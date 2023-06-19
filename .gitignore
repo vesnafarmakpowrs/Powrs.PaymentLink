@@ -260,3 +260,6 @@ FakesAssemblies/
 *.wasm
 *.wat
 *.xhtml
+/POWRS.PaymentLink/.vs/POWRS.PaymentLink/DesignTimeBuild/.dtbcache.v2
+/POWRS.PaymentLink/.vs/POWRS.PaymentLink/v17/.suo
+/POWRS.PaymentLink/.vs/POWRS.PaymentLink/config/applicationhost.config
