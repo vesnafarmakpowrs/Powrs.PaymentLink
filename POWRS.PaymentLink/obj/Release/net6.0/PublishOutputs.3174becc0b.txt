@@ -1,0 +1,7 @@
+C:\Projects\POWRS.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\PubTmp\Out\POWRS.PaymentLink.exe
+C:\Projects\POWRS.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
+C:\Projects\POWRS.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\PubTmp\Out\appsettings.json
+C:\Projects\POWRS.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\PubTmp\Out\POWRS.PaymentLink.dll
+C:\Projects\POWRS.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\PubTmp\Out\POWRS.PaymentLink.deps.json
+C:\Projects\POWRS.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\PubTmp\Out\POWRS.PaymentLink.runtimeconfig.json
+C:\Projects\POWRS.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\PubTmp\Out\POWRS.PaymentLink.pdb

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POWRS.PaymentLink", "POWRS.PaymentLink.csproj", "{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F69D14A9-ABC4-41DF-8943-FF2FFDEE7C31}
+	EndGlobalSection
+EndGlobal
