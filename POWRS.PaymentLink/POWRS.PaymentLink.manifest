@@ -8,7 +8,7 @@
 			<Content fileName="BuyEDaler.ws"/>
 			<Content fileName="Events.js"/>
 			<Content fileName="GetAccountInfo.ws"/>
-			<Content fileName="GetBuyEdalerServiceProviders.md"/>
+			<Content fileName="GetBuyEdalerServiceProviders.ws"/>
 			<Content fileName="OutgoingPayments.js"/>
 			<Content fileName="Payout.cssx"/>
 			<Content fileName="RegisterUpdates.ws"/>

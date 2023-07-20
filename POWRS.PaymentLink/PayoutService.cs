@@ -27,7 +27,7 @@ namespace POWRS.Payout
     /// <summary>
     /// Open Payments Platform service
     /// </summary>
-    public class OpenPaymentsPlatformService 
+    public class PayoutService
     {
         private static readonly Dictionary<string, string> buyTemplateIdsProduction = new Dictionary<string, string>()
         {
@@ -156,7 +156,7 @@ namespace POWRS.Payout
         /// <param name="Service">Service reference</param>
         /// <param name="Mode">Operation mode</param>
         /// <param name="Provider">Service provider.</param>
-        public OpenPaymentsPlatformService(CaseInsensitiveString Country, AspServiceProvider Service, OperationMode Mode,
+        public PayoutService(CaseInsensitiveString Country, AspServiceProvider Service, OperationMode Mode,
             PayoutServiceProvider Provider)
         {
             this.country = Country;
