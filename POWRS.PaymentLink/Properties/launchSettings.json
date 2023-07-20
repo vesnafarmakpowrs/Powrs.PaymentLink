@@ -1,27 +1,10 @@
 ﻿{
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:47733"
-    }
-  },
   "profiles": {
-    "POWRS.PaymentLink": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:7095;http://localhost:5194",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+    "IoT Gateway Console": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\dotnet\\dotnet.exe",
+      "commandLineArgs": "Waher.IoTGateway.Console.dll -instance Dev",
+      "workingDirectory": "C:\\My Projects\\IoTGateway\\Waher.IoTGateway.Console\\bin\\$(ConfigurationName)\\netcoreapp3.1\\"
     }
   }
 }
