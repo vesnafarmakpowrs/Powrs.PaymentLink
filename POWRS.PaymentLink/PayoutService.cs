@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Networking.OpenPaymentsPlatform;
 using TAG.Payments.OpenPaymentsPlatform;
+using Waher.Security.SHA3;
 using Waher.Content;
 using Waher.Content.Html.Elements;
 using Waher.Content.Markdown;
@@ -23,6 +24,14 @@ using Waher.Runtime.Settings;
 using Waher.Script;
 using Waher.Script.Operators.Arithmetics;
 using System.Security.Cryptography;
+using Waher.Networking.DNS.Enumerations;
+using Waher.Security.Users;
+using EDaler.Uris.Incomplete;
+using EDaler.Uris;
+using EDaler;
+using System.Diagnostics.Contracts;
+using Waher.Networking.XMPP;
+using Waher.Networking.Sniffers;
 
 namespace POWRS.Payout
 {
@@ -540,11 +549,11 @@ namespace POWRS.Payout
         /// <param name="TabId">Tab ID</param>
 		/// <param name="RequestFromMobilePhone">If request originates from mobile phone. (true)
         /// <returns>Result of operation.</returns>
-        public async Task<PaymentResult> BuyEDaler(IDictionary<CaseInsensitiveString, object> ContractParameters,string ContractID,
+        public async Task<PaymentResult> BuyEDaler(IDictionary<CaseInsensitiveString, object> ContractParameters, string ContractID,
             IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
             string SuccessUrl, string FailureUrl, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
         {
-
+            this.ContractId = ContractID;
             IPAddress.TryParse(RemoteEndpoint, out IPAddress ClientIpAddress);
 
             Log.Informational("PaymentLinkBuyEDaler started");
@@ -776,8 +785,9 @@ namespace POWRS.Payout
                 }
 
                 await DisplayUserMessage(TabId, "Your payment is complete! Thank you for using Vaulter! \n A payment confirmation is now sent to your email address.", true);
-                await UpdateContractWithTransactionStatusAsync(ContractID);
 
+                await connectClientAsync();
+             //   await UpdateContractWithTransactionStatusAsync(ContractID);
 
                 return new PaymentResult(Amount, Currency);
             }
@@ -791,7 +801,7 @@ namespace POWRS.Payout
                 PayoutServiceProvider.Dispose(Client, this.mode);
             }
         }
-
+        private string ContractId = string.Empty;
         private async Task DisplayUserMessage(string tabId, string message, bool isSuccess = false)
         {
             Log.Informational("DisplayUserMessage  " + message);
@@ -1248,28 +1258,160 @@ namespace POWRS.Payout
             return encodedBytes;
         }
 
-        private byte[] Sha2_256HMac(byte[] key, byte[] data)
+        private string GenerateUniqueRandomString(int length)
         {
-            using (HMACSHA256 hmac = new HMACSHA256(key))
+            // The minimum length for the random string should be 32 characters
+            if (length < 32)
+                throw new ArgumentException("The length must be at least 32 characters.");
+
+            // Set up the characters that can be used in the random string
+            const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+            using (RNGCryptoServiceProvider cryptoProvider = new RNGCryptoServiceProvider())
             {
-                return hmac.ComputeHash(data);
+                // Create a byte array to hold the random bytes
+                byte[] randomBytes = new byte[length];
+
+                // Generate the random bytes
+                cryptoProvider.GetBytes(randomBytes);
+
+                // Convert the random bytes to characters in the validChars string
+                StringBuilder stringBuilder = new StringBuilder(length);
+                for (int i = 0; i < length; i++)
+                {
+                    stringBuilder.Append(validChars[randomBytes[i] % validChars.Length]);
+                }
+
+                return stringBuilder.ToString();
             }
         }
 
+
+        private XmppClient client;
+        private async Task connectClientAsync()
+        {
+            try
+            {
+                int Port = 5222;    // Default XMPP Client-to-Server port.
+
+                string Account = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+
+                XmppCredentials XmppCredentials = new XmppCredentials();
+                XmppCredentials.Port = Port;
+                XmppCredentials.Host = Waher.IoTGateway.Gateway.Domain;
+                XmppCredentials.Password = Password;
+                XmppCredentials.Account = Account;
+                Log.Informational("XmppClient create");
+               
+                this.client = new XmppClient(XmppCredentials, "en", System.Reflection.Assembly.GetEntryAssembly(), new InMemorySniffer(250));
+                this.client.TrustServer = true;
+                Log.Informational("XmppClient trust");
+
+                this.client.AllowEncryption = true;
+
+
+                this.client.OnStateChanged += this.Client_OnStateChanged;
+                this.client.OnConnectionError += this.Client_OnConnectionError;
+
+                this.client.Connect(Gateway.Domain);
+
+                Log.Informational("XmppClient connect");
+            }
+            catch (Exception ex) {
+                Log.Informational("client connect" + ex.Message);
+            }
+        }
+
+        private async Task Client_OnStateChanged(object Sender, XmppState NewState)
+        {
+            try
+            {
+
+                Log.Informational("Client_OnStateChanged" + NewState.ToString());
+                if (NewState == XmppState.Connected)
+                    await ExecuteSendUri();
+            }
+            catch (Exception ex)
+            {
+                Log.Informational(ex.Message);
+            }
+        }
+
+        private Task Client_OnConnectionError(object Sender, Exception Exception)
+        {
+
+            Log.Informational("Client_OnConnectionError" + Exception.Message);
+            return Task.CompletedTask;
+        }
+        private EDalerClient eDalerClient = null;
+        private async Task ExecuteSendUri()
+        {
+            try
+            {
+                  Log.Informational("IN ExecuteSendUri");
+                    string ComponentAdress = string.Empty;
+                    string ComponentJid = string.Empty;
+
+                    ContractsClient Contracts = new ContractsClient(this.client, ComponentAdress);
+                    this.eDalerClient = new EDalerClient(this.client, Contracts, ComponentJid);
+
+                    string edalerUri = string.Empty;
+
+                    string ContractUri = ContractsClient.ContractIdUriString(this.ContractId);
+                    Log.Informational("ContractUri: " + ContractUri);
+
+                    if (!EDalerUri.TryParse(ContractUri, out EDalerUri Uri))
+                        throw new Exception("Invalid eDaler® URI.");
+
+                    if (Uri is EDalerIncompletePaymentUri IncompleteUri)
+                    {
+                        ContractUri = await this.eDalerClient.CreateFullPaymentUri(
+                            IncompleteUri.To,
+                            IncompleteUri.Amount,
+                            IncompleteUri.AmountExtra,
+                            IncompleteUri.Currency,
+                            (int)IncompleteUri.Expires.Subtract(DateTime.Today.AddDays(-1)).TotalDays);
+                    }
+
+                    Log.Informational("edalerUri: " + edalerUri);
+
+                    await this.eDalerClient.SendEDalerUriAsync(edalerUri);
+                    //this.Uri = string.Empty;
+
+            }
+            catch (Exception ex)
+            {
+                Log.Informational(ex.Message);
+            }
+        }
+
+
         private async Task UpdateContractWithTransactionStatusAsync(string ContractID)
         {
-            string TokenId = "";
+            string TokenId = "072c0582-91a9-4078-8cd0-4413fe0fa4ac@edaler.lab.neuron.vaulter.rs";
+            Log.Informational("UpdateContractWithTransactionStatusAsync");
             string PUserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+
+            Log.Informational(PUserName);
+            Log.Informational("UpdateContractWithTransactionStatusAsync");
             string PPassword = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+            Log.Informational(Gateway.Domain);
+            Log.Informational(PPassword + "ghj");
 
             int numBytes = 32;
             byte[] randomBytes = RandomBytesGenerator.GetRandomBytes(numBytes);
-
-
+            Log.Informational("random string 32" + GenerateUniqueRandomString(32));
             string Nonce = Convert.ToBase64String(randomBytes);
             string S = PUserName + ":" + Gateway.Domain + ":" + Nonce;
+            Log.Informational("Utf8Encode(S): " + Utf8Encode(S));
+            Log.Informational("Utf8Encode(S): " + Utf8Encode(PPassword));
+            Log.Informational("Sha2_256HMac: " + Waher.Security.Hashes.ComputeHMACSHA256Hash(Utf8Encode(S), Utf8Encode(PPassword)));
 
-            string Signature = Convert.ToBase64String(Sha2_256HMac(Utf8Encode(S), Utf8Encode(PPassword)));
+
+            string Signature = Convert.ToBase64String(Waher.Security.Hashes.ComputeHMACSHA256Hash(Utf8Encode(S), Utf8Encode(PPassword)));
+
+            Log.Informational(S);
 
             try
             {
