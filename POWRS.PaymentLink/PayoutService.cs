@@ -1,10 +1,12 @@
-﻿using Paiwise;
+﻿using Microsoft.VisualBasic;
+using Paiwise;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using TAG.Networking.OpenPaymentsPlatform;
 using TAG.Payments.OpenPaymentsPlatform;
 using Waher.Content;
@@ -12,11 +14,15 @@ using Waher.Content.Html.Elements;
 using Waher.Content.Markdown;
 using Waher.Events;
 using Waher.IoTGateway;
+using Waher.Networking.XMPP.Contracts;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
 using Waher.Persistence.Serialization;
 using Waher.Runtime.Inventory;
+using Waher.Runtime.Settings;
 using Waher.Script;
+using Waher.Script.Operators.Arithmetics;
+using System.Security.Cryptography;
 
 namespace POWRS.Payout
 {
@@ -534,7 +540,7 @@ namespace POWRS.Payout
         /// <param name="TabId">Tab ID</param>
 		/// <param name="RequestFromMobilePhone">If request originates from mobile phone. (true)
         /// <returns>Result of operation.</returns>
-        public async Task<PaymentResult> BuyEDaler(IDictionary<CaseInsensitiveString, object> ContractParameters,
+        public async Task<PaymentResult> BuyEDaler(IDictionary<CaseInsensitiveString, object> ContractParameters,string ContractID,
             IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
             string SuccessUrl, string FailureUrl, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
         {
@@ -770,6 +776,9 @@ namespace POWRS.Payout
                 }
 
                 await DisplayUserMessage(TabId, "Your payment is complete! Thank you for using Vaulter! \n A payment confirmation is now sent to your email address.", true);
+                await UpdateContractWithTransactionStatusAsync(ContractID);
+
+
                 return new PaymentResult(Amount, Currency);
             }
             catch (Exception ex)
@@ -1204,6 +1213,101 @@ namespace POWRS.Payout
 
 
         #endregion
+
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public class RandomBytesGenerator
+        {
+            public static byte[] GetRandomBytes(int length)
+            {
+                // Create a byte array to store the random bytes
+                byte[] randomBytes = new byte[length];
+
+                // Create a Random object to generate random numbers
+                Random random = new Random();
+
+                // Generate random bytes and store them in the byte array
+                random.NextBytes(randomBytes);
+
+                return randomBytes;
+            }
+        }
+
+        private static byte[] Utf8Encode(string input)
+        {
+            // Create an instance of the UTF-8 encoding
+            Encoding utf8 = Encoding.UTF8;
+
+            // Encode the input string to a byte array in UTF-8 format
+            byte[] encodedBytes = utf8.GetBytes(input);
+
+            return encodedBytes;
+        }
+
+        private byte[] Sha2_256HMac(byte[] key, byte[] data)
+        {
+            using (HMACSHA256 hmac = new HMACSHA256(key))
+            {
+                return hmac.ComputeHash(data);
+            }
+        }
+
+        private async Task UpdateContractWithTransactionStatusAsync(string ContractID)
+        {
+            string TokenId = "";
+            string PUserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+            string PPassword = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+
+            int numBytes = 32;
+            byte[] randomBytes = RandomBytesGenerator.GetRandomBytes(numBytes);
+
+
+            string Nonce = Convert.ToBase64String(randomBytes);
+            string S = PUserName + ":" + Gateway.Domain + ":" + Nonce;
+
+            string Signature = Convert.ToBase64String(Sha2_256HMac(Utf8Encode(S), Utf8Encode(PPassword)));
+
+            try
+            {
+                object Result = await InternetContent.PostAsync(
+                    new Uri("https://" + Gateway.Domain + "/Agent/Account/Login"),
+                    new Dictionary<string, object>()
+                    {
+                        { "userName", PUserName },
+                        { "nonce", Nonce },
+                        { "signature", Signature },
+                        { "seconds", 69 },
+                    },
+                    new KeyValuePair<string, string>("Accept", "application/json"));
+
+                if (Result is Dictionary<string, object> Response)
+                {
+                    if (Response.TryGetValue("jwt", out object ObjJwt) && ObjJwt is string Jwt)
+                    {
+                        string xmlNote = "<PaymentCompleted xmlns='https://neuron.vaulter.rs/Downloads/EscrowRebnis.xsd' />";
+
+                        object ResultXmlNote = await InternetContent.PostAsync(
+                        new Uri("https://" + Gateway.Domain + "/Agent/Tokens/AddXmlNote"),
+                         new Dictionary<string, object>()
+                    {
+                        { "tokenId", TokenId },
+                        { "note", xmlNote },
+                        { "personal", false }
+                    },
+                        new KeyValuePair<string, string>("Accept", "application/json"),
+                        new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+            }
+        }
 
 
         /// <summary>

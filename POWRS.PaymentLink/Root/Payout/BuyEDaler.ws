@@ -49,7 +49,7 @@ if(ContractAmount <= 0 || System.String.IsNullOrEmpty(ContractCurrency)) then
 );
 
 
-OPServiceProvider:=Create(TAG.Payments.OpenPaymentsPlatform.OpenPaymentsPlatformServiceProvider);
+OPServiceProvider:=Create(POWRS.Payout.PayoutServiceProvider);
 
 ClientID := GetSetting("TAG.Payments.OpenPaymentsPlatform.ClientID","");
 ClientSecret := GetSetting("TAG.Payments.OpenPaymentsPlatform.ClientSecret","");
@@ -68,7 +68,7 @@ else
 );
 
 AspService := Create(TAG.Networking.OpenPaymentsPlatform.AspServiceProvider, Client, PBicFi, PBankName, "");
-OPService:=Create(TAG.Payments.OpenPaymentsPlatform.OpenPaymentsPlatformService, "SWEDEN", AspService , Mode, OPServiceProvider);
+OPService:=Create(POWRS.Payout.PayoutService, "SWEDEN", AspService , Mode, OPServiceProvider);
 
 IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
 IdentityProperties.Add("PNR", personalNumber);
