@@ -10,7 +10,6 @@ Parameter: ID
 Parameter: Language
 JavaScript: Events.js
 JavaScript: Tests.js
-JavaScript: ../Agent.js
 JavaScript: OutgoingPayments.js
 
 <title>Document</title></head>
@@ -66,10 +65,7 @@ else
         Parameter.Name like "Value" ?   Value := Parameter.MarkdownValue;
         Parameter.Name like "Currency" ?   Currency := Parameter.MarkdownValue;
         Parameter.Name like "Commission" ?   Commission := Parameter.MarkdownValue;
-        Parameter.Name like "BuyerFirstName" ?   BuyerFirstName := Parameter.MarkdownValue;
-        Parameter.Name like "BuyerLastName" ?   BuyerLastName := Parameter.MarkdownValue;
-        Parameter.Name like "BuyerEmail" ?   BuyerEmail := Parameter.MarkdownValue;
-        Parameter.Name like "BuyerEmail" ?   BuyerCountryCode := Parameter.MarkdownValue;
+        Parameter.Name like "BuyerFullName" ?   BuyerFullName := Parameter.MarkdownValue;
         Parameter.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Parameter.MarkdownValue;
 	    Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.MarkdownValue;
         Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.MarkdownValue;
@@ -83,7 +79,7 @@ null
 
 Sold by **((Contract.Account)) ** <br/>
 **Payer** :<br/>
-**Name** : ((MarkdownEncode(BuyerFirstName + BuyerLastName) )) <br/>
+**Name** : ((MarkdownEncode(BuyerFullName) )) <br/>
 **Email address**: (()) <br/>
 <br/>
 

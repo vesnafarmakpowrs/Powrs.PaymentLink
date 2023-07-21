@@ -1,14 +1,7 @@
 ﻿Title: PaymentLink
 Date: 2023-07-18
 Author: Vesna Farmak
-Master: {{(Configuring:=Waher.IoTGateway.Gateway.Configuring) ? "Master.md" : "/Master.md"}}
-JavaScript: /Events.js
-JavaScript: /Settings/Next.js
-JavaScript: /Settings/PersonalData.js
-UserVariable: User
-Login: /Login.md
-Title: Open Payments Platform settings
-Description: Configures integration with the Payment Link backend payment service.
+Description: Configures integration with the Open Payments Platform backend payment service.
 Master: /Master.md
 Cache-Control: max-age=0, no-cache, no-store
 UserVariable: User
@@ -16,6 +9,7 @@ Privilege: Admin.Payments.Paiwise.OpenPaymentsPlatform
 Login: /Login.md
 JavaScript: Settings.js
 JavaScript: /Sniffers/Sniffer.js
+
 
 ========================================================================
 
@@ -33,8 +27,7 @@ if exists(Posted) then
 
 	SetSetting("POWRS.PaymentLink.OPPUser",Posted.UserName);
 	SetSetting("POWRS.PaymentLink.OPPUserPass",Posted.Password);
-
-	POWRS.Payout.PayoutServiceProvider.InvalidateCurrent();
+	
 
 	SeeOther("Settings.md");
 );

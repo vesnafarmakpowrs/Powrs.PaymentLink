@@ -85,7 +85,7 @@ SuccessUrl:= "";
 FailureUrl := "";
 CancelUrl := "";
 
-results := OPService.BuyEDaler(ContractParameters,IdentityProperties, SuccessUrl, FailureUrl, PTabID, False,"192.168.0.1");
+results := OPService.BuyEDaler(ContractParameters,PContractId,IdentityProperties, SuccessUrl, FailureUrl, PTabID, False,"192.168.0.1");
 
 {
 	Results: results
