@@ -16,11 +16,7 @@ using Waher.Persistence;
 using Waher.Persistence.Filters;
 using Waher.Persistence.Serialization;
 using Waher.Runtime.Inventory;
-using Waher.Runtime.Profiling.Export;
-using Waher.Runtime.Settings;
 using Waher.Script;
-using Waher.Security.CallStack;
-using Waher.Security.LoginMonitor;
 
 namespace POWRS.Payout
 {

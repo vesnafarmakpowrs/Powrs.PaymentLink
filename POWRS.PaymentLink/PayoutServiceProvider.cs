@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TAG.Networking.OpenPaymentsPlatform;
+using TAG.Payments.OpenPaymentsPlatform;
 using TAG.Payments.OpenPaymentsPlatform.Api;
 using Waher.Events;
 using Waher.IoTGateway;
@@ -13,7 +14,7 @@ using Waher.Networking.Sniffers;
 using Waher.Persistence;
 using Waher.Runtime.Inventory;
 
-namespace TAG.Payments.OpenPaymentsPlatform
+namespace POWRS.Payout
 {
 
 	/// <summary>
