@@ -10,10 +10,8 @@ if(contractParameters == null || System.String.IsNullOrEmpty(TokenId)) then
    BadRequest("Parameters or token for given contract do not exists");
 );
 
-PUserName := GetSetting("OPPUser","");
-PPassword := GetSetting("OPPUserPass","");
-
-domainInfo := Get("https://lab.neuron.vaulter.rs/Agent/Account/DomainInfo");
+PUserName := GetSetting("POWRS.PaymentLink.OPPUser","");
+PPassword := GetSetting("POWRS.PaymentLink.OPPUserPass","");
 
 Nonce := Base64Encode(RandomBytes(32));
 S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
@@ -24,10 +22,10 @@ Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account
                  {
                   "userName": PUserName,
                   "nonce": Nonce,
-	          "signature": Signature,
-	          "seconds": 60
+	              "signature": Signature,
+	              "seconds": 60
                   },
-		{"Accept" : "application/json"});
+		          {"Accept" : "application/json"});
 
 
 xmlNote := "<PaymentCompleted xmlns='https://neuron.vaulter.rs/Downloads/EscrowRebnis.xsd' />";
@@ -37,10 +35,10 @@ xmlNote := "<PaymentCompleted xmlns='https://neuron.vaulter.rs/Downloads/EscrowR
 xmlNoteResponse := POST("https://lab.neuron.vaulter.rs/Agent/Tokens/AddXmlNote",
                  {
                   "tokenId": TokenId,
-	          "note":xmlNote,
-	          "personal":false
+	              "note":xmlNote,
+	              "personal":false
                   },
-		{"Accept" : "application/json",
+		        {"Accept" : "application/json",
                 "Authorization":"Bearer " + Response.jwt});
 
 {	

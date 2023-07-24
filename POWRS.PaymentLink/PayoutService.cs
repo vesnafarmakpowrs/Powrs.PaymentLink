@@ -32,6 +32,8 @@ using EDaler;
 using System.Diagnostics.Contracts;
 using Waher.Networking.XMPP;
 using Waher.Networking.Sniffers;
+using NeuroFeatures;
+using System.Linq;
 
 namespace POWRS.Payout
 {
@@ -1347,34 +1349,39 @@ namespace POWRS.Payout
         private EDalerClient eDalerClient = null;
         private async Task ExecuteSendUri()
         {
+            Log.Informational("test");
             try
             {
-                  Log.Informational("IN ExecuteSendUri");
-                    string ComponentAdress = string.Empty;
-                    string ComponentJid = string.Empty;
+                   Log.Informational("IN ExecuteSendUri");
+                    string ComponentJid = "edaler.lab.neuron.vaulter.rs";
 
-                    ContractsClient Contracts = new ContractsClient(this.client, ComponentAdress);
-                    this.eDalerClient = new EDalerClient(this.client, Contracts, ComponentJid);
-
-                    string edalerUri = string.Empty;
-
-                    string ContractUri = ContractsClient.ContractIdUriString(this.ContractId);
-                    Log.Informational("ContractUri: " + ContractUri);
-
-                    if (!EDalerUri.TryParse(ContractUri, out EDalerUri Uri))
-                        throw new Exception("Invalid eDaler® URI.");
-
-                    if (Uri is EDalerIncompletePaymentUri IncompleteUri)
+                    ContractsClient ContractsClient = new ContractsClient(this.client, ComponentJid);
+                    if (await ContractsClient.LoadKeys(false))
                     {
-                        ContractUri = await this.eDalerClient.CreateFullPaymentUri(
-                            IncompleteUri.To,
-                            IncompleteUri.Amount,
-                            IncompleteUri.AmountExtra,
-                            IncompleteUri.Currency,
-                            (int)IncompleteUri.Expires.Subtract(DateTime.Today.AddDays(-1)).TotalDays);
+                        await ContractsClient.GenerateNewKeys();
                     }
 
-                    Log.Informational("edalerUri: " + edalerUri);
+                    Waher.Networking.XMPP.Contracts.Contract Contract = await ContractsClient.GetContractAsync(ContractId);
+                    this.eDalerClient = new EDalerClient(this.client, ContractsClient, ComponentJid);
+                   
+                    string ContractUri = ContractsClient.ContractIdUriString(this.ContractId);
+                    Log.Informational("ContractUri: " + ContractUri);
+                    Log.Informational("Contract[\"Value\"]" + Contract["Value"]);
+                    Log.Informational("Contract[\"Currency\"]" + Contract["Currency"]);
+                    
+                    NeuroFeaturesClient neuroFeaturesClient = new NeuroFeaturesClient(this.client, ContractsClient, ComponentJid);
+                    var tokenArgs = await neuroFeaturesClient.GetContractTokensAsync(ContractId);
+                    var token = tokenArgs?.Tokens?.FirstOrDefault();
+                    if (token is null)
+                    {
+                        Log.Informational("token is null");
+                        return;
+                    }
+                    Log.Informational("tokenid" + token.TokenId);
+
+                     string edalerUri = await this.eDalerClient.CreateFullPaymentUri("AgentUserTest8@lab.neuron.vaulter.rs", (decimal)Contract["Value"],
+                     null, Contract["Currency"].ToString(), 365, "nfeat:" + token.TokenId);
+                     Log.Informational("edalerUri: " + edalerUri);
 
                     await this.eDalerClient.SendEDalerUriAsync(edalerUri);
                     //this.Uri = string.Empty;
@@ -1385,6 +1392,7 @@ namespace POWRS.Payout
                 Log.Informational(ex.Message);
             }
         }
+
 
 
         private async Task UpdateContractWithTransactionStatusAsync(string ContractID)

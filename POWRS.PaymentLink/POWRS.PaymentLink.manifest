@@ -2,6 +2,7 @@
 <Module xmlns="http://waher.se/Schema/ModuleManifest.xsd">
 	<Assembly fileName="TAG.Networking.OpenPaymentsPlatform.dll"/>
 	<Assembly fileName="Edaler.dll" />
+	<Assembly fileName="NeuroFeatures.dll" />
 	<Assembly fileName="TAG.Payments.OpenPaymentsPlatform.dll"/>
 	<Assembly fileName="POWRS.PaymentLink.dll"/>
 	<Folder name="Root">
@@ -17,7 +18,6 @@
 			<Content fileName="Settings.md"/>
 			<Content fileName="vaulter_logo.svg"/>
 			<Content fileName="vaulterlogo.svg"/>
-			<Content fileName="VaulterState.ws"/>
 			</Folder>
 	</Folder>
 </Module>
