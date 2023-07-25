@@ -20,6 +20,29 @@ using Waher.Security;
 
 namespace POWRS.Payout
 {
+    public class Token
+    {
+        public string TokenId { get; set; }
+        public decimal Value { get; set; }
+        public string Currency { get; set; }
+        public string OwnerJid { get; set; }
+        public string Owner { get; set; }
+
+        public bool IsValid()
+        {
+            if (string.IsNullOrEmpty(TokenId) ||
+              string.IsNullOrEmpty(Currency) ||
+              string.IsNullOrEmpty(OwnerJid) ||
+              string.IsNullOrEmpty(Owner) ||
+              Value <= 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     /// <summary>
     /// Open Payments Platform service
     /// </summary>
@@ -314,21 +337,12 @@ namespace POWRS.Payout
 
         /// <summary>
         /// Processes payment for buying eDaler.
-        /// </summary>
-        /// <param name="ContractParameters">Parameters available in the
-        /// contract authorizing the payment.</param>
-        /// <param name="IdentityProperties">Properties engraved into the
-        /// legal identity signing the payment request.</param>
-        /// <param name="SuccessUrl">Optional Success URL the service provider can open on the client from a client web page, if payment has succeeded.</param>
-        /// <param name="FailureUrl">Optional Failure URL the service provider can open on the client from a client web page, if payment has failed.</param>
+        ///  <param name="ContractID">Tab ID</param>
         /// <param name="TabId">Tab ID</param>
 		/// <param name="RequestFromMobilePhone">If request originates from mobile phone. (true)
         /// <returns>Result of operation.</returns>
-        public async Task<PaymentResult> BuyEDaler(IDictionary<CaseInsensitiveString, object> ContractParameters, string ContractID,
-            IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
-            string SuccessUrl, string FailureUrl, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
+        public async Task<PaymentResult> BuyEDaler(string ContractID, string BankAccount, string PersonalNumber, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
         {
-            this.ContractId = ContractID;
             IPAddress.TryParse(RemoteEndpoint, out IPAddress ClientIpAddress);
 
             Log.Informational("PaymentLinkBuyEDaler started");
@@ -340,30 +354,31 @@ namespace POWRS.Payout
                 return new PaymentResult("Service not configured properly.");
             }
 
-            AuthorizationFlow Flow = Configuration.AuthorizationFlow;
-
-            Log.Informational("ValidateParameters started");
-
-            string Currency = ContractParameters["Currency"].ToString();
-            decimal Amount = Expression.ToDecimal(ContractParameters["Amount"]);
-
-            string Message = this.ValidateParameters(ContractParameters, IdentityProperties,
-               Amount, Currency, out CaseInsensitiveString PersonalNumber,
-                out string BankAccount, out string TextMessage);
-
-            Log.Informational("ValidateParameters completed");
-
-            Log.Informational(Message);
-            if (!string.IsNullOrEmpty(Message))
+            string Jwt = await LoginToUserAgent();
+            if (string.IsNullOrEmpty(Jwt))
             {
-                Log.Informational(Message);
-                await DisplayUserMessage(TabId, Message);
-                return new PaymentResult(Message);
+                Log.Informational("Unable to LoginToUserAgent");
+                return new PaymentResult("Unable to LoginToUserAgent");
             }
 
+            Token Token = await GetToken(ContractID, Jwt);
+
+            if (Token == null)
+            {
+                Log.Informational("No token for contractId: " + ContractID);
+                return new PaymentResult("Unable to LoginToUserAgent");
+            }
+
+            if (!Token.IsValid())
+            {
+                Log.Informational("Parameters for token are not valid.");
+                return new PaymentResult("Parameters for token are not valid");
+            }
+
+            AuthorizationFlow Flow = Configuration.AuthorizationFlow;
+
             Log.Informational("CreateClient started");
-            OpenPaymentsPlatformClient Client = PayoutServiceProvider.CreateClient(Configuration, this.mode,
-                ServicePurpose.Private);    // TODO: Contracts for corporate accounts (when using corporate IDs).
+            OpenPaymentsPlatformClient Client = PayoutServiceProvider.CreateClient(Configuration, this.mode,  ServicePurpose.Private);    // TODO: Contracts for corporate accounts (when using corporate IDs).
 
             if (Client is null)
             {
@@ -385,24 +400,31 @@ namespace POWRS.Payout
                 PaymentProduct Product;
 
                 if (Configuration.NeuronBankAccountIban.Substring(0, 2) == BankAccount.Substring(0, 2))
+                {
                     Product = PaymentProduct.domestic;
-                else if (Currency.ToUpper() == "EUR")
+                }
+                else if (Token.Currency.ToUpper() == "EUR")
+                {
                     Product = PaymentProduct.sepa_credit_transfers;
+                }
                 else
+                {
                     Product = PaymentProduct.international;
+                }
+
                 Log.Informational("CreatePaymentInitiation started");
 
                 PaymentInitiationReference PaymentInitiationReference = await Client.CreatePaymentInitiation(
-                    Product, Amount, Currency, BankAccount, Currency,
-                    Configuration.NeuronBankAccountIban, Currency,
-                    Configuration.NeuronBankAccountName, TextMessage, Operation);
+                    Product, Token.Value, Token.Currency, BankAccount, Token.Currency,
+                    Configuration.NeuronBankAccountIban, Token.Currency,
+                    Configuration.NeuronBankAccountName, "Vaulter", Operation);
 
                 Log.Informational("CreatePaymentInitiation completed");
 
                 Log.Informational("StartPaymentInitiationAuthorization started");
                 AuthorizationInformation AuthorizationStatus = await Client.StartPaymentInitiationAuthorization(
                     Product, PaymentInitiationReference.PaymentId, Operation,
-                    SuccessUrl, FailureUrl);
+                    "", "");
                 Log.Informational("StartPaymentInitiationAuthorization completed");
 
                 Log.Informational("GetAuthenticationMethod started");
@@ -561,9 +583,9 @@ namespace POWRS.Payout
 
                 await DisplayUserMessage(TabId, "Your payment is complete! Thank you for using Vaulter! \n A payment confirmation is now sent to your email address.", true);
 
-                await UpdateContractWithTransactionStatusAsync(Amount, Currency, IdentityProperties["JID"], ContractID);
+                await UpdateContractWithTransactionStatusAsync(Token, Jwt);
 
-                return new PaymentResult(Amount, Currency);
+                return new PaymentResult(Token.Value, Token.Currency);
             }
             catch (Exception ex)
             {
@@ -575,7 +597,7 @@ namespace POWRS.Payout
                 PayoutServiceProvider.Dispose(Client, this.mode);
             }
         }
-        private string ContractId = string.Empty;
+
         private async Task DisplayUserMessage(string tabId, string message, bool isSuccess = false)
         {
             Log.Informational("DisplayUserMessage  " + message);
@@ -659,70 +681,6 @@ namespace POWRS.Payout
             return new KeyValuePair<IPAddress, PaymentResult>(ClientIpAddress, null);
         }
 
-        private string ValidateParameters(IDictionary<CaseInsensitiveString, object> ContractParameters,
-            IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
-            decimal Amount, string Currency, out CaseInsensitiveString PersonalNumber,
-            out string BankAccount, out string TextMessage)
-        {
-            PersonalNumber = null;
-            TextMessage = string.Empty;
-            BankAccount = string.Empty;
-
-            if (!ContractParameters.TryGetValue("Amount", out object Obj))
-                return "Amount not available in contract.";
-
-            if (!(Obj is decimal ContractAmount))
-            {
-                try
-                {
-                    ContractAmount = Expression.ToDecimal(Obj);
-                }
-                catch (Exception)
-                {
-                    return "Amount in contract not of the correct type. Value: " + Expression.ToString(Obj) + ", Type: " + Obj?.GetType().FullName;
-                }
-            }
-
-            if (ContractAmount != Amount)
-                return "Amount in contract does not match amount in call.";
-
-            if (!ContractParameters.TryGetValue("Currency", out Obj))
-                return "Currency not available in contract.";
-
-            if (!(Obj is string ContractCurrency))
-                return "Currency in contract not of the correct type. Value: " + Expression.ToString(Obj) + ", Type: " + Obj?.GetType().FullName;
-
-            if (ContractCurrency != Currency)
-                return "Currency in contract does not match currency in call.";
-
-            if (!ContractParameters.TryGetValue("Account", out Obj))
-                return "Account not available in contract.";
-
-            if (!(Obj is string ContractAccount))
-                return "Account in contract not of the correct type. Value: " + Expression.ToString(Obj) + ", Type: " + Obj?.GetType().FullName;
-
-            if (ContractAccount.Length <= 2)
-                return "Invalid bank account.";
-
-            BankAccount = ContractAccount;
-
-            if (!(IdentityProperties.TryGetValue("PNR", out PersonalNumber)))
-                return "Personal number missing in identity.";
-
-            if (ContractParameters.TryGetValue("Message", out Obj))
-            {
-                if (!(Obj is string s))
-                    return "Message not a string. Value: " + Expression.ToString(Obj) + ", Type: " + Obj?.GetType().FullName;
-
-                s = s.Trim();
-                if (s.Length > 10)
-                    return "Message cannot be longer than 10 characters.";
-
-                TextMessage = s;
-            }
-
-            return null;
-        }
         /// <summary>
         /// Gets available payment options for buying eDaler.
         /// </summary>
@@ -1032,27 +990,14 @@ namespace POWRS.Payout
             return encodedBytes;
         }
 
-
-        private async Task UpdateContractWithTransactionStatusAsync(decimal Amount, string Currency, string ToBareJid, string ContractID)
+        private async Task UpdateContractWithTransactionStatusAsync(Token Token, string JwtToken)
         {
             try
             {
-                string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
-                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
-
-                string Jwt = await LoginToUserAgent(UserName, Password);
-                string TokenId = await GetToken(this.ContractId, Jwt);
-
-                if (TokenId == null)
-                {
-                    Log.Informational("No token for contractId: " + ContractID);
-                    return;
-                }
-
-                string fullPaymentUri = await CreateFullPaymentUri(ToBareJid, Amount, null, Currency, 364, "nfeat:" + TokenId);
+                string fullPaymentUri = await CreateFullPaymentUri(Token.OwnerJid, Token.Value, null, Token.Currency, 364, "nfeat:" + Token.TokenId);
                 Log.Informational("FullPaymentUri: " + fullPaymentUri);
 
-                await SendPaymentUri(fullPaymentUri, Jwt);
+                await SendPaymentUri(fullPaymentUri, JwtToken);
             }
             catch (Exception ex)
             {
@@ -1061,10 +1006,13 @@ namespace POWRS.Payout
             }
         }
 
-        private async Task<string> LoginToUserAgent(string UserName, string Password)
+        private async Task<string> LoginToUserAgent()
         {
             try
             {
+                string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+
                 byte[] randomBytes = RandomBytesGenerator.GetRandomBytes(32);
 
                 string Nonce = Convert.ToBase64String(randomBytes);
@@ -1088,13 +1036,13 @@ namespace POWRS.Payout
                     {
                         return Jwt;
                     }
-                return null;
             }
             catch (Exception ex)
             {
                 Log.Error(ex);
-                return null;
             }
+
+            return null;
         }
 
         private async Task<object> SendXmlNote(string TokenId, string Jwt)
@@ -1131,7 +1079,7 @@ namespace POWRS.Payout
             return ResultPaymentUri;
         }
 
-        private async Task<string> GetToken(string ContractId, string Jwt)
+        private async Task<Token> GetToken(string ContractId, string Jwt)
         {
             object TokensResult = await InternetContent.PostAsync(
              new Uri("https://" + Gateway.Domain + "/Agent/Tokens/GetContractTokens"),
@@ -1146,14 +1094,44 @@ namespace POWRS.Payout
              new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
             if (TokensResult is Dictionary<string, object> Response)
+            {
                 if (Response.TryGetValue("Tokens", out object ObjTokens) && ObjTokens is Dictionary<string, object> Tokens)
                 {
-                    if (Tokens.TryGetValue("ref", out object ObjTokenRef) && ObjTokenRef is Dictionary<string, object> TokenRef)
+                    if (Tokens.TryGetValue("Token", out object ObjToken) && ObjToken is Dictionary<string, object> Token)
                     {
-                        if (TokenRef.TryGetValue("id", out object ObjTokenId) && ObjTokenId is string TokenId)
-                            return TokenId;
+                        Token token = new Token();
+
+                        if (Token.TryGetValue("id", out object ObjTokenId) && ObjTokenId is string TokenId)
+                        {
+                            Log.Informational("id: " + TokenId);
+                            token.TokenId = TokenId;
+                        }
+                        if (Token.TryGetValue("value", out object ObjTokenValue) && ObjTokenValue is decimal Value)
+                        {
+                            Log.Informational("value: " + Value);
+                            token.Value = Value;
+                        }
+                        if (Token.TryGetValue("currency", out object ObjTokenCurrency) && ObjTokenCurrency is string Currency)
+                        {
+                            Log.Informational("currency: " + Currency);
+                            token.Currency = Currency;
+                        }
+                        if (Token.TryGetValue("owner", out object ObjTokenOwner) && ObjTokenOwner is string Owner)
+                        {
+                            Log.Informational("owner: " + Owner);
+                            token.Owner = Owner;
+                        }
+                        if (Token.TryGetValue("ownerJid", out object ObjTokenOwnerJid) && ObjTokenOwnerJid is string OwnerJid)
+                        {
+                            Log.Informational("ownerJid: " + OwnerJid);
+                            token.OwnerJid = OwnerJid;
+                        }
+
+                        return token;
                     }
                 }
+            }
+
             return null;
         }
 
@@ -1222,26 +1200,5 @@ namespace POWRS.Payout
 
             return this.IsConfigured();
         }
-
-        private string ValidateParameters(IDictionary<CaseInsensitiveString, object> ContractParameters,
-            IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
-            decimal Amount, string Currency, out CaseInsensitiveString PersonalNumber,
-            out string BankAccount, out string AccountName, out string TextMessage)
-        {
-            AccountName = null;
-            string Msg = this.ValidateParameters(ContractParameters, IdentityProperties, Amount, Currency, out PersonalNumber,
-                out BankAccount, out TextMessage);
-
-            if (!string.IsNullOrEmpty(Msg))
-                return Msg;
-
-            if (!ContractParameters.TryGetValue("AccountName", out object Obj))
-                return "Account Name not available in contract.";
-
-            AccountName = Obj?.ToString() ?? string.Empty;
-
-            return null;
-        }
-
     }
 }

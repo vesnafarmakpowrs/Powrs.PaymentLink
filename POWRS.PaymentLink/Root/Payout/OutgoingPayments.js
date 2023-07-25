@@ -108,6 +108,8 @@ function GenerateAccountsListUi(accounts) {
 
 function StartPayment(bankName, bicFi, iban) {
 	let contractId = document.getElementById('contractId').value;
+	let personalNumber = document.getElementById('personalNumber').value;
+
 	const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("POST", "BuyEdaler.ws", true);
@@ -116,13 +118,12 @@ function StartPayment(bankName, bicFi, iban) {
 	xhttp.send(JSON.stringify(
 		{
 			"tabId": TabID,
-			"sessionId": "",
 			"requestFromMobilePhone": Boolean(isMobileDevice),
 			"bicFi": bicFi,
 			"bankName": bankName,
-			"countryCode": "SE",
 			"contractId": contractId,
-			"bankAccount": iban
+			"bankAccount": iban,
+			"personalNumber": personalNumber
 		}));
 
 }

@@ -76,6 +76,7 @@ null
 {{]]
 
 <input type="hidden" value="((Contract.ContractId))" id="contractId"/>
+<input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
 
 Sold by **((Contract.Account)) ** <br/>
 **Payer** :<br/>
