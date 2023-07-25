@@ -1,39 +1,21 @@
-﻿using Microsoft.VisualBasic;
-using Paiwise;
+﻿using Paiwise;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using TAG.Networking.OpenPaymentsPlatform;
 using TAG.Payments.OpenPaymentsPlatform;
-using Waher.Security.SHA3;
 using Waher.Content;
-using Waher.Content.Html.Elements;
-using Waher.Content.Markdown;
 using Waher.Events;
 using Waher.IoTGateway;
-using Waher.Networking.XMPP.Contracts;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
 using Waher.Persistence.Serialization;
 using Waher.Runtime.Inventory;
 using Waher.Runtime.Settings;
 using Waher.Script;
-using Waher.Script.Operators.Arithmetics;
-using System.Security.Cryptography;
-using Waher.Networking.DNS.Enumerations;
-using Waher.Security.Users;
-using EDaler.Uris.Incomplete;
-using EDaler.Uris;
-using EDaler;
-using System.Diagnostics.Contracts;
-using Waher.Networking.XMPP;
-using Waher.Networking.Sniffers;
-using NeuroFeatures;
-using System.Linq;
+using Waher.Security;
 
 namespace POWRS.Payout
 {
@@ -788,8 +770,7 @@ namespace POWRS.Payout
 
                 await DisplayUserMessage(TabId, "Your payment is complete! Thank you for using Vaulter! \n A payment confirmation is now sent to your email address.", true);
 
-                await connectClientAsync();
-             //   await UpdateContractWithTransactionStatusAsync(ContractID);
+                await UpdateContractWithTransactionStatusAsync(ContractID);
 
                 return new PaymentResult(Amount, Currency);
             }
@@ -1260,239 +1241,151 @@ namespace POWRS.Payout
             return encodedBytes;
         }
 
-        private string GenerateUniqueRandomString(int length)
-        {
-            // The minimum length for the random string should be 32 characters
-            if (length < 32)
-                throw new ArgumentException("The length must be at least 32 characters.");
-
-            // Set up the characters that can be used in the random string
-            const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
-            using (RNGCryptoServiceProvider cryptoProvider = new RNGCryptoServiceProvider())
-            {
-                // Create a byte array to hold the random bytes
-                byte[] randomBytes = new byte[length];
-
-                // Generate the random bytes
-                cryptoProvider.GetBytes(randomBytes);
-
-                // Convert the random bytes to characters in the validChars string
-                StringBuilder stringBuilder = new StringBuilder(length);
-                for (int i = 0; i < length; i++)
-                {
-                    stringBuilder.Append(validChars[randomBytes[i] % validChars.Length]);
-                }
-
-                return stringBuilder.ToString();
-            }
-        }
-
-
-        private XmppClient client;
-        private async Task connectClientAsync()
-        {
-            try
-            {
-                int Port = 5222;    // Default XMPP Client-to-Server port.
-
-                string Account = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
-                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
-
-                XmppCredentials XmppCredentials = new XmppCredentials();
-                XmppCredentials.Port = Port;
-                XmppCredentials.Host = Waher.IoTGateway.Gateway.Domain;
-                XmppCredentials.Password = Password;
-                XmppCredentials.Account = Account;
-                Log.Informational("XmppClient create");
-               
-                this.client = new XmppClient(XmppCredentials, "en", System.Reflection.Assembly.GetEntryAssembly(), new InMemorySniffer(250));
-                this.client.TrustServer = true;
-                Log.Informational("XmppClient trust");
-
-                this.client.AllowEncryption = true;
-
-
-                this.client.OnStateChanged += this.Client_OnStateChanged;
-                this.client.OnConnectionError += this.Client_OnConnectionError;
-
-                this.client.Connect(Gateway.Domain);
-
-                Log.Informational("XmppClient connect");
-            }
-            catch (Exception ex) {
-                Log.Informational("client connect" + ex.Message);
-            }
-        }
-
-        private async Task Client_OnStateChanged(object Sender, XmppState NewState)
-        {
-            try
-            {
-
-                Log.Informational("Client_OnStateChanged" + NewState.ToString());
-                if (NewState == XmppState.Connected)
-                    await ExecuteSendUri();
-            }
-            catch (Exception ex)
-            {
-                Log.Informational(ex.Message);
-            }
-        }
-
-        private Task Client_OnConnectionError(object Sender, Exception Exception)
-        {
-
-            Log.Informational("Client_OnConnectionError" + Exception.Message);
-            return Task.CompletedTask;
-        }
-        private EDalerClient eDalerClient = null;
-        private async Task ExecuteSendUri()
-        {
-            Log.Informational("test");
-            try
-            {
-                   Log.Informational("IN ExecuteSendUri");
-                    string ComponentJid = "edaler.lab.neuron.vaulter.rs";
-
-                    ContractsClient ContractsClient = new ContractsClient(this.client, ComponentJid);
-                    if (await ContractsClient.LoadKeys(false))
-                    {
-                        await ContractsClient.GenerateNewKeys();
-                    }
-
-                    Waher.Networking.XMPP.Contracts.Contract Contract = await ContractsClient.GetContractAsync(ContractId);
-                    this.eDalerClient = new EDalerClient(this.client, ContractsClient, ComponentJid);
-                   
-                    string ContractUri = ContractsClient.ContractIdUriString(this.ContractId);
-                    Log.Informational("ContractUri: " + ContractUri);
-                    Log.Informational("Contract[\"Value\"]" + Contract["Value"]);
-                    Log.Informational("Contract[\"Currency\"]" + Contract["Currency"]);
-                    
-                    NeuroFeaturesClient neuroFeaturesClient = new NeuroFeaturesClient(this.client, ContractsClient, ComponentJid);
-                    var tokenArgs = await neuroFeaturesClient.GetContractTokensAsync(ContractId);
-                    var token = tokenArgs?.Tokens?.FirstOrDefault();
-                    if (token is null)
-                    {
-                        Log.Informational("token is null");
-                        return;
-                    }
-                    Log.Informational("tokenid" + token.TokenId);
-
-                     string edalerUri = await this.eDalerClient.CreateFullPaymentUri("AgentUserTest8@lab.neuron.vaulter.rs", (decimal)Contract["Value"],
-                     null, Contract["Currency"].ToString(), 365, "nfeat:" + token.TokenId);
-                     Log.Informational("edalerUri: " + edalerUri);
-
-                    await this.eDalerClient.SendEDalerUriAsync(edalerUri);
-                    //this.Uri = string.Empty;
-
-            }
-            catch (Exception ex)
-            {
-                Log.Informational(ex.Message);
-            }
-        }
-
-
-
+     
         private async Task UpdateContractWithTransactionStatusAsync(string ContractID)
         {
-            string TokenId = "072c0582-91a9-4078-8cd0-4413fe0fa4ac@edaler.lab.neuron.vaulter.rs";
-            Log.Informational("UpdateContractWithTransactionStatusAsync");
-            string PUserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+            Log.Informational(" IN UpdateContractWithTransactionStatusAsync");
+            string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+            string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
 
-            Log.Informational(PUserName);
-            Log.Informational("UpdateContractWithTransactionStatusAsync");
-            string PPassword = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
-            Log.Informational(Gateway.Domain);
-            Log.Informational(PPassword + "ghj");
+            string Jwt = await LoginToUserAgent(UserName, Password);
+            string TokensId = await GetToken(this.ContractId, Jwt);
+            if (TokensId != null)
+                Log.Informational("TokenId: " + TokensId);
+        }
 
-            int numBytes = 32;
-            byte[] randomBytes = RandomBytesGenerator.GetRandomBytes(numBytes);
-            Log.Informational("random string 32" + GenerateUniqueRandomString(32));
-            string Nonce = Convert.ToBase64String(randomBytes);
-            string S = PUserName + ":" + Gateway.Domain + ":" + Nonce;
-            Log.Informational("Utf8Encode(S): " + Utf8Encode(S));
-            Log.Informational("Utf8Encode(S): " + Utf8Encode(PPassword));
-            Log.Informational("Sha2_256HMac: " + Waher.Security.Hashes.ComputeHMACSHA256Hash(Utf8Encode(S), Utf8Encode(PPassword)));
-
-
-            string Signature = Convert.ToBase64String(Waher.Security.Hashes.ComputeHMACSHA256Hash(Utf8Encode(S), Utf8Encode(PPassword)));
-
-            Log.Informational(S);
-
+        private async Task<string> LoginToUserAgent(string UserName,string Password)
+        {
             try
             {
+                Log.Informational(Gateway.Domain);
+
+                byte[] randomBytes = RandomBytesGenerator.GetRandomBytes(32);
+
+                string Nonce = Convert.ToBase64String(randomBytes);
+                string S = UserName + ":" + Gateway.Domain + ":" + Nonce;
+
+                string Signature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Password), Utf8Encode(S)));
+
                 object Result = await InternetContent.PostAsync(
                     new Uri("https://" + Gateway.Domain + "/Agent/Account/Login"),
                     new Dictionary<string, object>()
                     {
-                        { "userName", PUserName },
+                        { "userName", UserName },
                         { "nonce", Nonce },
                         { "signature", Signature },
-                        { "seconds", 69 },
+                        { "seconds", 3600 },
                     },
                     new KeyValuePair<string, string>("Accept", "application/json"));
 
                 if (Result is Dictionary<string, object> Response)
-                {
                     if (Response.TryGetValue("jwt", out object ObjJwt) && ObjJwt is string Jwt)
                     {
-                        string xmlNote = "<PaymentCompleted xmlns='https://neuron.vaulter.rs/Downloads/EscrowRebnis.xsd' />";
-
-                        object ResultXmlNote = await InternetContent.PostAsync(
-                        new Uri("https://" + Gateway.Domain + "/Agent/Tokens/AddXmlNote"),
-                         new Dictionary<string, object>()
-                    {
-                        { "tokenId", TokenId },
-                        { "note", xmlNote },
-                        { "personal", false }
-                    },
-                        new KeyValuePair<string, string>("Accept", "application/json"),
-                        new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
+                        return Jwt;
                     }
-                }
+                return null;
             }
             catch (Exception ex)
             {
                 Log.Error(ex);
+                return null;
             }
         }
 
-
-        /// <summary>
-        /// If the service provider can be used to process a request to sell eDaler
-        /// of a certain amount, for a given account.
-        /// </summary>
-        /// <param name="AccountName">Account Name</param>
-        /// <returns>If service provider can be used.</returns>
-        public Task<bool> CanSellEDaler(CaseInsensitiveString AccountName)
+        private async Task<object> SendXmlNote(string TokenId, string Jwt)
         {
-            if (string.IsNullOrEmpty(this.sellTemplateId))
-                return Task.FromResult(false);
+            string xmlNote = "<PaymentCompleted xmlns='https://neuron.vaulter.rs/Downloads/EscrowRebnis.xsd' />";
 
-            return this.IsConfigured();
+            object ResultXmlNote = await InternetContent.PostAsync(
+            new Uri("https://" + Gateway.Domain + "/Agent/Tokens/AddXmlNote"),
+             new Dictionary<string, object>()
+                {
+                        { "tokenId", TokenId },
+                        { "note", xmlNote },
+                        { "personal", false }
+                },
+            new KeyValuePair<string, string>("Accept", "application/json"),
+            new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
+
+            Log.Informational("ResultXmlNote" + ResultXmlNote);
+            return ResultXmlNote;
         }
 
-        private string ValidateParameters(IDictionary<CaseInsensitiveString, object> ContractParameters,
-            IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
-            decimal Amount, string Currency, out CaseInsensitiveString PersonalNumber,
-            out string BankAccount, out string AccountName, out string TextMessage)
+        private async Task<object> SendPaymentUri(string PaymentUri, string Jwt)
         {
-            AccountName = null;
-            string Msg = this.ValidateParameters(ContractParameters, IdentityProperties, Amount, Currency, out PersonalNumber,
-                out BankAccount, out TextMessage);
+            object ResultPaymentUri = await InternetContent.PostAsync(
+             new Uri("https://" + Gateway.Domain + "/Agent/Wallet/ProcessEDalerUri"),
+              new Dictionary<string, object>()
+                 {
+                            { "uri", PaymentUri },
 
-            if (!string.IsNullOrEmpty(Msg))
-                return Msg;
+                 },
+             new KeyValuePair<string, string>("Accept", "application/json"),
+             new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
-            if (!ContractParameters.TryGetValue("AccountName", out object Obj))
-                return "Account Name not available in contract.";
+            Log.Informational("ResultPaymentUri" + ResultPaymentUri);
+            return ResultPaymentUri;
+        }
 
-            AccountName = Obj?.ToString() ?? string.Empty;
+        private async Task<string> GetToken(string ContractId, string Jwt)
+        {
+            object TokensResult = await InternetContent.PostAsync(
+             new Uri("https://" + Gateway.Domain + "/Agent/Tokens/GetContractTokens"),
+              new Dictionary<string, object>()
+                 {
+                            { "contractId", ContractId },
+                            { "offset", null },
+                            { "maxCount", null },
+                            { "references", true },
+                 },
+             new KeyValuePair<string, string>("Accept", "application/json"),
+             new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
+            if (TokensResult is Dictionary<string, object> Response)
+                if (Response.TryGetValue("Tokens", out object ObjTokens) && ObjTokens is Dictionary<string, object> Tokens)
+                {
+                    if (Tokens.TryGetValue("ref", out object ObjTokenRef) && ObjTokenRef is Dictionary<string, object> TokenRef)
+                    {
+                        if (TokenRef.TryGetValue("id", out object ObjTokenId) && ObjTokenId is string TokenId)
+                            return TokenId;
+                    }
+                }
             return null;
         }
 
+    /// <summary>
+    /// If the service provider can be used to process a request to sell eDaler
+    /// of a certain amount, for a given account.
+    /// </summary>
+    /// <param name="AccountName">Account Name</param>
+    /// <returns>If service provider can be used.</returns>
+    public Task<bool> CanSellEDaler(CaseInsensitiveString AccountName)
+    {
+        if (string.IsNullOrEmpty(this.sellTemplateId))
+            return Task.FromResult(false);
+
+        return this.IsConfigured();
     }
+
+    private string ValidateParameters(IDictionary<CaseInsensitiveString, object> ContractParameters,
+        IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
+        decimal Amount, string Currency, out CaseInsensitiveString PersonalNumber,
+        out string BankAccount, out string AccountName, out string TextMessage)
+    {
+        AccountName = null;
+        string Msg = this.ValidateParameters(ContractParameters, IdentityProperties, Amount, Currency, out PersonalNumber,
+            out BankAccount, out TextMessage);
+
+        if (!string.IsNullOrEmpty(Msg))
+            return Msg;
+
+        if (!ContractParameters.TryGetValue("AccountName", out object Obj))
+            return "Account Name not available in contract.";
+
+        AccountName = Obj?.ToString() ?? string.Empty;
+
+        return null;
+    }
+
+}
 }
