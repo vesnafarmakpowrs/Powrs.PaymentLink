@@ -1,5 +1,5 @@
 ({
-        "tabId": Required(Str(PTabID)),
+    "tabId": Required(Str(PTabID)),
 	"sessionId": Required(Str(PSessionId)),
 	"requestFromMobilePhone": Required(Boolean(PRequestFromMobilePhone)),
 	"bicFi": Required(Str(PBicFi)),
@@ -26,6 +26,7 @@ if(contractParameters == null) then
 
 ContractAmount:= 0;
 ContractCurrency:= "";
+ContractAccount:= "";
 
 foreach p in contractParameters DO 
 (
@@ -35,19 +36,23 @@ foreach p in contractParameters DO
 	);
 	if(p.Name == "Currency") then 
 	(
-	 ContractCurrency:= p.ObjectValue;
+	  ContractCurrency:= p.ObjectValue;
 	);
 	if(p.Name == "BuyerPersonalNum") then
 	(
-	 personalNumber:= p.ObjectValue;
+	  personalNumber:= p.ObjectValue;
 	);
 );
 
-if(ContractAmount <= 0 || System.String.IsNullOrEmpty(ContractCurrency)) then 
+
+account:= select top 1 Account from IoTBroker.Legal.Contracts.Contract where ContractId = PContractId
+
+if(ContractAmount <= 0 || System.String.IsNullOrEmpty(ContractCurrency) || System.String.IsNullOrEmpty(account)) then 
 (
-	BadRequest("Amount and currency could not be empty");
+	BadRequest("Amount, currency and account could not be empty");
 );
 
+contractAccount:= account + Gateway.Domain;
 
 OPServiceProvider:=Create(POWRS.Payout.PayoutServiceProvider);
 
@@ -72,14 +77,12 @@ OPService:=Create(POWRS.Payout.PayoutService, "SWEDEN", AspService , Mode, OPSer
 
 IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
 IdentityProperties.Add("PNR", personalNumber);
-IdentityProperties.Add("JID", "Juce@lab.neuron.vaulter.rs");
+IdentityProperties.Add("JID", contractAccount);
 
 ContractParameters := Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object);
 ContractParameters.Add("Amount", ContractAmount);
 ContractParameters.Add("Currency", ContractCurrency);
 ContractParameters.Add("Account", PAccount);
-
-
 
 SuccessUrl:= "";
 FailureUrl := "";

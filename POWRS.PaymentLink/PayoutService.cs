@@ -319,216 +319,6 @@ namespace POWRS.Payout
         /// contract authorizing the payment.</param>
         /// <param name="IdentityProperties">Properties engraved into the
         /// legal identity signing the payment request.</param>
-        /// <param name="Amount">Amount to be paid.</param>
-        /// <param name="Currency">Currency</param>
-        /// <param name="SuccessUrl">Optional Success URL the service provider can open on the client from a client web page, if payment has succeeded.</param>
-        /// <param name="FailureUrl">Optional Failure URL the service provider can open on the client from a client web page, if payment has succeeded.</param>
-        /// <param name="CancelUrl">Optional Cancel URL the service provider can open on the client from a client web page, if payment has succeeded.</param>
-        /// <param name="ClientUrlCallback">Method to call if the payment service
-        /// requests an URL to be displayed on the client.</param>
-        /// <param name="State">State object to pass on the callback method.</param>
-        /// <returns>Result of operation.</returns>
-        public async Task<PaymentResult> BuyEDaler(IDictionary<CaseInsensitiveString, object> ContractParameters,
-            IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
-            decimal Amount, string Currency, string SuccessUrl, string FailureUrl, string CancelUrl, ClientUrlEventHandler ClientUrlCallback, object State)
-        {
-            ServiceConfiguration Configuration = await ServiceConfiguration.GetCurrent();
-            if (!Configuration.IsWellDefined)
-                return new PaymentResult("Service not configured properly.");
-
-            AuthorizationFlow Flow = Configuration.AuthorizationFlow;
-
-            if (string.IsNullOrEmpty(this.buyTemplateId) || Flow == AuthorizationFlow.Redirect)
-            {
-                ContractParameters["Amount"] = Amount;
-                ContractParameters["Currency"] = Currency;
-            }
-
-            string Message = this.ValidateParameters(ContractParameters, IdentityProperties,
-                Amount, Currency, out CaseInsensitiveString PersonalNumber,
-                out string BankAccount, out string TextMessage);
-
-            if (!string.IsNullOrEmpty(Message))
-                return new PaymentResult(Message);
-
-            Message = CheckJidHostedByServer(IdentityProperties, out CaseInsensitiveString Account);
-            if (!string.IsNullOrEmpty(Message))
-                return new PaymentResult(Message);
-
-            OpenPaymentsPlatformClient Client = PayoutServiceProvider.CreateClient(Configuration, this.mode,
-                ServicePurpose.Private);    // TODO: Contracts for corporate accounts (when using corporate IDs).
-
-            if (Client is null)
-                return new PaymentResult("Service not configured properly.");
-
-            try
-            {
-                string PersonalID = GetPersonalID(PersonalNumber);
-
-                KeyValuePair<IPAddress, PaymentResult> P = await GetRemoteEndpoint(Account);
-                if (!(P.Value is null))
-                    return P.Value;
-
-                IPAddress ClientIpAddress = P.Key;
-
-                OperationInformation Operation = new OperationInformation(
-                    ClientIpAddress,
-                    typeof(PayoutServiceProvider).Assembly.FullName,
-                    Flow,
-                    PersonalID,
-                    null,
-                    this.service.BicFi);
-
-                PaymentProduct Product;
-
-                if (Configuration.NeuronBankAccountIban.Substring(0, 2) == BankAccount.Substring(0, 2))
-                    Product = PaymentProduct.domestic;
-                else if (Currency.ToUpper() == "EUR")
-                    Product = PaymentProduct.sepa_credit_transfers;
-                else
-                    Product = PaymentProduct.international;
-
-                PaymentInitiationReference PaymentInitiationReference = await Client.CreatePaymentInitiation(
-                    Product, Amount, Currency, BankAccount, Currency,
-                    Configuration.NeuronBankAccountIban, Currency,
-                    Configuration.NeuronBankAccountName, TextMessage, Operation);
-
-                AuthorizationInformation AuthorizationStatus = await Client.StartPaymentInitiationAuthorization(
-                    Product, PaymentInitiationReference.PaymentId, Operation,
-                    SuccessUrl, FailureUrl);
-
-                AuthenticationMethod AuthenticationMethod = AuthorizationStatus.GetAuthenticationMethod("mbid_same_device")
-                    ?? AuthorizationStatus.GetAuthenticationMethod("mbid");
-
-                if (AuthenticationMethod is null)
-                    return new PaymentResult("Unable to find a Mobile Bank ID authorization method for the operation.");
-
-                PaymentServiceUserDataResponse PsuDataResponse = await Client.PutPaymentInitiationUserData(
-                    Product, PaymentInitiationReference.PaymentId,
-                    AuthorizationStatus.AuthorizationID, AuthenticationMethod.MethodId, Operation);
-
-                if (!(ClientUrlCallback is null))
-                {
-                    if (!string.IsNullOrEmpty(PsuDataResponse.ChallengeData?.BankIdURL))
-                    {
-                        await ClientUrlCallback(this, new ClientUrlEventArgs(
-                            PsuDataResponse.ChallengeData.BankIdURL, State));
-                    }
-                    else if (!string.IsNullOrEmpty(PsuDataResponse.Links.ScaOAuth))
-                    {
-                        string Url = Client.GetClientWebUrl(PsuDataResponse.Links.ScaOAuth,
-                            "https://lab.tagroot.io/ReturnFromPayment.md", SuccessUrl);
-
-                        await ClientUrlCallback(this, new ClientUrlEventArgs(Url, State));
-                    }
-                }
-
-                TppMessage[] ErrorMessages = PsuDataResponse.Messages;
-                AuthorizationStatusValue AuthorizationStatusValue = PsuDataResponse.Status;
-                DateTime Start = DateTime.Now;
-                bool PaymentAuthorizationStarted = AuthorizationStatusValue == AuthorizationStatusValue.started ||
-                        AuthorizationStatusValue == AuthorizationStatusValue.authenticationStarted;
-                bool CreditorAuthorizationStarted = AuthorizationStatusValue == AuthorizationStatusValue.authoriseCreditorAccountStarted;
-
-                while (AuthorizationStatusValue != AuthorizationStatusValue.finalised &&
-                    AuthorizationStatusValue != AuthorizationStatusValue.failed &&
-                    DateTime.Now.Subtract(Start).TotalMinutes < Configuration.TimeoutMinutes)
-                {
-                    await Task.Delay(Configuration.PollingIntervalSeconds * 1000);
-
-                    AuthorizationStatus P2 = await Client.GetPaymentInitiationAuthorizationStatus(
-                        Product, PaymentInitiationReference.PaymentId, AuthorizationStatus.AuthorizationID, Operation);
-                    AuthorizationStatusValue = P2.Status;
-                    ErrorMessages = P2.Messages;
-
-                    if (!string.IsNullOrEmpty(P2.ChallengeData?.BankIdURL) && !(ClientUrlCallback is null))
-                    {
-                        switch (AuthorizationStatusValue)
-                        {
-                            case AuthorizationStatusValue.started:
-                            case AuthorizationStatusValue.authenticationStarted:
-                                if (!PaymentAuthorizationStarted)
-                                {
-                                    PaymentAuthorizationStarted = true;
-
-                                    ClientUrlEventArgs e = new ClientUrlEventArgs(P2.ChallengeData.BankIdURL, State);
-                                    await ClientUrlCallback(this, e);
-                                }
-                                break;
-
-                            case AuthorizationStatusValue.authoriseCreditorAccountStarted:
-                                if (!CreditorAuthorizationStarted)
-                                {
-                                    CreditorAuthorizationStarted = true;
-
-                                    ClientUrlEventArgs e = new ClientUrlEventArgs(P2.ChallengeData.BankIdURL, State);
-                                    await ClientUrlCallback(this, e);
-                                }
-                                break;
-                        }
-                    }
-                }
-
-                if (!(ErrorMessages is null) && ErrorMessages.Length > 0)
-                    return new PaymentResult(ErrorMessages[0].Text);
-
-                PaymentTransactionStatus Status = await Client.GetPaymentInitiationStatus(Product, PaymentInitiationReference.PaymentId, Operation);
-
-                if (!(Status.Messages is null) && Status.Messages.Length > 0 &&
-                    (Status.Status == PaymentStatus.RJCT ||
-                    Status.Status == PaymentStatus.CANC))
-                {
-                    StringBuilder Msg = new StringBuilder();
-
-                    foreach (TppMessage TppMsg in Status.Messages)
-                        Msg.AppendLine(TppMsg.Text);
-
-                    string s = Msg.ToString().Trim();
-
-                    if (!string.IsNullOrEmpty(s))
-                        return new PaymentResult(s);
-                }
-
-                switch (Status.Status)
-                {
-                    case PaymentStatus.RJCT:
-                        return new PaymentResult("Payment was rejected.");
-
-                    case PaymentStatus.CANC:
-                        return new PaymentResult("Payment was cancelled.");
-                }
-
-                switch (AuthorizationStatusValue)
-                {
-                    case AuthorizationStatusValue.finalised:
-                        break;
-
-                    case AuthorizationStatusValue.failed:
-                        return new PaymentResult("Payment failed. (" + AuthorizationStatusValue.ToString() + ")");
-
-                    default:
-                        return new PaymentResult("Transaction took too long to complete.");
-                }
-
-                return new PaymentResult(Amount, Currency);
-            }
-            catch (Exception ex)
-            {
-                return new PaymentResult(ex.Message);
-            }
-            finally
-            {
-                PayoutServiceProvider.Dispose(Client, this.mode);
-            }
-        }
-
-        /// <summary>
-        /// Processes payment for buying eDaler.
-        /// </summary>
-        /// <param name="ContractParameters">Parameters available in the
-        /// contract authorizing the payment.</param>
-        /// <param name="IdentityProperties">Properties engraved into the
-        /// legal identity signing the payment request.</param>
         /// <param name="SuccessUrl">Optional Success URL the service provider can open on the client from a client web page, if payment has succeeded.</param>
         /// <param name="FailureUrl">Optional Failure URL the service provider can open on the client from a client web page, if payment has failed.</param>
         /// <param name="TabId">Tab ID</param>
@@ -771,7 +561,7 @@ namespace POWRS.Payout
 
                 await DisplayUserMessage(TabId, "Your payment is complete! Thank you for using Vaulter! \n A payment confirmation is now sent to your email address.", true);
 
-                await UpdateContractWithTransactionStatusAsync(ContractID);
+                await UpdateContractWithTransactionStatusAsync(Amount, Currency, IdentityProperties["JID"], ContractID);
 
                 return new PaymentResult(Amount, Currency);
             }
@@ -1242,25 +1032,39 @@ namespace POWRS.Payout
             return encodedBytes;
         }
 
-     
-        private async Task UpdateContractWithTransactionStatusAsync(string ContractID)
-        {
-            Log.Informational(" IN UpdateContractWithTransactionStatusAsync");
-            string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
-            string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
 
-            string Jwt = await LoginToUserAgent(UserName, Password);
-            string TokensId = await GetToken(this.ContractId, Jwt);
-            if (TokensId != null)
-                Log.Informational("TokenId: " + TokensId);
-        }
-
-        private async Task<string> LoginToUserAgent(string UserName,string Password)
+        private async Task UpdateContractWithTransactionStatusAsync(decimal Amount, string Currency, string ToBareJid, string ContractID)
         {
             try
             {
-                Log.Informational(Gateway.Domain);
+                string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
 
+                string Jwt = await LoginToUserAgent(UserName, Password);
+                string TokenId = await GetToken(this.ContractId, Jwt);
+
+                if (TokenId == null)
+                {
+                    Log.Informational("No token for contractId: " + ContractID);
+                    return;
+                }
+
+                string fullPaymentUri = await CreateFullPaymentUri(ToBareJid, Amount, null, Currency, 364, "nfeat:" + TokenId);
+                Log.Informational("FullPaymentUri: " + fullPaymentUri);
+
+                await SendPaymentUri(fullPaymentUri, Jwt);
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex);
+            }
+        }
+
+        private async Task<string> LoginToUserAgent(string UserName, string Password)
+        {
+            try
+            {
                 byte[] randomBytes = RandomBytesGenerator.GetRandomBytes(32);
 
                 string Nonce = Convert.ToBase64String(randomBytes);
@@ -1319,7 +1123,6 @@ namespace POWRS.Payout
               new Dictionary<string, object>()
                  {
                             { "uri", PaymentUri },
-
                  },
              new KeyValuePair<string, string>("Accept", "application/json"),
              new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
@@ -1354,11 +1157,9 @@ namespace POWRS.Payout
             return null;
         }
 
-        public async Task<string> CreateFullPaymentUri(string ToBareJid, decimal Amount, decimal? AmountExtra,
+        public Task<string> CreateFullPaymentUri(string ToBareJid, decimal Amount, decimal? AmountExtra,
            CaseInsensitiveString Currency, int ValidNrDays, string Message)
         {
-           // await this.ValidatePaymentArguments(Amount, AmountExtra, Currency, ValidNrDays);
-
             StringBuilder Uri = new StringBuilder();
             DateTime Created = DateTime.UtcNow;
             DateTime Expires = DateTime.Today.AddDays(ValidNrDays);
@@ -1405,9 +1206,7 @@ namespace POWRS.Payout
                 Uri.Append(Convert.ToBase64String(Encoding.UTF8.GetBytes(Message)));
             }
 
-          //  await this.SignAndCheckBalance(Uri, Amount, AmountExtra, Currency, Id, Expires, ToBareJid);
-
-            return Uri.ToString();
+            return Task.FromResult(Uri.ToString());
         }
 
         /// <summary>
@@ -1417,32 +1216,32 @@ namespace POWRS.Payout
         /// <param name="AccountName">Account Name</param>
         /// <returns>If service provider can be used.</returns>
         public Task<bool> CanSellEDaler(CaseInsensitiveString AccountName)
-    {
-        if (string.IsNullOrEmpty(this.sellTemplateId))
-            return Task.FromResult(false);
+        {
+            if (string.IsNullOrEmpty(this.sellTemplateId))
+                return Task.FromResult(false);
 
-        return this.IsConfigured();
+            return this.IsConfigured();
+        }
+
+        private string ValidateParameters(IDictionary<CaseInsensitiveString, object> ContractParameters,
+            IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
+            decimal Amount, string Currency, out CaseInsensitiveString PersonalNumber,
+            out string BankAccount, out string AccountName, out string TextMessage)
+        {
+            AccountName = null;
+            string Msg = this.ValidateParameters(ContractParameters, IdentityProperties, Amount, Currency, out PersonalNumber,
+                out BankAccount, out TextMessage);
+
+            if (!string.IsNullOrEmpty(Msg))
+                return Msg;
+
+            if (!ContractParameters.TryGetValue("AccountName", out object Obj))
+                return "Account Name not available in contract.";
+
+            AccountName = Obj?.ToString() ?? string.Empty;
+
+            return null;
+        }
+
     }
-
-    private string ValidateParameters(IDictionary<CaseInsensitiveString, object> ContractParameters,
-        IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
-        decimal Amount, string Currency, out CaseInsensitiveString PersonalNumber,
-        out string BankAccount, out string AccountName, out string TextMessage)
-    {
-        AccountName = null;
-        string Msg = this.ValidateParameters(ContractParameters, IdentityProperties, Amount, Currency, out PersonalNumber,
-            out BankAccount, out TextMessage);
-
-        if (!string.IsNullOrEmpty(Msg))
-            return Msg;
-
-        if (!ContractParameters.TryGetValue("AccountName", out object Obj))
-            return "Account Name not available in contract.";
-
-        AccountName = Obj?.ToString() ?? string.Empty;
-
-        return null;
-    }
-
-}
 }

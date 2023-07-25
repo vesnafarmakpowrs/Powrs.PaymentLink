@@ -66,10 +66,12 @@
 
 	<ItemGroup>
 	  <Reference Include="TAG.Networking.OpenPaymentsPlatform">
-	    <HintPath>lib\TAG.Networking.OpenPaymentsPlatform.dll</HintPath>
+	    <HintPath>.\lib\TAG.Networking.OpenPaymentsPlatform.dll</HintPath>
+	    <Private>True</Private>
 	  </Reference>
 	  <Reference Include="TAG.Payments.OpenPaymentsPlatform">
-	    <HintPath>lib\TAG.Payments.OpenPaymentsPlatform.dll</HintPath>
+	    <HintPath>.\lib\TAG.Payments.OpenPaymentsPlatform.dll</HintPath>
+	    <Private>True</Private>
 	  </Reference>
 	</ItemGroup>
 

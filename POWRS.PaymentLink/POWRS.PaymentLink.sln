@@ -5,10 +5,6 @@ VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POWRS.PaymentLink", "POWRS.PaymentLink.csproj", "{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Networking.OpenPaymentsPlatform", "..\..\Powrs\NeuronOpenPaymentsPlatform\TAG.Networking.OpenPaymentsPlatform\TAG.Networking.OpenPaymentsPlatform.csproj", "{D8FA3BB0-A692-44BD-9A7B-9DD1076FD102}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Payments.OpenPaymentsPlatform", "..\..\Powrs\NeuronOpenPaymentsPlatform\TAG.Payments.OpenPaymentsPlatform\TAG.Payments.OpenPaymentsPlatform.csproj", "{AAF7D417-1A61-43B4-8BFE-DEFCE3864F42}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D8FA3BB0-A692-44BD-9A7B-9DD1076FD102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D8FA3BB0-A692-44BD-9A7B-9DD1076FD102}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D8FA3BB0-A692-44BD-9A7B-9DD1076FD102}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D8FA3BB0-A692-44BD-9A7B-9DD1076FD102}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AAF7D417-1A61-43B4-8BFE-DEFCE3864F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAF7D417-1A61-43B4-8BFE-DEFCE3864F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AAF7D417-1A61-43B4-8BFE-DEFCE3864F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AAF7D417-1A61-43B4-8BFE-DEFCE3864F42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
