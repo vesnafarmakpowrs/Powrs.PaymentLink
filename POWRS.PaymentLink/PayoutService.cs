@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TAG.Networking.OpenPaymentsPlatform;
 using TAG.Payments.OpenPaymentsPlatform;
 using Waher.Content;
+using Waher.Content.Xml;
 using Waher.Events;
 using Waher.IoTGateway;
 using Waher.Persistence;
@@ -1353,13 +1354,69 @@ namespace POWRS.Payout
             return null;
         }
 
-    /// <summary>
-    /// If the service provider can be used to process a request to sell eDaler
-    /// of a certain amount, for a given account.
-    /// </summary>
-    /// <param name="AccountName">Account Name</param>
-    /// <returns>If service provider can be used.</returns>
-    public Task<bool> CanSellEDaler(CaseInsensitiveString AccountName)
+        public async Task<string> CreateFullPaymentUri(string ToBareJid, decimal Amount, decimal? AmountExtra,
+           CaseInsensitiveString Currency, int ValidNrDays, string Message)
+        {
+           // await this.ValidatePaymentArguments(Amount, AmountExtra, Currency, ValidNrDays);
+
+            StringBuilder Uri = new StringBuilder();
+            DateTime Created = DateTime.UtcNow;
+            DateTime Expires = DateTime.Today.AddDays(ValidNrDays);
+            Guid Id = Guid.NewGuid();
+
+            Uri.Append("edaler:id=");
+            Uri.Append(Id.ToString());
+            Uri.Append(";f=");
+            Uri.Append(XML.Encode(ToBareJid));
+
+            if (!string.IsNullOrEmpty(ToBareJid))
+            {
+                if (ToBareJid.IndexOf('@') < 0)
+                {
+                    Uri.Append(";xx=");     // Destruction (payment to operator)
+                    Uri.Append(XML.Encode(ToBareJid));
+                }
+                else
+                {
+                    Uri.Append(";t=");
+                    Uri.Append(XML.Encode(ToBareJid));
+                }
+            }
+
+            Uri.Append(";am=");
+            Uri.Append(CommonTypes.Encode(Amount));
+
+            if (AmountExtra.HasValue)
+            {
+                Uri.Append(";amx=");
+                Uri.Append(CommonTypes.Encode(AmountExtra.Value));
+            }
+
+            Uri.Append(";cu=");
+            Uri.Append(XML.Encode(Currency));
+            Uri.Append(";cr=");
+            Uri.Append(XML.Encode(Created, false));
+            Uri.Append(";ex=");
+            Uri.Append(XML.Encode(Expires, true));
+
+            if (!string.IsNullOrEmpty(Message))
+            {
+                Uri.Append(";m=");
+                Uri.Append(Convert.ToBase64String(Encoding.UTF8.GetBytes(Message)));
+            }
+
+          //  await this.SignAndCheckBalance(Uri, Amount, AmountExtra, Currency, Id, Expires, ToBareJid);
+
+            return Uri.ToString();
+        }
+
+        /// <summary>
+        /// If the service provider can be used to process a request to sell eDaler
+        /// of a certain amount, for a given account.
+        /// </summary>
+        /// <param name="AccountName">Account Name</param>
+        /// <returns>If service provider can be used.</returns>
+        public Task<bool> CanSellEDaler(CaseInsensitiveString AccountName)
     {
         if (string.IsNullOrEmpty(this.sellTemplateId))
             return Task.FromResult(false);
