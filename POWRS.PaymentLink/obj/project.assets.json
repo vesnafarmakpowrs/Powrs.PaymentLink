@@ -1931,7 +1931,7 @@
           "lib/netstandard1.3/Waher.Content.Images.dll": {}
         }
       },
-      "Waher.Content.Markdown/2.5.2": {
+      "Waher.Content.Markdown/2.6.0": {
         "type": "package",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
@@ -1970,11 +1970,11 @@
           }
         }
       },
-      "Waher.Content.Markdown.GraphViz/2.4.0": {
+      "Waher.Content.Markdown.GraphViz/2.5.0": {
         "type": "package",
         "dependencies": {
           "Waher.Content": "2.6.2",
-          "Waher.Content.Markdown": "2.5.2",
+          "Waher.Content.Markdown": "2.6.0",
           "Waher.Content.Xml": "2.2.0",
           "Waher.Events": "1.1.2",
           "Waher.Runtime.Inventory": "1.1.4",
@@ -2016,11 +2016,11 @@
           }
         }
       },
-      "Waher.Content.Markdown.PlantUml/2.4.0": {
+      "Waher.Content.Markdown.PlantUml/2.5.0": {
         "type": "package",
         "dependencies": {
           "Waher.Content": "2.6.2",
-          "Waher.Content.Markdown": "2.5.2",
+          "Waher.Content.Markdown": "2.6.0",
           "Waher.Content.SystemFiles": "2.0.0",
           "Waher.Content.Xml": "2.2.0",
           "Waher.Events": "1.1.2",
@@ -2221,7 +2221,7 @@
           }
         }
       },
-      "Waher.IoTGateway/1.5.4": {
+      "Waher.IoTGateway/1.5.5": {
         "type": "package",
         "dependencies": {
           "Waher.Content": "2.6.2",
@@ -2230,11 +2230,11 @@
           "Waher.Content.Emoji.Emoji1": "2.0.1",
           "Waher.Content.Html": "2.2.0",
           "Waher.Content.Images": "2.1.4",
-          "Waher.Content.Markdown": "2.5.2",
+          "Waher.Content.Markdown": "2.6.0",
           "Waher.Content.Markdown.Consolidation": "2.3.0",
-          "Waher.Content.Markdown.GraphViz": "2.4.0",
+          "Waher.Content.Markdown.GraphViz": "2.5.0",
           "Waher.Content.Markdown.Layout2D": "2.3.0",
-          "Waher.Content.Markdown.PlantUml": "2.4.0",
+          "Waher.Content.Markdown.PlantUml": "2.5.0",
           "Waher.Content.Markdown.Web": "2.1.1",
           "Waher.Content.QR": "2.1.0",
           "Waher.Content.Semantic": "1.0.0",
@@ -3800,43 +3800,6 @@
             "codeLanguage": "any",
             "copyToOutput": false
           }
-        }
-      },
-      "TAG.Networking.OpenPaymentsPlatform/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Waher.Content": "2.6.2",
-          "Waher.Content.Xml": "2.2.0",
-          "Waher.Events": "1.1.2",
-          "Waher.Networking": "2.2.1"
-        },
-        "compile": {
-          "bin/placeholder/TAG.Networking.OpenPaymentsPlatform.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/TAG.Networking.OpenPaymentsPlatform.dll": {}
-        }
-      },
-      "TAG.Payments.OpenPaymentsPlatform/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Paiwise": "1.3.0",
-          "TAG.Networking.OpenPaymentsPlatform": "1.0.0",
-          "Waher.Events": "1.1.2",
-          "Waher.IoTGateway": "1.5.4",
-          "Waher.Networking": "2.2.1",
-          "Waher.Networking.HTTP": "2.2.4",
-          "Waher.Runtime.Inventory": "1.1.4",
-          "Waher.Runtime.Settings": "1.0.10",
-          "Waher.Script": "2.5.0"
-        },
-        "compile": {
-          "bin/placeholder/TAG.Payments.OpenPaymentsPlatform.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/TAG.Payments.OpenPaymentsPlatform.dll": {}
         }
       }
     }
@@ -7550,17 +7513,17 @@
         "waher.content.images.nuspec"
       ]
     },
-    "Waher.Content.Markdown/2.5.2": {
-      "sha512": "pUXlgHo4Zi/MluhNnD64MwyXtfcgkAhskd4YMwbdyJWCEOuX0rFFwC+bvd0sVfTWhV6FiJ96KO+b6b8XRgTdHg==",
+    "Waher.Content.Markdown/2.6.0": {
+      "sha512": "oXfiTb2ylrzgX/SYSyw9XOOalIg5wGfSk7a4M9ppO4n7FD1dDL9gFrwik49EdxQikQ4gLildrC4aR+UuZFZjZA==",
       "type": "package",
-      "path": "waher.content.markdown/2.5.2",
+      "path": "waher.content.markdown/2.6.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon_64x64.png",
         "LICENSE.txt",
         "lib/netstandard1.3/Waher.Content.Markdown.dll",
-        "waher.content.markdown.2.5.2.nupkg.sha512",
+        "waher.content.markdown.2.6.0.nupkg.sha512",
         "waher.content.markdown.nuspec"
       ]
     },
@@ -7579,10 +7542,10 @@
         "waher.content.markdown.consolidation.nuspec"
       ]
     },
-    "Waher.Content.Markdown.GraphViz/2.4.0": {
-      "sha512": "VAFgD4eFD8VoCxwXqLRWQ5RU1afXZNWlHWLVMsKJX8n1b3GywzZ+0OCYq5BTys0zI5Jn8qCmTxIKBzL6KmGATw==",
+    "Waher.Content.Markdown.GraphViz/2.5.0": {
+      "sha512": "KD8bJ/ALVPIEzauhL3GXRDDHTGU14/4yliUHEPGGz+wT+cDVjkwNAq8yHnkOGMnJAzlGG13sCD1Hx3n5Z2TgKQ==",
       "type": "package",
-      "path": "waher.content.markdown.graphviz/2.4.0",
+      "path": "waher.content.markdown.graphviz/2.5.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7590,7 +7553,7 @@
         "LICENSE.txt",
         "lib/netstandard2.0/Waher.Content.Markdown.GraphViz.dll",
         "lib/netstandard2.0/Waher.Content.Markdown.GraphViz.xml",
-        "waher.content.markdown.graphviz.2.4.0.nupkg.sha512",
+        "waher.content.markdown.graphviz.2.5.0.nupkg.sha512",
         "waher.content.markdown.graphviz.nuspec"
       ]
     },
@@ -7609,10 +7572,10 @@
         "waher.content.markdown.layout2d.nuspec"
       ]
     },
-    "Waher.Content.Markdown.PlantUml/2.4.0": {
-      "sha512": "38eRCUr07zxHIV0Gne24wH0eEUIZLt8/OGEq7zFKnYrVBb42O3qf7ATmQ4aR60t9hMd+9cf4kFmoGBJJ/ckD5Q==",
+    "Waher.Content.Markdown.PlantUml/2.5.0": {
+      "sha512": "bcMdqoogn3tHhZGR6jOpxedeUqgfRAYvrtX6L7LbH0XpEUg5p2MyEm6ofHVWjR1Nuw/8K2UPtzpkbaJfD1xmDQ==",
       "type": "package",
-      "path": "waher.content.markdown.plantuml/2.4.0",
+      "path": "waher.content.markdown.plantuml/2.5.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7620,7 +7583,7 @@
         "LICENSE.txt",
         "lib/netstandard2.0/Waher.Content.Markdown.PlantUml.dll",
         "lib/netstandard2.0/Waher.Content.Markdown.PlantUml.xml",
-        "waher.content.markdown.plantuml.2.4.0.nupkg.sha512",
+        "waher.content.markdown.plantuml.2.5.0.nupkg.sha512",
         "waher.content.markdown.plantuml.nuspec"
       ]
     },
@@ -7783,10 +7746,10 @@
         "waher.events.xmpp.nuspec"
       ]
     },
-    "Waher.IoTGateway/1.5.4": {
-      "sha512": "9eJDz6fkagSy6EYm4ptSRpPngpfik/03NQrQQwg3OKPcnF57YmztMOBTIw/05OWYC9yjRK7keCNBbG7gDvaamg==",
+    "Waher.IoTGateway/1.5.5": {
+      "sha512": "fWfdw/4JHcj96zR03ki4iAUbC9o4KSIGkFdHhMnrA4t7YGGObHrL7rMIxOSFTD322TxwIh4wpXqu8H7n3MAINQ==",
       "type": "package",
-      "path": "waher.iotgateway/1.5.4",
+      "path": "waher.iotgateway/1.5.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7918,7 +7881,7 @@
         "contentFiles/any/netstandard2.0/Root/Sniffers/XMPP.md",
         "contentFiles/any/netstandard2.0/Waher.IoTGateway.manifest",
         "lib/netstandard2.0/Waher.IoTGateway.dll",
-        "waher.iotgateway.1.5.4.nupkg.sha512",
+        "waher.iotgateway.1.5.5.nupkg.sha512",
         "waher.iotgateway.nuspec"
       ]
     },
@@ -8847,16 +8810,6 @@
         "waher.things.metering.1.2.3.nupkg.sha512",
         "waher.things.metering.nuspec"
       ]
-    },
-    "TAG.Networking.OpenPaymentsPlatform/1.0.0": {
-      "type": "project",
-      "path": "../../Powrs/NeuronOpenPaymentsPlatform/TAG.Networking.OpenPaymentsPlatform/TAG.Networking.OpenPaymentsPlatform.csproj",
-      "msbuildProject": "../../Powrs/NeuronOpenPaymentsPlatform/TAG.Networking.OpenPaymentsPlatform/TAG.Networking.OpenPaymentsPlatform.csproj"
-    },
-    "TAG.Payments.OpenPaymentsPlatform/1.0.0": {
-      "type": "project",
-      "path": "../../Powrs/NeuronOpenPaymentsPlatform/TAG.Payments.OpenPaymentsPlatform/TAG.Payments.OpenPaymentsPlatform.csproj",
-      "msbuildProject": "../../Powrs/NeuronOpenPaymentsPlatform/TAG.Payments.OpenPaymentsPlatform/TAG.Payments.OpenPaymentsPlatform.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -8865,10 +8818,8 @@
       "Microsoft.NETCore.App >= 2.0.0",
       "NeuroFeatures >= 1.1.9",
       "Paiwise >= 1.3.0",
-      "TAG.Networking.OpenPaymentsPlatform >= 1.0.0",
-      "TAG.Payments.OpenPaymentsPlatform >= 1.0.0",
       "Waher.Events >= 1.1.2",
-      "Waher.IoTGateway >= 1.5.4",
+      "Waher.IoTGateway >= 1.5.5",
       "Waher.Networking >= 2.2.1",
       "Waher.Networking.HTTP >= 2.2.4",
       "Waher.Runtime.Inventory >= 1.1.4",
@@ -8909,14 +8860,7 @@
       "frameworks": {
         "netcoreapp2.0": {
           "targetAlias": "netcoreapp2.0",
-          "projectReferences": {
-            "C:\\Projects\\Powrs\\NeuronOpenPaymentsPlatform\\TAG.Networking.OpenPaymentsPlatform\\TAG.Networking.OpenPaymentsPlatform.csproj": {
-              "projectPath": "C:\\Projects\\Powrs\\NeuronOpenPaymentsPlatform\\TAG.Networking.OpenPaymentsPlatform\\TAG.Networking.OpenPaymentsPlatform.csproj"
-            },
-            "C:\\Projects\\Powrs\\NeuronOpenPaymentsPlatform\\TAG.Payments.OpenPaymentsPlatform\\TAG.Payments.OpenPaymentsPlatform.csproj": {
-              "projectPath": "C:\\Projects\\Powrs\\NeuronOpenPaymentsPlatform\\TAG.Payments.OpenPaymentsPlatform\\TAG.Payments.OpenPaymentsPlatform.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -8953,7 +8897,7 @@
           },
           "Waher.IoTGateway": {
             "target": "Package",
-            "version": "[1.5.4, )"
+            "version": "[1.5.5, )"
           },
           "Waher.Networking": {
             "target": "Package",

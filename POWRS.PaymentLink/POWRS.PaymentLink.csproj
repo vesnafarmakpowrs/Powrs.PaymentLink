@@ -54,7 +54,7 @@
 		<PackageReference Include="NeuroFeatures" Version="1.1.9" />
 		<PackageReference Include="Paiwise" Version="1.3.0" />
 		<PackageReference Include="Waher.Events" Version="1.1.2" />
-		<PackageReference Include="Waher.IoTGateway" Version="1.5.4" />
+		<PackageReference Include="Waher.IoTGateway" Version="1.5.5" />
 		<PackageReference Include="Waher.Networking" Version="2.2.1" />
 		<PackageReference Include="Waher.Networking.HTTP" Version="2.2.4" />
 		<PackageReference Include="Waher.Runtime.Inventory" Version="1.1.4" />
@@ -65,8 +65,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Powrs\NeuronOpenPaymentsPlatform\TAG.Networking.OpenPaymentsPlatform\TAG.Networking.OpenPaymentsPlatform.csproj" />
-		<ProjectReference Include="..\..\Powrs\NeuronOpenPaymentsPlatform\TAG.Payments.OpenPaymentsPlatform\TAG.Payments.OpenPaymentsPlatform.csproj" />
+	  <Reference Include="TAG.Networking.OpenPaymentsPlatform">
+	    <HintPath>lib\TAG.Networking.OpenPaymentsPlatform.dll</HintPath>
+	  </Reference>
+	  <Reference Include="TAG.Payments.OpenPaymentsPlatform">
+	    <HintPath>lib\TAG.Payments.OpenPaymentsPlatform.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 

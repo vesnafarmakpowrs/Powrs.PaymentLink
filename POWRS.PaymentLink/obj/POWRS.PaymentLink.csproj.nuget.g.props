@@ -14,497 +14,497 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Language\Waher.IoTGateway.en.lng" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Language\Waher.IoTGateway.en.lng')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Language\Waher.IoTGateway.en.lng" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Language\Waher.IoTGateway.en.lng')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Language\Waher.IoTGateway.en.lng</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Language\Waher.IoTGateway.es.lng" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Language\Waher.IoTGateway.es.lng')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Language\Waher.IoTGateway.es.lng" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Language\Waher.IoTGateway.es.lng')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Language\Waher.IoTGateway.es.lng</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Controls\SimpleTable.script" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Controls\SimpleTable.script')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Controls\SimpleTable.script" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Controls\SimpleTable.script')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Controls\SimpleTable.script</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Controls\SimpleTree.cssx" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Controls\SimpleTree.cssx')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Controls\SimpleTree.cssx" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Controls\SimpleTree.cssx')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Controls\SimpleTree.cssx</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Controls\SimpleTree.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Controls\SimpleTree.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Controls\SimpleTree.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Controls\SimpleTree.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Controls\SimpleTree.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Copyright.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Copyright.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Copyright.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Copyright.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Copyright.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Events.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Events.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Events.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Events.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Events.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Login.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Login.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Login.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Login.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Login.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\ProposeContract.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\ProposeContract.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\ProposeContract.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\ProposeContract.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\ProposeContract.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\ProposeContract.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\ProposeContract.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\ProposeContract.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\ProposeContract.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\ProposeContract.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Backup.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Backup.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Backup.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Backup.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Backup.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Backup.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Backup.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Backup.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Backup.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Backup.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Config.cssx" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Config.cssx')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Config.cssx" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Config.cssx')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Config.cssx</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Database.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Database.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Database.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Database.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Database.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Database.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Database.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Database.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Database.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Database.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Database\MongoDB.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Database\MongoDB.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Database\MongoDB.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Database\MongoDB.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Database\MongoDB.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Domain.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Domain.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Domain.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Domain.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Domain.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Domain.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Domain.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Domain.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Domain.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Domain.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\ExpandPrivilege.ws" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\ExpandPrivilege.ws')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\ExpandPrivilege.ws" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\ExpandPrivilege.ws')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\ExpandPrivilege.ws</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Introduction.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Introduction.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Introduction.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Introduction.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Introduction.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentities.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentities.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentities.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentities.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\LegalIdentities.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentity.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentity.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentity.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentity.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\LegalIdentity.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentity.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentity.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentity.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentity.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\LegalIdentity.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Master.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Master.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Master.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Master.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Master.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Next.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Next.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Next.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Next.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Next.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Notification.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Notification.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Notification.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Notification.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Notification.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Notification.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Notification.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Notification.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Notification.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Notification.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\PersonalData.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\PersonalData.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\Backups.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\Backups.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\Backups.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\Backups.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\PersonalData\Backups.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\LocalDatabase.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\LocalDatabase.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\LocalDatabase.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\LocalDatabase.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\PersonalData\LocalDatabase.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\LocalSensorsAndDevices.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\LocalSensorsAndDevices.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\LocalSensorsAndDevices.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\LocalSensorsAndDevices.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\PersonalData\LocalSensorsAndDevices.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\NetworkIdentity.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\NetworkIdentity.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\NetworkIdentity.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\NetworkIdentity.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\PersonalData\NetworkIdentity.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\WebPages.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\WebPages.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\WebPages.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\WebPages.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\PersonalData\WebPages.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Restore.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Restore.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Restore.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Restore.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Restore.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Restore.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Restore.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Restore.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Restore.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Restore.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Role.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Role.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Role.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Role.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Role.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Roles.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Roles.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Roles.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Roles.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Roles.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Roles.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Roles.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Roles.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Roles.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Roles.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Roles.ws" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Roles.ws')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Roles.ws" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Roles.ws')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Roles.ws</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Roster.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Roster.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Roster.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Roster.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Roster.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Roster.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Roster.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Roster.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Roster.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Roster.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\RosterItems.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\RosterItems.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\RosterItems.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\RosterItems.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\RosterItems.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Theme.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Theme.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Theme.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Theme.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Theme.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Theme.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Theme.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Theme.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Theme.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Theme.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\User.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\User.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\User.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\User.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\User.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Users.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Users.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Users.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Users.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Users.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Users.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Users.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Users.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Users.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Users.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Users.ws" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\Users.ws')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Users.ws" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\Users.ws')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\Users.ws</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\XMPP.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\XMPP.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\XMPP.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\XMPP.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\XMPP.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\XMPP.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Settings\XMPP.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\XMPP.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Settings\XMPP.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Settings\XMPP.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\SignatureRequest.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\SignatureRequest.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\SignatureRequest.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\SignatureRequest.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\SignatureRequest.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\SignatureRequest.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\SignatureRequest.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\SignatureRequest.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\SignatureRequest.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\SignatureRequest.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\Database.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\Database.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\Database.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\Database.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Sniffers\Database.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.cssx" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.cssx')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.cssx" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.cssx')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Sniffers\EventLog.cssx</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Sniffers\EventLog.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Sniffers\EventLog.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.css" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.css')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.css" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.css')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Sniffers\Sniffer.css</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.js')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.js" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.js')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Sniffers\Sniffer.js</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Sniffers\Sniffer.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\XMPP.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Root\Sniffers\XMPP.md')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\XMPP.md" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Root\Sniffers\XMPP.md')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
       <Link>Root\Sniffers\XMPP.md</Link>
     </Content>
-    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Waher.IoTGateway.manifest" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.4\contentFiles\any\netstandard2.0\Waher.IoTGateway.manifest')">
+    <Content Include="$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Waher.IoTGateway.manifest" Condition="Exists('$(NuGetPackageRoot)waher.iotgateway\1.5.5\contentFiles\any\netstandard2.0\Waher.IoTGateway.manifest')">
       <NuGetPackageId>Waher.IoTGateway</NuGetPackageId>
-      <NuGetPackageVersion>1.5.4</NuGetPackageVersion>
+      <NuGetPackageVersion>1.5.5</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
