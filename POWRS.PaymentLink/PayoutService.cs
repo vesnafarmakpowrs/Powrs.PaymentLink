@@ -1166,18 +1166,13 @@ namespace POWRS.Payout
 
                 string s1 = UserName + ":" + Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
                 Log.Informational("s1: " + s1);
-
-                byte[] Key1 = Utf8Encode(Secret);
-                byte[] Data1 = Utf8Encode(s1);
-
-                string KeySignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Key1, Data1));
+                string KeySignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Secret), Utf8Encode(s1)));
                 Log.Informational("KeySignature: " + KeySignature);
 
                 string s2 = s1 + ":" + KeySignature + ":" + DataBase64 + ":" + LegalId;
-                byte[] Key2 = Utf8Encode(Password);
-                byte[] Data2 = Utf8Encode(s2);
-
-                string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Key2, Data2));
+                Log.Informational("s2: " + s2);
+              
+                string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Password), Utf8Encode(s2)));
                 Log.Informational("RequestSignature: " + RequestSignature);
 
                 object ResultSignature = await InternetContent.PostAsync(
