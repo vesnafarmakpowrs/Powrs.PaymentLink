@@ -27,6 +27,7 @@ Sniffer := Create(Waher.Networking.Sniffers.ConsoleOutSniffer, Waher.Networking.
 if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
 (
  RequestEndPoint:= "192.168.0.1";
+ PPersonalNumber := "";
  Client := TAG.Networking.OpenPaymentsPlatform.OpenPaymentsPlatformClient.CreateSandbox(ClientID, ClientSecret, ServicePurpose.Private, [Sniffer])
 )
 else

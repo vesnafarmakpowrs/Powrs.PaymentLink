@@ -1,4 +1,5 @@
-﻿using Paiwise;
+﻿using NeuroFeatures;
+using Paiwise;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -1081,6 +1082,8 @@ namespace POWRS.Payout
 
         private async Task<Token> GetToken(string ContractId, string Jwt)
         {
+            try
+            {
             object TokensResult = await InternetContent.PostAsync(
              new Uri("https://" + Gateway.Domain + "/Agent/Tokens/GetContractTokens"),
               new Dictionary<string, object>()
@@ -1088,17 +1091,18 @@ namespace POWRS.Payout
                             { "contractId", ContractId },
                             { "offset", null },
                             { "maxCount", null },
-                            { "references", true },
+                            { "references", false },
                  },
              new KeyValuePair<string, string>("Accept", "application/json"),
              new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
-
+            
             if (TokensResult is Dictionary<string, object> Response)
             {
-                if (Response.TryGetValue("Tokens", out object ObjTokens) && ObjTokens is Dictionary<string, object> Tokens)
+                 if (Response.TryGetValue("Tokens", out object ObjTokens) && ObjTokens is Dictionary<string, object> Tokens)
                 {
-                    if (Tokens.TryGetValue("Token", out object ObjToken) && ObjToken is Dictionary<string, object> Token)
+                    if (Tokens.TryGetValue("token", out object ObjToken) && ObjToken is Dictionary<string, object> Token)
                     {
+                        Log.Informational("Token: " + Token);
                         Token token = new Token();
 
                         if (Token.TryGetValue("id", out object ObjTokenId) && ObjTokenId is string TokenId)
@@ -1106,10 +1110,10 @@ namespace POWRS.Payout
                             Log.Informational("id: " + TokenId);
                             token.TokenId = TokenId;
                         }
-                        if (Token.TryGetValue("value", out object ObjTokenValue) && ObjTokenValue is decimal Value)
+                        if (Token.TryGetValue("value", out object ObjTokenValue) && ObjTokenValue is string Value)
                         {
                             Log.Informational("value: " + Value);
-                            token.Value = Value;
+                            token.Value = Convert.ToDecimal(Value);
                         }
                         if (Token.TryGetValue("currency", out object ObjTokenCurrency) && ObjTokenCurrency is string Currency)
                         {
@@ -1131,7 +1135,11 @@ namespace POWRS.Payout
                     }
                 }
             }
-
+            }
+            catch (Exception ex)
+            {
+                Log.Informational("GetToken " + ex.Message);
+            }
             return null;
         }
 
