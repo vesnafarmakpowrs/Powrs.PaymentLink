@@ -384,7 +384,7 @@ namespace POWRS.Payout
             AuthorizationFlow Flow = Configuration.AuthorizationFlow;
 
             Log.Informational("CreateClient started");
-            OpenPaymentsPlatformClient Client = PayoutServiceProvider.CreateClient(Configuration, this.mode,  ServicePurpose.Private);    // TODO: Contracts for corporate accounts (when using corporate IDs).
+            OpenPaymentsPlatformClient Client = PayoutServiceProvider.CreateClient(Configuration, this.mode, ServicePurpose.Private);    // TODO: Contracts for corporate accounts (when using corporate IDs).
 
             if (Client is null)
             {
@@ -1000,7 +1000,7 @@ namespace POWRS.Payout
         {
             try
             {
-                string fullPaymentUri = await CreateFullPaymentUri(Token.OwnerJid, Token.Value, null, Token.Currency, 364, "nfeat:" + Token.TokenId);
+                string fullPaymentUri = await CreateFullPaymentUri(Token.OwnerJid, Token.Value, Token.Currency, 364, "nfeat:" + Token.TokenId);
                 Log.Informational("FullPaymentUri: " + fullPaymentUri);
 
                 string Signiture = await GetSigniture(fullPaymentUri, JwtToken);
@@ -1091,57 +1091,57 @@ namespace POWRS.Payout
         {
             try
             {
-            object TokensResult = await InternetContent.PostAsync(
-             new Uri("https://" + Gateway.Domain + "/Agent/Tokens/GetContractTokens"),
-              new Dictionary<string, object>()
-                 {
+                object TokensResult = await InternetContent.PostAsync(
+                 new Uri("https://" + Gateway.Domain + "/Agent/Tokens/GetContractTokens"),
+                  new Dictionary<string, object>()
+                     {
                             { "contractId", ContractId },
                             { "offset", null },
                             { "maxCount", null },
                             { "references", false },
-                 },
-             new KeyValuePair<string, string>("Accept", "application/json"),
-             new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
-            
-            if (TokensResult is Dictionary<string, object> Response)
-            {
-                 if (Response.TryGetValue("Tokens", out object ObjTokens) && ObjTokens is Dictionary<string, object> Tokens)
+                     },
+                 new KeyValuePair<string, string>("Accept", "application/json"),
+                 new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
+
+                if (TokensResult is Dictionary<string, object> Response)
                 {
-                    if (Tokens.TryGetValue("token", out object ObjToken) && ObjToken is Dictionary<string, object> Token)
+                    if (Response.TryGetValue("Tokens", out object ObjTokens) && ObjTokens is Dictionary<string, object> Tokens)
                     {
-                        Log.Informational("Token: " + Token);
-                        Token token = new Token();
+                        if (Tokens.TryGetValue("token", out object ObjToken) && ObjToken is Dictionary<string, object> Token)
+                        {
+                            Log.Informational("Token: " + Token);
+                            Token token = new Token();
 
-                        if (Token.TryGetValue("id", out object ObjTokenId) && ObjTokenId is string TokenId)
-                        {
-                            Log.Informational("id: " + TokenId);
-                            token.TokenId = TokenId;
-                        }
-                        if (Token.TryGetValue("value", out object ObjTokenValue) && ObjTokenValue is string Value)
-                        {
-                            Log.Informational("value: " + Value);
-                            token.Value = Convert.ToDecimal(Value);
-                        }
-                        if (Token.TryGetValue("currency", out object ObjTokenCurrency) && ObjTokenCurrency is string Currency)
-                        {
-                            Log.Informational("currency: " + Currency);
-                            token.Currency = Currency;
-                        }
-                        if (Token.TryGetValue("owner", out object ObjTokenOwner) && ObjTokenOwner is string Owner)
-                        {
-                            Log.Informational("owner: " + Owner);
-                            token.Owner = Owner;
-                        }
-                        if (Token.TryGetValue("ownerJid", out object ObjTokenOwnerJid) && ObjTokenOwnerJid is string OwnerJid)
-                        {
-                            Log.Informational("ownerJid: " + OwnerJid);
-                            token.OwnerJid = OwnerJid;
-                        }
+                            if (Token.TryGetValue("id", out object ObjTokenId) && ObjTokenId is string TokenId)
+                            {
+                                Log.Informational("id: " + TokenId);
+                                token.TokenId = TokenId;
+                            }
+                            if (Token.TryGetValue("value", out object ObjTokenValue) && ObjTokenValue is string Value)
+                            {
+                                Log.Informational("value: " + Value);
+                                token.Value = Convert.ToDecimal(Value);
+                            }
+                            if (Token.TryGetValue("currency", out object ObjTokenCurrency) && ObjTokenCurrency is string Currency)
+                            {
+                                Log.Informational("currency: " + Currency);
+                                token.Currency = Currency;
+                            }
+                            if (Token.TryGetValue("owner", out object ObjTokenOwner) && ObjTokenOwner is string Owner)
+                            {
+                                Log.Informational("owner: " + Owner);
+                                token.Owner = Owner;
+                            }
+                            if (Token.TryGetValue("ownerJid", out object ObjTokenOwnerJid) && ObjTokenOwnerJid is string OwnerJid)
+                            {
+                                Log.Informational("ownerJid: " + OwnerJid);
+                                token.OwnerJid = OwnerJid;
+                            }
 
-                        return token;
+                            return token;
+                        }
                     }
                 }
-            }
             }
             catch (Exception ex)
             {
@@ -1157,27 +1157,28 @@ namespace POWRS.Payout
                 string LegalId = "2c512516-50bf-9921-6c14-7b67c40fb9a0@legal.lab.neuron.vaulter.rs";
                 string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
                 string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
-                string KeyId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.KeyId", string.Empty); 
-                string Secret = await RuntimeSettings.GetAsync("POWRS.PaymentLink.Secret", string.Empty); 
-
+                string KeyId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.KeyId", string.Empty);
+                string Secret = await RuntimeSettings.GetAsync("POWRS.PaymentLink.Secret", string.Empty);
 
                 string DataBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(PaymentUri));
                 string LocalName = "ed448";
                 string Namespace = "urn:ieee:iot:e2e:1.0";
-            
+
                 string s1 = UserName + ":" + Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
+                Log.Informational("s1: " + s1);
 
                 byte[] Key1 = Utf8Encode(Secret);
                 byte[] Data1 = Utf8Encode(s1);
 
                 string KeySignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Key1, Data1));
+                Log.Informational("KeySignature: " + KeySignature);
 
                 string s2 = s1 + ":" + KeySignature + ":" + DataBase64 + ":" + LegalId;
                 byte[] Key2 = Utf8Encode(Password);
                 byte[] Data2 = Utf8Encode(s2);
 
                 string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Key2, Data2));
-
+                Log.Informational("RequestSignature: " + RequestSignature);
 
                 object ResultSignature = await InternetContent.PostAsync(
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/SignData"),
@@ -1201,14 +1202,17 @@ namespace POWRS.Payout
             }
             catch (Exception ex)
             {
-                Log.Informational("GetSigniture" + ex.Message);
+                Log.Informational("GetSigniture errorMessage: " + ex.Message);
             }
             return String.Empty;
         }
 
-        public Task<string> CreateFullPaymentUri(string ToBareJid, decimal Amount, decimal? AmountExtra,
+        public async Task<string> CreateFullPaymentUri(string ToBareJid, decimal Amount,
            CaseInsensitiveString Currency, int ValidNrDays, string Message)
         {
+            string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+            string loggedUserJid = UserName + "@" + Gateway.Domain;
+
             StringBuilder Uri = new StringBuilder();
             DateTime Created = DateTime.UtcNow;
             DateTime Expires = DateTime.Today.AddDays(ValidNrDays);
@@ -1216,36 +1220,22 @@ namespace POWRS.Payout
 
             Uri.Append("edaler:id=");
             Uri.Append(Id.ToString());
-            Uri.Append(";f=");
-            Uri.Append(XML.Encode(ToBareJid));
 
-            if (!string.IsNullOrEmpty(ToBareJid))
-            {
-                if (ToBareJid.IndexOf('@') < 0)
-                {
-                    Uri.Append(";xx=");     // Destruction (payment to operator)
-                    Uri.Append(XML.Encode(ToBareJid));
-                }
-                else
-                {
-                    Uri.Append(";t=");
-                    Uri.Append(XML.Encode(ToBareJid));
-                }
-            }
+            Uri.Append(";f=");
+            Uri.Append(XML.Encode(loggedUserJid));
+
+            Uri.Append(";t=");
+            Uri.Append(XML.Encode(ToBareJid));
 
             Uri.Append(";am=");
             Uri.Append(CommonTypes.Encode(Amount));
 
-            if (AmountExtra.HasValue)
-            {
-                Uri.Append(";amx=");
-                Uri.Append(CommonTypes.Encode(AmountExtra.Value));
-            }
-
             Uri.Append(";cu=");
             Uri.Append(XML.Encode(Currency));
+
             Uri.Append(";cr=");
             Uri.Append(XML.Encode(Created, false));
+
             Uri.Append(";ex=");
             Uri.Append(XML.Encode(Expires, true));
 
@@ -1255,7 +1245,7 @@ namespace POWRS.Payout
                 Uri.Append(Convert.ToBase64String(Encoding.UTF8.GetBytes(Message)));
             }
 
-            return Task.FromResult(Uri.ToString());
+            return Uri.ToString();
         }
 
         /// <summary>
