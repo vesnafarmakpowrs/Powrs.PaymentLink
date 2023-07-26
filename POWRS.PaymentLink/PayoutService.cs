@@ -3,11 +3,14 @@ using Paiwise;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using TAG.Networking.OpenPaymentsPlatform;
 using TAG.Payments.OpenPaymentsPlatform;
 using Waher.Content;
+using Waher.Content.Html;
+using Waher.Content.Html.Elements;
 using Waher.Content.Xml;
 using Waher.Events;
 using Waher.IoTGateway;
@@ -17,6 +20,8 @@ using Waher.Persistence.Serialization;
 using Waher.Runtime.Inventory;
 using Waher.Runtime.Settings;
 using Waher.Script;
+using Waher.Script.Content.Functions.Encoding;
+using Waher.Script.Functions.Vectors;
 using Waher.Security;
 
 namespace POWRS.Payout
@@ -998,6 +1003,8 @@ namespace POWRS.Payout
                 string fullPaymentUri = await CreateFullPaymentUri(Token.OwnerJid, Token.Value, null, Token.Currency, 364, "nfeat:" + Token.TokenId);
                 Log.Informational("FullPaymentUri: " + fullPaymentUri);
 
+                string Signiture = await GetSigniture(fullPaymentUri, JwtToken);
+                fullPaymentUri += ";s=" + Signiture;
                 await SendPaymentUri(fullPaymentUri, JwtToken);
             }
             catch (Exception ex)
@@ -1141,6 +1148,62 @@ namespace POWRS.Payout
                 Log.Informational("GetToken " + ex.Message);
             }
             return null;
+        }
+
+        private async Task<string> GetSigniture(string PaymentUri, string Jwt)
+        {
+            try
+            {
+                string LegalId = "2c512516-50bf-9921-6c14-7b67c40fb9a0@legal.lab.neuron.vaulter.rs";
+                string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+                string KeyId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.KeyId", string.Empty); 
+                string Secret = await RuntimeSettings.GetAsync("POWRS.PaymentLink.Secret", string.Empty); 
+
+
+                string DataBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(PaymentUri));
+                string LocalName = "ed448";
+                string Namespace = "urn:ieee:iot:e2e:1.0";
+            
+                string s1 = UserName + ":" + Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
+
+                byte[] Key1 = Utf8Encode(Secret);
+                byte[] Data1 = Utf8Encode(s1);
+
+                string KeySignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Key1, Data1));
+
+                string s2 = s1 + ":" + KeySignature + ":" + DataBase64 + ":" + LegalId;
+                byte[] Key2 = Utf8Encode(Password);
+                byte[] Data2 = Utf8Encode(s2);
+
+                string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Key2, Data2));
+
+
+                object ResultSignature = await InternetContent.PostAsync(
+                 new Uri("https://" + Gateway.Domain + "/Agent/Legal/SignData"),
+                  new Dictionary<string, object>()
+                     {
+                            { "keyId", KeyId },
+                            { "legalId", LegalId },
+                            { "dataBase64", DataBase64},
+                            { "keySignature", KeySignature },
+                            { "requestSignature", RequestSignature },
+                     },
+                 new KeyValuePair<string, string>("Accept", "application/json"),
+                 new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
+
+
+                if (ResultSignature is Dictionary<string, object> Response)
+                {
+                    if (Response.TryGetValue("Signature", out object ObjSignature) && ObjSignature is string Signature)
+                        return Signature;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Informational("GetSigniture" + ex.Message);
+            }
+            return String.Empty;
         }
 
         public Task<string> CreateFullPaymentUri(string ToBareJid, decimal Amount, decimal? AmountExtra,

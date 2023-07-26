@@ -27,8 +27,9 @@ if exists(Posted) then
 
 	SetSetting("POWRS.PaymentLink.OPPUser",Posted.UserName);
 	SetSetting("POWRS.PaymentLink.OPPUserPass",Posted.Password);
+	SetSetting("POWRS.PaymentLink.KeyId",Posted.KeyId);
+	SetSetting("POWRS.PaymentLink.Secret",Posted.Secret);
 	
-
 	SeeOther("Settings.md");
 );
 }}
@@ -41,10 +42,19 @@ if exists(Posted) then
 </p>
 
 <p>
-<label for="Password">Secret:</label>  
+<label for="Password">Password:</label>  
 <input type="password" id="Password" name="Password" value='{{GetSetting("POWRS.PaymentLink.OPPUserPass","")}}' required title="Password used to authenticate the OPP user with the backend."/>
 </p>
 
+<p>
+<label for="KeyId">Key Id:</label>  
+<input type="text" id="KeyId" name="KeyId" value='{{GetSetting("POWRS.PaymentLink.KeyId","")}}' autofocus required title="Identity of key to use for signing the Identity application."/>
+</p>
+
+<p>
+<label for="Secret">Secret:</label>  
+<input type="password" id="Secret" name="Secret" value='{{GetSetting("POWRS.PaymentLink.Secret","")}}' required title="The secret corresponding to the key."/>
+</p>
 
 <button type="submit" class="posButton">Apply</button>
 </fieldset>
