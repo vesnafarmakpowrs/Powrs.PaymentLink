@@ -1242,7 +1242,7 @@ namespace POWRS.Payout
                             { "contractId", ContractId},
                             { "role", Role},
                             { "nonce", Nonce },
-                            { "keySignature", RequestSignature },
+                            { "keySignature", KeySignature },
                             { "requestSignature", RequestSignature },
                      },
                  new KeyValuePair<string, string>("Accept", "application/json"),
