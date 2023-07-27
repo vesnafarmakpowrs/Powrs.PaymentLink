@@ -384,6 +384,7 @@ namespace POWRS.Payout
 
             string ContractIdBuyEdaler = await CreateBuyEdalerContract(Jwt);
 
+            await SignContract(ContractID, Jwt);
             AuthorizationFlow Flow = Configuration.AuthorizationFlow;
 
             Log.Informational("CreateClient started");
@@ -1205,7 +1206,64 @@ namespace POWRS.Payout
             return String.Empty;
         }
 
-        private async Task<string> CreateBuyEdalerContract(string Jwt)
+        private async Task<string> SignContract(string ContractId, string Jwt)
+        {
+            try
+            {
+                string LegalId = "2c512516-50bf-9921-6c14-7b67c40fb9a0@legal.lab.neuron.vaulter.rs";
+                string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+                string KeyId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.KeyId", string.Empty);
+                string Secret = await RuntimeSettings.GetAsync("POWRS.PaymentLink.Secret", string.Empty);
+
+                string LocalName = "ed448";
+                string Namespace = "urn:ieee:iot:e2e:1.0";
+
+                string s1 = UserName + ":" + Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
+                Log.Informational("s1: " + s1);
+                string KeySignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Secret), Utf8Encode(s1)));
+                Log.Informational("KeySignature: " + KeySignature);
+
+                string Role = "Buyer";
+                string Nonce = Convert.ToBase64String(RandomBytesGenerator.GetRandomBytes(32));
+
+                string s2 = s1 + ":" + KeySignature + ":" + Nonce + ":" + LegalId + ":" + ContractId + ":" + Role;
+                Log.Informational("s2: " + s2);
+
+                string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Password), Utf8Encode(s2)));
+                Log.Informational("sign Contract: " + RequestSignature);
+
+                object ResultSignature = await InternetContent.PostAsync(
+                 new Uri("https://" + Gateway.Domain + "/Agent/Legal/SignContract"),
+                  new Dictionary<string, object>()
+                     {
+                            { "keyId", KeyId },
+                            { "legalId", LegalId },
+                            { "contractId", ContractId},
+                            { "role", Role},
+                            { "nonce", Nonce },
+                            { "keySignature", RequestSignature },
+                            { "requestSignature", RequestSignature },
+                     },
+                 new KeyValuePair<string, string>("Accept", "application/json"),
+                 new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
+
+                if (ResultSignature is Dictionary<string, object> Response)
+                {
+                    if (Response.TryGetValue("Contract", out object ObjSignature) && ObjSignature is string Signature)
+                        return Signature;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Informational("Sign Contract errorMessage: " + ex.Message);
+            }
+            return String.Empty;
+        }
+
+        
+
+    private async Task<string> CreateBuyEdalerContract(string Jwt)
         {
             try {
                 Log.Informational("in CreateBuyEdalerContract : " );
@@ -1213,8 +1271,8 @@ namespace POWRS.Payout
 
             string OwnerJid = "lab.vaulter.se@neuron.vaulter.rs";
             string OwnerId = "2c523e34-c122-58ec-e81d-570f5370f803@legal.neuron.vaulter.rs";
-
-            string LegalIdOPPUser = "2c53c929-5240-9ddf-9811-36d962c0ad15@legal.lab.neuron.vaulter.rs";
+               
+            string LegalIdOPPUser = "2c512516-50bf-9921-6c14-7b67c40fb9a0@legal.lab.neuron.vaulter.rs";
 
                 List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>() 
                  {
