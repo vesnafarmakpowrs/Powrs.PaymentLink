@@ -384,7 +384,7 @@ namespace POWRS.Payout
 
             string ContractIdBuyEdaler = await CreateBuyEdalerContract(Jwt);
 
-            await SignContract(ContractID, Jwt);
+            await SignContract(ContractIdBuyEdaler, Jwt);
             AuthorizationFlow Flow = Configuration.AuthorizationFlow;
 
             Log.Informational("CreateClient started");
@@ -1210,7 +1210,8 @@ namespace POWRS.Payout
         {
             try
             {
-                string LegalId = "2c512516-50bf-9921-6c14-7b67c40fb9a0@legal.lab.neuron.vaulter.rs";
+                
+                string LegalId = "2c5527cc-d03e-90a8-a813-9284271a1add@legal.lab.neuron.vaulter.rs";
                 string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
                 string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
                 string KeyId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.KeyId", string.Empty);
@@ -1233,6 +1234,8 @@ namespace POWRS.Payout
                 string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Password), Utf8Encode(s2)));
                 Log.Informational("sign Contract: " + RequestSignature);
 
+            
+
                 object ResultSignature = await InternetContent.PostAsync(
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/SignContract"),
                   new Dictionary<string, object>()
@@ -1247,6 +1250,9 @@ namespace POWRS.Payout
                      },
                  new KeyValuePair<string, string>("Accept", "application/json"),
                  new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
+
+                Log.Informational("ResultSignature " + JSON.Encode(ResultSignature, false).ToString());
+
 
                 if (ResultSignature is Dictionary<string, object> Response)
                 {
@@ -1272,7 +1278,7 @@ namespace POWRS.Payout
             string OwnerJid = "lab.vaulter.se@neuron.vaulter.rs";
             string OwnerId = "2c523e34-c122-58ec-e81d-570f5370f803@legal.neuron.vaulter.rs";
                
-            string LegalIdOPPUser = "2c512516-50bf-9921-6c14-7b67c40fb9a0@legal.lab.neuron.vaulter.rs";
+            string LegalIdOPPUser = "2c5527cc-d03e-90a8-a813-9284271a1add@legal.lab.neuron.vaulter.rs";
 
                 List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>() 
                  {
@@ -1332,13 +1338,19 @@ namespace POWRS.Payout
                 if (ResultContractBuyEdaler != null)
                   Log.Informational("ResultContractBuyEdaler : " + ResultContractBuyEdaler);
 
+              Log.Informational(JSON.Encode(ResultContractBuyEdaler, false).ToString());
+
                 if (ResultContractBuyEdaler is Dictionary<string, object> Response)
             { 
-                    foreach (var key in Response)
-                        Log.Informational("ResultContractBuyEdaler key: " + key);
-                
-                if (Response.TryGetValue("Contract", out object ObjContract) && ObjContract is string Contract)
-                    return Contract;
+                    if (Response.TryGetValue("Contract", out object ObjContract) && ObjContract is Dictionary<string,object> Contract)
+                        if (Contract.TryGetValue("id", out object ObjContractId) && ObjContractId is string ContractId)
+                        {
+                            Log.Informational("buyeDalerContractCreated" + ContractId);
+
+                            return ContractId;
+                        }
+                    
+                   
             }
 
             }
