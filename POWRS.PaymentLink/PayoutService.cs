@@ -22,6 +22,7 @@ using Waher.Runtime.Settings;
 using Waher.Script;
 using Waher.Script.Content.Functions.Encoding;
 using Waher.Script.Functions.Vectors;
+using Waher.Script.Persistence.SPARQL;
 using Waher.Security;
 
 namespace POWRS.Payout
@@ -381,6 +382,8 @@ namespace POWRS.Payout
                 return new PaymentResult("Parameters for token are not valid");
             }
 
+            string ContractIdBuyEdaler = await CreateBuyEdalerContract(Jwt);
+
             AuthorizationFlow Flow = Configuration.AuthorizationFlow;
 
             Log.Informational("CreateClient started");
@@ -589,7 +592,7 @@ namespace POWRS.Payout
 
                 await DisplayUserMessage(TabId, "Your payment is complete! Thank you for using Vaulter! \n A payment confirmation is now sent to your email address.", true);
 
-                await UpdateContractWithTransactionStatusAsync(Token, Jwt);
+               // await UpdateContractWithTransactionStatusAsync(Token, Jwt);
 
                 return new PaymentResult(Token.Value, Token.Currency);
             }
@@ -1171,7 +1174,7 @@ namespace POWRS.Payout
 
                 string s2 = s1 + ":" + KeySignature + ":" + DataBase64 + ":" + LegalId;
                 Log.Informational("s2: " + s2);
-              
+
                 string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Password), Utf8Encode(s2)));
                 Log.Informational("RequestSignature: " + RequestSignature);
 
@@ -1198,6 +1201,92 @@ namespace POWRS.Payout
             catch (Exception ex)
             {
                 Log.Informational("GetSigniture errorMessage: " + ex.Message);
+            }
+            return String.Empty;
+        }
+
+        private async Task<string> CreateBuyEdalerContract(string Jwt)
+        {
+            try {
+                Log.Informational("in CreateBuyEdalerContract : " );
+                string BuyEdalerContract = string.Empty;
+
+            string OwnerJid = "lab.vaulter.se@neuron.vaulter.rs";
+            string OwnerId = "2c523e34-c122-58ec-e81d-570f5370f803@legal.neuron.vaulter.rs";
+
+            string LegalIdOPPUser = "2c53c929-5240-9ddf-9811-36d962c0ad15@legal.lab.neuron.vaulter.rs";
+
+                List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>() 
+                 {
+                  new Dictionary<CaseInsensitiveString, object>()
+                    {  
+                        { "role" , "Buyer" },
+                        { "legalId" , LegalIdOPPUser } 
+                    },
+
+                  new Dictionary<CaseInsensitiveString, object>()
+                    {  
+                         { "role" , "TrustProvider" },
+                         { "legalId" , OwnerId }
+                    }
+                };
+
+            List<IDictionary<CaseInsensitiveString, object>> ParametersList = new List<IDictionary<CaseInsensitiveString, object>>() 
+                {
+                  new Dictionary<CaseInsensitiveString, object>()
+                    {    { "name" , "Amount" },
+                         { "value" , "11" }
+                    },
+
+                  new Dictionary<CaseInsensitiveString, object>()
+                    {    { "name" , "Currency" },
+                         { "value" , "SEK" }
+                    },
+
+                  new Dictionary<CaseInsensitiveString, object>()
+                    {    { "name" , "Account" },
+                         { "value" , "SE8160000000000401975231" }
+                    },
+
+                  new Dictionary<CaseInsensitiveString, object>()
+                    {    { "name" , "Message" },
+                         { "value" , "Vaulter" }
+                    }
+                };
+
+             
+
+                Log.Informational("in CreateBuyEdalerContract before post : ");
+                object ResultContractBuyEdaler = await InternetContent.PostAsync(
+                 new Uri("https://" + Gateway.Domain + "/Agent/Legal/CreateContract"),
+                  new Dictionary<string, object>()
+                     {
+                            { "templateId", BuyEDalerTemplateContractId },
+                            { "visibility", "CreatorAndParts" },
+                            { "Parts", PartsList},
+                            { "Parameters", ParametersList }
+                     },
+                 new KeyValuePair<string, string>("Accept", "application/json"),
+                 new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
+
+                Log.Informational("after post ResultContractBuyEdaler : " + ResultContractBuyEdaler);
+
+                if (ResultContractBuyEdaler != null)
+                  Log.Informational("ResultContractBuyEdaler : " + ResultContractBuyEdaler);
+
+                if (ResultContractBuyEdaler is Dictionary<string, object> Response)
+            { 
+                    foreach (var key in Response)
+                        Log.Informational("ResultContractBuyEdaler key: " + key);
+                
+                if (Response.TryGetValue("Contract", out object ObjContract) && ObjContract is string Contract)
+                    return Contract;
+            }
+
+            }
+            catch (Exception ex)
+            {
+                Log.Informational("CreateBuyEdalerContract errorMessage: " + ex.Message);
             }
             return String.Empty;
         }
