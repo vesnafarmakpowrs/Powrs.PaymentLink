@@ -29,7 +29,8 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.OPPUserPass",Posted.Password);
 	SetSetting("POWRS.PaymentLink.KeyId",Posted.KeyId);
 	SetSetting("POWRS.PaymentLink.Secret",Posted.Secret);
-	
+	SetSetting("POWRS.PaymentLink.OPPUserLegalId",Posted.LegalId);
+
 	SeeOther("Settings.md");
 );
 }}
@@ -44,6 +45,11 @@ if exists(Posted) then
 <p>
 <label for="Password">Password:</label>  
 <input type="password" id="Password" name="Password" value='{{GetSetting("POWRS.PaymentLink.OPPUserPass","")}}' required title="Password used to authenticate the OPP user with the backend."/>
+</p>
+
+<p>
+<label for="LegalId">legal Id:</label>  
+<input type="text" id="LegalId" name="LegalId" value='{{GetSetting("POWRS.PaymentLink.OPPUserLegalId","")}}' required title="Legal Id used to authenticate the OPP user with the backend."/>
 </p>
 
 <p>

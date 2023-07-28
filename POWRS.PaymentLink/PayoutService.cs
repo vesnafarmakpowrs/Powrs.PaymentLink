@@ -1211,12 +1211,13 @@ namespace POWRS.Payout
             try
             {
                 
-                string LegalId = "2c5527cc-d03e-90a8-a813-9284271a1add@legal.lab.neuron.vaulter.rs";
                 string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
                 string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+                string LegalId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
+
                 string KeyId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.KeyId", string.Empty);
                 string Secret = await RuntimeSettings.GetAsync("POWRS.PaymentLink.Secret", string.Empty);
-
+                
                 string LocalName = "ed448";
                 string Namespace = "urn:ieee:iot:e2e:1.0";
 
@@ -1278,24 +1279,26 @@ namespace POWRS.Payout
             string OwnerJid = "lab.vaulter.se@neuron.vaulter.rs";
             string OwnerId = "2c523e34-c122-58ec-e81d-570f5370f803@legal.neuron.vaulter.rs";
                
-            string LegalIdOPPUser = "2c5527cc-d03e-90a8-a813-9284271a1add@legal.lab.neuron.vaulter.rs";
+            string LegalIdOPPUser = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
 
-                List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>() 
+                List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>()
                  {
                   new Dictionary<CaseInsensitiveString, object>()
-                    {  
+                    {
                         { "role" , "Buyer" },
-                        { "legalId" , LegalIdOPPUser } 
+                        { "legalId" , LegalIdOPPUser }
                     },
 
                   new Dictionary<CaseInsensitiveString, object>()
-                    {  
+                    {
                          { "role" , "TrustProvider" },
                          { "legalId" , OwnerId }
                     }
                 };
 
-            List<IDictionary<CaseInsensitiveString, object>> ParametersList = new List<IDictionary<CaseInsensitiveString, object>>() 
+
+
+                List<IDictionary<CaseInsensitiveString, object>> ParametersList = new List<IDictionary<CaseInsensitiveString, object>>() 
                 {
                   new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "Amount" },
