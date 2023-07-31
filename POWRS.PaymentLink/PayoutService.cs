@@ -76,7 +76,7 @@ namespace POWRS.Payout
         private static readonly Dictionary<string, string> buyTemplateIdsSandbox = new Dictionary<string, string>()
         {
             { "ELLFSESS", "2ba713cc-5c13-354c-8409-54d68d1e35ce@legal.lab.tagroot.io" },
-            { "ESSESESS", "2ba713d9-5c13-354e-8409-54d68d144838@legal.lab.tagroot.io" },
+            { "ESSESESS", "2c5a54be-d4c4-b04d-0c0a-03bcbe6385f2@legal.lab.neuron.vaulter.rs" },
             { "HANDSESS", "2ba713e2-5c13-3550-8409-54d68d7545d2@legal.lab.tagroot.io" },
             { "NDEASESS", "2ba713eb-5c13-3552-8409-54d68dc6093d@legal.lab.tagroot.io" },
             { "SWEDSESS", "2ba713f6-5c13-3556-8409-54d68d2492da@legal.lab.tagroot.io" },
@@ -382,11 +382,13 @@ namespace POWRS.Payout
                 return new PaymentResult("Parameters for token are not valid");
             }
 
-            string ContractIdBuyEdaler = await CreateBuyEdalerContract(Jwt);
+            string ContractIdBuyEdaler = await CreateBuyEdalerContract(Jwt, Token, BankAccount, TabId);
 
             await SignContract(ContractIdBuyEdaler, Jwt);
-            AuthorizationFlow Flow = Configuration.AuthorizationFlow;
 
+            return new PaymentResult("Contract created ");
+
+            AuthorizationFlow Flow = Configuration.AuthorizationFlow;
             Log.Informational("CreateClient started");
             OpenPaymentsPlatformClient Client = PayoutServiceProvider.CreateClient(Configuration, this.mode, ServicePurpose.Private);    // TODO: Contracts for corporate accounts (when using corporate IDs).
 
@@ -1222,15 +1224,12 @@ namespace POWRS.Payout
                 string Namespace = "urn:ieee:iot:e2e:1.0";
 
                 string s1 = UserName + ":" + Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
-                Log.Informational("s1: " + s1);
                 string KeySignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Secret), Utf8Encode(s1)));
-                Log.Informational("KeySignature: " + KeySignature);
 
                 string Role = "Buyer";
                 string Nonce = Convert.ToBase64String(RandomBytesGenerator.GetRandomBytes(32));
 
                 string s2 = s1 + ":" + KeySignature + ":" + Nonce + ":" + LegalId + ":" + ContractId + ":" + Role;
-                Log.Informational("s2: " + s2);
 
                 string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Password), Utf8Encode(s2)));
                 Log.Informational("sign Contract: " + RequestSignature);
@@ -1252,9 +1251,7 @@ namespace POWRS.Payout
                  new KeyValuePair<string, string>("Accept", "application/json"),
                  new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
-                Log.Informational("ResultSignature " + JSON.Encode(ResultSignature, false).ToString());
-
-
+                //Log.Informational("ResultSignature " + JSON.Encode(ResultSignature, false).ToString());
                 if (ResultSignature is Dictionary<string, object> Response)
                 {
                     if (Response.TryGetValue("Contract", out object ObjSignature) && ObjSignature is string Signature)
@@ -1270,17 +1267,17 @@ namespace POWRS.Payout
 
         
 
-    private async Task<string> CreateBuyEdalerContract(string Jwt)
+    private async Task<string> CreateBuyEdalerContract(string Jwt, Token token, string BankAccount, string TabId)
         {
             try {
-                Log.Informational("in CreateBuyEdalerContract : " );
                 string BuyEdalerContract = string.Empty;
 
             string OwnerJid = "lab.vaulter.se@neuron.vaulter.rs";
             string OwnerId = "2c523e34-c122-58ec-e81d-570f5370f803@legal.neuron.vaulter.rs";
                
             string LegalIdOPPUser = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
-
+            string BuyEDalerTemplateContractId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.BuyEDalerTemplateContractId", string.Empty);
+            
                 List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>()
                  {
                   new Dictionary<CaseInsensitiveString, object>()
@@ -1296,34 +1293,37 @@ namespace POWRS.Payout
                     }
                 };
 
-
-
                 List<IDictionary<CaseInsensitiveString, object>> ParametersList = new List<IDictionary<CaseInsensitiveString, object>>() 
                 {
                   new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "Amount" },
-                         { "value" , "11" }
+                         { "value" , token.Value }
                     },
 
                   new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "Currency" },
-                         { "value" , "SEK" }
+                         { "value" , token.Currency }
                     },
 
                   new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "Account" },
-                         { "value" , "SE8160000000000401975231" }
+                         { "value" , BankAccount}
                     },
 
                   new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "Message" },
                          { "value" , "Vaulter" }
+                    },
+                   new Dictionary<CaseInsensitiveString, object>()
+                    {    { "name" , "requestFromMobilePhone" },
+                         { "value" , "false" }
+                    },
+                     new Dictionary<CaseInsensitiveString, object>()
+                    {    { "name" , "tabId" },
+                         { "value" , TabId }
                     }
                 };
 
-             
-
-                Log.Informational("in CreateBuyEdalerContract before post : ");
                 object ResultContractBuyEdaler = await InternetContent.PostAsync(
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/CreateContract"),
                   new Dictionary<string, object>()
@@ -1336,14 +1336,9 @@ namespace POWRS.Payout
                  new KeyValuePair<string, string>("Accept", "application/json"),
                  new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
-                Log.Informational("after post ResultContractBuyEdaler : " + ResultContractBuyEdaler);
+              //Log.Informational(JSON.Encode(ResultContractBuyEdaler, false).ToString());
 
-                if (ResultContractBuyEdaler != null)
-                  Log.Informational("ResultContractBuyEdaler : " + ResultContractBuyEdaler);
-
-              Log.Informational(JSON.Encode(ResultContractBuyEdaler, false).ToString());
-
-                if (ResultContractBuyEdaler is Dictionary<string, object> Response)
+             if (ResultContractBuyEdaler is Dictionary<string, object> Response)
             { 
                     if (Response.TryGetValue("Contract", out object ObjContract) && ObjContract is Dictionary<string,object> Contract)
                         if (Contract.TryGetValue("id", out object ObjContractId) && ObjContractId is string ContractId)
@@ -1352,8 +1347,6 @@ namespace POWRS.Payout
 
                             return ContractId;
                         }
-                    
-                   
             }
 
             }
