@@ -119,11 +119,8 @@ function StartPayment(bankName, bicFi, iban) {
 		{
 			"tabId": TabID,
 			"requestFromMobilePhone": Boolean(isMobileDevice),
-			"bicFi": bicFi,
-			"bankName": bankName,
 			"contractId": contractId,
-			"bankAccount": iban,
-			"personalNumber": personalNumber
+			"bankAccount": iban
 		}));
 
 }

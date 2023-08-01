@@ -22,7 +22,7 @@ if(index > -1) then
  PBicFi:= PBicFi.Substring(index + 1);
 );
 
-OPServiceProvider:=Create(POWRS.Payout.PayoutServiceProvider);
+OPServiceProvider:=Create(TAG.Payments.OpenPaymentsPlatform.OpenPaymentsPlatformServiceProvider);
 
 ClientID := GetSetting("TAG.Payments.OpenPaymentsPlatform.ClientID","");
 ClientSecret := GetSetting("TAG.Payments.OpenPaymentsPlatform.ClientSecret","");
@@ -52,7 +52,7 @@ else
 
 AspService := Create(TAG.Networking.OpenPaymentsPlatform.AspServiceProvider, Client, PBicFi, PBankName, "");
 
-OPService:=Create(POWRS.Payout.PayoutService, "SWEDEN", AspService , Mode, OPServiceProvider);
+OPService:=Create(TAG.Payments.OpenPaymentsPlatform.OpenPaymentsPlatformService, "SWEDEN", AspService , Mode, OPServiceProvider);
 
 IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
 IdentityProperties.Add("PNR", personalNumber);
@@ -66,6 +66,7 @@ CancelUrl := "";
 results := OPService.GetPaymentOptionsForBuyingEDaler(IdentityProperties, SuccessUrl, FailureUrl, CancelUrl, PTabID, PRequestFromMobilePhone,"192.168.0.1");
 
 {
-	Results: results
+	Results: results,
+       "PBicFi" : PBicFi
 }
 

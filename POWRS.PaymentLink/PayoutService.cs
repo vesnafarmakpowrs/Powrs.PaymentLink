@@ -1,19 +1,11 @@
 ﻿using EDaler;
-using Microsoft.VisualBasic;
-using NeuroFeatures;
 using Paiwise;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using TAG.Networking.OpenPaymentsPlatform;
-using TAG.Payments.OpenPaymentsPlatform;
 using Waher.Content;
-using Waher.Content.Html;
-using Waher.Content.Html.Elements;
 using Waher.Content.Xml;
 using Waher.Events;
 using Waher.IoTGateway;
@@ -23,332 +15,25 @@ using Waher.Networking.XMPP.Contracts;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
 using Waher.Persistence.Serialization;
-using Waher.Runtime.Inventory;
 using Waher.Runtime.Profiling.Events;
 using Waher.Runtime.Settings;
-using Waher.Script;
-using Waher.Script.Content.Functions.Encoding;
-using Waher.Script.Functions.Vectors;
-using Waher.Script.Persistence.SPARQL;
-using Waher.Script.Units.BaseQuantities;
 using Waher.Security;
+using POWRS.PaymentLink.Model;
 
 namespace POWRS.Payout
 {
-    public class Token
-    {
-        public string TokenId { get; set; }
-        public decimal Value { get; set; }
-        public string Currency { get; set; }
-        public string OwnerJid { get; set; }
-        public string Owner { get; set; }
-
-        public bool IsValid()
-        {
-            if (string.IsNullOrEmpty(TokenId) ||
-              string.IsNullOrEmpty(Currency) ||
-              string.IsNullOrEmpty(OwnerJid) ||
-              string.IsNullOrEmpty(Owner) ||
-              Value <= 0)
-            {
-                return false;
-            }
-
-            return true;
-        }
-    }
-
     /// <summary>
     /// Open Payments Platform service
     /// </summary>
     public class PayoutService
     {
-        private static readonly Dictionary<string, string> buyTemplateIdsProduction = new Dictionary<string, string>()
-        {
-            { "ELLFSESS", "2bebf3fe-151c-76cd-180b-8e272c027c0d@legal.paiwise.tagroot.io" },
-            { "ESSESESS", "2bebf416-151c-76d0-180b-8e272c8a8890@legal.paiwise.tagroot.io" },
-            { "HANDSESS", "2bebf426-151c-76d2-180b-8e272c4a5d69@legal.paiwise.tagroot.io" },
-            { "NDEASESS", "2bebf434-151c-76d6-180b-8e272cb1e584@legal.paiwise.tagroot.io" },
-            { "SWEDSESS", "2bebf441-151c-76d8-180b-8e272cf43b0a@legal.paiwise.tagroot.io" },
-            { "NDEAFIHH", string.Empty },
-            { "DABASESX", string.Empty },
-            { "DNBANOKK", string.Empty },
-            { "NDEANOKK", string.Empty },
-            { "NDEADKKK", string.Empty },
-            { "OKOYFIHH", null },
-            { "DNBASESX", null },
-            { "DNBADEHX", null },
-            { "DNBAGB2L", null }
-        };
-
-        private static readonly Dictionary<string, string> buyTemplateIdsSandbox = new Dictionary<string, string>()
-        {
-            { "ELLFSESS", "2ba713cc-5c13-354c-8409-54d68d1e35ce@legal.lab.tagroot.io" },
-            { "ESSESESS", "2c5a5aa0-689f-e581-600d-7ebc6fed17de@legal.lab.neuron.vaulter.rs" },
-            { "HANDSESS", "2ba713e2-5c13-3550-8409-54d68d7545d2@legal.lab.tagroot.io" },
-            { "NDEASESS", "2ba713eb-5c13-3552-8409-54d68dc6093d@legal.lab.tagroot.io" },
-            { "SWEDSESS", "2ba713f6-5c13-3556-8409-54d68d2492da@legal.lab.tagroot.io" },
-            { "NDEAFIHH", string.Empty },
-            { "DABASESX", string.Empty },
-            { "DNBANOKK", string.Empty },
-            { "NDEANOKK", string.Empty },
-            { "NDEADKKK", string.Empty },
-            { "OKOYFIHH", null },
-            { "DNBASESX", null },
-            { "DNBADEHX", null },
-            { "DNBAGB2L", null }
-        };
-
-        private static readonly Dictionary<string, string> buyTemplateIdsLocalDev = new Dictionary<string, string>()
-        {
-            { "ELLFSESS", "2be5a9bc-0022-b121-8029-227baed8c9db@legal." },
-            { "ESSESESS", "2be5a9dc-0022-b127-8029-227bae11c604@legal." },
-            { "HANDSESS", "2be5a9e9-0022-b12a-8029-227baeb0c983@legal." },
-            { "NDEASESS", "2be5a9fa-0022-b12c-8029-227baee190ce@legal." },
-            { "SWEDSESS", "2be5aa07-0022-b12e-8029-227baeb2d454@legal." },
-            { "NDEAFIHH", string.Empty },
-            { "DABASESX", string.Empty },
-            { "DNBANOKK", string.Empty },
-            { "NDEANOKK", string.Empty },
-            { "NDEADKKK", string.Empty },
-            { "OKOYFIHH", null },
-            { "DNBASESX", null },
-            { "DNBADEHX", null },
-            { "DNBAGB2L", null }
-        };
-
-        private static readonly Dictionary<string, string> sellTemplateIdsProduction = new Dictionary<string, string>()
-        {
-            { "ELLFSESS", "2bebf475-151c-76dd-180b-8e272c2cdda8@legal.paiwise.tagroot.io" },
-            { "ESSESESS", "2bebf49a-151c-76e0-180b-8e272c2d1ec1@legal.paiwise.tagroot.io" },
-            { "HANDSESS", "2bebf4a7-151c-76e2-180b-8e272c8433da@legal.paiwise.tagroot.io" },
-            { "NDEASESS", "2bebf4b7-151c-76e6-180b-8e272cb7e7d1@legal.paiwise.tagroot.io" },
-            { "SWEDSESS", "2bebf4c2-151c-76e8-180b-8e272cae5fcd@legal.paiwise.tagroot.io" },
-            { "NDEAFIHH", string.Empty },
-            { "DABASESX", string.Empty },
-            { "DNBANOKK", string.Empty },
-            { "NDEANOKK", string.Empty },
-            { "NDEADKKK", string.Empty },
-            { "OKOYFIHH", null },
-            { "DNBASESX", null },
-            { "DNBADEHX", null },
-            { "DNBAGB2L", null }
-        };
-
-        private static readonly Dictionary<string, string> sellTemplateIdsSandbox = new Dictionary<string, string>()
-        {
-            { "ELLFSESS", "2ba7143d-5c13-3570-8409-54d68df89117@legal.lab.tagroot.io" },
-            { "ESSESESS", "2ba71449-5c13-3572-8409-54d68ddf81b4@legal.lab.tagroot.io" },
-            { "HANDSESS", "2ba71451-5c13-3574-8409-54d68d7d414a@legal.lab.tagroot.io" },
-            { "NDEASESS", "2ba7145a-5c13-3576-8409-54d68d243631@legal.lab.tagroot.io" },
-            { "SWEDSESS", "2ba71464-5c13-3578-8409-54d68d68c6a3@legal.lab.tagroot.io" },
-            { "NDEAFIHH", string.Empty },
-            { "DABASESX", string.Empty },
-            { "DNBANOKK", string.Empty },
-            { "NDEANOKK", string.Empty },
-            { "NDEADKKK", string.Empty },
-            { "OKOYFIHH", null },
-            { "DNBASESX", null },
-            { "DNBADEHX", null },
-            { "DNBAGB2L", null }
-        };
-
-        private static readonly Dictionary<string, string> sellTemplateIdsLocalDev = new Dictionary<string, string>()
-        {
-            { "ELLFSESS", "2be5aa2d-0022-b13c-8029-227bae3aeeed@legal." },
-            { "ESSESESS", "2be5aa3a-0022-b147-8029-227bae306db1@legal." },
-            { "HANDSESS", "2be5aa46-0022-b14e-8029-227bae4f3831@legal." },
-            { "NDEASESS", "2be5aa52-0022-b150-8029-227bae7fdd4d@legal." },
-            { "SWEDSESS", "2be5aa5f-0022-b152-8029-227baef01fa8@legal." },
-            { "NDEAFIHH", string.Empty },
-            { "DABASESX", string.Empty },
-            { "DNBANOKK", string.Empty },
-            { "NDEANOKK", string.Empty },
-            { "NDEADKKK", string.Empty },
-            { "OKOYFIHH", null },
-            { "DNBASESX", null },
-            { "DNBADEHX", null },
-            { "DNBAGB2L", null }
-        };
-
-        private readonly PayoutServiceProvider provider;
-        private readonly CaseInsensitiveString country;
-        private readonly AspServiceProvider service;
-        private readonly OperationMode mode;
-        private readonly string buyTemplateId;
-        private readonly string sellTemplateId;
-        private readonly string id;
-        //private string sessionId;
-        //private bool requestFromMobilePhone;
-        //private string tabId;
-        //private IPAddress clientIpAddress;
-
-        /// <summary>
-        /// Open Payments Platform service
-        /// </summary>
-        /// <param name="Country">Country where service operates</param>
-        /// <param name="Service">Service reference</param>
-        /// <param name="Mode">Operation mode</param>
-        /// <param name="Provider">Service provider.</param>
-        public PayoutService(CaseInsensitiveString Country, AspServiceProvider Service, OperationMode Mode,
-            PayoutServiceProvider Provider)
-        {
-            this.country = Country;
-            this.service = Service;
-            this.mode = Mode;
-            this.provider = Provider;
-
-            if (Mode == OperationMode.Production)
-            {
-                this.id = "Production." + this.service.BicFi;
-
-                if (!buyTemplateIdsProduction.TryGetValue(Service.BicFi.ToUpper(), out this.buyTemplateId))
-                    this.buyTemplateId = null;
-
-                if (!sellTemplateIdsProduction.TryGetValue(Service.BicFi.ToUpper(), out this.sellTemplateId))
-                    this.sellTemplateId = null;
-            }
-            else
-            {
-                this.id = "Sandbox." + this.service.BicFi;
-
-                if (string.IsNullOrEmpty(Gateway.Domain))
-                {
-                    if (!buyTemplateIdsLocalDev.TryGetValue(Service.BicFi.ToUpper(), out this.buyTemplateId))
-                        this.buyTemplateId = null;
-
-                    if (!sellTemplateIdsLocalDev.TryGetValue(Service.BicFi.ToUpper(), out this.sellTemplateId))
-                        this.sellTemplateId = null;
-                }
-                else
-                {
-                    if (!buyTemplateIdsSandbox.TryGetValue(Service.BicFi.ToUpper(), out this.buyTemplateId))
-                        this.buyTemplateId = null;
-
-                    if (!sellTemplateIdsSandbox.TryGetValue(Service.BicFi.ToUpper(), out this.sellTemplateId))
-                        this.sellTemplateId = null;
-                }
-            }
-        }
-
-        #region IServiceProvider
-
-        /// <summary>
-        /// ID of service
-        /// </summary>
-        public string Id => this.id;
-
-        /// <summary>
-        /// Name of service
-        /// </summary>
-        public string Name => this.service.Name;
-
-        /// <summary>
-        /// Icon URL
-        /// </summary>
-        public string IconUrl => this.service.LogoUrl;
-
-        /// <summary>
-        /// Width of icon, in pixels.
-        /// </summary>
-        public int IconWidth => 181;
-
-        /// <summary>
-        /// Height of icon, in pixels
-        /// </summary>
-        public int IconHeight => 150;
-
-        #endregion
-
-        #region IProcessingSupport<CaseInsensitiveString>
-
-        /// <summary>
-        /// How well a currency is supported
-        /// </summary>
-        /// <param name="Currency">Currency</param>
-        /// <returns>Support</returns>
-        public Grade Supports(CaseInsensitiveString Currency)
-        {
-            string Expected;
-
-            switch (this.country.LowerCase)
-            {
-                case "se":
-                    Expected = "sek";
-                    break;
-
-                case "no":
-                    Expected = "nok";
-                    break;
-
-                case "dk":
-                    Expected = "dkk";
-                    break;
-
-                case "fi":
-                case "de":
-                    Expected = "eur";
-                    break;
-
-                case "uk":
-                    Expected = "gbp";
-                    break;
-
-                default:
-                    return Grade.NotAtAll;
-
-            }
-
-            if (Currency.LowerCase == Expected)
-                return Grade.Excellent;
-
-            switch (Currency.LowerCase)
-            {
-                case "sek":
-                case "dkk":
-                case "nok":
-                case "eur":
-                case "gbp":
-                    return Grade.Ok;
-
-                default:
-                    return Grade.NotAtAll;
-            }
-        }
-
-        #endregion
-
-        #region IBuyEDalerService
-
-        /// <summary>
-        /// Contract ID of Template, for buying e-Daler
-        /// </summary>
-        public string BuyEDalerTemplateContractId => this.buyTemplateId ?? string.Empty;
-
-        ///// <summary>
-        ///// Reference to service provider
-        ///// </summary>
-        //public IBuyEDalerServiceProvider BuyEDalerServiceProvider => this.provider;
-
-        /// <summary>
-        /// If the service provider can be used to process a request to buy eDaler
-        /// of a certain amount, for a given account.
-        /// </summary>
-        /// <param name="AccountName">Account Name</param>
-        /// <returns>If service provider can be used.</returns>
-        public Task<bool> CanBuyEDaler(CaseInsensitiveString AccountName)
-        {
-            if (this.buyTemplateId is null)
-                return Task.FromResult(false);
-
-            return this.IsConfigured();
-        }
-
-        private async Task<bool> IsConfigured()
-        {
-            ServiceConfiguration Configuration = await ServiceConfiguration.GetCurrent();
-            return Configuration.IsWellDefined;
-        }
+        private readonly string ComponentJid = "edaler.lab.neuron.vaulter.rs";
+        private XmppClient _xmppClient;
+        private ContractsClient _contractsClient;
+        private EDalerClient _edalerClient;
+        private string PaymentContractId;
+        private Token PaymentToken;
+        private string PaymentJwtToken;
 
         /// <summary>
         /// Processes payment for buying eDaler.
@@ -356,121 +41,96 @@ namespace POWRS.Payout
         /// <param name="TabId">Tab ID</param>
 		/// <param name="RequestFromMobilePhone">If request originates from mobile phone. (true)
         /// <returns>Result of operation.</returns>
-        public async Task<PaymentResult> BuyEDaler(string ContractID, string BankAccount, string PersonalNumber, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
+        public async Task<PaymentResult> BuyEDaler(string ContractID, string BankAccount, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
         {
-           
-                ServiceConfiguration Configuration = await ServiceConfiguration.GetCurrent();
-                AuthorizationFlow Flow = Configuration.AuthorizationFlow;
-                Log.Informational("CreateClient started");
-                OpenPaymentsPlatformClient Client = PayoutServiceProvider.CreateClient(Configuration, this.mode, ServicePurpose.Private);    // TODO: Contracts for corporate accounts (when using corporate IDs).
             try
             {
-                IPAddress.TryParse(RemoteEndpoint, out IPAddress ClientIpAddress);
-            await connectClientAsync(ContractID);
-            Log.Informational("PaymentLinkBuyEDaler started");
+                Log.Informational("PaymentLinkBuyEDaler started");
 
-         
-            if (!Configuration.IsWellDefined)
-            {
-                await DisplayUserMessage(TabId, "Service not configured properly.");
-                return new PaymentResult("Service not configured properly.");
-            }
+                await ConnectClientAsync();
+                string Jwt = await LoginToUserAgent();
 
-            string Jwt = await LoginToUserAgent();
-            if (string.IsNullOrEmpty(Jwt))
-            {
-                Log.Informational("Unable to LoginToUserAgent");
-                return new PaymentResult("Unable to LoginToUserAgent");
-            }
+                if (string.IsNullOrEmpty(Jwt))
+                {
+                    Log.Informational("Unable to LoginToUserAgent");
+                    return new PaymentResult("Unable to LoginToUserAgent");
+                }
 
-            Token Token = await GetToken(ContractID, Jwt);
+                Token Token = await GetToken(ContractID, Jwt);
 
-            if (Token == null)
-            {
-                Log.Informational("No token for contractId: " + ContractID);
-                return new PaymentResult("Unable to LoginToUserAgent");
-            }
+                if (Token == null)
+                {
+                    Log.Informational("No token for contractId: " + ContractID);
+                    return new PaymentResult("Unable to LoginToUserAgent");
+                }
 
-            if (!Token.IsValid())
-            {
-                Log.Informational("Parameters for token are not valid.");
-                return new PaymentResult("Parameters for token are not valid");
-            }
+                if (!Token.IsValid())
+                {
+                    Log.Informational("Parameters for token are not valid.");
+                    return new PaymentResult("Parameters for token are not valid");
+                }
 
-            string ContractIdBuyEdaler = await CreateBuyEdalerContract(Jwt, Token, BankAccount, TabId);
-            PaymentContractId = ContractIdBuyEdaler;
+                string ContractIdBuyEdaler = await CreateBuyEdalerContract(Jwt, Token, BankAccount, TabId, RequestFromMobilePhone);
 
-            string ComponentJid = "edaler.lab.neuron.vaulter.rs";
-            ContractsClient ContractsClient = new ContractsClient(this.client, ComponentJid);
-            Waher.Networking.XMPP.Contracts.Contract Contract = await ContractsClient.GetContractAsync(ContractID);
-            this.eDalerClient = new EDalerClient(this.client, ContractsClient, ComponentJid);
-            this.eDalerClient.BalanceUpdated += this.EDalerClient_BalanceUpdated;
-
+                PaymentContractId = ContractIdBuyEdaler;
                 PaymentToken = Token;
                 PaymentJwtToken = Jwt;
 
-            await SignContract(ContractIdBuyEdaler, Jwt);
-           
-            return new PaymentResult("Contract created ");
+                await SignContract(ContractIdBuyEdaler, Jwt);
+
+                return new PaymentResult("Contract created ");
             }
             catch (System.Exception ex)
             {
                 await DisplayUserMessage(TabId, ex.Message);
                 return new PaymentResult(ex.Message);
             }
-            finally
-            {
-               // PayoutServiceProvider.Dispose(Client, this.mode);
-            }
-           
         }
-
-        private XmppClient client;
-        private EDalerClient eDalerClient = null;
-        private async Task connectClientAsync(string ContractId)
+        private async Task ConnectClientAsync()
         {
-            try
-            {
-                int Port = 5222;    // Default XMPP Client-to-Server port.
+            //try
+            //{
+            //    int Port = 5222;    // Default XMPP Client-to-Server port.
 
-                string Account = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
-                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+            //    string Account = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+            //    string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
 
-                XmppCredentials XmppCredentials = new XmppCredentials();
-                XmppCredentials.Port = Port;
-                XmppCredentials.Host = Waher.IoTGateway.Gateway.Domain;
-                XmppCredentials.Password = Password;
-                XmppCredentials.Account = Account;
-                Log.Informational("XmppClient create");
+            //    XmppCredentials XmppCredentials = new XmppCredentials();
+            //    XmppCredentials.Port = Port;
+            //    XmppCredentials.Host = Gateway.Domain;
+            //    XmppCredentials.Password = Password;
+            //    XmppCredentials.Account = Account;
+            //    Log.Informational("XmppClient create");
 
-                this.client = new XmppClient(XmppCredentials, "en", System.Reflection.Assembly.GetEntryAssembly(), new InMemorySniffer(250));
-                this.client.TrustServer = true;
-                Log.Informational("XmppClient trust");
+            //    this._xmppClient = new XmppClient(XmppCredentials, "en", System.Reflection.Assembly.GetEntryAssembly(), new InMemorySniffer(250))
+            //    {
+            //        TrustServer = true
+            //    };
+            //    Log.Informational("XmppClient trust");
 
-                this.client.AllowEncryption = true;
+            //    this._xmppClient.AllowEncryption = true;
 
+            //    this._xmppClient.OnStateChanged += this.Client_OnStateChanged;
+            //    this._xmppClient.OnConnectionError += this.Client_OnConnectionError;
 
-                this.client.OnStateChanged += this.Client_OnStateChanged;
-                this.client.OnConnectionError += this.Client_OnConnectionError;
+            //    this._xmppClient.Connect(Gateway.Domain);
 
-                this.client.Connect(Gateway.Domain);
+            //    this._contractsClient = new ContractsClient(this._xmppClient, ComponentJid);
+            //    this._edalerClient = new EDalerClient(this._xmppClient, this._contractsClient, ComponentJid);
 
-                Log.Informational("XmppClient connect");
-            }
-            catch (System.Exception ex)
-            {
-                Log.Informational("client connect" + ex.Message);
-            }
+            //    Log.Informational("XmppClient connect");
+            //}
+            //catch (System.Exception ex)
+            //{
+            //    Log.Informational("client connect" + ex.Message);
+            //}
         }
 
         private async Task Client_OnStateChanged(object Sender, XmppState NewState)
         {
             try
             {
-
                 Log.Informational("Client_OnStateChanged" + NewState.ToString());
-                if (NewState == XmppState.Connected)
-                    Log.Informational("XmppState.Connected" + NewState.ToString());
             }
             catch (System.Exception ex)
             {
@@ -484,9 +144,6 @@ namespace POWRS.Payout
             return Task.CompletedTask;
         }
 
-        private string PaymentContractId = string.Empty;
-        private Token PaymentToken;
-        private string PaymentJwtToken;
         private async Task EDalerClient_BalanceUpdated(object Sender, BalanceEventArgs e)
         {
             Log.Informational("EDalerClient_BalanceUpdated" + e.Balance.Amount.ToString());
@@ -502,15 +159,14 @@ namespace POWRS.Payout
                     Log.Informational("Amount: " + e.Balance.Amount ?? "Amount is null");
                     Log.Informational("Currency: " + e.Balance.Currency ?? "Currency is null");
 
-                   await UpdateContractWithTransactionStatusAsync();
-            }
+                    await UpdateContractWithTransactionStatusAsync();
+                }
                 catch (System.Exception ex)
                 {
                     Log.Informational(ex.Message);
                 }
             }
         }
-
 
         private async Task DisplayUserMessage(string tabId, string message, bool isSuccess = false)
         {
@@ -520,360 +176,7 @@ namespace POWRS.Payout
                     {
                         { "ok", isSuccess },
                         { "message", message },
-                    }, false), true, "User", "Admin.Payments.Paiwise.OpenPaymentsPlatform");
-        }
-
-        private static string CheckJidHostedByServer(IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
-            out CaseInsensitiveString Account)
-        {
-            Account = null;
-
-            if (!IdentityProperties.TryGetValue("JID", out CaseInsensitiveString JID))
-                return "JID not encoded into identity.";
-
-            int i = JID.IndexOf('@');
-            if (i < 0)
-                return "Invalid JID encoded into identity.";
-
-            Account = JID.Substring(0, i);
-            CaseInsensitiveString Domain = JID.Substring(i + 1);
-            bool IsServerDomain = Domain == Gateway.Domain;
-
-            if (!IsServerDomain)
-            {
-                foreach (CaseInsensitiveString AlternativeDomain in Gateway.AlternativeDomains)
-                {
-                    if (AlternativeDomain == Domain)
-                    {
-                        IsServerDomain = true;
-                        break;
-                    }
-                }
-
-                if (!IsServerDomain)
-                    return "JID not registered on this server.";
-            }
-
-            return null;
-        }
-
-        private static string GetPersonalID(CaseInsensitiveString PersonalNumber)
-        {
-            return PersonalNumber?.Value?.
-                Replace("-", string.Empty).
-                Replace(".", string.Empty).
-                Replace(" ", string.Empty);
-        }
-
-        private static async Task<KeyValuePair<IPAddress, PaymentResult>> GetRemoteEndpoint(CaseInsensitiveString Account)
-        {
-            IEnumerable<GenericObject> LoginRecords = await Database.Find<GenericObject>(
-                "BrokerAccountLogins", 0, 1,
-                new FilterFieldEqualTo("UserName", Account));
-
-            string RemoteEndpoint = null;
-
-            foreach (GenericObject LoginRecord in LoginRecords)
-            {
-                if (LoginRecord.TryGetFieldValue("RemoteEndpoint", out object Obj))
-                {
-                    RemoteEndpoint = Obj?.ToString();
-                    break;
-                }
-            }
-
-            if (string.IsNullOrEmpty(RemoteEndpoint))
-                return new KeyValuePair<IPAddress, PaymentResult>(null, new PaymentResult("Client IP address was not found. Required to process payment."));
-
-            int i = RemoteEndpoint.LastIndexOf(':');
-            if (i > 0)
-                RemoteEndpoint = RemoteEndpoint.Substring(0, i);
-
-            if (!IPAddress.TryParse(RemoteEndpoint, out IPAddress ClientIpAddress))
-                return new KeyValuePair<IPAddress, PaymentResult>(null, new PaymentResult("Client not connected via IP network. Required to process payment."));
-
-            return new KeyValuePair<IPAddress, PaymentResult>(ClientIpAddress, null);
-        }
-
-        /// <summary>
-        /// Gets available payment options for buying eDaler.
-        /// </summary>
-        /// <param name="IdentityProperties">Properties engraved into the legal identity that will performm the request.</param>
-        /// <param name="SuccessUrl">Optional Success URL the service provider can open on the client from a client web page, if getting options has succeeded.</param>
-        /// <param name="FailureUrl">Optional Failure URL the service provider can open on the client from a client web page, if getting options has succeeded.</param>
-        /// <param name="CancelUrl">Optional Cancel URL the service provider can open on the client from a client web page, if getting options has succeeded.</param>
-        /// <param name="ClientUrlCallback">Method to call if the payment service
-        /// requests an URL to be displayed on the client.</param>
-		/// <param name="SessionId">Session ID</param>
-		/// <param name="TabId">Tab ID</param>
-		/// <param name="RequestFromMobilePhone">If request originates from mobile phone. (true)
-		/// or web/desktop/other (false).</param>
-        /// <returns>Array of dictionaries, each dictionary representing a set of parameters that can be selected in the
-        /// contract to sign.</returns>
-
-        /// <summary>
-        /// Gets an URL that can be used to start the BankID app on a desptop.
-        /// </summary>
-        /// <param name="RedirectUrl">URL to redirect to.</param>
-        /// <returns>URL for starting a BankID app on a desktop.</returns>
-        public string GetMobileAppUrl(string RedirectUrl, string AutoStartToken)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.Append("bankid://?autostarttoken=");
-            sb.Append(System.Web.HttpUtility.UrlEncode(AutoStartToken));
-            sb.Append("&redirect=");
-
-            if (!string.IsNullOrEmpty(RedirectUrl))
-                sb.Append(System.Web.HttpUtility.UrlEncode(RedirectUrl));
-            else
-                sb.Append("null");
-
-            return sb.ToString();
-        }
-
-
-        /// <summary>
-        /// Gets available payment options for buying eDaler.
-        /// </summary>
-        /// <param name="IdentityProperties">Properties engraved into the legal identity that will performm the request.</param>
-        /// <param name="SuccessUrl">Optional Success URL the service provider can open on the client from a client web page, if getting options has succeeded.</param>
-        /// <param name="FailureUrl">Optional Failure URL the service provider can open on the client from a client web page, if getting options has succeeded.</param>
-        /// <param name="CancelUrl">Optional Cancel URL the service provider can open on the client from a client web page, if getting options has succeeded.</param>
-        /// <param name="TabId">Tab ID</param>
-        /// <param name="RequestFromMobilePhone">If request originates from mobile phone. (true)
-        /// <param name="RemoteEndpoint">Client IP adress
-        /// <returns>Result of operation.</returns>
-        public async Task<IDictionary<CaseInsensitiveString, object>[]> GetPaymentOptionsForBuyingEDaler(
-            IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties,
-            string SuccessUrl, string FailureUrl, string CancelUrl, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
-        {
-
-            IPAddress.TryParse(RemoteEndpoint, out IPAddress ClientIpAddress);
-
-            ServiceConfiguration Configuration = await ServiceConfiguration.GetCurrent();
-            if (!Configuration.IsWellDefined)
-                return new IDictionary<CaseInsensitiveString, object>[0];
-
-            AuthorizationFlow Flow = Configuration.AuthorizationFlow;
-
-            string Message = CheckJidHostedByServer(IdentityProperties, out CaseInsensitiveString Account);
-            if (!string.IsNullOrEmpty(Message))
-                return new IDictionary<CaseInsensitiveString, object>[0];
-
-            if (!(IdentityProperties.TryGetValue("PNR", out CaseInsensitiveString PersonalNumber)))
-                return new IDictionary<CaseInsensitiveString, object>[0];
-
-            Log.Informational("Account" + Account + "PersonalNumber" + PersonalNumber);
-
-
-            OpenPaymentsPlatformClient Client = PayoutServiceProvider.CreateClient(Configuration, this.mode,
-                ServicePurpose.Private);    // TODO: Contracts for corporate accounts (when using corporate IDs).
-
-            if (Client is null)
-                return new IDictionary<CaseInsensitiveString, object>[0];
-
-
-            Log.Informational("Client created ");
-            try
-            {
-                string PersonalID = GetPersonalID(PersonalNumber);
-
-                OperationInformation Operation = new OperationInformation(
-                    ClientIpAddress,
-                    typeof(PayoutServiceProvider).Assembly.FullName,
-                    Flow,
-                    PersonalID,
-                    null,
-                    this.service.BicFi);
-
-                ConsentStatus Consent = await Client.CreateConsent(string.Empty, true, false, false,
-                    DateTime.Today.AddDays(1), 1, false, Operation);
-
-                Log.Informational("Consent created ");
-
-                AuthorizationInformation Status = await Client.StartConsentAuthorization(Consent.ConsentID, Operation);
-
-                AuthenticationMethod Method = null;
-
-
-                if (!string.IsNullOrEmpty(TabId))
-                    if (RequestFromMobilePhone)
-                    {
-                        Method = Status.GetAuthenticationMethod("mbid_same_device")
-                            ?? Status.GetAuthenticationMethod("mbid");
-                    }
-                    else
-                    {
-                        Method = Status.GetAuthenticationMethod("mbid_animated_qr_token")
-                              ?? Status.GetAuthenticationMethod("mbid_animated_qr_image")
-                              ?? Status.GetAuthenticationMethod("mbid")
-                              ?? Status.GetAuthenticationMethod("mbid_same_device");
-
-
-                    }
-                Log.Informational("Method" + Method.Name.ToString() + "TabID" + TabId + "requestFromMobilePhone" + RequestFromMobilePhone);
-
-                if (Method is null)
-                    return new IDictionary<CaseInsensitiveString, object>[0];
-
-                PaymentServiceUserDataResponse PsuDataResponse = await Client.PutConsentUserData(Consent.ConsentID,
-                    Status.AuthorizationID, Method.MethodId, Operation);
-
-                if (PsuDataResponse is null)
-                    return new IDictionary<CaseInsensitiveString, object>[0];
-
-                if (!(PsuDataResponse.ChallengeData is null) && !string.IsNullOrEmpty(TabId))
-                {
-                    await ClientEvents.PushEvent(new string[] { TabId }, "ShowQRCode",
-                   JSON.Encode(new Dictionary<string, object>()
-                   {
-                                { "BankIdUrl", PsuDataResponse.ChallengeData.BankIdURL},
-                                { "MobileAppUrl",  GetMobileAppUrl(null, PsuDataResponse.ChallengeData.AutoStartToken)},
-                                { "AutoStartToken", PsuDataResponse.ChallengeData.AutoStartToken},
-                                { "ImageUrl",PsuDataResponse.ChallengeData.ImageUrl },
-                                { "fromMobileDevice", RequestFromMobilePhone },
-                                { "title", "Authorize recipient" },
-                                { "message", "Scan the following QR-code with your Bank-ID app, or click on it if your Bank-ID is installed on your computer." },
-                   }, false), true);
-                }
-
-                Log.Informational(PsuDataResponse.Status.ToString());
-                TppMessage[] ErrorMessages = PsuDataResponse.Messages;
-                AuthorizationStatusValue AuthorizationStatusValue = PsuDataResponse.Status;
-                DateTime Start = DateTime.Now;
-                bool PaymentAuthorizationStarted = AuthorizationStatusValue == AuthorizationStatusValue.started ||
-                        AuthorizationStatusValue == AuthorizationStatusValue.authenticationStarted;
-                bool CreditorAuthorizationStarted = AuthorizationStatusValue == AuthorizationStatusValue.authoriseCreditorAccountStarted;
-                Log.Informational("0 " + AuthorizationStatusValue.ToString());
-                int counter = 0;
-                while (AuthorizationStatusValue != AuthorizationStatusValue.finalised &&
-                    AuthorizationStatusValue != AuthorizationStatusValue.failed &&
-                    DateTime.Now.Subtract(Start).TotalMinutes < Configuration.TimeoutMinutes)
-                {
-                    counter++;
-                    Log.Informational(counter.ToString() + AuthorizationStatusValue.ToString());
-                    await Task.Delay(Configuration.PollingIntervalSeconds);
-
-                    AuthorizationStatus P2 = await Client.GetConsentAuthorizationStatus(Consent.ConsentID, Status.AuthorizationID, Operation);
-
-                    AuthorizationStatusValue = P2.Status;
-
-                    Log.Informational(counter.ToString() + P2.Status.ToString());
-                    ErrorMessages = P2.Messages;
-
-                    Log.Informational(counter.ToString() + P2.Messages.ToString());
-                    switch (AuthorizationStatusValue)
-                    {
-                        case AuthorizationStatusValue.started:
-                        case AuthorizationStatusValue.authenticationStarted:
-                            Log.Informational("authenticationStarted");
-
-                            if (!PaymentAuthorizationStarted)
-                            {
-
-                                PaymentAuthorizationStarted = true;
-
-                                //ClientUrlEventArgs e = new ClientUrlEventArgs(P2.ChallengeData.BankIdURL, State);
-                                //await ClientUrlCallback(this, e);
-                            }
-                            break;
-
-                        case AuthorizationStatusValue.authoriseCreditorAccountStarted:
-                            Log.Informational("authoriseCreditorAccountStarted");
-
-                            if (!CreditorAuthorizationStarted)
-
-                            {
-                                CreditorAuthorizationStarted = true;
-
-                                //ClientUrlEventArgs e = new ClientUrlEventArgs(P2.ChallengeData.BankIdURL, State);
-                                //await ClientUrlCallback(this, e);
-                            }
-                            break;
-                    }
-                }
-
-
-                ConsentStatusValue ConsentStatusValue = await Client.GetConsentStatus(Consent.ConsentID, Operation);
-                switch (ConsentStatusValue)
-                {
-                    case ConsentStatusValue.rejected:
-                        Log.Informational("Consent was rejected.");
-                        break;
-
-                    case ConsentStatusValue.revokedByPsu:
-                        Log.Informational("Consent was revoked.");
-                        break;
-
-                    case ConsentStatusValue.expired:
-                        Log.Informational("Consent has expired.");
-                        break;
-
-                    case ConsentStatusValue.terminatedByTpp:
-                        Log.Informational("Consent was terminated.");
-                        break;
-
-                    case ConsentStatusValue.valid:
-                        Log.Informational("Consent is valid.");
-                        break;
-
-                    default:
-                        Log.Informational("Consent was not valid.");
-                        break;
-                }
-
-                Log.Informational("Consent was :" + ConsentStatusValue.ToString());
-
-                if (!(ErrorMessages is null) && ErrorMessages.Length > 0)
-                    throw new System.Exception(ErrorMessages[0].Text);
-
-                AccountInformation[] Accounts = await Client.GetAccounts(Consent.ConsentID, Operation, true);
-                List<IDictionary<CaseInsensitiveString, object>> Result = new List<IDictionary<CaseInsensitiveString, object>>();
-
-                foreach (AccountInformation Account2 in Accounts)
-                {
-                    Log.Informational(Account2.Iban + "" + Account2.Name);
-                    Result.Add(new Dictionary<CaseInsensitiveString, object>()
-                    {
-                        { "Account", Account2.Iban },
-                        { "ResourceId", Account2.ResourceID },
-                        { "Iban", Account2.Iban },
-                        { "Bban", Account2.Bban },
-                        { "Bic", Account2.Bic },
-                        { "Balance", Account2.Balance},
-                        { "Currency", Account2.Currency },
-                        { "CashAccountType", Account2.CashAccountType },
-                        { "Name", Account2.Name},
-                        { "OwnerName", Account2.OwnerName },
-                        { "Product", Account2.Product},
-                        { "Status", Account2.Status },
-                        { "Usage", Account2.Usage },
-                });
-                }
-
-                await ClientEvents.PushEvent(new string[] { TabId }, "ShowAccountInfo",
-                       JSON.Encode(new Dictionary<string, object>()
-                       {
-                                { "AccountInfo", Result.ToArray()},
-                                { "message", "Account information the following QR-code with your Bank-ID app, or click on it if your Bank-ID is installed on your computer." },
-                       }, false), true);
-
-                return Result.ToArray();
-            }
-            finally
-            {
-                PayoutServiceProvider.Dispose(Client, this.mode);
-            }
-        }
-
-
-        #endregion
-
-        public static string Base64Encode(string plainText)
-        {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+                    }, false), true);
         }
 
         public class RandomBytesGenerator
@@ -917,7 +220,6 @@ namespace POWRS.Payout
             }
             catch (System.Exception ex)
             {
-
                 Log.Error(ex);
             }
         }
@@ -1136,8 +438,6 @@ namespace POWRS.Payout
                 string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Password), Utf8Encode(s2)));
                 Log.Informational("sign Contract: " + RequestSignature);
 
-
-
                 object ResultSignature = await InternetContent.PostAsync(
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/SignContract"),
                   new Dictionary<string, object>()
@@ -1167,20 +467,14 @@ namespace POWRS.Payout
             return String.Empty;
         }
 
-
-
-        private async Task<string> CreateBuyEdalerContract(string Jwt, Token token, string BankAccount, string TabId)
+        private async Task<string> CreateBuyEdalerContract(string Jwt, Token token, string BankAccount, string TabId, bool requestFromMobilePhone)
         {
             try
             {
-                string BuyEdalerContract = string.Empty;
-
-                string OwnerJid = "lab.vaulter.se@neuron.vaulter.rs";
                 string OwnerId = "2c523e34-c122-58ec-e81d-570f5370f803@legal.neuron.vaulter.rs";
 
                 string LegalIdOPPUser = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
                 string BuyEDalerTemplateContractId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.BuyEDalerTemplateContractId", string.Empty);
-                // string BuyEDalerTemplateContractId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.BuyEDalerTemplateContractId", string.Empty);
 
                 List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>()
                  {
@@ -1240,8 +534,6 @@ namespace POWRS.Payout
                  new KeyValuePair<string, string>("Accept", "application/json"),
                  new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
-                //Log.Informational(JSON.Encode(ResultContractBuyEdaler, false).ToString());
-
                 if (ResultContractBuyEdaler is Dictionary<string, object> Response)
                 {
                     if (Response.TryGetValue("Contract", out object ObjContract) && ObjContract is Dictionary<string, object> Contract)
@@ -1300,20 +592,6 @@ namespace POWRS.Payout
             }
 
             return Uri.ToString();
-        }
-
-        /// <summary>
-        /// If the service provider can be used to process a request to sell eDaler
-        /// of a certain amount, for a given account.
-        /// </summary>
-        /// <param name="AccountName">Account Name</param>
-        /// <returns>If service provider can be used.</returns>
-        public Task<bool> CanSellEDaler(CaseInsensitiveString AccountName)
-        {
-            if (string.IsNullOrEmpty(this.sellTemplateId))
-                return Task.FromResult(false);
-
-            return this.IsConfigured();
         }
     }
 }
