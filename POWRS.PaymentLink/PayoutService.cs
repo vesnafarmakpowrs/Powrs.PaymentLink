@@ -76,7 +76,7 @@ namespace POWRS.Payout
         private static readonly Dictionary<string, string> buyTemplateIdsSandbox = new Dictionary<string, string>()
         {
             { "ELLFSESS", "2ba713cc-5c13-354c-8409-54d68d1e35ce@legal.lab.tagroot.io" },
-            { "ESSESESS", "2c5a54be-d4c4-b04d-0c0a-03bcbe6385f2@legal.lab.neuron.vaulter.rs" },
+            { "ESSESESS", "2c5a5aa0-689f-e581-600d-7ebc6fed17de@legal.lab.neuron.vaulter.rs" },
             { "HANDSESS", "2ba713e2-5c13-3550-8409-54d68d7545d2@legal.lab.tagroot.io" },
             { "NDEASESS", "2ba713eb-5c13-3552-8409-54d68dc6093d@legal.lab.tagroot.io" },
             { "SWEDSESS", "2ba713f6-5c13-3556-8409-54d68d2492da@legal.lab.tagroot.io" },
