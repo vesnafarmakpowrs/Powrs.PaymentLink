@@ -105,7 +105,6 @@ function GenerateAccountsListUi(accounts) {
 	});
 }
 
-
 function StartPayment(bankName, bicFi, iban) {
 	let contractId = document.getElementById('contractId').value;
 	let personalNumber = document.getElementById('personalNumber').value;
@@ -122,7 +121,6 @@ function StartPayment(bankName, bicFi, iban) {
 			"contractId": contractId,
 			"bankAccount": iban
 		}));
-
 }
 
 function DisplayTransactionResult(result)
@@ -130,18 +128,6 @@ function DisplayTransactionResult(result)
    console.log(result);
    var Div = document.getElementById("QrCode");
    Div.innerHTML = result.message;
-
-//let contractId = document.getElementById('contractId').value;
-//	var xhttp = new XMLHttpRequest();
-//	xhttp.open("POST", "VaulterState.ws", true);
-//	xhttp.setRequestHeader("Content-Type", "application/json");
-//	xhttp.setRequestHeader("Accept", "application/json");
-//	xhttp.send(JSON.stringify(
-//		{
-//			"contractId": contractId
-//		}));
-
-
 }
 
 

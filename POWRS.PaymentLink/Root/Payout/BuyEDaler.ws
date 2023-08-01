@@ -1,9 +1,8 @@
 ({
-    "tabId": Required(Str(PTabID)),
+    	"tabId": Required(Str(PTabID)),
 	"requestFromMobilePhone": Required(Boolean(PRequestFromMobilePhone)),
 	"contractId": Required(Str(PContractId)),
-	"bankAccount": Required(Str(PBuyerBankAccount)),
-	"personalNumber": Required(Str(PPersonalNumber))
+	"bankAccount": Required(Str(PBuyerBankAccount))
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
@@ -14,4 +13,3 @@ results := OPService.BuyEDaler(PContractId, PBuyerBankAccount, PTabID, PRequestF
 {
 	Results: results
 }
-
