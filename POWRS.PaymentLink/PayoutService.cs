@@ -1,7 +1,10 @@
-﻿using NeuroFeatures;
+﻿using EDaler;
+using Microsoft.VisualBasic;
+using NeuroFeatures;
 using Paiwise;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -14,15 +17,20 @@ using Waher.Content.Html.Elements;
 using Waher.Content.Xml;
 using Waher.Events;
 using Waher.IoTGateway;
+using Waher.Networking.Sniffers;
+using Waher.Networking.XMPP;
+using Waher.Networking.XMPP.Contracts;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
 using Waher.Persistence.Serialization;
 using Waher.Runtime.Inventory;
+using Waher.Runtime.Profiling.Events;
 using Waher.Runtime.Settings;
 using Waher.Script;
 using Waher.Script.Content.Functions.Encoding;
 using Waher.Script.Functions.Vectors;
 using Waher.Script.Persistence.SPARQL;
+using Waher.Script.Units.BaseQuantities;
 using Waher.Security;
 
 namespace POWRS.Payout
@@ -350,11 +358,18 @@ namespace POWRS.Payout
         /// <returns>Result of operation.</returns>
         public async Task<PaymentResult> BuyEDaler(string ContractID, string BankAccount, string PersonalNumber, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
         {
-            IPAddress.TryParse(RemoteEndpoint, out IPAddress ClientIpAddress);
-
+           
+                ServiceConfiguration Configuration = await ServiceConfiguration.GetCurrent();
+                AuthorizationFlow Flow = Configuration.AuthorizationFlow;
+                Log.Informational("CreateClient started");
+                OpenPaymentsPlatformClient Client = PayoutServiceProvider.CreateClient(Configuration, this.mode, ServicePurpose.Private);    // TODO: Contracts for corporate accounts (when using corporate IDs).
+            try
+            {
+                IPAddress.TryParse(RemoteEndpoint, out IPAddress ClientIpAddress);
+            await connectClientAsync(ContractID);
             Log.Informational("PaymentLinkBuyEDaler started");
 
-            ServiceConfiguration Configuration = await ServiceConfiguration.GetCurrent();
+         
             if (!Configuration.IsWellDefined)
             {
                 await DisplayUserMessage(TabId, "Service not configured properly.");
@@ -383,232 +398,119 @@ namespace POWRS.Payout
             }
 
             string ContractIdBuyEdaler = await CreateBuyEdalerContract(Jwt, Token, BankAccount, TabId);
+            PaymentContractId = ContractIdBuyEdaler;
+
+            string ComponentJid = "edaler.lab.neuron.vaulter.rs";
+            ContractsClient ContractsClient = new ContractsClient(this.client, ComponentJid);
+            Waher.Networking.XMPP.Contracts.Contract Contract = await ContractsClient.GetContractAsync(ContractID);
+            this.eDalerClient = new EDalerClient(this.client, ContractsClient, ComponentJid);
+            this.eDalerClient.BalanceUpdated += this.EDalerClient_BalanceUpdated;
+
+                PaymentToken = Token;
+                PaymentJwtToken = Jwt;
 
             await SignContract(ContractIdBuyEdaler, Jwt);
-
+           
             return new PaymentResult("Contract created ");
-
-            AuthorizationFlow Flow = Configuration.AuthorizationFlow;
-            Log.Informational("CreateClient started");
-            OpenPaymentsPlatformClient Client = PayoutServiceProvider.CreateClient(Configuration, this.mode, ServicePurpose.Private);    // TODO: Contracts for corporate accounts (when using corporate IDs).
-
-            if (Client is null)
-            {
-                return new PaymentResult("Service not configured properly.");
             }
-            Log.Informational("CreateClient completed");
-            try
-            {
-                string PersonalID = GetPersonalID(PersonalNumber);
-
-                OperationInformation Operation = new OperationInformation(
-                    ClientIpAddress,
-                    typeof(PayoutServiceProvider).Assembly.FullName,
-                    Flow,
-                    PersonalID,
-                    null,
-                    this.service.BicFi);
-
-                PaymentProduct Product;
-
-                if (Configuration.NeuronBankAccountIban.Substring(0, 2) == BankAccount.Substring(0, 2))
-                {
-                    Product = PaymentProduct.domestic;
-                }
-                else if (Token.Currency.ToUpper() == "EUR")
-                {
-                    Product = PaymentProduct.sepa_credit_transfers;
-                }
-                else
-                {
-                    Product = PaymentProduct.international;
-                }
-
-                Log.Informational("CreatePaymentInitiation started");
-
-                PaymentInitiationReference PaymentInitiationReference = await Client.CreatePaymentInitiation(
-                    Product, Token.Value, Token.Currency, BankAccount, Token.Currency,
-                    Configuration.NeuronBankAccountIban, Token.Currency,
-                    Configuration.NeuronBankAccountName, "Vaulter", Operation);
-
-                Log.Informational("CreatePaymentInitiation completed");
-
-                Log.Informational("StartPaymentInitiationAuthorization started");
-                AuthorizationInformation AuthorizationStatus = await Client.StartPaymentInitiationAuthorization(
-                    Product, PaymentInitiationReference.PaymentId, Operation,
-                    "", "");
-                Log.Informational("StartPaymentInitiationAuthorization completed");
-
-                Log.Informational("GetAuthenticationMethod started");
-                AuthenticationMethod AuthenticationMethod = null;
-
-                Log.Informational("TabID: " + TabId ?? "-" + "requestFromMobilePhone: " + RequestFromMobilePhone);
-
-                if (!string.IsNullOrEmpty(TabId))
-                {
-                    if (RequestFromMobilePhone)
-                    {
-                        AuthenticationMethod = AuthorizationStatus.GetAuthenticationMethod("mbid_same_device")
-                            ?? AuthorizationStatus.GetAuthenticationMethod("mbid");
-                    }
-                    else
-                    {
-                        AuthenticationMethod = AuthorizationStatus.GetAuthenticationMethod("mbid_animated_qr_token")
-                            ?? AuthorizationStatus.GetAuthenticationMethod("mbid_animated_qr_image")
-                            ?? AuthorizationStatus.GetAuthenticationMethod("mbid")
-                            ?? AuthorizationStatus.GetAuthenticationMethod("mbid_same_device");
-                    }
-                }
-                Log.Informational("GetAuthenticationMethod completed");
-                Log.Informational("Method" + AuthenticationMethod.Name.ToString() + "TabID" + TabId + "requestFromMobilePhone" + RequestFromMobilePhone);
-
-                Log.Informational("PutPaymentInitiationUserData started");
-                PaymentServiceUserDataResponse PsuDataResponse = await Client.PutPaymentInitiationUserData(
-                    Product, PaymentInitiationReference.PaymentId,
-                    AuthorizationStatus.AuthorizationID, AuthenticationMethod.MethodId, Operation);
-                Log.Informational("PutPaymentInitiationUserData completed");
-
-
-                if (!(PsuDataResponse.ChallengeData is null) && !string.IsNullOrEmpty(TabId))
-                {
-                    await ClientEvents.PushEvent(new string[] { TabId }, "ShowQRCode",
-                    JSON.Encode(new Dictionary<string, object>()
-                    {
-                                { "BankIdUrl", PsuDataResponse.ChallengeData.BankIdURL},
-                                { "MobileAppUrl",  GetMobileAppUrl(null, PsuDataResponse.ChallengeData.AutoStartToken)},
-                                { "AutoStartToken", PsuDataResponse.ChallengeData.AutoStartToken},
-                                { "ImageUrl",PsuDataResponse.ChallengeData.ImageUrl },
-                                { "fromMobileDevice", RequestFromMobilePhone },
-                                { "title", "Authorize recipient" },
-                                { "message", "Scan the following QR-code with your Bank-ID app, or click on it if your Bank-ID is installed on your computer." },
-                    }, false), true);
-                }
-
-                Log.Informational(PsuDataResponse.Status.ToString());
-
-                TppMessage[] ErrorMessages = PsuDataResponse.Messages;
-                AuthorizationStatusValue AuthorizationStatusValue = PsuDataResponse.Status;
-                DateTime Start = DateTime.Now;
-                bool PaymentAuthorizationStarted = AuthorizationStatusValue == AuthorizationStatusValue.started ||
-                        AuthorizationStatusValue == AuthorizationStatusValue.authenticationStarted;
-                bool CreditorAuthorizationStarted = AuthorizationStatusValue == AuthorizationStatusValue.authoriseCreditorAccountStarted;
-
-                while (AuthorizationStatusValue != AuthorizationStatusValue.finalised &&
-                    AuthorizationStatusValue != AuthorizationStatusValue.failed &&
-                    DateTime.Now.Subtract(Start).TotalMinutes < Configuration.TimeoutMinutes)
-                {
-                    await Task.Delay(Configuration.PollingIntervalSeconds * 1000);
-                    Log.Informational("AuthorizationStatusValue:" + AuthorizationStatusValue);
-                    AuthorizationStatus P2 = await Client.GetPaymentInitiationAuthorizationStatus(
-                        Product, PaymentInitiationReference.PaymentId, AuthorizationStatus.AuthorizationID, Operation);
-                    AuthorizationStatusValue = P2.Status;
-                    ErrorMessages = P2.Messages;
-
-                    if (!string.IsNullOrEmpty(P2.ChallengeData?.BankIdURL))
-                    {
-                        switch (AuthorizationStatusValue)
-                        {
-                            case AuthorizationStatusValue.started:
-                                Log.Informational("AuthorizationStatusValue.started");
-                                break;
-                            case AuthorizationStatusValue.authenticationStarted:
-
-                                Log.Informational("AuthorizationStatusValue.authenticationStarted");
-                                if (!PaymentAuthorizationStarted)
-                                {
-                                    PaymentAuthorizationStarted = true;
-
-                                    // ClientUrlEventArgs e = new ClientUrlEventArgs(P2.ChallengeData.BankIdURL, State);
-                                    // await ClientUrlCallback(this, e);
-                                }
-                                break;
-
-                            case AuthorizationStatusValue.authoriseCreditorAccountStarted:
-
-                                Log.Informational("AuthorizationStatusValue.authoriseCreditorAccountStarted");
-                                if (!CreditorAuthorizationStarted)
-                                {
-                                    CreditorAuthorizationStarted = true;
-
-                                    //ClientUrlEventArgs e = new ClientUrlEventArgs(P2.ChallengeData.BankIdURL, State);
-                                    //await ClientUrlCallback(this, e);
-                                }
-                                break;
-                        }
-                    }
-                }
-
-                if (!(ErrorMessages is null) && ErrorMessages.Length > 0)
-                {
-                    await DisplayUserMessage(TabId, ErrorMessages[0].Text);
-                    return new PaymentResult(ErrorMessages[0].Text);
-                }
-
-
-                PaymentTransactionStatus Status = await Client.GetPaymentInitiationStatus(Product, PaymentInitiationReference.PaymentId, Operation);
-                Log.Informational("PaymentTransactionStatus: " + Status);
-                if (!(Status.Messages is null) && Status.Messages.Length > 0 &&
-                    (Status.Status == PaymentStatus.RJCT ||
-                    Status.Status == PaymentStatus.CANC))
-                {
-                    StringBuilder Msg = new StringBuilder();
-
-                    foreach (TppMessage TppMsg in Status.Messages)
-                        Msg.AppendLine(TppMsg.Text);
-
-                    string s = Msg.ToString().Trim();
-
-                    if (!string.IsNullOrEmpty(s))
-                    {
-                        await DisplayUserMessage(TabId, s);
-                        return new PaymentResult(s);
-                    }
-
-                }
-
-                Log.Informational("Status.Status: " + Status.Status);
-                switch (Status.Status)
-                {
-                    case PaymentStatus.RJCT:
-                        await DisplayUserMessage(TabId, "Payment was rejected.");
-                        return new PaymentResult("Payment was rejected.");
-
-                    case PaymentStatus.CANC:
-                        await DisplayUserMessage(TabId, "Payment was cancelled.");
-                        return new PaymentResult("Payment was cancelled.");
-                }
-
-                Log.Informational("AuthorizationStatusValue: " + AuthorizationStatusValue);
-                switch (AuthorizationStatusValue)
-                {
-                    case AuthorizationStatusValue.finalised:
-                        break;
-
-                    case AuthorizationStatusValue.failed:
-                        await DisplayUserMessage(TabId, "Payment failed. (" + AuthorizationStatusValue.ToString() + ")");
-                        return new PaymentResult("Payment failed. (" + AuthorizationStatusValue.ToString() + ")");
-
-                    default:
-                        await DisplayUserMessage(TabId, "Transaction took too long to complete.");
-                        return new PaymentResult("Transaction took too long to complete.");
-                }
-
-                await DisplayUserMessage(TabId, "Your payment is complete! Thank you for using Vaulter! \n A payment confirmation is now sent to your email address.", true);
-
-               // await UpdateContractWithTransactionStatusAsync(Token, Jwt);
-
-                return new PaymentResult(Token.Value, Token.Currency);
-            }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 await DisplayUserMessage(TabId, ex.Message);
                 return new PaymentResult(ex.Message);
             }
             finally
             {
-                PayoutServiceProvider.Dispose(Client, this.mode);
+               // PayoutServiceProvider.Dispose(Client, this.mode);
+            }
+           
+        }
+
+        private XmppClient client;
+        private EDalerClient eDalerClient = null;
+        private async Task connectClientAsync(string ContractId)
+        {
+            try
+            {
+                int Port = 5222;    // Default XMPP Client-to-Server port.
+
+                string Account = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+
+                XmppCredentials XmppCredentials = new XmppCredentials();
+                XmppCredentials.Port = Port;
+                XmppCredentials.Host = Waher.IoTGateway.Gateway.Domain;
+                XmppCredentials.Password = Password;
+                XmppCredentials.Account = Account;
+                Log.Informational("XmppClient create");
+
+                this.client = new XmppClient(XmppCredentials, "en", System.Reflection.Assembly.GetEntryAssembly(), new InMemorySniffer(250));
+                this.client.TrustServer = true;
+                Log.Informational("XmppClient trust");
+
+                this.client.AllowEncryption = true;
+
+
+                this.client.OnStateChanged += this.Client_OnStateChanged;
+                this.client.OnConnectionError += this.Client_OnConnectionError;
+
+                this.client.Connect(Gateway.Domain);
+
+                Log.Informational("XmppClient connect");
+            }
+            catch (System.Exception ex)
+            {
+                Log.Informational("client connect" + ex.Message);
             }
         }
+
+        private async Task Client_OnStateChanged(object Sender, XmppState NewState)
+        {
+            try
+            {
+
+                Log.Informational("Client_OnStateChanged" + NewState.ToString());
+                if (NewState == XmppState.Connected)
+                    Log.Informational("XmppState.Connected" + NewState.ToString());
+            }
+            catch (System.Exception ex)
+            {
+                Log.Informational(ex.Message);
+            }
+        }
+        private Task Client_OnConnectionError(object Sender, System.Exception Exception)
+        {
+
+            Log.Informational("Client_OnConnectionError" + Exception.Message);
+            return Task.CompletedTask;
+        }
+
+        private string PaymentContractId = string.Empty;
+        private Token PaymentToken;
+        private string PaymentJwtToken;
+        private async Task EDalerClient_BalanceUpdated(object Sender, BalanceEventArgs e)
+        {
+            Log.Informational("EDalerClient_BalanceUpdated" + e.Balance.Amount.ToString());
+
+            string ContractId = "iotsc:" + PaymentContractId;
+            Log.Informational("Wallet_BalanceUpdated: " + e.Balance.Event.Message);
+
+            Log.Informational("BalanceMessage: " + e.Balance?.Event?.Message ?? "Message is null");
+            if (e.Balance.Event.Message == ContractId)
+            {
+                try
+                {
+                    Log.Informational("Amount: " + e.Balance.Amount ?? "Amount is null");
+                    Log.Informational("Currency: " + e.Balance.Currency ?? "Currency is null");
+
+                   await UpdateContractWithTransactionStatusAsync();
+            }
+                catch (System.Exception ex)
+                {
+                    Log.Informational(ex.Message);
+                }
+            }
+        }
+
 
         private async Task DisplayUserMessage(string tabId, string message, bool isSuccess = false)
         {
@@ -924,7 +826,7 @@ namespace POWRS.Payout
                 Log.Informational("Consent was :" + ConsentStatusValue.ToString());
 
                 if (!(ErrorMessages is null) && ErrorMessages.Length > 0)
-                    throw new Exception(ErrorMessages[0].Text);
+                    throw new System.Exception(ErrorMessages[0].Text);
 
                 AccountInformation[] Accounts = await Client.GetAccounts(Consent.ConsentID, Operation, true);
                 List<IDictionary<CaseInsensitiveString, object>> Result = new List<IDictionary<CaseInsensitiveString, object>>();
@@ -1002,18 +904,18 @@ namespace POWRS.Payout
             return encodedBytes;
         }
 
-        private async Task UpdateContractWithTransactionStatusAsync(Token Token, string JwtToken)
+        private async Task UpdateContractWithTransactionStatusAsync()
         {
             try
             {
-                string fullPaymentUri = await CreateFullPaymentUri(Token.OwnerJid, Token.Value, Token.Currency, 364, "nfeat:" + Token.TokenId);
+                string fullPaymentUri = await CreateFullPaymentUri(PaymentToken.OwnerJid, PaymentToken.Value, PaymentToken.Currency, 364, "nfeat:" + PaymentToken.TokenId);
                 Log.Informational("FullPaymentUri: " + fullPaymentUri);
 
-                string Signiture = await GetSigniture(fullPaymentUri, JwtToken);
+                string Signiture = await GetSigniture(fullPaymentUri, PaymentJwtToken);
                 fullPaymentUri += ";s=" + Signiture;
-                await SendPaymentUri(fullPaymentUri, JwtToken);
+                await SendPaymentUri(fullPaymentUri, PaymentJwtToken);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
 
                 Log.Error(ex);
@@ -1051,7 +953,7 @@ namespace POWRS.Payout
                         return Jwt;
                     }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Error(ex);
             }
@@ -1149,7 +1051,7 @@ namespace POWRS.Payout
                     }
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Informational("GetToken " + ex.Message);
             }
@@ -1160,7 +1062,7 @@ namespace POWRS.Payout
         {
             try
             {
-                string LegalId = "2c512516-50bf-9921-6c14-7b67c40fb9a0@legal.lab.neuron.vaulter.rs";
+                string LegalId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
                 string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
                 string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
                 string KeyId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.KeyId", string.Empty);
@@ -1195,13 +1097,14 @@ namespace POWRS.Payout
                  new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
 
+                Log.Informational("ResultSignature " + JSON.Encode(ResultSignature, false).ToString());
                 if (ResultSignature is Dictionary<string, object> Response)
                 {
                     if (Response.TryGetValue("Signature", out object ObjSignature) && ObjSignature is string Signature)
                         return Signature;
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Informational("GetSigniture errorMessage: " + ex.Message);
             }
@@ -1212,14 +1115,13 @@ namespace POWRS.Payout
         {
             try
             {
-                
                 string UserName = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
                 string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
                 string LegalId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
 
                 string KeyId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.KeyId", string.Empty);
                 string Secret = await RuntimeSettings.GetAsync("POWRS.PaymentLink.Secret", string.Empty);
-                
+
                 string LocalName = "ed448";
                 string Namespace = "urn:ieee:iot:e2e:1.0";
 
@@ -1234,7 +1136,7 @@ namespace POWRS.Payout
                 string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Password), Utf8Encode(s2)));
                 Log.Informational("sign Contract: " + RequestSignature);
 
-            
+
 
                 object ResultSignature = await InternetContent.PostAsync(
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/SignContract"),
@@ -1258,26 +1160,28 @@ namespace POWRS.Payout
                         return Signature;
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Informational("Sign Contract errorMessage: " + ex.Message);
             }
             return String.Empty;
         }
 
-        
 
-    private async Task<string> CreateBuyEdalerContract(string Jwt, Token token, string BankAccount, string TabId)
+
+        private async Task<string> CreateBuyEdalerContract(string Jwt, Token token, string BankAccount, string TabId)
         {
-            try {
+            try
+            {
                 string BuyEdalerContract = string.Empty;
 
-            string OwnerJid = "lab.vaulter.se@neuron.vaulter.rs";
-            string OwnerId = "2c523e34-c122-58ec-e81d-570f5370f803@legal.neuron.vaulter.rs";
-               
-            string LegalIdOPPUser = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
-            string BuyEDalerTemplateContractId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.BuyEDalerTemplateContractId", string.Empty);
-            
+                string OwnerJid = "lab.vaulter.se@neuron.vaulter.rs";
+                string OwnerId = "2c523e34-c122-58ec-e81d-570f5370f803@legal.neuron.vaulter.rs";
+
+                string LegalIdOPPUser = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
+                string BuyEDalerTemplateContractId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.BuyEDalerTemplateContractId", string.Empty);
+                // string BuyEDalerTemplateContractId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.BuyEDalerTemplateContractId", string.Empty);
+
                 List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>()
                  {
                   new Dictionary<CaseInsensitiveString, object>()
@@ -1293,7 +1197,7 @@ namespace POWRS.Payout
                     }
                 };
 
-                List<IDictionary<CaseInsensitiveString, object>> ParametersList = new List<IDictionary<CaseInsensitiveString, object>>() 
+                List<IDictionary<CaseInsensitiveString, object>> ParametersList = new List<IDictionary<CaseInsensitiveString, object>>()
                 {
                   new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "Amount" },
@@ -1336,21 +1240,21 @@ namespace POWRS.Payout
                  new KeyValuePair<string, string>("Accept", "application/json"),
                  new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
-              //Log.Informational(JSON.Encode(ResultContractBuyEdaler, false).ToString());
+                //Log.Informational(JSON.Encode(ResultContractBuyEdaler, false).ToString());
 
-             if (ResultContractBuyEdaler is Dictionary<string, object> Response)
-            { 
-                    if (Response.TryGetValue("Contract", out object ObjContract) && ObjContract is Dictionary<string,object> Contract)
+                if (ResultContractBuyEdaler is Dictionary<string, object> Response)
+                {
+                    if (Response.TryGetValue("Contract", out object ObjContract) && ObjContract is Dictionary<string, object> Contract)
                         if (Contract.TryGetValue("id", out object ObjContractId) && ObjContractId is string ContractId)
                         {
                             Log.Informational("buyeDalerContractCreated" + ContractId);
 
                             return ContractId;
                         }
-            }
+                }
 
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Informational("CreateBuyEdalerContract errorMessage: " + ex.Message);
             }
