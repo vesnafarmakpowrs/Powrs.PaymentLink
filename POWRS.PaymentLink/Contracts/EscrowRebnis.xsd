@@ -1,0 +1,5 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd" targetNamespace="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd" elementFormDefault="qualified">
+    <xs:complexType name="Empty"/>
+    <xs:element name="Cancel" type="Empty"/>
+</xs:schema>

@@ -27,7 +27,6 @@ namespace POWRS.Payout
         private XmppClient _xmppClient;
         private ContractsClient _contractsClient;
         private EDalerClient _edalerClient;
-        private Guid TransferEdalerTransactionId;
 
         private Token CurrentToken = null;
         private string BuyEdalerContractId;
@@ -36,7 +35,6 @@ namespace POWRS.Payout
 
         public PayoutService()
         {
-            TransferEdalerTransactionId = new Guid();
             if (!ConnectClient())
             {
                 Log.Informational("Unable to login to xmppClient");
@@ -184,10 +182,6 @@ namespace POWRS.Payout
                 {
                     await EdalerAddedInWallet(e.Balance.Event);
                 }
-                else
-                {
-                    await EdalerRemovedFromWallet(e.Balance.Event);
-                }
             }
             catch (Exception ex)
             {
@@ -199,22 +193,6 @@ namespace POWRS.Payout
             }
         }
 
-        private async Task EdalerRemovedFromWallet(AccountEvent accountEvent)
-        {
-            //Transfer eDaler is successfull
-            if (TransferEdalerTransactionId != accountEvent.TransactionId)
-            {
-                return;
-            }
-
-            if (totalAmountPaid <= 0)
-            {
-                Log.Error(new Exception("Total amount paid must be greater than 0"));
-                return;
-            }
-
-            await SendPaymentCompletedXmlNote();
-        }
         private async Task EdalerAddedInWallet(AccountEvent accountEvent)
         {
             string contract = "iotsc:" + BuyEdalerContractId;
@@ -625,7 +603,7 @@ namespace POWRS.Payout
             DateTime Expires = DateTime.Today.AddDays(ValidNrDays);
 
             Uri.Append("edaler:id=");
-            Uri.Append(TransferEdalerTransactionId.ToString());
+            Uri.Append(Guid.NewGuid().ToString());
 
             Uri.Append(";f=");
             Uri.Append(XML.Encode(loggedUserJid));
