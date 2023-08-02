@@ -47,7 +47,14 @@ namespace POWRS.Payout
             {
                 Log.Informational("PaymentLinkBuyEDaler started");
 
-                await ConnectClientAsync();
+                bool isConnected = await ConnectClientAsync();
+
+                if (!isConnected)
+                {
+                    Log.Informational("Unable to Connect to xmppClient");
+                    return new PaymentResult("Unable to Connect to xmppClient");
+                }
+
                 string Jwt = await LoginToUserAgent();
 
                 if (string.IsNullOrEmpty(Jwt))
@@ -56,12 +63,13 @@ namespace POWRS.Payout
                     return new PaymentResult("Unable to LoginToUserAgent");
                 }
 
+
                 Token Token = await GetToken(ContractID, Jwt);
 
                 if (Token == null)
                 {
                     Log.Informational("No token for contractId: " + ContractID);
-                    return new PaymentResult("Unable to LoginToUserAgent");
+                    return new PaymentResult("No token for contractId: " + ContractID);
                 }
 
                 if (!Token.IsValid())
@@ -86,56 +94,55 @@ namespace POWRS.Payout
                 return new PaymentResult(ex.Message);
             }
         }
-        private async Task ConnectClientAsync()
-        {
-            //try
-            //{
-            //    int Port = 5222;    // Default XMPP Client-to-Server port.
-
-            //    string Account = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
-            //    string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
-
-            //    XmppCredentials XmppCredentials = new XmppCredentials();
-            //    XmppCredentials.Port = Port;
-            //    XmppCredentials.Host = Gateway.Domain;
-            //    XmppCredentials.Password = Password;
-            //    XmppCredentials.Account = Account;
-            //    Log.Informational("XmppClient create");
-
-            //    this._xmppClient = new XmppClient(XmppCredentials, "en", System.Reflection.Assembly.GetEntryAssembly(), new InMemorySniffer(250))
-            //    {
-            //        TrustServer = true
-            //    };
-            //    Log.Informational("XmppClient trust");
-
-            //    this._xmppClient.AllowEncryption = true;
-
-            //    this._xmppClient.OnStateChanged += this.Client_OnStateChanged;
-            //    this._xmppClient.OnConnectionError += this.Client_OnConnectionError;
-
-            //    this._xmppClient.Connect(Gateway.Domain);
-
-            //    this._contractsClient = new ContractsClient(this._xmppClient, ComponentJid);
-            //    this._edalerClient = new EDalerClient(this._xmppClient, this._contractsClient, ComponentJid);
-
-            //    Log.Informational("XmppClient connect");
-            //}
-            //catch (System.Exception ex)
-            //{
-            //    Log.Informational("client connect" + ex.Message);
-            //}
-        }
-
-        private async Task Client_OnStateChanged(object Sender, XmppState NewState)
+        private async Task<bool> ConnectClientAsync()
         {
             try
             {
-                Log.Informational("Client_OnStateChanged" + NewState.ToString());
+                int Port = 5222;    // Default XMPP Client-to-Server port.
+
+                string Account = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
+                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+
+                XmppCredentials XmppCredentials = new XmppCredentials
+                {
+                    Port = Port,
+                    Host = Gateway.Domain,
+                    Password = Password,
+                    Account = Account
+                };
+                Log.Informational("XmppClient create");
+
+                this._xmppClient = new XmppClient(XmppCredentials, "en", System.Reflection.Assembly.GetEntryAssembly(), new InMemorySniffer(250))
+                {
+                    TrustServer = true
+                };
+                Log.Informational("XmppClient trust");
+
+                this._xmppClient.AllowEncryption = true;
+                this._xmppClient.OnStateChanged += this.Client_OnStateChanged;
+                this._xmppClient.OnConnectionError += this.Client_OnConnectionError;
+                this._xmppClient.Connect(Gateway.Domain);
+
+                this._contractsClient = new ContractsClient(this._xmppClient, ComponentJid);
+
+                this._edalerClient = new EDalerClient(this._xmppClient, this._contractsClient, ComponentJid);
+                this._edalerClient.BalanceUpdated += EDalerClient_BalanceUpdated;
+
+                Log.Informational("XmppClient connected");
+                return true;
             }
             catch (System.Exception ex)
             {
-                Log.Informational(ex.Message);
+                Log.Informational("client connect" + ex.Message);
             }
+
+            return false;
+        }
+
+        private Task Client_OnStateChanged(object Sender, XmppState NewState)
+        {
+            Log.Informational("Client_OnStateChanged" + NewState.ToString());
+            return Task.CompletedTask;
         }
         private Task Client_OnConnectionError(object Sender, System.Exception Exception)
         {
@@ -160,6 +167,7 @@ namespace POWRS.Payout
                     Log.Informational("Currency: " + e.Balance.Currency ?? "Currency is null");
 
                     await UpdateContractWithTransactionStatusAsync();
+                    PaymentContractId = string.Empty;
                 }
                 catch (System.Exception ex)
                 {
