@@ -64,8 +64,8 @@ Nonce := Base64Encode(RandomBytes(32));
 
 LocalName := "ed448";
 Namespace := "urn:ieee:iot:e2e:1.0";
-KeyId := "*********";
-KeyPassword:= "********";
+KeyId := GetSetting("POWRS.PaymentLink.ApiKey","");
+KeyPassword:= GetSetting("POWRS.PaymentLink.ApiKeySecret","");
 
 S1 := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
 KeySignature := Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(KeyPassword)));
