@@ -21,17 +21,45 @@ namespace POWRS.Payout
     /// <summary>
     /// Open Payments Platform service
     /// </summary>
-    public class PayoutService
+    public class PayoutService : IDisposable
     {
         private readonly string ComponentJid = "edaler." + Gateway.Domain;
         private XmppClient _xmppClient;
         private ContractsClient _contractsClient;
         private EDalerClient _edalerClient;
-        private object _lockObject = new object();
-        private Guid TransferGuid;
+        private Guid TransferEdalerTransactionId;
 
-        private readonly Dictionary<string, Token> _activeContracts = new Dictionary<string, Token>();
+        private Token CurrentToken = null;
+        private string BuyEdalerContractId;
         private string JwtToken;
+        private decimal totalAmountPaid;
+
+        public PayoutService()
+        {
+            TransferEdalerTransactionId = new Guid();
+            if (!ConnectClient())
+            {
+                Log.Informational("Unable to login to xmppClient");
+                throw new Exception("Unable to login to xmppClient");
+            }
+        }
+
+        private async Task<bool> IsConnected()
+        {
+            if (this._xmppClient is null)
+            {
+                return false;
+            }
+
+            if (this._xmppClient.State == XmppState.Connected)
+            {
+                return true;
+            }
+
+            await _xmppClient.WaitStateAsync(3000, XmppState.Connected);
+            return this._xmppClient?.State == XmppState.Connected;
+        }
+
         /// <summary>
         /// Processes payment for buying eDaler.
         /// <param name="ContractID">Tab ID</param>
@@ -46,15 +74,7 @@ namespace POWRS.Payout
             {
                 Log.Informational("PaymentLinkBuyEDaler started");
 
-                if (_activeContracts.ContainsKey(ContractID))
-                {
-                    Log.Informational("BuyEdaler for contractId already active");
-                    return new PaymentResult("BuyEdaler for contractId already active");
-                }
-
-                bool isConnected = await ConnectClientAsync();
-
-                if (!isConnected)
+                if (!await IsConnected())
                 {
                     Log.Informational("Unable to Connect to xmppClient");
                     return new PaymentResult("Unable to Connect to xmppClient");
@@ -84,10 +104,8 @@ namespace POWRS.Payout
 
                 string ContractIdBuyEdaler = await CreateBuyEdalerContract(JwtToken, Token, BankAccount, TabId, RequestFromMobilePhone);
 
-                lock (_lockObject)
-                {
-                    _activeContracts.Add("iotsc:" + ContractIdBuyEdaler, Token);
-                }
+                CurrentToken = Token;
+                BuyEdalerContractId = ContractIdBuyEdaler;
 
                 await SignContract(ContractIdBuyEdaler, JwtToken);
 
@@ -100,14 +118,14 @@ namespace POWRS.Payout
             }
         }
 
-        private async Task<bool> ConnectClientAsync()
+        private bool ConnectClient()
         {
             try
             {
                 int Port = 5222;    // Default XMPP Client-to-Server port.
 
-                string Account = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUser", string.Empty);
-                string Password = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserPass", string.Empty);
+                string Account = RuntimeSettings.Get("POWRS.PaymentLink.OPPUser", string.Empty);
+                string Password = RuntimeSettings.Get("POWRS.PaymentLink.OPPUserPass", string.Empty);
 
                 XmppCredentials XmppCredentials = new XmppCredentials
                 {
@@ -131,7 +149,7 @@ namespace POWRS.Payout
 
                 _edalerClient = new EDalerClient(_xmppClient, _contractsClient, ComponentJid);
                 _edalerClient.BalanceUpdated += EDalerClient_BalanceUpdated;
-                Log.Informational("XmppClient connected");
+
                 return true;
             }
             catch (Exception ex)
@@ -146,46 +164,68 @@ namespace POWRS.Payout
         {
             try
             {
-                if (TransferGuid != null)
+                if (CurrentToken is null)
                 {
-                    Log.Informational("Transfered");
-                    Log.Informational("Remote: " + e.Balance.Event.Remote);
-                    Log.Informational("Change: " + e.Balance.Event.Change);
-                    Log.Informational("Change: " + e.Balance.Event.TransactionId);
-                    Log.Informational("TransferGuid: " + TransferGuid);
-                    Log.Informational("Transfered");
-                }
-                Log.Informational("EDalerClient_BalanceUpdatedAmount" + e.Balance?.Amount.ToString());
-                Log.Informational("EDalerClient_BalanceUpdatedCurrency" + e.Balance?.Currency.ToString());
-                Log.Informational("Wallet_BalanceUpdated: " + e.Balance.Event.Message);
-                Log.Informational("BalanceMessage: " + e.Balance?.Event?.Message ?? "Message is null");
-
-                if (string.IsNullOrEmpty(e.Balance?.Event?.Message))
-                {
+                    Log.Error(new Exception("Token is null"));
                     return;
                 }
 
-                Token token = null;
-                lock (_lockObject)
+                if (e.Balance?.Event?.Change == null)
                 {
-                    _activeContracts.TryGetValue(e.Balance.Event.Message, out token);
-                }
-                if (token == null)
-                {
+                    Log.Error(new Exception("Change could not be null"));
                     return;
                 }
 
-                await UpdateContractWithTransactionStatusAsync(token);
+                Log.Informational("Change: " + e.Balance.Event.Change);
+                Log.Informational("TransactionId: " + e.Balance.Event.TransactionId);
+                Log.Informational("Message: " + e.Balance.Event.Message);
 
-                lock (_lockObject)
+                if (e.Balance.Event.Change > 0)
                 {
-                    _activeContracts.Remove(e.Balance.Event.Message);
+                    await EdalerAddedInWallet(e.Balance.Event);
+                }
+                else
+                {
+                    await EdalerRemovedFromWallet(e.Balance.Event);
                 }
             }
             catch (Exception ex)
             {
                 Log.Informational(ex.Message);
             }
+            finally
+            {
+                Dispose();
+            }
+        }
+
+        private async Task EdalerRemovedFromWallet(AccountEvent accountEvent)
+        {
+            //Transfer eDaler is successfull
+            if (TransferEdalerTransactionId != accountEvent.TransactionId)
+            {
+                return;
+            }
+
+            if (totalAmountPaid <= 0)
+            {
+                Log.Error(new Exception("Total amount paid must be greater than 0"));
+                return;
+            }
+
+            await SendPaymentCompletedXmlNote();
+        }
+        private async Task EdalerAddedInWallet(AccountEvent accountEvent)
+        {
+            string contract = "iotsc:" + BuyEdalerContractId;
+
+            if (string.IsNullOrEmpty(accountEvent.Message) || contract != accountEvent.Message)
+            {
+                return;
+            }
+
+            totalAmountPaid = accountEvent.Change;
+            await UpdateContractWithTransactionStatusAsync(CurrentToken);
         }
 
         private async Task DisplayUserMessage(string tabId, string message, bool isSuccess = false)
@@ -283,20 +323,21 @@ namespace POWRS.Payout
             return null;
         }
 
-        private async Task<object> SendXmlNote(string TokenId, string Jwt)
+        private async Task<object> SendPaymentCompletedXmlNote()
         {
-            string xmlNote = "<PaymentCompleted xmlns='https://neuron.vaulter.rs/Downloads/EscrowRebnis.xsd' />";
+            string nmspc = $"https://{Gateway.Domain}/Downloads/EscrowRebnis.xsd";
+            string xmlNote = $"<PaymentCompleted xmlns='{nmspc}' amountPaid='{XML.Encode(totalAmountPaid.ToString())}'/>";
 
             object ResultXmlNote = await InternetContent.PostAsync(
             new Uri("https://" + Gateway.Domain + "/Agent/Tokens/AddXmlNote"),
              new Dictionary<string, object>()
                 {
-                        { "tokenId", TokenId },
+                        { "tokenId", CurrentToken.TokenId },
                         { "note", xmlNote },
                         { "personal", false }
                 },
             new KeyValuePair<string, string>("Accept", "application/json"),
-            new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
+            new KeyValuePair<string, string>("Authorization", "Bearer " + JwtToken));
 
             Log.Informational("ResultXmlNote" + ResultXmlNote);
             return ResultXmlNote;
@@ -582,10 +623,9 @@ namespace POWRS.Payout
             StringBuilder Uri = new StringBuilder();
             DateTime Created = DateTime.UtcNow;
             DateTime Expires = DateTime.Today.AddDays(ValidNrDays);
-            TransferGuid = Guid.NewGuid();
 
             Uri.Append("edaler:id=");
-            Uri.Append(TransferGuid.ToString());
+            Uri.Append(TransferEdalerTransactionId.ToString());
 
             Uri.Append(";f=");
             Uri.Append(XML.Encode(loggedUserJid));
@@ -612,6 +652,16 @@ namespace POWRS.Payout
             }
 
             return Uri.ToString();
+        }
+
+        public void Dispose()
+        {
+            this._edalerClient?.Dispose();
+            this._contractsClient?.Dispose();
+            this._xmppClient.Dispose();
+            this.CurrentToken = null;
+            this.BuyEdalerContractId = null;
+            this.JwtToken = null;
         }
     }
 }
