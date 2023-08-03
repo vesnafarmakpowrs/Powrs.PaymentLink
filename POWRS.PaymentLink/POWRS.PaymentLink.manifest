@@ -6,6 +6,7 @@
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="PaymentLink">
+				<Content fileName="CancelItem.ws"/>
 				<Content fileName="SellItem.ws"/>
 				<Content fileName="Index.md"/>
 			</Folder>
