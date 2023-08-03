@@ -1,5 +1,6 @@
 ({
-    	"tabId": Required(Str(PTabID)),
+	"buyEdalerTemplateId":Required(Str(PBuyEdalerTemplateId)),
+    "tabId": Required(Str(PTabID)),
 	"requestFromMobilePhone": Required(Boolean(PRequestFromMobilePhone)),
 	"contractId": Required(Str(PContractId)),
 	"bankAccount": Required(Str(PBuyerBankAccount))
@@ -8,7 +9,7 @@
 
 OPService:=Create(POWRS.Payout.PayoutService);
 PRequestFromMobilePhone:= False;
-results := OPService.BuyEDaler(PContractId, PBuyerBankAccount, PTabID, PRequestFromMobilePhone, Request.RemoteEndPoint);
+results := OPService.BuyEDaler(PBuyEdalerTemplateId, PContractId, PBuyerBankAccount, PTabID, PRequestFromMobilePhone, Request.RemoteEndPoint);
 
 {
 	Results: results

@@ -15,6 +15,7 @@ using Waher.Persistence;
 using Waher.Runtime.Settings;
 using Waher.Security;
 using POWRS.PaymentLink.Model;
+using Waher.Networking.HTTP;
 
 namespace POWRS.Payout
 {
@@ -66,11 +67,24 @@ namespace POWRS.Payout
 		/// <param name="RequestFromMobilePhone">If request originates from mobile phone. (true)
         /// <param name="RemoteEndpoint">Tab ID</param>
         /// <returns>Result of operation.</returns>
-        public async Task<PaymentResult> BuyEDaler(string ContractID, string BankAccount, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
+        public async Task<PaymentResult> BuyEDaler(string BuyEdalerTemplateId, string ContractID, string BankAccount, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
         {
             try
             {
                 Log.Informational("PaymentLinkBuyEDaler started");
+
+                if (string.IsNullOrEmpty(BuyEdalerTemplateId))
+                {
+                    throw new BadRequestException("BuyEdalerTemplateId could not be empty");
+                }
+                if (string.IsNullOrEmpty(ContractID))
+                {
+                    throw new BadRequestException("ContractID could not be empty");
+                }
+                if (string.IsNullOrEmpty(BankAccount))
+                {
+                    throw new BadRequestException("BankAccount could not be empty");
+                }
 
                 if (!await IsConnected())
                 {
@@ -100,7 +114,7 @@ namespace POWRS.Payout
                     return new PaymentResult("Parameters for token are not valid");
                 }
 
-                string ContractIdBuyEdaler = await CreateBuyEdalerContract(JwtToken, Token, BankAccount, TabId, RequestFromMobilePhone);
+                string ContractIdBuyEdaler = await CreateBuyEdalerContract(BuyEdalerTemplateId, JwtToken, Token, BankAccount, TabId, RequestFromMobilePhone);
 
                 CurrentToken = Token;
                 BuyEdalerContractId = ContractIdBuyEdaler;
@@ -111,6 +125,7 @@ namespace POWRS.Payout
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 await DisplayUserMessage(TabId, ex.Message);
                 return new PaymentResult(ex.Message);
             }
@@ -492,7 +507,6 @@ namespace POWRS.Payout
                  new KeyValuePair<string, string>("Accept", "application/json"),
                  new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
-                //Log.Informational("ResultSignature " + JSON.Encode(ResultSignature, false).ToString());
                 if (ResultSignature is Dictionary<string, object> Response)
                 {
                     if (Response.TryGetValue("Contract", out object ObjSignature) && ObjSignature is string Signature)
@@ -506,14 +520,12 @@ namespace POWRS.Payout
             return String.Empty;
         }
 
-        private async Task<string> CreateBuyEdalerContract(string Jwt, Token token, string BankAccount, string TabId, bool requestFromMobilePhone)
+        private async Task<string> CreateBuyEdalerContract(string BuyEdalerTemplateId, string Jwt, Token token, string BankAccount, string TabId, bool requestFromMobilePhone)
         {
             try
             {
                 string OwnerId = "2c523e34-c122-58ec-e81d-570f5370f803@legal.neuron.vaulter.rs";
-
                 string LegalIdOPPUser = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
-                string BuyEDalerTemplateContractId = await RuntimeSettings.GetAsync("POWRS.PaymentLink.BuyEDalerTemplateContractId", string.Empty);
 
                 List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>()
                  {
@@ -565,7 +577,7 @@ namespace POWRS.Payout
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/CreateContract"),
                   new Dictionary<string, object>()
                      {
-                            { "templateId", BuyEDalerTemplateContractId },
+                            { "templateId", BuyEdalerTemplateId },
                             { "visibility", "CreatorAndParts" },
                             { "Parts", PartsList},
                             { "Parameters", ParametersList }
