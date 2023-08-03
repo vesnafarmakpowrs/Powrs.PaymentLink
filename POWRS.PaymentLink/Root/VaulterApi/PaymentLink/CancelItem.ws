@@ -27,7 +27,7 @@ Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account
                   },
 		   {"Accept" : "application/json"});
 
-xmlNote := "<Cancel namespace=\"https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd\" />";
+xmlNote := "<Cancel xmlns=\"https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd\" />";
 
 xmlNoteResponse := POST("https://lab.neuron.vaulter.rs/Agent/Tokens/AddXmlNote",
                  {
