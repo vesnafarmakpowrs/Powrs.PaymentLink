@@ -124,3 +124,22 @@ Description of properties:
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
 
 
+CancelItem.ws
+--------------
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/CancelItem.ws")}}`  
+Method: `POST`
+
+Call this resource to cancel an Item in Vaulter. JSON in the following format is expected in the call.
+
+```
+{
+    "contractId": Required(String(contractId))
+}
+```
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `contractId`      | Contract Id. This id is returned as a response of sellItem |
