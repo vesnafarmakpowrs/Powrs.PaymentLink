@@ -3,6 +3,8 @@
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
+PContractId := PContractId + "@legal." + Waher.IoTGateway.Gateway.Domain;
+
 contractParameters:= select top 1 Parameters from IoTBroker.Legal.Contracts.Contract where ContractId = PContractId;
 TokenId:= select top 1 TokenId from NeuroFeatureTokens where OwnershipContract = PContractId;
 if(contractParameters == null || System.String.IsNullOrEmpty(TokenId)) then
