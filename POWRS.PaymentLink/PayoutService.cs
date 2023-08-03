@@ -75,15 +75,18 @@ namespace POWRS.Payout
 
                 if (string.IsNullOrEmpty(BuyEdalerTemplateId))
                 {
-                    throw new BadRequestException("BuyEdalerTemplateId could not be empty");
+                    Log.Informational("BuyEdalerTemplateId could not be empty");
+                    return new PaymentResult("BuyEdalerTemplateId could not be empty");
                 }
                 if (string.IsNullOrEmpty(ContractID))
                 {
-                    throw new BadRequestException("ContractID could not be empty");
+                    Log.Informational("ContractID could not be empty");
+                    return new PaymentResult("ContractID could not be empty");
                 }
                 if (string.IsNullOrEmpty(BankAccount))
                 {
-                    throw new BadRequestException("BankAccount could not be empty");
+                    Log.Informational("BankAccount could not be empty");
+                    return new PaymentResult("BankAccount could not be empty");
                 }
 
                 if (!await IsConnected())
@@ -513,7 +516,7 @@ namespace POWRS.Payout
                         return Signature;
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Log.Informational("Sign Contract errorMessage: " + ex.Message);
             }
