@@ -16,6 +16,7 @@ using Waher.Runtime.Settings;
 using Waher.Security;
 using POWRS.PaymentLink.Model;
 using Waher.Networking.HTTP;
+using LegalLab.Models.Network.Events;
 
 namespace POWRS.Payout
 {
@@ -41,6 +42,8 @@ namespace POWRS.Payout
                 Log.Informational("Unable to login to xmppClient");
                 throw new Exception("Unable to login to xmppClient");
             }
+            
+            Log.Register(new PaymentCompletedEventSink());
         }
 
         private async Task<bool> IsConnected()
@@ -207,6 +210,7 @@ namespace POWRS.Payout
             }
             finally
             {
+                Log.Unregister(new PaymentCompletedEventSink());
                 Dispose();
             }
         }

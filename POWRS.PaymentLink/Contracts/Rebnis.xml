@@ -73,7 +73,7 @@
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
-					<OnEvent actionRef="LogPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
+					<OnEvent actionRef="LogPayment" failureState="AwaitingForPayment" newState="PaymentCompleted">
 						<OnPaymentReceived amountTotalVariable="AmountPaid" conditionVariable="ConditionForPayment" currencyVariable="CurrencyPaid" fromVariable="Source" />
 					</OnEvent>
 				</State>
@@ -105,44 +105,20 @@
 				<State id="Done">
 					<OnEnter actionRef="End" />
 				</State>
-
-
 				<Action id="LogPayment">
-						<LogEvent actor="{Seller}" eventId="AuthorizeSource" level="Medium" message="OnPaymentRecieved invoked." object="{Seller}" type="Informational" />
+					<LogEvent actor="{Seller}" eventId="AuthorizeSource" level="Medium" message="OnPaymentRecieved invoked." object="{Seller}" type="Informational" />
+					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="OnPaymentRecieved invoked." object="{Seller}" type="Informational" />
 				</Action>
-
 				<Action id="ProcessBuyerPayment">
-					<If condition="empty(ConditionForPayment) and CurrencyPaid=Currency and AmountPaid >= AmountToPay ">
+					<If condition="empty(ConditionForPayment) and CurrencyPaid=Currency and AmountPaid &gt;= AmountToPay ">
 						<Then>
 							<PersistVariable name="TotalAmountPaid" value="{AmountPaid}" />
 							<PersistVariable name="CurrencyPaid" value="{CurrencyPaid}" />
 							<PersistVariable name="PaymentDateTime" value="{Now}" />
-							<CallAction actionRef="TransferFee"/>
+							<CallAction actionRef="TransferFee" />
 						</Then>
 					</If>
 				</Action>
-
-				<!-- <Action id="CheckPayment">
-					 <Script>
-					<![CDATA[	
-						TotalAmountPaid:=SelectXmlStr(Note,'/default:PaymentCompleted/@amountPaid');
-					]]>			
-					</Script>
-					<PersistVariable name="TotalAmountPaid" value="{TotalAmountPaid}" />
-					<PersistVariable name="PaymentDateTime" value="{Now}" />
-
-					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted'}" object="{Buyer}" type="Informational" />
-					 <If condition="TotalAmountPaid &lt; AmountToPay">
-						<Then>
-							<TextNote content="Insuficient payment" />
-							<Error reason="Insuficient payment" />
-						</Then>
-						<Else>							 
-							<TextNote content="Payment successfull" />
-						 </Else>
-					</If> 
-				</Action> -->
-
 				<Action id="ReturnFunds">
 					<If condition="TotalAmountPaid&gt;0">
 						<Then>
@@ -169,21 +145,18 @@
 						</Then>
 						<Else>
 							<Script>	
-							<![CDATA[	
-								AmountToSell:= Value;							
-								BankAccountToSell:= SellerBankAccount;
-								SellEdalerFrom:= Seller;
-								ServiceProviderId:= SellerServiceProviderId;
-								ServiceProviderType:= SellerServiceProviderType;
-								AccountName:= 'SellEdalerTest';
-								MessageOnError:= 'Release funds error';
-							]]>
-					</Script>
+							AmountToSell:= Value;							
+							BankAccountToSell:= SellerBankAccount;
+							SellEdalerFrom:= Seller;
+							ServiceProviderId:= SellerServiceProviderId;
+							ServiceProviderType:= SellerServiceProviderType;
+							AccountName:= 'SellEdalerTest';
+							MessageOnError:= 'Release funds error';
+						</Script>
 							<CallAction actionRef="TrySellEdaler" />
 						</Else>
 					</If>
 				</Action>
-
 				<Action id="TransferFee">
 					<Try>
 						<Payment amount="{EscrowFee}" contract="{TokenContract}" currency="{Currency}" from="{Seller}" reference="{Reference:='nfeat:'+TokenId}" to="{EscrowFeeJid}" validDays="3" />
@@ -195,7 +168,6 @@
 						</Catch>
 					</Try>
 				</Action>
-
 				<Action id="TrySellEdaler">
 					<Try>
 						<LogEvent actor="{SellEdalerFrom}" eventId="TrySellEdaler" level="Medium" message="{'TrySellEdaler started - ' + ' Amount: ' + AmountToSell + ' Contract: ' + TokenContract + ' Currency: ' + Currency + ' From: ' + SellEdalerFrom + ' TokenId: ' + TokenId + ' ServiceProviderId: ' + ServiceProviderId + ' ServiceProviderType: ' + ServiceProviderType + ' BankAccount: ' + BankAccountToSell + ' AccountName: ' + AccountName }" module="SellEDaler" object="" type="Informational" />
@@ -224,7 +196,7 @@
 | TokenContract     | {{TokenContract}}     |
 | Buyer               | {{Buyer}}          	 |
 | Seller              | {{Seller}}          	|
-	</ReportPresent>
+</ReportPresent>
 			</StateMachine>
 		</Definition>
 		<Tag name="Seller">
@@ -427,7 +399,7 @@
 				</paragraph>
 			</description>
 		</stringParameter>
-		<stringParameter name="BuyerPersonalNum" value=""  minLength="10">
+		<stringParameter name="BuyerPersonalNum" value="" minLength="10">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Full valid personal number of buyer.</text>

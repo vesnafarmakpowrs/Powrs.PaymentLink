@@ -9,6 +9,7 @@
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\OutgoingPayments.js" />
+		<None Remove="Root\Payout\Payout - Copy.md" />
 		<None Remove="Root\Payout\Payout.cssx" />
 		<None Remove="Root\Payout\Payout.md" />
 		<None Remove="Root\Payout\GetBuyEdalerServiceProviders.ws" />
