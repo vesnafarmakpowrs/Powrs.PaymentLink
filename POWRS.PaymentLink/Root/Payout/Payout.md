@@ -1,7 +1,7 @@
 ﻿Title: Contract
 Description: Displays information about a contract.
-Date: 2020-02-18
-Author: Peter Waher
+Date: 2023-08-04
+Author: Vesna Farmak
 Cache-Control: max-age=0, no-cache, no-store
 CSS: Payout.cssx
 CSS: /css/base.css
@@ -38,26 +38,30 @@ Protect your money with smart payments
 </tr></table>
 
 {{
-CS:=IoTBroker.Legal.Contracts.ContractState;
-MinDT:=System.DateTime.MinValue;
-MaxDT:=System.DateTime.MaxValue;
-
-OneRow(s):=
-(
-	s.Replace("\r\n","\n").Replace("\n","<br/>")
-);
-
 
 ID += "@legal." + Gateway.Domain; 
-Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
-if !exists(Contract) then 
-	NotFound("Contract not found.")
-else
+
+Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
+if !exists(Token) then 
+	NotFound("Item does not found.");
+
+if Token.HasStateMachine then
 (
-	v:=Create(Waher.Script.Variables,[]);
-	foreach Parameter in Contract.Parameters do Parameter.Populate(v);
-	foreach Parameter in Contract.Parameters do Parameter.IsParameterValid(v);
+	CurrentState:=Token.GetCurrentStateVariables();
+	if exists(CurrentState) then
+		ContractState:= CurrentState.State;
 );
+if ContractState == "AwaitingForPayment" then 
+(
+   Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
+   if !exists(Contract) then 
+	NotFound("Contract not found.")
+    else
+    (
+	    v:=Create(Waher.Script.Variables,[]);
+	    foreach Parameter in Contract.Parameters do Parameter.Populate(v);
+	    foreach Parameter in Contract.Parameters do Parameter.IsParameterValid(v);
+    );
     foreach Parameter in (Contract.Parameters ?? []) do 
       (
         Parameter.Name like "Title" ?   Title := Parameter.MarkdownValue;
@@ -67,16 +71,14 @@ else
         Parameter.Name like "Commission" ?   Commission := Parameter.MarkdownValue;
         Parameter.Name like "BuyerFullName" ?   BuyerFullName := Parameter.MarkdownValue;
         Parameter.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Parameter.MarkdownValue;
-	    Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.MarkdownValue;
+        Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.MarkdownValue;
         Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.MarkdownValue;
       );
-null
-}}
 
-{{]]
-
+]]**((ContractState))
 <input type="hidden" value="((Contract.ContractId))" id="contractId"/>
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
+
 
 Sold by **((Contract.Account)) ** <br/>
 **Payer** :<br/>
@@ -122,7 +124,7 @@ Sold by **((Contract.Account)) ** <br/>
      <tr>
         <td style="width:70%">Total to pay</td>
         <td class="itemPrice"  rowspan="2" ><div class="price">((AmountToPay)) </div> <td>
-        <td style="width:10%;" rowspan="2" > ((Currency )) [[}} </td>
+        <td style="width:10%;" rowspan="2" > ((Currency )) </td>
     </tr>
  <tr>
   <td style="width:70%"> </td>
@@ -150,20 +152,20 @@ Sold by **((Contract.Account)) ** <br/>
 <select id="serviceProvidersSelect">
 </select>
 
-
-````async:Preparing authentication...
-
-
-]]
-
-<div class="spaceItem"></div>
-<div class="spaceItem"></div>
-[[;
-
-null
-````
-
-<div style='display:none;' id="TestStatus"></div>
 <div id="QrCode"></div>
+
+[[
+)
+else if ContractState == "PaymentCompleted" then 
+(
+]]**((ContractState))**[[
+)
+else if ContractState == "Cancel" then 
+(
+]]**((ContractState))**ed[[
+)
+
+
+}}
 
 </main>

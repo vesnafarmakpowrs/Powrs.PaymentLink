@@ -195,9 +195,9 @@ namespace POWRS.Payout
                     return;
                 }
 
-                Log.Informational("Change: " + e.Balance.Event.Change);
-                Log.Informational("TransactionId: " + e.Balance.Event.TransactionId);
-                Log.Informational("Message: " + e.Balance.Event.Message);
+              //  Log.Informational("Change: " + e.Balance.Event.Change);
+              //  Log.Informational("TransactionId: " + e.Balance.Event.TransactionId);
+              //  Log.Informational("Message: " + e.Balance.Event.Message);
 
                 if (e.Balance.Event.Change > 0)
                 {
@@ -230,7 +230,7 @@ namespace POWRS.Payout
 
         private async Task DisplayUserMessage(string tabId, string message, bool isSuccess = false)
         {
-            Log.Informational("DisplayUserMessage  " + message);
+            //Log.Informational("DisplayUserMessage  " + message);
             await ClientEvents.PushEvent(new string[] { tabId }, "DisplayTransactionResult",
                     JSON.Encode(new Dictionary<string, object>()
                     {
@@ -272,7 +272,7 @@ namespace POWRS.Payout
             try
             {
                 string fullPaymentUri = await CreateFullPaymentUri(PaymentToken.OwnerJid, PaymentToken.Value, PaymentToken.Currency, 364, "nfeat:" + PaymentToken.TokenId);
-                Log.Informational("FullPaymentUri: " + fullPaymentUri);
+               // Log.Informational("FullPaymentUri: " + fullPaymentUri);
 
                 string Signiture = await GetSigniture(fullPaymentUri, JwtToken);
                 fullPaymentUri += ";s=" + Signiture;
@@ -339,7 +339,7 @@ namespace POWRS.Payout
             new KeyValuePair<string, string>("Accept", "application/json"),
             new KeyValuePair<string, string>("Authorization", "Bearer " + JwtToken));
 
-            Log.Informational("ResultXmlNote" + ResultXmlNote);
+            //Log.Informational("ResultXmlNote" + ResultXmlNote);
             return ResultXmlNote;
         }
 
@@ -354,7 +354,7 @@ namespace POWRS.Payout
              new KeyValuePair<string, string>("Accept", "application/json"),
              new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
-            Log.Informational("ResultPaymentUri" + ResultPaymentUri);
+            //Log.Informational("ResultPaymentUri" + ResultPaymentUri);
             return ResultPaymentUri;
         }
 
@@ -380,32 +380,32 @@ namespace POWRS.Payout
                     {
                         if (Tokens.TryGetValue("token", out object ObjToken) && ObjToken is Dictionary<string, object> Token)
                         {
-                            Log.Informational("Token: " + Token);
+                            //Log.Informational("Token: " + Token);
                             Token token = new Token();
 
                             if (Token.TryGetValue("id", out object ObjTokenId) && ObjTokenId is string TokenId)
                             {
-                                Log.Informational("id: " + TokenId);
+                                //Log.Informational("id: " + TokenId);
                                 token.TokenId = TokenId;
                             }
                             if (Token.TryGetValue("value", out object ObjTokenValue) && ObjTokenValue is string Value)
                             {
-                                Log.Informational("value: " + Value);
+                                //Log.Informational("value: " + Value);
                                 token.Value = Convert.ToDecimal(Value);
                             }
                             if (Token.TryGetValue("currency", out object ObjTokenCurrency) && ObjTokenCurrency is string Currency)
                             {
-                                Log.Informational("currency: " + Currency);
+                                //Log.Informational("currency: " + Currency);
                                 token.Currency = Currency;
                             }
                             if (Token.TryGetValue("owner", out object ObjTokenOwner) && ObjTokenOwner is string Owner)
                             {
-                                Log.Informational("owner: " + Owner);
+                                //Log.Informational("owner: " + Owner);
                                 token.Owner = Owner;
                             }
                             if (Token.TryGetValue("ownerJid", out object ObjTokenOwnerJid) && ObjTokenOwnerJid is string OwnerJid)
                             {
-                                Log.Informational("ownerJid: " + OwnerJid);
+                               // Log.Informational("ownerJid: " + OwnerJid);
                                 token.OwnerJid = OwnerJid;
                             }
 
@@ -436,15 +436,11 @@ namespace POWRS.Payout
                 string Namespace = "urn:ieee:iot:e2e:1.0";
 
                 string s1 = UserName + ":" + Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
-                Log.Informational("s1: " + s1);
                 string KeySignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Secret), Utf8Encode(s1)));
-                Log.Informational("KeySignature: " + KeySignature);
 
                 string s2 = s1 + ":" + KeySignature + ":" + DataBase64 + ":" + LegalId;
-                Log.Informational("s2: " + s2);
 
                 string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Password), Utf8Encode(s2)));
-                Log.Informational("RequestSignature: " + RequestSignature);
 
                 object ResultSignature = await InternetContent.PostAsync(
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/SignData"),
@@ -459,8 +455,6 @@ namespace POWRS.Payout
                  new KeyValuePair<string, string>("Accept", "application/json"),
                  new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
-
-                Log.Informational("ResultSignature " + JSON.Encode(ResultSignature, false).ToString());
                 if (ResultSignature is Dictionary<string, object> Response)
                 {
                     if (Response.TryGetValue("Signature", out object ObjSignature) && ObjSignature is string Signature)
@@ -497,7 +491,6 @@ namespace POWRS.Payout
                 string s2 = s1 + ":" + KeySignature + ":" + Nonce + ":" + LegalId + ":" + ContractId + ":" + Role;
 
                 string RequestSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Utf8Encode(Password), Utf8Encode(s2)));
-                Log.Informational("sign Contract: " + RequestSignature);
 
                 object ResultSignature = await InternetContent.PostAsync(
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/SignContract"),
