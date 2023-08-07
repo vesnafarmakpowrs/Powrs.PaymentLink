@@ -121,7 +121,7 @@ namespace POWRS.Payout
                     return new PaymentResult("Parameters for token are not valid");
                 }
 
-                await SendServiceProviderSelectedXmlNote(CurrentToken, BankAccount, ServiceProviderId, ServiceProviderType);
+                await SendServiceProviderSelectedXmlNote(Token, BankAccount, ServiceProviderId, ServiceProviderType);
 
                 string ContractIdBuyEdaler = await CreateBuyEdalerContract(BuyEdalerTemplateId, JwtToken, Token, BankAccount, TabId, RequestFromMobilePhone);
 
@@ -200,9 +200,7 @@ namespace POWRS.Payout
                     return;
                 }
 
-              //  Log.Informational("Change: " + e.Balance.Event.Change);
-              //  Log.Informational("TransactionId: " + e.Balance.Event.TransactionId);
-              //  Log.Informational("Message: " + e.Balance.Event.Message);
+                Log.Informational("Change: " + e.Balance.Event.Change + "TransactionId: " + e.Balance.Event.TransactionId + "Message: " + e.Balance.Event.Message);
 
                 if (e.Balance.Event.Change > 0)
                 {
@@ -330,6 +328,8 @@ namespace POWRS.Payout
 
         private async Task<object> SendServiceProviderSelectedXmlNote(Token CurrentToken, string buyerBankAccount, string ProviderId, string ProviderType)
         {
+            try
+            {
             string nmspc = $"https://{Gateway.Domain}/Downloads/EscrowRebnis.xsd";
             string xmlNote = $"<ServiceProviderSelected xmlns='{nmspc}' buyerBankAccount='{buyerBankAccount}' buyEdalerServiceProviderId='{ProviderId}' buyEdalerServiceProviderType='{ProviderType}'/>";
 
@@ -347,6 +347,12 @@ namespace POWRS.Payout
             Log.Informational("ResultSignature " + JSON.Encode(ResultXmlNote, false).ToString());
           
             return ResultXmlNote;
+            }
+            catch (System.Exception ex)
+            {
+                Log.Error(ex);
+            }
+            return null;
         }
 
 
