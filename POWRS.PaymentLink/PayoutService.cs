@@ -17,7 +17,6 @@ using Waher.Security;
 using POWRS.PaymentLink.Model;
 using Waher.Networking.HTTP;
 using LegalLab.Models.Network.Events;
-using Waher.Runtime.Profiling;
 
 namespace POWRS.Payout
 {
@@ -44,7 +43,7 @@ namespace POWRS.Payout
                 throw new Exception("Unable to login to xmppClient");
             }
             
-            //Log.Register(new PaymentCompletedEventSink());
+           // Log.Register(new PaymentCompletedEventSink());
         }
 
         private async Task<bool> IsConnected()
@@ -130,8 +129,6 @@ namespace POWRS.Payout
 
                 await SignContract(ContractIdBuyEdaler, JwtToken);
 
-               
-        
                 return new PaymentResult("Contract created ");
             }
             catch (Exception ex)
@@ -190,7 +187,7 @@ namespace POWRS.Payout
             {
                 if (CurrentToken is null)
                 {
-                   // Log.Error(new Exception("Token is null"));
+                    Log.Error(new Exception("Token is null"));
                     return;
                 }
 
@@ -200,7 +197,9 @@ namespace POWRS.Payout
                     return;
                 }
 
-                Log.Informational("Change: " + e.Balance.Event.Change + "TransactionId: " + e.Balance.Event.TransactionId + "Message: " + e.Balance.Event.Message);
+              //  Log.Informational("Change: " + e.Balance.Event.Change);
+              //  Log.Informational("TransactionId: " + e.Balance.Event.TransactionId);
+              //  Log.Informational("Message: " + e.Balance.Event.Message);
 
                 if (e.Balance.Event.Change > 0)
                 {
@@ -326,26 +325,24 @@ namespace POWRS.Payout
             return null;
         }
 
-        private async Task<object> SendServiceProviderSelectedXmlNote(Token CurrentToken, string buyerBankAccount, string ProviderId, string ProviderType)
+        private async Task<object> SendServiceProviderSelectedXmlNote(Token Token, string BuyerBankAccount, string ProviderId, string ProviderType)
         {
             try
             {
             string nmspc = $"https://{Gateway.Domain}/Downloads/EscrowRebnis.xsd";
-            string xmlNote = $"<ServiceProviderSelected xmlns='{nmspc}' buyerBankAccount='{buyerBankAccount}' buyEdalerServiceProviderId='{ProviderId}' buyEdalerServiceProviderType='{ProviderType}'/>";
+            string xmlNote = $"<ServiceProviderSelected xmlns='{nmspc}' buyerBankAccount='{BuyerBankAccount}' buyEdalerServiceProviderId='{ProviderId}' buyEdalerServiceProviderType='{ProviderType}'/>";
 
             object ResultXmlNote = await InternetContent.PostAsync(
             new Uri("https://" + Gateway.Domain + "/Agent/Tokens/AddXmlNote"),
              new Dictionary<string, object>()
                 {
-                        { "tokenId", CurrentToken.TokenId },
+                        { "tokenId", Token.TokenId },
                         { "note", xmlNote },
                         { "personal", false }
                 },
             new KeyValuePair<string, string>("Accept", "application/json"),
             new KeyValuePair<string, string>("Authorization", "Bearer " + JwtToken));
 
-            Log.Informational("ResultSignature " + JSON.Encode(ResultXmlNote, false).ToString());
-          
             return ResultXmlNote;
             }
             catch (System.Exception ex)

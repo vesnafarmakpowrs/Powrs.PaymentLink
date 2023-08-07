@@ -7,14 +7,15 @@
 	"bic" :Required(Str(PBic))
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
-P:=GetServiceProvidersForBuyingEDaler('SE','SEK');
+
+P:=GetServiceProvidersForSellingEDaler('SE','SEK');
 ServiceProviderId := "";
 ServiceProviderType := "";
 foreach asp in P do
   if Contains(asp.Id,PBic) then 
     (
 	  ServiceProviderId := asp.Id;
-	  ServiceProviderType := asp.BuyEDalerServiceProvider.Id
+	  ServiceProviderType := asp.SellEDalerServiceProvider.Id
     );
 
 

@@ -110,10 +110,10 @@
 				</State>
 				<Action id="BuyerServiceProviderSelected">
 					<Script>
-					BuyerBankAccount:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyerBankAccount');						
-					BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyEdalerServiceProviderId');
-					BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyEdalerServiceProviderType');
-					</Script>
+				BuyerBankAccount:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyerBankAccount');						
+				BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyEdalerServiceProviderId');
+				BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyEdalerServiceProviderType');
+				</Script>
 					<PersistVariable name="BuyerBankAccount" value="{BuyerBankAccount}" />
 					<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 					<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
@@ -141,13 +141,22 @@
 					<If condition="TotalAmountPaid&gt;0">
 						<Then>
 							<Try>
-								<Payment amount="{TotalAmountPaid}" contract="{TokenContract}" currency="{Currency}" from="{'AgentUserTest8@lab.neuron.vaulter.rs'}" reference="{'2c5527cc-d03e-90a8-a813-9284271a1add@legal.lab.neuron.vaulter.rs'}" to="{'OPPUser@lab.neuron.vaulter.rs'}" validDays="3" />
+								<SellEDaler amount="{TotalAmountPaid}" 
+											contract="{TokenContract}" 
+											currency="{Currency}" 
+											from="{Seller}" 
+											reference="{Reference:='nfeat:'+TokenContract}" 
+											serviceId="{BuyerServiceProviderId}" 
+											serviceProvider="{BuyerServiceProviderType}">
+									<Parameter key="Amount" value="{TotalAmountPaid}" />
+									<Parameter key="Currency" value="{Currency}" />
+									<Parameter key="Account" value="{BuyerBankAccount}" />
+									<Parameter key="AccountName" value="{Buyer}" />
+									<Parameter key="Message" value="Vaulter" />
+								</SellEDaler>
 								<Catch exceptionVariable="ex">
-									<LogEvent actor="{Seller}" eventId="UnableToRefund" level="Medium" message="{'Unable to refund the buyer when reservation cancelled' + +ex.Message }" object="{Buyer}" type="Error">
-										<Tag key="PaidAmount" value="{TotalAmountPaid}" />
-										<Tag key="TokenContract" value="{TokenContract}" />
-										<Tag key="Currency" value="{Currency}" />
-									</LogEvent>
+									<LogEvent actor="{Seller}" eventId="SellEDaler" level="Medium" message="{ex.Message }" module="SellEDaler" object="" type="Error" />
+									<Error reason="{ex.Message}" />
 								</Catch>
 							</Try>
 						</Then>
@@ -163,15 +172,7 @@
 							<TextNote content="The amount paid is not sufficient" />
 						</Then>
 						<Else>
-							<Script>	
-						AmountToSell:= Value;							
-						BankAccountToSell:= SellerBankAccount;
-						SellEdalerFrom:= Seller;
-						ServiceProviderId:= SellerServiceProviderId;
-						ServiceProviderType:= SellerServiceProviderType;
-						AccountName:= 'SellEdalerTest';
-						MessageOnError:= 'Release funds error';
-					</Script>
+							
 							<CallAction actionRef="TrySellEdaler" />
 						</Else>
 					</If>
@@ -189,17 +190,21 @@
 				</Action>
 				<Action id="TrySellEdaler">
 					<Try>
-						<LogEvent actor="{SellEdalerFrom}" eventId="TrySellEdaler" level="Medium" message="{'TrySellEdaler started - ' + ' Amount: ' + AmountToSell + ' Contract: ' + TokenContract + ' Currency: ' + Currency + ' From: ' + SellEdalerFrom + ' TokenId: ' + TokenId + ' ServiceProviderId: ' + ServiceProviderId + ' ServiceProviderType: ' + ServiceProviderType + ' BankAccount: ' + BankAccountToSell + ' AccountName: ' + AccountName }" module="SellEDaler" object="" type="Informational" />
-						<SellEDaler amount="{AmountToSell}" contract="{TokenContract}" currency="{Currency}" from="{SellEdalerFrom}" reference="{Reference:='nfeat:'+TokenId}" serviceId="{ServiceProviderId}" serviceProvider="{ServiceProviderType}">
+						<SellEDaler amount="{TotalAmountPaid}" 
+									contract="{TokenContract}" 
+									currency="{Currency}" 
+									from="{Seller}" 
+									reference="{Reference:='nfeat:'+TokenId}" 
+									serviceId="{ServiceProviderId}" 
+									serviceProvider="{ServiceProviderType}">
 							<Parameter key="Amount" value="{AmountToSell}" />
 							<Parameter key="Currency" value="{Currency}" />
 							<Parameter key="Account" value="{BankAccountToSell}" />
-							<Parameter key="AccountName" value="{AccountName}" />
+							<Parameter key="AccountName" value="{Buyer}" />
 							<Parameter key="Message" value="Vaulter" />
 						</SellEDaler>
-						<TextNote content="{'Amount of edaler: ' + AmountToSell + ' ' + Currency + ' sold. From: ' + SellEdalerFrom + ' to BankAccount: ' + BankAccountToSell}" />
 						<Catch exceptionVariable="ex">
-							<LogEvent actor="{SellEdalerFrom}" eventId="SellEDaler" level="Medium" message="{MessageOnError + ' - ' +ex.Message }" module="SellEDaler" object="" type="Error" />
+							<LogEvent actor="{Seller}" eventId="SellEDaler" level="Medium" message="{ex.Message }" module="SellEDaler" object="" type="Error" />
 							<Error reason="{ex.Message}" />
 						</Catch>
 					</Try>
