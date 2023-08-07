@@ -73,7 +73,10 @@
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
-					<OnEvent actionRef="LogPayment" failureState="AwaitingForPayment" newState="PaymentCompleted">
+					<OnEvent actionRef="BuyerServiceProviderSelected">
+						<OnExternalXmlNote localName="ServiceProviderSelected" namespace="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd" noteVariable="Note" sourceVariable="Source" />
+					</OnEvent>
+					<OnEvent actionRef="CheckPayment" failureState="AwaitingForPayment" newState="PaymentCompleted">
 						<OnPaymentReceived amountTotalVariable="AmountPaid" conditionVariable="ConditionForPayment" currencyVariable="CurrencyPaid" fromVariable="Source" />
 					</OnEvent>
 				</State>
@@ -105,6 +108,16 @@
 				<State id="Done">
 					<OnEnter actionRef="End" />
 				</State>
+				<Action id="BuyerServiceProviderSelected">
+					<Script>
+					BuyerBankAccount:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyerBankAccount');						
+					BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyEdalerServiceProviderId');
+					BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyEdalerServiceProviderType');
+					</Script>
+					<PersistVariable name="BuyerBankAccount" value="{BuyerBankAccount}" />
+					<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
+					<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
+				</Action>
 				<Action id="LogPayment">
 					<LogEvent actor="{Seller}" eventId="AuthorizeSource" level="Medium" message="OnPaymentRecieved invoked." object="{Seller}" type="Informational" />
 					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="OnPaymentRecieved invoked." object="{Seller}" type="Informational" />
@@ -119,14 +132,20 @@
 						</Then>
 					</If>
 				</Action>
+				<Action id="CheckPayment">
+					<PersistVariable name="TotalAmountPaid" value="{AmountPaid}" />
+					<PersistVariable name="PaymentDateTime" value="{Now}" />
+					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{TotalAmountPaid}" object="{Buyer}" type="Informational" />
+				</Action>
 				<Action id="ReturnFunds">
 					<If condition="TotalAmountPaid&gt;0">
 						<Then>
 							<Try>
-								<Payment amount="{TotalAmountPaid}" contract="{TokenContract}" currency="{Currency}" from="{Seller}" reference="{TokenContract}" to="{Buyer}" validDays="3" />
+								<Payment amount="{TotalAmountPaid}" contract="{TokenContract}" currency="{Currency}" from="{'AgentUserTest8@lab.neuron.vaulter.rs'}" reference="{'2c5527cc-d03e-90a8-a813-9284271a1add@legal.lab.neuron.vaulter.rs'}" to="{'OPPUser@lab.neuron.vaulter.rs'}" validDays="3" />
 								<Catch exceptionVariable="ex">
-									<LogEvent actor="{Seller}" eventId="UnableToRefund" level="Medium" message="{'Unable to refund the buyer when reservation cancelled'}" object="{Buyer}" type="Error">
+									<LogEvent actor="{Seller}" eventId="UnableToRefund" level="Medium" message="{'Unable to refund the buyer when reservation cancelled' + +ex.Message }" object="{Buyer}" type="Error">
 										<Tag key="PaidAmount" value="{TotalAmountPaid}" />
+										<Tag key="TokenContract" value="{TokenContract}" />
 										<Tag key="Currency" value="{Currency}" />
 									</LogEvent>
 								</Catch>
@@ -145,14 +164,14 @@
 						</Then>
 						<Else>
 							<Script>	
-							AmountToSell:= Value;							
-							BankAccountToSell:= SellerBankAccount;
-							SellEdalerFrom:= Seller;
-							ServiceProviderId:= SellerServiceProviderId;
-							ServiceProviderType:= SellerServiceProviderType;
-							AccountName:= 'SellEdalerTest';
-							MessageOnError:= 'Release funds error';
-						</Script>
+						AmountToSell:= Value;							
+						BankAccountToSell:= SellerBankAccount;
+						SellEdalerFrom:= Seller;
+						ServiceProviderId:= SellerServiceProviderId;
+						ServiceProviderType:= SellerServiceProviderType;
+						AccountName:= 'SellEdalerTest';
+						MessageOnError:= 'Release funds error';
+					</Script>
 							<CallAction actionRef="TrySellEdaler" />
 						</Else>
 					</If>

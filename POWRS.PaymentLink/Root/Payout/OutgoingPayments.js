@@ -100,13 +100,13 @@ function GenerateAccountsListUi(accounts) {
             if (selectedServiceProvider == null) {
                 return;
             }
-            StartPayment(selectedServiceProvider.C5, account.Iban);
+            StartPayment(selectedServiceProvider.C5, account.Iban, account.Bic);
         }
         container.appendChild(bankElement);
     });
 }
 
-function StartPayment(BuyEdalerTemplateId, iban) {
+function StartPayment(BuyEdalerTemplateId, iban, bic) {
     let contractId = document.getElementById('contractId').value;
 
     if (!contractId || !BuyEdalerTemplateId || !iban) {
@@ -125,7 +125,8 @@ function StartPayment(BuyEdalerTemplateId, iban) {
             "tabId": TabID,
             "requestFromMobilePhone": Boolean(isMobileDevice),
             "contractId": contractId,
-            "bankAccount": iban
+            "bankAccount": iban,
+            "bic": bic
         }));
 }
 

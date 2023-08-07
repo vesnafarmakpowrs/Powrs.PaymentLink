@@ -3,13 +3,24 @@
     "tabId": Required(Str(PTabID)),
 	"requestFromMobilePhone": Required(Boolean(PRequestFromMobilePhone)),
 	"contractId": Required(Str(PContractId)),
-	"bankAccount": Required(Str(PBuyerBankAccount))
+	"bankAccount": Required(Str(PBuyerBankAccount)),
+	"bic" :Required(Str(PBic))
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
+P:=GetServiceProvidersForBuyingEDaler('SE','SEK');
+ServiceProviderId := "";
+ServiceProviderType := "";
+foreach asp in P do
+  if Contains(asp.Id,PBic) then 
+    (
+	  ServiceProviderId := asp.Id;
+	  ServiceProviderType := asp.BuyEDalerServiceProvider.Id
+    );
+
 
 OPService:=Create(POWRS.Payout.PayoutService);
 PRequestFromMobilePhone:= False;
-results := OPService.BuyEDaler(PBuyEdalerTemplateId, PContractId, PBuyerBankAccount, PTabID, PRequestFromMobilePhone, Request.RemoteEndPoint);
+results := OPService.BuyEDaler(PBuyEdalerTemplateId, PContractId, PBuyerBankAccount, ServiceProviderId, ServiceProviderType, PTabID, PRequestFromMobilePhone, Request.RemoteEndPoint);
 
 {
 	Results: results

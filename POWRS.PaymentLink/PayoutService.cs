@@ -17,6 +17,7 @@ using Waher.Security;
 using POWRS.PaymentLink.Model;
 using Waher.Networking.HTTP;
 using LegalLab.Models.Network.Events;
+using Waher.Runtime.Profiling;
 
 namespace POWRS.Payout
 {
@@ -43,7 +44,7 @@ namespace POWRS.Payout
                 throw new Exception("Unable to login to xmppClient");
             }
             
-            Log.Register(new PaymentCompletedEventSink());
+            //Log.Register(new PaymentCompletedEventSink());
         }
 
         private async Task<bool> IsConnected()
@@ -70,7 +71,7 @@ namespace POWRS.Payout
 		/// <param name="RequestFromMobilePhone">If request originates from mobile phone. (true)
         /// <param name="RemoteEndpoint">Tab ID</param>
         /// <returns>Result of operation.</returns>
-        public async Task<PaymentResult> BuyEDaler(string BuyEdalerTemplateId, string ContractID, string BankAccount, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
+        public async Task<PaymentResult> BuyEDaler(string BuyEdalerTemplateId, string ContractID, string BankAccount,string ServiceProviderId,string ServiceProviderType, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
         {
             try
             {
@@ -120,6 +121,8 @@ namespace POWRS.Payout
                     return new PaymentResult("Parameters for token are not valid");
                 }
 
+                await SendServiceProviderSelectedXmlNote(CurrentToken, BankAccount, ServiceProviderId, ServiceProviderType);
+
                 string ContractIdBuyEdaler = await CreateBuyEdalerContract(BuyEdalerTemplateId, JwtToken, Token, BankAccount, TabId, RequestFromMobilePhone);
 
                 CurrentToken = Token;
@@ -127,6 +130,8 @@ namespace POWRS.Payout
 
                 await SignContract(ContractIdBuyEdaler, JwtToken);
 
+               
+        
                 return new PaymentResult("Contract created ");
             }
             catch (Exception ex)
@@ -185,7 +190,7 @@ namespace POWRS.Payout
             {
                 if (CurrentToken is null)
                 {
-                    Log.Error(new Exception("Token is null"));
+                   // Log.Error(new Exception("Token is null"));
                     return;
                 }
 
@@ -210,7 +215,7 @@ namespace POWRS.Payout
             }
             finally
             {
-                Log.Unregister(new PaymentCompletedEventSink());
+               // Log.Unregister(new PaymentCompletedEventSink());
                 Dispose();
             }
         }
@@ -322,6 +327,28 @@ namespace POWRS.Payout
 
             return null;
         }
+
+        private async Task<object> SendServiceProviderSelectedXmlNote(Token CurrentToken, string buyerBankAccount, string ProviderId, string ProviderType)
+        {
+            string nmspc = $"https://{Gateway.Domain}/Downloads/EscrowRebnis.xsd";
+            string xmlNote = $"<ServiceProviderSelected xmlns='{nmspc}' buyerBankAccount='{buyerBankAccount}' buyEdalerServiceProviderId='{ProviderId}' buyEdalerServiceProviderType='{ProviderType}'/>";
+
+            object ResultXmlNote = await InternetContent.PostAsync(
+            new Uri("https://" + Gateway.Domain + "/Agent/Tokens/AddXmlNote"),
+             new Dictionary<string, object>()
+                {
+                        { "tokenId", CurrentToken.TokenId },
+                        { "note", xmlNote },
+                        { "personal", false }
+                },
+            new KeyValuePair<string, string>("Accept", "application/json"),
+            new KeyValuePair<string, string>("Authorization", "Bearer " + JwtToken));
+
+            Log.Informational("ResultSignature " + JSON.Encode(ResultXmlNote, false).ToString());
+          
+            return ResultXmlNote;
+        }
+
 
         private async Task<object> SendPaymentCompletedXmlNote()
         {
