@@ -110,10 +110,10 @@
 				</State>
 				<Action id="BuyerServiceProviderSelected">
 					<Script>
-				BuyerBankAccount:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyerBankAccount');						
-				BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyEdalerServiceProviderId');
-				BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyEdalerServiceProviderType');
-				</Script>
+			BuyerBankAccount:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyerBankAccount');						
+			BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyEdalerServiceProviderId');
+			BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyEdalerServiceProviderType');
+			</Script>
 					<PersistVariable name="BuyerBankAccount" value="{BuyerBankAccount}" />
 					<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 					<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
@@ -141,13 +141,7 @@
 					<If condition="TotalAmountPaid&gt;0">
 						<Then>
 							<Try>
-								<SellEDaler amount="{TotalAmountPaid}" 
-											contract="{TokenContract}" 
-											currency="{Currency}" 
-											from="{Seller}" 
-											reference="{Reference:='nfeat:'+TokenContract}" 
-											serviceId="{BuyerServiceProviderId}" 
-											serviceProvider="{BuyerServiceProviderType}">
+								<SellEDaler amount="{TotalAmountPaid}" contract="{TokenContract}" currency="{Currency}" from="{Seller}" reference="{Reference:='nfeat:'+TokenContract}" serviceId="{BuyerServiceProviderId}" serviceProvider="{BuyerServiceProviderType}">
 									<Parameter key="Amount" value="{TotalAmountPaid}" />
 									<Parameter key="Currency" value="{Currency}" />
 									<Parameter key="Account" value="{BuyerBankAccount}" />
@@ -190,13 +184,7 @@
 				</Action>
 				<Action id="TrySellEdaler">
 					<Try>
-						<SellEDaler amount="{TotalAmountPaid}" 
-									contract="{TokenContract}" 
-									currency="{Currency}" 
-									from="{Seller}" 
-									reference="{Reference:='nfeat:'+TokenId}" 
-									serviceId="{ServiceProviderId}" 
-									serviceProvider="{ServiceProviderType}">
+						<SellEDaler amount="{TotalAmountPaid}" contract="{TokenContract}" currency="{Currency}" from="{Seller}" reference="{Reference:='nfeat:'+TokenId}" serviceId="{ServiceProviderId}" serviceProvider="{ServiceProviderType}">
 							<Parameter key="Amount" value="{AmountToSell}" />
 							<Parameter key="Currency" value="{Currency}" />
 							<Parameter key="Account" value="{BankAccountToSell}" />
@@ -441,6 +429,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Id from remote system.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="CallBackUrl">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Send info when transaction is completed.</text>
 				</paragraph>
 			</description>
 		</stringParameter>

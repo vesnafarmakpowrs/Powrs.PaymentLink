@@ -7,6 +7,7 @@
         public string Currency { get; set; }
         public string OwnerJid { get; set; }
         public string Owner { get; set; }
+        public string CallBackUrl { get; set; }
 
         public bool IsValid()
         {

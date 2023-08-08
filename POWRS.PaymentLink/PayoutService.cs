@@ -438,6 +438,12 @@ namespace POWRS.Payout
                                // Log.Informational("ownerJid: " + OwnerJid);
                                 token.OwnerJid = OwnerJid;
                             }
+                            if (Token.TryGetValue("callBackUrl", out object ObjCallBackUrl) && ObjCallBackUrl is string CallBackUrl)
+                            {
+                                 Log.Informational("callBackUrl: " + CallBackUrl);
+                                token.CallBackUrl = CallBackUrl;
+                            }
+                            
 
                             return token;
                         }
@@ -571,7 +577,9 @@ namespace POWRS.Payout
                          { "legalId" , OwnerId }
                     }
                 };
-
+                string CallBackUrl = !String.IsNullOrEmpty(token.CallBackUrl)? token.CallBackUrl : "";
+                Log.Informational("token.CallBackUrl" + token.CallBackUrl);
+                Log.Informational("CallBackUrl" + CallBackUrl);
                 List<IDictionary<CaseInsensitiveString, object>> ParametersList = new List<IDictionary<CaseInsensitiveString, object>>()
                 {
                   new Dictionary<CaseInsensitiveString, object>()
@@ -600,7 +608,12 @@ namespace POWRS.Payout
                      new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "tabId" },
                          { "value" , TabId }
+                    },
+                     new Dictionary<CaseInsensitiveString, object>()
+                    {    { "name" , "callBackUrl" },
+                         { "value" , "https://rebnis.com" }
                     }
+                     
                 };
 
                 object ResultContractBuyEdaler = await InternetContent.PostAsync(

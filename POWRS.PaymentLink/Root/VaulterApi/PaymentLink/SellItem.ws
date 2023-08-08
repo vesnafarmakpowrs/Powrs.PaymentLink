@@ -17,7 +17,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Optional(String(PCallbackUrl))
+    "callbackUrl":Optional(String(PCallBackUrl))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 
@@ -38,7 +38,7 @@ Response := POST("https://lab.neuron.vaulter.rs/Agent/Account/Login",
 
 Token := "Bearer " + Response.jwt;
 
-t:= "2c5cb3b2-b0a0-95e5-b803-01427d96a9cc@legal.lab.neuron.vaulter.rs";
+t:= "2c64b586-f8f9-9fdf-9423-5df14a3bbeac@legal.lab.neuron.vaulter.rs";
 TemplateId:="2c4be7d4-32ae-033a-1022-ff6e374fa7f6@legal.lab.neuron.vaulter.rs";
 
 Contract:=CreateContract(PUserName,t, "Public",
@@ -53,7 +53,8 @@ Contract:=CreateContract(PUserName,t, "Public",
         "Expires": Today.AddDays(364),
         "SellerBankAccount" : PClientBankAccount,
         "BuyerFullName":PBuyerFirstName + " " + PBuyerLastName,
-        "BuyerPersonalNum":PBuyerPersonalNum
+        "BuyerPersonalNum":PBuyerPersonalNum,
+        "CallBackUrl" : PCallBackUrl
     });
 
 
