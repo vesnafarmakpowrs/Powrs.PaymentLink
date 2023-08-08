@@ -1,6 +1,6 @@
 ({
 	"buyEdalerTemplateId":Required(Str(PBuyEdalerTemplateId)),
-    "tabId": Required(Str(PTabID)),
+        "tabId": Required(Str(PTabID)),
 	"requestFromMobilePhone": Required(Boolean(PRequestFromMobilePhone)),
 	"contractId": Required(Str(PContractId)),
 	"bankAccount": Required(Str(PBuyerBankAccount)),
@@ -15,7 +15,7 @@ foreach asp in P do
   if Contains(asp.Id,PBic) then 
     (
 	  ServiceProviderId := asp.Id;
-	  ServiceProviderType := asp.SellEDalerServiceProvider.Id
+	  ServiceProviderType := asp.SellEDalerServiceProvider.Id + ".OpenPaymentsPlatformServiceProvider";
     );
 
 
