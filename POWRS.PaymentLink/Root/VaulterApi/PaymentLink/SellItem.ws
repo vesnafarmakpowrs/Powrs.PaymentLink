@@ -57,8 +57,9 @@ Contract:=CreateContract(PUserName,t, "Public",
         "CallBackUrl" : PCallBackUrl
     });
 
+    
+LegalIdentity :=select top 1 * from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc ;
 
-LegalIdentity :=select top 1 * from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName order by Created desc ;
 
 LegalId := LegalIdentity.Id;
 Nonce := Base64Encode(RandomBytes(32));

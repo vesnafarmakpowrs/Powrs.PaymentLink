@@ -30,8 +30,6 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.KeyId",Posted.KeyId);
 	SetSetting("POWRS.PaymentLink.Secret",Posted.Secret);
 	SetSetting("POWRS.PaymentLink.OPPUserLegalId",Posted.LegalId);
-    SetSetting("POWRS.PaymentLink.ApiKeyId",Posted.LegalId);
-    SetSetting("POWRS.PaymentLink.ApiKeySecret",Posted.LegalId);
 	
 	SeeOther("Settings.md");
 );
@@ -62,16 +60,6 @@ if exists(Posted) then
 <p>
 <label for="Secret">Secret:</label>  
 <input type="password" id="Secret" name="Secret" value='{{GetSetting("POWRS.PaymentLink.Secret","")}}' required title="The secret corresponding to the key."/>
-</p>
-
-<p>
-<label for="ApiKeyId">Api Key Id:</label>  
-<input type="text" id="ApiKeyId" name="ApiKeyId" value='{{GetSetting("POWRS.PaymentLink.ApiKeyId","")}}' autofocus required title="Identity of API key to use for contract creation."/>
-</p>
-
-<p>
-<label for="ApiKeySecret">Api Key Secret:</label>  
-<input type="password" id="ApiKeySecret" name="ApiKeySecret" value='{{GetSetting("POWRS.PaymentLink.ApiKeySecret","")}}' required title="The secret corresponding to the Api key."/>
 </p>
 
 <button type="submit" class="posButton">Apply</button>
