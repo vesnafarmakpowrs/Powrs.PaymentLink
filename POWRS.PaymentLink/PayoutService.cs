@@ -42,8 +42,8 @@ namespace POWRS.Payout
                 Log.Informational("Unable to login to xmppClient");
                 throw new Exception("Unable to login to xmppClient");
             }
-            
-           // Log.Register(new PaymentCompletedEventSink());
+
+            // Log.Register(new PaymentCompletedEventSink());
         }
 
         private async Task<bool> IsConnected()
@@ -70,7 +70,7 @@ namespace POWRS.Payout
 		/// <param name="RequestFromMobilePhone">If request originates from mobile phone. (true)
         /// <param name="RemoteEndpoint">Tab ID</param>
         /// <returns>Result of operation.</returns>
-        public async Task<PaymentResult> BuyEDaler(string BuyEdalerTemplateId, string ContractID, string BankAccount,string ServiceProviderId,string ServiceProviderType, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
+        public async Task<PaymentResult> BuyEDaler(string BuyEdalerTemplateId, string ContractID, string BankAccount, string ServiceProviderId, string ServiceProviderType, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
         {
             try
             {
@@ -197,9 +197,9 @@ namespace POWRS.Payout
                     return;
                 }
 
-              //  Log.Informational("Change: " + e.Balance.Event.Change);
-              //  Log.Informational("TransactionId: " + e.Balance.Event.TransactionId);
-              //  Log.Informational("Message: " + e.Balance.Event.Message);
+                //  Log.Informational("Change: " + e.Balance.Event.Change);
+                //  Log.Informational("TransactionId: " + e.Balance.Event.TransactionId);
+                //  Log.Informational("Message: " + e.Balance.Event.Message);
 
                 if (e.Balance.Event.Change > 0)
                 {
@@ -212,7 +212,7 @@ namespace POWRS.Payout
             }
             finally
             {
-               // Log.Unregister(new PaymentCompletedEventSink());
+                // Log.Unregister(new PaymentCompletedEventSink());
                 Dispose();
             }
         }
@@ -274,7 +274,7 @@ namespace POWRS.Payout
             try
             {
                 string fullPaymentUri = await CreateFullPaymentUri(PaymentToken.OwnerJid, PaymentToken.Value, PaymentToken.Currency, 364, "nfeat:" + PaymentToken.TokenId);
-               // Log.Informational("FullPaymentUri: " + fullPaymentUri);
+                // Log.Informational("FullPaymentUri: " + fullPaymentUri);
 
                 string Signiture = await GetSigniture(fullPaymentUri, JwtToken);
                 fullPaymentUri += ";s=" + Signiture;
@@ -329,21 +329,21 @@ namespace POWRS.Payout
         {
             try
             {
-            string nmspc = $"https://{Gateway.Domain}/Downloads/EscrowRebnis.xsd";
-            string xmlNote = $"<ServiceProviderSelected xmlns='{nmspc}' buyerBankAccount='{BuyerBankAccount}' buyEdalerServiceProviderId='{ProviderId}' buyEdalerServiceProviderType='{ProviderType}'/>";
+                string nmspc = $"https://{Gateway.Domain}/Downloads/EscrowRebnis.xsd";
+                string xmlNote = $"<ServiceProviderSelected xmlns='{nmspc}' buyerBankAccount='{BuyerBankAccount}' buyEdalerServiceProviderId='{ProviderId}' buyEdalerServiceProviderType='{ProviderType}'/>";
 
-            object ResultXmlNote = await InternetContent.PostAsync(
-            new Uri("https://" + Gateway.Domain + "/Agent/Tokens/AddXmlNote"),
-             new Dictionary<string, object>()
-                {
+                object ResultXmlNote = await InternetContent.PostAsync(
+                new Uri("https://" + Gateway.Domain + "/Agent/Tokens/AddXmlNote"),
+                 new Dictionary<string, object>()
+                    {
                         { "tokenId", Token.TokenId },
                         { "note", xmlNote },
                         { "personal", false }
-                },
-            new KeyValuePair<string, string>("Accept", "application/json"),
-            new KeyValuePair<string, string>("Authorization", "Bearer " + JwtToken));
+                    },
+                new KeyValuePair<string, string>("Accept", "application/json"),
+                new KeyValuePair<string, string>("Authorization", "Bearer " + JwtToken));
 
-            return ResultXmlNote;
+                return ResultXmlNote;
             }
             catch (System.Exception ex)
             {
@@ -435,15 +435,15 @@ namespace POWRS.Payout
                             }
                             if (Token.TryGetValue("ownerJid", out object ObjTokenOwnerJid) && ObjTokenOwnerJid is string OwnerJid)
                             {
-                               // Log.Informational("ownerJid: " + OwnerJid);
+                                // Log.Informational("ownerJid: " + OwnerJid);
                                 token.OwnerJid = OwnerJid;
                             }
                             if (Token.TryGetValue("callBackUrl", out object ObjCallBackUrl) && ObjCallBackUrl is string CallBackUrl)
                             {
-                                 Log.Informational("callBackUrl: " + CallBackUrl);
+                                Log.Informational("callBackUrl: " + CallBackUrl);
                                 token.CallBackUrl = CallBackUrl;
                             }
-                            
+
 
                             return token;
                         }
@@ -577,9 +577,7 @@ namespace POWRS.Payout
                          { "legalId" , OwnerId }
                     }
                 };
-                string CallBackUrl = !String.IsNullOrEmpty(token.CallBackUrl)? token.CallBackUrl : "";
-                Log.Informational("token.CallBackUrl" + token.CallBackUrl);
-                Log.Informational("CallBackUrl" + CallBackUrl);
+
                 List<IDictionary<CaseInsensitiveString, object>> ParametersList = new List<IDictionary<CaseInsensitiveString, object>>()
                 {
                   new Dictionary<CaseInsensitiveString, object>()
@@ -608,13 +606,16 @@ namespace POWRS.Payout
                      new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "tabId" },
                          { "value" , TabId }
-                    },
-                     new Dictionary<CaseInsensitiveString, object>()
+                    }
+                };
+                string CallBackUrl = !String.IsNullOrEmpty(token.CallBackUrl) ? token.CallBackUrl : "";
+                if (!string.IsNullOrEmpty(CallBackUrl))
+                {
+                    ParametersList.Add(new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "callBackUrl" },
                          { "value" , "https://rebnis.com" }
-                    }
-                     
-                };
+                    });
+                }
 
                 object ResultContractBuyEdaler = await InternetContent.PostAsync(
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/CreateContract"),
