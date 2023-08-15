@@ -27,7 +27,7 @@ S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
 Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
 
 
-Response := POST("https://lab.neuron.vaulter.rs/Agent/Account/Login",
+R := POST("https://lab.neuron.vaulter.rs/Agent/Account/Login",
                  {
                   "userName": PUserName,
                   "nonce": Nonce,
@@ -36,9 +36,9 @@ Response := POST("https://lab.neuron.vaulter.rs/Agent/Account/Login",
                   },
 		{"Accept" : "application/json"});
 
-Token := "Bearer " + Response.jwt;
+Token := "Bearer " + R.jwt;
 
-t:= "2c64b586-f8f9-9fdf-9423-5df14a3bbeac@legal.lab.neuron.vaulter.rs";
+t:= "2c68d4ab-03bc-fba1-4019-d59180c12602@legal.lab.neuron.vaulter.rs";
 TemplateId:="2c4be7d4-32ae-033a-1022-ff6e374fa7f6@legal.lab.neuron.vaulter.rs";
 
 Contract:=CreateContract(PUserName,t, "Public",
