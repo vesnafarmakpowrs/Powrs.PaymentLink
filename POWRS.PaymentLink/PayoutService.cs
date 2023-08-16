@@ -606,16 +606,12 @@ namespace POWRS.Payout
                      new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "tabId" },
                          { "value" , TabId }
-                    }
-                };
-                string CallBackUrl = !String.IsNullOrEmpty(token.CallBackUrl) ? token.CallBackUrl : "";
-                if (!string.IsNullOrEmpty(CallBackUrl))
-                {
-                    ParametersList.Add(new Dictionary<CaseInsensitiveString, object>()
+                    },
+                     new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "callBackUrl" },
                          { "value" , "https://rebnis.com" }
-                    });
-                }
+                    }
+                };
 
                 object ResultContractBuyEdaler = await InternetContent.PostAsync(
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/CreateContract"),
