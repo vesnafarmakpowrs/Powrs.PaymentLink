@@ -559,10 +559,13 @@ namespace POWRS.Payout
         private async Task<string> CreateBuyEdalerContract(string BuyEdalerTemplateId, string Jwt, Token token, string BankAccount, string TabId, bool requestFromMobilePhone)
         {
             try
-            {
-                string OwnerId = "2c523e34-c122-58ec-e81d-570f5370f803@legal.neuron.vaulter.rs";
+            {               
+                string TrustProvider = await RuntimeSettings.GetAsync("POWRS.PaymentLink.TrustProviderLegalId", string.Empty); ;
                 string LegalIdOPPUser = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
 
+                Log.Informational("TrustProvider: " + TrustProvider);
+                Log.Informational("LegalIdOPPUser:" + LegalIdOPPUser);
+                
                 List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>()
                  {
                   new Dictionary<CaseInsensitiveString, object>()
@@ -574,7 +577,7 @@ namespace POWRS.Payout
                   new Dictionary<CaseInsensitiveString, object>()
                     {
                          { "role" , "TrustProvider" },
-                         { "legalId" , OwnerId }
+                         { "legalId" , TrustProvider }
                     }
                 };
 
