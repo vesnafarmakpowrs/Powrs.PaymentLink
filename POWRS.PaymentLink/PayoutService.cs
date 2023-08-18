@@ -15,8 +15,6 @@ using Waher.Persistence;
 using Waher.Runtime.Settings;
 using Waher.Security;
 using POWRS.PaymentLink.Model;
-using Waher.Networking.HTTP;
-using LegalLab.Models.Network.Events;
 
 namespace POWRS.Payout
 {
