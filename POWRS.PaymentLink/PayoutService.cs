@@ -15,6 +15,8 @@ using Waher.Persistence;
 using Waher.Runtime.Settings;
 using Waher.Security;
 using POWRS.PaymentLink.Model;
+using System.Linq;
+using System.Security.Cryptography;
 
 namespace POWRS.Payout
 {
@@ -28,8 +30,8 @@ namespace POWRS.Payout
         private ContractsClient _contractsClient;
         private EDalerClient _edalerClient;
 
-        private Token CurrentToken = null;
-        private string BuyEdalerContractId;
+        private InitiatePaymentRequest _ongoingPaymentRequest;
+        private string _ongoingBuyEdalerContractId;
         private string JwtToken;
         private decimal totalAmountPaid;
 
@@ -68,23 +70,30 @@ namespace POWRS.Payout
 		/// <param name="RequestFromMobilePhone">If request originates from mobile phone. (true)
         /// <param name="RemoteEndpoint">Tab ID</param>
         /// <returns>Result of operation.</returns>
-        public async Task<PaymentResult> BuyEDaler(string BuyEdalerTemplateId, string ContractID, string BankAccount, string ServiceProviderId, string ServiceProviderType, string TabId, bool RequestFromMobilePhone, string RemoteEndpoint)
+        public async Task<PaymentResult> InitiatePayment(InitiatePaymentRequest Request)
         {
             try
             {
                 Log.Informational("PaymentLinkBuyEDaler started");
 
-                if (string.IsNullOrEmpty(BuyEdalerTemplateId))
+                if (Request is null)
+                {
+                    return new PaymentResult("Payment request is not valid, missing info.");
+                }
+
+                Request.LogRequestValues();
+
+                if (string.IsNullOrEmpty(Request.BuyEdalerTemplateId))
                 {
                     Log.Informational("BuyEdalerTemplateId could not be empty");
                     return new PaymentResult("BuyEdalerTemplateId could not be empty");
                 }
-                if (string.IsNullOrEmpty(ContractID))
+                if (string.IsNullOrEmpty(Request.ContractID))
                 {
                     Log.Informational("ContractID could not be empty");
                     return new PaymentResult("ContractID could not be empty");
                 }
-                if (string.IsNullOrEmpty(BankAccount))
+                if (string.IsNullOrEmpty(Request.BankAccount))
                 {
                     Log.Informational("BankAccount could not be empty");
                     return new PaymentResult("BankAccount could not be empty");
@@ -104,26 +113,12 @@ namespace POWRS.Payout
                     return new PaymentResult("Unable to LoginToUserAgent");
                 }
 
-                Token Token = await GetToken(ContractID, JwtToken);
+                await SendServiceProviderSelectedXmlNote(Request);
 
-                if (Token == null)
-                {
-                    Log.Informational("No token for contractId: " + ContractID);
-                    return new PaymentResult("No token for contractId: " + ContractID);
-                }
+                string ContractIdBuyEdaler = await CreateBuyEdalerContract(JwtToken, Request);
 
-                if (!Token.IsValid())
-                {
-                    Log.Informational("Parameters for token are not valid.");
-                    return new PaymentResult("Parameters for token are not valid");
-                }
-
-                await SendServiceProviderSelectedXmlNote(Token, BankAccount, ServiceProviderId, ServiceProviderType);
-
-                string ContractIdBuyEdaler = await CreateBuyEdalerContract(BuyEdalerTemplateId, JwtToken, Token, BankAccount, TabId, RequestFromMobilePhone);
-
-                CurrentToken = Token;
-                BuyEdalerContractId = ContractIdBuyEdaler;
+                _ongoingPaymentRequest = Request;
+                _ongoingBuyEdalerContractId = ContractIdBuyEdaler;
 
                 await SignContract(ContractIdBuyEdaler, JwtToken);
 
@@ -132,7 +127,7 @@ namespace POWRS.Payout
             catch (Exception ex)
             {
                 Log.Error(ex);
-                await DisplayUserMessage(TabId, ex.Message);
+                await DisplayUserMessage(Request.TabId, ex.Message);
                 return new PaymentResult(ex.Message);
             }
         }
@@ -183,9 +178,9 @@ namespace POWRS.Payout
         {
             try
             {
-                if (CurrentToken is null)
+                if (_ongoingPaymentRequest is null)
                 {
-                    Log.Error(new Exception("Token is null"));
+                    Log.Error(new Exception("No ongoing payments..."));
                     return;
                 }
 
@@ -194,10 +189,6 @@ namespace POWRS.Payout
                     Log.Error(new Exception("Change could not be null"));
                     return;
                 }
-
-                //  Log.Informational("Change: " + e.Balance.Event.Change);
-                //  Log.Informational("TransactionId: " + e.Balance.Event.TransactionId);
-                //  Log.Informational("Message: " + e.Balance.Event.Message);
 
                 if (e.Balance.Event.Change > 0)
                 {
@@ -217,7 +208,7 @@ namespace POWRS.Payout
 
         private async Task EdalerAddedInWallet(AccountEvent accountEvent)
         {
-            string contract = "iotsc:" + BuyEdalerContractId;
+            string contract = "iotsc:" + _ongoingBuyEdalerContractId;
 
             if (string.IsNullOrEmpty(accountEvent.Message) || contract != accountEvent.Message)
             {
@@ -225,12 +216,11 @@ namespace POWRS.Payout
             }
 
             totalAmountPaid = accountEvent.Change;
-            await UpdateContractWithTransactionStatusAsync(CurrentToken);
+            await UpdateContractWithTransactionStatusAsync();
         }
 
         private async Task DisplayUserMessage(string tabId, string message, bool isSuccess = false)
         {
-            //Log.Informational("DisplayUserMessage  " + message);
             await ClientEvents.PushEvent(new string[] { tabId }, "DisplayTransactionResult",
                     JSON.Encode(new Dictionary<string, object>()
                     {
@@ -267,12 +257,16 @@ namespace POWRS.Payout
             return encodedBytes;
         }
 
-        private async Task UpdateContractWithTransactionStatusAsync(Token PaymentToken)
+        private async Task UpdateContractWithTransactionStatusAsync()
         {
             try
             {
-                string fullPaymentUri = await CreateFullPaymentUri(PaymentToken.OwnerJid, PaymentToken.Value, PaymentToken.Currency, 364, "nfeat:" + PaymentToken.TokenId);
-                // Log.Informational("FullPaymentUri: " + fullPaymentUri);
+                if (_ongoingPaymentRequest is null)
+                {
+                    return;
+                }
+
+                string fullPaymentUri = await CreateFullPaymentUri(_ongoingPaymentRequest.OwnerJid, _ongoingPaymentRequest.Amount, _ongoingPaymentRequest.Currency, 364, "nfeat:" + _ongoingPaymentRequest.TokenId);
 
                 string Signiture = await GetSigniture(fullPaymentUri, JwtToken);
                 fullPaymentUri += ";s=" + Signiture;
@@ -305,7 +299,7 @@ namespace POWRS.Payout
                         { "userName", UserName },
                         { "nonce", Nonce },
                         { "signature", Signature },
-                        { "seconds", 3600 },
+                        { "seconds", 70 },
                     },
                     new KeyValuePair<string, string>("Accept", "application/json"));
 
@@ -323,18 +317,18 @@ namespace POWRS.Payout
             return null;
         }
 
-        private async Task<object> SendServiceProviderSelectedXmlNote(Token Token, string BuyerBankAccount, string ProviderId, string ProviderType)
+        private async Task<object> SendServiceProviderSelectedXmlNote(InitiatePaymentRequest Request)
         {
             try
             {
                 string nmspc = $"https://{Gateway.Domain}/Downloads/EscrowRebnis.xsd";
-                string xmlNote = $"<ServiceProviderSelected xmlns='{nmspc}' buyerBankAccount='{BuyerBankAccount}' buyEdalerServiceProviderId='{ProviderId}' buyEdalerServiceProviderType='{ProviderType}'/>";
+                string xmlNote = $"<ServiceProviderSelected xmlns='{nmspc}' buyerBankAccount='{Request.BankAccount}' buyEdalerServiceProviderId='{Request.ServiceProviderId}' buyEdalerServiceProviderType='{Request.ServiceProviderType}'/>";
 
                 object ResultXmlNote = await InternetContent.PostAsync(
                 new Uri("https://" + Gateway.Domain + "/Agent/Tokens/AddXmlNote"),
                  new Dictionary<string, object>()
                     {
-                        { "tokenId", Token.TokenId },
+                        { "tokenId", Request.TokenId },
                         { "note", xmlNote },
                         { "personal", false }
                     },
@@ -350,27 +344,6 @@ namespace POWRS.Payout
             return null;
         }
 
-
-        private async Task<object> SendPaymentCompletedXmlNote()
-        {
-            string nmspc = $"https://{Gateway.Domain}/Downloads/EscrowRebnis.xsd";
-            string xmlNote = $"<PaymentCompleted xmlns='{nmspc}' amountPaid='{XML.Encode(totalAmountPaid.ToString())}'/>";
-
-            object ResultXmlNote = await InternetContent.PostAsync(
-            new Uri("https://" + Gateway.Domain + "/Agent/Tokens/AddXmlNote"),
-             new Dictionary<string, object>()
-                {
-                        { "tokenId", CurrentToken.TokenId },
-                        { "note", xmlNote },
-                        { "personal", false }
-                },
-            new KeyValuePair<string, string>("Accept", "application/json"),
-            new KeyValuePair<string, string>("Authorization", "Bearer " + JwtToken));
-
-            //Log.Informational("ResultXmlNote" + ResultXmlNote);
-            return ResultXmlNote;
-        }
-
         private async Task<object> SendPaymentUri(string PaymentUri, string Jwt)
         {
             object ResultPaymentUri = await InternetContent.PostAsync(
@@ -382,77 +355,7 @@ namespace POWRS.Payout
              new KeyValuePair<string, string>("Accept", "application/json"),
              new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
 
-            //Log.Informational("ResultPaymentUri" + ResultPaymentUri);
             return ResultPaymentUri;
-        }
-
-        private async Task<Token> GetToken(string ContractId, string Jwt)
-        {
-            try
-            {
-                object TokensResult = await InternetContent.PostAsync(
-                 new Uri("https://" + Gateway.Domain + "/Agent/Tokens/GetContractTokens"),
-                  new Dictionary<string, object>()
-                     {
-                            { "contractId", ContractId },
-                            { "offset", null },
-                            { "maxCount", null },
-                            { "references", false },
-                     },
-                 new KeyValuePair<string, string>("Accept", "application/json"),
-                 new KeyValuePair<string, string>("Authorization", "Bearer " + Jwt));
-
-                if (TokensResult is Dictionary<string, object> Response)
-                {
-                    if (Response.TryGetValue("Tokens", out object ObjTokens) && ObjTokens is Dictionary<string, object> Tokens)
-                    {
-                        if (Tokens.TryGetValue("token", out object ObjToken) && ObjToken is Dictionary<string, object> Token)
-                        {
-                            //Log.Informational("Token: " + Token);
-                            Token token = new Token();
-
-                            if (Token.TryGetValue("id", out object ObjTokenId) && ObjTokenId is string TokenId)
-                            {
-                                //Log.Informational("id: " + TokenId);
-                                token.TokenId = TokenId;
-                            }
-                            if (Token.TryGetValue("value", out object ObjTokenValue) && ObjTokenValue is string Value)
-                            {
-                                //Log.Informational("value: " + Value);
-                                token.Value = Convert.ToDecimal(Value);
-                            }
-                            if (Token.TryGetValue("currency", out object ObjTokenCurrency) && ObjTokenCurrency is string Currency)
-                            {
-                                //Log.Informational("currency: " + Currency);
-                                token.Currency = Currency;
-                            }
-                            if (Token.TryGetValue("owner", out object ObjTokenOwner) && ObjTokenOwner is string Owner)
-                            {
-                                //Log.Informational("owner: " + Owner);
-                                token.Owner = Owner;
-                            }
-                            if (Token.TryGetValue("ownerJid", out object ObjTokenOwnerJid) && ObjTokenOwnerJid is string OwnerJid)
-                            {
-                                // Log.Informational("ownerJid: " + OwnerJid);
-                                token.OwnerJid = OwnerJid;
-                            }
-                            if (Token.TryGetValue("callBackUrl", out object ObjCallBackUrl) && ObjCallBackUrl is string CallBackUrl)
-                            {
-                                Log.Informational("callBackUrl: " + CallBackUrl);
-                                token.CallBackUrl = CallBackUrl;
-                            }
-
-
-                            return token;
-                        }
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Log.Informational("GetToken " + ex.Message);
-            }
-            return null;
         }
 
         private async Task<string> GetSigniture(string PaymentUri, string Jwt)
@@ -554,16 +457,16 @@ namespace POWRS.Payout
             return String.Empty;
         }
 
-        private async Task<string> CreateBuyEdalerContract(string BuyEdalerTemplateId, string Jwt, Token token, string BankAccount, string TabId, bool requestFromMobilePhone)
+        private async Task<string> CreateBuyEdalerContract(string Jwt, InitiatePaymentRequest Request)
         {
             try
-            {               
+            {
                 string TrustProvider = await RuntimeSettings.GetAsync("POWRS.PaymentLink.TrustProviderLegalId", string.Empty); ;
                 string LegalIdOPPUser = await RuntimeSettings.GetAsync("POWRS.PaymentLink.OPPUserLegalId", string.Empty);
 
                 Log.Informational("TrustProvider: " + TrustProvider);
                 Log.Informational("LegalIdOPPUser:" + LegalIdOPPUser);
-                
+
                 List<IDictionary<CaseInsensitiveString, object>> PartsList = new List<IDictionary<CaseInsensitiveString, object>>()
                  {
                   new Dictionary<CaseInsensitiveString, object>()
@@ -583,17 +486,17 @@ namespace POWRS.Payout
                 {
                   new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "Amount" },
-                         { "value" , token.Value }
+                         { "value" , Request.Amount }
                     },
 
                   new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "Currency" },
-                         { "value" , token.Currency }
+                         { "value" , Request.Currency }
                     },
 
                   new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "Account" },
-                         { "value" , BankAccount}
+                         { "value" , Request.BankAccount}
                     },
 
                   new Dictionary<CaseInsensitiveString, object>()
@@ -606,7 +509,7 @@ namespace POWRS.Payout
                     },
                      new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "tabId" },
-                         { "value" , TabId }
+                         { "value" , Request.TabId }
                     },
                      new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "callBackUrl" },
@@ -618,7 +521,7 @@ namespace POWRS.Payout
                  new Uri("https://" + Gateway.Domain + "/Agent/Legal/CreateContract"),
                   new Dictionary<string, object>()
                      {
-                            { "templateId", BuyEdalerTemplateId },
+                            { "templateId", Request.BuyEdalerTemplateId },
                             { "visibility", "CreatorAndParts" },
                             { "Parts", PartsList},
                             { "Parameters", ParametersList }
@@ -690,9 +593,10 @@ namespace POWRS.Payout
             this._edalerClient?.Dispose();
             this._contractsClient?.Dispose();
             this._xmppClient.Dispose();
-            this.CurrentToken = null;
-            this.BuyEdalerContractId = null;
+            this._ongoingPaymentRequest = null;
+            this._ongoingBuyEdalerContractId = null;
             this.JwtToken = null;
+            _edalerClient.BalanceUpdated -= EDalerClient_BalanceUpdated;
         }
     }
 }
