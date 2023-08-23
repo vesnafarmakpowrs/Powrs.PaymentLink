@@ -44,10 +44,9 @@ R := POST(NeuronAddress + "/Agent/Account/Login",
 
 Token := "Bearer " + R.jwt;
 
-t:= "2c68d4ab-03bc-fba1-4019-d59180c12602@legal.lab.neuron.vaulter.rs";
-TemplateId:="2c4be7d4-32ae-033a-1022-ff6e374fa7f6@legal.lab.neuron.vaulter.rs";
+TemplateId:="2c68d4ab-03bc-fba1-4019-d59180c12602@legal.lab.neuron.vaulter.rs";
 
-Contract:=CreateContract(PUserName,t, "Public",
+Contract:=CreateContract(PUserName,TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
 	    "Title": PTitle,
