@@ -1,4 +1,3 @@
-
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
@@ -20,14 +19,21 @@ if !exists(Posted) then BadRequest("No payload.");
     "callbackUrl":Optional(String(PCallBackUrl))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
+normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PBuyerCountryCode, PBuyerPersonalNum);
+isValid = Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PBuyerCountryCode ,normalizedPersonalNumber);
+
+if(!isValid) then 
+(
+    BadRequest("Personal number:" + PBuyerPersonalNum + " is not valid for the country: " + PBuyerCountryCode);
+)
 
 Nonce := Base64Encode(RandomBytes(32));
 S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
 
 Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
+NeuronAddress:= "https://" + Waher.IoTGateway.Gateway.Domain;
 
-
-R := POST("https://lab.neuron.vaulter.rs/Agent/Account/Login",
+R := POST(NeuronAddress + "/Agent/Account/Login",
                  {
                   "userName": PUserName,
                   "nonce": Nonce,
@@ -60,7 +66,6 @@ Contract:=CreateContract(PUserName,t, "Public",
     
 LegalIdentity :=select top 1 * from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc ;
 
-
 LegalId := LegalIdentity.Id;
 Nonce := Base64Encode(RandomBytes(32));
 
@@ -78,7 +83,7 @@ Role := "Creator";
 S2 := S1 + ":" + KeySignature + ":" + Nonce + ":" + LegalId + ":" + ContractId + ":" + Role;
 RequestSignature := Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
 
-ResponseSignContract := POST("https://lab.neuron.vaulter.rs/Agent/Legal/SignContract",
+ResponseSignContract := POST(NeuronAddress + "/Agent/Legal/SignContract",
                              {
 	                        "keyId": KeyId,
 	                        "legalId": LegalId,
@@ -95,7 +100,7 @@ ResponseSignContract := POST("https://lab.neuron.vaulter.rs/Agent/Legal/SignCont
 
 State := select top 1 State from Contracts where ContractId = ContractId;
 
-Link := "https://lab.neuron.vaulter.rs/Payout/Payout.md?ID=" + Replace(ContractId,"@legal.lab.neuron.vaulter.rs","");
+Link := NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal.lab.neuron.vaulter.rs","");
 {
     "Link" : Link
 }

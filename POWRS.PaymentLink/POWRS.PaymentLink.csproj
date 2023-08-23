@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-	</PropertyGroup>
+	<PropertyGroup />
 
 	<ItemGroup>
 		<None Remove="Root\Payout\Events.js" />
@@ -91,7 +89,7 @@
 
 	<PropertyGroup>
 
-		<TargetFramework>netcoreapp2.0</TargetFramework>
+		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 	
 </Project>

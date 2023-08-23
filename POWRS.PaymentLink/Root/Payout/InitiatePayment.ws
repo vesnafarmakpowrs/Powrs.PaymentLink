@@ -48,15 +48,14 @@ InitiatePaymentRequest.Amount = AmountToPay;
 InitiatePaymentRequest.CallBackUrl = CallBackUrl;
 InitiatePaymentRequest.TokenId = Token.TokenId;
 InitiatePaymentRequest.OwnerJid = Token.OwnerJid;
-InitiatePaymentRequest.Owner = Token.Owner;
 InitiatePaymentRequest.Currency = Currency;
 InitiatePaymentRequest.BuyEdalerTemplateId:= PBuyEdalerTemplateId;
-InitiatePaymentRequest.ContractID:= PContractId;
+InitiatePaymentRequest.ContractId:= PContractId;
 InitiatePaymentRequest.BankAccount:= PBuyerBankAccount;
 InitiatePaymentRequest.ServiceProviderId:= ServiceProviderId;
 InitiatePaymentRequest.ServiceProviderType:= ServiceProviderType;
 InitiatePaymentRequest.TabId:= PTabID;
-InitiatePaymentRequest.RequestFromMobilePhone:= False;
+InitiatePaymentRequest.RequestFromMobilePhone:= false;
 InitiatePaymentRequest.RemoteEndpoint:= Request.RemoteEndPoint;
 
 results := OPService.InitiatePayment(InitiatePaymentRequest);

@@ -78,25 +78,15 @@ namespace POWRS.Payout
 
                 if (Request is null)
                 {
-                    return new PaymentResult("Payment request is not valid, missing info.");
+                    return new PaymentResult("Payment request could not be empty");
                 }
 
-                Request.LogRequestValues();
+                string validationMessage = Request.Validate();
 
-                if (string.IsNullOrEmpty(Request.BuyEdalerTemplateId))
+                if (!string.IsNullOrEmpty(validationMessage))
                 {
-                    Log.Informational("BuyEdalerTemplateId could not be empty");
-                    return new PaymentResult("BuyEdalerTemplateId could not be empty");
-                }
-                if (string.IsNullOrEmpty(Request.ContractID))
-                {
-                    Log.Informational("ContractID could not be empty");
-                    return new PaymentResult("ContractID could not be empty");
-                }
-                if (string.IsNullOrEmpty(Request.BankAccount))
-                {
-                    Log.Informational("BankAccount could not be empty");
-                    return new PaymentResult("BankAccount could not be empty");
+                    Log.Informational(validationMessage);
+                    return new PaymentResult(validationMessage);
                 }
 
                 if (!await IsConnected())
@@ -505,7 +495,7 @@ namespace POWRS.Payout
                     },
                    new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "requestFromMobilePhone" },
-                         { "value" , "false" }
+                         { "value" , Request.RequestFromMobilePhone.ToString().ToLowerInvariant() }
                     },
                      new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "tabId" },
@@ -513,7 +503,7 @@ namespace POWRS.Payout
                     },
                      new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "callBackUrl" },
-                         { "value" , "https://rebnis.com" }
+                         { "value" , Request.CallBackUrl }
                     }
                 };
 
