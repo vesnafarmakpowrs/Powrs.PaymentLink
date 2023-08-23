@@ -85,6 +85,8 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
 {
     "userName": Required(String(PUserName)),
     "password": Required(String(PPassword)),
+    "keyId" : Required(String(PKeyId)),
+    "keyPassword" : Required(String(PKeyPassword)),
     "orderNum":Required(String(PRemoteId)),
     "title":Required(String(PTitle)),
     "price":Required(Integer(PPrice)),
@@ -108,6 +110,8 @@ Description of properties:
 |:------------------|:------------|
 | `userName`        | Client User Name on Vaulter neuron. |
 | `password`        | Client Password on Vaulter Neuron. |
+| `keyId`           | Client Key Id on Vaulter neuron. |
+| `keyPassword`     | Client Key Password on Vaulter Neuron. |
 | `orderNum`        | ID of item in the caller's system. |
 | `title`           | Displayable name of item. |
 | `price`           | Price of the item. |

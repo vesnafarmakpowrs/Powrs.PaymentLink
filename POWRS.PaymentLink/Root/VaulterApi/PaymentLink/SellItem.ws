@@ -4,6 +4,8 @@ if !exists(Posted) then BadRequest("No payload.");
 ({
     "userName": Required(String(PUserName)),
     "password": Required(String(PPassword)),
+    "keyId" : Required(String(PKeyId)),
+    "keyPassword" : Required(String(PKeyPassword)),
     "orderNum":Required(String(PRemoteId)),
     "title":Required(String(PTitle)),
     "price":Required(Integer(PPrice)),
@@ -27,7 +29,7 @@ S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
 Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
 
 
-R := POST("https://lab.neuron.vaulter.rs/Agent/Account/Login",
+R := POST("https://" + Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
                  {
                   "userName": PUserName,
                   "nonce": Nonce,
@@ -38,7 +40,7 @@ R := POST("https://lab.neuron.vaulter.rs/Agent/Account/Login",
 
 Token := "Bearer " + R.jwt;
 
-t:= "2c68d4ab-03bc-fba1-4019-d59180c12602@legal.lab.neuron.vaulter.rs";
+t:= "2c779265-831b-a0b7-3414-c04ca7e943a1@legal.neuron.vaulter.se";
 TemplateId:="2c4be7d4-32ae-033a-1022-ff6e374fa7f6@legal.lab.neuron.vaulter.rs";
 
 Contract:=CreateContract(PUserName,t, "Public",
@@ -66,11 +68,9 @@ Nonce := Base64Encode(RandomBytes(32));
 
 LocalName := "ed448";
 Namespace := "urn:ieee:iot:e2e:1.0";
-KeyId := GetSetting("POWRS.PaymentLink.ApiKey","");
-KeyPassword:= GetSetting("POWRS.PaymentLink.ApiKeySecret","");
 
-S1 := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
-KeySignature := Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(KeyPassword)));
+S1 := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + PKeyId;
+KeySignature := Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(PKeyPassword)));
 
 ContractId := Contract.ContractId;
 Role := "Creator";
@@ -78,9 +78,9 @@ Role := "Creator";
 S2 := S1 + ":" + KeySignature + ":" + Nonce + ":" + LegalId + ":" + ContractId + ":" + Role;
 RequestSignature := Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
 
-ResponseSignContract := POST("https://lab.neuron.vaulter.rs/Agent/Legal/SignContract",
+ResponseSignContract := POST("https://" + Waher.IoTGateway.Gateway.Domain + "/Agent/Legal/SignContract",
                              {
-	                        "keyId": KeyId,
+	                        "keyId": PKeyId,
 	                        "legalId": LegalId,
 	                        "contractId": ContractId,
 	                        "role": Role,
@@ -95,7 +95,7 @@ ResponseSignContract := POST("https://lab.neuron.vaulter.rs/Agent/Legal/SignCont
 
 State := select top 1 State from Contracts where ContractId = ContractId;
 
-Link := "https://lab.neuron.vaulter.rs/Payout/Payout.md?ID=" + Replace(ContractId,"@legal.lab.neuron.vaulter.rs","");
+Link := "https://" + Waher.IoTGateway.Gateway.Domain + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal." + Waher.IoTGateway.Gateway.Domain,"");
 {
     "Link" : Link
 }
