@@ -174,12 +174,6 @@ namespace POWRS.Payout
                     return;
                 }
 
-                if (e.Balance?.Event?.Change == null)
-                {
-                    Log.Error(new Exception("Change could not be null"));
-                    return;
-                }
-
                 if (e.Balance.Event.Change > 0)
                 {
                     await EdalerAddedInWallet(e.Balance.Event);
@@ -192,7 +186,7 @@ namespace POWRS.Payout
             finally
             {
                 // Log.Unregister(new PaymentCompletedEventSink());
-                Dispose();
+                await Dispose();
             }
         }
 
@@ -223,13 +217,8 @@ namespace POWRS.Payout
         {
             public static byte[] GetRandomBytes(int length)
             {
-                // Create a byte array to store the random bytes
                 byte[] randomBytes = new byte[length];
-
-                // Create a Random object to generate random numbers
                 Random random = new Random();
-
-                // Generate random bytes and store them in the byte array
                 random.NextBytes(randomBytes);
 
                 return randomBytes;
@@ -266,6 +255,26 @@ namespace POWRS.Payout
             {
                 Log.Error(ex);
             }
+            finally
+            {
+
+            }
+        }
+
+        private async Task LogoutFromUserAgent()
+        {
+            try
+            {
+                object Result = await InternetContent.PostAsync(
+                    new Uri("https://" + Gateway.Domain + "/Agent/Account/Login"),
+                     new Dictionary<string, object>() { },
+                    new KeyValuePair<string, string>("Accept", "application/json"));
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Inable to logout from user agent api");
+                Log.Error(ex);
+            }
         }
 
         private async Task<string> LoginToUserAgent()
@@ -289,7 +298,7 @@ namespace POWRS.Payout
                         { "userName", UserName },
                         { "nonce", Nonce },
                         { "signature", Signature },
-                        { "seconds", 70 },
+                        { "seconds", 45 },
                     },
                     new KeyValuePair<string, string>("Accept", "application/json"));
 
@@ -385,7 +394,9 @@ namespace POWRS.Payout
                 if (ResultSignature is Dictionary<string, object> Response)
                 {
                     if (Response.TryGetValue("Signature", out object ObjSignature) && ObjSignature is string Signature)
+                    {
                         return Signature;
+                    }
                 }
             }
             catch (System.Exception ex)
@@ -578,7 +589,7 @@ namespace POWRS.Payout
             return Uri.ToString();
         }
 
-        public void Dispose()
+        public async Task Dispose()
         {
             this._edalerClient?.Dispose();
             this._contractsClient?.Dispose();
@@ -587,6 +598,7 @@ namespace POWRS.Payout
             this._ongoingBuyEdalerContractId = null;
             this.JwtToken = null;
             _edalerClient.BalanceUpdated -= EDalerClient_BalanceUpdated;
+            await this.LogoutFromUserAgent();
         }
     }
 }
