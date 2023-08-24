@@ -38,7 +38,7 @@ R := POST(NeuronAddress + "/Agent/Account/Login",
                   "userName": PUserName,
                   "nonce": Nonce,
 	              "signature": Signature,
-	              "seconds": 60
+	              "seconds": 10
                   },
 		{"Accept" : "application/json"});
 
@@ -94,10 +94,11 @@ ResponseSignContract := POST(NeuronAddress + "/Agent/Legal/SignContract",
                                 },
 			      {
 				"Accept" : "application/json",
-                                "Authorization": Token
+                           "Authorization": Token
                               });
 
-State := select top 1 State from Contracts where ContractId = ContractId;
+
+POST(NeuronAddress + "/Agent/Account/Logout", { }, {"Accept" : "application/json"});
 
 Link := NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal.lab.neuron.vaulter.rs","");
 {
