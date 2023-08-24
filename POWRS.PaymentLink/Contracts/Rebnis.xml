@@ -43,6 +43,9 @@
 				<Variable id="TokenContract">
 					<TokenProperty>CreationContract</TokenProperty>
 				</Variable>
+				<Variable id="TokenId">
+					<TokenProperty>TokenId</TokenProperty>
+				</Variable>
 				<Variable id="Buyer">
 					<TagReference tag="Buyer" />
 				</Variable>
@@ -75,6 +78,8 @@
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
+					<OnEnter actionRef="ReportNewState"
+						beforeActionScript="NewState:='AwaitingForPayment'" />
 					<OnEvent actionRef="BuyerServiceProviderSelected">
 						<OnExternalXmlNote localName="ServiceProviderSelected"
 							namespace="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd"
@@ -88,6 +93,8 @@
 					</OnEvent>
 				</State>
 				<State id="PaymentCompleted">
+					<OnEnter actionRef="ReportNewState"
+						beforeActionScript="NewState:='PaymentCompleted'" />
 					<OnEvent newState="ServiceDelivered">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
@@ -117,6 +124,10 @@
 				<State id="Done">
 					<OnEnter actionRef="End" />
 				</State>
+				<Action id="ReportNewState">
+					<LogEvent actor="{Seller}" eventId="StateChanged" level="Medium"
+						message="{'StateChanged to: ' + NewState }" object="{Seller}" type="Informational" />
+				</Action>
 				<Action id="BuyerServiceProviderSelected">
 					<Script>
 						BuyerBankAccount:=SelectXmlStr(Note,'/default:ServiceProviderSelected/@buyerBankAccount');
@@ -147,22 +158,22 @@
 					</If>
 				</Action>
 				<Action id="CheckPayment">
-					<If condition="exists(AmountPaid) and AmountPaid >= AmountToPay">
-						<Then>
+					<!-- <If condition="exists(AmountPaid) and AmountPaid >= AmountToPay">
+						<Then> -->
 							<PersistVariable name="TotalAmountPaid" value="{AmountPaid}" />
 							<PersistVariable name="PaymentDateTime" value="{Now}" />
 							<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium"
 								message="{'PaymentCompleted, amountPaid: ' + TotalAmountPaid + ' ' + Currency}" object="{Buyer}" type="Informational" />
-						</Then>
+						<!-- </Then>
 						<Else>
 							<PersistVariable name="TotalAmountPaid" value="0" />
 							<PersistVariable name="PaymentDateTime" value="{Now}" />
 							<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium"
 								message="{'PaymentCompleted but with error, amountPaid: ' + TotalAmountPaid + ' ' + Currency '. Expected amount: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
 							<Error
-								reason="{'ExpectedAmount: ' + AmountToPay + ' ' + Currency + '. Paid amount: ' + AmountPaid + ' ' + Currency + 'nfeat:' + TokenContract}" />
+								reason="{'ExpectedAmount: ' + AmountToPay + ' ' + Currency + '. Paid amount: ' + AmountPaid + ' ' + Currency + 'nfeat:' + TokenId}" />
 						</Else>
-					</If>
+					</If> -->
 				</Action>
 				<Action id="ReturnFunds">
 					<If condition="TotalAmountPaid >= AmountToPay">
@@ -170,7 +181,7 @@
 							<Try>
 								<SellEDaler amount="{Value}" contract="{TokenContract}"
 									currency="{Currency}" from="{Seller}"
-									reference="{Reference:='nfeat:'+TokenContract}"
+									reference="{Reference:='nfeat:'+ TokenId}"
 									serviceId="{BuyerServiceProviderId}"
 									serviceProvider="{BuyerServiceProviderType}">
 									<Parameter key="Amount" value="{Value}" />
@@ -194,7 +205,7 @@
 								message="Unable to return funds due to insuffiecent payment. "
 								object="{Buyer}" type="Informational" />
 							<Error
-								reason="{ 'Unable to return funds due to insuffiecent payment. nfeat:' + TokenContract}" />
+								reason="{ 'Unable to return funds due to insuffiecent payment. nfeat:' + TokenId}" />
 						</Else>
 					</If>
 				</Action>
@@ -218,7 +229,7 @@
 					<Try>
 						<Payment amount="{EscrowFee}" contract="{TokenContract}"
 							currency="{Currency}" from="{Seller}"
-							reference="{Reference:='nfeat:'+TokenId}" to="{EscrowFeeJid}"
+							reference="{Reference:='nfeat:'+ TokenId}" to="{EscrowFeeJid}"
 							validDays="3" />
 						<PersistVariable name="FeesTransfered" value="true" />
 						<TextNote
@@ -235,7 +246,7 @@
 					<Try>
 						<SellEDaler amount="{TotalAmountPaid}" contract="{TokenContract}"
 							currency="{Currency}" from="{Seller}"
-							reference="{Reference:='nfeat:'+TokenId}"
+							reference="{Reference:='nfeat:'+ TokenId}"
 							serviceId="{ServiceProviderId}" serviceProvider="{ServiceProviderType}">
 							<Parameter key="Amount" value="{AmountToSell}" />
 							<Parameter key="Currency" value="{Currency}" />
