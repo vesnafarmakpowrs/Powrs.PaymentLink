@@ -186,7 +186,7 @@ namespace POWRS.Payout
             finally
             {
                 // Log.Unregister(new PaymentCompletedEventSink());
-                await Dispose();
+                 Dispose();
             }
         }
 
@@ -589,16 +589,23 @@ namespace POWRS.Payout
             return Uri.ToString();
         }
 
-        public async Task Dispose()
+        public async void Dispose()
         {
-            this._edalerClient?.Dispose();
-            this._contractsClient?.Dispose();
-            this._xmppClient.Dispose();
-            this._ongoingPaymentRequest = null;
-            this._ongoingBuyEdalerContractId = null;
-            this.JwtToken = null;
-            _edalerClient.BalanceUpdated -= EDalerClient_BalanceUpdated;
-            await this.LogoutFromUserAgent();
+            try
+            {
+                this._edalerClient?.Dispose();
+                this._contractsClient?.Dispose();
+                this._xmppClient.Dispose();
+                this._ongoingPaymentRequest = null;
+                this._ongoingBuyEdalerContractId = null;
+                this.JwtToken = null;
+                _edalerClient.BalanceUpdated -= EDalerClient_BalanceUpdated;
+                await this.LogoutFromUserAgent();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Unable to dispose payout servcice. Error: " + ex.Message);
+            }
         }
     }
 }

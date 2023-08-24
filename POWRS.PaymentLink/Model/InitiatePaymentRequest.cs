@@ -86,7 +86,7 @@ namespace POWRS.PaymentLink.Model
 
         public string Validate()
         {
-            StringBuilder sb = new();
+            StringBuilder sb = new StringBuilder();
             Type type = this.GetType();
             PropertyInfo[] properties = type.GetProperties();
 
@@ -95,7 +95,7 @@ namespace POWRS.PaymentLink.Model
                 var propertyValue = property.GetValue(this);
                 var mandatoryAttribute = property.GetCustomAttribute(typeof(MandatoryAttribute));
 
-                if (mandatoryAttribute is not null)
+                if (mandatoryAttribute != null)
                 {
                     continue;
                 }

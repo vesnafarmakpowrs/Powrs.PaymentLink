@@ -37,6 +37,9 @@
 				<Variable id="AmountToPay">
 					<TagReference tag="AmountToPay" />
 				</Variable>
+				<Variable id="Price">
+					<TagReference tag="Value" />
+				</Variable>
 				<Variable id="Currency">
 					<TagReference tag="Currency" />
 				</Variable>
@@ -77,7 +80,7 @@
 					<TagReference tag="DeliveryDate" />
 				</Variable>
 				<State id="AwaitingForPayment">
-					<OnEnter actionRef="AuthorizeServer" />
+					<OnEnter actionRef="AuthorizeServer" />		
 					<OnEnter actionRef="ReportNewState"
 						beforeActionScript="NewState:='AwaitingForPayment'" />
 					<OnEvent actionRef="BuyerServiceProviderSelected">
@@ -93,15 +96,16 @@
 					</OnEvent>
 				</State>
 				<State id="PaymentCompleted">
+					<OnEnter actionRef="UnauthorizeServer" />
 					<OnEnter actionRef="ReportNewState"
 						beforeActionScript="NewState:='PaymentCompleted'" />
 					<OnEvent newState="ServiceDelivered">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
-					<OnEvent newState="Cancel">
-						<OnExternalXmlNote localName="Cancel"
+					<OnEvent newState="Cancel" failureState="PaymentCompleted">
+						<OnXmlNote localName="Cancel"
 							namespace="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd"
-							noteVariable="Note" sourceVariable="Source" />
+							noteVariable="Note" />
 					</OnEvent>
 				</State>
 				<State id="PaymentNotPerformed">
@@ -139,13 +143,7 @@
 						value="{BuyerEdalerServiceProviderId}" />
 					<PersistVariable name="BuyerServiceProviderType"
 						value="{BuyerEdalerServiceProviderType}" />
-				</Action>
-				<Action id="LogPayment">
-					<LogEvent actor="{Seller}" eventId="AuthorizeSource" level="Medium"
-						message="OnPaymentRecieved invoked." object="{Seller}" type="Informational" />
-					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium"
-						message="OnPaymentRecieved invoked." object="{Seller}" type="Informational" />
-				</Action>
+				</Action>				
 				<Action id="ProcessBuyerPayment">
 					<If
 						condition="empty(ConditionForPayment) and CurrencyPaid=Currency and AmountPaid &gt;= AmountToPay ">
@@ -176,15 +174,17 @@
 					</If> -->
 				</Action>
 				<Action id="ReturnFunds">
-					<If condition="TotalAmountPaid >= AmountToPay">
+					<LogEvent actor="{Seller}" eventId="ReturnFunds" level="Medium"
+								message="Funds return in progress..." object="{Buyer}" type="Informational" />
+					<!-- <If condition="TotalAmountPaid >= Price">
 						<Then>
 							<Try>
-								<SellEDaler amount="{Value}" contract="{TokenContract}"
+								<SellEDaler amount="{Price}" contract="{TokenContract}"
 									currency="{Currency}" from="{Seller}"
 									reference="{Reference:='nfeat:'+ TokenId}"
 									serviceId="{BuyerServiceProviderId}"
 									serviceProvider="{BuyerServiceProviderType}">
-									<Parameter key="Amount" value="{Value}" />
+									<Parameter key="Amount" value="{Price}" />
 									<Parameter key="Currency" value="{Currency}" />
 									<Parameter key="Account" value="{BuyerBankAccount}" />
 									<Parameter key="AccountName" value="{Buyer}" />
@@ -207,13 +207,13 @@
 							<Error
 								reason="{ 'Unable to return funds due to insuffiecent payment. nfeat:' + TokenId}" />
 						</Else>
-					</If>
+					</If> -->
 				</Action>
 				<Action id="AuthorizeServer">
-					<AuthorizeSource source="OPPUser@lab.neuron.vaulter.rs" />
-					<LogEvent actor="{Seller}" eventId="AuthorizeSource" level="Medium"
-						message="OPPUser@lab.neuron.vaulter.rs authorized" object="{Seller}"
-						type="Informational" />
+					<AuthorizeSource source="OPPUser@lab.neuron.vaulter.rs" />					
+				</Action>
+				<Action id="UnauthorizeServer">
+					<UnauthorizeSource source="OPPUser@lab.neuron.vaulter.rs" />					
 				</Action>
 				<Action id="ReleaseFunds">
 					<If condition="TotalAmountPaid &lt; AmountToPay">
