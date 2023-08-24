@@ -8,12 +8,13 @@
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-   Contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId = PContractId;
-   Token:= select top 1 * from NeuroFeatureTokens where OwnershipContract = PContractId;
-   if (Contract == null || Token == null) then 
-   (
+Contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId = PContractId;
+Token:= select top 1 * from NeuroFeatureTokens where OwnershipContract = PContractId;
+
+if (Contract == null || Token == null) then 
+(
 	NotFound("Contract or token not found.")
-   );
+);
 	
 P:=GetServiceProvidersForSellingEDaler('SE','SEK');
 ServiceProviderId := "";

@@ -134,6 +134,8 @@ Call this resource to cancel an Item in Vaulter. JSON in the following format is
 
 ```
 {
+    "userName": Required(String(userName)),
+    "password": Required(String(password)),
     "contractId": Required(String(contractId))
 }
 ```
@@ -142,4 +144,6 @@ Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
+| `userName`        | Same username used to register an item in our system |
+| `password`        | Same password used to register an item in our system |
 | `contractId`      | Contract Id. This id is returned as a response of sellItem |
