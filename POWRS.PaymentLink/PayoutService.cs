@@ -105,12 +105,18 @@ namespace POWRS.Payout
 
                 await SendServiceProviderSelectedXmlNote(Request);
 
-                string ContractIdBuyEdaler = await CreateBuyEdalerContract(JwtToken, Request);
+                CreateContractResult CreateContractResult = await CreateBuyEdalerContract(JwtToken, Request);
+
+                if (!CreateContractResult.IsSuccess)
+                {
+                    Log.Error(CreateContractResult.ErrorMessage + "ContractId: " + CreateContractResult.ContractId ?? string.Empty);
+                    return new PaymentResult(CreateContractResult.ErrorMessage);
+                }
 
                 _ongoingPaymentRequest = Request;
-                _ongoingBuyEdalerContractId = ContractIdBuyEdaler;
+                _ongoingBuyEdalerContractId = CreateContractResult.ContractId;
 
-                await SignContract(ContractIdBuyEdaler, JwtToken);
+                await SignContract(CreateContractResult.ContractId, JwtToken);
 
                 return new PaymentResult("Contract created ");
             }
@@ -458,8 +464,9 @@ namespace POWRS.Payout
             return String.Empty;
         }
 
-        private async Task<string> CreateBuyEdalerContract(string Jwt, InitiatePaymentRequest Request)
+        private async Task<CreateContractResult> CreateBuyEdalerContract(string Jwt, InitiatePaymentRequest Request)
         {
+            CreateContractResult Result = new CreateContractResult();
             try
             {
                 string TrustProvider = await RuntimeSettings.GetAsync("POWRS.PaymentLink.TrustProviderLegalId", string.Empty); ;
@@ -540,17 +547,17 @@ namespace POWRS.Payout
                         if (Contract.TryGetValue("id", out object ObjContractId) && ObjContractId is string ContractId)
                         {
                             Log.Informational("buyeDalerContractCreated" + ContractId);
-
-                            return ContractId;
+                            Result.ContractId = ContractId;
                         }
                 }
 
             }
             catch (Exception ex)
             {
-                Log.Informational("CreateBuyEdalerContract errorMessage: " + ex.Message);
+                Result.ErrorMessage = ex.Message;
             }
-            return String.Empty;
+
+            return Result;
         }
 
         public async Task<string> CreateFullPaymentUri(string ToBareJid, decimal Amount,
