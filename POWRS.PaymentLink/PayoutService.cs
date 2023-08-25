@@ -186,7 +186,7 @@ namespace POWRS.Payout
             finally
             {
                 // Log.Unregister(new PaymentCompletedEventSink());
-                 Dispose();
+                Dispose();
             }
         }
 
@@ -515,6 +515,10 @@ namespace POWRS.Payout
                      new Dictionary<CaseInsensitiveString, object>()
                     {    { "name" , "callBackUrl" },
                          { "value" , Request.CallBackUrl }
+                    },
+                      new Dictionary<CaseInsensitiveString, object>()
+                    {    { "name" , "personalNumber" },
+                         { "value" , Request.PersonalNumber }
                     }
                 };
 

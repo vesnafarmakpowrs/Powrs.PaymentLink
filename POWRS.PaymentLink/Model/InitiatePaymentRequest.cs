@@ -75,6 +75,12 @@ namespace POWRS.PaymentLink.Model
         public string TabId { get; set; }
 
         /// <summary>
+        /// Personal number of initiator for buying eDaler.
+        /// </summary>
+        [Mandatory]
+        public string PersonalNumber { get; set; }
+
+        /// <summary>
         /// If payment link is initiated from mobile phone.
         /// </summary>
         public bool RequestFromMobilePhone { get; set; }

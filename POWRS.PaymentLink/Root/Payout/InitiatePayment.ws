@@ -31,6 +31,7 @@ Currency:= "";
 CallBackUrl:= "";
 Value := 0;
 EscrowFee := 0;
+PersonalNumber:= "";
 
 foreach Parameter in (Contract.Parameters ?? []) do 
 	  (
@@ -39,12 +40,18 @@ foreach Parameter in (Contract.Parameters ?? []) do
          Parameter.Name like "EscrowFee" ?  EscrowFee := System.String.IsNullOrEmpty(Parameter.MarkdownValue)? 0 :Parameter.MarkdownValue ;
 		 Parameter.Name like "Currency" ?  Currency := Parameter.MarkdownValue;
 		 Parameter.Name like "CallBackUrl" ?  CallBackUrl := Parameter.MarkdownValue;
+		 Parameter.Name like "BuyerPersonalNum" ?  PersonalNumber := Parameter.MarkdownValue;
       );
 AmountToPay :=  Int(Value) + Int(EscrowFee);
 
 if (AmountToPay <= 0 || System.String.IsNullOrEmpty(Currency)) then 
 (
   BadRequest("Amount or currency not existing in the contract");
+);
+
+if(System.String.IsNullOrEmpty(PersonalNumber)) then 
+(
+	 BadRequest("Personal number is not found in the contract");
 );
 
 OPService :=Create(POWRS.Payout.PayoutService);
@@ -55,6 +62,7 @@ InitiatePaymentRequest.CallBackUrl := CallBackUrl;
 InitiatePaymentRequest.TokenId := Token.TokenId;
 InitiatePaymentRequest.OwnerJid := Token.OwnerJid;
 InitiatePaymentRequest.Currency := Currency;
+InitiatePaymentRequest.PersonalNumber := PersonalNumber;
 InitiatePaymentRequest.BuyEdalerTemplateId := PBuyEdalerTemplateId;
 InitiatePaymentRequest.ContractId := PContractId;
 InitiatePaymentRequest.BankAccount := PBuyerBankAccount;
