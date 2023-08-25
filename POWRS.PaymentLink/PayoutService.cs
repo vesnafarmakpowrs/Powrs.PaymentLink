@@ -298,7 +298,7 @@ namespace POWRS.Payout
                         { "userName", UserName },
                         { "nonce", Nonce },
                         { "signature", Signature },
-                        { "seconds", 45 },
+                        { "seconds", 60 },
                     },
                     new KeyValuePair<string, string>("Accept", "application/json"));
 
