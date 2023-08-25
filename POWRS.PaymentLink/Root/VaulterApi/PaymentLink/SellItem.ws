@@ -58,7 +58,7 @@ R := POST(NeuronAddress + "/Agent/Account/Login",
 
 Token := "Bearer " + R.jwt;
 
-TemplateId:="2c79d3c2-70dc-02cb-cc0f-48b429e54234@legal.lab.neuron.vaulter.rs";
+TemplateId:="2c79d3c2-70dc-02cb-cc0f-48b429e54234@legal.neuron.vaulter.se";
 
 Contract:=CreateContract(PUserName,TemplateId, "Public",
     {
@@ -106,5 +106,5 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
                               });
 
 {
-    "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal.lab.neuron.vaulter.rs","")
+    "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal" + Waher.IoTGateway.Gateway.Domain,"")
 }
