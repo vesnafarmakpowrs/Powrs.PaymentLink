@@ -1,9 +1,9 @@
 ({
-        "tabId": Required(Str(PTabID)),
+    "tabId": Required(Str(PTabID)),
 	"sessionId": Required(Str(PSessionId)),
 	"requestFromMobilePhone": Required(Boolean(PRequestFromMobilePhone)),
-        "bicFi": Required(Str(PBicFi)),
-        "bankName": Required(Str(PBankName)),
+    "bicFi": Required(Str(PBicFi)),
+    "bankName": Required(Str(PBankName)),
 	"contractId":Required(Str(PContractId))
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");

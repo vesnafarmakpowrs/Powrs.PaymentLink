@@ -17,8 +17,9 @@ Nonce := Base64Encode(RandomBytes(32));
 S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
 
 Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
+NeuronAddress:= "https://" + Waher.IoTGateway.Gateway.Domain;
 
-Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
+Response := POST(NeuronAddress + "/Agent/Account/Login",
                  {
                   "userName": PUserName,
                   "nonce": Nonce,
@@ -28,11 +29,11 @@ Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account
 		          {"Accept" : "application/json"});
 
 
-xmlNote := "<PaymentCompleted xmlns='https://neuron.vaulter.rs/Downloads/EscrowRebnis.xsd' />";
+xmlNote := "<PaymentCompleted xmlns='https://" + NeuronAddress + "/Downloads/EscrowRebnis.xsd' />";
 
 
 
-xmlNoteResponse := POST("https://lab.neuron.vaulter.rs/Agent/Tokens/AddXmlNote",
+xmlNoteResponse := POST(NeuronAddress + "/Agent/Tokens/AddXmlNote",
                  {
                   "tokenId": TokenId,
 	              "note":xmlNote,

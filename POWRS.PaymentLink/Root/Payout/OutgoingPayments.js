@@ -116,7 +116,7 @@ function StartPayment(BuyEdalerTemplateId, iban, bic) {
 
     const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "BuyEdaler.ws", true);
+    xhttp.open("POST", "InitiatePayment.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(

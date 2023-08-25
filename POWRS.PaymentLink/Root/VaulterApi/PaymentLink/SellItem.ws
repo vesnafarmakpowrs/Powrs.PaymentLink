@@ -22,28 +22,51 @@ if !exists(Posted) then BadRequest("No payload.");
     "callbackUrl":Optional(String(PCallBackUrl))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
+LegalId := select top 1 Id from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc;
+if(System.String.IsNullOrEmpty(LegalId)) then
+(
+    BadRequest("User " + PUserName + " does not have approved legal identity so it is unable to sign contracts");
+);
+
+KeyId := GetSetting(PUserName + ".KeyId","");
+KeyPassword:= GetSetting(PUserName + ".KeySecret","");
+
+if(System.String.IsNullOrEmpty(KeyId) || System.String.IsNullOrEmpty(KeyPassword)) then 
+(
+    BadRequest("No signing keys or password available for user: " + PUserName);
+);
+
+normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PBuyerCountryCode, PBuyerPersonalNum);
+isValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PBuyerCountryCode ,normalizedPersonalNumber);
+
+if(!isValid) then 
+(
+    BadRequest("Personal number: " + PBuyerPersonalNum + " is not valid for the country: " + PBuyerCountryCode);
+);
 
 Nonce := Base64Encode(RandomBytes(32));
 S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
 
 Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
+NeuronAddress:= "https://" + Waher.IoTGateway.Gateway.Domain;
 
+R := POST(NeuronAddress + "/Agent/Account/Login",
 
-R := POST("https://" + Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
                  {
                   "userName": PUserName,
                   "nonce": Nonce,
 	              "signature": Signature,
-	              "seconds": 60
+	              "seconds": 10
                   },
 		{"Accept" : "application/json"});
 
 Token := "Bearer " + R.jwt;
 
-t:= "2c779265-831b-a0b7-3414-c04ca7e943a1@legal.neuron.vaulter.se";
-TemplateId:="2c4be7d4-32ae-033a-1022-ff6e374fa7f6@legal.lab.neuron.vaulter.rs";
 
-Contract:=CreateContract(PUserName,t, "Public",
+TemplateId:="2c79d3c2-70dc-02cb-cc0f-48b429e54234@legal.neuron.vaulter.se";
+
+
+Contract:=CreateContract(PUserName,TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
 	    "Title": PTitle,
@@ -59,11 +82,6 @@ Contract:=CreateContract(PUserName,t, "Public",
         "CallBackUrl" : PCallBackUrl
     });
 
-    
-LegalIdentity :=select top 1 * from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc ;
-
-
-LegalId := LegalIdentity.Id;
 Nonce := Base64Encode(RandomBytes(32));
 
 LocalName := "ed448";
@@ -78,7 +96,8 @@ Role := "Creator";
 S2 := S1 + ":" + KeySignature + ":" + Nonce + ":" + LegalId + ":" + ContractId + ":" + Role;
 RequestSignature := Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
 
-ResponseSignContract := POST("https://" + Waher.IoTGateway.Gateway.Domain + "/Agent/Legal/SignContract",
+POST(NeuronAddress + "/Agent/Legal/SignContract",
+
                              {
 	                        "keyId": PKeyId,
 	                        "legalId": LegalId,
@@ -90,12 +109,10 @@ ResponseSignContract := POST("https://" + Waher.IoTGateway.Gateway.Domain + "/Ag
                                 },
 			      {
 				"Accept" : "application/json",
-                                "Authorization": Token
+                           "Authorization": Token
                               });
 
-State := select top 1 State from Contracts where ContractId = ContractId;
 
-Link := "https://" + Waher.IoTGateway.Gateway.Domain + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal." + Waher.IoTGateway.Gateway.Domain,"");
 {
-    "Link" : Link
+    "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal." + Waher.IoTGateway.Gateway.Domain,"")
 }

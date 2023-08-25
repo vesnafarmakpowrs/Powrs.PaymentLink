@@ -12,7 +12,7 @@
 			</Folder>
 		</Folder>
 		<Folder name="Payout">
-				<Content fileName="BuyEDaler.ws"/>
+				<Content fileName="InitiatePayment.ws"/>
 				<Content fileName="Events.js"/>
 				<Content fileName="GetAccountInfo.ws"/>
 				<Content fileName="GetBuyEdalerServiceProviders.ws"/>

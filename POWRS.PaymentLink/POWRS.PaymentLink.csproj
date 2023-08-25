@@ -1,13 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-	</PropertyGroup>
+	<PropertyGroup />
 
 	<ItemGroup>
-		<None Remove="Root\Payout\BuyEDaler.ws" />
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
+		<None Remove="Root\Payout\InitiatePayment.ws" />
 		<None Remove="Root\Payout\OutgoingPayments.js" />
 		<None Remove="Root\Payout\Payout - Copy.md" />
 		<None Remove="Root\Payout\Payout.cssx" />
@@ -33,7 +31,7 @@
 		<Content Include="Root\VaulterApi\PaymentLink\Index.md">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\BuyEDaler.ws">
+		<Content Include="Root\Payout\InitiatePayment.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\Events.js">
