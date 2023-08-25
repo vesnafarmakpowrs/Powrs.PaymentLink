@@ -100,9 +100,9 @@
 					<OnEnter actionRef="ReportNewState"
 						beforeActionScript="NewState:='PaymentCompleted'" />
 					<OnEvent newState="ServiceDelivered">
-						<OnDateTime>{DeliveryDate}</OnDateTime>
+						<OnDuration>P7D</OnDuration>
 					</OnEvent>
-					<OnEvent newState="Cancel" failureState="PaymentCompleted">
+					<OnEvent actionRef="ReturnFunds" newState="Cancel" failureState="PaymentCompleted">
 						<OnXmlNote localName="Cancel"
 							namespace="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd"
 							noteVariable="Note" />
@@ -120,7 +120,6 @@
 					</OnEvent>
 				</State>
 				<State id="Cancel">
-					<OnEnter actionRef="ReturnFunds" />
 					<OnEvent newState="Done">
 						<OnDuration>PT10S</OnDuration>
 					</OnEvent>
@@ -156,27 +155,27 @@
 					</If>
 				</Action>
 				<Action id="CheckPayment">
-					<!-- <If condition="exists(AmountPaid) and AmountPaid >= AmountToPay">
-						<Then> -->
+					<If condition="exists(AmountPaid) and AmountPaid >= AmountToPay">
+						<Then>
 							<PersistVariable name="TotalAmountPaid" value="{AmountPaid}" />
 							<PersistVariable name="PaymentDateTime" value="{Now}" />
 							<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium"
 								message="{'PaymentCompleted, amountPaid: ' + TotalAmountPaid + ' ' + Currency}" object="{Buyer}" type="Informational" />
-						<!-- </Then>
+						</Then>
 						<Else>
-							<PersistVariable name="TotalAmountPaid" value="0" />
+							<PersistVariable name="TotalAmountPaid" value="{AmountPaid}" />
 							<PersistVariable name="PaymentDateTime" value="{Now}" />
 							<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium"
 								message="{'PaymentCompleted but with error, amountPaid: ' + TotalAmountPaid + ' ' + Currency '. Expected amount: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
 							<Error
 								reason="{'ExpectedAmount: ' + AmountToPay + ' ' + Currency + '. Paid amount: ' + AmountPaid + ' ' + Currency + 'nfeat:' + TokenId}" />
 						</Else>
-					</If> -->
+					</If>
 				</Action>
 				<Action id="ReturnFunds">
 					<LogEvent actor="{Seller}" eventId="ReturnFunds" level="Medium"
 								message="Funds return in progress..." object="{Buyer}" type="Informational" />
-					<!-- <If condition="TotalAmountPaid >= Price">
+					<If condition="TotalAmountPaid >= Price">
 						<Then>
 							<Try>
 								<SellEDaler amount="{Price}" contract="{TokenContract}"
@@ -207,7 +206,7 @@
 							<Error
 								reason="{ 'Unable to return funds due to insuffiecent payment. nfeat:' + TokenId}" />
 						</Else>
-					</If> -->
+					</If>
 				</Action>
 				<Action id="AuthorizeServer">
 					<AuthorizeSource source="OPPUser@lab.neuron.vaulter.rs" />					

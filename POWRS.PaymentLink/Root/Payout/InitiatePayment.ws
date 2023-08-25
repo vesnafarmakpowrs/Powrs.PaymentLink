@@ -40,9 +40,9 @@ foreach Parameter in (Contract.Parameters ?? []) do
 		 Parameter.Name like "Currency" ?  Currency := Parameter.MarkdownValue;
 		 Parameter.Name like "CallBackUrl" ?  CallBackUrl := Parameter.MarkdownValue;
       );
-AmountToPay := EscrowFee + Value;
+AmountToPay :=  Int(Value) + Int(EscrowFee);
 
-if (Int(AmountToPay) <= 0 || System.String.IsNullOrEmpty(Currency)) then 
+if (AmountToPay <= 0 || System.String.IsNullOrEmpty(Currency)) then 
 (
   BadRequest("Amount or currency not existing in the contract");
 );
