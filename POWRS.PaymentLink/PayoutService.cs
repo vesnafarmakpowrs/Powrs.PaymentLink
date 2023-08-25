@@ -266,13 +266,13 @@ namespace POWRS.Payout
             try
             {
                 object Result = await InternetContent.PostAsync(
-                    new Uri("https://" + Gateway.Domain + "/Agent/Account/Login"),
-                     new Dictionary<string, object>() { },
+                    new Uri("https://" + Gateway.Domain + "/Agent/Account/Logout"),
+                    new Dictionary<string, object>() { },
                     new KeyValuePair<string, string>("Accept", "application/json"));
             }
             catch (Exception ex)
             {
-                Log.Error("Inable to logout from user agent api");
+                Log.Error("Unable to logout from user agent api");
                 Log.Error(ex);
             }
         }
