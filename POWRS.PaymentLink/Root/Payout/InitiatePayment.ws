@@ -69,7 +69,7 @@ InitiatePaymentRequest.BankAccount := PBuyerBankAccount;
 InitiatePaymentRequest.ServiceProviderId := ServiceProviderId;
 InitiatePaymentRequest.ServiceProviderType := ServiceProviderType;
 InitiatePaymentRequest.TabId := PTabID;
-InitiatePaymentRequest.RequestFromMobilePhone := false;
+InitiatePaymentRequest.RequestFromMobilePhone := PRequestFromMobilePhone;
 InitiatePaymentRequest.RemoteEndpoint := Request.RemoteEndPoint;
 
 results := OPService.InitiatePayment(InitiatePaymentRequest);
