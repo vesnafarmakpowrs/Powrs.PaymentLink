@@ -267,22 +267,6 @@ namespace POWRS.Payout
             }
         }
 
-        private async Task LogoutFromUserAgent()
-        {
-            try
-            {
-                object Result = await InternetContent.PostAsync(
-                    new Uri("https://" + Gateway.Domain + "/Agent/Account/Logout"),
-                    new Dictionary<string, object>() { },
-                    new KeyValuePair<string, string>("Accept", "application/json"));
-            }
-            catch (Exception ex)
-            {
-                Log.Error("Unable to logout from user agent api");
-                Log.Error(ex);
-            }
-        }
-
         private async Task<string> LoginToUserAgent()
         {
             try
@@ -600,7 +584,7 @@ namespace POWRS.Payout
             return Uri.ToString();
         }
 
-        public async void Dispose()
+        public void Dispose()
         {
             try
             {
@@ -611,11 +595,10 @@ namespace POWRS.Payout
                 this._ongoingBuyEdalerContractId = null;
                 this.JwtToken = null;
                 _edalerClient.BalanceUpdated -= EDalerClient_BalanceUpdated;
-                await this.LogoutFromUserAgent();
             }
             catch (Exception ex)
             {
-                Log.Error("Unable to dispose payout servcice. Error: " + ex.Message);
+                Log.Error("Unable to dispose payout service. Error: " + ex.Message);
             }
         }
     }
