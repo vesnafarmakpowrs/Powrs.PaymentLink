@@ -63,11 +63,11 @@ Token := "Bearer " + R.jwt;
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
 (
-  TemplateId:= "2c7b15f8-18b8-e8f0-1401-94b03907c57d@legal.lab.neuron.vaulter.rs";
+  TemplateId:= "2c7f0d51-2495-e0ea-4403-36b4df569f89@legal.lab.neuron.vaulter.rs";
 )
 else
 (
-  TemplateId:="2c79d3c2-70dc-02cb-cc0f-48b429e54234@legal.neuron.vaulter.se";
+  TemplateId:="2c7f0cd1-e63d-01f4-8c13-9297d32c6095@legal.neuron.vaulter.se";
 );
 
 
@@ -86,6 +86,7 @@ Contract:=CreateContract(PUserName,TemplateId, "Public",
         "SellerBankAccount" : PClientBankAccount,
         "BuyerFullName":PBuyerFirstName + " " + PBuyerLastName,
         "BuyerPersonalNum":PBuyerPersonalNum,
+        "BuyerEmail":PBuyerEmail,
         "CallBackUrl" : PCallBackUrl
     });
 

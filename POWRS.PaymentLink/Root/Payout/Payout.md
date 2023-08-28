@@ -70,6 +70,7 @@ if ContractState == "AwaitingForPayment" then
         Parameter.Name like "Currency" ?   Currency := Parameter.MarkdownValue;
         Parameter.Name like "Commission" ?   Commission := Parameter.MarkdownValue;
         Parameter.Name like "BuyerFullName" ?   BuyerFullName := Parameter.MarkdownValue;
+        Parameter.Name like "BuyerEmail" ?  BuyerEmail := Parameter.MarkdownValue;
         Parameter.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Parameter.MarkdownValue;
         Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.MarkdownValue;
         Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.MarkdownValue;
@@ -83,7 +84,7 @@ if ContractState == "AwaitingForPayment" then
 Sold by **((Contract.Account)) ** <br/>
 **Payer** :<br/>
 **Name** : ((MarkdownEncode(BuyerFullName) )) <br/>
-**Email address**: (()) <br/>
+**Email address**:  ((BuyerEmail ))<br/>
 <br/>
 
 <div class="item">
