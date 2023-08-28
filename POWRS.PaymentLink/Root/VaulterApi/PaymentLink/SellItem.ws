@@ -4,8 +4,6 @@ if !exists(Posted) then BadRequest("No payload.");
 ({
     "userName": Required(String(PUserName)),
     "password": Required(String(PPassword)),
-    "keyId" : Required(String(PKeyId)),
-    "keyPassword" : Required(String(PKeyPassword)),
     "orderNum":Required(String(PRemoteId)),
     "title":Required(String(PTitle)),
     "price":Required(Integer(PPrice)),
@@ -87,8 +85,8 @@ Nonce := Base64Encode(RandomBytes(32));
 LocalName := "ed448";
 Namespace := "urn:ieee:iot:e2e:1.0";
 
-S1 := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + PKeyId;
-KeySignature := Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(PKeyPassword)));
+S1 := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
+KeySignature := Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(KeyPassword)));
 
 ContractId := Contract.ContractId;
 Role := "Creator";
@@ -99,7 +97,7 @@ RequestSignature := Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPasswor
 POST(NeuronAddress + "/Agent/Legal/SignContract",
 
                              {
-	                        "keyId": PKeyId,
+	                        "keyId": KeyId,
 	                        "legalId": LegalId,
 	                        "contractId": ContractId,
 	                        "role": Role,
