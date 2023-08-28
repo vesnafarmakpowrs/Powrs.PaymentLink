@@ -142,18 +142,19 @@ function OpenUrl(Url) {
     Window.focus();
 }
 
+var linkAlreadyOpened = false;
 function ShowQRCode(Data) {
     console.log(Data);
     var Div = document.getElementById("QrCode");
-    Div.innerHTML = "in URL: " + encodeURIComponent(Data.url) + "Data.fromMobileDevice: " + Data.fromMobileDevice;
 
-    if (data.fromMobileDevice) {
-        if (Data.BankIdUrl) {
+    if (Data.fromMobileDevice) {
+        if (Data.BankIdUrl && linkAlreadyOpened == false) {
             Div.innerHTML = "Opening authorization link." + Data.BankIdUrl;
             window.open(Data.BankIdUrl, "_self");
+            linkAlreadyOpened = true;
         }
     }
-    if (Data.ImageUrl != null) {
+    if (Data.ImageUrl) {
         Div.innerHTML = "<fieldset><legend>" + Data.title + "</legend><p>" + Data.message +
             "</p><p><img alt='Bank ID QR Code' src='" + Data.ImageUrl + "'/></p></fieldset>";
     }
