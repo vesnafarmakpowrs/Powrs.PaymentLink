@@ -108,9 +108,6 @@ Sold by **((Contract.Account)) ** <br/>
         <td class="itemPrice"  rowspan="2" ><div class="price">((EscrowFee))</div> <td>
         <td style="width:10%;" rowspan="2" > ((Currency )) </td>
       </tr>
-      <tr>
-        <td style="width:70%"> ((Description))</td>
-      </tr>
 </table>
 </div>
   
