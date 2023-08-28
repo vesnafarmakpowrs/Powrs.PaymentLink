@@ -147,18 +147,20 @@ function ShowQRCode(Data) {
     var Div = document.getElementById("QrCode");
     Div.innerHTML = "in URL: " + encodeURIComponent(Data.url) + "Data.fromMobileDevice: " + Data.fromMobileDevice;
 
+    if (data.fromMobileDevice) {
+        if (Data.BankIdUrl) {
+            Div.innerHTML = "Opening authorization link." + Data.BankIdUrl;
+            window.open(Data.BankIdUrl, "_self");
+        }
+    }
     if (Data.ImageUrl != null) {
         Div.innerHTML = "<fieldset><legend>" + Data.title + "</legend><p>" + Data.message +
             "</p><p><img alt='Bank ID QR Code' src='" + Data.ImageUrl + "'/></p></fieldset>";
     }
-    else if (!Data.fromMobileDevice) {
+    else if (Data.AutoStartToken) {
         Div.innerHTML = "<fieldset><legend>" + Data.title + "</legend><p>" + Data.message +
             "</p><p>" + "<a href='" + Data.AutoStartToken + "'><img alt='Bank ID QR Code' src='/QR/" +
             encodeURIComponent(Data.AutoStartToken) + "'/></a></p></fieldset>";
-    }
-    else {
-        Div.innerHTML = "Opening authorization link." + Data.BankIdUrl;
-        window.open(Data.BankIdUrl, "_self")
     }
 }
 
