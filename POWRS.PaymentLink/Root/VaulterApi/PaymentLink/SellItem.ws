@@ -67,11 +67,8 @@ if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
 )
 else
 (
-  TemplateId:="2c7f0cd1-e63d-01f4-8c13-9297d32c6095@legal.neuron.vaulter.se";
+  TemplateId:="2c7f35f3-13a0-2767-dc1e-dedae5fbcffb@legal.neuron.vaulter.se";
 );
-
-
-
 
 Contract:=CreateContract(PUserName,TemplateId, "Public",
     {
