@@ -60,8 +60,17 @@ R := POST(NeuronAddress + "/Agent/Account/Login",
 
 Token := "Bearer " + R.jwt;
 
+Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
+if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
+(
+  TemplateId:= "2c7b15f8-18b8-e8f0-1401-94b03907c57d@legal.lab.neuron.vaulter.rs";
+)
+else
+(
+  TemplateId:="2c79d3c2-70dc-02cb-cc0f-48b429e54234@legal.neuron.vaulter.se";
+);
 
-TemplateId:="2c79d3c2-70dc-02cb-cc0f-48b429e54234@legal.neuron.vaulter.se";
+
 
 
 Contract:=CreateContract(PUserName,TemplateId, "Public",
