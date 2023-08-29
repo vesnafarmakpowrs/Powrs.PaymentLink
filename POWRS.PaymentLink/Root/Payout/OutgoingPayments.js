@@ -148,13 +148,14 @@ function ShowQRCode(Data) {
     var Div = document.getElementById("QrCode");
 
     if (Data.fromMobileDevice) {
-        if (Data.BankIdUrl && linkAlreadyOpened == false) {
-            Div.innerHTML = "Opening authorization link." + Data.BankIdUrl;
-            window.open(Data.BankIdUrl, "_self");
+        if (Data.BankIdUrl) {
+            var link = "https://app.bankid.com/?autostarttoken=" + Data.AutoStartToken + "&redirect=null";
+            Div.innerHTML = "Opening authorization link: " + "<a href='" + link + "'></a>";
+            window.open(link, "_blank");
             linkAlreadyOpened = true;
         }
     }
-    if (Data.ImageUrl) {
+    else if (Data.ImageUrl) {
         Div.innerHTML = "<fieldset><legend>" + Data.title + "</legend><p>" + Data.message +
             "</p><p><img alt='Bank ID QR Code' src='" + Data.ImageUrl + "'/></p></fieldset>";
     }
