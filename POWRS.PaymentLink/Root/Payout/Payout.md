@@ -43,8 +43,10 @@ if Token.HasStateMachine then
 if ContractState == "AwaitingForPayment" then 
 (
    Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
-   if !exists(Contract) then 
-	NotFound("Contract not found.")
+    if !exists(Contract) then
+    (
+	NotFound("Contract not found.");
+    )
     else
     (
 	    v:=Create(Waher.Script.Variables,[]);
