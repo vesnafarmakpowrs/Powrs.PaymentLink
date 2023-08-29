@@ -28,10 +28,13 @@ ClientID := GetSetting("TAG.Payments.OpenPaymentsPlatform.ClientID","");
 ClientSecret := GetSetting("TAG.Payments.OpenPaymentsPlatform.ClientSecret","");
 Sniffer := Create(Waher.Networking.Sniffers.ConsoleOutSniffer, Waher.Networking.Sniffers.BinaryPresentationMethod.Base64 , Waher.Networking.Sniffers.LineEnding.NewLine);
 
+Ip := Request.RemoteEndPoint.Substring(0,Request.RemoteEndPoint.IndexOf(":")); 
+
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
 (
- Client := TAG.Networking.OpenPaymentsPlatform.OpenPaymentsPlatformClient.CreateSandbox(ClientID, ClientSecret, ServicePurpose.Private, [Sniffer])
+ Client := TAG.Networking.OpenPaymentsPlatform.OpenPaymentsPlatformClient.CreateSandbox(ClientID, ClientSecret, ServicePurpose.Private, [Sniffer]);
+ Ip := "192.168.0.1";
 )
 else
 (
@@ -56,14 +59,13 @@ OPService:=Create(TAG.Payments.OpenPaymentsPlatform.OpenPaymentsPlatformService,
 
 IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
 IdentityProperties.Add("PNR", personalNumber);
-IdentityProperties.Add("JID", "juce@" + Gateway.Domain);
+IdentityProperties.Add("JID", "OPPUser@" + Gateway.Domain);
 
 SuccessUrl:= "";
 FailureUrl := "";
 CancelUrl := "";
 
-
-results := OPService.GetPaymentOptionsForBuyingEDaler(IdentityProperties, SuccessUrl, FailureUrl, CancelUrl, PTabID, PRequestFromMobilePhone,"192.168.0.1");
+results := OPService.GetPaymentOptionsForBuyingEDaler(IdentityProperties, SuccessUrl, FailureUrl, CancelUrl, PTabID, PRequestFromMobilePhone,Ip);
 
 {
 	Results: results,
