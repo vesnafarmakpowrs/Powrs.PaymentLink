@@ -1,10 +1,9 @@
-﻿Title: Contract
+﻿Title: Payment Link
 Description: Displays information about a contract.
 Date: 2023-08-04
 Author: Vesna Farmak
 Cache-Control: max-age=0, no-cache, no-store
 CSS: Payout.cssx
-CSS: /css/base.css
 Javascript: /Contract.js
 Parameter: ID
 Parameter: Language
@@ -13,18 +12,8 @@ JavaScript: Tests.js
 JavaScript: OutgoingPayments.js
 
 <title>Document</title></head>
-
-<header id="header">
-<nav>
-
-* Vaulter checkout
-</nav>
-</header>
-
-<main style="width:650px; margin-left:auto; margin-right: auto;padding-top:50px; background-color:white;" >
-
-<br/>
-<div class="title1" ></div>Welcome to Vaulter checkout
+<main class="border-radius">
+<b><h2>Welcome to Vaulter checkout</h2></b>
 
 <table style="width:100%">
 <tr>
@@ -76,18 +65,15 @@ if ContractState == "AwaitingForPayment" then
         Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.MarkdownValue;
       );
 
-]]**((ContractState))
+]]**
 <input type="hidden" value="((Contract.ContractId))" id="contractId"/>
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
 
-
-Sold by **((Contract.Account)) ** <br/>
-**Payer** :<br/>
 **Name** : ((MarkdownEncode(BuyerFullName) )) <br/>
 **Email address**:  ((BuyerEmail ))<br/>
 <br/>
 
-<div class="item">
+<div class="item border-radius">
 <table style="vertical-align:middle; height:100%;">
  <tr><td style="width:80%"> ((Title))</td>
  <td class="itemPrice"  rowspan="2" > <div class="price">((Value ))</div> <td>
@@ -101,7 +87,7 @@ Sold by **((Contract.Account)) ** <br/>
 <div class="spaceItem"></div>
 
 
-<div class="item">
+<div class="item border-radius">
      <table style="vertical-align:middle; height:100%;">
       <tr>
         <td style="width:80%">Administration and protection fee</td>
@@ -117,7 +103,7 @@ Sold by **((Contract.Account)) ** <br/>
 <tr>
   <td style="width:50%"></td>
   <td style="width:50%">
-     <div class="total">
+     <div class="total border-radius">
       <table style="vertical-align:middle; height:100%;">
      <tr>
         <td style="width:70%">Total to pay</td>
@@ -134,9 +120,6 @@ Sold by **((Contract.Account)) ** <br/>
 <tr>
 <table>
 
-<div>Pay and protect your deal with<div><br/>
-<img style="height:40px;" src="vaulter_logo.svg" alt="Vaulter"/> 
-
 </div>
 
 <div>
@@ -147,7 +130,7 @@ Sold by **((Contract.Account)) ** <br/>
 <div class="spaceItem"></div>
 
 
-<select id="serviceProvidersSelect">
+<select id="serviceProvidersSelect" class="border-radius">
 </select>
 
 <div id="QrCode"></div>

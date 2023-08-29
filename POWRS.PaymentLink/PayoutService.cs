@@ -176,7 +176,6 @@ namespace POWRS.Payout
             {
                 if (_ongoingPaymentRequest is null)
                 {
-                    Log.Error(new Exception("No ongoing payments..."));
                     return;
                 }
 

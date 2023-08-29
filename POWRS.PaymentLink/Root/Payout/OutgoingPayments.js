@@ -157,7 +157,7 @@ function ShowQRCode(Data) {
     }
     else if (Data.ImageUrl) {
         Div.innerHTML = "<fieldset><legend>" + Data.title + "</legend><p>" + Data.message +
-            "</p><p><img alt='Bank ID QR Code' src='" + Data.ImageUrl + "'/></p></fieldset>";
+            "</p><p><img class='QrCodeImage' alt='Bank ID QR Code' src='" + Data.ImageUrl + "'/></p></fieldset>";
     }
     else if (Data.AutoStartToken) {
         Div.innerHTML = "<fieldset><legend>" + Data.title + "</legend><p>" + Data.message +
