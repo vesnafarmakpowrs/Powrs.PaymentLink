@@ -33,7 +33,6 @@ namespace POWRS.Payout
         private InitiatePaymentRequest _ongoingPaymentRequest;
         private string _ongoingBuyEdalerContractId;
         private string JwtToken;
-        private decimal totalAmountPaid;
 
         public PayoutService()
         {
@@ -144,20 +143,18 @@ namespace POWRS.Payout
                     Password = Password,
                     Account = Account
                 };
-                Log.Informational("XmppClient create");
 
                 _xmppClient = new XmppClient(XmppCredentials, "en", System.Reflection.Assembly.GetEntryAssembly(), new InMemorySniffer(250))
                 {
-                    TrustServer = true
+                    TrustServer = true,
+                    AllowEncryption = true
                 };
-                Log.Informational("XmppClient trust");
 
-                _xmppClient.AllowEncryption = true;
                 _xmppClient.Connect(Gateway.Domain);
 
                 _contractsClient = new ContractsClient(_xmppClient, ComponentJid);
-
                 _edalerClient = new EDalerClient(_xmppClient, _contractsClient, ComponentJid);
+
                 _edalerClient.BalanceUpdated += EDalerClient_BalanceUpdated;
 
                 return true;
@@ -172,40 +169,23 @@ namespace POWRS.Payout
 
         private async Task EDalerClient_BalanceUpdated(object Sender, BalanceEventArgs e)
         {
-            try
-            {
-                if (_ongoingPaymentRequest is null)
-                {
-                    return;
-                }
-
-                if (e.Balance.Event.Change > 0)
-                {
-                    await EdalerAddedInWallet(e.Balance.Event);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Informational(ex.Message);
-            }
-            finally
-            {
-                // Log.Unregister(new PaymentCompletedEventSink());
-                Dispose();
-            }
-        }
-
-        private async Task EdalerAddedInWallet(AccountEvent accountEvent)
-        {
-            string contract = "iotsc:" + _ongoingBuyEdalerContractId;
-
-            if (string.IsNullOrEmpty(accountEvent.Message) || contract != accountEvent.Message)
+            if (_ongoingPaymentRequest is null || string.IsNullOrEmpty(_ongoingBuyEdalerContractId))
             {
                 return;
             }
 
-            totalAmountPaid = accountEvent.Change;
-            await UpdateContractWithTransactionStatusAsync();
+            var balanceEvent = e.Balance.Event;
+            string contract = "iotsc:" + _ongoingBuyEdalerContractId;
+
+            if (string.IsNullOrEmpty(balanceEvent.Message) || contract != balanceEvent.Message)
+            {
+                return;
+            }
+
+            if (balanceEvent.Change > 0)
+            {
+                await UpdateContractWithTransactionStatusAsync(e.Balance);
+            }
         }
 
         private async Task DisplayUserMessage(string tabId, string message, bool isSuccess = false)
@@ -232,28 +212,25 @@ namespace POWRS.Payout
 
         private static byte[] Utf8Encode(string input)
         {
-            // Create an instance of the UTF-8 encoding
             Encoding utf8 = Encoding.UTF8;
-
-            // Encode the input string to a byte array in UTF-8 format
             byte[] encodedBytes = utf8.GetBytes(input);
 
             return encodedBytes;
         }
 
-        private async Task UpdateContractWithTransactionStatusAsync()
+        private async Task UpdateContractWithTransactionStatusAsync(Balance Balance)
         {
             try
             {
-                if (_ongoingPaymentRequest is null)
-                {
-                    return;
-                }
-
-                string fullPaymentUri = await CreateFullPaymentUri(_ongoingPaymentRequest.OwnerJid, _ongoingPaymentRequest.Amount, _ongoingPaymentRequest.Currency, 364, "nfeat:" + _ongoingPaymentRequest.TokenId);
+                string fullPaymentUri = await CreateFullPaymentUri(_ongoingPaymentRequest.OwnerJid,
+                        Balance.Event.Change,
+                        Balance.Currency,
+                        364,
+                        "nfeat:" + _ongoingPaymentRequest.TokenId);
 
                 string Signiture = await GetSigniture(fullPaymentUri, JwtToken);
                 fullPaymentUri += ";s=" + Signiture;
+
                 await SendPaymentUri(fullPaymentUri, JwtToken);
             }
             catch (Exception ex)
@@ -262,7 +239,7 @@ namespace POWRS.Payout
             }
             finally
             {
-
+                Dispose();
             }
         }
 
