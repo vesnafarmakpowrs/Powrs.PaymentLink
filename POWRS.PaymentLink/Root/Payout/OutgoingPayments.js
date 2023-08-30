@@ -165,14 +165,14 @@ function ShowQRCode(Data) {
 
     if (Data.fromMobileDevice &&
         ((!linkAlreadyOpened && !Data.isPaymentInitialization) ||
-            (!paymentlinkAlreadyOpened && !Data.isPaymentInitialization))
+            (!paymentlinkAlreadyOpened && Data.isPaymentInitialization))
     )
     {
         var link = "bankid:///?autostarttoken=" + Data.AutoStartToken + "&redirect=null";
         if ((isIOS && isSafari) || (isChrome && isAndroid))
             link = "https://app.bankid.com/?autostarttoken=" + Data.AutoStartToken + "&redirect=null";
         Div.innerHTML = "Opening authorization link: " + "<a href='" + link + "'></a>";
-        window.open(link, "_self");
+        window.open(link, "_blank");
         if (Data.isPaymentInitialization) {
             paymentlinkAlreadyOpened = true;
         }
