@@ -142,33 +142,36 @@ function OpenUrl(Url) {
     Window.focus();
 }
 
-var isAndroid = false;
-var isIOS = false;
-var isChrome = false;
-var isSafari = false;
-
-function ShowQRCode(Data) {
-    var Div = document.getElementById("QrCode");
+function OpenBankIdApp(Data) {
+    if (Data == null) {
+        console.log("data is empty");
+        return;
+    }
 
     var isAndroid = /Android/.test(navigator.userAgent);
     var isIOS = /(iPhone|iPad|iPod)/.test(navigator.userAgent);
     var isChrome = navigator.userAgentData?.brands?.some(b => b.brand === 'Google Chrome') || /CriOS/.test(navigator.userAgent);
     var isSafari = /safari/.test(window.navigator.userAgent.toLowerCase()) && !isChrome;
-      
-    if (Data.fromMobileDevice) {
-        var link = "bankid:///?autostarttoken=" + Data.AutoStartToken + "&redirect=null";
-        if ((isIOS && isSafari) || (isChrome && isAndroid))
-            link = "https://app.bankid.com/?autostarttoken=" + Data.AutoStartToken + "&redirect=null";
 
-        if (isIOS && isSafari)
-            window.open(link, "_self");
-        else
-            window.open(link, "_blank");
+    var link = Data.MobileAppUrl;
 
-        Div.innerHTML = "Opening authorization link: " + link + "<br/> paymentlinkAlreadyOpened:" + paymentlinkAlreadyOpened + "<br/> linkAlreadyOpened:" + linkAlreadyOpened;
-
+    if ((isIOS && isSafari) || (isChrome && isAndroid)) {
+        link = Data.BankIdUrl;
     }
-    else if (Data.ImageUrl) {
+
+    console.log("Opening authorization link: " + link);
+
+    if (isIOS && isSafari) {
+        window.open(link, "_self");
+    }
+    else {
+        window.open(link, "_blank");
+    }
+}
+function ShowQRCode(Data) {
+    var Div = document.getElementById("QrCode");
+
+    if (Data.ImageUrl) {
         Div.innerHTML = "<fieldset><legend>" + Data.title + "</legend><p>" + Data.message +
             "</p><p><img class='QrCodeImage' alt='Bank ID QR Code' src='" + Data.ImageUrl + "'/></p></fieldset>";
     }
