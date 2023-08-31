@@ -146,23 +146,16 @@ var isAndroid = false;
 var isIOS = false;
 var isChrome = false;
 var isSafari = false;
-var linkAlreadyOpened = false;
-var paymentlinkAlreadyOpened = false;
 
 function ShowQRCode(Data) {
-    console.log(Data);
     var Div = document.getElementById("QrCode");
 
     var isAndroid = /Android/.test(navigator.userAgent);
-    var isIOS = /(iPhone|iPad|iPod)/.test(navigator.platform);
+    var isIOS = /(iPhone|iPad|iPod)/.test(navigator.userAgent);
     var isChrome = navigator.userAgentData?.brands?.some(b => b.brand === 'Google Chrome') || /CriOS/.test(navigator.userAgent);
     var isSafari = /safari/.test(window.navigator.userAgent.toLowerCase()) && !isChrome;
-
-    var isPaymentInitialization = Data.isPaymentInitialization;
-    var openedLinkAccInfo = linkAlreadyOpened && !isPaymentInitialization;
-    var openedLinkPayment = paymentlinkAlreadyOpened && isPaymentInitialization;
-
-    if (Data.fromMobileDevice && (!openedLinkAccInfo || !openedLinkPayment)) {
+      
+    if (Data.fromMobileDevice) {
         var link = "bankid:///?autostarttoken=" + Data.AutoStartToken + "&redirect=null";
         if ((isIOS && isSafari) || (isChrome && isAndroid))
             link = "https://app.bankid.com/?autostarttoken=" + Data.AutoStartToken + "&redirect=null";
@@ -174,10 +167,6 @@ function ShowQRCode(Data) {
 
         Div.innerHTML = "Opening authorization link: " + link + "<br/> paymentlinkAlreadyOpened:" + paymentlinkAlreadyOpened + "<br/> linkAlreadyOpened:" + linkAlreadyOpened;
 
-        if (Data.isPaymentInitialization)
-            paymentlinkAlreadyOpened = true;
-        else
-            linkAlreadyOpened = true;
     }
     else if (Data.ImageUrl) {
         Div.innerHTML = "<fieldset><legend>" + Data.title + "</legend><p>" + Data.message +
