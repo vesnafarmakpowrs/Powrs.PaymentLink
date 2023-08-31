@@ -147,26 +147,15 @@ function OpenBankIdApp(Data) {
         console.log("data is empty");
         return;
     }
-
-    var isAndroid = /Android/.test(navigator.userAgent);
-    var isIOS = /(iPhone|iPad|iPod)/.test(navigator.userAgent);
-    var isChrome = navigator.userAgentData?.brands?.some(b => b.brand === 'Google Chrome') || /CriOS/.test(navigator.userAgent);
-    var isSafari = /safari/.test(window.navigator.userAgent.toLowerCase()) && !isChrome;
-
-    var link = Data.MobileAppUrl;
-
-    if ((isIOS && isSafari) || (isChrome && isAndroid)) {
-        link = Data.BankIdUrl;
+    var link = Data.BankIdUrl;
+    var mode = "_blank";
+    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isSafari) {
+        link = Data.MobileAppUrl;
+        mode = "_self";
     }
 
-    console.log("Opening authorization link: " + link);
-
-    if (isIOS && isSafari) {
-        window.open(link, "_self");
-    }
-    else {
-        window.open(link, "_blank");
-    }
+    window.open(link, mode);
 }
 function ShowQRCode(Data) {
     var Div = document.getElementById("QrCode");
