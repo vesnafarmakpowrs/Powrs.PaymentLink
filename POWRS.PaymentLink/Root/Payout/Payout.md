@@ -12,7 +12,6 @@ JavaScript: Tests.js
 JavaScript: OutgoingPayments.js
 
 <title>Document</title></head>
-<body onload = "getBrowserInfo()"></body>
 <main class="border-radius"  >
 <b><h2>Welcome to Vaulter checkout</h2></b>
 
