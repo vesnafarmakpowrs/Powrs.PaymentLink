@@ -187,14 +187,16 @@ function OpenBankIdApp(Data) {
         console.log("data is empty");
         return;
     }
+
     var link = Data.BankIdUrl;
     var mode = "_blank";
     var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
     if (isSafari) {
         link = Data.MobileAppUrl;
+        link = link.replace("redirect=null", "redirect=" + window.location.href);
         mode = "_self";
     }
-
     window.open(link, mode);
 }
 function ToggleServiceProviderSelect(shouldBeDisabled) {
