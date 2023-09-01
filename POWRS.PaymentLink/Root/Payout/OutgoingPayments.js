@@ -15,6 +15,10 @@ function ShowAccountInfo(Accounts) {
 }
 
 function GenerateServiceProvidersUI() {
+    if (document.getElementById("serviceProvidersSelect") == null) {
+        return;
+    }
+
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "GetBuyEdalerServiceProviders.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
@@ -166,9 +170,14 @@ function StartPayment(BuyEdalerTemplateId, iban, bic) {
 
 function DisplayTransactionResult(Result) {
     var Div = ClearQrCodeDiv();
-    Div.innerHTML = result.Message;
-    if (IsCompleted) {
+    Div.innerHTML = Result.Message;
+    if (Result.IsCompleted) {
         ToggleSpinner(false);
+        if (Result.IsSuccess) {
+            setTimeout(function () {
+                location.reload();
+            }, 4000);
+        }
     }
 }
 
