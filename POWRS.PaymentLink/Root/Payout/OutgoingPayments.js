@@ -194,7 +194,6 @@ function OpenBankIdApp(Data) {
 
     if (isSafari) {
         link = Data.MobileAppUrl;
-        link = link.replace("redirect=null", "redirect=" + window.location.href);
         mode = "_self";
     }
     window.open(link, mode);
