@@ -144,6 +144,7 @@ function GetAccountInfo() {
 }
 
 function StartPayment(BuyEdalerTemplateId, iban, bic) {
+    ToggleServiceProviderSelect(true);
     ClearQrCodeDiv();
     let contractId = document.getElementById('contractId').value;
 
@@ -196,7 +197,10 @@ function OpenBankIdApp(Data) {
 
     window.open(link, mode);
 }
-
+function ToggleServiceProviderSelect(shouldBeDisabled) {
+    var select = document.getElementById("serviceProvidersSelect");
+    select.disabled = shouldBeDisabled;
+}
 function ToggleSpinner(showSpinner) {
     var spinner = document.getElementById("spinnerContainer");
     let displayStyle = showSpinner ? "flex" : "none";
