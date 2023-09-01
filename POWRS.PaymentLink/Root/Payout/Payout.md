@@ -131,11 +131,13 @@ if ContractState == "AwaitingForPayment" then
 
 <div class="spaceItem"></div>
 
-
-<select id="serviceProvidersSelect" class="border-radius">
+<select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="border-radius">
 </select>
 
 <div id="QrCode"></div>
+<div id="spinnerContainer">
+  <img src="./spinner.gif" alt="loadingSpinner">
+</div>
 
 [[
 )

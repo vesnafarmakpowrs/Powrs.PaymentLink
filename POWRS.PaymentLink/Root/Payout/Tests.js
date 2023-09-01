@@ -18,27 +18,6 @@ function StartQrCodeAnimation(SessionId, RequestFromMobilePhone, QrCodeUsed)
 	updateTimer = window.setInterval(UpdateQrCode, 1000);
 }
 
-
-function GetAccountInfo(RequestFromMobilePhone)
-{
-const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
-var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "GetAccountInfo.ws", true);
-	xhttp.setRequestHeader("Content-Type", "application/json");
-	xhttp.setRequestHeader("Accept", "application/json");
-	xhttp.send(JSON.stringify(
-		{
-			"tabId": TabID,
-			"sessionId": "",
-			"requestFromMobilePhone": Boolean(isMobileDevice),
-                        "bicFi":selectedServiceProvider.C2,
-                        "bankName": selectedServiceProvider.C1,
-			"contractId": document.getElementById("contractId").value
-		}));
-
-}
-
-
 function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUsed)
 {
 	var xhttp = new XMLHttpRequest();

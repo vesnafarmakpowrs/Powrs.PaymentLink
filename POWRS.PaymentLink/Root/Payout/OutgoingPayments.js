@@ -11,6 +11,7 @@ function ShowAccountInfo(Accounts) {
     }
 
     GenerateAccountsListUi(Accounts.AccountInfo);
+    ToggleSpinner(false);
 }
 
 function GenerateServiceProvidersUI() {
@@ -48,7 +49,7 @@ function GenerateServiceProvidersUI() {
                     }
 
                     selectedServiceProvider = provider;
-                    document.getElementById("QrCode").innerHTML = "";
+                    ClearQrCodeDiv();
                     GetAccountInfo();
                 };
                 for (let i = 0; i < serviceProviders.length; i++) {
@@ -66,10 +67,16 @@ function GenerateServiceProvidersUI() {
     }
 }
 
-function GenerateAccountsListUi(accounts) {
-    console.log(accounts);
-    const container = document.getElementById('QrCode');
+function ClearQrCodeDiv() {
+    var container = document.getElementById('QrCode');
     container.innerHTML = "";
+    ToggleSpinner(true);
+
+    return container;
+}
+
+function GenerateAccountsListUi(accounts) {
+    var container = ClearQrCodeDiv();
 
     accounts.forEach(account => {
         const bankElement = document.createElement('button');
@@ -97,7 +104,15 @@ function GenerateAccountsListUi(accounts) {
         bankElement.appendChild(logoElement);
         bankElement.appendChild(nameAndBalance);
         bankElement.onclick = function () {
+            var balance = parseFloat(account.Balance);
+            if (!balance || balance <= 0) {
+                alert("Unable to select " + account.Iban + ". Balance is not sufficient.");
+                return;
+            }
             if (selectedServiceProvider == null) {
+                return;
+            }
+            if (!window.confirm("Selected account is: " + account.Iban + ". Are you sure?")) {
                 return;
             }
             StartPayment(selectedServiceProvider.C5, account.Iban, account.Bic);
@@ -106,7 +121,26 @@ function GenerateAccountsListUi(accounts) {
     });
 }
 
+function GetAccountInfo() {
+    const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "GetAccountInfo.ws", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.setRequestHeader("Accept", "application/json");
+    xhttp.send(JSON.stringify(
+        {
+            "tabId": TabID,
+            "sessionId": "",
+            "requestFromMobilePhone": Boolean(isMobileDevice),
+            "bicFi": selectedServiceProvider.C2,
+            "bankName": selectedServiceProvider.C1,
+            "contractId": document.getElementById("contractId").value
+        }));
+
+}
+
 function StartPayment(BuyEdalerTemplateId, iban, bic) {
+    ClearQrCodeDiv();
     let contractId = document.getElementById('contractId').value;
 
     if (!contractId || !BuyEdalerTemplateId || !iban) {
@@ -130,16 +164,12 @@ function StartPayment(BuyEdalerTemplateId, iban, bic) {
         }));
 }
 
-function DisplayTransactionResult(result) {
-    console.log(result);
-    var Div = document.getElementById("QrCode");
-    Div.innerHTML = result.message;
-}
-
-
-function OpenUrl(Url) {
-    var Window = window.open(Url, "_blank");
-    Window.focus();
+function DisplayTransactionResult(Result) {
+    var Div = ClearQrCodeDiv();
+    Div.innerHTML = result.Message;
+    if (IsCompleted) {
+        ToggleSpinner(false);
+    }
 }
 
 function OpenBankIdApp(Data) {
@@ -157,6 +187,13 @@ function OpenBankIdApp(Data) {
 
     window.open(link, mode);
 }
+
+function ToggleSpinner(showSpinner) {
+    var spinner = document.getElementById("spinnerContainer");
+    let displayStyle = showSpinner ? "flex" : "none";
+    spinner.style.display = displayStyle;
+}
+
 function ShowQRCode(Data) {
     var Div = document.getElementById("QrCode");
 
@@ -169,6 +206,8 @@ function ShowQRCode(Data) {
             "</p><p>" + "<a href='" + Data.AutoStartToken + "'><img alt='Bank ID QR Code' src='/QR/" +
             encodeURIComponent(Data.AutoStartToken) + "'/></a></p></fieldset>";
     }
+
+    ToggleSpinner(false);
 }
 
 function PaymentError(Data) {
