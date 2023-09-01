@@ -38,24 +38,6 @@ var xhttp = new XMLHttpRequest();
 
 }
 
-function StartPayment(RequestFromMobilePhone)
-{
-const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
-console.log(TabID + "ismobiledevice:" + isMobileDevice );
-console.log(window.navigator.userAgent.toLowerCase());
-var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "InitiatePayment.ws", true);
-	xhttp.setRequestHeader("Content-Type", "application/json");
-	xhttp.setRequestHeader("Accept", "application/json");
-	xhttp.send(JSON.stringify(
-		{
-			"tabId": TabID,
-			"sessionId": "",
-			"requestFromMobilePhone": Boolean(isMobileDevice)
-		}));
-
-}
-
 
 function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUsed)
 {
