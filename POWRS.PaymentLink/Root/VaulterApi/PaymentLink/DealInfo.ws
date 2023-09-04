@@ -6,9 +6,7 @@ if !exists(Posted) then BadRequest("No payload.");
    "countryCode":Required(String(PCountryCode))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-
- stateMachine:= select top 1 * from StateMachineCurrentStates where StateMachineId = PMachineId;
- contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= PContractId;
+contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= PContractId;
 
 ShortId := select top 1 ShortId from NeuroFeatureTokens where TokenId= PMachineId;
 Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
@@ -33,12 +31,8 @@ SellerId := SellerName.Substring(0,3).ToUpper();
  pdfPath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\" + fileName;
 
  html:= System.IO.File.ReadAllText(htmlTemplatePath);
- html1:= html;
  htmlBuilder:= Create(System.Text.StringBuilder, html);
 
- if (stateMachine == null || contract == null) then
-	Error("State machine or contract are missing");
- 
 Value := 0;
 EscrowFee := 0;
  foreach Parameter in (contract.Parameters ?? []) do 
@@ -49,7 +43,7 @@ EscrowFee := 0;
      Parameter.Name like "BuyerFullName" ?   htmlBuilder:= htmlBuilder.Replace("{{buyer_name}}",  Parameter.MarkdownValue);
      Parameter.Name like "Currency" ?   htmlBuilder:= htmlBuilder.Replace("{{currency}}",  Parameter.MarkdownValue);
      Parameter.Name like "DealDoneDate" ?   htmlBuilder:= htmlBuilder.Replace("{{issue_date}}",  Parameter.MarkdownValue);
-     Parameter.Name like "DeliveryDate" ?   htmlBuilder:= htmlBuilder.Replace("{{delivery_date",  Parameter.Value.ToShortDateString());
+     Parameter.Name like "DeliveryDate" ?   htmlBuilder:= htmlBuilder.Replace("{{delivery_date}}",  Parameter.Value.ToShortDateString());
    );
 
 AmountToPay:= 0;
