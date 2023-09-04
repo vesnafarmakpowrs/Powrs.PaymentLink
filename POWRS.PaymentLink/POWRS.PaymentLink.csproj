@@ -16,9 +16,11 @@
 		<None Remove="Root\Payout\Settings.md" />
 		<None Remove="Root\Payout\vaulter_logo.svg" />
 		<None Remove="Root\Payout\vaulterlogo.svg" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\purchase_agreement.html" />
 		<None Remove="Root\VaulterApi\PaymentLink\Index.md" />
 		<None Remove="Root\VaulterApi\PaymentLink\SellItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\DealInfo.ws" />
 		<None Remove="POWRS.PaymentLink.manifest" />
 	</ItemGroup>
 	<ItemGroup>
@@ -29,6 +31,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Index.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\DealInfo.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\InitiatePayment.ws">
@@ -67,7 +72,10 @@
 		<Content Include="Root\Payout\vaulterlogo.svg">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-	    <Content Include="POWRS.PaymentLink.manifest">
+		<Content Include="Root\Payout\HtmlTemplates\EN\purchase_agreement.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="POWRS.PaymentLink.manifest">
 		    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
@@ -84,6 +92,10 @@
 		<PackageReference Include="Waher.Runtime.Settings" Version="1.0.10" />
 		<PackageReference Include="Waher.Script" Version="2.5.2" />
 		<PackageReference Include="Waher.Security.SHA3" Version="1.0.3" />		
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Root\Payout\HtmlTemplates\" />
 	</ItemGroup>
 
 

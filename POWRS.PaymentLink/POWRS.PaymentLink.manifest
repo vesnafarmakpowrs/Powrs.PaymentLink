@@ -9,9 +9,10 @@
 				<Content fileName="CancelItem.ws"/>
 				<Content fileName="SellItem.ws"/>
 				<Content fileName="Index.md"/>
-			</Folder>
-		</Folder>
-		<Folder name="Payout">
+				<Content fileName="DealInfo.ws"/>
+		     </Folder>
+		</Folder
+		    <Folder name="Payout">
 				<Content fileName="InitiatePayment.ws"/>
 				<Content fileName="Events.js"/>
 				<Content fileName="GetAccountInfo.ws"/>
@@ -25,6 +26,11 @@
 				<Content fileName="vaulter_logo.svg"/>
 				<Content fileName="vaulterlogo.svg"/>
 				<Content fileName="spinner.gif"/>
+			<Folder name="HtmlTemplates">
+				<Folder name="EN">
+					<Content fileName="purchase_agreement.html" />
+				</Folder>				
+			</Folder>
 			</Folder>
 	</Folder>
 </Module>
