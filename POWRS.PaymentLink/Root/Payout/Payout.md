@@ -32,6 +32,7 @@ Protect your money with smart payments
 ID += "@legal." + Gateway.Domain; 
 
 Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
+
 if !exists(Token) then 
 	NotFound("Item does not found.");
 
@@ -56,7 +57,7 @@ if ContractState == "AwaitingForPayment" then
 	    foreach Parameter in Contract.Parameters do Parameter.IsParameterValid(v);
     );
 
-    Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
+    Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
 
     AgentName := "";
     OrgName := "";
@@ -144,10 +145,13 @@ if ContractState == "AwaitingForPayment" then
 <table>
 
 </div>
-
+<div>
+   <input type="checkbox" id="termsAndCondition" name="termsAndCondition">
+   <label for="termsAndCondition"><a href="https://www.powrs.se/vaulter-payment-link-privacy-policy" target="_blank">Terms ans conditions</a></label> 
+</div><br/>
 <div>
    <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement">
-   <label for="purchaseAgreement"><a onclick="generatePDF();"  target="_blank">Purchase Agreement</a></label> 
+   <label for="purchaseAgreement"><a href="#" onclick="generatePDF();event.preventDefault();" >Purchase Agreement</a></label> 
 </div>
 
 <div class="spaceItem"></div>
