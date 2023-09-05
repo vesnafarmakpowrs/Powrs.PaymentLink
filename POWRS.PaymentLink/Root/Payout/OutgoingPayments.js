@@ -81,6 +81,8 @@ function ClearQrCodeDiv() {
 
 function GenerateAccountsListUi(accounts) {
     var container = ClearQrCodeDiv();
+    var accountList = document.createElement('div');
+    accountList.className = "account-list";
 
     accounts.forEach(account => {
         const bankElement = document.createElement('button');
@@ -121,8 +123,10 @@ function GenerateAccountsListUi(accounts) {
             }
             StartPayment(selectedServiceProvider.C5, account.Iban, account.Bic);
         }
-        container.appendChild(bankElement);
+        accountList.appendChild(bankElement);
     });
+
+    container.appendChild(accountList);
 }
 
 function GetAccountInfo() {

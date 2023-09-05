@@ -224,6 +224,12 @@ body {
   height:10px;
 }
 
+.account-list{
+ border:1px solid darkgray;
+ padding:1rem;
+ border-radius:1rem;
+}
+
 .name-balance{
   width: 100%;
 }
@@ -235,8 +241,8 @@ body {
   margin-bottom:1rem ;
   background: #f3f3f3;
   border: 2px solid #f3f3f3;
-  border-radius: 10px;
-  padding: 5px;
+  border-radius: 1rem;
+  padding: 0.5rem;
   width: 100%;
 }
 
@@ -294,7 +300,7 @@ select {
   }
 
 .account-item{
-  height:7rem;
+  height:auto;
   font-size:3rem;
  }
 
