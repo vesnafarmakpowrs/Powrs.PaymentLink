@@ -145,6 +145,14 @@ function GetAccountInfo() {
             "contractId": document.getElementById("contractId").value
         }));
 
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            var response = JSON.parse(xhttp.responseText);
+            if (isMobileDevice) {
+                ShowAccountInfo(response.Results);
+            }
+        }
+    }
 }
 
 function StartPayment(BuyEdalerTemplateId, iban, bic) {
@@ -186,6 +194,7 @@ function DisplayTransactionResult(Result) {
     }
 }
 
+
 function OpenBankIdApp(Data) {
     if (Data == null) {
         console.log("data is empty");
@@ -194,14 +203,19 @@ function OpenBankIdApp(Data) {
 
     var link = Data.BankIdUrl;
     var mode = "_blank";
-    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    var isIos = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-    if (isSafari) {
+    if (isIos) {
         link = Data.MobileAppUrl;
         mode = "_self";
+        let chromeAgent = navigator.userAgent.indexOf("Chrome") > -1;
+        if (!chromeAgent) {
+            link = link.replace('redirect=null', 'redirect=');
+        }
     }
     window.open(link, mode);
 }
+
 function ToggleServiceProviderSelect(shouldBeDisabled) {
     var select = document.getElementById("serviceProvidersSelect");
     select.disabled = shouldBeDisabled;
