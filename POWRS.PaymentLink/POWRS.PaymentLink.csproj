@@ -3,6 +3,7 @@
 	<PropertyGroup />
 
 	<ItemGroup>
+		<None Remove="Root\Payout\DealInfo.ws" />
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\InitiatePayment.ws" />
@@ -19,8 +20,7 @@
 		<None Remove="Root\Payout\HtmlTemplates\EN\purchase_agreement.html" />
 		<None Remove="Root\VaulterApi\PaymentLink\Index.md" />
 		<None Remove="Root\VaulterApi\PaymentLink\SellItem.ws" />
-		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />
-		<None Remove="Root\VaulterApi\PaymentLink\DealInfo.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />		
 		<None Remove="POWRS.PaymentLink.manifest" />
 	</ItemGroup>
 	<ItemGroup>
@@ -33,7 +33,7 @@
 		<Content Include="Root\VaulterApi\PaymentLink\Index.md">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\DealInfo.ws">
+		<Content Include="Root\Payout\DealInfo.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\InitiatePayment.ws">

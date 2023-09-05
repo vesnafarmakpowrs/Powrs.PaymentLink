@@ -4,28 +4,28 @@
 	<Assembly fileName="NeuroFeatures.dll" />
 	<Assembly fileName="POWRS.PaymentLink.dll"/>
 	<Folder name="Root">
-		<Folder name="VaulterApi">
+		    <Folder name="VaulterApi">
 			<Folder name="PaymentLink">
 				<Content fileName="CancelItem.ws"/>
 				<Content fileName="SellItem.ws"/>
 				<Content fileName="Index.md"/>
-				<Content fileName="DealInfo.ws"/>
-		     </Folder>
-		</Folder
+			</Folder>
+		</Folder>
 		    <Folder name="Payout">
-				<Content fileName="InitiatePayment.ws"/>
-				<Content fileName="Events.js"/>
-				<Content fileName="GetAccountInfo.ws"/>
-				<Content fileName="GetBuyEdalerServiceProviders.ws"/>
-				<Content fileName="OutgoingPayments.js"/>
-				<Content fileName="Payout.cssx"/>
-				<Content fileName="Payout.md"/>
-				<Content fileName="RegisterUpdates.ws"/>
-				<Content fileName="Tests.js"/>
-				<Content fileName="Settings.md"/>
-				<Content fileName="vaulter_logo.svg"/>
-				<Content fileName="vaulterlogo.svg"/>
-				<Content fileName="spinner.gif"/>
+		<Content fileName="InitiatePayment.ws"/>
+		<Content fileName="Events.js"/>
+		<Content fileName="GetAccountInfo.ws"/>
+		<Content fileName="GetBuyEdalerServiceProviders.ws"/>
+		<Content fileName="OutgoingPayments.js"/>
+		<Content fileName="Payout.cssx"/>
+		<Content fileName="Payout.md"/>
+		<Content fileName="RegisterUpdates.ws"/>
+		<Content fileName="Tests.js"/>
+		<Content fileName="Settings.md"/>
+		<Content fileName="vaulter_logo.svg"/>
+		<Content fileName="vaulterlogo.svg"/>
+		<Content fileName="spinner.gif"/>
+		<Content fileName="DealInfo.ws"/>
 			<Folder name="HtmlTemplates">
 				<Folder name="EN">
 					<Content fileName="purchase_agreement.html" />

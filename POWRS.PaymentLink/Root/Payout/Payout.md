@@ -10,6 +10,7 @@ Parameter: Language
 JavaScript: Events.js
 JavaScript: Tests.js
 JavaScript: OutgoingPayments.js
+JavaScript: html2pdf.bundle.min.js
 
 <title>Document</title></head>
 <main class="border-radius"  >
@@ -43,6 +44,7 @@ if Token.HasStateMachine then
 if ContractState == "AwaitingForPayment" then 
 (
    Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
+   
     if !exists(Contract) then
     (
 	NotFound("Contract not found.");
@@ -53,6 +55,23 @@ if ContractState == "AwaitingForPayment" then
 	    foreach Parameter in Contract.Parameters do Parameter.Populate(v);
 	    foreach Parameter in Contract.Parameters do Parameter.IsParameterValid(v);
     );
+
+    Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
+
+    AgentName := "";
+    OrgName := "";
+    foreach I in Identities do
+    (
+       AgentName := I.FIRST + " " + I.MIDDLE + " " + I.LAST;
+       OrgName  := I.ORGNAME;
+    );
+
+    SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
+    SellerId := SellerName.Substring(0,3).ToUpper(); 
+
+    FileName:= SellerId + Token.ShortId;
+
+
     foreach Parameter in (Contract.Parameters ?? []) do 
       (
         Parameter.Name like "Title" ?   Title := Parameter.MarkdownValue;
@@ -70,6 +89,8 @@ if ContractState == "AwaitingForPayment" then
 ]]**
 <input type="hidden" value="((Contract.ContractId))" id="contractId"/>
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
+<input type="hidden" value="((FileName))" id="fileName"/>
+
 
 **Name** : ((MarkdownEncode(BuyerFullName) )) <br/>
 **Email address**:  ((BuyerEmail ))<br/>
@@ -126,7 +147,7 @@ if ContractState == "AwaitingForPayment" then
 
 <div>
    <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement">
-   <label for="purchaseAgreement"><a>Purchase Agreement</a></label> 
+   <label for="purchaseAgreement"><a onclick="generatePDF();"  target="_blank">Purchase Agreement</a></label> 
 </div>
 
 <div class="spaceItem"></div>
