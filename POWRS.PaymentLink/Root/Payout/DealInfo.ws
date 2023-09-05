@@ -5,7 +5,7 @@ if !exists(Posted) then BadRequest("No payload.");
    "countryCode":Required(String(PCountryCode))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= PContractId;
+Contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= PContractId;
 
 if (contract == null) then
 	Error("Contract is missing");
