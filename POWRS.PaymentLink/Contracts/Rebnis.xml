@@ -52,6 +52,12 @@
 				<Variable id="Buyer">
 					<TagReference tag="Buyer" />
 				</Variable>
+				<Variable id="BuyerEmail">
+					<TagReference tag="BuyerEmail" />
+				</Variable>
+				<Variable id="CallBackUrl">
+					<TagReference tag="CallBackUrl" />
+				</Variable>
 				<Variable id="Seller">
 					<TagReference tag="Seller" />
 				</Variable>
@@ -81,6 +87,9 @@
 				</Variable>
 				<Variable id="EscrowFee">
 					<TagReference tag="EscrowFee" />
+				</Variable>
+				<Variable id="Notifications">
+					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
@@ -125,7 +134,34 @@
 					<OnEnter actionRef="End" />
 				</State>
 				<Action id="ReportNewState">
-					<LogEvent actor="{Seller}" eventId="StateChanged" level="Medium" message="{'StateChanged to: ' + NewState }" object="{Seller}" type="Informational" />
+					<Try>
+						<Script>
+							Json:= {
+							"Status":  NewState,
+							"TokenId": TokenId,
+							"ContractId": TokenContract,
+							"CallBackUrl": CallBackUrl,
+							"ShouldNotifyClient": NewState == "PaymentCompleted"
+							};
+						</Script>
+						<HttpPost responseVariable="Response" resource="https://lab.neuron.vaulter.rs/VaulterApi/PaymentLink/ReportNewState.ws" content="{Json}">
+							<Header key="Accept" value="application/json"/>
+						</HttpPost>
+						<Script>
+							if(!exists(Response.State) || !exists(Response.Success)) then
+							(
+							success:= Boolean(Response.Success);
+							Notifications[NewState]:= success;
+							);
+						</Script>
+						<Catch exceptionVariable="ex">
+							<Script>
+								Notifications[NewState]:= false;
+							</Script>
+							<LogEvent actor="{Seller}" eventId="ReportNewState" level="Medium" message="{'Error while notifying client about state changed: ' + ex.Message}" module="ReportNewState" object="" type="Error" />
+						</Catch>
+					</Try>
+					<PersistVariable name="Notifications" value="{Notifications}"/>
 				</Action>
 				<Action id="BuyerServiceProviderSelected">
 					<Script>
@@ -173,7 +209,7 @@
 									MessageOnError:= 'ReturnFunds error';
 								]]>
 							</Script>
-							<CallAction actionRef="TrySellEdaler" />							
+							<CallAction actionRef="TrySellEdaler" />
 						</Then>
 						<Else>
 							<LogEvent actor="{Seller}" eventId="ReturnFunds" level="Medium" message="Unable to return funds due to insuffiecent payment. " object="{Buyer}" type="Informational" />
@@ -247,7 +283,7 @@
 							<Error reason="{ex.Message}" />
 						</Catch>
 					</Try>
-				</Action>				
+				</Action>
 				<Action id="End">
 					<End />
 				</Action>
@@ -267,6 +303,12 @@
 		</Tag>
 		<Tag name="Buyer">
 			<ParameterReference parameter="BuyerFullName" />
+		</Tag>
+		<Tag name="BuyerEmail">
+			<ParameterReference parameter="BuyerEmail" />
+		</Tag>
+		<Tag name="CallBackUrl">
+			<ParameterReference parameter="CallBackUrl" />
 		</Tag>
 		<Tag name="Title">
 			<ParameterReference parameter="Title" />

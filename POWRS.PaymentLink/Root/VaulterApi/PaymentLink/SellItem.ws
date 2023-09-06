@@ -63,7 +63,7 @@ Token := "Bearer " + R.jwt;
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
 (
-  TemplateId:= "2c830a59-78d9-2a49-f419-5573a1088c1b@legal.lab.neuron.vaulter.rs";
+  TemplateId:= "2c8b2877-da85-3b7e-7809-9867d3ffd301@legal.lab.neuron.vaulter.rs";
 )
 else
 (
