@@ -10,7 +10,7 @@ Parameter: Language
 JavaScript: Events.js
 JavaScript: Tests.js
 JavaScript: OutgoingPayments.js
-JavaScript: html2pdf.bundle.min.js
+
 
 <title>Document</title></head>
 <main class="border-radius"  >

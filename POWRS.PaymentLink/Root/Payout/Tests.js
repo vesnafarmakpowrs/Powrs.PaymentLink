@@ -156,10 +156,32 @@ function autoLaunchBankID(autostarttoken) {
         window.location = g_intent;
     }
 }
+function downloadPDF(base64Data, filename) {
+    // Convert the base64 string to a Blob
+    const byteCharacters = atob(base64Data);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+        const slice = byteCharacters.slice(offset, offset + 512);
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, { type: 'application/pdf' });
 
+    // Create an anchor link and trigger the download
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(link.href); // clean up
+}
 
 function generatePDF() {
-
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "DealInfo.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
@@ -172,12 +194,8 @@ function generatePDF() {
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4) {
             if (xhttp.status === 200) {
-                var opt = {
-                    margin: 15,
-                    filename: document.getElementById("fileName").value + '.pdf'
-                };
                 var response = JSON.parse(xhttp.responseText);
-                html2pdf().set(opt).from(response.Html).save();
+                downloadPDF(response.PDF, response.Name);
             }
         }
     }

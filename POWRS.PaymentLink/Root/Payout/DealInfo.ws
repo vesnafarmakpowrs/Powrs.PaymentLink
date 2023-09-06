@@ -5,7 +5,7 @@ if !exists(Posted) then BadRequest("No payload.");
    "countryCode":Required(String(PCountryCode))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-Contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= PContractId;
+contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= PContractId;
 
 if (contract == null) then
 	Error("Contract is missing");
@@ -27,8 +27,9 @@ foreach I in Identities do
  fileName:= SellerId + ShortId + ".pdf";
  url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ fileName);
 
- htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\purchase_agreement.html";
- 
+ htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\purchase_agreement.html"; 
+ htmlToGeneratePath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\" + PContractId + ".html";
+
  pdfPath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\" + fileName;
 
  html:= System.IO.File.ReadAllText(htmlTemplatePath);
@@ -57,8 +58,19 @@ htmlBuilder:= htmlBuilder.Replace("{{seller_name}}",  SellerName);
 htmlBuilder:= htmlBuilder.Replace("{{seller_id}}",  SellerId);
 htmlBuilder:= htmlBuilder.Replace("{{short_id}}",  ShortId);
 htmlBuilder:= htmlBuilder.Replace("{{issue_date}}", contract.Created.ToShortDateString());
+
+ System.IO.File.WriteAllText(htmlToGeneratePath, htmlBuilder.ToString(), System.Text.Encoding.UTF8);
+
+ ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
+ "\"" + htmlToGeneratePath +"\"" + " \"" +  pdfPath + "\"",
+ "C:\\ProgramData\\IoT Gateway\\Root\\HtmlTemplates");
+
+ bytes:= System.IO.File.ReadAllBytes(pdfPath);
+
+ System.IO.File.Delete(htmlToGeneratePath);
+ System.IO.File.Delete(pdfPath);
 	
 {
-	    Name: fileName,
-        Html: htmlBuilder.ToString()
+	Name: fileName,
+	PDF: bytes
 }
