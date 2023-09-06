@@ -147,7 +147,7 @@ if ContractState == "AwaitingForPayment" then
 </div>
 <div>
    <input type="checkbox" id="termsAndCondition" name="termsAndCondition">
-   <label for="termsAndCondition"><a href="https://www.powrs.se/vaulter-payment-link-privacy-policy" target="_blank">Terms ans conditions</a></label> 
+   <label for="termsAndCondition"><a href="Terms_and_Conditions.html" target="_blank">Terms ans conditions</a></label> 
 </div><br/>
 <div>
    <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement">
