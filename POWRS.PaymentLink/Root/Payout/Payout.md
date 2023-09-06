@@ -114,7 +114,7 @@ if ContractState == "AwaitingForPayment" then
 <div class="item border-radius">
      <table style="vertical-align:middle; height:100%;">
       <tr>
-        <td style="width:80%">Administration and protection fee</td>
+        <td style="width:80%">Vaulter service fee</td>
         <td class="itemPrice"  rowspan="2" ><div class="price">((EscrowFee))</div> <td>
         <td style="width:10%;" rowspan="2" > ((Currency )) </td>
       </tr>
