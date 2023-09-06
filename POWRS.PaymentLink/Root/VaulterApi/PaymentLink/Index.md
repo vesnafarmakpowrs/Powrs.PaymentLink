@@ -76,7 +76,7 @@ are themselves also described as JSON objects.
 SellIItem.ws
 --------------
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/SellIItem.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/SellItem.ws")}}`  
 Method: `POST`
 
 Call this resource to register a new Item in Vaulter. JSON in the following format is expected in the call.
@@ -85,8 +85,6 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
 {
     "userName": Required(String(PUserName)),
     "password": Required(String(PPassword)),
-    "keyId" : Required(String(PKeyId)),
-    "keyPassword" : Required(String(PKeyPassword)),
     "orderNum":Required(String(PRemoteId)),
     "title":Required(String(PTitle)),
     "price":Required(Integer(PPrice)),
