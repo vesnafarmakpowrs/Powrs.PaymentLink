@@ -1,5 +1,13 @@
-if !exists(Posted) then BadRequest("No payload.");
+remoteEndpoint:= Request.RemoteEndPoint.Split(':', null)[0];
+blocked:= select Blocked from RemoteEndpoints where Endpoint = remoteEndpoint;
 
+if(blocked != null && blocked == true) then 
+(
+ Sleep(30000);
+ NotFound("");
+);
+
+if !exists(Posted) then BadRequest("No payload.");
 r:= Request.DecodeData();
 if(!exists(r.Status) || !exists(r.TokenId) || !exists(r.ContractId) || !exists(r.CallBackUrl) || !exists(r.ShouldNotifyClient)) then
 (
