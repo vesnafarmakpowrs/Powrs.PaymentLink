@@ -2,11 +2,11 @@
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
-    "userName": Required(String(PUserName)),
+       "userName": Required(String(PUserName)),
     "password": Required(String(PPassword)),
     "orderNum":Required(String(PRemoteId)),
     "title":Required(String(PTitle)),
-    "price":Required(Integer(PPrice)),
+    "price":Required(Double(PPrice) >= 1),
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
     "description":Required(String(PDescription)),
     "paymentDeadline":Required(DateTime(PPaymentDeadline)),

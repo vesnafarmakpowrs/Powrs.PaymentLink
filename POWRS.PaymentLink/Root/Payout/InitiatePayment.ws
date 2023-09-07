@@ -35,16 +35,15 @@ PersonalNumber:= "";
 
 foreach Parameter in (Contract.Parameters ?? []) do 
 	  (
-         Parameter.Name like "AmountToPay" ?  AmountToPay := System.String.IsNullOrEmpty(Parameter.MarkdownValue)? 0 :Parameter.MarkdownValue ;
-         Parameter.Name like "Value" ?  Value := System.String.IsNullOrEmpty(Parameter.MarkdownValue)? 0 :Parameter.MarkdownValue ;
-         Parameter.Name like "EscrowFee" ?  EscrowFee := System.String.IsNullOrEmpty(Parameter.MarkdownValue)? 0 :Parameter.MarkdownValue ;
+         Parameter.Name like "Value" ?  Value := Parameter.ObjectValue ?? 0 ;
+         Parameter.Name like "EscrowFee" ?  EscrowFee := Parameter.ObjectValue ?? 0;
 		 Parameter.Name like "Currency" ?  Currency := Parameter.MarkdownValue;
 		 Parameter.Name like "CallBackUrl" ?  CallBackUrl := Parameter.MarkdownValue;
 		 Parameter.Name like "BuyerPersonalNum" ?  PersonalNumber := Parameter.MarkdownValue;
       );
-AmountToPay :=  Int(Value) + Int(EscrowFee);
+AmountToPay :=  Value + EscrowFee;
 
-if (AmountToPay <= 0 || System.String.IsNullOrEmpty(Currency)) then 
+if (AmountToPay < 1 || System.String.IsNullOrEmpty(Currency)) then 
 (
   BadRequest("Amount or currency not existing in the contract");
 );
@@ -73,7 +72,6 @@ InitiatePaymentRequest.RequestFromMobilePhone := PRequestFromMobilePhone;
 InitiatePaymentRequest.RemoteEndpoint := Request.RemoteEndPoint;
 
 results := OPService.InitiatePayment(InitiatePaymentRequest);
-
 {
 	Results: results
 }
