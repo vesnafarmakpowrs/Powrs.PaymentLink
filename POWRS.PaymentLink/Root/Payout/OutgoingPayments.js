@@ -44,7 +44,7 @@ function GenerateServiceProvidersUI() {
 
                 selectInput.onchange = function () {
                     var value = document.getElementById("serviceProvidersSelect").value;
-                    let provider = serviceProviders.find(m => m.C1 == value);
+                    let provider = serviceProviders.find(m => m.Name == value);
 
                     if (provider == null) {
                         selectedServiceProvider = null;
@@ -60,7 +60,7 @@ function GenerateServiceProvidersUI() {
                     const provider = serviceProviders[i];
 
                     var option = document.createElement("option");
-                    option.text = provider.C1;
+                    option.text = provider.Name;
 
                     selectInput.add(option);
                 }
@@ -121,7 +121,7 @@ function GenerateAccountsListUi(accounts) {
             if (!window.confirm("Selected account is: " + account.Iban + ". Are you sure?")) {
                 return;
             }
-            StartPayment(selectedServiceProvider.C5, account.Iban, account.Bic);
+            StartPayment(selectedServiceProvider.BuyEDalerTemplateContractId, account.Iban, account.Bic);
         }
         accountList.appendChild(bankElement);
     });
@@ -140,8 +140,8 @@ function GetAccountInfo() {
             "tabId": TabID,
             "sessionId": "",
             "requestFromMobilePhone": Boolean(isMobileDevice),
-            "bicFi": selectedServiceProvider.C2,
-            "bankName": selectedServiceProvider.C1,
+            "bicFi": selectedServiceProvider.Id,
+            "bankName": selectedServiceProvider.Name,
             "contractId": document.getElementById("contractId").value
         }));
 
