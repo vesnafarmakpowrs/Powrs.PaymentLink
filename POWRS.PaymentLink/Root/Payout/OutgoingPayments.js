@@ -1,5 +1,6 @@
 var serviceProviders = null;
 var selectedServiceProvider = null;
+const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
 
 document.addEventListener("DOMContentLoaded", () => {
     GenerateServiceProvidersUI();
@@ -51,14 +52,21 @@ function GenerateServiceProvidersUI() {
                         alert("Select valid bank.");
                         return;
                     }
-
                     selectedServiceProvider = provider;
-                    ClearQrCodeDiv();
-                    GetAccountInfo();
+                    if (!Boolean(isMobileDevice) && !provider.QRCode) {
+                        ShowMessage("To pay with this bank, please open the payment link from your phone.");
+                    }
+                    else {
+                        ClearQrCodeDiv();
+                        GetAccountInfo();
+                    }
+
+
                 };
                 for (let i = 0; i < serviceProviders.length; i++) {
                     const provider = serviceProviders[i];
-
+                    if (provider == null)
+                        break;
                     var option = document.createElement("option");
                     option.text = provider.Name;
 
@@ -224,6 +232,11 @@ function ToggleSpinner(showSpinner) {
     var spinner = document.getElementById("spinnerContainer");
     let displayStyle = showSpinner ? "flex" : "none";
     spinner.style.display = displayStyle;
+}
+
+function ShowMessage(message) {
+    var Div = document.getElementById("QrCode");
+    Div.innerHTML = "<fieldset><legend>Message</legend><p>" + message + "</p></fieldset>";
 }
 
 function ShowQRCode(Data) {
