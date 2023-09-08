@@ -259,3 +259,15 @@ function PaymentError(Data) {
     var Div = document.getElementById("QrCode");
     Div.innerHTML = "<fieldset><legend>Error</legend><p>" + Data + "</p></fieldset>";
 }
+
+function UserAgree() {
+    if (!document.getElementById("purchaseAgreement").checked ||
+        !document.getElementById("termsAndCondition").checked) {
+        document.getElementById("serviceProvidersSelect").disabled = true;
+    }
+    else {
+        document.getElementById("serviceProvidersSelect").disabled = false;
+        var container = document.getElementById('QrCode');
+        container.innerHTML = "";
+    }
+}

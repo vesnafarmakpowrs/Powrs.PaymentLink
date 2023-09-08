@@ -146,17 +146,17 @@ if ContractState == "AwaitingForPayment" then
 
 </div>
 <div>
-   <input type="checkbox" id="termsAndCondition" name="termsAndCondition">
-   <label for="termsAndCondition"><a href="Terms_and_Conditions.html" target="_blank">Terms ans conditions</a></label> 
+   <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();">
+   <label for="termsAndCondition"><a href="https://www.powrs.se/vaulter-payment-link-privacy-policy" target="_blank">Terms ans conditions</a></label> 
 </div><br/>
 <div>
-   <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement">
+   <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement" onclick="UserAgree();">
    <label for="purchaseAgreement"><a href="#" onclick="generatePDF();event.preventDefault();" >Purchase Agreement</a></label> 
 </div>
 
 <div class="spaceItem"></div>
 
-<select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="border-radius">
+<select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="border-radius" disabled>
 </select>
 
 <div id="QrCode"></div>
