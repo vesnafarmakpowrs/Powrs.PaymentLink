@@ -1,16 +1,14 @@
-
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
-       "userName": Required(String(PUserName)),
+    "userName": Required(String(PUserName)),
     "password": Required(String(PPassword)),
     "orderNum":Required(String(PRemoteId)),
     "title":Required(String(PTitle)),
-    "price":Required(Double(PPrice) >= 1),
+    "price":Required(Double(PPrice) >= 0.1),
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
     "description":Required(String(PDescription)),
-    "paymentDeadline":Required(DateTime(PPaymentDeadline)),
-    "deliveryDate":Required(DateTime(PDeliveryDate)),
+    "deliveryDate":Required(String(PDeliveryDate)),
     "sellerBankAccount":Required(String(PClientBankAccount)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
@@ -19,6 +17,12 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "callbackUrl":Optional(String(PCallBackUrl))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
+
+ParsedDeliveryDate:= null;
+if(!System.DateTime.TryParse(PDeliveryDate, ParsedDeliveryDate)) then
+(
+  BadRequest("Delivery date must be in MM/dd/yyyy format");
+);
 
 LegalId := select top 1 Id from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc;
 if(System.String.IsNullOrEmpty(LegalId)) then
@@ -63,29 +67,38 @@ Token := "Bearer " + R.jwt;
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
 (
-  TemplateId:= "2c8b2877-da85-3b7e-7809-9867d3ffd301@legal.lab.neuron.vaulter.rs";
+  TemplateId:= "2c8dc855-2223-17fa-1417-abe2914da798@legal.lab.neuron.vaulter.rs"
 )
 else
 (
   TemplateId:="2c830abd-c0fb-49b2-741b-37334d79a272@legal.neuron.vaulter.se";
 );
 
-Contract:=CreateContract(PUserName,TemplateId, "Public",
+CallBackUrl:= "";
+if(exists(PCallBackUrl) && !System.String.IsNullOrWhiteSpace(PCallBackUrl)) then 
+(
+ CallBackUrl:= PCallBackUrl;
+);
+
+try
+Contract:=CreateContract(PUserName, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
 	    "Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
-        "PaymentDeadline" : Today.AddDays(364),
-        "DeliveryDate" : Today.AddDays(364),
-        "Currency": PCurrency,       
+        "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00),
+        "DeliveryDate" : DateTime(ParsedDeliveryDate.Year, ParsedDeliveryDate.Month, ParsedDeliveryDate.Day, 23, 59, 59, 00),
+        "Currency": PCurrency,
         "Expires": Today.AddDays(364),
         "SellerBankAccount" : PClientBankAccount,
         "BuyerFullName":PBuyerFirstName + " " + PBuyerLastName,
         "BuyerPersonalNum":PBuyerPersonalNum,
         "BuyerEmail":PBuyerEmail,
-        "CallBackUrl" : PCallBackUrl
-    });
+        "CallBackUrl" : CallBackUrl
+    })
+catch
+BadRequest("Check parameters and try again.");
 
 Nonce := Base64Encode(RandomBytes(32));
 
@@ -102,7 +115,6 @@ S2 := S1 + ":" + KeySignature + ":" + Nonce + ":" + LegalId + ":" + ContractId +
 RequestSignature := Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
 
 POST(NeuronAddress + "/Agent/Legal/SignContract",
-
                              {
 	                        "keyId": KeyId,
 	                        "legalId": LegalId,
@@ -116,7 +128,6 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
 				"Accept" : "application/json",
                            "Authorization": Token
                               });
-
 
 {
     "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal." + Waher.IoTGateway.Gateway.Domain,"")
