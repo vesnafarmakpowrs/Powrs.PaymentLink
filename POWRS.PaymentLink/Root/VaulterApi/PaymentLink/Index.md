@@ -115,8 +115,7 @@ Description of properties:
 | `price`           | Price of the item. |
 | `currency`        | Currency used by the price. Must be a 3-upper-case-letter currency symbol. |
 | `description`     | Displayable description of item. |
-| `paymentDeadline` | Payment deadline of item. |
-| `deliveryDate`    | Delivery Date of item. |
+| `deliveryDate`    | Delivery Date of item. MM//dd/YYY |
 | `sellerBankAccount`| Sellers bank account. |
 | `buyerFirstName`  | Buyer First name. |
 | `buyerLastName`   | Buyer Last name. |
