@@ -90,7 +90,6 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "price":Required(Integer(PPrice)),
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
     "description":Required(String(PDescription)),
-    "paymentDeadline":Required(DateTime(PPaymentDeadline)),
     "deliveryDate":Required(DateTime(PDeliveryDate)),
     "sellerBankAccount":Required(String(PClientBankAccount)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
