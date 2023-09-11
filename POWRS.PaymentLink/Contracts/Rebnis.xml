@@ -35,7 +35,7 @@
 				<Variable id="AmountToPay">
 					<TagReference tag="AmountToPay" />
 				</Variable>
-				<Variable id="EscrowFeeJid" value="fees@lab.neuron.vaulter.rs">
+				<Variable id="EscrowFeeJid" value="{'fees@' + NeuronDomain}">
 				</Variable>
 				<Variable id="Price">
 					<TagReference tag="Value" />
@@ -91,14 +91,16 @@
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
+				<Variable id="NeuronDomain">
+					<Calc><![CDATA[Gateway.Domain]]></Calc>
+				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewState:='AwaitingForPayment'" />
 					<OnEvent actionRef="BuyerServiceProviderSelected">
-						<OnExternalXmlNote localName="ServiceProviderSelected" namespace="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd" noteVariable="Note" sourceVariable="Source" />
+						<OnExternalXmlNote localName="ServiceProviderSelected" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" sourceVariable="Source" />
 					</OnEvent>
 					<OnEvent newState="Cancel">
-						<OnXmlNote localName="Cancel" namespace="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd" noteVariable="Note" />
+						<OnXmlNote localName="Cancel" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" />
 					</OnEvent>
 					<OnEvent actionRef="CheckPayment">
 						<OnPaymentReceived amountTotalVariable="AmountPaid" referenceVariable="TokenReference" conditionVariable="ConditionForPayment" currencyVariable="CurrencyPaid" fromVariable="Source" />
@@ -117,7 +119,7 @@
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
 					<OnEvent actionRef="ReturnFunds" failureState="PaymentCompleted" newState="Cancel">
-						<OnXmlNote localName="Cancel" namespace="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd" noteVariable="Note" />
+						<OnXmlNote localName="Cancel" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" />
 					</OnEvent>
 				</State>
 				<State id="PaymentNotPerformed">
@@ -127,7 +129,6 @@
 					</OnEvent>
 				</State>
 				<State id="ServiceDelivered">
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewState:='ServiceDelivered'" />
 					<OnEnter actionRef="ReleaseFunds" />
 					<OnEvent newState="Done">
 						<OnDuration>PT10S</OnDuration>
@@ -144,15 +145,14 @@
 				<Action id="ReportNewState">
 					<Try>
 						<Script>
+							endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/ReportNewState.ws";
 							Json:= {
 							"Status":  NewState,
-							"TokenId": TokenId,
 							"ContractId": TokenContract,
-							"CallBackUrl": CallBackUrl,
-							"ShouldNotifyClient": NewState == "PaymentCompleted"
+							"CallBackUrl": CallBackUrl
 							};
 						</Script>
-						<HttpPost responseVariable="Response" resource="https://lab.neuron.vaulter.rs/VaulterApi/PaymentLink/ReportNewState.ws" content="{Json}">
+						<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
 							<Header key="Accept" value="application/json"/>
 						</HttpPost>
 						<Script>
@@ -247,10 +247,10 @@
 					</If>
 				</Action>
 				<Action id="AuthorizeServer">
-					<AuthorizeSource source="OPPUser@lab.neuron.vaulter.rs" />
+					<AuthorizeSource source="{'OPPUser@' + NeuronDomain}" />
 				</Action>
 				<Action id="UnauthorizeServer">
-					<UnauthorizeSource source="OPPUser@lab.neuron.vaulter.rs" />
+					<UnauthorizeSource source="{'OPPUser@' + NeuronDomain}" />
 				</Action>
 
 				<Action id="TransferFee">

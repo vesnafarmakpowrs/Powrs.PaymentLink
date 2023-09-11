@@ -19,8 +19,14 @@ if(System.String.IsNullOrEmpty(r.Status) || System.String.IsNullOrEmpty(r.TokenI
  BadRequest("Payload does not conform to specification.");
 );
 
+ContractId:= select top 1 ContractId from Contracts where ContractId = r.ContractId;
+if(ContractId == null) then 
+(
+ BadRequest("ContractId not valid");
+);
+
 success:= false;
-if(!System.String.IsNullOrEmpty(r.CallBackUrl) and r.ShouldNotifyClient) then
+if(!System.String.IsNullOrEmpty(r.CallBackUrl)) then
 (
  Log.Informational("Sending state update request to: " + r.CallBackUrl + " State: " + r.Status, null);
  POST(r.CallBackUrl,
@@ -35,6 +41,5 @@ if(!System.String.IsNullOrEmpty(r.CallBackUrl) and r.ShouldNotifyClient) then
 );
 
 {    	
-    "Status" : r.Status,
     "Success": success
 }

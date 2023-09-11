@@ -15,6 +15,12 @@ if (Contract == null || Token == null) then
 (
 	NotFound("Contract or token not found.")
 );
+
+State:= select top 1 State from StateMachineCurrentStates where StateMachineId = Token.MachineId;
+if(State.Equals("AwaitingForPayment")) then 
+(
+ BadRequest("Payment is no longer possible for this item.");
+);
 	
 P:=GetServiceProvidersForSellingEDaler('SE','SEK');
 ServiceProviderId := "";

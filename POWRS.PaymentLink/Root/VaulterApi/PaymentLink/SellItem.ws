@@ -15,7 +15,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Optional(String(PCallBackUrl))
+    "callbackUrl":Required(String(PCallBackUrl))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 ParsedDeliveryDate:= null;
@@ -74,17 +74,28 @@ else
   TemplateId:="2c830abd-c0fb-49b2-741b-37334d79a272@legal.neuron.vaulter.se";
 );
 
-CallBackUrl:= "";
-if(exists(PCallBackUrl) && !System.String.IsNullOrWhiteSpace(PCallBackUrl)) then 
+ContractParameters:= select top 1 Parameters from Contracts where ContractId = TemplateId;
+if(ContractParameters == null) then 
 (
- CallBackUrl:= PCallBackUrl;
+ BadRequest("Parameters for the contract does not exists.");
+);
+
+EscrowFee:= 0;
+foreach Parameter in ContractParameters do 
+(
+  Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.ObjectValue;
+);
+
+if(EscrowFee <= 0) then 
+(
+ BadRequest("Fee not properly configured");
 );
 
 try
 Contract:=CreateContract(PUserName, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
-	    "Title": PTitle,
+	 "Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
         "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00),
@@ -95,7 +106,7 @@ Contract:=CreateContract(PUserName, TemplateId, "Public",
         "BuyerFullName":PBuyerFirstName + " " + PBuyerLastName,
         "BuyerPersonalNum":PBuyerPersonalNum,
         "BuyerEmail":PBuyerEmail,
-        "CallBackUrl" : CallBackUrl
+        "CallBackUrl" : PCallBackUrl
     })
 catch
 BadRequest("Check parameters and try again.");
@@ -130,5 +141,7 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
                               });
 
 {
-    "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal." + Waher.IoTGateway.Gateway.Domain,"")
+    "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal." + Waher.IoTGateway.Gateway.Domain,""),
+    "EscrowFee": EscrowFee,
+    "Currency": PCurrency
 }
