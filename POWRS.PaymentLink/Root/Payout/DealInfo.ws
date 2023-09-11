@@ -63,7 +63,7 @@ htmlBuilder:= htmlBuilder.Replace("{{issue_date}}", contract.Created.ToShortDate
 
  ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
  "\"" + htmlToGeneratePath +"\"" + " \"" +  pdfPath + "\"",
- "C:\\ProgramData\\IoT Gateway\\Root\\HtmlTemplates");
+ Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\");
 
  bytes:= System.IO.File.ReadAllBytes(pdfPath);
 
