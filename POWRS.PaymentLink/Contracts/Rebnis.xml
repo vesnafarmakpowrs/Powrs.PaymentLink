@@ -110,7 +110,7 @@
 						<OnCondition><![CDATA[exists(TotalAmountPaid) && TotalAmountPaid>=AmountToPay]]></OnCondition>
 					</OnEvent>
 					<OnEvent newState="PaymentNotPerformed">
-						<OnDuration>PT15M</OnDuration>
+						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
 				</State>
 				<State id="PaymentCompleted">
