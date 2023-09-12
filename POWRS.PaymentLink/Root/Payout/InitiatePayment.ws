@@ -17,7 +17,7 @@ if (Contract == null || Token == null) then
 );
 
 State:= select top 1 State from StateMachineCurrentStates where StateMachineId = Token.MachineId;
-if(State.Equals("AwaitingForPayment")) then 
+if (!State.Equals("AwaitingForPayment")) then 
 (
  BadRequest("Payment is no longer possible for this item.");
 );

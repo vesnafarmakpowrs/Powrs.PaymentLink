@@ -107,8 +107,6 @@ Description of properties:
 |:------------------|:------------|
 | `userName`        | Client User Name on Vaulter neuron. |
 | `password`        | Client Password on Vaulter Neuron. |
-| `keyId`           | Client Key Id on Vaulter neuron. |
-| `keyPassword`     | Client Key Password on Vaulter Neuron. |
 | `orderNum`        | ID of item in the caller's system. |
 | `title`           | Displayable name of item. |
 | `price`           | Price of the item. |

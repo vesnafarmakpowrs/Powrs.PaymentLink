@@ -91,6 +91,16 @@ if(EscrowFee <= 0) then
  BadRequest("Fee not properly configured");
 );
 
+
+Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/GetBic.ws",
+                 {
+                    "bankAccount":  PClientBankAccount
+                  },
+		   {"Accept" : "application/json"});
+
+PSellerServiceProviderId := Response.serviceProviderId;
+PSellerServiceProviderType := Response.serviceProviderType;
+
 try
 Contract:=CreateContract(PUserName, TemplateId, "Public",
     {
@@ -103,6 +113,8 @@ Contract:=CreateContract(PUserName, TemplateId, "Public",
         "Currency": PCurrency,
         "Expires": Today.AddDays(364),
         "SellerBankAccount" : PClientBankAccount,
+        "SellerServiceProviderId" : PSellerServiceProviderId,
+        "SellerServiceProviderType" : PSellerServiceProviderType,
         "BuyerFullName":PBuyerFirstName + " " + PBuyerLastName,
         "BuyerPersonalNum":PBuyerPersonalNum,
         "BuyerEmail":PBuyerEmail,

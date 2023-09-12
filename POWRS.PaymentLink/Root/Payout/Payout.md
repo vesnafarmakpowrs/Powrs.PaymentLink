@@ -147,7 +147,7 @@ if ContractState == "AwaitingForPayment" then
 </div>
 <div>
    <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();">
-   <label for="termsAndCondition"><a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">Terms ans conditions</a></label> 
+   <label for="termsAndCondition"><a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">Terms and conditions</a></label> 
 </div><br/>
 <div>
    <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement" onclick="UserAgree();">
