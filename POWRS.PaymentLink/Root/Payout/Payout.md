@@ -174,7 +174,10 @@ else if ContractState == "Cancel" then
 (
 ]]**((ContractState))**ed[[
 )
-
+else 
+(
+]]**Payment link has expired. Please contact the seller to receive a new one.**[[
+)
 
 }}
 
