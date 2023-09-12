@@ -35,7 +35,8 @@
 				<Variable id="AmountToPay">
 					<TagReference tag="AmountToPay" />
 				</Variable>
-				<Variable id="EscrowFeeJid" value="{'fees@' + NeuronDomain}">
+				<Variable id="EscrowFeeJid">
+					<Calc><![CDATA['fees@' + Gateway.Domain]]></Calc>
 				</Variable>
 				<Variable id="Price">
 					<TagReference tag="Value" />
@@ -109,7 +110,7 @@
 						<OnCondition><![CDATA[exists(TotalAmountPaid) && TotalAmountPaid>=AmountToPay]]></OnCondition>
 					</OnEvent>
 					<OnEvent newState="PaymentNotPerformed">
-						<OnDateTime>{PaymentDeadline}</OnDateTime>
+						<OnDuration>PT15M</OnDuration>
 					</OnEvent>
 				</State>
 				<State id="PaymentCompleted">
