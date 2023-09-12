@@ -87,11 +87,15 @@
 		<None Remove="Root\VaulterApi\PaymentLink\Index.md" />
 		<None Remove="Root\VaulterApi\PaymentLink\SellItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\ReportNewState.ws" />
-		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />		
+		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\GetBic.ws" />
 		<None Remove="POWRS.PaymentLink.manifest" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Include="Root\VaulterApi\PaymentLink\SellItem.ws">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\GetBic.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\ReportNewState.ws">

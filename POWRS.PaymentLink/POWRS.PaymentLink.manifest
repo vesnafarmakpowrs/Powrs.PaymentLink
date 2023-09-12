@@ -8,6 +8,7 @@
 			<Folder name="PaymentLink">
 				<Content fileName="CancelItem.ws"/>
 				<Content fileName="SellItem.ws"/>
+				<Content fileName="GetBic.ws"/>
 				<Content fileName="Index.md"/>
 			</Folder>
 		</Folder>
