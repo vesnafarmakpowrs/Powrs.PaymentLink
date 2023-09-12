@@ -13,7 +13,9 @@ JavaScript: OutgoingPayments.js
 
 
 <title>Document</title></head>
+
 <main class="border-radius"  >
+<div class="content">
 <b><h2>Welcome to Vaulter checkout</h2></b>
 
 <table style="width:100%">
@@ -180,5 +182,10 @@ else
 )
 
 }}
+</div>
+
 
 </main>
+<div class="footer">
+ Powrs AB, (org.no 559302-8045), Hammarbybacken 27, Stockholm, Sweden ©2021 - 2023 POWRS 
+</div>
