@@ -13,8 +13,58 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'RTDromo'; 
+    src: url('fonts/RTDromo-Book.woff2') format('woff2'),
+         url('fonts/RTDromo-Book.woff') format('woff');
+    font-weight: normal; 
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RTDromo Book Oblique'; 
+    src: url('fonts/RTDromo-BookOblique.woff2') format('woff2'),
+         url('fonts/RTDromo-BookOblique.woff') format('woff');
+    font-weight: normal; 
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RTDromo Light'; 
+    src: url('fonts/RTDromo-Light.woff2') format('woff2'),
+         url('fonts/RTDromo-Light.woff') format('woff');
+    font-weight: normal; 
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'RTDromo Light Oblique'; 
+    src: url('fonts/RTDromo-LightOblique.woff2') format('woff2'),
+         url('fonts/RTDromo-LightOblique.woff') format('woff');
+    font-weight: normal; 
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'RTDromo Medium'; 
+    src: url('fonts/RTDromo-Medium.woff2') format('woff2'),
+         url('fonts/RTDromo-Medium.woff') format('woff');
+    font-weight: normal; 
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RTDromo Medium Oblique'; 
+    src: url('fonts/RTDromo-MediumOblique.woff2') format('woff2'),
+         url('fonts/RTDromo-MediumOblique.woff') format('woff');
+    font-weight: normal; 
+    font-style: normal;
+}
+
+
 .content {
-    min-height: calc(100% - 40px);  /* Adjusts the content height, considering the footer's height */
     padding: 20px;
     padding: 0 5% 2.5em 5%;
     background-color:white;
@@ -71,16 +121,14 @@
             border-top: 1px solid #ddd;  /* light border at the top */
             box-sizing: content-box;
         }
-/* Desktop styles using a media query */
-@media (min-width: 768px) { /* 768px is a commonly used breakpoint for tablets/desktops, but you can adjust this value as needed */
-    .footer {
-        width: 40%;
-    }
- 
-    .content {
-        width: 50%;
-    }
+
+
+
+.vaulterLogo
+{
+   width:50px;
 }
+
 
 #QrCode
 {
@@ -90,7 +138,8 @@
 main
 {
     height:90%;
-    
+    width:50%;
+    margin: 0 auto;
 }
 
 a 
@@ -108,6 +157,12 @@ a:hover
     color: #FFF;
     font-weight:600;
     cursor: not-allowed;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  width:500px;
 }
 
 p
@@ -168,8 +223,8 @@ input[type="checkbox"] + label
     display: inline-block;
     cursor: pointer;
     position: relative;
-    padding-left: 2em;
-    padding-bottom:0.3em;
+    padding-left: 1.4em;
+    padding-bottom:0.1em;
     margin-right: 1em;
 }
 
@@ -234,11 +289,7 @@ fieldset > legend
 	background-color:¤HeaderColor¤;
 }
 
-.center {
-  margin-left: auto;
-  margin-right: auto;
-  width:500px;
-}
+
 
 
 body {
@@ -259,6 +310,12 @@ body {
   left: 0px;
   padding : 10px;
   overflow: hidden;
+}
+
+.welcomeLbl
+{
+ font-family: 'RTDromo Medium';
+ font-size: 1.4rem;
 }
 
 .whiteItemBg
@@ -387,25 +444,46 @@ select {
     font-size:2rem;
     width: 100%;
   }
+ 
+ input[type="checkbox"] + label:before {
+    width: 1.3em;
+    height: 1.3em;
+ }
+  
+ 
+input[type="checkbox"] + label
+{
+    padding-left: 2.2em;
+    padding-top:0.3em;
+    padding-bottom:0.3em;
+    margin-right: 1em;
+}
 
   select {
    height: 6rem !important;
    font-size:3rem !important;
   }
 
-.account-item{
-  height:auto;
-  font-size:3rem;
- }
+  .welcomeLbl {
+    font-family: 'RTDromo Medium';
+     font-size: 3rem;
+   }
+
+  .account-item{
+    height:auto;
+    font-size:3rem;
+   }
+
+   .vaulterLogo{
+       width:80px;
+    }
+
+.footer {
+        width: 80%;
+        margin: 0 auto;
+    }
 
  #spinnerContainer{
    height: 15rem !important;
- }
-}
-
-@media only screen and (max-width: 768px) {
-  select {
-   height: 6rem !important;
-   font-size:3rem !important;
   }
 }

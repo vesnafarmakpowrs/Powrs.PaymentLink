@@ -16,18 +16,24 @@ JavaScript: OutgoingPayments.js
 
 <main class="border-radius"  >
 <div class="content">
-<b><h2>Welcome to Vaulter checkout</h2></b>
+<b><h2></h2></b>
 
 <table style="width:100%">
-<tr>
-<td>
-Protect your money with smart payments 
-</td>
-<td rowspan="2"><img style="width:30px;" src="vaulterlogo.svg" alt="Vaulter"/> </td>
-<tr>
-
-</tr>
-</tr></table>
+  <tr class="welcomeLbl">
+    <td>Welcome to Vaulter checkout
+    </td>
+    <td rowspan="3"><img class="vaulterLogo" src="vaulterlogo.svg" alt="Vaulter"/> </td>
+  </tr>
+  <tr>
+    <td>
+       Protect your money with smart payments 
+    </td>
+  </tr>
+ <tr>
+    <td>
+    </td>
+  </tr>
+</table>
 
 {{
 
