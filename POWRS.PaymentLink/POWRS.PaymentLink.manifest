@@ -13,14 +13,6 @@
 			</Folder>
 		</Folder>
 		    <Folder name="Payout">
-				<Folder>
-					<Content fileName="Coanda-Bold.ttf"/>
-				</Folder>
-				<Folder name="HtmlTemplates">
-					<Folder name="EN">
-						<Content fileName="purchase_agreement.html" />
-					</Folder>
-				</Folder>
 				<Content fileName="InitiatePayment.ws"/>
 				<Content fileName="Events.js"/>
 				<Content fileName="GetAccountInfo.ws"/>
@@ -35,7 +27,6 @@
 				<Content fileName="vaulterlogo.svg"/>
 				<Content fileName="spinner.gif"/>
 				<Content fileName="DealInfo.ws"/>
-			
 			</Folder>
 	</Folder>
 </Module>

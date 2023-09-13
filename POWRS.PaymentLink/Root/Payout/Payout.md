@@ -85,14 +85,14 @@ if ContractState == "AwaitingForPayment" then
       (
         Parameter.Name like "Title" ?   Title := Parameter.MarkdownValue;
         Parameter.Name like "Description" ?   Description := Parameter.MarkdownValue;
-        Parameter.Name like "Value" ?   Value := Parameter.MarkdownValue;
+        Parameter.Name like "Value" ?   Value := Double(Parameter.MarkdownValue).ToString("N2");
         Parameter.Name like "Currency" ?   Currency := Parameter.MarkdownValue;
         Parameter.Name like "Commission" ?   Commission := Parameter.MarkdownValue;
         Parameter.Name like "BuyerFullName" ?   BuyerFullName := Parameter.MarkdownValue;
         Parameter.Name like "BuyerEmail" ?  BuyerEmail := Parameter.MarkdownValue;
         Parameter.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Parameter.MarkdownValue;
-        Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.MarkdownValue;
-        Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.MarkdownValue;
+        Parameter.Name like "EscrowFee" ?   EscrowFee := Double(Parameter.MarkdownValue).ToString("N2");
+        Parameter.Name like "AmountToPay" ?   AmountToPay := Double(Parameter.MarkdownValue).ToString("N2");
       );
 
 ]]**
@@ -111,7 +111,7 @@ if ContractState == "AwaitingForPayment" then
 <table style="vertical-align:middle; height:100%;">
  <tr><td style="width:80%"> ((Title))</td>
  <td class="itemPrice"  rowspan="2" > <div class="price">((Value ))</div> <td>
- <td style="width:10%;" rowspan="2" > ((Currency )) </td>
+ <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
 </tr>
  <tr>
   <td style="width:70%"> ((Description))</td>
@@ -126,7 +126,7 @@ if ContractState == "AwaitingForPayment" then
       <tr>
         <td style="width:80%">Vaulter service fee</td>
         <td class="itemPrice"  rowspan="2" ><div class="price">((EscrowFee))</div> <td>
-        <td style="width:10%;" rowspan="2" > ((Currency )) </td>
+        <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
       </tr>
 </table>
 </div>
@@ -135,14 +135,14 @@ if ContractState == "AwaitingForPayment" then
 
 <table style="width:100%">
 <tr>
-  <td style="width:50%"></td>
-  <td style="width:50%">
+  <td style="width:40%"></td>
+  <td style="width:60%">
      <div class="total border-radius">
       <table style="vertical-align:middle; height:100%;">
         <tr>
          <td style="width:70%">Total to pay</td>
          <td class="itemPrice"  rowspan="2" ><div class="price">((AmountToPay)) </div> <td>
-         <td style="width:10%;" rowspan="2" > ((Currency )) </td>
+         <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
         </tr>
         <tr>
          <td style="width:70%"> </td>
@@ -172,7 +172,7 @@ if ContractState == "AwaitingForPayment" then
       <table style="vertical-align:middle; height:100%;">
         <tr>
          <td style="width:80%">The amount safeguarded by Vaulter until the end of the cancelation period set by the seller</td>
-         <td class="moneyRight" style="width:10%;" >((AmountToPay))</td>
+         <td class="moneyRight itemPrice">((AmountToPay))</td>
          <td class="currencyLeft" style="width:10%;" >((Currency ))</td>
         </tr>
       </table>
