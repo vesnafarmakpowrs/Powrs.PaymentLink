@@ -92,7 +92,6 @@
 }
 
 .selectBank{
- width:100% !important;
  border: 1px solid #BBC4CE !important;
 }
 
@@ -109,16 +108,16 @@
 }
 
 .footer {
-            position: fixed;    /* This makes the footer stick to the bottom */
+            position: fixed;    
             font-size: 0.8em;  
             bottom: 0;  
-            width: 90%;                /* Set the width of the footer */
-            margin-left: auto;         /* Center the footer horizontally (part 1/2) */
-            margin-right: auto;        /* Center the footer horizontally (part 2/2) */
+            width: 90%;               
+            margin-left: auto;         
+            margin-right: auto;       
             text-align: center;        
             padding: 5px 0;
-            background-color: #f4f4f4;  /* light gray background */
-            border-top: 1px solid #ddd;  /* light border at the top */
+            background-color: #f4f4f4;  
+            border-top: 1px solid #ddd;  
             box-sizing: content-box;
         }
 
@@ -203,7 +202,7 @@ input:focus
 
 select
 {
-	width: 100%;
+    width: 100%;
     padding: 6px 10px;
     margin: 4px 0;
     box-sizing: border-box;
@@ -223,7 +222,7 @@ input[type="checkbox"] + label
     display: inline-block;
     cursor: pointer;
     position: relative;
-    padding-left: 1.4em;
+    padding-left: 1.6em;
     padding-bottom:0.1em;
     margin-right: 1em;
 }
@@ -302,7 +301,7 @@ body {
 
 .item {
   width: 100%;
-  min-height: 71px;
+  min-height: 40px;
   background: rgba(246,246,248,1);
   opacity: 1;
   position: relative;
@@ -338,6 +337,19 @@ body {
   position: relative;
   top: 0px;
   left: 0px;
+  padding : 10px;
+  overflow: hidden;
+}
+
+
+.selectBankDiv{
+  width: 100%;
+  background: white;
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  right: 0px;
   padding : 10px;
   overflow: hidden;
 }

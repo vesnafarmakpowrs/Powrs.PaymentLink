@@ -100,10 +100,12 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
 
-
 **Name** : ((MarkdownEncode(BuyerFullName) )) <br/>
 **Email address**:  ((BuyerEmail ))<br/>
 <br/>
+
+**Sold by<br>
+((SellerName))**
 
 <div class="item border-radius">
 <table style="vertical-align:middle; height:100%;">
@@ -177,12 +179,17 @@ if ContractState == "AwaitingForPayment" then
      </div>
    </td>
  <tr>
-<table>
 
-<div class="spaceItem"></div>
-
-<select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="border-radius selectBank" disabled>
-</select>
+<table style="width:100%">
+ <tr>
+  <td style="width:100%">
+    <div class="selectBankDiv">
+      <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" disabled>
+      </select>
+    </div>
+  </td>
+  </tr>
+</table>
 
 <div id="QrCode"></div>
 <div id="spinnerContainer">
@@ -205,8 +212,8 @@ else
 )
 
 }}
-</div>
 
+</div>
 
 </main>
 <div class="footer-parent">
