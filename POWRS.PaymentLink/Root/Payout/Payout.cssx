@@ -10,20 +10,30 @@
 .content {
     min-height: calc(100% - 40px);  /* Adjusts the content height, considering the footer's height */
     padding: 20px;
+    padding: 0 5% 2.5em 5%;
+    background-color:white;
+    width: 50%;
+    height:90%;
+    top:3em;
+    z-index:2;
+    margin: 3rem auto 0rem auto;
+    box-sizing: border-box;
+    border-radius: 0.5rem !important;
 }
 
 .footer {
-    position: fixed;    /* This makes the footer stick to the bottom */
-    bottom: 0;          /* Position it at the bottom of the page */
-    height: 80px;       /* Adjust this to fit your content */
-    background-color: #f5f5f5; /* Just for visibility. You can customize this */
-    text-align: center;
-    font-size: 1rem !important;
-    line-height: 30px;  /* Vertically center the text */
-    width: 100%;
-    z-index:2;
-    margin: 3rem auto 0rem auto; 
-}
+            position: fixed;    /* This makes the footer stick to the bottom */
+             font-size: 0.8em;  
+            bottom: 0;  
+            width: 40%;                /* Set the width of the footer */
+            margin-left: auto;         /* Center the footer horizontally (part 1/2) */
+            margin-right: auto;        /* Center the footer horizontally (part 2/2) */
+            text-align: center;        
+            padding: 5px 0;
+            background-color: #f4f4f4;  /* light gray background */
+            border-top: 1px solid #ddd;  /* light border at the top */
+            box-sizing: content-box;
+        }
 
 
 #QrCode
@@ -33,13 +43,8 @@
 
 main
 {
-    padding: 0 5% 2.5em 5%;
-    width: 50%;
     height:90%;
-    top:3em;
-    z-index:2;
-    margin: 3rem auto 0rem auto;    
-    background-color:white;
+    
 }
 
 a 
@@ -183,9 +188,7 @@ fieldset > legend
   width:500px;
 }
 
-* {
-  box-sizing: border-box;
-}
+
 body {
   font-size: 1rem;
 }
@@ -204,6 +207,19 @@ body {
   left: 0px;
   padding : 10px;
   overflow: hidden;
+}
+
+.whiteItemBg
+{
+  background-color:white !important;
+}
+
+.safeguarded
+{
+   width:20%; 
+   text-align: right; 
+   display: table-cell;
+   vertical-align: middle;
 }
 
 .total{
@@ -294,6 +310,10 @@ select {
 .border-radius {
   border-radius:0.5rem !important;
 }
+.border-solid {
+  border:1px solid darkgray;
+}
+
 
 #spinnerContainer{
  display: none;

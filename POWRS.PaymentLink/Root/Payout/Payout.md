@@ -187,5 +187,5 @@ else
 
 </main>
 <div class="footer">
- Powrs AB, (org.no 559302-8045), Hammarbybacken 27, Stockholm, Sweden ©2021 - 2023 POWRS 
+ Powrs AB, (org.no 559302-8045), Hammarbybacken 27, Stockholm <br/>Sweden ©2021 - 2023 POWRS 
 </div>
