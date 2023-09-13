@@ -69,6 +69,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Root\Payout\Fonts\Coanda-Bold.ttf"/>"
 		<None Remove="Root\Payout\DealInfo.ws" />
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
@@ -105,6 +106,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Index.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\Payout\Fonts\Coanda-Bold.ttf">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\DealInfo.ws">

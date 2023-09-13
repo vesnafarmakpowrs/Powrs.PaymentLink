@@ -13,25 +13,29 @@
 			</Folder>
 		</Folder>
 		    <Folder name="Payout">
-		<Content fileName="InitiatePayment.ws"/>
-		<Content fileName="Events.js"/>
-		<Content fileName="GetAccountInfo.ws"/>
-		<Content fileName="GetBuyEdalerServiceProviders.ws"/>
-		<Content fileName="OutgoingPayments.js"/>
-		<Content fileName="Payout.cssx"/>
-		<Content fileName="Payout.md"/>
-		<Content fileName="RegisterUpdates.ws"/>
-		<Content fileName="Tests.js"/>
-		<Content fileName="Settings.md"/>
-		<Content fileName="vaulter_logo.svg"/>
-		<Content fileName="vaulterlogo.svg"/>
-		<Content fileName="spinner.gif"/>
-		<Content fileName="DealInfo.ws"/>
-			<Folder name="HtmlTemplates">
-				<Folder name="EN">
-					<Content fileName="purchase_agreement.html" />
-				</Folder>				
-			</Folder>
+				<Folder>
+					<Content fileName="Coanda-Bold.ttf"/>
+				</Folder>
+				<Folder name="HtmlTemplates">
+					<Folder name="EN">
+						<Content fileName="purchase_agreement.html" />
+					</Folder>
+				</Folder>
+				<Content fileName="InitiatePayment.ws"/>
+				<Content fileName="Events.js"/>
+				<Content fileName="GetAccountInfo.ws"/>
+				<Content fileName="GetBuyEdalerServiceProviders.ws"/>
+				<Content fileName="OutgoingPayments.js"/>
+				<Content fileName="Payout.cssx"/>
+				<Content fileName="Payout.md"/>
+				<Content fileName="RegisterUpdates.ws"/>
+				<Content fileName="Tests.js"/>
+				<Content fileName="Settings.md"/>
+				<Content fileName="vaulter_logo.svg"/>
+				<Content fileName="vaulterlogo.svg"/>
+				<Content fileName="spinner.gif"/>
+				<Content fileName="DealInfo.ws"/>
+			
 			</Folder>
 	</Folder>
 </Module>

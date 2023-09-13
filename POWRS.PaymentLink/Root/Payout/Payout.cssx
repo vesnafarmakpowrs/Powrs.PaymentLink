@@ -6,13 +6,19 @@
     color:¤TextColor¤;
     
 }
+@font-face {
+    font-family: 'Goanda Bold'; 
+    src: url('Fonts/Coanda-Bold.ttf') format('truetype'); 
+    font-weight: bold; 
+    font-style: normal;
+}
 
 .content {
     min-height: calc(100% - 40px);  /* Adjusts the content height, considering the footer's height */
     padding: 20px;
     padding: 0 5% 2.5em 5%;
     background-color:white;
-    width: 50%;
+    width: 90%;
     height:90%;
     top:3em;
     z-index:2;
@@ -21,11 +27,42 @@
     border-radius: 0.5rem !important;
 }
 
+
+
+.footer-parent {
+   display: grid;
+    place-items: center;  
+}
+
+.vaulterDiv{
+    border-radius: 1rem;
+    background-color: white !important;
+    border: 1px solid #BBC4CE;
+    margin: 1rem auto 0rem auto;
+}
+
+.selectBank{
+ width:100% !important;
+ border: 1px solid #BBC4CE !important;
+}
+
+.moneyRight
+{
+ font-family: 'Goanda Bold', sans-serif;
+ text-align:right;
+}
+
+.currencyLeft
+{
+ font-family: sans-serif;
+ text-align:left;
+}
+
 .footer {
             position: fixed;    /* This makes the footer stick to the bottom */
-             font-size: 0.8em;  
+            font-size: 0.8em;  
             bottom: 0;  
-            width: 40%;                /* Set the width of the footer */
+            width: 90%;                /* Set the width of the footer */
             margin-left: auto;         /* Center the footer horizontally (part 1/2) */
             margin-right: auto;        /* Center the footer horizontally (part 2/2) */
             text-align: center;        
@@ -34,7 +71,16 @@
             border-top: 1px solid #ddd;  /* light border at the top */
             box-sizing: content-box;
         }
-
+/* Desktop styles using a media query */
+@media (min-width: 768px) { /* 768px is a commonly used breakpoint for tablets/desktops, but you can adjust this value as needed */
+    .footer {
+        width: 40%;
+    }
+ 
+    .content {
+        width: 50%;
+    }
+}
 
 #QrCode
 {
@@ -119,11 +165,11 @@ input[type="checkbox"]
 
 input[type="checkbox"] + label
 {
-	display: inline-block;
+    display: inline-block;
     cursor: pointer;
     position: relative;
-    padding-left: 2.5em;
-	padding-bottom:0.3em;
+    padding-left: 2em;
+    padding-bottom:0.3em;
     margin-right: 1em;
 }
 
@@ -132,8 +178,8 @@ input[type="checkbox"] + label:before
 	content: "";
     display: inline-block;
  
-    width: 1em;
-    height: 1em;
+    width: 0.9em;
+    height: 0.9em;
  
     margin-right: 1em;
     position: absolute;
@@ -141,27 +187,33 @@ input[type="checkbox"] + label:before
     bottom: 1px;
 
     border-radius: 0.15em;
-    font-size: 1.75em;
+    font-size: 1.4em;
     box-sizing: border-box;
-    border: 2px solid black;
+    border: 2px solid #888787;
     background-color: ¤GraphBgColor¤;
     color:¤TextColor¤;
 }
 
 input[type="checkbox"] + label:before:focus
 {
-    border: 3px solid black;
+    border: 3px solid #888787;
 }
 
 input[type="checkbox"]:checked + label:before
 {
     content: "\2713";
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-    color: black;
+    color: #888787;
     text-align: center;
     line-height: 0.75em;
 }
 
+a {
+    color: #576B81;
+    text-decoration: none; 
+    font-weight: bold; 
+    font-style: normal;
+}
 fieldset
 {
     margin:2em 1em 2em 1em;
@@ -238,6 +290,7 @@ body {
   text-align:right;
   rowspan:"2";
   vertical-align:middle;
+  font-family: 'Goanda Bold', sans-serif;
 }
 
 .price

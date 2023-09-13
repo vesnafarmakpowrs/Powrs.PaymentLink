@@ -131,14 +131,14 @@ if ContractState == "AwaitingForPayment" then
   <td style="width:50%">
      <div class="total border-radius">
       <table style="vertical-align:middle; height:100%;">
-     <tr>
-        <td style="width:70%">Total to pay</td>
-        <td class="itemPrice"  rowspan="2" ><div class="price">((AmountToPay)) </div> <td>
-        <td style="width:10%;" rowspan="2" > ((Currency )) </td>
-    </tr>
- <tr>
-  <td style="width:70%"> </td>
- </tr>
+        <tr>
+         <td style="width:70%">Total to pay</td>
+         <td class="itemPrice"  rowspan="2" ><div class="price">((AmountToPay)) </div> <td>
+         <td style="width:10%;" rowspan="2" > ((Currency )) </td>
+        </tr>
+        <tr>
+         <td style="width:70%"> </td>
+        </tr>
 </table>
 
 </div>
@@ -150,15 +150,32 @@ if ContractState == "AwaitingForPayment" then
 <div>
    <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();">
    <label for="termsAndCondition"><a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">Terms and conditions</a></label> 
-</div><br/>
+</div>
+<div class="spaceItem"></div>
 <div>
    <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement" onclick="UserAgree();">
    <label for="purchaseAgreement"><a href="#" onclick="generatePDF();event.preventDefault();" >Purchase Agreement</a></label> 
 </div>
 
+<table style="width:100%">
+ <tr>
+  <td style="width:100%">
+     <div class="total border-radius vaulterDiv">
+      <table style="vertical-align:middle; height:100%;">
+        <tr>
+         <td style="width:80%">The amount safeguarded by Vaulter until the end of the cancelation period set by the seller</td>
+         <td class="moneyRight" style="width:10%;" >((AmountToPay))</td>
+         <td class="currencyLeft" style="width:10%;" >((Currency ))</td>
+        </tr>
+      </table>
+     </div>
+   </td>
+ <tr>
+<table>
+
 <div class="spaceItem"></div>
 
-<select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="border-radius" disabled>
+<select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="border-radius selectBank" disabled>
 </select>
 
 <div id="QrCode"></div>
@@ -186,6 +203,8 @@ else
 
 
 </main>
-<div class="footer">
- Powrs AB, (org.no 559302-8045), Hammarbybacken 27, Stockholm <br/>Sweden ©2021 - 2023 POWRS 
+<div class="footer-parent">
+  <div class="footer">
+   Powrs AB, (org.no 559302-8045), Hammarbybacken 27, Stockholm <br/>Sweden ©2021 - 2023 POWRS 
+  </div>
 </div>
