@@ -172,7 +172,7 @@ if ContractState == "AwaitingForPayment" then
       <table style="vertical-align:middle; height:100%;">
         <tr>
          <td style="width:80%">The amount safeguarded by Vaulter until the end of the cancelation period set by the seller</td>
-         <td class="moneyRight itemPrice">((AmountToPay))</td>
+         <td class="moneyRight itemPrice">((EscrowFee))</td>
          <td class="currencyLeft" style="width:10%;" >((Currency ))</td>
         </tr>
       </table>
