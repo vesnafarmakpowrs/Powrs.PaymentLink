@@ -60,17 +60,14 @@ function GenerateServiceProvidersUI() {
                         ClearQrCodeDiv();
                         GetAccountInfo();
                     }
-
-
                 };
                 for (let i = 0; i < serviceProviders.length; i++) {
                     const provider = serviceProviders[i];
-                    if (provider == null)
-                        break;
-                    var option = document.createElement("option");
-                    option.text = provider.Name;
-
-                    selectInput.add(option);
+                    if (provider != null) {
+                        var option = document.createElement("option");
+                        option.text = provider.Name;
+                        selectInput.add(option);
+                    }
                 }
             } else {
                 alert('Unable to load service providers');

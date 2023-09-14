@@ -125,9 +125,9 @@
 				</State>
 				<State id="PaymentNotPerformed">
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewState:='PaymentNotPerformed'" />
-					<OnEvent newState="Done">
-						<OnDuration>PT10S</OnDuration>
-					</OnEvent>
+					<!-- <OnEvent newState="Done">
+						<OnDuration>PT10S</OnDuration> 
+					</OnEvent>-->
 				</State>
 				<State id="ServiceDelivered">
 					<OnEnter actionRef="ReleaseFunds" />
@@ -420,7 +420,7 @@
 				</paragraph>
 			</description>
 		</numericalParameter>
-		<numericalParameter name="EscrowFee" value="1" guide="Vaulter Fees" min="1" minIncluded="true">
+		<numericalParameter name="EscrowFee" value="20" guide="Vaulter Fees" min="1" minIncluded="true">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Vaulter transaction fees.</text>
