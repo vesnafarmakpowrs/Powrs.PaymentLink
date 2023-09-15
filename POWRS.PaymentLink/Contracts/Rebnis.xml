@@ -115,7 +115,7 @@
 				</State>
 				<State id="PaymentCompleted">
 					<OnEnter actionRef="UnauthorizeServer" />
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewState:='PaymentCompleted'" />
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
 					<OnEvent newState="ServiceDelivered">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
@@ -124,10 +124,7 @@
 					</OnEvent>
 				</State>
 				<State id="PaymentNotPerformed">
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewState:='PaymentNotPerformed'" />
-					<!-- <OnEvent newState="Done">
-						<OnDuration>PT10S</OnDuration> 
-					</OnEvent>-->
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentNotPerformed'" />
 				</State>
 				<State id="ServiceDelivered">
 					<OnEnter actionRef="ReleaseFunds" />
@@ -148,7 +145,7 @@
 						<Script>
 							endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/ReportNewState.ws";
 							Json:= {
-							"Status":  NewState,
+							"Status":  NewStatus,
 							"ContractId": TokenContract,
 							"CallBackUrl": CallBackUrl
 							};
@@ -160,12 +157,12 @@
 							if(!exists(Response.State) || !exists(Response.Success)) then
 							(
 							success:= Boolean(Response.Success);
-							Notifications[NewState]:= success;
+							Notifications[NewStatus]:= success;
 							);
 						</Script>
 						<Catch exceptionVariable="ex">
 							<Script>
-								Notifications[NewState]:= false;
+								Notifications[NewStatus]:= false;
 							</Script>
 							<LogEvent actor="{Seller}" eventId="ReportNewState" level="Medium" message="{'Error while notifying client about state changed: ' + ex.Message}" module="ReportNewState" object="" type="Error" />
 						</Catch>
@@ -531,7 +528,7 @@
 				</paragraph>
 			</description>
 		</dateTimeParameter>
-		<dateTimeParameter name="DeliveryDate" exp="DeliveryDate &gt; Now &amp;&amp; DeliveryDate &gt; PaymentDeadline">
+		<dateTimeParameter name="DeliveryDate" exp="DeliveryDate &gt;= Now &amp;&amp; DeliveryDate &gt;= PaymentDeadline">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Date and time when goods should be delivered.</text>

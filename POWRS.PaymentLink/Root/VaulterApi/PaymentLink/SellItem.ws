@@ -67,11 +67,11 @@ Token := "Bearer " + R.jwt;
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
 (
-  TemplateId:= "2c91c1de-98e1-38b2-200a-12b05de1c3dc@legal.lab.neuron.vaulter.rs"
+  TemplateId:= "2c956e24-b43e-6ef5-381c-a5eec5d5e434@legal.lab.neuron.vaulter.rs"
 )
 else
 (
-  TemplateId:="2c95651c-0a03-4209-bc0d-52dc12df7c42@legal.neuron.vaulter.se";
+  TemplateId:="2c96dff9-3003-f5d5-7817-9f1c46a12eb7@legal.neuron.vaulter.se";
 );
 
 ContractParameters:= select top 1 Parameters from Contracts where ContractId = TemplateId;
