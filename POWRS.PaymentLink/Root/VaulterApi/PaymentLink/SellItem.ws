@@ -67,11 +67,11 @@ Token := "Bearer " + R.jwt;
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
 (
-  TemplateId:= "2c956e24-b43e-6ef5-381c-a5eec5d5e434@legal.lab.neuron.vaulter.rs"
+  TemplateId:= "2c9ad20f-ac6e-c6d3-b80f-ed0bbf0ea3f4@legal.lab.neuron.vaulter.rs"
 )
 else
 (
-  TemplateId:="2c96dff9-3003-f5d5-7817-9f1c46a12eb7@legal.neuron.vaulter.se";
+  TemplateId:="2c9ad3b4-3004-2195-7817-9f1c469a0057@legal.neuron.vaulter.se";
 );
 
 ContractParameters:= select top 1 Parameters from Contracts where ContractId = TemplateId;
@@ -101,6 +101,18 @@ Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/Pa
 PSellerServiceProviderId := Response.serviceProviderId;
 PSellerServiceProviderType := Response.serviceProviderType;
 
+ Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = PUserName And State = 'Approved';
+
+    AgentName := "";
+    OrgName := "";
+    foreach I in Identities do
+    (
+       AgentName := I.FIRST + " " + I.MIDDLE + " " + I.LAST;
+       OrgName  := I.ORGNAME;
+    );
+
+    SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
+
 try
 Contract:=CreateContract(PUserName, TemplateId, "Public",
     {
@@ -113,6 +125,7 @@ Contract:=CreateContract(PUserName, TemplateId, "Public",
         "Currency": PCurrency,
         "Expires": Today.AddDays(364),
         "SellerBankAccount" : PClientBankAccount,
+        "SellerName" : SellerName,
         "SellerServiceProviderId" : PSellerServiceProviderId,
         "SellerServiceProviderType" : PSellerServiceProviderType,
         "BuyerFullName":PBuyerFirstName + " " + PBuyerLastName,

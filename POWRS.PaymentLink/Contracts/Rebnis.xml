@@ -62,6 +62,9 @@
 				<Variable id="Seller">
 					<TagReference tag="Seller" />
 				</Variable>
+				<Variable id="SellerName">
+					<TagReference tag="SellerName" />
+				</Variable>
 				<Variable id="SellerServiceProviderId">
 					<TagReference tag="SellerServiceProviderId" />
 				</Variable>
@@ -236,7 +239,7 @@
 									SellEdalerFrom:= Seller;
 									ServiceProviderId:= SellerServiceProviderId;
 									ServiceProviderType:= SellerServiceProviderType;
-									AccountName:= Buyer;
+									AccountName:= SellerName;
 									MessageOnError:= 'ReleaseFundsToSeller error';
 								]]>
 							</Script>
@@ -328,6 +331,9 @@
 		</Tag>
 		<Tag name="Currency">
 			<ParameterReference parameter="Currency" />
+		</Tag>
+		<Tag name="SellerName">
+			<ParameterReference parameter="SellerName" />
 		</Tag>
 		<Tag name="SellerServiceProviderId">
 			<ParameterReference parameter="SellerServiceProviderId" />
@@ -456,6 +462,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Seller's bank account number</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SellerName" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Seller Name used to sellEdaler</text>
 				</paragraph>
 			</description>
 		</stringParameter>
