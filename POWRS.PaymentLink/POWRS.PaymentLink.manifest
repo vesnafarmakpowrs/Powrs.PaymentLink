@@ -17,11 +17,11 @@
 				<Content fileName="Events.js"/>
 				<Content fileName="GetAccountInfo.ws"/>
 				<Content fileName="GetBuyEdalerServiceProviders.ws"/>
-				<Content fileName="OutgoingPayments.js"/>
+				<Content fileName="PaymentLinkJs.js"/>
 				<Content fileName="Payout.cssx"/>
 				<Content fileName="Payout.md"/>
 				<Content fileName="RegisterUpdates.ws"/>
-				<Content fileName="Tests.js"/>
+				<Content fileName="PaymentLinkTests.js"/>
 				<Content fileName="Settings.md"/>
 				<Content fileName="vaulter_logo.svg"/>
 				<Content fileName="vaulterlogo.svg"/>

@@ -8,8 +8,8 @@ Javascript: /Contract.js
 Parameter: ID
 Parameter: Language
 JavaScript: Events.js
-JavaScript: Tests.js
-JavaScript: OutgoingPayments.js
+JavaScript: PaymentLinkTests.js
+JavaScript: PaymentLinkJs.js
 
 
 <title>Document</title></head>
