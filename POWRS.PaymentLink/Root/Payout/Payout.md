@@ -83,14 +83,14 @@ if ContractState == "AwaitingForPayment" then
       (
         Parameter.Name like "Title" ?   Title := Parameter.MarkdownValue;
         Parameter.Name like "Description" ?   Description := Parameter.MarkdownValue;
-        Parameter.Name like "Value" ?   Value := Double(Parameter.MarkdownValue).ToString("N2");
+        Parameter.Name like "Value" ?   Value := Parameter.ObjectValue.ToString("N2");
         Parameter.Name like "Currency" ?   Currency := Parameter.MarkdownValue;
         Parameter.Name like "Commission" ?   Commission := Parameter.MarkdownValue;
         Parameter.Name like "BuyerFullName" ?   BuyerFullName := Parameter.MarkdownValue;
         Parameter.Name like "BuyerEmail" ?  BuyerEmail := Parameter.MarkdownValue;
         Parameter.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Parameter.MarkdownValue;
-        Parameter.Name like "EscrowFee" ?   EscrowFee := Double(Parameter.MarkdownValue).ToString("N2");
-        Parameter.Name like "AmountToPay" ?   AmountToPay := Double(Parameter.MarkdownValue).ToString("N2");
+        Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.ObjectValue.ToString("N2");
+        Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.ObjectValue.ToString("N2");
       );
 
 ]]**
