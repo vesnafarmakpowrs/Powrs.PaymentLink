@@ -17,7 +17,7 @@
 				<Content fileName="Events.js"/>
 				<Content fileName="GetAccountInfo.ws"/>
 				<Content fileName="GetBuyEdalerServiceProviders.ws"/>
-				<Content fileName="PaymentLinkJs.js"/>
+				<Content fileName="PaymentLink.js"/>
 				<Content fileName="Payout.cssx"/>
 				<Content fileName="Payout.md"/>
 				<Content fileName="RegisterUpdates.ws"/>
