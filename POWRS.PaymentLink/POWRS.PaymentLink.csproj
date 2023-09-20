@@ -75,7 +75,6 @@
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\InitiatePayment.ws" />
 		<None Remove="Root\Payout\PaymentLinkJs.js" />
-		<None Remove="Root\Payout\PaymentLinkTests.js" />
 		<None Remove="Root\Payout\Payout - Copy.md" />
 		<None Remove="Root\Payout\Payout.cssx" />
 		<None Remove="Root\Payout\Payout.md" />
@@ -133,9 +132,6 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\RegisterUpdates.ws">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Root\Payout\PaymentLinkTests.js">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\Settings.md">
