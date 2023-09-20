@@ -2,6 +2,72 @@
 
 	<PropertyGroup />
 
+	<ItemGroup>
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Language\Waher.IoTGateway.en.lng" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Language\Waher.IoTGateway.es.lng" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Controls\SimpleTable.script" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Controls\SimpleTree.cssx" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Controls\SimpleTree.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Copyright.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Events.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Login.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\ProposeContract.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\ProposeContract.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Backup.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Backup.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\ChangePassword.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Config.cssx" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Database.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Database.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Database\MongoDB.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Domain.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Domain.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\ExpandPrivilege.ws" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Introduction.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentities.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentity.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\LegalIdentity.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Master.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Next.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Notification.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Notification.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\PersonalData.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\PersonalData.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\Backups.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\LocalDatabase.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\LocalSensorsAndDevices.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\NetworkIdentity.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\PersonalData\WebPages.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Restore.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Restore.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Role.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Roles.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Roles.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Roles.ws" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Roster.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Roster.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\RosterItems.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Theme.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Theme.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\User.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Users.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Users.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\Users.ws" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\XMPP.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Settings\XMPP.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\SignatureRequest.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\SignatureRequest.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Sniffers\Database.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.cssx" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Sniffers\EventLog.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.css" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.js" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Sniffers\Sniffer.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Root\Sniffers\XMPP.md" />
+	  <Content Remove="C:\Users\NenadAleksic\.nuget\packages\waher.iotgateway\1.5.7\contentFiles\any\netstandard2.0\Waher.IoTGateway.manifest" />
+	</ItemGroup>
+
 	
 	<ItemGroup>
 		<None Remove="Root\Payout\DealInfo.ws" />
