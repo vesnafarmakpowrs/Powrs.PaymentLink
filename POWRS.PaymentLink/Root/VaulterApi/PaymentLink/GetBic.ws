@@ -1,9 +1,8 @@
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
-    "bankAccount":Required(String(PBankAccount))
+    "bankAccount":Required(String(PBankAccount)) like "SE\\d{22}"
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
-
 
 bankAccountInformationList := [
          { 'ClearingNumberFrom' : 1100, 'ClearingNumberTo' : 1199, 'Method' : 1, 'IbanId' : "300", 'Bic' :"NDEASESS" },
@@ -59,9 +58,7 @@ bankAccountInformationList := [
 
 PCountry := PBankAccount.Substring(0,2);
 PCurrency := 'SEK';
-BankAccount := PBankAccount.Substring(2,Length(PBankAccount)-2);
-ClearingNumber := Int(BankAccount.Substring(0,4));
-bankId := 2455;
+ClearingNumber := Int(PBankAccount.Substring(4,4));
 Bic:= "";
 foreach bank in bankAccountInformationList do
    bank.ClearingNumberFrom <= ClearingNumber && ClearingNumber <= bank.ClearingNumberTo ? Bic := bank.Bic;
