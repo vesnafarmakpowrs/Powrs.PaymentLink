@@ -172,6 +172,15 @@
 	  <Folder Include="Root\Payout\HtmlTemplates\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <EmbeddedResource Update="Resx\PaylinkResources.en-US.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resx\PaylinkResources.sv-SE.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	</ItemGroup>
+
 
 	<PropertyGroup>
 

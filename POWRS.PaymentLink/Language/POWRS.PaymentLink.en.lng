@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Translation xmlns="http://waher.se/Schema/Translation.xsd">
+	<Language code="en" name="English">
+		<Namespace name="POWRS.PaymentLink">
+			<String id="1">The amount safeguarded by Vaulter until the end of the cancelation period set by the seller</String>
+			<String id="2">Authorize recipient </String>
+			<String id="2">Email address </String>
+		</Namespace>
+	</Language>
+</Translation>

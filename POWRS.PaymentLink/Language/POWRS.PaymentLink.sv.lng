@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Translation xmlns="http://waher.se/Schema/Translation.xsd">
+	<Language code="sv" name="Svenska">
+		<Namespace name="POWRS.PaymentLink">
+			<String id="1">OpenAI</String>			
+		</Namespace>
+	</Language>
+</Translation>
