@@ -22,7 +22,7 @@ foreach I in Identities do
 );
 
  SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
- SellerId := SellerName.Substring(0,3).ToUpper(); 
+ SellerId := UpperCase(SellerName.Substring(0,3));
 
  fileName:= SellerId + ShortId + ".pdf";
  url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ fileName);
