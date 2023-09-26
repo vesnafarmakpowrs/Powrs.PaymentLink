@@ -74,7 +74,7 @@ if ContractState == "AwaitingForPayment" then
     );
 
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
-    SellerId := SellerName.Substring(0,3).ToUpper(); 
+    SellerId := UpperCase(SellerName.Substring(0,3)); 
 
     FileName:= SellerId + Token.ShortId;
 
