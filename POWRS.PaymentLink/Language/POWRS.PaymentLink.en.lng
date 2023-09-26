@@ -24,9 +24,8 @@
 			<String id="20">Total to pay </String>
 			<String id="21">Vaulter service fee </String>
 			<String id="22">Welcome to Vaulter checkout </String>
-		
-			
-		
+			<String id="23">Payment link has expired. Please contact the seller to receive a new one. </String>
+			<String id="24">Unable to select bank account. Balance is not sufficient.</String>
 		</Namespace>
 	</Language>
 </Translation>

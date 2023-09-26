@@ -25,7 +25,8 @@
 		    <String id="20">Summa att betala</String>
 		    <String id="21">Vaulters tjänsteavgift</String>
 		    <String id="22">Välkommen till Vaulters Kassa</String>
-		
+			<String id="23">Betalningslänken har upphört att gälla. Kontakta säljaren för att få en ny.</String>
+			<String id="24">Det går inte att välja bankkonto, saldot är inte tillräckligt</String>
 		</Namespace>
 	</Language>
 </Translation>

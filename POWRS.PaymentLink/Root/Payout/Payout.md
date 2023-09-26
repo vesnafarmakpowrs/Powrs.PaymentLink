@@ -9,39 +9,20 @@ Parameter: lan
 JavaScript: Events.js
 JavaScript: PaymentLink.js
 
-<title>Document</title></head>
-
-<main class="border-radius"  >
+<main class="border-radius">
 <div class="content">
 <b><h2></h2></b>
-
-<table style="width:100%">
-  <tr class="welcomeLbl">
-    <td>Welcome to Vaulter checkout
-    </td>
-    <td rowspan="3"><img class="vaulterLogo" src="vaulterlogo.svg" alt="Vaulter"/> </td>
-  </tr>
-  <tr>
-    <td>
-       Protect your money with smart payments 
-    </td>
-  </tr>
- <tr>
-    <td>
-    </td>
-  </tr>
-</table>
-
 {{
 
-Language:= null;
+ Language:= null;
 if(exists(lan)) then 
 (
   Language:= Translator.GetLanguageAsync(lan);
 );
 if(Language == null) then 
 (
- Language:= Translator.GetLanguageAsync("en");
+ lan:= "sv";
+ Language:= Translator.GetLanguageAsync("sv");
 );
 
 LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
@@ -108,16 +89,36 @@ if ContractState == "AwaitingForPayment" then
         Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.ObjectValue.ToString("N2");
       );
 
-]]**
+]]
+<table style="width:100%">
+  <tr class="welcomeLbl">     
+    <td>**((LanguageNamespace.GetStringAsync(22) ))**    
+    </td>
+    <td rowspan="3"><img class="vaulterLogo" src="vaulterlogo.svg" alt="Vaulter"/> </td>
+  </tr>
+  <tr>
+    <td>
+       ((LanguageNamespace.GetStringAsync(6) ))
+    </td>
+  </tr>
+ <tr>
+    <td>
+    </td>
+  </tr>
+</table>
+
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(10) ))" id="selectedAccountOk">
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(24) ))" id="selectedAccountNotOk">
 <input type="hidden" value="((Contract.ContractId))" id="contractId"/>
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
 
 **((LanguageNamespace.GetStringAsync(4) ))** : ((MarkdownEncode(BuyerFullName) )) <br/>
-**Email address**:  ((BuyerEmail ))<br/>
+
+**((LanguageNamespace.GetStringAsync(3) ))**:  ((BuyerEmail ))<br/>
 <br/>
 
-**Sold by<br>
+**((LanguageNamespace.GetStringAsync(12) ))**<br>
 ((SellerName))**
 
 <div class="item border-radius">
@@ -137,7 +138,7 @@ if ContractState == "AwaitingForPayment" then
 <div class="item border-radius">
      <table style="vertical-align:middle; height:100%;">
       <tr>
-        <td style="width:80%">Vaulter service fee</td>
+        <td style="width:80%">((LanguageNamespace.GetStringAsync(21) ))</td>
         <td class="itemPrice"  rowspan="2" ><div class="price">((EscrowFee))</div> <td>
         <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
       </tr>
@@ -153,7 +154,7 @@ if ContractState == "AwaitingForPayment" then
      <div class="total border-radius">
       <table style="vertical-align:middle; height:100%;">
         <tr>
-         <td style="width:70%">Total to pay</td>
+         <td style="width:70%">((LanguageNamespace.GetStringAsync(20) ))</td>
          <td class="itemPrice"  rowspan="2" ><div class="price">((AmountToPay)) </div> <td>
          <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
         </tr>
@@ -170,12 +171,12 @@ if ContractState == "AwaitingForPayment" then
 </div>
 <div>
    <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();">
-   <label for="termsAndCondition"><a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">Terms and conditions</a></label> 
+   <label for="termsAndCondition"><a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label> 
 </div>
 <div class="spaceItem"></div>
 <div>
    <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement" onclick="UserAgree();">
-   <label for="purchaseAgreement"><a href="#" onclick="generatePDF();event.preventDefault();" >Purchase Agreement</a></label> 
+   <label for="purchaseAgreement"><a href="#" onclick="generatePDF();event.preventDefault();" >**((LanguageNamespace.GetStringAsync(7) ))**</a></label> 
 </div>
 
 <table style="width:100%">
@@ -184,7 +185,7 @@ if ContractState == "AwaitingForPayment" then
      <div class="total border-radius vaulterDiv">
       <table style="vertical-align:middle; height:100%;">
         <tr>
-         <td style="width:80%">The amount safeguarded by Vaulter until the end of the cancelation period set by the seller</td>
+         <td style="width:80%">((LanguageNamespace.GetStringAsync(1) ))</td>
          <td class="moneyRight itemPrice">((Value))</td>
          <td class="currencyLeft" style="width:10%;" >((Currency ))</td>
         </tr>
@@ -198,6 +199,7 @@ if ContractState == "AwaitingForPayment" then
   <td style="width:100%">
     <div class="selectBankDiv">
       <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" disabled>
+        <option value="none" selected disabled hidden>((LanguageNamespace.GetStringAsync(9) ))</option>
       </select>
     </div>
   </td>
@@ -213,15 +215,15 @@ if ContractState == "AwaitingForPayment" then
 )
 else if ContractState == "PaymentCompleted" then 
 (
-]]**((ContractState))**[[
+]]**((LanguageNamespace.GetStringAsync(16) ))**[[
 )
 else if ContractState == "Cancel" then 
 (
-]]**((ContractState))**ed[[
+]]**((LanguageNamespace.GetStringAsync(14) ))**ed[[
 )
 else 
 (
-]]**Payment link has expired. Please contact the seller to receive a new one.**[[
+]]**((LanguageNamespace.GetStringAsync(23) ))**[[
 )
 
 }}

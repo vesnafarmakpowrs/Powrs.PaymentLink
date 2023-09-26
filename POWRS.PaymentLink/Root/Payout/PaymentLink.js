@@ -37,11 +37,6 @@ function GenerateServiceProvidersUI() {
                 serviceProviders = response.ServiceProviders;
 
                 let selectInput = document.getElementById("serviceProvidersSelect");
-                selectInput.innerHTML = "";
-
-                let defaultOption = document.createElement("option");
-                defaultOption.text = '-- Please select bank --';
-                selectInput.add(defaultOption);
 
                 selectInput.onchange = function () {
                     var value = document.getElementById("serviceProvidersSelect").value;
@@ -116,14 +111,17 @@ function GenerateAccountsListUi(accounts) {
         bankElement.appendChild(nameAndBalance);
         bankElement.onclick = function () {
             var balance = parseFloat(account.Balance);
+            var balanceNotOkMessage = document.getElementById("selectedAccountNotOk").value;
+            var balanceOkMessage = document.getElementById("selectedAccountOk").value;
             if (!balance || balance <= 0) {
-                alert("Unable to select " + account.Iban + ". Balance is not sufficient.");
+                alert(balanceNotOkMessage);
                 return;
             }
             if (selectedServiceProvider == null) {
                 return;
             }
-            if (!window.confirm("Selected account is: " + account.Iban + ". Are you sure?")) {
+            balanceOkMessage = balanceOkMessage.replace("{0}", account.Iban);
+            if (!window.confirm(balanceOkMessage)) {
                 return;
             }
             StartPayment(selectedServiceProvider.BuyEDalerTemplateContractId, account.Iban, account.Bic);
