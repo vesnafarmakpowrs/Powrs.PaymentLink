@@ -28,4 +28,8 @@
 				<Content fileName="DealInfo.ws"/>
 			</Folder>
 	</Folder>
+	<Folder name="Language">
+		<Content fileName="POWRS.PaymentLink.en.lng"/>
+		<Content fileName="POWRS.PaymentLink.sv.lng"/>
+	</Folder>
 </Module>

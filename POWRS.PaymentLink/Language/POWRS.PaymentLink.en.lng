@@ -4,7 +4,29 @@
 		<Namespace name="POWRS.PaymentLink">
 			<String id="1">The amount safeguarded by Vaulter until the end of the cancelation period set by the seller</String>
 			<String id="2">Authorize recipient </String>
-			<String id="2">Email address </String>
+			<String id="3">Email address </String>
+			<String id="4">Name </String>
+			<String id="5">Payment link has expired. Please contact the seller to receive a new one. </String>
+			<String id="6">Protect your money with smart payments </String>
+			<String id="7">Purchase Agreement </String>
+			<String id="8">Scan the following QR- code with your BANK-ID app, or click on it if your Bank-ID is installed on your computer </String>
+			<String id="9">Please select bank</String>
+			<String id="10">Selected account is: {0}. Are you sure? </String>
+			<String id="11">Seller </String>
+			<String id="12">Sold by </String>
+			<String id="13">Awaiting For Payment </String>
+			<String id="14">Cancel </String>
+			<String id="15">Done </String>
+			<String id="16">Payment Completed </String>
+			<String id="17">Payment Not Performed </String>
+			<String id="18">Service Delivery </String>
+			<String id="19">Terms and conditions </String>
+			<String id="20">Total to pay </String>
+			<String id="21">Vaulter service fee </String>
+			<String id="22">Welcome to Vaulter checkout </String>
+		
+			
+		
 		</Namespace>
 	</Language>
 </Translation>

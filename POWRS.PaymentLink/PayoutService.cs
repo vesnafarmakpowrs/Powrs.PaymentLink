@@ -15,8 +15,6 @@ using Waher.Persistence;
 using Waher.Runtime.Settings;
 using Waher.Security;
 using POWRS.PaymentLink.Model;
-using System.Linq;
-using System.Security.Cryptography;
 
 namespace POWRS.Payout
 {

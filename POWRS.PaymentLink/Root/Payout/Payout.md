@@ -1,12 +1,11 @@
 ﻿Title: Payment Link
 Description: Displays information about a contract.
 Date: 2023-08-04
-Author: Vesna Farmak
+Author: POWRS
 Cache-Control: max-age=0, no-cache, no-store
 CSS: Payout.cssx
-Javascript: /Contract.js
 Parameter: ID
-Parameter: Language
+Parameter: lan
 JavaScript: Events.js
 JavaScript: PaymentLink.js
 
@@ -34,6 +33,22 @@ JavaScript: PaymentLink.js
 </table>
 
 {{
+
+Language:= null;
+if(exists(lan)) then 
+(
+  Language:= Translator.GetLanguageAsync(lan);
+);
+if(Language == null) then 
+(
+ Language:= Translator.GetLanguageAsync("en");
+);
+
+LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
+if(LanguageNamespace == null) then 
+(
+ BadRequest("Page is not available at the moment");
+);
 
 ID += "@legal." + Gateway.Domain; 
 
@@ -98,7 +113,7 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
 
-**Name** : ((MarkdownEncode(BuyerFullName) )) <br/>
+**((LanguageNamespace.GetStringAsync(4) ))** : ((MarkdownEncode(BuyerFullName) )) <br/>
 **Email address**:  ((BuyerEmail ))<br/>
 <br/>
 

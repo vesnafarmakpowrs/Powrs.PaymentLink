@@ -2,7 +2,30 @@
 <Translation xmlns="http://waher.se/Schema/Translation.xsd">
 	<Language code="sv" name="Svenska">
 		<Namespace name="POWRS.PaymentLink">
-			<String id="1">OpenAI</String>			
+			
+			<String id="1">Summan som skyddas av Vaulter tills uppsägningstiden som säljaren stipulerar löper ut</String>
+		    <String id="2">Auktoriserad mottagare</String>
+		    <String id="3">Email-adress</String>
+		    <String id="4">Namn</String>
+		    <String id="5">Betalningslänken har upphört att gälla. Kontakta säljaren för att få en ny.</String>
+			<String id="6">Skydda dina pengar med smarta betalningar</String>
+		    <String id="7">Köpeavtal</String>
+	     	<String id="8">Skanna följande QR-kod med din Bank-ID-app, eller klicka på den om ditt Bank-ID är installerat på din dator.</String>
+	        <String id="9">Välj bank</String>
+            <String id="10">Valt konto är {0}.  Är du säker?</String>
+		    <String id="11">SELLERSSON</String>
+		    <String id="12">Såld av</String>
+		    <String id="13">Väntar på betalning</String>
+	        <String id="14">Annullera</String>
+		    <String id="15">Gjort</String>
+			<String id="16">Betalning genomförd</String>
+			<String id="17">Betalning ej utförd</String>
+		    <String id="18">Tjänsteleverans</String>
+		    <String id="19">Användarvillkor</String>
+		    <String id="20">Summa att betala</String>
+		    <String id="21">Vaulters tjänsteavgift</String>
+		    <String id="22">Välkommen till Vaulters Kassa</String>
+		
 		</Namespace>
 	</Language>
 </Translation>

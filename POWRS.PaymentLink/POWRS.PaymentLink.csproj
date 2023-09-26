@@ -173,12 +173,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Resx\PaylinkResources.en-US.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resx\PaylinkResources.sv-SE.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
+	  <None Update="Language\POWRS.PaymentLink.en.lng">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Language\POWRS.PaymentLink.sv.lng">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 
