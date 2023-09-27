@@ -131,11 +131,13 @@
 				</State>
 				<State id="ServiceDelivered">
 					<OnEnter actionRef="ReleaseFunds" />
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='ReleaseFunds'" />
 					<OnEvent newState="Done">
 						<OnDuration>PT10S</OnDuration>
 					</OnEvent>
 				</State>
 				<State id="Cancel">
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentReimbursed'" />
 					<OnEvent newState="Done">
 						<OnDuration>PT10S</OnDuration>
 					</OnEvent>
