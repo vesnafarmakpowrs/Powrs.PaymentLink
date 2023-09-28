@@ -21,6 +21,7 @@ function GetTranslations() {
     Translations.TransactionCompleted = document.getElementById("TransactionCompleted").value;
     Translations.TransactionFailed = document.getElementById("TransactionFailed").value;
     Translations.TransactionInProgress = document.getElementById("TransactionInProgress").value;
+    Translations.OpenLinkOnPhoneMessage = document.getElementById("OpenLinkOnPhoneMessage").value;
 }
 
 function ShowAccountInfo(Accounts) {
@@ -66,7 +67,7 @@ function GenerateServiceProvidersUI() {
                     }
                     selectedServiceProvider = provider;
                     if (!Boolean(isMobileDevice) && !provider.QRCode) {
-                        ShowMessage("To pay with this bank, please open the payment link from your phone.");
+                        ShowMessage(Translations.OpenLinkOnPhoneMessage);
                     }
                     else {
                         ClearQrCodeDiv();
@@ -81,8 +82,6 @@ function GenerateServiceProvidersUI() {
                         selectInput.add(option);
                     }
                 }
-            } else {
-                alert('Unable to load service providers');
             }
         }
     }
