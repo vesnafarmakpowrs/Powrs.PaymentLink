@@ -33,10 +33,14 @@ namespace POWRS.PaymentLink
 
                ContractParameters.TryGetValue("Value", out object Value);
                ContractParameters.TryGetValue("EscrowFee", out object EscrowFee);
-               Decimal AmountToPay = Convert.ToDecimal(Value) + Convert.ToDecimal(EscrowFee);
-               Html = Html.Replace("{{escrow_fee}}", EscrowFee.ToString());
-               Html = Html.Replace("{{amount_paid}}", AmountToPay.ToString());
+                if (!(Value is null) && !(EscrowFee is null))
+                {
+                    Decimal AmountToPay = Convert.ToDecimal(Value) + Convert.ToDecimal(EscrowFee);
 
+                    Html = Html.Replace("{{escrow_fee}}", EscrowFee.ToString());
+                    Html = Html.Replace("{{amount_paid}}", AmountToPay.ToString());
+                }
+               
                List<string> DateObjects = new List<string>{ "DeliveryDate", "Created"};
                foreach (var parameter in ContractParameters)
                 {
@@ -45,8 +49,8 @@ namespace POWRS.PaymentLink
                         ContractParameters.TryGetValue(parameter.Key, out object DateObj);
                         Html = Html.Replace(parameter.Key, Convert.ToDateTime(DateObj).ToShortDateString());
                     }
-                    else { 
-                    Html = Html.Replace("{{" + parameter.Key + "}}", parameter.Value.ToString());
+                    else {
+                        Html = Html.Replace("{{" + parameter.Key + "}}", parameter.Value.ToString());
                     }
                 }
              
@@ -55,7 +59,7 @@ namespace POWRS.PaymentLink
             catch (Exception ex)
             {
                 Log.Error(ex);
-                return null;
+                return  ex.Message;
             }
         }
     }
