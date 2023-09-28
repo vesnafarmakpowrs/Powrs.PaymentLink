@@ -101,7 +101,7 @@ namespace POWRS.PaymentLink.Model
                 var propertyValue = property.GetValue(this);
                 var mandatoryAttribute = property.GetCustomAttribute(typeof(MandatoryAttribute));
 
-                if (mandatoryAttribute != null)
+                if (mandatoryAttribute == null)
                 {
                     continue;
                 }
@@ -110,9 +110,8 @@ namespace POWRS.PaymentLink.Model
                 {
                     sb.AppendLine($"Property {property.Name} could not be empty");
                 }
-                else if (property.PropertyType == typeof(decimal) && (decimal)propertyValue >= 0)
+                else if (property.PropertyType == typeof(decimal) && (decimal)propertyValue <= 0)
                 {
-
                     sb.AppendLine($"Property {property.Name} could not be negative value");
                 }
 

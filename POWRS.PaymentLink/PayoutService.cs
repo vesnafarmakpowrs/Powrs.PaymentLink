@@ -39,8 +39,6 @@ namespace POWRS.Payout
                 Log.Informational("Unable to login to xmppClient");
                 throw new Exception("Unable to login to xmppClient");
             }
-
-            // Log.Register(new PaymentCompletedEventSink());
         }
 
         private async Task<bool> IsConnected()
@@ -512,6 +510,7 @@ namespace POWRS.Payout
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 Result.ErrorMessage = ex.Message;
             }
 
