@@ -79,5 +79,5 @@ InitiatePaymentRequest.RemoteEndpoint := Request.RemoteEndPoint;
 
 results := OPService.InitiatePayment(InitiatePaymentRequest);
 {
-	Results: results
+	Result: results
 }

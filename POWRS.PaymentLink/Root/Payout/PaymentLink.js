@@ -1,10 +1,27 @@
 var serviceProviders = null;
 var selectedServiceProvider = null;
+var Translations = {};
 const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
 
 document.addEventListener("DOMContentLoaded", () => {
+    GetTranslations();
     GenerateServiceProvidersUI();
 });
+
+function GetTranslations() {
+    var element = document.getElementById("SelectedAccountOk");
+    if (element == null) {
+        return;
+    }
+
+    Translations.SelectedAccountOk = document.getElementById("SelectedAccountOk").value;
+    Translations.SelectedAccountNotOk = document.getElementById("SelectedAccountNotOk").value;
+    Translations.QrCodeScanMessage = document.getElementById("QrCodeScanMessage").value;
+    Translations.QrCodeScanTitle = document.getElementById("QrCodeScanTitle").value;
+    Translations.TransactionCompleted = document.getElementById("TransactionCompleted").value;
+    Translations.TransactionFailed = document.getElementById("TransactionFailed").value;
+    Translations.TransactionInProgress = document.getElementById("TransactionInProgress").value;
+}
 
 function ShowAccountInfo(Accounts) {
     if (Accounts.AccountInfo == null) {
@@ -111,17 +128,15 @@ function GenerateAccountsListUi(accounts) {
         bankElement.appendChild(nameAndBalance);
         bankElement.onclick = function () {
             var balance = parseFloat(account.Balance);
-            var balanceNotOkMessage = document.getElementById("selectedAccountNotOk").value;
-            var balanceOkMessage = document.getElementById("selectedAccountOk").value;
             if (!balance || balance <= 0) {
-                alert(balanceNotOkMessage);
+                alert(Translations.SelectedAccountNotOk);
                 return;
             }
             if (selectedServiceProvider == null) {
                 return;
             }
-            balanceOkMessage = balanceOkMessage.replace("{0}", account.Iban);
-            if (!window.confirm(balanceOkMessage)) {
+
+            if (!window.confirm(Translations.SelectedAccountOk.replace("{0}", account.Iban))) {
                 return;
             }
             StartPayment(selectedServiceProvider.BuyEDalerTemplateContractId, account.Iban, account.Bic);
@@ -182,6 +197,47 @@ function StartPayment(BuyEdalerTemplateId, iban, bic) {
             "bankAccount": iban,
             "bic": bic
         }));
+
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4) {
+            if (xhttp.status === 200) {
+                var response = JSON.parse(xhttp.responseText);
+                if (!response.Result.Ok) {
+                    TransactionFailed(null);
+                }
+            }
+            else {
+                TransactionFailed(null);
+            }
+        }
+    }
+}
+function TransactionInProgress(Result) {
+    let res = {
+        IsCompleted: false,
+        IsSuccess: false,
+        Message: Translations.TransactionInProgress
+    };
+
+    DisplayTransactionResult(res);
+}
+function TransactionFailed(Result) {
+    let res = {
+        IsCompleted: true,
+        IsSuccess: false,
+        Message: Translations.TransactionFailed
+    };
+
+    DisplayTransactionResult(res);
+}
+function TransactionCompleted(Result) {
+    let res = {
+        IsCompleted: true,
+        IsSuccess: false,
+        Message: Translations.TransactionCompleted
+    };
+
+    DisplayTransactionResult(res);
 }
 
 function DisplayTransactionResult(Result) {
@@ -238,11 +294,11 @@ function ShowQRCode(Data) {
     var Div = document.getElementById("QrCode");
 
     if (Data.ImageUrl) {
-        Div.innerHTML = "<fieldset><legend>" + Data.title + "</legend><p>" + Data.message +
+        Div.innerHTML = "<fieldset><legend>" + Translations.QrCodeScanTitle + "</legend><p>" + Translations.QrCodeScanMessage +
             "</p><p><img class='QrCodeImage' alt='Bank ID QR Code' src='" + Data.ImageUrl + "'/></p></fieldset>";
     }
     else if (Data.AutoStartToken) {
-        Div.innerHTML = "<fieldset><legend>" + Data.title + "</legend><p>" + Data.message +
+        Div.innerHTML = "<fieldset><legend>" + Translations.QrCodeScanTitle + "</legend><p>" + Translations.QrCodeScanMessage +
             "</p><p>" + "<a href='" + Data.AutoStartToken + "'><img alt='Bank ID QR Code' src='/QR/" +
             encodeURIComponent(Data.AutoStartToken) + "'/></a></p></fieldset>";
     }

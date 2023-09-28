@@ -107,8 +107,14 @@ if ContractState == "AwaitingForPayment" then
   </tr>
 </table>
 
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(10) ))" id="selectedAccountOk">
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(24) ))" id="selectedAccountNotOk">
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(10) ))" id="SelectedAccountOk"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(24) ))" id="SelectedAccountNotOk"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(25) ))" id="QrCodeScanMessage"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(26) ))" id="QrCodeScanTitle"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(27) ))" id="TransactionCompleted"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(28) ))" id="TransactionFailed"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
+
 <input type="hidden" value="((Contract.ContractId))" id="contractId"/>
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
 <input type="hidden" value="((FileName))" id="fileName"/>

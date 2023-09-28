@@ -27,6 +27,11 @@
 		    <String id="22">Välkommen till Vaulters Kassa</String>
 			<String id="23">Betalningslänken har upphört att gälla. Kontakta säljaren för att få en ny.</String>
 			<String id="24">Det går inte att välja bankkonto, saldot är inte tillräckligt</String>
+			<String id="25">Skanna följande QR-kod med din Bank-ID-app.</String>
+			<String id="26">Auktorisering av bank-id</String>
+			<String id="27">Betalning genomförd. Tack för att du använder vaulter!</String>
+			<String id="28">Betalningen har inte slutförts. Försök igen eller använd ett annat bankkonto.</String>
+			<String id="29">Betalning pågår... Uppdatera inte sidan!</String>
 		</Namespace>
 	</Language>
 </Translation>
