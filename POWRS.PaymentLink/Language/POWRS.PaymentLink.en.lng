@@ -31,6 +31,7 @@
 			<String id="27">Payment successful. Thank you for using vaulter!</String>
 			<String id="28">Payment could not be completed. Please try again or use different bank account.</String>
 			<String id="29">Payment is in progress... Do not refresh the page!</String>
+			<String id="30">To pay with this bank, please open the payment link on the phone where you have intalled Bank-ID.</String>
 		</Namespace>
 	</Language>
 </Translation>

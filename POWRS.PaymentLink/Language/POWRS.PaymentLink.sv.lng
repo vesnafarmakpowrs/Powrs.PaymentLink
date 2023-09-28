@@ -32,6 +32,7 @@
 			<String id="27">Betalning genomförd. Tack för att du använder vaulter!</String>
 			<String id="28">Betalningen har inte slutförts. Försök igen eller använd ett annat bankkonto.</String>
 			<String id="29">Betalning pågår... Uppdatera inte sidan!</String>
+			<String id="30">För att betala med denna bank, vänligen öppna betalningslänken på telefonen där du har installerat Bank-ID.</String>
 		</Namespace>
 	</Language>
 </Translation>
