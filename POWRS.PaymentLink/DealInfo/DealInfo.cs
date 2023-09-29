@@ -22,23 +22,19 @@ namespace POWRS.PaymentLink
 
             try
             {
-               IdentityProperties.TryGetValue("AgentName", out CaseInsensitiveString AgentName);
-               IdentityProperties.TryGetValue("ORGNAME", out CaseInsensitiveString OrgName);
-
-               string SellerName = !String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
-               string SellerId = SellerName.Substring(0, 3).ToUpperInvariant();
-
                ContractParameters.TryGetValue("ShortId", out object ShortId);
-               string InvoiceNo = SellerId + ShortId.ToString() + ".pdf";
-
+              
+               string InvoiceNo = GetInvoiceNo(IdentityProperties, ShortId.ToString());
+               Html = Html.Replace("{{InvoiceNo}}", InvoiceNo);
+               
                ContractParameters.TryGetValue("Value", out object Value);
                ContractParameters.TryGetValue("EscrowFee", out object EscrowFee);
                 if (!(Value is null) && !(EscrowFee is null))
                 {
                     Decimal AmountToPay = Convert.ToDecimal(Value) + Convert.ToDecimal(EscrowFee);
 
-                    Html = Html.Replace("{{escrow_fee}}", EscrowFee.ToString());
-                    Html = Html.Replace("{{amount_paid}}", AmountToPay.ToString());
+                    Html = Html.Replace("{{EscrowFee}}", EscrowFee.ToString());
+                    Html = Html.Replace("{{AmountToPay}}", AmountToPay.ToString());
                 }
                
                List<string> DateObjects = new List<string>{ "DeliveryDate", "Created"};
@@ -47,7 +43,7 @@ namespace POWRS.PaymentLink
                     if (DateObjects.Contains(parameter.Key))
                     {
                         ContractParameters.TryGetValue(parameter.Key, out object DateObj);
-                        Html = Html.Replace(parameter.Key, Convert.ToDateTime(DateObj).ToShortDateString());
+                        Html = Html.Replace("{{" + parameter.Key + "}}", Convert.ToDateTime(DateObj).ToShortDateString());
                     }
                     else {
                         Html = Html.Replace("{{" + parameter.Key + "}}", parameter.Value.ToString());
@@ -60,6 +56,31 @@ namespace POWRS.PaymentLink
             {
                 Log.Error(ex);
                 return  ex.Message;
+            }
+        }
+
+        public static string GetInvoiceNo(IDictionary<CaseInsensitiveString, CaseInsensitiveString> IdentityProperties, string ShortId)
+        {
+            if (IdentityProperties is null || ShortId is null)
+            {
+                throw new Exception("Parameters missing");
+            }
+
+            try
+            {
+                IdentityProperties.TryGetValue("AgentName", out CaseInsensitiveString AgentName);
+                IdentityProperties.TryGetValue("ORGNAME", out CaseInsensitiveString OrgName);
+
+                string SellerName = !String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
+                string SellerId = SellerName.Substring(0, 3).ToUpperInvariant();
+                string InvoiceNo = SellerId + ShortId.ToString();
+
+                return InvoiceNo;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                return ex.Message;
             }
         }
     }

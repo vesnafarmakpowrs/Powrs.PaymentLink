@@ -5,70 +5,47 @@ if !exists(Posted) then BadRequest("No payload.");
    "countryCode":Required(String(PCountryCode))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= PContractId;
+   contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= PContractId;
 
-if (contract == null) then
+   if (contract == null) then
 	Error("Contract is missing");
 
-ShortId := select top 1 ShortId from NeuroFeatureTokens where OwnershipContract = PContractId;
-Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
+   ShortId := select top 1 ShortId from NeuroFeatureTokens where OwnershipContract = PContractId;
+      
+   ContractParams:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object);
+   ContractParams.Add("Created",contract.Created.ToShortDateString());
+   ContractParams.Add("ShortId",ShortId);
+   foreach Parameter in contract.Parameters do 
+     Parameter.ObjectValue != null ? ContractParams.Add(Parameter.Name, Parameter.ObjectValue);
 
-AgentName := "";
-OrgName := "";
-foreach I in Identities do
-(
- AgentName := I.FIRST + " " + I.MIDDLE + " " + I.LAST;
- OrgName  := I.ORGNAME;
-);
+   Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
+   IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
+   foreach Parameter in Identity.Parameters do 
+     Parameter.ObjectValue != null ? ContractParams.Add(Parameter.Name, Parameter.ObjectValue);
+   IdentityProperties.Add("AgentName", Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
+   IdentityProperties.Add("ORGNAME", Identity.ORGNAME );
+   
+   htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\purchase_agreement.html"; 
+   html:= System.IO.File.ReadAllText(htmlTemplatePath);
+   FormatedHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
+   
+   htmlToGeneratePath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\" + PContractId + ".html";
+   
+   fileName:= POWRS.PaymentLink.DealInfo.GetInvoiceNo(IdentityProperties, ShortId) + ".pdf";
+   url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ fileName);
 
- SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
- SellerId := UpperCase(SellerName.Substring(0,3));
+   htmlToGeneratePath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\" + PContractId + ".html";
+   System.IO.File.WriteAllText(htmlToGeneratePath, FormatedHtml, System.Text.Encoding.UTF8);
+   
+   pdfPath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\" + fileName;
+   ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
+   "\"" + htmlToGeneratePath +"\"" + " \"" +  pdfPath + "\"",
+   Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\");
 
- fileName:= SellerId + ShortId + ".pdf";
- url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ fileName);
+   bytes:= System.IO.File.ReadAllBytes(pdfPath);
 
- htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\purchase_agreement.html"; 
- htmlToGeneratePath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\" + PContractId + ".html";
-
- pdfPath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\" + fileName;
-
- html:= System.IO.File.ReadAllText(htmlTemplatePath);
- htmlBuilder:= Create(System.Text.StringBuilder, html);
-
- Value := 0;
- EscrowFee := 0;
- foreach Parameter in (contract.Parameters ?? []) do 
- (
-     Parameter.Name like "Value" ?  Value := System.String.IsNullOrEmpty(Parameter.MarkdownValue)? 0 :Parameter.MarkdownValue ;
-     Parameter.Name like "EscrowFee" ?  EscrowFee := System.String.IsNullOrEmpty(Parameter.MarkdownValue)? 0 :Parameter.MarkdownValue ;
-     Parameter.Name like "Title" ?   htmlBuilder:= htmlBuilder.Replace("{{purchased_product_name}}",  Parameter.MarkdownValue);
-     Parameter.Name like "BuyerFullName" ?   htmlBuilder:= htmlBuilder.Replace("{{buyer_name}}",  Parameter.MarkdownValue);
-     Parameter.Name like "Currency" ?   htmlBuilder:= htmlBuilder.Replace("{{currency}}",  Parameter.MarkdownValue);
-     Parameter.Name like "DealDoneDate" ?   htmlBuilder:= htmlBuilder.Replace("{{issue_date}}",  Parameter.MarkdownValue);
-     Parameter.Name like "DeliveryDate" ?   htmlBuilder:= htmlBuilder.Replace("{{delivery_date}}",  Parameter.Value.ToShortDateString());
-   );
-
-AmountToPay:= 0;
-AmountToPay :=  Int(Value) + Int(EscrowFee);
-
-htmlBuilder:= htmlBuilder.Replace("{{value}}",  Value.ToString());
-htmlBuilder:= htmlBuilder.Replace("{{escrow_fee}}",  EscrowFee.ToString());
-htmlBuilder:= htmlBuilder.Replace("{{amount_paid}}",  AmountToPay.ToString());
-htmlBuilder:= htmlBuilder.Replace("{{seller_name}}",  SellerName);
-htmlBuilder:= htmlBuilder.Replace("{{seller_id}}",  SellerId);
-htmlBuilder:= htmlBuilder.Replace("{{short_id}}",  ShortId);
-htmlBuilder:= htmlBuilder.Replace("{{issue_date}}", contract.Created.ToShortDateString());
-
- System.IO.File.WriteAllText(htmlToGeneratePath, htmlBuilder.ToString(), System.Text.Encoding.UTF8);
-
- ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
- "\"" + htmlToGeneratePath +"\"" + " \"" +  pdfPath + "\"",
- Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\");
-
- bytes:= System.IO.File.ReadAllBytes(pdfPath);
-
- System.IO.File.Delete(htmlToGeneratePath);
- System.IO.File.Delete(pdfPath);
+   System.IO.File.Delete(htmlToGeneratePath);
+   System.IO.File.Delete(pdfPath);
 	
 {
 	Name: fileName,
