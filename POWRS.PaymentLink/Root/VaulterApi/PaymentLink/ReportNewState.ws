@@ -63,21 +63,14 @@ if (r.Status in SendEmailOnStatusList) then
    html:= System.IO.File.ReadAllText(htmlTemplatePath);
      
    FormatedHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
-     
-   BuyerEmail := Contract["BuyerEmail"];
 
-   if(!System.String.IsNullOrEmpty(BuyerEmail)) then
-   (
-     success:= true;
-     ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
-     Config := ConfigClass.Instance;
-     POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, BuyerEmail, "Test payment", "test");
-   ); 
-
+   ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
+   Config := ConfigClass.Instance;
+   POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Test payment", "test");
+   
 );
 
 {    	
     "Status" : r.Status,
-    "Success": success,
-    "msg" : BuyerEmail + FormatedHtml 
+    "Success": success
 }
