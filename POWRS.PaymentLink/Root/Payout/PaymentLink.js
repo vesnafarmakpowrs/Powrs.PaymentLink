@@ -4,11 +4,12 @@ var Translations = {};
 const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
 
 document.addEventListener("DOMContentLoaded", () => {
-    GetTranslations();
+    GenerateTranslations();
+    GenerateLanguageDropdown();
     GenerateServiceProvidersUI();
 });
 
-function GetTranslations() {
+function GenerateTranslations() {
     var element = document.getElementById("SelectedAccountOk");
     if (element == null) {
         return;
@@ -22,6 +23,45 @@ function GetTranslations() {
     Translations.TransactionFailed = document.getElementById("TransactionFailed").value;
     Translations.TransactionInProgress = document.getElementById("TransactionInProgress").value;
     Translations.OpenLinkOnPhoneMessage = document.getElementById("OpenLinkOnPhoneMessage").value;
+}
+
+function GenerateLanguageDropdown() {
+    var prefferedLanguage = document.getElementById("prefferedLanguage");
+    if (prefferedLanguage == null) {
+        return;
+    }
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "GetAvailableLanguages.ws", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.setRequestHeader("Accept", "application/json");
+    xhttp.send(JSON.stringify(
+        {
+            "Namespace": document.getElementById("Namespace").value
+        }));
+
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            let response = JSON.parse(xhttp.responseText);
+            if (response.Languages != null && response.Languages.length > 0) {
+                const languageDropdown = document.getElementById("languageDropdown");
+                response.Languages.forEach(language => {
+                    let option = document.createElement("option");
+                    option.value = language.Code;
+                    option.textContent = language.Name;
+                    languageDropdown.appendChild(option);
+                });
+
+                languageDropdown.value = prefferedLanguage.value;
+                languageDropdown.addEventListener("change", function (e) {
+                    PreferredLanguage = languageDropdown.value;
+                    let url = new URL(window.location.href);
+                    url.searchParams.set('lng', languageDropdown.value);
+                    window.location.href = url.toString();
+                });
+            }
+        }
+    }
 }
 
 function ShowAccountInfo(Accounts) {

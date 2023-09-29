@@ -73,6 +73,7 @@
 		<None Remove="Root\Payout\DealInfo.ws" />
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
+		<None Remove="Root\Payout\GetAvailableLanguages.ws" />
 		<None Remove="Root\Payout\InitiatePayment.ws" />
 		<None Remove="Root\Payout\PaymentLink.js" />
 		<None Remove="Root\Payout\Payout - Copy.md" />
@@ -90,6 +91,11 @@
 		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetBic.ws" />
 		<None Remove="POWRS.PaymentLink.manifest" />
+	</ItemGroup>
+
+	
+	<ItemGroup>
+	  <Compile Include="Root\Payout\GetAvailableLanguages.ws" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Include="Root\VaulterApi\PaymentLink\SellItem.ws">
