@@ -13,19 +13,28 @@
 			</Folder>
 		</Folder>
 		    <Folder name="Payout">
-				<Content fileName="InitiatePayment.ws"/>
-				<Content fileName="Events.js"/>
-				<Content fileName="GetAccountInfo.ws"/>
-				<Content fileName="GetBuyEdalerServiceProviders.ws"/>
-				<Content fileName="PaymentLink.js"/>
-				<Content fileName="Payout.cssx"/>
 				<Content fileName="Payout.md"/>
-				<Content fileName="RegisterUpdates.ws"/>
-				<Content fileName="Settings.md"/>
-				<Content fileName="vaulter_logo.svg"/>
-				<Content fileName="vaulterlogo.svg"/>
-				<Content fileName="spinner.gif"/>
-				<Content fileName="DealInfo.ws"/>
+				<Content fileName="Settings.md"/>				
+				<Folder name="API">
+					<Content fileName="InitiatePayment.ws"/>
+					<Content fileName="GetAccountInfo.ws"/>
+					<Content fileName="GetBuyEdalerServiceProviders.ws"/>
+					<Content fileName="RegisterUpdates.ws"/>
+					<Content fileName="DealInfo.ws"/>
+					<Content fileName="GetAvailableLanguages.ws"/>
+				</Folder>
+				<Folder name="js">
+					<Content fileName="Events.js"/>
+					<Content fileName="PaymentLink.js"/>
+				</Folder>
+				<Folder name="css">
+					<Content fileName="Payout.cssx"/>
+				</Folder>
+				<Folder name="resources">
+					<Content fileName="vaulter_logo.svg"/>
+					<Content fileName="vaulterlogo.svg"/>
+					<Content fileName="spinner.gif"/>
+				</Folder>											
 			</Folder>
 	</Folder>
 	<Folder name="Language">

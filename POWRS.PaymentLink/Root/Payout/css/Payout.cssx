@@ -63,6 +63,9 @@
     font-style: normal;
 }
 
+select {
+     border: 1px solid #BBC4CE !important;
+}
 
 .content {
     padding: 20px;
@@ -186,7 +189,7 @@ h2::before
 {
     display: block; 
     content: " ";
-    height: 2em;
+    height: 1em;
 }
 
 input[type='checkbox']:checked ~ label.taskListItemLabel
@@ -452,6 +455,12 @@ select {
  margin: 0 auto;
 }
 
+#languageDropdown {
+ width: 30%;
+ float: right;
+ margin-bottom: 2rem;
+}
+
 @media only screen and (max-width: 1024px) {
   main {
     margin: 0 auto 0rem auto;
@@ -477,6 +486,10 @@ input[type="checkbox"] + label
    height: 6rem !important;
    font-size:3rem !important;
   }
+
+  #languageDropdown {
+   width: 40%;
+}
 
   .welcomeLbl {
     font-family: 'RTDromo Medium';

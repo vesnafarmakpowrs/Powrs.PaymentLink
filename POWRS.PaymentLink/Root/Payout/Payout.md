@@ -3,11 +3,11 @@ Description: Displays information about a contract.
 Date: 2023-08-04
 Author: POWRS
 Cache-Control: max-age=0, no-cache, no-store
-CSS: Payout.cssx
+CSS: css/Payout.cssx
 Parameter: ID
-Parameter: lan
-JavaScript: Events.js
-JavaScript: PaymentLink.js
+Parameter: lng
+JavaScript: js/Events.js
+JavaScript: js/PaymentLink.js
 
 <main class="border-radius">
 <div class="content">
@@ -15,13 +15,13 @@ JavaScript: PaymentLink.js
 {{
 
  Language:= null;
-if(exists(lan)) then 
+if(exists(lng)) then 
 (
-  Language:= Translator.GetLanguageAsync(lan);
+  Language:= Translator.GetLanguageAsync(lng);
 );
 if(Language == null) then 
 (
- lan:= "sv";
+ lng:= "sv";
  Language:= Translator.GetLanguageAsync("sv");
 );
 
@@ -46,7 +46,7 @@ if Token.HasStateMachine then
 );
 if ContractState == "AwaitingForPayment" then 
 (
-   Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
+    Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
    
     if !exists(Contract) then
     (
@@ -90,11 +90,12 @@ if ContractState == "AwaitingForPayment" then
       );
 
 ]]
+<select title="languageDropdown" id="languageDropdown"></select>
 <table style="width:100%">
   <tr class="welcomeLbl">     
     <td>**((LanguageNamespace.GetStringAsync(22) ))**    
     </td>
-    <td rowspan="3"><img class="vaulterLogo" src="vaulterlogo.svg" alt="Vaulter"/> </td>
+    <td rowspan="3"><img class="vaulterLogo" src="./resources/vaulterlogo.svg" alt="Vaulter"/> </td>
   </tr>
   <tr>
     <td>
@@ -107,6 +108,8 @@ if ContractState == "AwaitingForPayment" then
   </tr>
 </table>
 
+<input type="hidden" value="((lng ))" id="prefferedLanguage"/>
+<input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(10) ))" id="SelectedAccountOk"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(24) ))" id="SelectedAccountNotOk"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(25) ))" id="QrCodeScanMessage"/>
@@ -215,7 +218,7 @@ if ContractState == "AwaitingForPayment" then
 
 <div id="QrCode"></div>
 <div id="spinnerContainer">
-  <img src="./spinner.gif" alt="loadingSpinner">
+  <img src="./resources/spinner.gif" alt="loadingSpinner">
 </div>
 
 [[

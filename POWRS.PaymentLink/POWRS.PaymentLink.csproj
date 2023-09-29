@@ -73,6 +73,7 @@
 		<None Remove="Root\Payout\DealInfo.ws" />
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
+		<None Remove="Root\Payout\GetAvailableLanguages.ws" />
 		<None Remove="Root\Payout\InitiatePayment.ws" />
 		<None Remove="Root\Payout\PaymentLink.js" />
 		<None Remove="Root\Payout\Payout - Copy.md" />
@@ -107,43 +108,43 @@
 		<Content Include="Root\VaulterApi\PaymentLink\Index.md">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\DealInfo.ws">
+		<Content Include="Root\Payout\API\DealInfo.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\InitiatePayment.ws">
+		<Content Include="Root\Payout\API\InitiatePayment.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\Events.js">
+		<Content Include="Root\Payout\js\Events.js">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\GetAccountInfo.ws">
+		<Content Include="Root\Payout\API\GetAccountInfo.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\PaymentLink.js">
+		<Content Include="Root\Payout\js\PaymentLink.js">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\Payout.cssx">
+		<Content Include="Root\Payout\css\Payout.cssx">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\Payout.md">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\GetBuyEdalerServiceProviders.ws">
+		<Content Include="Root\Payout\API\GetBuyEdalerServiceProviders.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\RegisterUpdates.ws">
+		<Content Include="Root\Payout\API\RegisterUpdates.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\Settings.md">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\vaulter_logo.svg">
+		<Content Include="Root\Payout\resources\vaulter_logo.svg">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\vaulterlogo.svg">
+		<Content Include="Root\Payout\resources\vaulterlogo.svg">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\spinner.gif">
+		<Content Include="Root\Payout\resources\spinner.gif">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\HtmlTemplates\EN\purchase_agreement.html">
@@ -177,6 +178,9 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Language\POWRS.PaymentLink.sv.lng">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\API\GetAvailableLanguages.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
