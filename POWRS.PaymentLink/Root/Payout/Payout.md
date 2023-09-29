@@ -3,11 +3,11 @@ Description: Displays information about a contract.
 Date: 2023-08-04
 Author: POWRS
 Cache-Control: max-age=0, no-cache, no-store
-CSS: Payout.cssx
+CSS: css/Payout.cssx
 Parameter: ID
 Parameter: lng
-JavaScript: Events.js
-JavaScript: PaymentLink.js
+JavaScript: js/Events.js
+JavaScript: js/PaymentLink.js
 
 <main class="border-radius">
 <div class="content">
@@ -95,7 +95,7 @@ if ContractState == "AwaitingForPayment" then
   <tr class="welcomeLbl">     
     <td>**((LanguageNamespace.GetStringAsync(22) ))**    
     </td>
-    <td rowspan="3"><img class="vaulterLogo" src="vaulterlogo.svg" alt="Vaulter"/> </td>
+    <td rowspan="3"><img class="vaulterLogo" src="./resources/vaulterlogo.svg" alt="Vaulter"/> </td>
   </tr>
   <tr>
     <td>
@@ -218,7 +218,7 @@ if ContractState == "AwaitingForPayment" then
 
 <div id="QrCode"></div>
 <div id="spinnerContainer">
-  <img src="./spinner.gif" alt="loadingSpinner">
+  <img src="./resources/spinner.gif" alt="loadingSpinner">
 </div>
 
 [[

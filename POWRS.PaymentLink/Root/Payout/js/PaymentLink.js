@@ -32,7 +32,7 @@ function GenerateLanguageDropdown() {
     }
 
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "GetAvailableLanguages.ws", true);
+    xhttp.open("POST", "API/GetAvailableLanguages.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
@@ -79,7 +79,7 @@ function GenerateServiceProvidersUI() {
     }
 
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "GetBuyEdalerServiceProviders.ws", true);
+    xhttp.open("POST", "API/GetBuyEdalerServiceProviders.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
@@ -189,7 +189,7 @@ function GenerateAccountsListUi(accounts) {
 function GetAccountInfo() {
     const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "GetAccountInfo.ws", true);
+    xhttp.open("POST", "API/GetAccountInfo.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
@@ -224,7 +224,7 @@ function StartPayment(BuyEdalerTemplateId, iban, bic) {
 
     const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "InitiatePayment.ws", true);
+    xhttp.open("POST", "API/InitiatePayment.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
@@ -366,7 +366,7 @@ var updateTimer = null;
 
 function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUsed) {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "RegisterUpdates.ws", true);
+    xhttp.open("POST", "API/RegisterUpdates.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
@@ -406,7 +406,7 @@ function downloadPDF(base64Data, filename) {
 
 function generatePDF() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "DealInfo.ws", true);
+    xhttp.open("POST", "API/DealInfo.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
