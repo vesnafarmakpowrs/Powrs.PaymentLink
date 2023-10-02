@@ -28,6 +28,20 @@
 				<Folder name="css">
 					<Content fileName="Payout.cssx"/>
 				</Folder>
+				<Folder name="Fonts">
+					<Content fileName="Coanda-Bold.ttf"/>
+					<Content fileName="RTDromo-Medium.woff2"/>
+					<Content fileName="RTDromo-Medium.woff"/>
+				</Folder>
+				<Folder name="HtmlTemplates">
+					<Folder name="EN">
+						<Content fileName="PaymentCompleted.html"></Content>
+						<Content fileName="PaymentNotPerformed.html"></Content>
+						<Content fileName="PaymentReimbursed.html"></Content>
+						<Content fileName="purchase_agreement.html"></Content>
+						<Content fileName="purchase_agreement.html"></Content>
+					</Folder>
+				</Folder>
 				<Folder name="resources">
 					<Content fileName="vaulter_logo.svg"/>
 					<Content fileName="vaulterlogo.svg"/>

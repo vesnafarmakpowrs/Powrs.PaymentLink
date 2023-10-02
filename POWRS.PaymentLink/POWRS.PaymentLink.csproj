@@ -191,6 +191,15 @@
 	  <None Update="Root\Payout\API\InitiatePayment.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\Fonts\Coanda-Bold.ttf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\Fonts\RTDromo-Medium.woff">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\Fonts\RTDromo-Medium.woff2">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 
