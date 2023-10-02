@@ -240,7 +240,7 @@ function StartPayment(iban, bic) {
         if (xhttp.readyState === 4) {
             if (xhttp.status === 200) {
                 var response = JSON.parse(xhttp.responseText);
-                if (!response.Ok) {
+                if (!response.OK) {
                     TransactionFailed(null);
                 }
             }
@@ -272,7 +272,7 @@ function TransactionFailed(Result) {
 function TransactionCompleted(Result) {
     let res = {
         IsCompleted: true,
-        IsSuccess: false,
+        IsSuccess: true,
         Message: Translations.TransactionCompleted
     };
 
