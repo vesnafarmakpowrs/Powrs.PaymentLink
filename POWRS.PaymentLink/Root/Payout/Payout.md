@@ -88,22 +88,18 @@ if ContractState == "AwaitingForPayment" then
         Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.ObjectValue.ToString("N2");
         Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.ObjectValue.ToString("N2");
       );
-
+BuyerFirstName := Before(BuyerFullName," ");
 ]]
-<select title="languageDropdown" id="languageDropdown"></select>
+
 <table style="width:100%">
-  <tr class="welcomeLbl">     
-    <td>**((LanguageNamespace.GetStringAsync(22) ))**    
-    </td>
-    <td rowspan="3"><img class="vaulterLogo" src="./resources/vaulterlogo.svg" alt="Vaulter"/> </td>
+  <tr class="welcomeLbl">   
+    <td rowspan="2"><img class="vaulterLogo" src="./resources/vaulterlogo.svg" alt="Vaulter"/> </td>
+    <td>**((LanguageNamespace.GetStringAsync(22) )), ((BuyerFirstName))** </td>
+    <td rowspan="2"><select title="languageDropdown" id="languageDropdown"></select></td>
   </tr>
   <tr>
     <td>
        ((LanguageNamespace.GetStringAsync(6) ))
-    </td>
-  </tr>
- <tr>
-    <td>
     </td>
   </tr>
 </table>
@@ -124,98 +120,135 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
 
-**((LanguageNamespace.GetStringAsync(4) ))** : ((MarkdownEncode(BuyerFullName) )) <br/>
-
-**((LanguageNamespace.GetStringAsync(3) ))**:  ((BuyerEmail ))<br/>
-<br/>
-
-**((LanguageNamespace.GetStringAsync(12) ))**<br>
-((SellerName))**
-
-<div class="item border-radius">
-<table style="vertical-align:middle; height:100%;">
- <tr><td style="width:80%"> ((Title))</td>
- <td class="itemPrice"  rowspan="2" > <div class="price">((Value ))</div> <td>
- <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-</tr>
+<div class="payer-details">
+<table>
  <tr>
-  <td style="width:70%"> ((Description))</td>
+  <td coolspan="2">
+    **((LanguageNamespace.GetStringAsync(31) ))**
+  </td>
+ </tr>
+<tr>
+  <td class="payerName">
+    ((LanguageNamespace.GetStringAsync(4) )):
+  </td>
+  <td class="payerValue">
+  **((MarkdownEncode(BuyerFullName) ))**
+  </td>
+ </tr>
+<tr>
+  <td class="payerName">
+    ((LanguageNamespace.GetStringAsync(3) )):
+  </td>
+  <td class="payerValue">
+   **((BuyerEmail ))**
+  </td>
  </tr>
 </table>
 </div>
-<div class="spaceItem"></div>
 
 
-<div class="item border-radius">
-     <table style="vertical-align:middle; height:100%;">
-      <tr>
-        <td style="width:80%">((LanguageNamespace.GetStringAsync(21) ))</td>
-        <td class="itemPrice"  rowspan="2" ><div class="price">((EscrowFee))</div> <td>
-        <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-      </tr>
+<br/>
+
+<div class="payment-details">
+<table style="width:100%">
+ <tr>
+  <td colspan="2">
+    **((LanguageNamespace.GetStringAsync(32) ))**
+  </td>
+ </tr>
+<tr>
+  <td class="payerName">
+    ((LanguageNamespace.GetStringAsync(11) )):
+  </td>
+  <td class="payerValue">
+  **((SellerName))****
+  </td>
+ </tr>
+
+ <tr class="spaceUnder"><td colspan="2"> </td></tr>
+<tr>
+  <td colspan="2" class="item border-radius">
+      <table style="vertical-align:middle; height:100%;">
+         <tr>
+            <td style="width:80%"> ((Title))</td>
+            <td class="itemPrice"  rowspan="2" >((Value ))<td>
+            <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
+         </tr>
+         <tr>
+            <td style="width:70%"> ((Description))</td>
+         </tr>
+      </table>
+  </td>
+ </tr>
+
+ <tr class="spaceUnder"><td colspan="2"> </td></tr>
+<tr class="spaceUnder">
+  <td colspan="2" class="item border-radius">
+      <table style="vertical-align:middle; height:100%;">
+         <tr>
+           <td style="width:80%">((LanguageNamespace.GetStringAsync(21) ))</td>
+           <td class="itemPrice"  rowspan="2" >((EscrowFee))<td>
+           <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
+         </tr>
+      </table>
+  </td>
+ </tr>
+
+ <tr class="spaceUnder"><td colspan="2"> </td></tr>
+<tr>
+  <td colspan="2" class="item border-radius">
+      <table style="vertical-align:middle; height:100%;">
+         <tr>
+           <td style="width:80%">**((LanguageNamespace.GetStringAsync(20) ))**</td>
+           <td class="itemPrice"  rowspan="2" >((AmountToPay))<td>
+           <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
+         </tr>
+      </table>
+  </td>
+ </tr>
 </table>
 </div>
   
 <div class="spaceItem"></div>
+<br/>
 
-<table style="width:100%">
-<tr>
-  <td style="width:40%"></td>
-  <td style="width:60%">
-     <div class="total border-radius">
-      <table style="vertical-align:middle; height:100%;">
-        <tr>
-         <td style="width:70%">((LanguageNamespace.GetStringAsync(20) ))</td>
-         <td class="itemPrice"  rowspan="2" ><div class="price">((AmountToPay)) </div> <td>
-         <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-        </tr>
-        <tr>
-         <td style="width:70%"> </td>
-        </tr>
-</table>
-
-</div>
-</td>
-<tr>
-<table>
-
-</div>
-<div>
-   <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();">
-   <label for="termsAndCondition"><a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label> 
-</div>
-<div class="spaceItem"></div>
-<div>
-   <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement" onclick="UserAgree();">
-   <label for="purchaseAgreement"><a href="#" onclick="generatePDF();event.preventDefault();" >**((LanguageNamespace.GetStringAsync(7) ))**</a></label> 
-</div>
-
+<div class="vaulter-details">
 <table style="width:100%">
  <tr>
-  <td style="width:100%">
-     <div class="total border-radius vaulterDiv">
-      <table style="vertical-align:middle; height:100%;">
-        <tr>
-         <td style="width:80%">((LanguageNamespace.GetStringAsync(1) ))</td>
-         <td class="moneyRight itemPrice">((Value))</td>
-         <td class="currencyLeft" style="width:10%;" >((Currency ))</td>
-        </tr>
-      </table>
-     </div>
+  <td colspan="3"><img class="vaulter_Logo" src="./resources/vaulter_logo.svg" alt="Vaulter"/> </td>
+ </tr>
+ <tr >
+  <td colspan="3">
+     <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();">
+     <label for="termsAndCondition"><a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label> 
    </td>
- <tr>
-
-<table style="width:100%">
- <tr>
-  <td style="width:100%">
-    <div class="selectBankDiv">
-      <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" disabled>
+ </tr>
+ <tr class="spaceUnder">
+    <td colspan="3">
+      <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement" onclick="UserAgree();">
+      <label for="purchaseAgreement"><a href="#" onclick="generatePDF();event.preventDefault();" >**((LanguageNamespace.GetStringAsync(7) ))**</a></label> 
+   </td>
+ </tr>
+ <tr class="spaceUnder"><td colspan="3"> </td></tr>
+  <tr class="safeguarded" >
+     <td style="width:80%; text-align:left">((LanguageNamespace.GetStringAsync(1) ))</td>
+     <td class="moneyRight itemPrice">((Value))</td>
+     <td class="currencyLeft" style="width:10%;" >((Currency ))</td>
+ </tr>
+ <tr class="spaceUnder"><td colspan="3"> </td></tr>
+ <tr >
+    <td colspan="3">
+    <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" disabled>
         <option value="none" selected disabled hidden>((LanguageNamespace.GetStringAsync(9) ))</option>
       </select>
-    </div>
-  </td>
-  </tr>
-</table>
+   </td>
+ </tr>
+ </table>
+
+</div>
+
+<div class="spaceItem"></div>
+
 
 <div id="QrCode"></div>
 <div id="spinnerContainer">
