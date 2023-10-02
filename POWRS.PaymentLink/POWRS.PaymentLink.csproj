@@ -74,6 +74,8 @@
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\GetAvailableLanguages.ws" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\ReleaseFundsReport.html" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\Reports\PaymentReimbursedReport.html" />
 		<None Remove="Root\Payout\InitiatePayment.ws" />
 		<None Remove="Root\Payout\PaymentLink.js" />
 		<None Remove="Root\Payout\Payout - Copy.md" />
@@ -96,7 +98,17 @@
 		<None Remove="Root\VaulterApi\PaymentLink\GetBic.ws" />
 		<None Remove="POWRS.PaymentLink.manifest" />
 	</ItemGroup>
+
+	
 	<ItemGroup>
+	  <Content Include="Root\Payout\HtmlTemplates\EN\Reports\ReleaseFundsReport.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Root\Payout\HtmlTemplates\EN\Reports\PaymentReimbursedReport.html">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\SellItem.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -172,10 +184,6 @@
 		<PackageReference Include="Waher.Content" Version="2.6.5" />
 		<PackageReference Include="Waher.Events" Version="1.1.3" />
 		<PackageReference Include="Waher.Persistence" Version="1.10.0" />		
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Root\Payout\HtmlTemplates\" />
 	</ItemGroup>
 
 	<ItemGroup>
