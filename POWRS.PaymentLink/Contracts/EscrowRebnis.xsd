@@ -2,11 +2,14 @@
     xmlns="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd" targetNamespace="https://lab.neuron.vaulter.rs/Downloads/EscrowRebnis.xsd" elementFormDefault="qualified">
     <xs:complexType name="Empty"/>
     <xs:element name="Cancel" type="Empty"/>
-	<xs:element name="ServiceProviderSelected">
+
+	<xs:element name="InitiatePayment">
 		<xs:complexType>
 			<xs:attribute name='buyerBankAccount' type='xs:string' use='required'/>
 			<xs:attribute name='buyEdalerServiceProviderId' type='xs:string' use='required'/>
 			<xs:attribute name='buyEdalerServiceProviderType' type='xs:string' use='required'/>
+			<xs:attribute name='fromMobilePhone' type='xs:string' use='required'/>
+			<xs:attribute name='tabId' type='xs:string' use='required'/>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>

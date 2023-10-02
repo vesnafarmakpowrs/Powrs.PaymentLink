@@ -14,7 +14,7 @@
 		</Folder>
 		    <Folder name="Payout">
 				<Content fileName="Payout.md"/>
-				<Content fileName="Settings.md"/>				
+				<Content fileName="Settings.md"/>
 				<Folder name="API">
 					<Content fileName="InitiatePayment.ws"/>
 					<Content fileName="GetAccountInfo.ws"/>

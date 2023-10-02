@@ -178,7 +178,7 @@ function GenerateAccountsListUi(accounts) {
             if (!window.confirm(Translations.SelectedAccountOk.replace("{0}", account.Iban))) {
                 return;
             }
-            StartPayment(selectedServiceProvider.BuyEDalerTemplateContractId, account.Iban, account.Bic);
+            StartPayment(account.Iban, account.Bic);
         }
         accountList.appendChild(bankElement);
     });
@@ -212,27 +212,26 @@ function GetAccountInfo() {
     }
 }
 
-function StartPayment(BuyEdalerTemplateId, iban, bic) {
+function StartPayment(iban, bic) {
     ToggleServiceProviderSelect(true);
     ClearQrCodeDiv();
     let contractId = document.getElementById('contractId').value;
 
-    if (!contractId || !BuyEdalerTemplateId || !iban) {
+    if (!contractId || !iban || !bic) {
         alert("Contract, template or account missing.");
         return;
     }
 
     const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/InitiatePayment.ws", true);
+    xhttp.open("POST", "InitiatePayment.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
         {
-            "buyEdalerTemplateId": BuyEdalerTemplateId,
             "tabId": TabID,
             "requestFromMobilePhone": Boolean(isMobileDevice),
-            "contractId": contractId,
+            "tokenId": document.getElementById("TokenId").value,
             "bankAccount": iban,
             "bic": bic
         }));
@@ -241,7 +240,7 @@ function StartPayment(BuyEdalerTemplateId, iban, bic) {
         if (xhttp.readyState === 4) {
             if (xhttp.status === 200) {
                 var response = JSON.parse(xhttp.responseText);
-                if (!response.Result.Ok) {
+                if (!response.Ok) {
                     TransactionFailed(null);
                 }
             }
@@ -251,6 +250,7 @@ function StartPayment(BuyEdalerTemplateId, iban, bic) {
         }
     }
 }
+
 function TransactionInProgress(Result) {
     let res = {
         IsCompleted: false,
