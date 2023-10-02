@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Module xmlns="http://waher.se/Schema/ModuleManifest.xsd">
-	<Assembly fileName="Edaler.dll" />
-	<Assembly fileName="NeuroFeatures.dll" />
 	<Assembly fileName="POWRS.PaymentLink.dll"/>
 	<Folder name="Root">
 		    <Folder name="VaulterApi">

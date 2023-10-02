@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Net.Mail;
-using System.Net;
-using System.Threading.Tasks;
 using Waher.Events;
 using System.Collections.Generic;
 using Waher.Persistence;
-using Waher.Content.Html.Elements;
-using System.Reflection.Metadata;
 
 namespace POWRS.PaymentLink
 {
