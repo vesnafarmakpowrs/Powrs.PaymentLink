@@ -119,6 +119,7 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
 
+<input type="hidden" value="((Token.TokenId))" id="TokenId"/>
 <input type="hidden" value="((Contract.ContractId))" id="contractId"/>
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
 <input type="hidden" value="((FileName))" id="fileName"/>

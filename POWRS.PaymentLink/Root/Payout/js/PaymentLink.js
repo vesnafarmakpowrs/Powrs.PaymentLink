@@ -224,7 +224,7 @@ function StartPayment(iban, bic) {
 
     const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "InitiatePayment.ws", true);
+    xhttp.open("POST", "API/InitiatePayment.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
