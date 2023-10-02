@@ -48,7 +48,7 @@ function GenerateLanguageDropdown() {
                 response.Languages.forEach(language => {
                     let option = document.createElement("option");
                     option.value = language.Code;
-                    option.textContent = language.Name;
+                    option.textContent = language.Code;
                     languageDropdown.appendChild(option);
                 });
 
