@@ -464,81 +464,6 @@ font-size: 1rem !important;
 }
 
 
-@media only screen and (max-width: 1024px) {
-main {
-margin: 0 auto 0rem auto;
-font-size:2rem;
-width: 100%;
-}
-
-.content {
-padding: 0 2% 5% 2%;
-width: 95%;
-}
-
-input[type="checkbox"] + label:before {
-width: 1.3em;
-height: 1.3em;
-}
-
-
-input[type="checkbox"] + label
-{
-padding-left: 2.2em;
-padding-top:0.3em;
-padding-bottom:0.3em;
-margin-right: 1em;
-}
-
-select {
-height: 6rem !important;
-font-size:3rem !important;
-}
-
-.welcomeLbl {
-font-family: 'RTDromo Medium';
-font-size: 2.5rem;
-}
-
-.itemPrice {
-width:30%;
-font-size: 4rem !important;
-padding-top : 5px;
-}
-
-.account-item{
-height:auto;
-font-size:3rem;
-}
-
-.vaulterLogo{
-width:0px;
-}
-
-
-.vaulter_Logo{
-width:10em;
-}
-
-.footer {
-width: 80%;
-margin: 0 auto;
-}
-
-#spinnerContainer{
-height: 15rem !important;
-}
-
-
-#languageDropdown {
-width: auto;
-float: right;
-padding: 5px;
-font-size: 2rem !important;
-}
-
-}
-
 
 .payer-details {
 width: 100%px;
@@ -590,6 +515,82 @@ border: 1px solid rgba(0, 0, 0, 0.50);
 border-radius: 10px;
 padding: 10px;
 }
+
+
+@media only screen and (max-width: 1024px) {
+main {
+margin: 0 auto 0rem auto;
+font-size:2rem;
+width: 100%;
+}
+
+.content {
+padding: 0 2% 5% 2%;
+width: 95%;
+}
+
+input[type="checkbox"] + label:before {
+width: 1.3em;
+height: 1.3em;
+}
+
+
+input[type="checkbox"] + label
+{
+padding-left: 2.2em;
+padding-top:0.3em;
+padding-bottom:0.3em;
+margin-right: 1em;
+}
+
+select {
+height: 6rem !important;
+font-size:3rem !important;
+}
+
+.welcomeLbl {
+font-family: 'RTDromo Medium';
+font-size: 2.5rem;
+}
+
+.itemPrice {
+font-size: 3rem !important;
+padding-top : 5px;
+}
+
+.account-item{
+height:auto;
+font-size:3rem;
+}
+
+.vaulterLogo{
+width:0px;
+}
+
+
+.vaulter_Logo{
+width:10em;
+}
+
+.footer {
+width: 100%;
+margin: 0 auto;
+}
+
+#spinnerContainer{
+height: 15rem !important;
+}
+
+
+#languageDropdown {
+width: auto;
+float: right;
+padding: 5px;
+font-size: 2rem !important;
+}
+
+}
+
 
 
 

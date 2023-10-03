@@ -167,10 +167,10 @@ BuyerFirstName := Before(BuyerFullName," ");
 
  <tr class="spaceUnder"><td colspan="2"> </td></tr>
 <tr>
-  <td colspan="2" class="item border-radius">
-      <table style="vertical-align:middle; height:100%;">
+  <td colspan="2" class="item border-radius" >
+      <table style="vertical-align:middle; width:100%;">
          <tr>
-            <td style="width:80%"> ((Title))</td>
+            <td style="width:80%;"> ((Title))</td>
             <td class="itemPrice"  rowspan="2" >((Value ))<td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
          </tr>
@@ -184,7 +184,7 @@ BuyerFirstName := Before(BuyerFullName," ");
  <tr class="spaceUnder"><td colspan="2"> </td></tr>
 <tr class="spaceUnder">
   <td colspan="2" class="item border-radius">
-      <table style="vertical-align:middle; height:100%;">
+      <table style="vertical-align:middle; width:100%;">
          <tr>
            <td style="width:80%">((LanguageNamespace.GetStringAsync(21) ))</td>
            <td class="itemPrice"  rowspan="2" >((EscrowFee))<td>
@@ -197,7 +197,7 @@ BuyerFirstName := Before(BuyerFullName," ");
  <tr class="spaceUnder"><td colspan="2"> </td></tr>
 <tr>
   <td colspan="2" class="item border-radius">
-      <table style="vertical-align:middle; height:100%;">
+      <table style="vertical-align:middle; width:100%;">
          <tr>
            <td style="width:80%">**((LanguageNamespace.GetStringAsync(20) ))**</td>
            <td class="itemPrice"  rowspan="2" >((AmountToPay))<td>
