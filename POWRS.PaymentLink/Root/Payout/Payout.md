@@ -2,14 +2,17 @@
 Description: Displays information about a contract.
 Date: 2023-08-04
 Author: POWRS
+Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
 CSS: css/Payout.cssx
 Parameter: ID
 Parameter: lng
 JavaScript: js/Events.js
 JavaScript: js/PaymentLink.js
+JavaScript: https://js.stripe.com/v3/
 
 <main class="border-radius">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <div class="content">
 <b><h2></h2></b>
 {{
@@ -245,11 +248,13 @@ BuyerFirstName := Before(BuyerFullName," ");
  </tr>
  </table>
 
-</div>
-
 <div class="spaceItem"></div>
-
-
+<form id="payment-form">
+        <div id="stripe-payment-container">
+            <!-- A Stripe Element will be inserted here. -->
+	</div>
+ <button style="width: 100%; background-color: blue; color: white; border: none; padding: 10px; text-transform: uppercase;" type="submit">Submit Payment</button>
+</form>
 <div id="QrCode"></div>
 <div id="spinnerContainer">
   <img src="./resources/spinner.gif" alt="loadingSpinner">

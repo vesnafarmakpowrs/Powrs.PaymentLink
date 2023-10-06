@@ -423,3 +423,82 @@ function generatePDF() {
         }
     }
 }
+
+
+function GeneratePaymentForm(Data) {
+    console.log(Data);
+    console.log(Data.PublishableKey);
+    console.log(Data.ClientSecret);
+    var stripe = Stripe(Data.PublishableKey);
+    const clientSecret = Data.ClientSecret;
+
+    const elements = stripe.elements({ clientSecret: clientSecret });
+    const paymentElement = elements.create('card');
+
+    // Add an instance of the card Element into the card-element div.
+    paymentElement.mount('#stripe-payment-container');
+    const form = document.getElementById('payment-form');
+    // Handle form submission.
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let error = null;
+        try {
+            stripe
+                .confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: paymentElement,
+                        billing_details: {
+                            name: 'Jenny Rosen',
+                            email: 'nenad.aleksic@powrs.se'
+                        },
+                    },
+                })
+                .then(function (result) {
+                    console.log(result);
+                    error = result.error;
+                });
+            if (error) {
+                // Handle payment validation errors
+                console.error(error.message);
+            } else {
+                // Send the paymentMethod.id to your server for further processing
+                const paymentMethodId = paymentMethod.id;
+                console.log(paymentMethodId)
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    });
+}
+
+
+function StartCardPayment() {
+
+    ClearQrCodeDiv();
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "API/InitiatePayment.ws", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.setRequestHeader("Accept", "application/json");
+    xhttp.send(JSON.stringify(
+        {
+            "tabId": TabID,
+            "tokenId": document.getElementById("TokenId").value
+        }));
+
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4) {
+            if (xhttp.status === 200) {
+                var response = JSON.parse(xhttp.responseText);
+                if (!response.OK) {
+                    TransactionFailed(null);
+
+                }
+            }
+            else {
+                TransactionFailed(null);
+            }
+        }
+    }
+}
+
+
