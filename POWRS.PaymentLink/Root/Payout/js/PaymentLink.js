@@ -111,7 +111,11 @@ function GenerateServiceProvidersUI() {
                     }
                     else {
                         ClearQrCodeDiv();
-                        GetAccountInfo(); 
+                        if (provider.Name.includes('Stripe')) {
+                            StartCardPayment();
+                            return;
+                        }
+                        GetAccountInfo();
                     }
                 };
                 for (let i = 0; i < serviceProviders.length; i++) {
@@ -419,6 +423,74 @@ function generatePDF() {
             if (xhttp.status === 200) {
                 var response = JSON.parse(xhttp.responseText);
                 downloadPDF(response.PDF, response.Name);
+            }
+        }
+    }
+}
+
+function GeneratePaymentForm(Data) {
+    var stripe = Stripe(Data.PublishableKey);
+    const clientSecret = Data.ClientSecret;
+
+    const elements = stripe.elements({ clientSecret: clientSecret });
+    const paymentElement = elements.create('card');
+
+    // Add an instance of the card Element into the card-element div.
+    paymentElement.mount('#stripe-payment-container');
+    const form = document.getElementById('payment-form');
+    // Handle form submission.
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let error = null;
+        try {
+            stripe
+                .confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: paymentElement,
+                        billing_details: {
+                            name: document.getElementById("buyerFullName"),
+                            email: document.getElementById("buyerEmail")
+                        },
+                    },
+                })
+                .then(function (result) {
+                    console.log(result);
+                    error = result.error;
+                });
+            if (error) {
+                console.error(error.message);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    });
+}
+
+
+function StartCardPayment() {
+    ClearQrCodeDiv();
+    const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "API/InitiatePayment.ws", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.setRequestHeader("Accept", "application/json");
+    xhttp.send(JSON.stringify(
+        {
+            "tabId": TabID,
+            "tokenId": document.getElementById("TokenId").value
+        }));
+
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4) {
+            if (xhttp.status === 200) {
+                var response = JSON.parse(xhttp.responseText);
+                if (!response.OK) {
+                    TransactionFailed(null);
+
+                }
+            }
+            else {
+                TransactionFailed(null);
             }
         }
     }
