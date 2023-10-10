@@ -118,6 +118,8 @@ BuyerFirstName := Before(BuyerFullName," ");
 <input type="hidden" value="((Token.TokenId))" id="TokenId"/>
 <input type="hidden" value="((Contract.ContractId))" id="contractId"/>
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
+<input type="hidden" value="((BuyerFullName)" id="buyerFullName"/>
+<input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
 
 <div class="payer-details">
@@ -249,7 +251,11 @@ BuyerFirstName := Before(BuyerFullName," ");
 
 <div class="spaceItem"></div>
 
-
+<form id="payment-form">
+    <div id="stripe-payment-container">    
+	</div>
+ <button style="width: 100%; background-color: blue; color: white; border: none; padding: 10px; text-transform: uppercase;" type="submit">Submit Payment</button>
+</form>
 <div id="QrCode"></div>
 <div id="spinnerContainer">
   <img src="./resources/spinner.gif" alt="loadingSpinner">
