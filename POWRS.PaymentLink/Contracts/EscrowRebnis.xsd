@@ -5,23 +5,9 @@
 		<xs:complexType>
 			<xs:attribute name="buyEdalerServiceProviderId" type="xs:string" use="required" />
 			<xs:attribute name="buyEdalerServiceProviderType" type="xs:string" use="required" />
-			<xs:attribute name="buyerBankAccount" type="xs:string" use="required" />
-			<xs:attribute name="fromMobilePhone" type="xs:string" use="required" />
+			<xs:attribute name="buyerBankAccount" type="xs:string" use="optional" />
+			<xs:attribute name="fromMobilePhone" type="xs:string" use="optional" />
 			<xs:attribute name="tabId" type="xs:string" use="required" />
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="InitiateCardPayment">
-		<xs:complexType>
-			<xs:attribute name="buyEdalerServiceProviderId" type="xs:string" use="required" />
-			<xs:attribute name="buyEdalerServiceProviderType" type="xs:string" use="required" />
-			<xs:attribute name="tabId" type="xs:string" use="required" />
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="InitiateCardPayment">
-		<xs:complexType>
-			<xs:attribute name='buyEdalerServiceProviderId' type='xs:string' use='required'/>
-			<xs:attribute name='buyEdalerServiceProviderType' type='xs:string' use='required'/>
-			<xs:attribute name='tabId' type='xs:string' use='required'/>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>
