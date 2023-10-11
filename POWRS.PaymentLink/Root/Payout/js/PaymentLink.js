@@ -84,8 +84,7 @@ function GenerateServiceProvidersUI() {
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
         {
-            "Country": "SE",
-            "Currency": "SEK"
+            "ContractId": document.getElementById("ContractId").value,
         }));
 
     xhttp.onreadystatechange = function () {
@@ -191,7 +190,6 @@ function GenerateAccountsListUi(accounts) {
 }
 
 function GetAccountInfo() {
-    const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "API/GetAccountInfo.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
@@ -226,7 +224,6 @@ function StartPayment(iban, bic) {
         return;
     }
 
-    const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "API/InitiatePayment.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
@@ -249,6 +246,9 @@ function StartPayment(iban, bic) {
                 }
             }
             else {
+                if (xhttp.status === 408) {
+                    return;
+                }
                 TransactionFailed(null);
             }
         }
@@ -456,10 +456,10 @@ function GeneratePaymentForm(Data) {
                 .then(function (result) {
                     console.log(result);
                     error = result.error;
+                    if (error) {
+                        console.error(error.message);
+                    }
                 });
-            if (error) {
-                console.error(error.message);
-            }
         } catch (error) {
             console.error(error);
         }
@@ -469,9 +469,9 @@ function GeneratePaymentForm(Data) {
 
 function StartCardPayment() {
     ClearQrCodeDiv();
-    const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
+
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/InitiatePayment.ws", true);
+    xhttp.open("POST", "API/InitiateCardPayment.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
@@ -486,10 +486,12 @@ function StartCardPayment() {
                 var response = JSON.parse(xhttp.responseText);
                 if (!response.OK) {
                     TransactionFailed(null);
-
                 }
             }
             else {
+                if (xhttp.status === 408) {
+                    return;
+                }
                 TransactionFailed(null);
             }
         }
