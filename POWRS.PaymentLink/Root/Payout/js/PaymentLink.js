@@ -109,7 +109,7 @@ function GenerateServiceProvidersUI() {
                         ShowMessage(Translations.OpenLinkOnPhoneMessage);
                     }
                     else {
-                        ClearQrCodeDiv();
+                        ClearQrCodeDiv(); 
                         if (provider.Name.includes('Stripe')) {
                             StartCardPayment();
                             return;
