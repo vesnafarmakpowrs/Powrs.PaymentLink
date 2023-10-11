@@ -5,7 +5,6 @@
     <title>Vaulter</title>
     <style>
 
-
         .border {
             max-width: 700px;
         }
@@ -37,7 +36,7 @@
 
         .footer {
             color: #596273;
-            font-family: Roboto;
+            font-family: Arial, Helvetica, sans-serif;
             font-size: 11px;
             font-style: italic;
             font-weight: 400;
@@ -69,13 +68,10 @@
 
             <div className="confirmationText">
 
-                <p>Detta är Vaulter-bekräftelsen på att ditt köpavtal med nummer {{InvoiceNo}} nu har annullerats.</p>
-                <p>
-                    Vaulter har återbetalat pengarna från valvet till det bankkonto som du har gjort den första betalningen från, baserat på informationen som erhållits från säljaren.
-                </p>
+                <p>Detta är Vaulter-bekräftelsen på att ditt köpavtal med nummer {{InvoiceNo}} nu är stängt.</p>
+                <p>Vaulter har släppt pengarna från valvet till säljarens bankkonto.</p>
 
             </div>
-
 
             <div class="payment-report">
                 <p>Betalningsrapport – köpavtal nr {{InvoiceNo}}</p>
@@ -87,27 +83,24 @@
 
             <div class="firstText">
                 <span>Betalningsdatum:</span><span style="margin-left: 77px;">{{PaymentDate}}</span><br>
-                <span>Betalt belopp:</span><span style="margin-left: 100px;">{{AmountToPay}}{{Currency}}</span><br>
+                <span>Betalt belopp:</span><span style="margin-left: 100px;">{{AmountToPay}} {{Currency}}</span><br>
                 <span>Vaulter serviceavgift:</span><span style="margin-left: 56px;">{{EscrowFee}}</span><br>
-                <span>Säkrat belopp:</span><span style="margin-left: 94px;">{{Price}}{{Currency}}</span><br>
+                <span>Säkrat belopp:</span><span style="margin-left: 94px;">{{Price}} {{Currency}}</span><br>
             </div>
 
             <div class="secondText">
                 <span>Utgivningsdatum</span><span style="margin-left: 80px;">{{DeliveryDate}}</span><br>
-                <span>Utsläppsmängd</span><span style="margin-left: 87px;">{{Price}}{{Currency}}</span><br>
+                <span>Utsläppsmängd</span><span style="margin-left: 87px;">{{Price}}  {{Currency}}</span><br>
                 <span>Förmånstagare</span><span style="margin-left: 90px;">{{SellerName}}</span><br>
-                <span>Representerar</span><span style="margin-left: 93px;"> Hävning av köpeavtal</span><br>
+                <span>Representerar</span><span style="margin-left: 96px;">{{Description}}</span><br>
             </div>
 
-            <p style="font-size: 11px; font-style: italic; color: #596273; ">
-                *det datum då pengarna har skickats från Vaulter-valvet till betalarens bankkonto. Observera att pengarna kan komma in på en annan dag.
-                **det återbetalda beloppet kan skilja sig från det skyddade beloppet om det finns en administrations- eller avbeställningsavgift som säljaren uppfattar i enlighet med deras villkor och affärsvillkor.
-            </p><br />
+
+
 
             <div className="bottom text">
 
-                <p>Tack för att du använder våra tjänster!</p>
-
+                <p>Tack för att du använder vår service! </p>
 
             </div>
         </div>
