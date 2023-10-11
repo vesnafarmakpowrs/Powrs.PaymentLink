@@ -15,7 +15,7 @@ if !exists(Posted) then BadRequest("No payload.");
    ContractParams:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object);
    ContractParams.Add("Created",contract.Created.ToShortDateString());
    ContractParams.Add("ShortId",ShortId);
-   foreach Parameter in contract.Parameters do 
+   foreach Parameter in contract.Parameters do
      Parameter.ObjectValue != null ? ContractParams.Add(Parameter.Name, Parameter.ObjectValue);
 
    Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';

@@ -448,6 +448,13 @@
 				</paragraph>
 			</description>
 		</stringParameter>
+		<stringParameter name="Country" value="SE" guide="Country" regEx="[A-Z]{2}" minLength="2" maxLength="2">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Country where token will be sold.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
 		<numericalParameter name="CommissionPercent" value="0" guide="Commision (%)" min="0" minIncluded="true" max="100" maxIncluded="true">
 			<description xml:lang="en">
 				<paragraph>

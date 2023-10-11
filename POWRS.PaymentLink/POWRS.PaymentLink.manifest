@@ -17,6 +17,8 @@
 					<Content fileName="InitiatePayment.ws"/>
 					<Content fileName="GetAccountInfo.ws"/>
 					<Content fileName="GetBuyEdalerServiceProviders.ws"/>
+					<Content fileName="InitiateCardPayment.ws"/>
+					<Content fileName="InitiatePayment.ws"/>
 					<Content fileName="RegisterUpdates.ws"/>
 					<Content fileName="DealInfo.ws"/>
 					<Content fileName="GetAvailableLanguages.ws"/>

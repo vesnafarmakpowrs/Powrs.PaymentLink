@@ -1,9 +1,31 @@
 ({
-    "Country": Required(Str(PCountry)),
-    "Currency": Required(Str(PCurrency))
+    "ContractId": Required(Str(PContractId)),
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-Providers:=GetServiceProvidersForBuyingEDaler(PCountry,PCurrency);
+ Parameters:= p:= select top 1 Parameters from IoTBroker.Legal.Contracts.Contract ContractId= PContractId;
+ if (Parameters == null) then
+	Error("Parameters are missing");
+
+Currency:= "";
+CountryCode:= "";
+foreach param in Parameters do
+(
+ if(param.Name == "Currency") then 
+ (
+   Currency:= param.ObjectValue;
+ );
+ if(param.Name == "Country") then 
+ (
+   CountryCode:= param.ObjectValue;
+ );
+);
+
+if(System.String.IsNullOrWhiteSpace(Currency) || System.String.IsNullOrWhiteSpace(CountryCode)) then 
+(
+ Error("BadRequest");
+);
+
+Providers:=GetServiceProvidersForBuyingEDaler(CountryCode,Currency);
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 QRcode := true;
 counter :=0;
