@@ -75,7 +75,6 @@
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\GetAvailableLanguages.ws" />
 		<None Remove="Root\Payout\HtmlTemplates\EN\ReleaseFundsReport.html" />
-		<None Remove="Root\Payout\HtmlTemplates\EN\Reports\PaymentReimbursedReport.html" />
 		<None Remove="Root\Payout\InitiatePayment.ws" />
 		<None Remove="Root\Payout\PaymentLink.js" />
 		<None Remove="Root\Payout\Payout - Copy.md" />
@@ -86,11 +85,6 @@
 		<None Remove="Root\Payout\Settings.md" />
 		<None Remove="Root\Payout\vaulter_logo.svg" />
 		<None Remove="Root\Payout\vaulterlogo.svg" />
-		<None Remove="Root\Payout\HtmlTemplates\EN\purchase_agreement.html" />
-		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentCompleted.html" />
-		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentNotPerformed.html" />
-		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentReimbursed.html" />
-		<None Remove="Root\Payout\HtmlTemplates\EN\ReleaseFunds.html" />
 		<None Remove="Root\VaulterApi\PaymentLink\Index.md" />
 		<None Remove="Root\VaulterApi\PaymentLink\SellItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\ReportNewState.ws" />
@@ -98,17 +92,7 @@
 		<None Remove="Root\VaulterApi\PaymentLink\GetBic.ws" />
 		<None Remove="POWRS.PaymentLink.manifest" />
 	</ItemGroup>
-
-	
 	<ItemGroup>
-	  <Content Include="Root\Payout\HtmlTemplates\EN\Reports\ReleaseFundsReport.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="Root\Payout\HtmlTemplates\EN\Reports\PaymentReimbursedReport.html">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\SellItem.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -158,21 +142,6 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\resources\spinner.gif">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Root\Payout\HtmlTemplates\EN\purchase_agreement.html">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Root\Payout\HtmlTemplates\EN\PaymentCompleted.html">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Root\Payout\HtmlTemplates\EN\PaymentNotPerformed.html">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Root\Payout\HtmlTemplates\EN\PaymentReimbursed.html">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Root\Payout\HtmlTemplates\EN\ReleaseFunds.html">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="POWRS.PaymentLink.manifest">
