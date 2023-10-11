@@ -103,7 +103,7 @@
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
-					<OnEvent newState="Cancel">
+					<OnEvent newState="PaymentCanceled">
 						<OnXmlNote localName="Cancel" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" />
 					</OnEvent>
 					<OnEvent actionRef="InitiatePayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
@@ -119,7 +119,7 @@
 					<OnEvent newState="ServiceDelivered">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
-					<OnEvent actionRef="ReturnFunds" failureState="PaymentCompleted" newState="Cancel">
+					<OnEvent actionRef="ReturnFunds" failureState="PaymentCompleted" newState="PaymentCanceled">
 						<OnXmlNote localName="Cancel" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" />
 					</OnEvent>
 				</State>
@@ -133,7 +133,7 @@
 						<OnDuration>PT10S</OnDuration>
 					</OnEvent>
 				</State>
-				<State id="Cancel">
+				<State id="PaymentCanceled">
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentReimbursed'" />
 					<OnEvent newState="Done">
 						<OnDuration>PT10S</OnDuration>
