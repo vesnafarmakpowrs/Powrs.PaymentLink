@@ -180,13 +180,13 @@
 						TabId:= SelectXmlStr(Note,'/default:InitiatePayment/@tabId');
 						try
 						(
-						BuyerBankAccount:=SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
-						FromMobilePhone:=  SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
+							BuyerBankAccount:=SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
+							FromMobilePhone:=  SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
 						)
-						catch
+						catch 
 						(
-						BuyerBankAccount:= "";
-						FromMobilePhone:= false;
+							BuyerBankAccount:= "";
+						    FromMobilePhone:= false;
 						)
 					</Script>
 					<Try>
