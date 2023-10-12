@@ -26,19 +26,24 @@ success:= false;
 
 if(!System.String.IsNullOrEmpty(r.CallBackUrl) && (r.Status in SendCallBackOnStatusList)) then
 (
- Log.Informational("Sending state update request to: " + r.CallBackUrl + " State: " + r.Status, null);
- POST(r.CallBackUrl,
+  try
+    (
+ 	Log.Informational("Sending state update request to: " + r.CallBackUrl + " State: " + r.Status, null);
+ 	POST(r.CallBackUrl,
                  {
 	           "status": r.Status
                   },
 		  {
 	           "Accept" : "application/json"
                   });
- success:= true;
- Log.Informational("Sending state update request finished to: " + r.CallBackUrl + " State: " + r.Status, null);
+ 	success:= true;
+ 	Log.Informational("Sending state update request finished to: " + r.CallBackUrl + " State: " + r.Status, null);
+    )catch
+       Log.Informational("Sending state update request finished  to: " + r.CallBackUrl + "failed",null);
+  
 );
 
-CountryCode := "EN";
+CountryCode := "SE";
 if (r.Status in SendEmailOnStatusList) then
 (
    contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= r.ContractId;
@@ -66,7 +71,7 @@ if (r.Status in SendEmailOnStatusList) then
 
    ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
    Config := ConfigClass.Instance;
-   POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Vaulter payment", FormatedHtml);
+   POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Test payment", FormatedHtml);
    
 );
 
