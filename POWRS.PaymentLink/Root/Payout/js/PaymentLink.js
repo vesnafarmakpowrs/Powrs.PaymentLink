@@ -111,7 +111,7 @@ function GenerateServiceProvidersUI() {
                     }
                     else {
                         ClearQrCodeDiv();
-                        GetAccountInfo();
+                        GetAccountInfo(); 
                     }
                 };
                 for (let i = 0; i < serviceProviders.length; i++) {
