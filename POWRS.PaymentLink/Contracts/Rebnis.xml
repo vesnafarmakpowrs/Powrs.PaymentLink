@@ -154,6 +154,7 @@
 						</Script>
 						<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
 							<Header key="Accept" value="application/json"/>
+							<Header key="Content-Type" value="application/json"/>
 						</HttpPost>
 						<Script>
 							if(!exists(Response.State) || !exists(Response.Success)) then
