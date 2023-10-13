@@ -261,7 +261,7 @@ else if ContractState == "PaymentCompleted" then
 (
 ]]**((LanguageNamespace.GetStringAsync(16) ))**[[
 )
-else if ContractState == "Cancel" then 
+else if ContractState == "PaymentCanceled" then 
 (
 ]]**((LanguageNamespace.GetStringAsync(14) ))**ed[[
 )
