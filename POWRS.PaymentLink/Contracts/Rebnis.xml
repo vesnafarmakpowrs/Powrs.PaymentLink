@@ -173,11 +173,19 @@
 				</Action>
 				<Action id="InitiatePayment">					
 					<Script>
-						BuyerBankAccount:=SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
 						BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
 						BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderType');
-						FromMobilePhone:=  SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
 						TabId:= SelectXmlStr(Note,'/default:InitiatePayment/@tabId');
+						try
+						(
+						BuyerBankAccount:=SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
+						FromMobilePhone:=  SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
+						)
+						catch
+						(
+						BuyerBankAccount:= "";
+						FromMobilePhone:= false;
+						)
 					</Script>
 					<Try>
 						<BuyEDaler to="{Seller}"
@@ -195,13 +203,15 @@
 							<Parameter key="tabId" value="{TabId}"></Parameter>
 							<Parameter key="callBackUrl" value="{CallBackUrl}"></Parameter>
 							<Parameter key="personalNumber" value="{BuyerPersonalNum}"></Parameter>
+							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
+							<Parameter key="TokenId" value="{TokenId}"></Parameter>
 						</BuyEDaler>
 
 						<PersistVariable name="BuyerBankAccount" value="{BuyerBankAccount}" />
 						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
-						<PersistVariable name="PaymentDateTime" value="{Now}" />						
+						<PersistVariable name="PaymentDateTime" value="{Now}" />
 						<CallAction actionRef="TransferFee" />
 						
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
@@ -445,6 +455,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>The initial currency of the token.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="Country" value="SE" guide="Country" regEx="[A-Z]{2}" minLength="2" maxLength="2">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Country where token will be sold.</text>
 				</paragraph>
 			</description>
 		</stringParameter>
