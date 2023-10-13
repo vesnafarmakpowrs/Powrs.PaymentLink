@@ -115,7 +115,7 @@
 				</State>
 				<State id="PaymentCompleted">
 					<OnEnter actionRef="UnauthorizeServer" />
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'; SendEmail := true;" />
 					<OnEvent newState="ServiceDelivered">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
@@ -124,17 +124,17 @@
 					</OnEvent>
 				</State>
 				<State id="PaymentNotPerformed">
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentNotPerformed'" />
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentNotPerformed'; SendEmail := false;" />
 				</State>
 				<State id="ServiceDelivered">
 					<OnEnter actionRef="ReleaseFunds" />
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='ReleaseFunds'" />
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='ReleaseFunds'; SendEmail := true;" />
 					<OnEvent newState="Done">
 						<OnDuration>PT10S</OnDuration>
 					</OnEvent>
 				</State>
 				<State id="PaymentCanceled">
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentReimbursed'" />
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentReimbursed'; SendEmail := true;" />
 					<OnEvent newState="Done">
 						<OnDuration>PT10S</OnDuration>
 					</OnEvent>
@@ -149,7 +149,8 @@
 							Json:= {
 							"Status":  NewStatus,
 							"ContractId": TokenContract,
-							"CallBackUrl": CallBackUrl
+							"CallBackUrl": CallBackUrl,
+							"SendEmail" : SendEmail
 							};
 						</Script>
 						<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">

@@ -9,7 +9,8 @@ if(blocked != null && blocked == true) then
 
 if !exists(Posted) then BadRequest("No payload.");
 r:= Request.DecodeData();
-if(!exists(r.Status) || !exists(r.ContractId) || !exists(r.CallBackUrl)) then
+
+if(!exists(r.Status) || !exists(r.ContractId) || !exists(r.CallBackUrl) ) then
 (
   BadRequest("Payload does not conform to specification.");
 );
@@ -19,7 +20,6 @@ if(System.String.IsNullOrEmpty(r.Status) || System.String.IsNullOrEmpty(r.Contra
  BadRequest("Payload does not conform to specification.");
 );
 
-SendEmailOnStatusList := {"ReleaseFunds", "PaymentReimbursed", "PaymentCompleted"};
 SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted"};
 
 success:= false;
@@ -44,7 +44,7 @@ if(!System.String.IsNullOrEmpty(r.CallBackUrl) && (r.Status in SendCallBackOnSta
 );
 
 CountryCode := "SE";
-if (r.Status in SendEmailOnStatusList) then
+if (exists(r.SendEmail) &&  r.SendEmail) then
 (
  
    contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= r.ContractId;
