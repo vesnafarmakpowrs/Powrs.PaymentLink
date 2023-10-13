@@ -1,7 +1,6 @@
 ﻿({
     "tabId": Required(Str(PTabID)),
-	"tokenId": Required(Str(PTokenId)),
-	
+	"tokenId": Required(Str(PTokenId))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 ServiceProviderId := "TAG.Payments.Stripe.StripeService.Test";

@@ -121,7 +121,7 @@ BuyerFirstName := Before(BuyerFullName," ");
 <input type="hidden" value="((Token.TokenId))" id="TokenId"/>
 <input type="hidden" value="((Contract.ContractId))" id="contractId"/>
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
-<input type="hidden" value="((BuyerFullName)" id="buyerFullName"/>
+<input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
 

@@ -1,8 +1,8 @@
 ({
-    "ContractId": Required(Str(PContractId)),
+    "ContractId": Required(Str(PContractId))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
- Parameters:= p:= select top 1 Parameters from IoTBroker.Legal.Contracts.Contract ContractId= PContractId;
+ Parameters:= select top 1 Parameters from IoTBroker.Legal.Contracts.Contract where ContractId= PContractId;
  if (Parameters == null) then
 	Error("Parameters are missing");
 

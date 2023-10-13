@@ -109,6 +109,9 @@
 					<OnEvent actionRef="InitiatePayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="InitiatePayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+					<OnEvent actionRef="InitiateCardPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
+						<OnExternalXmlNote localName="InitiateCardPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
@@ -173,21 +176,50 @@
 					</Try>
 					<PersistVariable name="Notifications" value="{Notifications}"/>
 				</Action>
-				<Action id="InitiatePayment">					
+				<Action id="InitiateCardPayment">
+					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="InitiateCardPayment invoked" object="{Buyer}" type="Informational" />
+					<Script>						
+						BuyerEdalerServiceProviderId:= SelectXmlStr(Note,'/default:InitiateCardPayment/@buyEdalerServiceProviderId');
+						BuyerEdalerServiceProviderType:= SelectXmlStr(Note,'/default:InitiateCardPayment/@buyEdalerServiceProviderType');
+						TabId:= SelectXmlStr(Note,'/default:InitiateCardPayment/@tabId');
+					</Script>
+					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{BuyerEdalerServiceProviderId + ' ' + BuyerEdalerServiceProviderType + ' ' + TabId} invoked" object="{Buyer}" type="Informational" />
+					<Try>
+						<BuyEDaler to="{Seller}"
+							   amount="{AmountToPay}"
+							   currency="{Currency}"
+							   reference="{'nfeat: ' + TokenId}"
+						       contract="{TokenContract}"
+							   serviceId="{BuyerEdalerServiceProviderId}"
+							   serviceProvider="{BuyerEdalerServiceProviderType}">
+							<Parameter key="Amount" value="{AmountToPay}"></Parameter>
+							<Parameter key="Currency" value="{Currency}"></Parameter>
+							<Parameter key="tabId" value="{TabId}"></Parameter>
+							<Parameter key="personalNumber" value="{BuyerPersonalNum}"></Parameter>
+							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
+							<Parameter key="TokenId" value="{TokenId}"></Parameter>
+						</BuyEDaler>
+
+						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
+						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
+						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
+						<PersistVariable name="PaymentDateTime" value="{Now}" />
+						<CallAction actionRef="TransferFee" />
+
+						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="InitiatePayment">
 					<Script>
 						BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
 						BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderType');
 						TabId:= SelectXmlStr(Note,'/default:InitiatePayment/@tabId');
-						try
-						(
-							BuyerBankAccount:=SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
-							FromMobilePhone:=  SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
-						)
-						catch 
-						(
-							BuyerBankAccount:= "";
-						    FromMobilePhone:= false;
-						)
+						FromMobilePhone:=  SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
+						BuyerBankAccount:= SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
 					</Script>
 					<Try>
 						<BuyEDaler to="{Seller}"
@@ -215,14 +247,14 @@
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{Now}" />
 						<CallAction actionRef="TransferFee" />
-						
+
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
 						<Catch exceptionVariable="ex">
 							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>
 						</Catch>
 					</Try>
-				</Action>				
+				</Action>
 				<Action id="ReturnFunds">
 					<LogEvent actor="{Seller}" eventId="ReturnFunds" level="Medium" message="Funds return in progress..." object="{Buyer}" type="Informational" />
 					<If condition="TotalAmountPaid &gt;= Price">
