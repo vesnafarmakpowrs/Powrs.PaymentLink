@@ -84,7 +84,7 @@ function GenerateServiceProvidersUI() {
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
         {
-            "ContractId": document.getElementById("ContractId").value,
+            "ContractId": document.getElementById("contractId").value,
         }));
 
     xhttp.onreadystatechange = function () {

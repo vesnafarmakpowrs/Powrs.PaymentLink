@@ -8,6 +8,7 @@ Parameter: ID
 Parameter: lng
 JavaScript: js/Events.js
 JavaScript: js/PaymentLink.js
+Javascript: https://js.stripe.com/v3/
 
 <main class="border-radius">
 <div class="content">
@@ -118,7 +119,7 @@ BuyerFirstName := Before(BuyerFullName," ");
 <input type="hidden" value="((Token.TokenId))" id="TokenId"/>
 <input type="hidden" value="((Contract.ContractId))" id="contractId"/>
 <input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
-<input type="hidden" value="((BuyerFullName)" id="buyerFullName"/>
+<input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
 
