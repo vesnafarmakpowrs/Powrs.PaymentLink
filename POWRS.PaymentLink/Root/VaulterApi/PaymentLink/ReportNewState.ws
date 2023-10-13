@@ -19,7 +19,7 @@ if(System.String.IsNullOrEmpty(r.Status) || System.String.IsNullOrEmpty(r.Contra
  BadRequest("Payload does not conform to specification.");
 );
 
-SendEmailOnStatusList := {"ServiceDelivered", "PaymentReimbursed", "PaymentCompleted"};
+SendEmailOnStatusList := {"ReleaseFunds", "PaymentReimbursed", "PaymentCompleted"};
 SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted"};
 
 success:= false;
@@ -105,6 +105,7 @@ if (r.Status in SendEmailOnStatusList) then
 
    );
 
+   Log.Informational("Sending email for " + r.Status  ,null);
    ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
    Config := ConfigClass.Instance;
    POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);

@@ -32,7 +32,7 @@ namespace POWRS.PaymentLink
                     Html = Html.Replace("{{AmountToPay}}", AmountToPay.ToString());
                 }
                
-               List<string> DateObjects = new List<string>{ "DeliveryDate", "Created"};
+               List<string> DateObjects = new List<string>{ "DeliveryDate", "Created", "PaymentDateTime" };
                foreach (var parameter in ContractParameters)
                 {
                     if (DateObjects.Contains(parameter.Key))
