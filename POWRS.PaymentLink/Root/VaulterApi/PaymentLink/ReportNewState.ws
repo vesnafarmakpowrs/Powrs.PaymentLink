@@ -19,7 +19,7 @@ if(System.String.IsNullOrEmpty(r.Status) || System.String.IsNullOrEmpty(r.Contra
  BadRequest("Payload does not conform to specification.");
 );
 
-SendEmailOnStatusList := {"ServiceDelivered", "PaymentCanceled", "PaymentCompleted"};
+SendEmailOnStatusList := {"ServiceDelivered", "PaymentReimbursed", "PaymentCompleted"};
 SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted"};
 
 success:= false;
@@ -78,7 +78,7 @@ if (r.Status in SendEmailOnStatusList) then
    Base64Attachment := null;
    FileName := null;
    
-   if Contains(FormatedHtml,"{{purchase_agreement}}") then
+   if (r.Status == "PaymentCompleted") then
    (
      htmlTemplatePath:= htmlTemplateRoot + "purchase_agreement.html"; 
      html:= System.IO.File.ReadAllText(htmlTemplatePath);
@@ -87,7 +87,7 @@ if (r.Status in SendEmailOnStatusList) then
      htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
    
      FileName:= POWRS.PaymentLink.DealInfo.GetInvoiceNo(IdentityProperties, ShortId) + ".pdf";
-     url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ fileName);
+     url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ FileName);
 
      htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
      System.IO.File.WriteAllText(htmlToGeneratePath, FormatedPurchaseAgreementHtml , System.Text.Encoding.UTF8);
@@ -98,12 +98,12 @@ if (r.Status in SendEmailOnStatusList) then
      
      byteArray := System.IO.File.ReadAllBytes(pdfPath);
      Base64Attachment := System.Convert.ToBase64String(byteArray);
-
      System.IO.File.Delete(htmlToGeneratePath);
      System.IO.File.Delete(pdfPath);
 
    );
 
+   Log.Informational("Sending pruchase agreement attached file " + FileName ,null);
    ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
    Config := ConfigClass.Instance;
    POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
