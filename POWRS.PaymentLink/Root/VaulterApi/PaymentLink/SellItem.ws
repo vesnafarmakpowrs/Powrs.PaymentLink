@@ -92,14 +92,14 @@ if(EscrowFee <= 0) then
 );
 
 
-Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/GetBic.ws",
+GetBicResponse := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/GetBic.ws",
                  {
                     "bankAccount":  PClientBankAccount
                   },
 		   {"Accept" : "application/json"});
 
-PSellerServiceProviderId := Response.serviceProviderId;
-PSellerServiceProviderType := Response.serviceProviderType;
+PSellerServiceProviderId := GetBicResponse.serviceProviderId;
+PSellerServiceProviderType := GetBicResponse.serviceProviderType;
 
  Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = PUserName And State = 'Approved';
 
@@ -117,12 +117,13 @@ try
 Contract:=CreateContract(PUserName, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
-	 "Title": PTitle,
+	"Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
         "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00),
         "DeliveryDate" : DateTime(ParsedDeliveryDate.Year, ParsedDeliveryDate.Month, ParsedDeliveryDate.Day, 23, 59, 59, 00),
         "Currency": PCurrency,
+        "Country": PBuyerCountryCode,
         "Expires": Today.AddDays(364),
         "SellerBankAccount" : PClientBankAccount,
         "SellerName" : SellerName,
@@ -134,7 +135,7 @@ Contract:=CreateContract(PUserName, TemplateId, "Public",
         "CallBackUrl" : PCallBackUrl
     })
 catch
-BadRequest("Check parameters and try again.");
+BadRequest(Exception.Message);
 
 Nonce := Base64Encode(RandomBytes(32));
 
@@ -161,8 +162,8 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
 	                        "requestSignature": RequestSignature
                                 },
 			      {
-				"Accept" : "application/json",
-                           "Authorization": Token
+			       "Accept" : "application/json",		       
+                               "Authorization": Token
                               });
 
 {
