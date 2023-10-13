@@ -74,12 +74,13 @@ if (r.Status in SendEmailOnStatusList) then
    html:= System.IO.File.ReadAllText(htmlTemplatePath);
   
    FormatedHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
+   Base64Attachment := null;
 	
    if Contains(FormatedHtml,"{{purchase_agreement}}") then
    (
      htmlTemplatePath:= htmlTemplateRoot + "purchase_agreement.html"; 
      html:= System.IO.File.ReadAllText(htmlTemplatePath);
-     FormatedHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
+     FormatedPurchaseAgreementHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
    
      htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
    
@@ -87,28 +88,28 @@ if (r.Status in SendEmailOnStatusList) then
      url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ fileName);
 
      htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
-     System.IO.File.WriteAllText(htmlToGeneratePath, FormatedHtml, System.Text.Encoding.UTF8);
+     System.IO.File.WriteAllText(htmlToGeneratePath, FormatedPurchaseAgreementHtml , System.Text.Encoding.UTF8);
    
      pdfPath:= htmlTemplateRoot + fileName;
      ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
      "\"" + htmlToGeneratePath +"\"" + " \"" +  pdfPath + "\"", htmlTemplateRoot);
-
-     bytes:= System.IO.File.ReadAllBytes(pdfPath);
+     
+     byteArray := System.IO.File.ReadAllBytes(pdfPath);
+     Base64Attachment := System.Convert.ToBase64String(byteArray);
 
      System.IO.File.Delete(htmlToGeneratePath);
      System.IO.File.Delete(pdfPath);
-
-     Replace(FormatedHtml,"{{purchase_agreement}}",bytes);
 
    );
 
    ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
    Config := ConfigClass.Instance;
-   POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Vaulter", FormatedHtml);
+   POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, fileName);
    
 );
 
 {    	
     "Status" : r.Status,
-    "Success": success
+    "Success": success,
+    "bytes" : Base64Attachment
 }
