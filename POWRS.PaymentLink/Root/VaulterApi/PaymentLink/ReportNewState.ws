@@ -74,8 +74,10 @@ if (r.Status in SendEmailOnStatusList) then
    html:= System.IO.File.ReadAllText(htmlTemplatePath);
   
    FormatedHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
+   
    Base64Attachment := null;
-	
+   FileName := null;
+   
    if Contains(FormatedHtml,"{{purchase_agreement}}") then
    (
      htmlTemplatePath:= htmlTemplateRoot + "purchase_agreement.html"; 
@@ -84,13 +86,13 @@ if (r.Status in SendEmailOnStatusList) then
    
      htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
    
-     fileName:= POWRS.PaymentLink.DealInfo.GetInvoiceNo(IdentityProperties, ShortId) + ".pdf";
+     FileName:= POWRS.PaymentLink.DealInfo.GetInvoiceNo(IdentityProperties, ShortId) + ".pdf";
      url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ fileName);
 
      htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
      System.IO.File.WriteAllText(htmlToGeneratePath, FormatedPurchaseAgreementHtml , System.Text.Encoding.UTF8);
    
-     pdfPath:= htmlTemplateRoot + fileName;
+     pdfPath:= htmlTemplateRoot + FileName;
      ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
      "\"" + htmlToGeneratePath +"\"" + " \"" +  pdfPath + "\"", htmlTemplateRoot);
      
@@ -104,12 +106,11 @@ if (r.Status in SendEmailOnStatusList) then
 
    ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
    Config := ConfigClass.Instance;
-   POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, fileName);
+   POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
    
 );
 
 {    	
     "Status" : r.Status,
-    "Success": success,
-    "bytes" : Base64Attachment
+    "Success": success
 }
