@@ -36,9 +36,14 @@
 				<Folder name="HtmlTemplates">
 					<Folder name="EN">
 						<Content fileName="PaymentCompleted.html"></Content>
-						<Content fileName="PaymentNotPerformed.html"></Content>
-						<Content fileName="PaymentReimbursed.html"></Content>
+						<Content fileName="ServiceDelivered.html"></Content>
+						<Content fileName="PaymentCanceled.html"></Content>
 						<Content fileName="purchase_agreement.html"></Content>
+					</Folder>
+					<Folder name="SE">
+						<Content fileName="PaymentCompleted.html"></Content>
+						<Content fileName="ServiceDelivered.html"></Content>
+						<Content fileName="PaymentCanceled.html"></Content>
 						<Content fileName="purchase_agreement.html"></Content>
 					</Folder>
 				</Folder>
