@@ -337,6 +337,8 @@
 							<Parameter key="Currency" value="{Currency}" />
 							<Parameter key="Account" value="{BankAccountToSell}" />
 							<Parameter key="AccountName" value="{AccountName}" />
+							<Parameter key="ContractId" value="{TokenContract}" />
+							<Parameter key="TokenId" value="{TokenId}" />
 							<Parameter key="Message" value="Vaulter" />
 						</SellEDaler>
 						<TextNote content="{'Amount of edaler: ' + AmountToSell + ' ' + Currency + ' sold. From: ' + SellEdalerFrom + ' to BankAccount: ' + BankAccountToSell}" />
