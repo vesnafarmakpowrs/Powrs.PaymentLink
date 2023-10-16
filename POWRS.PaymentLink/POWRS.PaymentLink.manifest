@@ -18,6 +18,7 @@
 					<Content fileName="GetAccountInfo.ws"/>
 					<Content fileName="GetBuyEdalerServiceProviders.ws"/>
 					<Content fileName="RegisterUpdates.ws"/>
+					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="DealInfo.ws"/>
 					<Content fileName="GetAvailableLanguages.ws"/>
 				</Folder>
