@@ -10,7 +10,7 @@ if(blocked != null && blocked == true) then
 if !exists(Posted) then BadRequest("No payload.");
 r:= Request.DecodeData();
 
-if(!exists(r.Status) || !exists(r.ContractId) || !exists(r.CallBackUrl) ) then
+if(!exists(r.Status) || !exists(r.ContractId) || !exists(r.CallBackUrl) || !exists(r.TokenId)) then
 (
   BadRequest("Payload does not conform to specification.");
 );
@@ -52,9 +52,14 @@ if (exists(r.SendEmail) &&  r.SendEmail) then
    if (contract == null) then
 	Error("Contract is missing");
 
-   ShortId := select top 1 ShortId from NeuroFeatureTokens where OwnershipContract = r.ContractId;
-      
+   ShortId := select top 1 ShortId from NeuroFeatureTokens where TokenId = r.TokenId;
    ContractParams:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object);
+
+ StateMachine:= select top 1 * from StateMachineCurrentStates where StateMachineId= r.TokenId;
+   foreach variable in StateMachine.VariableValues DO   
+     variable.Name == "PaymentDateTime" ? ContractParams.Add(variable.Name,variable.Value); 
+    
+   
    ContractParams.Add("Created",contract.Created.ToShortDateString());
    ContractParams.Add("ShortId",ShortId);
    ContractParams.Add("ContractId",r.ContractId.ToString());

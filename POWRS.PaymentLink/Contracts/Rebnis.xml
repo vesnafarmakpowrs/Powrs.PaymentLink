@@ -149,6 +149,7 @@
 							Json:= {
 							"Status":  NewStatus,
 							"ContractId": TokenContract,
+							"TokenId" : TokenId,
 							"CallBackUrl": CallBackUrl,
 							"SendEmail" : SendEmail
 							};
