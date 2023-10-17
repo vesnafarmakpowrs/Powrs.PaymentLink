@@ -432,8 +432,14 @@ function GeneratePaymentForm(Data) {
     var stripe = Stripe(Data.PublishableKey);
     const clientSecret = Data.ClientSecret;
 
+    const appearance = {
+        theme: 'flat',
+        variables: { colorPrimaryText: '#262626' }
+    };
+
     const elements = stripe.elements({ clientSecret: clientSecret });
-    const paymentElement = elements.create('card');
+    const paymentElement = elements.create('payment', appearance);
+
 
     // Add an instance of the card Element into the card-element div.
     paymentElement.mount('#stripe-payment-container');
@@ -443,16 +449,11 @@ function GeneratePaymentForm(Data) {
         e.preventDefault();
         let error = null;
         try {
-            stripe
-                .confirmCardPayment(clientSecret, {
-                    payment_method: {
-                        card: paymentElement,
-                        billing_details: {
-                            name: document.getElementById("buyerFullName"),
-                            email: document.getElementById("buyerEmail")
-                        },
-                    },
-                })
+            stripe.confirmPayment({
+                elements,
+                confirmParams: { return_url: window.location.href },
+                redirect: "if_required"
+            })
                 .then(function (result) {
                     console.log(result);
                     error = result.error;
