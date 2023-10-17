@@ -434,13 +434,13 @@ function GeneratePaymentForm(Data) {
     const clientSecret = Data.ClientSecret;
 
     const appearance = {
-        theme: 'flat',
+        theme: 'stripe',
         variables: { colorPrimaryText: '#262626' }
     };
 
-    const elements = stripe.elements({ clientSecret: clientSecret });
-    const paymentElement = elements.create('payment', appearance);
-
+    const elements = stripe.elements({ appearance, clientSecret });
+    const paymentElement = elements.create('payment');
+    document.getElementById("payment-form").style.display = "block";
     document.getElementById("stripe-submit").style.display = "block";
     // Add an instance of the card Element into the card-element div.
     paymentElement.mount('#payment-element');
@@ -452,7 +452,7 @@ function GeneratePaymentForm(Data) {
 
         let error = null;
         try {
-            ToggleSpinner(true);
+            setStripeLoading(true);
             stripe.confirmPayment({
                 elements,
                 confirmParams: { return_url: window.location.href },
@@ -477,10 +477,22 @@ function GeneratePaymentForm(Data) {
     });
 }
 
+// Show a spinner on payment submission
+function setStripeLoading(isLoading) {
+    if (isLoading) {
+        // Disable the button and show a spinner
+        document.querySelector("#stripe-submit").disabled = true;
+        document.querySelector("#spinner").classList.remove("hidden");
+    } else {
+        document.querySelector("#stripe-submit").disabled = false;
+        document.querySelector("#spinner").classList.add("hidden");
+    }
+}
 
 function StartCardPayment() {
     ClearQrCodeDiv();
-
+    ToggleSpinner(false);
+    document.getElementById("payment-form").style.display = "block";
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "API/InitiateCardPayment.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
