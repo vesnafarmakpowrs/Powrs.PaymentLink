@@ -257,8 +257,10 @@ BuyerFirstName := Before(BuyerFullName," ");
         </div>
         <div id="payment-element">
         </div>
+        <div class="spinner hidden" id="spinner"></div>
         <div class="stripe-submit-div">
-          <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
+          <div class="spinner hidden" id="spinner"></div>
+           <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
         </div>
       </form>
 <div id="QrCode"></div>
