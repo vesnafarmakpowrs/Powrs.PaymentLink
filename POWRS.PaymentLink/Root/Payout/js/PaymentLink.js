@@ -109,7 +109,7 @@ function GenerateServiceProvidersUI() {
                         ShowMessage(Translations.OpenLinkOnPhoneMessage);
                     }
                     else {
-                        ClearQrCodeDiv(); 
+                        ClearQrCodeDiv();
                         if (provider.Name.includes('Stripe')) {
                             StartCardPayment();
                             return;
@@ -133,13 +133,13 @@ function GenerateServiceProvidersUI() {
 function ClearQrCodeDiv() {
     var container = document.getElementById('QrCode');
     container.innerHTML = "";
-    ToggleSpinner(true);
 
     return container;
 }
 
 function GenerateAccountsListUi(accounts) {
     var container = ClearQrCodeDiv();
+    ToggleSpinner(true);
     var accountList = document.createElement('div');
     accountList.className = "account-list";
 
@@ -217,6 +217,7 @@ function GetAccountInfo() {
 function StartPayment(iban, bic) {
     ToggleServiceProviderSelect(true);
     ClearQrCodeDiv();
+    ToggleSpinner(true);
     let contractId = document.getElementById('contractId').value;
 
     if (!contractId || !iban || !bic) {
@@ -440,19 +441,28 @@ function GeneratePaymentForm(Data) {
     const elements = stripe.elements({ clientSecret: clientSecret });
     const paymentElement = elements.create('payment', appearance);
 
-
+    document.getElementById("stripe-submit").style.display = "block";
     // Add an instance of the card Element into the card-element div.
-    paymentElement.mount('#stripe-payment-container');
+    paymentElement.mount('#payment-element');
+
     const form = document.getElementById('payment-form');
     // Handle form submission.
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
         let error = null;
         try {
+            ToggleSpinner(true);
             stripe.confirmPayment({
                 elements,
                 confirmParams: { return_url: window.location.href },
-                redirect: "if_required"
+                redirect: "if_required",
+                payment_method_data: {
+                    billing_details: {
+                        name: document.getElementById("buyerFullName"),
+                        email: document.getElementById("buyerEmail")
+                    }
+                },
             })
                 .then(function (result) {
                     console.log(result);

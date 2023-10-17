@@ -252,11 +252,15 @@ BuyerFirstName := Before(BuyerFullName," ");
 
 <div class="spaceItem"></div>
 
-<form id="payment-form">
-    <div id="stripe-payment-container">    
-	</div>
- <button style="width: 100%; background-color: blue; color: white; border: none; padding: 10px; text-transform: uppercase;" type="submit">Submit Payment</button>
-</form>
+ <form id="payment-form">
+        <div id="link-authentication-element">
+        </div>
+        <div id="payment-element">
+        </div>
+        <div class="stripe-submit-div">
+          <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
+        </div>
+      </form>
 <div id="QrCode"></div>
 <div id="spinnerContainer">
   <img src="./resources/spinner.gif" alt="loadingSpinner">
