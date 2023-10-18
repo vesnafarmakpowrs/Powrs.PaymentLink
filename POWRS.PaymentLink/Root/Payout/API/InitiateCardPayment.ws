@@ -1,7 +1,11 @@
 ﻿({
-    "tabId": Required(Str(PTabID)),
-	"tokenId": Required(Str(PTokenId))
+         "tabId": Required(Str(PTabID)),
+	"requestFromMobilePhone": Required(Boolean(PRequestFromMobilePhone)),
+	"tokenId": Required(Str(PTokenId)),
+        "bankAccount": Required(Str(PBankAccount))
+	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
+
 
 ServiceProviderId := "TAG.Payments.Stripe.StripeService.Test";
 ServiceProviderType := "TAG.Payments.Stripe.StripeServiceProvider";
@@ -27,7 +31,7 @@ R := POST(NeuronAddress + "/Agent/Account/Login",
 escrowDomain:= "https://" + Gateway.Domain + "/Downloads/EscrowRebnis.xsd";
 
 
-xmlNote:= "<InitiateCardPayment xmlns='" + escrowDomain + "' buyEdalerServiceProviderId='" + ServiceProviderId + "' buyEdalerServiceProviderType='" + ServiceProviderType + "'  tabId='" + PTabID + "' />";
+xmlNote:= "<InitiatePayment xmlns='" + escrowDomain + "' buyEdalerServiceProviderId='" + ServiceProviderId + "' buyEdalerServiceProviderType='" + ServiceProviderType + "' fromMobilePhone='" + PRequestFromMobilePhone + "'  tabId='" + PTabID + "' buyerBankAccount='" + PBankAccount + "' />";
 
 xmlNoteResponse := POST(NeuronAddress + "/Agent/Tokens/AddXmlNote",
                  {

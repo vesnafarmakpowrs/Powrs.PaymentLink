@@ -13,18 +13,58 @@ color:¤TextColor¤;
 
 form {
   width: 30vw;
-  min-width: 500px;
   align-self: center;
   box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
-    0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+  0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
   border-radius: 7px;
-  padding: 40px;
 }
 
-#payment-form
+#stripe-method
+{
+  width: 10vw;
+  align-self: center;
+  box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
+  0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+  border-radius: 7px;
+  padding: 10px;
+}
+
+#payment-method
+{
+  width : 100%;
+  border-spacing : 20px;
+}
+
+
+#payment-method-tbl
+{
+  width : 100%;
+ border-spacing: 30px;
+}
+
+.payment-method-tab
+{
+ width : 50%;
+box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
+  0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+  border-radius: 7px;
+  padding: 10px;
+}
+
+#payment-form-bank
 {
   display:none;
+  padding:30px;
+  width : 100%;
 }
+
+#payment-form-card
+{
+  display:none;
+  padding:30px;
+  width : 100%;
+}
+
 
 
 @font-face {
@@ -576,6 +616,11 @@ main {
 margin: 0 auto 0rem auto;
 font-size:2rem;
 width: 100%;
+}
+
+.form {
+  width: 100%;
+  min-width: 500px;
 }
 
 .content {
