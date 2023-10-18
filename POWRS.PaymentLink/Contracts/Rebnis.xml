@@ -183,7 +183,7 @@
 						BuyerEdalerServiceProviderType:= SelectXmlStr(Note,'/default:InitiateCardPayment/@buyEdalerServiceProviderType');
 						TabId:= SelectXmlStr(Note,'/default:InitiateCardPayment/@tabId');
 					</Script>
-					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{BuyerEdalerServiceProviderId + ' ' + BuyerEdalerServiceProviderType + ' ' + TabId} invoked" object="{Buyer}" type="Informational" />
+					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{BuyerEdalerServiceProviderId + ' ' + BuyerEdalerServiceProviderType + ' ' + TabId}" object="{Buyer}" type="Informational" />
 					<Try>
 						<BuyEDaler to="{Seller}"
 							   amount="{AmountToPay}"

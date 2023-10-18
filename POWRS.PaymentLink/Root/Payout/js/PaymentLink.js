@@ -358,10 +358,13 @@ function PaymentError(Data) {
 function UserAgree() {
     if (!document.getElementById("purchaseAgreement").checked ||
         !document.getElementById("termsAndCondition").checked) {
-        document.getElementById("serviceProvidersSelect").disabled = true;
+        document.getElementById("payment-form-bank").disabled = true;
+        document.getElementById("payment-form-card").disabled = true;
     }
     else {
-        document.getElementById("serviceProvidersSelect").disabled = false;
+
+        document.getElementById("payment-form-bank").disabled = false;
+        document.getElementById("payment-form-card").disabled = false;
         var container = document.getElementById('QrCode');
         container.innerHTML = "";
     }
@@ -440,22 +443,21 @@ function GeneratePaymentForm(Data) {
 
     const elements = stripe.elements({ appearance, clientSecret });
     const paymentElement = elements.create('payment');
-    document.getElementById("payment-form").style.display = "block";
     document.getElementById("stripe-submit").style.display = "block";
     // Add an instance of the card Element into the card-element div.
     paymentElement.mount('#payment-element');
 
-    const form = document.getElementById('payment-form');
+    const form = document.getElementById('payment-form-card');
     // Handle form submission.
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         let error = null;
         try {
-            setStripeLoading(true);
+
             stripe.confirmPayment({
                 elements,
-                confirmParams: { return_url: window.location.href },
+
                 redirect: "if_required",
                 payment_method_data: {
                     billing_details: {
@@ -477,22 +479,26 @@ function GeneratePaymentForm(Data) {
     });
 }
 
-// Show a spinner on payment submission
-function setStripeLoading(isLoading) {
-    if (isLoading) {
-        // Disable the button and show a spinner
-        document.querySelector("#stripe-submit").disabled = true;
-        document.querySelector("#spinner").classList.remove("hidden");
-    } else {
-        document.querySelector("#stripe-submit").disabled = false;
-        document.querySelector("#spinner").classList.add("hidden");
+function StartBankPayment() {
+    ShowBankPayment(true);
+}
+
+function ShowBankPayment(show) {
+    if (show) {
+        document.getElementById("payment-form-card").style.display = "none";
+        document.getElementById("payment-form-bank").style.display = "block";
     }
+    else {
+        document.getElementById("payment-form-card").style.display = "block";
+        document.getElementById("payment-form-bank").style.display = "none";
+    }
+    ClearQrCodeDiv();
+    ToggleSpinner(false);
 }
 
 function StartCardPayment() {
-    ClearQrCodeDiv();
-    ToggleSpinner(false);
-    document.getElementById("payment-form").style.display = "block";
+
+    ShowBankPayment(false);
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "API/InitiateCardPayment.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");

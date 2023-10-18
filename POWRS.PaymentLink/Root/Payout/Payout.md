@@ -241,30 +241,41 @@ BuyerFirstName := Before(BuyerFullName," ");
      <td class="currencyLeft" style="width:10%;" >((Currency ))</td>
  </tr>
  <tr class="spaceUnder"><td colspan="3"> </td></tr>
- <tr >
-    <td colspan="3">
-    <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" disabled>
-        <option value="none" selected disabled hidden>((LanguageNamespace.GetStringAsync(9) ))</option>
-      </select>
-   </td>
- </tr>
+ 
  </table>
 
 </div>
 
 <div class="spaceItem"></div>
+ <form id="payment-method">
+  <table id="payment-method-tbl">
+   <tr>
+    <td class="payment-method-tab" onclick="StartBankPayment()"><element id="stripe-method-bank" >Bank</element></td>
+    <td class="payment-method-tab" onclick="StartCardPayment()"><element id="stripe-method-card" >Card</element></td>
+   </tr>
+  </table> 
+ </form>
 
- <form id="payment-form">
-        <div id="link-authentication-element">
-        </div>
-        <div id="payment-element">
-        </div>
-        <div class="spinner hidden" id="spinner"></div>
-        <div class="stripe-submit-div">
-          <div class="spinner hidden" id="spinner"></div>
-           <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
-        </div>
-      </form>
+<div class="spaceItem"></div>
+<br/>
+
+<form id="payment-form-bank">
+ <div>
+     <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" >
+        <option value="none" selected disabled hidden>((LanguageNamespace.GetStringAsync(9) ))</option>
+      </select>
+   </div>
+</form>
+
+ <form id="payment-form-card">
+   <div id="link-authentication-element">
+   </div>
+   <div id="payment-element">
+   </div>
+   <div class="stripe-submit-div">
+    <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
+   </div>
+  </form>
 <div id="QrCode"></div>
 <div id="spinnerContainer">
   <img src="./resources/spinner.gif" alt="loadingSpinner">
