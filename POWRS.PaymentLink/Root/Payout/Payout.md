@@ -4,6 +4,7 @@ Date: 2023-08-04
 Author: POWRS
 Cache-Control: max-age=0, no-cache, no-store
 CSS: css/Payout.cssx
+CSS: css/Stripe.css
 Parameter: ID
 Parameter: lng
 JavaScript: js/Events.js
@@ -270,6 +271,13 @@ BuyerFirstName := Before(BuyerFullName," ");
    </div>
    <div id="payment-element">
    </div>
+   <div class="stipe-name-div">
+         <div class=">
+           <input type="text" inputmode="text" name="linkLegalName" id="Field-linkLegalNameInput" 
+            placeholder="First and last name" 
+            autocomplete="billing name" 
+            aria-invalid="false" aria-required="false" class="stipe-name-input" value=""></div>
+   <div>
    <div class="stripe-submit-div">
     <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
    </div>

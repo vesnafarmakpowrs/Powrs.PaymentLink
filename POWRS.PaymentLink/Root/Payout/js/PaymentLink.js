@@ -432,6 +432,81 @@ function generatePDF() {
     }
 }
 
+function AddStipeNameInput() {
+    var t = document.getElementById("payment-element");
+
+    var outerDiv = document.createElement('div');
+    outerDiv.className = 'flex-item width-12 stipe-name-div';
+
+    // Create the FormFieldGroup div
+    var formFieldGroupDiv = document.createElement('div');
+    formFieldGroupDiv.className = 'FormFieldGroup';
+
+    // Create the label and its container
+    var labelContainer = document.createElement('div');
+    labelContainer.className = 'FormFieldGroup-labelContainer flex-container justify-content-space-between';
+    var label = document.createElement('label');
+    label.setAttribute('for', 'billingName');
+    var labelText = document.createElement('span');
+    labelText.className = 'Label Text-color--gray600 stipe-name-input';
+    labelText.textContent = 'Cardholder name';
+    label.appendChild(labelText);
+    labelContainer.appendChild(label);
+
+    // Create the Fieldset div with an inner container
+    var fieldsetDiv = document.createElement('div');
+    fieldsetDiv.className = 'FormFieldGroup-Fieldset';
+    fieldsetDiv.id = 'billingName-fieldset';
+    var fieldsetInnerDiv = document.createElement('div');
+    fieldsetInnerDiv.className = 'FormFieldGroup-container';
+    fieldsetInnerDiv.id = 'billingName-fieldset-inner';
+
+    // Create the FormFieldGroup-child div
+    var formFieldChildDiv = document.createElement('div');
+    formFieldChildDiv.className = 'FormFieldGroup-child FormFieldGroup-child--width-12 FormFieldGroup-childLeft FormFieldGroup-childRight FormFieldGroup-childTop FormFieldGroup-childBottom';
+
+    // Create the FormFieldInput div
+    var formFieldInputDiv = document.createElement('div');
+    formFieldInputDiv.className = 'p-FieldLabel';
+
+    // Create the CheckoutInputContainer div and its contents
+    var checkoutInputContainerDiv = document.createElement('div');
+    checkoutInputContainerDiv.className = 'CheckoutInputContainer';
+    var inputContainerSpan = document.createElement('span');
+    inputContainerSpan.className = 'InputContainer';
+    inputContainerSpan.setAttribute('data-max', '');
+
+    // Create the input element
+    var inputElement = document.createElement('input');
+    inputElement.className = 'CheckoutInput Input Input--empty';
+    inputElement.setAttribute('autocomplete', 'ccname');
+    inputElement.setAttribute('autocorrect', 'off');
+    inputElement.setAttribute('spellcheck', 'false');
+    inputElement.id = 'billingName';
+    inputElement.name = 'billingName';
+    inputElement.type = 'text';
+    inputElement.setAttribute('placeholder', 'Full name on card');
+    inputElement.setAttribute('aria-invalid', 'false');
+    inputElement.value = '';
+
+    // Append the input element to the input container
+    inputContainerSpan.appendChild(inputElement);
+
+    // Append all elements together to create the desired structure
+    checkoutInputContainerDiv.appendChild(inputContainerSpan);
+    formFieldInputDiv.appendChild(checkoutInputContainerDiv);
+    formFieldChildDiv.appendChild(formFieldInputDiv);
+    fieldsetInnerDiv.appendChild(formFieldChildDiv);
+    fieldsetDiv.appendChild(fieldsetInnerDiv);
+    formFieldGroupDiv.appendChild(labelContainer);
+    formFieldGroupDiv.appendChild(fieldsetDiv);
+    outerDiv.appendChild(formFieldGroupDiv);
+
+    console.log(t);
+    t.appendChild(outerDiv);
+}
+
+
 function GeneratePaymentForm(Data) {
     var stripe = Stripe(Data.PublishableKey);
     const clientSecret = Data.ClientSecret;
@@ -442,12 +517,15 @@ function GeneratePaymentForm(Data) {
     };
 
     const elements = stripe.elements({ appearance, clientSecret });
+    elements.update({ locale: 'en' });
     const paymentElement = elements.create('payment');
     document.getElementById("stripe-submit").style.display = "block";
     // Add an instance of the card Element into the card-element div.
     paymentElement.mount('#payment-element');
 
+
     const form = document.getElementById('payment-form-card');
+    AddStipeNameInput();
     // Handle form submission.
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -495,7 +573,6 @@ function ShowBankPayment(show) {
     ClearQrCodeDiv();
     ToggleSpinner(false);
 }
-
 function StartCardPayment() {
 
     ShowBankPayment(false);
