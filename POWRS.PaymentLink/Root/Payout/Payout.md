@@ -6,6 +6,7 @@ Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
 CSS: css/Payout.cssx
 CSS: css/Stripe.css
+viewport : Width=device-width, initial-scale=1
 Parameter: ID
 Parameter: lng
 JavaScript: js/Events.js
@@ -127,7 +128,7 @@ BuyerFirstName := Before(BuyerFullName," ");
 <input type="hidden" value="((FileName))" id="fileName"/>
 
 <div class="payer-details">
-<table>
+<table width="100%">
  <tr>
   <td coolspan="2">
     **((LanguageNamespace.GetStringAsync(31) ))**
@@ -288,7 +289,7 @@ BuyerFirstName := Before(BuyerFullName," ");
 <div id="spinnerContainer">
   <img src="./resources/spinner.gif" alt="loadingSpinner">
 </div>
-
+</main>
 [[
 )
 else if ContractState == "PaymentCompleted" then 
@@ -308,7 +309,7 @@ else
 
 </div>
 
-</main>
+
 <div class="footer-parent">
   <div class="footer">
    Powrs AB, (org.no 559302-8045), Hammarbybacken 27, Stockholm <br/>Sweden ©2021 - 2023 POWRS 

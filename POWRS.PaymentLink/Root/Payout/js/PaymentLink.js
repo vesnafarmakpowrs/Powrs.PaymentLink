@@ -518,7 +518,14 @@ function GeneratePaymentForm(Data) {
 
     const elements = stripe.elements({ appearance, clientSecret });
     elements.update({ locale: 'en' });
-    const paymentElement = elements.create('payment');
+    const paymentElement = elements.create('payment', {
+        fields: {
+            billingDetails: {
+                name: 'auto',
+                email: 'auto',
+            }
+        }
+    });
     document.getElementById("stripe-submit").style.display = "block";
     // Add an instance of the card Element into the card-element div.
     paymentElement.mount('#payment-element');

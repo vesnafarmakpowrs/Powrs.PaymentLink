@@ -262,7 +262,9 @@ text-decoration:line-through;
 
 input:focus
 {
-border: 3px solid ¤ButtonColor¤;
+    box-shadow: var(--focus-border-box-shadow);
+    outline: none;
+    z-index: var(--checkout-z-index-input-is-focused);
 }
 
 select
@@ -482,6 +484,19 @@ stripe-button:disabled {
   opacity: 0.5;
   cursor: default;
 }
+    
+.stipe-name-input
+{
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,SF Pro Text,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol !important;
+    font-size: 1rem !important;
+    color: var(--colorText) !important;
+}
+
+
+.stipe-name-div
+{
+   padding-top: 10px !important;
+}
 
 .account-list{
 border:1px solid darkgray;
@@ -614,7 +629,6 @@ padding: 10px;
 @media only screen and (max-width: 1024px) {
 main {
 margin: 0 auto 0rem auto;
-font-size:2rem;
 width: 100%;
 }
 
@@ -649,11 +663,10 @@ font-size:3rem !important;
 
 .welcomeLbl {
 font-family: 'RTDromo Medium';
-font-size: 2.5rem;
+
 }
 
 .itemPrice {
-   font-size: 3rem !important;
    padding-top : 5px;
 }
 
@@ -685,7 +698,6 @@ height: 15rem !important;
 width: auto;
 float: right;
 padding: 5px;
-font-size: 2rem !important;
 }
 
 }
