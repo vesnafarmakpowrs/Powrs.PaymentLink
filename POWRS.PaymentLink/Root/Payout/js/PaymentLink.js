@@ -449,7 +449,11 @@ function AddStipeNameInput() {
     label.setAttribute('for', 'billingName');
     var labelText = document.createElement('span');
     labelText.className = 'Label Text-color--gray600 stipe-name-input';
-    labelText.textContent = 'Cardholder name';
+
+    const cardHolderTxt = document.getElementById("cardHolderTxt");
+    const cardHolderNameTxt = document.getElementById("cardHolderNameTxt");
+
+    labelText.textContent = cardHolderTxt.value;
     label.appendChild(labelText);
     labelContainer.appendChild(label);
 
@@ -485,7 +489,7 @@ function AddStipeNameInput() {
     inputElement.id = 'billingName';
     inputElement.name = 'billingName';
     inputElement.type = 'text';
-    inputElement.setAttribute('placeholder', 'Full name on card');
+    inputElement.setAttribute('placeholder', cardHolderNameTxt.value);
     inputElement.setAttribute('aria-invalid', 'false');
     inputElement.value = '';
 
@@ -506,7 +510,6 @@ function AddStipeNameInput() {
     t.appendChild(outerDiv);
 }
 
-
 function GeneratePaymentForm(Data) {
     var stripe = Stripe(Data.PublishableKey);
     const clientSecret = Data.ClientSecret;
@@ -517,15 +520,11 @@ function GeneratePaymentForm(Data) {
     };
 
     const elements = stripe.elements({ appearance, clientSecret });
-    elements.update({ locale: 'en' });
-    const paymentElement = elements.create('payment', {
-        fields: {
-            billingDetails: {
-                name: 'auto',
-                email: 'auto',
-            }
-        }
-    });
+
+    const languageDropdown = document.getElementById("languageDropdown");
+    elements.update({ locale: languageDropdown.value });
+
+    const paymentElement = elements.create('payment');
     document.getElementById("stripe-submit").style.display = "block";
     // Add an instance of the card Element into the card-element div.
     paymentElement.mount('#payment-element');
