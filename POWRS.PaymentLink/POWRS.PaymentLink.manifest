@@ -22,6 +22,8 @@
 					<Content fileName="RegisterUpdates.ws"/>
 					<Content fileName="DealInfo.ws"/>
 					<Content fileName="GetAvailableLanguages.ws"/>
+					<Content fileName="VerifyToken.ws"/>
+					<Content fileName="GetContracts.ws"/>
 				</Folder>
 				<Folder name="js">
 					<Content fileName="Events.js"/>
