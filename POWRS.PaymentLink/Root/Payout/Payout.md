@@ -124,6 +124,8 @@ BuyerFirstName := Before(BuyerFullName," ");
 <input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(34) ))" id="cardHolderTxt"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(35) ))" id="cardHolderNameTxt"/>
 
 <div class="payer-details">
 <table width="100%">
