@@ -11,14 +11,7 @@ try
 )
 catch
 (
-   Log.Informational("Token not valid first", null);
-   Forbidden("Token not valid first");
-);
-
-if(System.String.IsNullOrEmpty(PJwt)) then 
-(
- Log.Informational("Token not valid  empty", null);
- Forbidden("Token not valid empty");
+   Forbidden("Token not valid");
 );
 
 reason:= null;
