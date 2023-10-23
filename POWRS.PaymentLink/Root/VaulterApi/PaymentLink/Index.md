@@ -28,9 +28,11 @@ The Vaulter API is accessed via HTTPS.
 Unecnrypted requests will be rejected. Minimum cipher strength used in TLS layer is 128 bits of security.
 
 ### Authentication
-
-Clients of the API will be authenticated using the `WWW-Authentication` mechanism `BASIC`. Each client
-needs to [request an acccount](/Feedback.md), to get credentials to integrate with the API.
+Client needs `JWT` Token in order to access all the resources.
+Token must be sent in Authorization header in next format: "Bearer exampleTokenRetrieved".
+To get an access token, client must login with provided credentials, and must set duration of the token in seconds
+(max is 3600s).
+Token refresh must be initiated manually only when token expires.
 
 ### Return Codes
 
@@ -83,8 +85,6 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
 
 ```
 {
-    "userName": Required(String(PUserName)),
-    "password": Required(String(PPassword)),
     "orderNum":Required(String(PRemoteId)),
     "title":Required(String(PTitle)),
     "price":Required(Integer(PPrice)),
@@ -105,8 +105,6 @@ Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
-| `userName`        | Client User Name on Vaulter neuron. |
-| `password`        | Client Password on Vaulter Neuron. |
 | `orderNum`        | ID of item in the caller's system. |
 | `title`           | Displayable name of item. |
 | `price`           | Price of the item. |
@@ -132,8 +130,6 @@ Call this resource to cancel an Item in Vaulter. JSON in the following format is
 
 ```
 {
-    "userName": Required(String(userName)),
-    "password": Required(String(password)),
     "contractId": Required(String(contractId))
 }
 ```
@@ -142,6 +138,4 @@ Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
-| `userName`        | Same username used to register an item in our system |
-| `password`        | Same password used to register an item in our system |
 | `contractId`      | Contract Id. This id is returned as a response of sellItem |

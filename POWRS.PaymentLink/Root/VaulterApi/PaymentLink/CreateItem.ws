@@ -1,8 +1,6 @@
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
-    "userName": Required(String(PUserName)),
-    "password": Required(String(PPassword)),
     "orderNum":Required(String(PRemoteId)),
     "title":Required(String(PTitle)),
     "price":Required(Double(PPrice) >= 0.1),
@@ -17,6 +15,22 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "callbackUrl":Required(String(PCallBackUrl))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
+
+Jwt:= null;
+try
+(
+    header:= null;
+    Request.Header.TryGetHeaderField("Authorization", header);
+    auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", 
+            {"includeInfo": true}, {"Accept": "application/json", "Authorization": header.Value});
+   
+    Jwt:= header.Value;   
+    PUserName:= auth.userName;
+)
+catch
+(
+  Forbidden("Token not valid");
+);
 
 ParsedDeliveryDate:= null;
 if(!System.DateTime.TryParse(PDeliveryDate, ParsedDeliveryDate)) then
@@ -45,24 +59,6 @@ if(!isValid) then
 (
     BadRequest("Personal number: " + PBuyerPersonalNum + " is not valid for the country: " + PBuyerCountryCode);
 );
-
-Nonce := Base64Encode(RandomBytes(32));
-S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
-
-Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
-NeuronAddress:= "https://" + Waher.IoTGateway.Gateway.Domain;
-
-R := POST(NeuronAddress + "/Agent/Account/Login",
-
-                 {
-                  "userName": PUserName,
-                  "nonce": Nonce,
-	              "signature": Signature,
-	              "seconds": 10
-                  },
-		{"Accept" : "application/json"});
-
-Token := "Bearer " + R.jwt;
 
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
@@ -96,7 +92,7 @@ GetBicResponse := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Vaulter
                  {
                     "bankAccount":  PClientBankAccount
                   },
-		   {"Accept" : "application/json"});
+		   {"Accept" : "application/json", "Authorization": Jwt});
 
 PSellerServiceProviderId := GetBicResponse.serviceProviderId;
 PSellerServiceProviderType := GetBicResponse.serviceProviderType;
@@ -150,6 +146,7 @@ Role := "Creator";
 
 S2 := S1 + ":" + KeySignature + ":" + Nonce + ":" + LegalId + ":" + ContractId + ":" + Role;
 RequestSignature := Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
+NeuronAddress:= "https://" + Waher.IoTGateway.Gateway.Domain;
 
 POST(NeuronAddress + "/Agent/Legal/SignContract",
                              {
@@ -163,7 +160,7 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
                                 },
 			      {
 			       "Accept" : "application/json",		       
-                               "Authorization": Token
+                               "Authorization": Jwt
                               });
 
 {

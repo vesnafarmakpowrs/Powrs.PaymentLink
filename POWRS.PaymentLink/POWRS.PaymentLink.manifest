@@ -8,6 +8,7 @@
 				<Content fileName="SellItem.ws"/>
 				<Content fileName="GetBic.ws"/>
 				<Content fileName="Index.md"/>
+				<Content fileName="CreateItem.md"/>
 			</Folder>
 		</Folder>
 		    <Folder name="Payout">

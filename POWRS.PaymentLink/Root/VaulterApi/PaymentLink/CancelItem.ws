@@ -1,33 +1,28 @@
 ({
-    "userName":Required(Str(PUserName)),
-    "password":Required(Str(PPassword)),
-    "contractId":Required(Str(PContractId))
-	
+    "contractId":Required(Str(PContractId))	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-PContractId := PContractId + "@legal." + Waher.IoTGateway.Gateway.Domain;
+Jwt:= null;
+try
+(
+header:= null;
+Request.Header.TryGetHeaderField("Authorization", header);
+Jwt:= header.Value;
+auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", 
+            {"includeInfo": false}, {"Accept": "application/json", "Authorization": header.Value});
+)
+catch
+(
+  Forbidden("Token not valid");
+);
 
-contractParameters:= select top 1 Parameters from IoTBroker.Legal.Contracts.Contract where ContractId = PContractId;
+PContractId := PContractId + "@legal." + Waher.IoTGateway.Gateway.Domain;
 TokenId:= select top 1 TokenId from NeuroFeatureTokens where OwnershipContract = PContractId;
 
-if(contractParameters == null || System.String.IsNullOrEmpty(TokenId)) then
+if(System.String.IsNullOrEmpty(TokenId)) then
 (
    BadRequest("Parameters or token for given contract do not exists");
 );
-
-Nonce := Base64Encode(RandomBytes(32));
-S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
-
-Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
-
-Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
-                 {
-                    "userName": PUserName,
-                     "nonce": Nonce,
-	                "signature": Signature,
-	                "seconds": 5
-                  },
-		   {"Accept" : "application/json"});
 
 domain:= "https://" + Gateway.Domain;
 namespace:= domain + "/Downloads/EscrowRebnis.xsd";
@@ -40,9 +35,9 @@ xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",
 	              "personal":false
                   },
 		        {"Accept" : "application/json",
-                "Authorization":"Bearer " + Response.jwt});
+                "Authorization":"Bearer " + Jwt});
 
 {	
-    "xmlNote" : xmlNoteResponse
+    "canceled" : true
 }
 

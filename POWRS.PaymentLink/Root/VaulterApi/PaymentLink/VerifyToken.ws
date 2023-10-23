@@ -1,7 +1,25 @@
 ({
-    "jwt":Required(Str(PJwt)),
     "includeInfo":Optional(Bool(PIncludeInfo))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
+
+PJwt:= null;
+try
+(
+    header:= null;
+    Request.Header.TryGetHeaderField("Authorization", header);
+    PJwt:= Trim(header.Value.Substring(7));
+)
+catch
+(
+   Log.Informational("Token not valid first", null);
+   Forbidden("Token not valid first");
+);
+
+if(System.String.IsNullOrEmpty(PJwt)) then 
+(
+ Log.Informational("Token not valid  empty", null);
+ Forbidden("Token not valid empty");
+);
 
 reason:= null;
 username:= null;
@@ -23,7 +41,7 @@ Token:= null;
 
 try 
 (
- Token:=Create(JwtToken, PJwt);
+ Token:=Create(Waher.Security.JWT.JwtToken, PJwt);
 )
 catch
 (
