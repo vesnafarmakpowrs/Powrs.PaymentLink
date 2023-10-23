@@ -85,15 +85,28 @@
 		<None Remove="Root\Payout\Settings.md" />
 		<None Remove="Root\Payout\vaulter_logo.svg" />
 		<None Remove="Root\Payout\vaulterlogo.svg" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\purchase_agreement.html" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentCompleted.html" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentNotPerformed.html" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentReimbursed.html" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\ReleaseFunds.html" />
+		<None Remove="Root\VaulterApi\PaymentLink\CreateItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Index.md" />
-		<None Remove="Root\VaulterApi\PaymentLink\SellItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\ReportNewState.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetBic.ws" />
 		<None Remove="POWRS.PaymentLink.manifest" />
 	</ItemGroup>
 	<ItemGroup>
-		<Content Include="Root\VaulterApi\PaymentLink\SellItem.ws">
+	  <Content Include="Root\Payout\HtmlTemplates\EN\Reports\ReleaseFundsReport.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Root\Payout\HtmlTemplates\EN\Reports\PaymentReimbursedReport.html">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\CreateItem.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\GetBic.ws">
