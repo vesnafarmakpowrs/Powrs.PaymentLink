@@ -109,8 +109,8 @@
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
-					<OnEvent newState="PaymentCanceled">
-						<OnXmlNote localName="Cancel" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" />
+					<OnEvent newState="Cancel">
+						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" />
 					</OnEvent>
 					<OnEvent actionRef="InitiatePayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="InitiatePayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" sourceVariable="Source"/>
@@ -128,8 +128,8 @@
 					<OnEvent newState="ServiceDelivered">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
-					<OnEvent actionRef="ReturnFunds" failureState="PaymentCompleted" newState="PaymentCanceled">
-						<OnXmlNote localName="Cancel" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" />
+					<OnEvent actionRef="ReturnFunds" failureState="PaymentCompleted" newState="Cancel">
+						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" />
 					</OnEvent>
 				</State>
 				<State id="PaymentNotPerformed">
@@ -262,25 +262,54 @@
 					</Try>
 				</Action>
 				<Action id="ReturnFunds">
+					<Script>
+						AmountToBeReturned:=Num(SelectXmlStr(Note,'/default:ReturnFunds/@amountToBeReturned'));
+					</Script>
 					<LogEvent actor="{Seller}" eventId="ReturnFunds" level="Medium" message="Funds return in progress..." object="{Buyer}" type="Informational" />
 					<If condition="TotalAmountPaid &gt;= Price">
 						<Then>
 							<Script>
 								<![CDATA[					
-									AmountToSell:= Price;
+									AmountToSell:= AmountToBeReturned;
 									BankAccountToSell:= BuyerBankAccount;
 									SellEdalerFrom:= Seller;
 									ServiceProviderId:= BuyerServiceProviderId;
 									ServiceProviderType:= BuyerServiceProviderType;
 									AccountName:= Buyer;
 									MessageOnError:= 'ReturnFunds error';
+									AmountToBeReleased := Price - AmountToBeReturned;
+								]]>
+							</Script>
+							<PersistVariable name="AmountToBeReturned" value="{AmountToBeReturned}" />
+							<PersistVariable name="AmountToBeReleased" value="{AmountToBeReleased}" />
+
+							<CallAction actionRef="TrySellEdaler" />
+							<CallAction actionRef="ReleaseFundsSellerAfterRefund" />
+						</Then>
+						<Else>
+							<LogEvent actor="{Seller}" eventId="Release Funds" level="Medium" message="Unable to return funds due to insuffiecent payment. " object="{Buyer}" type="Informational" />
+							<Error reason="{ 'Unable to return funds due to insuffiecent payment. nfeat:' + TokenId}" />
+						</Else>
+					</If>
+				</Action>
+				<Action id="ReleaseFundsSellerAfterRefund">
+					<If condition="AmountToBeReleased &lt; 0">
+						<Then>
+							<TextNote content="The amount paid is not sufficient" />
+						</Then>
+						<Else>
+							<Script>
+								<![CDATA[					
+									AmountToSell:= AmountToBeReleased;
+									BankAccountToSell:= SellerBankAccount;
+									SellEdalerFrom:= Seller;
+									ServiceProviderId:= SellerServiceProviderId;
+									ServiceProviderType:= SellerServiceProviderType;
+									AccountName:= SellerName;
+									MessageOnError:= 'ReleaseFundsToSeller after rufund buyer error';
 								]]>
 							</Script>
 							<CallAction actionRef="TrySellEdaler" />
-						</Then>
-						<Else>
-							<LogEvent actor="{Seller}" eventId="ReturnFunds" level="Medium" message="Unable to return funds due to insuffiecent payment. " object="{Buyer}" type="Informational" />
-							<Error reason="{ 'Unable to return funds due to insuffiecent payment. nfeat:' + TokenId}" />
 						</Else>
 					</If>
 				</Action>
