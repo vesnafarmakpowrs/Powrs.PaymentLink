@@ -1,7 +1,6 @@
 ({
     "userName":Required(Str(PUserName)),
-    "password":Required(Str(PPassword)),
-    "duration":Optional(Int(PDuration) <= 3600)
+    "password":Required(Str(PPassword))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 if(System.String.IsNullOrWhiteSpace(PUserName) or System.String.IsNullOrWhiteSpace(PPassword)) then 
@@ -9,10 +8,7 @@ if(System.String.IsNullOrWhiteSpace(PUserName) or System.String.IsNullOrWhiteSpa
  BadRequest("Username and Password could not be empty");
 );
 
-if(!exists(PDuration)) then 
-(
- PDuration:= 60;
-);
+validInSeconds:= 1800;
 
 Nonce := Base64Encode(RandomBytes(32));
 S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
@@ -24,13 +20,14 @@ Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Log
                     "userName": PUserName,
                     "nonce": Nonce,
 	                "signature": Signature,
-	                "seconds": PDuration
+	                "seconds": validInSeconds
                   },
 		   {"Accept" : "application/json"});
 
 domain:= "https://" + Gateway.Domain;
 
 {	
-    "jwt" : Resp.jwt
+    "jwt" : Resp.jwt,
+    "validUntil": Now.AddSeconds(validInSeconds)
 }
 
