@@ -63,7 +63,7 @@ if(!isValid) then
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
 (
-  TemplateId:= "2cbbb3b3-a242-a689-6821-76aae8c7417f@legal.lab.neuron.vaulter.rs"
+  TemplateId:= "2cca6897-ef22-fcdc-901f-9e66b8cf17be@legal.lab.neuron.vaulter.rs"
 )
 else
 (

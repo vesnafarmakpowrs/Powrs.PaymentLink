@@ -17,4 +17,9 @@
 			<xs:attribute name="tabId" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="ReturnFunds">
+		<xs:complexType>
+			<xs:attribute name="amountToBeReturned" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
 </xs:schema>

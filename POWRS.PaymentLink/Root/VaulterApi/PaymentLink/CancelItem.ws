@@ -1,5 +1,6 @@
 ({
-    "contractId":Required(Str(PContractId))	
+    "contractId":Required(Str(PContractId)),
+    "refundAmount" : Optional(int(PRefundAmount))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 Jwt:= null;
@@ -17,7 +18,16 @@ catch
 );
 
 PContractId := PContractId + "@legal." + Waher.IoTGateway.Gateway.Domain;
-TokenId:= select top 1 TokenId from NeuroFeatureTokens where OwnershipContract = PContractId;
+
+Token := select top 1 TokenId, Value from NeuroFeatureTokens where OwnershipContract = PContractId;
+TokenId := Token[0][0];
+TokenValue := Token[0][1];
+
+if (PRefundAmount > TokenValue) then
+(
+   BadRequest("Refund amount can't be bigger than item value ");
+);
+
 
 if(System.String.IsNullOrEmpty(TokenId)) then
 (
@@ -26,7 +36,16 @@ if(System.String.IsNullOrEmpty(TokenId)) then
 
 domain:= "https://" + Gateway.Domain;
 namespace:= domain + "/Downloads/EscrowRebnis.xsd";
-xmlNote := "<Cancel xmlns='" + namespace + "' />";
+
+
+if exists(PRefundAmount)  then
+(
+  xmlNote := "<ReturnFunds xmlns='" + namespace + "' amountToBeReturned='" + PRefundAmount + "' />";
+)
+else
+(
+  xmlNote := "<ReturnFunds xmlns='" + namespace + "' amountToBeReturned='" + TokenValue + "' />";
+);
 
 xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",
                  {
@@ -34,8 +53,8 @@ xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",
 	              "note":xmlNote,
 	              "personal":false
                   },
-		        {"Accept" : "application/json",
-                "Authorization":"Bearer " + Jwt});
+		 {"Accept" : "application/json",
+                  "Authorization": header.Value});
 
 {	
     "canceled" : true
