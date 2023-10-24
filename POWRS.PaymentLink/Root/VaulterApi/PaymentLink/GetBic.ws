@@ -87,6 +87,8 @@ foreach P in Providers do
           ServiceProviderId:= P.Id;
           ServiceProviderType := P.BuyEDalerServiceProvider.GetType();  
        );
+
+Response.SetHeader("Access-Control-Allow-Origin","*");
    
 {
    bic: Bic,
