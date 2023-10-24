@@ -32,6 +32,12 @@
 		</OwnerCanDestroyIndividual>
 		<Definition>
 			<StateMachine startState="AwaitingForPayment" xmlns="https://paiwise.tagroot.io/Schema/StateMachines.xsd">
+				<Variable id="Title">
+					<TagReference tag="Title" />
+				</Variable>
+				<Variable id="Description">
+					<TagReference tag="Description" />
+				</Variable>
 				<Variable id="AmountToPay">
 					<TagReference tag="AmountToPay" />
 				</Variable>
