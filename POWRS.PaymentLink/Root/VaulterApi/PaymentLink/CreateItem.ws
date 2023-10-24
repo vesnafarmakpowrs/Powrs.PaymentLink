@@ -162,6 +162,7 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
 			       "Accept" : "application/json",		       
                                "Authorization": Jwt
                               });
+Response.SetHeader("Access-Control-Allow-Origin","*");
 
 {
     "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal." + Waher.IoTGateway.Gateway.Domain,""),

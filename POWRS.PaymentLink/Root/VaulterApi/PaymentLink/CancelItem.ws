@@ -56,6 +56,8 @@ xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",
 		 {"Accept" : "application/json",
                   "Authorization": header.Value});
 
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 {	
     "canceled" : true
 }

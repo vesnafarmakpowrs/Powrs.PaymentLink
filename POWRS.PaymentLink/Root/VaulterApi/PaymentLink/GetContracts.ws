@@ -33,4 +33,6 @@ catch
  Log.Error(Exception.Message, null);
 );
 
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 contracts;

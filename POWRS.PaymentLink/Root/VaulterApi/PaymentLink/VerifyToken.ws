@@ -71,6 +71,8 @@ if(System.String.IsNullOrWhiteSpace(legalIdentity)) then
 id:= returnUserInfo ? legalIdentity : "";
 user:= returnUserInfo ? username : "";
 
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 if(returnUserInfo) then 
 (
  {

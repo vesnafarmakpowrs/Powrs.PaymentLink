@@ -26,6 +26,8 @@ Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Log
 
 domain:= "https://" + Gateway.Domain;
 
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 {	
     "jwt" : Resp.jwt,
     "validUntil": Now.AddSeconds(validInSeconds)
