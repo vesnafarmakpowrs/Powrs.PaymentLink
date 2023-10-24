@@ -212,8 +212,8 @@ Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
-| `skip`      | How many items should be skipped when fetching data. ( Used for pagination. ) |
-| `take`      | How many items should be retrieved when fetching data. By Default, All records.|
+| `skip`      | How many items should be skipped when fetching data. ( Used for pagination. ) If none, use 0. |
+| `take`      | How many items should be retrieved when fetching data. If all records, use -1.|
 
 **Response**
 ```
