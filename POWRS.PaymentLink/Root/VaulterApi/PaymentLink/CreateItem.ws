@@ -16,6 +16,8 @@ if !exists(Posted) then BadRequest("No payload.");
     "callbackUrl":Required(String(PCallBackUrl))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 Jwt:= null;
 try
 (
@@ -162,7 +164,6 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
 			       "Accept" : "application/json",		       
                                "Authorization": Jwt
                               });
-Response.SetHeader("Access-Control-Allow-Origin","*");
 
 {
     "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal." + Waher.IoTGateway.Gateway.Domain,""),

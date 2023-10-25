@@ -3,6 +3,8 @@
   "take":Required(Int(PTake))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 header:= null;
 try
 (
@@ -32,7 +34,5 @@ catch
 (
  Log.Error(Exception.Message, null);
 );
-
-Response.SetHeader("Access-Control-Allow-Origin","*");
 
 contracts;
