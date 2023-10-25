@@ -1,11 +1,3 @@
-Title: Vaulter API v1
-Description: This document contains information about the Vaulter API (v1)
-Author:  POWRS DOO
-Date: 2023-06-16
-Master: \Master.md
-Copyright: \Copyright.md
-
-============================================================================
 
 Vaulter API (v1)
 ==================
@@ -62,24 +54,29 @@ Accept: application/json
 ```
 
 #### Mandatory Authorization Headers ( Except Login )
-```
+
+````
 Authorization: Bearer ...
-```
-Login
---------------
+````
+
+### Login
+
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Login.ws")}}`
-Method:  `POST`
+
+Method:  POST
 
 Read  **Authentication section** first.
 Call this resource to Login into the system using username and password provided by system administrators. 
 
 **Request**
-```
+
+````
 {
    "userName":Required,
    "password":Required
 }
-```
+````
+
 Description of properties:
 
 | Name              | Description |
@@ -88,6 +85,7 @@ Description of properties:
 | `password`        | Password required to login into the system.|
 
 **Response**
+
 ```
 {
  "jwt": Represents created token.
@@ -95,8 +93,7 @@ Description of properties:
 }
 ```
 
-Create Item
---------------
+### Create Item
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/CreateItem.ws")}}`  
 Method: `POST`
@@ -105,7 +102,8 @@ Method: `POST`
 Call this resource to register a new Item in Vaulter. JSON in the following format is expected in the call.
 
 **Request**
-```
+
+````
 {
     "orderNum":Required(String(PRemoteId)),
     "title":Required(String(PTitle)),
@@ -121,7 +119,7 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "callbackUrl":Optional(String(PCallbackUrl))
 }
-```
+````
 
 Description of properties:
 
@@ -142,17 +140,17 @@ Description of properties:
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
 
 **Response**
-~~~
+
+````
 {
 	 "Link": "Represents payment link generated for the created item.",
 	 "EscrowFee": "Calculated fee that will be added on the item price.".
 	 "Currency": "Represents currency which will be used by buyer to pay"	 
 }
-~~~
+````
 
 
-Cancel Item
---------------
+### Cancel Item
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/CancelItem.ws")}}`  
 Method: `POST`
@@ -160,12 +158,14 @@ Method: `POST`
 Call this resource to cancel an Item in Vaulter. JSON in the following format is expected in the call.
 
 **Request**
-```
+
+````
 {
     "contractId": Required(String(contractId)),
     "refundAmount" : Optional(int(PRefundAmount))
 }
-```
+````
+
 Description of properties:
 
 | Name              | Description |
@@ -174,6 +174,7 @@ Description of properties:
 | `refundAmount`      | If payment is aleady done from the buyer side, how much to refunt to buyer. Rest of it will be released to seller's bank account. Could not be more than |
 
 **Response**
+
 ````
 {
  200 OK 
@@ -192,8 +193,8 @@ Description of properties:
 ````
 
 
-Get Contracts
----------------------
+### Get Contracts
+
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/GetContracts.ws")}}`  
 Method: `POST`
 
@@ -201,12 +202,13 @@ Call this resource to  fetch items created by the owner of the `JWT Token` from 
 If token is not provided, or token is invalid, `Bad request` will be thrown, Also if token is expired, or something is wrong with logged party, `Forbidden` will be thrown.
 
 **Request**
-~~~
+
+````
 {
   "skip":Required(Int(PSkip)),
   "take":Required(Int(PTake))
 }
-~~~
+````
 
 Description of properties:
 
@@ -216,7 +218,8 @@ Description of properties:
 | `take`      | How many items should be retrieved when fetching data. If all records, use -1.|
 
 **Response**
-```
+
+````
 {
  "TokenId": (String),
  "State":  (String),
@@ -235,9 +238,9 @@ Description of properties:
 		  },
 	  ]
 }
-```
+````
 
-Verify Token
+### Verify Token
 ---------------------------
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/VerifyToken.ws")}}`  
@@ -254,7 +257,8 @@ Read **Authorization section**.
 ````
 
 **Response**
-~~~
+
+````
 200 OK
 	{
 		 "authorized": true
@@ -269,17 +273,17 @@ Read **Authorization section**.
 	{
 		 //This means that token is not presented, not valid or broken.
 	}
-~~~
+````
 
-Bank Identifier Code
---------------------------------
+### Bank Identifier Code
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/GetBic.ws")}}`  
 Method: `POST`
 
-Call this resource to fetch Open payment service providers for given bankAccount. ***( Only works for sweden )***
+Call this resource to fetch Open payment service providers for given bankAccount. ***(Only works for sweden)***
 
 **Request**
+
 ````
 {
    "bankAccount":Required(String(PBankAccount))"
@@ -291,12 +295,14 @@ Call this resource to fetch Open payment service providers for given bankAccount
 | `bankAccount`      | Valid bank account in Swedish IBAN format. (SE\\d{22})|
 
 **Response**
+
+
 ````
 {
-	"bic": (String) "Bank identifier code", 
-	serviceProviderId: (String) "Id of Open payment provider",
-    eDalerServiceProviderId: (String) "Edaler service provider",
-    serviceProviderType: (String) "Type of Open payment provider"
+	 "bic": (String) "Bank identifier code", 
+	 "serviceProviderId": (String) "Id of Open payment provider",
+     "eDalerServiceProviderId": (String) "Edaler service provider",
+     "serviceProviderType": (String) "Type of Open payment provider"
 }
 ````
 
