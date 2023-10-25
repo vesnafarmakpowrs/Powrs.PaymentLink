@@ -270,15 +270,30 @@ There is no need of properties to be send in a request
 ````
 {
  "FIRST": (String),
+ "MIDDLE": (String),
  "LAST":  (String),
  "PNR": (String),
  "COUNTRY": (String),
+ "ADDR" : (String),
+ "ADDR2" : (String),
+ "ZIP" : (String),
+ "AREA" : (String),
+ "CITY" : (String),
+ "REGION" : (String),
  "JID": (String),
  "AGENT" : (String),
  "ORGNAME" : (String),
  "ORGDEPT" : (String),
  "ORGROLE" : (String),
- "ORGCOUNTRY" : (String)
+ "ORGCOUNTRY" : (String),
+ "ORGNR" : (String),
+ "ORGADDR" : (String),
+ "ORGADDR2" : (String),
+ "ORGZIP" : (String),
+ "ORGAREA" : (String),
+ "ORGCITY" : (String),
+ "ORGREGION" : (String),
+ "ORGCOUNTRY" : (String),
 }
 ````
 
