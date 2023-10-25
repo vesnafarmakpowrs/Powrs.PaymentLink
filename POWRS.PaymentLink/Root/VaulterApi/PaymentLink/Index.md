@@ -1,4 +1,11 @@
+Title: Vaulter API v1
+Description: This document contains information about the Vaulter API (v1)
+Author:  POWRS DOO
+Date: 2023-06-16
+Master: \Master.md
+Copyright: \Copyright.md
 
+============================================================================
 Vaulter API (v1)
 ==================
 
@@ -237,6 +244,41 @@ Description of properties:
 			   "Value": "VariableValue2"
 		  },
 	  ]
+}
+````
+
+### Get Account Info
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/GetAccountInfo.ws")}}`  
+Method: `POST`
+
+Call this resource to  fetch items created by the owner of the `JWT Token` from the header section of the request.
+If token is not provided, or token is invalid, `Bad request` will be thrown, Also if token is expired, or something is wrong with logged party, `Forbidden` will be thrown.
+
+**Request**
+
+````
+{
+}
+````
+
+There is no need of properties to be send in a request
+
+
+**Response**
+
+````
+{
+ "FIRST": (String),
+ "LAST":  (String),
+ "PNR": (String),
+ "COUNTRY": (String),
+ "JID": (String),
+ "AGENT" : (String),
+ "ORGNAME" : (String),
+ "ORGDEPT" : (String),
+ "ORGROLE" : (String),
+ "ORGCOUNTRY" : (String)
 }
 ````
 
