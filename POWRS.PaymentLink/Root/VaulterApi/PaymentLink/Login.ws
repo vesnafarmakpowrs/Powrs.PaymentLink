@@ -3,6 +3,8 @@
     "password":Required(Str(PPassword))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 if(System.String.IsNullOrWhiteSpace(PUserName) or System.String.IsNullOrWhiteSpace(PPassword)) then 
 (
  BadRequest("Username and Password could not be empty");
@@ -25,8 +27,6 @@ Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Log
 		   {"Accept" : "application/json"});
 
 domain:= "https://" + Gateway.Domain;
-
-Response.SetHeader("Access-Control-Allow-Origin","*");
 
 {	
     "jwt" : Resp.jwt,

@@ -4,11 +4,13 @@ if !exists(Posted) then BadRequest("No payload.");
     "bankAccount":Required(String(PBankAccount)) like "SE\\d{22}"
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 try
 (
-header:= null;
-Request.Header.TryGetHeaderField("Authorization", header);
-auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", {"includeInfo": false}, {"Accept": "application/json",  "Authorization": header.Value});
+	header:= null;
+	Request.Header.TryGetHeaderField("Authorization", header);
+	auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", {"includeInfo": false}, {"Accept": "application/json",  "Authorization": header.Value});
 )
 catch
 (
@@ -87,8 +89,6 @@ foreach P in Providers do
           ServiceProviderId:= P.Id;
           ServiceProviderType := P.BuyEDalerServiceProvider.GetType();  
        );
-
-Response.SetHeader("Access-Control-Allow-Origin","*");
    
 {
    bic: Bic,

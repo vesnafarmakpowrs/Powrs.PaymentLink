@@ -3,13 +3,15 @@
     "refundAmount" : Optional(int(PRefundAmount))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 Jwt:= null;
 try
 (
-header:= null;
-Request.Header.TryGetHeaderField("Authorization", header);
-Jwt:= header.Value;
-auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", 
+    header:= null;
+    Request.Header.TryGetHeaderField("Authorization", header);
+    Jwt:= header.Value;
+    auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", 
             {"includeInfo": false}, {"Accept": "application/json", "Authorization": header.Value});
 )
 catch
@@ -55,8 +57,6 @@ xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",
                   },
 		 {"Accept" : "application/json",
                   "Authorization": header.Value});
-
-Response.SetHeader("Access-Control-Allow-Origin","*");
 
 {	
     "canceled" : true
