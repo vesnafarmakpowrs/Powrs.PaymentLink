@@ -74,6 +74,7 @@
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\GetAvailableLanguages.ws" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\ContactUs.html" />
 		<None Remove="Root\Payout\HtmlTemplates\EN\ReleaseFundsReport.html" />
 		<None Remove="Root\Payout\HtmlTemplates\EN\Reports\PaymentReimbursedReport.html" />
 		<None Remove="Root\Payout\InitiatePayment.ws" />
@@ -92,21 +93,32 @@
 		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentReimbursed.html" />
 		<None Remove="Root\Payout\HtmlTemplates\EN\ReleaseFunds.html" />
 		<None Remove="Root\VaulterApi\PaymentLink\CreateItem.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\GetAccountInfo.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Index.md" />
 		<None Remove="Root\VaulterApi\PaymentLink\ReportNewState.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetBic.ws" />
 		<None Remove="POWRS.PaymentLink.manifest" />
+		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
 	</ItemGroup>
 
 	
 	<ItemGroup>
+	  <Content Include="Root\Payout\HtmlTemplates\EN\ContactUs.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
 	  <Content Include="Root\Payout\HtmlTemplates\EN\Reports\ReleaseFundsReport.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
 	<ItemGroup>
 		<Content Include="Root\Payout\HtmlTemplates\EN\Reports\PaymentReimbursedReport.html">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\GetAccountInfo.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\CreateItem.ws">
