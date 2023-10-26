@@ -363,3 +363,34 @@ Call this resource to fetch Open payment service providers for given bankAccount
 }
 ````
 
+
+### Send Contact Us Email 
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/SendContactUsEmail.ws")}}`  
+Method: `POST`
+
+Call this resource to send contact us email.
+
+**Request**
+
+````
+{
+  "userEmail":Required(String(PUserEmail)),
+  "body":Required(String(PBody))
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `userEmail`       | Email from the user which should be used when Powers want to contact. |
+| `body`            | Email body that should be send to Powrs info email. |
+
+**Response**
+
+
+````
+{
+	 "Success": (Bool) 
+}
+````
+
