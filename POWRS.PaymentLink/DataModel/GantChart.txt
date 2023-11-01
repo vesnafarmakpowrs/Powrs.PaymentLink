@@ -1,0 +1,189 @@
+@startgantt
+saturday are closed
+sunday are closed
+
+Project starts the 16st of january 2023
+
+[Vaulter Payment Link] lasts 40 days
+[Vaulter Payment Link] is colored in #ff9999
+
+-- Organization Stuff --
+
+[Sign server service provider Sweden] lasts 2 days
+[Sign server service provider Sweden] is colored in #ffb399
+[Sign server service provider Sweden] is 100% complete
+
+[Set up Powers neuron for Sweden] lasts 1 days
+[Set up Powers neuron for Sweden] is colored in #ffb399
+[Set up Powers neuron for Sweden] starts at [Sign server service provider Sweden]'s end
+[Set up Powers neuron for Sweden] is 100% complete
+
+[Jira board  Ciprian] lasts 1 days
+[Jira board  Ciprian] is colored in #ffb399
+[Jira board  Ciprian] is 100% complete
+
+[Git Hub project Vesna] lasts 1 days
+[Git Hub project Vesna] is colored in #ffb399
+[Git Hub project Vesna] is 100% complete
+
+[BankID deal] lasts 11 days
+[BankID deal] is colored in #ffb399
+[BankID deal] is 100% complete
+
+
+[BankID time activation account] lasts 50 days
+[BankID time activation account] is colored in #ffb399
+[BankID time activation account] starts at [BankID deal]'s end
+[BankID time activation account] is 100% complete
+
+-- Design --
+
+[Agree on Final Flow Ciprian Androd Robert] lasts 2 days
+[Agree on Final Flow Ciprian Androd Robert] is colored in #ffcc99
+[Agree on Final Flow Ciprian Androd Robert] is 100% complete
+
+[Data Model Vesna] lasts 1 days
+[Data Model Vesna] is colored in #ffcc99
+[Data Model Vesna] is 100% complete
+
+[State machine diagram Vesna Ciprian] lasts 1 days
+[State machine diagram Vesna Ciprian] is colored in #ffcc99
+[State machine diagram Vesna Ciprian] starts at [Agree on Final Flow Ciprian Androd Robert]'s end
+[State machine diagram Vesna Ciprian] is 100% complete
+
+
+[Develop Report in Figma Ciprian] lasts 5 days
+[Develop Report in Figma Ciprian] is colored in #9999ff
+[Develop Report in Figma Ciprian] is 100% complete
+
+-- Bank integration --
+[Server user Agent Peter] starts at 23th of january 2023
+[Server user Agent Peter] lasts 10 days
+[Server user Agent Peter] is colored in #ccff99
+[Server user Agent Peter] is 100% complete
+
+[Led Pay Peter] lasts 8 days
+[Led Pay Peter] is colored in #99e6ff
+[Led Pay Peter] starts at [Server user Agent Peter]'s end
+[Led Pay Peter] is 100% complete
+
+[Vacation Peter] lasts 5 days
+[Vacation Peter] is colored in #99e6ff
+[Vacation Peter] starts at 16th of february 2023
+[Vacation Peter] is 100% complete
+
+[Led Pay Payout Peter] lasts 5 days
+[Led Pay Payout Peter] is colored in #99e6ff
+[Led Pay Payout Peter] starts at [Vacation Peter]'s end
+[Led Pay Payout Peter] is 100% complete
+
+[bank integration Peter] lasts 15 days
+[bank integration Peter] is colored in #99e6ff
+[bank integration Peter] starts at [Led Pay Payout Peter]'s end
+[bank integration Peter] is 100% complete
+
+[Stripe integration Peter] lasts 20 days
+[Stripe integration Peter] is colored in #99e6ff
+[Stripe integration Peter] starts at [bank integration Peter]'s end
+[Stripe integration Peter] is 70% complete
+
+[swish integration] lasts 20 days
+[swish integration] is colored in #99e6ff
+[swish integration] starts at [Stripe integration Peter]'s end
+[swish integration] is 0% complete
+
+-- Backend --
+
+[QR connect Bank ID Peter] lasts 14 days
+[QR connect Bank ID Peter] is colored in #ccff99
+[QR connect Bank ID Peter] starts at [BankID time activation account]'s end
+[QR connect Bank ID Peter] starts at [bank integration Peter]'s end
+[QR connect Bank ID Peter] is 0% complete
+
+[State machine Vesna Mateo] starts at 24th of january 2023
+[State machine Vesna Mateo] lasts 2 days
+[State machine Vesna Mateo] is colored in #ccff99
+[State machine Vesna Mateo] starts at [State machine diagram Vesna Ciprian]'s end
+[State machine Vesna Mateo] is 100% complete
+
+[Create contract Mateo] lasts 3 days
+[Create contract Mateo] starts at 27th of january 2023
+[Create contract Mateo] is colored in #ccff99
+[Create contract Mateo] starts at [State machine Vesna Mateo]'s end
+[Create contract Mateo] is 100% complete
+
+-- API --
+
+[Design API Vesna] lasts 3 days
+[Design API Vesna] starts at 27th of january 2023
+[Design API Vesna] is colored in #99ffcc
+[Design API Vesna] starts at [State machine Vesna Mateo]'s end
+[Design API Vesna] is 100% complete
+
+[Vacation Vesna] is colored in #99ffcc
+[Vacation Vesna] starts at 13th of mart 2023
+[Vacation Vesna] lasts 5 days
+[Vacation Vesna] is 0% complete 
+
+[Sell item API Vesna] lasts 5 days
+
+[Sell item API Vesna] is colored in #99ffcc
+[Sell item API Vesna] starts at 15th of april 2023
+[Sell item API Vesna] starts at [Design API Vesna]'s end
+[Sell item API Vesna] is 0% complete
+
+[Cancel item API Vesna] lasts 3 days
+[Cancel item API Vesna] is colored in #99ffcc
+[Cancel item API Vesna] starts at [Sell item API Vesna]'s end
+[Cancel item API Vesna] is 0% complete
+
+[Transaction info API Vesna] lasts 5 days
+[Transaction info API Vesna] is colored in #99ffcc
+[Transaction info API Vesna] starts at [Cancel item API Vesna]'s end
+[Transaction info API Vesna] is 0% complete
+
+-- Admin --
+[Mock up Admin in Figma Peter Mateo] lasts 4 days
+[Mock up Admin in Figma Peter Mateo] is colored in #9999ff
+[Mock up Admin in Figma Peter Mateo] starts at [QR connect Bank ID Peter]'s end
+
+[Develop Admin Login] lasts 5 days
+[Develop Admin Login] is colored in #9999ff
+[Develop Admin Login] starts at [Mock up Admin in Figma Peter Mateo]'s end
+
+[Admin reports Mateo Miljan] lasts 10 days
+[Admin reports Mateo Miljan] is colored in #9999ff
+[Admin reports Mateo Miljan] starts at [Develop Admin Login]'s end
+
+-- Web --
+
+[web proof of concept Mateo Peter] starts at 23th of february 2023
+[web proof of concept Mateo Peter] is colored in #ffff99
+[web proof of concept Mateo Peter] lasts 10 days
+[web proof of concept Mateo Peter] is 30% complete
+
+[web develop MVP Mateo Miljan] lasts 10 days
+[web develop MVP Mateo Miljan] is colored in #ffff99
+[web develop MVP Mateo Miljan] starts at [web proof of concept Mateo Peter]'s end
+[web develop MVP Mateo Miljan] starts at [QR connect Bank ID Peter]'s end
+[web develop MVP Mateo Miljan] starts at [bank integration Peter]'s end
+
+[Web develop final Mateo Miljan] lasts 10 days
+[Web develop final Mateo Miljan] is colored in #ffff99
+[Web develop final Mateo Miljan] starts at [web develop MVP Mateo Miljan]'s end
+[Web develop final Mateo Miljan] starts at [swish integration]'s end
+[Web develop final Mateo Miljan] starts at [Develop Admin Login]'s end
+
+-- Testing --
+
+[Testing QA ] lasts 30 days 
+[Testing QA ] is colored in #ff99ff
+
+-- Legal Stuff --
+
+[Privacy polycy - Lily, Anders] lasts 30 days
+[Privacy polycy - Lily, Anders] is colored in #ff99ff
+
+[User Agreement - Lily, Anders] lasts 30 days
+[User Agreement - Lily, Anders] is colored in #ff99ff
+@endgantt
