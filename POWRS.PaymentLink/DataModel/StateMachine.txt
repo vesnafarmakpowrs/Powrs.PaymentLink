@@ -1,0 +1,32 @@
+@startuml
+
+[*] --> AwaitingForPayment
+
+
+AwaitingForPayment : buyer paid time
+AwaitingForPayment : timeout duration end of that day ?? 
+
+AwaitingForPayment --> InsertOrder : submit form
+ 
+InsertOrder: * Create insertOrder at Payspot with 3 sequence orders
+InsertOrder: * One order for Ageny with Transaction Amount = PotalPaidAmount - 8 euro 
+InsertOrder: * One order for YUTA with  Transaction Amount = 4 euro
+InsertOrder: * One order for POWRS with Transaction Amount = 4 euro 
+InsertOrder: * payspotTransactionID is generated
+
+InsertOrder  --> PaymentCompleted
+ 
+
+PaymentCompleted : * how we will know when order is completed ???
+PaymentCompleted : * send post request payspot Order confirm api 
+
+PaymentCompleted --> ConfirmOrder
+ConfirmOrder :* Processed payment order to Agency
+ConfirmOrder :* Processed payment order to YUTA
+ConfirmOrder :* Processed payment order to POWRS
+
+AwaitingForPayment --> PaymentNotPerformed : day end\n without\n payment ??
+
+
+
+@enduml

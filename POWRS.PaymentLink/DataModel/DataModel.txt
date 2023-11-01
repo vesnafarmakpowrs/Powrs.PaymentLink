@@ -1,0 +1,47 @@
+@startuml
+allowmixing
+
+
+json Client{
+   "id": "client@vaulter.neuron.se",
+   "Name":"",
+   "UserName":"???",
+   "Company registration No" : "",
+   "email": "",
+   "phone":"",
+   "city": "",
+   "zip": "",
+   "country":"",
+   "bankAccount": ""
+}
+
+json User{
+   "First Name":"buyer@vaulter.neuron.se",
+   "Last Name":"",
+   "UserName":"???",
+   "Personal Identification No" : "",
+   "email": "",
+   "phone":"",
+   "city": "",
+   "zip": "???",
+   "country":"",
+   "bankAccount": ""
+}
+
+json Contract{
+   "RemoteId":"OrderNum",
+   "Name":"rent ski Head 2021",
+   "Description":"Head ski 2021",
+   "Price":"2226",
+   "Currency" : "SEK",
+   "Category" : "Skiing",
+   "sellerId" : "client@vaulter.neuron.se",
+   "buyerId": "buyer@vaulter.neuron.se",
+   "paymentDeadline": "30.01.2023",
+   "deliveryDate": "",
+   "callbackURL": ""
+}
+
+
+
+@enduml
