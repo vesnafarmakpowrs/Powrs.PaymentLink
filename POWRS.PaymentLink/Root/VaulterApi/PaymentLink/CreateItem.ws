@@ -13,9 +13,9 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Required(String(PCallBackUrl))
+    "callbackUrl":Required(String(PCallBackUrl)),
+    "password":Required(String(PPassword))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
-
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
 Jwt:= null;
@@ -38,6 +38,11 @@ ParsedDeliveryDate:= null;
 if(!System.DateTime.TryParse(PDeliveryDate, ParsedDeliveryDate)) then
 (
   BadRequest("Delivery date must be in MM/dd/yyyy format");
+);
+
+if(ParsedDeliveryDate < Now) then 
+(
+ BadRequest("Delivery date must be in the future");
 );
 
 LegalId := select top 1 Id from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc;
@@ -65,7 +70,7 @@ if(!isValid) then
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
 (
-  TemplateId:= "2cca6897-ef22-fcdc-901f-9e66b8cf17be@legal.lab.neuron.vaulter.rs"
+  TemplateId:= "2cca4fc9-ef22-ef53-901f-9e66b8194bd0@legal.lab.neuron.vaulter.rs"
 )
 else
 (
