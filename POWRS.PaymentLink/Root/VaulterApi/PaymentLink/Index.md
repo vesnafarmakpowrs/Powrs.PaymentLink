@@ -124,7 +124,8 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Optional(String(PCallbackUrl))
+    "callbackUrl":Optional(String(PCallbackUrl)),
+    "password":Required(String(PPassword))
 }
 ````
 
@@ -145,6 +146,7 @@ Description of properties:
 | `buyerPersonalNum`| Buyer personal number. |
 | `buyerCountryCode`| Buyer country code. |
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
+| `password`| Required for signature. |
 
 **Response**
 

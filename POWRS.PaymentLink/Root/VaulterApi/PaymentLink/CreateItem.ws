@@ -13,9 +13,9 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Required(String(PCallBackUrl))
+    "callbackUrl":Required(String(PCallBackUrl)),
+    "password":Required(String(PPassword))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
-
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
 Jwt:= null;
@@ -38,6 +38,11 @@ ParsedDeliveryDate:= null;
 if(!System.DateTime.TryParse(PDeliveryDate, ParsedDeliveryDate)) then
 (
   BadRequest("Delivery date must be in MM/dd/yyyy format");
+);
+
+if(ParsedDeliveryDate < Now) then 
+(
+ BadRequest("Delivery date must be in the future");
 );
 
 LegalId := select top 1 Id from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc;
