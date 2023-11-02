@@ -124,8 +124,7 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Optional(String(PCallbackUrl)),
-    "password":Required(String(PPassword))
+    "callbackUrl":Optional(String(PCallbackUrl))
 }
 ````
 

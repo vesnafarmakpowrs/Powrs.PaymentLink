@@ -13,8 +13,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Required(String(PCallBackUrl)),
-    "password":Required(String(PPassword))
+    "callbackUrl":Required(String(PCallBackUrl))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
@@ -34,6 +33,18 @@ catch
   Forbidden("Token not valid");
 );
 
+PPassword:= select top 1 Password from BrokerAccounts where UserName = PUserName;
+if(System.String.IsNullOrWhiteSpace(PPassword)) then 
+(
+    BadRequest("No user with given username");
+);
+
+LegalId := select top 1 Id from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc;
+if(System.String.IsNullOrEmpty(LegalId)) then
+(
+    BadRequest("User does not have approved legal identity so it is unable to sign contracts");
+);
+
 ParsedDeliveryDate:= null;
 if(!System.DateTime.TryParse(PDeliveryDate, ParsedDeliveryDate)) then
 (
@@ -43,12 +54,6 @@ if(!System.DateTime.TryParse(PDeliveryDate, ParsedDeliveryDate)) then
 if(ParsedDeliveryDate < Now) then 
 (
  BadRequest("Delivery date must be in the future");
-);
-
-LegalId := select top 1 Id from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc;
-if(System.String.IsNullOrEmpty(LegalId)) then
-(
-    BadRequest("User " + PUserName + " does not have approved legal identity so it is unable to sign contracts");
 );
 
 KeyId := GetSetting(PUserName + ".KeyId","");
@@ -120,7 +125,7 @@ try
 Contract:=CreateContract(PUserName, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
-	"Title": PTitle,
+	    "Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
         "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00),
