@@ -1,4 +1,4 @@
-<contract archiveOpt="P1Y" archiveReq="P1Y" canActAsTemplate="true" duration="P1Y" id="RebnisToken" visibility="Public" xmlns="urn:ieee:iot:leg:sc:1.0">
+<contract archiveOpt="P1Y" archiveReq="P1Y" canActAsTemplate="true" duration="P1Y" id="PaylinkToken" visibility="Public" xmlns="urn:ieee:iot:leg:sc:1.0">
 	<Create xmlns="https://paiwise.tagroot.io/Schema/NeuroFeatures.xsd">
 		<TokenID shortIdAlphabet="0123456789" shortIdLength="10">
 			<Random />
@@ -101,6 +101,9 @@
 				<Variable id="EscrowFee">
 					<TagReference tag="EscrowFee" />
 				</Variable>
+				<Variable id="AllowedServiceProviders">
+					<TagReference tag="AllowedServiceProviders" />
+				</Variable>
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
@@ -110,13 +113,13 @@
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
 					<OnEvent newState="Cancel">
-						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" />
+						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" />
 					</OnEvent>
 					<OnEvent actionRef="InitiatePayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
-						<OnExternalXmlNote localName="InitiatePayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+						<OnExternalXmlNote localName="InitiatePayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent actionRef="InitiateCardPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
-						<OnExternalXmlNote localName="InitiateCardPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+						<OnExternalXmlNote localName="InitiateCardPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
@@ -129,7 +132,7 @@
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
 					<OnEvent actionRef="ReturnFunds" failureState="PaymentCompleted" newState="Cancel">
-						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowRebnis.xsd'}" noteVariable="Note" />
+						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" />
 					</OnEvent>
 				</State>
 				<State id="PaymentNotPerformed">
@@ -455,6 +458,9 @@
 		<Tag name="EscrowFee">
 			<ParameterReference parameter="EscrowFee" />
 		</Tag>
+		<Tag name="AllowedServiceProviders">
+			<ParameterReference parameter="AllowedServiceProviders" />
+		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
 		</FriendlyName>
@@ -663,6 +669,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Send info when transaction is completed.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="AllowedServiceProviders" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Service providers that buyer can use to buy eDaler for this contract. Delimited by ";"</text>
 				</paragraph>
 			</description>
 		</stringParameter>

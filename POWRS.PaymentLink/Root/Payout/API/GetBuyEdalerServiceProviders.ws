@@ -45,7 +45,7 @@ ProviderList := [
                          "Name": Name, 
 		                 "Id": P.Id, 
 		                 "IconUrl": "https://" + P.Id.Replace("Production.",Waher.IoTGateway.Gateway.Domain + "/Payout/Bank/") + ".png",
-		                 "BuyEDalerServiceProvider.Id": P.BuyEDalerServiceProvider.Id, 
+		                 "BuyEDalerServiceProviderId": P.BuyEDalerServiceProvider.Id, 
 		                 "BuyEDalerTemplateContractId": P.BuyEDalerTemplateContractId, 
 		                 "QRCode" :QRcode
                        }

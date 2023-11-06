@@ -1,0 +1,804 @@
+<contract archiveOpt="P1Y" archiveReq="P1Y" canActAsTemplate="true" duration="P1Y" id="PaylinkToken" visibility="Public" xmlns="urn:ieee:iot:leg:sc:1.0">
+	<Create xmlns="https://paiwise.tagroot.io/Schema/NeuroFeatures.xsd">
+		<TokenID shortIdAlphabet="0123456789" shortIdLength="10">
+			<Random />
+		</TokenID>
+		<Creator>
+			<RoleReference role="Creator" />
+		</Creator>
+		<Owner>
+			<RoleReference role="Creator" />
+		</Owner>
+		<TrustProvider>
+			<RoleReference role="TrustProvider" />
+		</TrustProvider>
+		<Value>
+			<ParameterReference parameter="Value" />
+		</Value>
+		<Currency>
+			<ParameterReference parameter="Currency" />
+		</Currency>
+		<CommissionPercent>
+			<ParameterReference parameter="CommissionPercent" />
+		</CommissionPercent>
+		<Expires>
+			<ParameterReference parameter="Expires" />
+		</Expires>
+		<CreatorCanDestroy>
+			<Boolean>true</Boolean>
+		</CreatorCanDestroy>
+		<OwnerCanDestroyIndividual>
+			<Boolean>true</Boolean>
+		</OwnerCanDestroyIndividual>
+		<Definition>
+			<StateMachine startState="AwaitingForPayment" xmlns="https://paiwise.tagroot.io/Schema/StateMachines.xsd">
+				<Variable id="Title">
+					<TagReference tag="Title" />
+				</Variable>
+				<Variable id="Description">
+					<TagReference tag="Description" />
+				</Variable>
+				<Variable id="AmountToPay">
+					<TagReference tag="AmountToPay" />
+				</Variable>
+				<Variable id="EscrowFeeJid">
+					<Calc><![CDATA['fees@' + Gateway.Domain]]></Calc>
+				</Variable>
+				<Variable id="Price">
+					<TagReference tag="Value" />
+				</Variable>
+				<Variable id="Currency">
+					<TagReference tag="Currency" />
+				</Variable>
+				<Variable id="TokenContract">
+					<TokenProperty>CreationContract</TokenProperty>
+				</Variable>
+				<Variable id="TokenId">
+					<TokenProperty>TokenId</TokenProperty>
+				</Variable>
+				<Variable id="Buyer">
+					<TagReference tag="Buyer" />
+				</Variable>
+				<Variable id="BuyerEmail">
+					<TagReference tag="BuyerEmail" />
+				</Variable>
+				<Variable id="CallBackUrl">
+					<TagReference tag="CallBackUrl" />
+				</Variable>
+				<Variable id="Seller">
+					<TagReference tag="Seller" />
+				</Variable>
+				<Variable id="SellerName">
+					<TagReference tag="SellerName" />
+				</Variable>
+				<Variable id="SellerServiceProviderId">
+					<TagReference tag="SellerServiceProviderId" />
+				</Variable>
+				<Variable id="SellerServiceProviderType">
+					<TagReference tag="SellerServiceProviderType" />
+				</Variable>
+				<Variable id="SellerBankAccount">
+					<TagReference tag="SellerBankAccount" />
+				</Variable>
+				<Variable id="BuyerServiceProviderId">
+					<TagReference tag="BuyerServiceProviderId" />
+				</Variable>
+				<Variable id="BuyerServiceProviderType">
+					<TagReference tag="BuyerServiceProviderType" />
+				</Variable>
+				<Variable id="BuyerBankAccount">
+					<TagReference tag="BuyerBankAccount" />
+				</Variable>
+				<Variable id="BuyerPersonalNum">
+					<TagReference tag="BuyerPersonalNum" />
+				</Variable>
+				<Variable id="PaymentDeadline">
+					<TagReference tag="PaymentDeadline" />
+				</Variable>
+				<Variable id="DeliveryDate">
+					<TagReference tag="DeliveryDate" />
+				</Variable>
+				<Variable id="EscrowFee">
+					<TagReference tag="EscrowFee" />
+				</Variable>
+				<Variable id="AllowedServiceProviders">
+					<TagReference tag="AllowedServiceProviders" />
+				</Variable>
+				<Variable id="Notifications">
+					<Calc><![CDATA[{}]]></Calc>
+				</Variable>
+				<Variable id="NeuronDomain">
+					<Calc><![CDATA[Gateway.Domain]]></Calc>
+				</Variable>
+				<State id="AwaitingForPayment">
+					<OnEnter actionRef="AuthorizeServer" />
+					<OnEvent newState="Cancel">
+						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" />
+					</OnEvent>
+					<OnEvent actionRef="InitiatePayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
+						<OnExternalXmlNote localName="InitiatePayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="InitiateCardPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
+						<OnExternalXmlNote localName="InitiateCardPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent newState="PaymentNotPerformed">
+						<OnDateTime>{PaymentDeadline}</OnDateTime>
+					</OnEvent>
+				</State>
+				<State id="PaymentCompleted">
+					<OnEnter actionRef="UnauthorizeServer" />
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
+					<OnEvent newState="ServiceDelivered">
+						<OnDateTime>{DeliveryDate}</OnDateTime>
+					</OnEvent>
+					<OnEvent actionRef="ReturnFunds" failureState="PaymentCompleted" newState="Cancel">
+						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" />
+					</OnEvent>
+				</State>
+				<State id="PaymentNotPerformed">
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentNotPerformed'" />
+				</State>
+				<State id="ServiceDelivered">
+					<OnEnter actionRef="ReleaseFunds" />
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='ReleaseFunds'" />
+					<OnEvent newState="Done">
+						<OnDuration>PT10S</OnDuration>
+					</OnEvent>
+				</State>
+				<State id="Cancel">
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentReimbursed'" />
+					<OnEvent newState="Done">
+						<OnDuration>PT10S</OnDuration>
+					</OnEvent>
+				</State>
+				<State id="Done">
+					<OnEnter actionRef="End" />
+				</State>
+				<Action id="ReportNewState">
+					<Try>
+						<Script>
+							endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/ReportNewState.ws";
+							Json:= {
+							"Status":  NewStatus,
+							"ContractId": TokenContract,
+							"CallBackUrl": CallBackUrl
+							};
+						</Script>
+						<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
+							<Header key="Accept" value="application/json"/>
+						</HttpPost>
+						<Script>
+							if(!exists(Response.State) || !exists(Response.Success)) then
+							(
+							success:= Boolean(Response.Success);
+							Notifications[NewStatus]:= success;
+							);
+						</Script>
+						<Catch exceptionVariable="ex">
+							<Script>
+								Notifications[NewStatus]:= false;
+							</Script>
+							<LogEvent actor="{Seller}" eventId="ReportNewState" level="Medium" message="{'Error while notifying client about state changed: ' + ex.Message}" module="ReportNewState" object="" type="Error" />
+						</Catch>
+					</Try>
+					<PersistVariable name="Notifications" value="{Notifications}"/>
+				</Action>
+				<Action id="InitiateCardPayment">
+					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="InitiateCardPayment invoked" object="{Buyer}" type="Informational" />
+					<Script>
+						BuyerEdalerServiceProviderId:= SelectXmlStr(Note,'/default:InitiateCardPayment/@buyEdalerServiceProviderId');
+						BuyerEdalerServiceProviderType:= SelectXmlStr(Note,'/default:InitiateCardPayment/@buyEdalerServiceProviderType');
+						TabId:= SelectXmlStr(Note,'/default:InitiateCardPayment/@tabId');
+					</Script>
+					<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{BuyerEdalerServiceProviderId + ' ' + BuyerEdalerServiceProviderType + ' ' + TabId}" object="{Buyer}" type="Informational" />
+					<Try>
+						<BuyEDaler to="{Seller}"
+							   amount="{AmountToPay}"
+							   currency="{Currency}"
+							   reference="{'nfeat: ' + TokenId}"
+						       contract="{TokenContract}"
+							   serviceId="{BuyerEdalerServiceProviderId}"
+							   serviceProvider="{BuyerEdalerServiceProviderType}">
+							<Parameter key="Amount" value="{AmountToPay}"></Parameter>
+							<Parameter key="Currency" value="{Currency}"></Parameter>
+							<Parameter key="tabId" value="{TabId}"></Parameter>
+							<Parameter key="personalNumber" value="{BuyerPersonalNum}"></Parameter>
+							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
+							<Parameter key="TokenId" value="{TokenId}"></Parameter>
+						</BuyEDaler>
+
+						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
+						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
+						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
+						<PersistVariable name="PaymentDateTime" value="{Now}" />
+						<CallAction actionRef="TransferFee" />
+
+						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="InitiatePayment">
+					<Script>
+						BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
+						BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderType');
+						TabId:= SelectXmlStr(Note,'/default:InitiatePayment/@tabId');
+						FromMobilePhone:=  SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
+						BuyerBankAccount:= SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
+					</Script>
+					<Try>
+						<BuyEDaler to="{Seller}"
+							   amount="{AmountToPay}"
+							   currency="{Currency}"
+							   reference="{'nfeat: ' + TokenId}"
+						       contract="{TokenContract}"
+							   serviceId="{BuyerEdalerServiceProviderId}"
+							   serviceProvider="{BuyerEdalerServiceProviderType}">
+							<Parameter key="Amount" value="{AmountToPay}"></Parameter>
+							<Parameter key="Currency" value="{Currency}"></Parameter>
+							<Parameter key="Account" value="{BuyerBankAccount}"></Parameter>
+							<Parameter key="Message" value="Vaulter"></Parameter>
+							<Parameter key="requestFromMobilePhone" value="{LowerCase(FromMobilePhone)}"></Parameter>
+							<Parameter key="tabId" value="{TabId}"></Parameter>
+							<Parameter key="callBackUrl" value="{CallBackUrl}"></Parameter>
+							<Parameter key="personalNumber" value="{BuyerPersonalNum}"></Parameter>
+							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
+							<Parameter key="TokenId" value="{TokenId}"></Parameter>
+						</BuyEDaler>
+
+						<PersistVariable name="BuyerBankAccount" value="{BuyerBankAccount}" />
+						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
+						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
+						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
+						<PersistVariable name="PaymentDateTime" value="{Now}" />
+						<CallAction actionRef="TransferFee" />
+
+						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="ReturnFunds">
+					<Script>
+						AmountToBeReturned:=Num(SelectXmlStr(Note,'/default:ReturnFunds/@amountToBeReturned'));
+					</Script>
+					<LogEvent actor="{Seller}" eventId="ReturnFunds" level="Medium" message="Funds return in progress..." object="{Buyer}" type="Informational" />
+					<If condition="TotalAmountPaid &gt;= Price">
+						<Then>
+							<Script>
+								<![CDATA[					
+									AmountToSell:= AmountToBeReturned;
+									BankAccountToSell:= BuyerBankAccount;
+									SellEdalerFrom:= Seller;
+									ServiceProviderId:= BuyerServiceProviderId;
+									ServiceProviderType:= BuyerServiceProviderType;
+									AccountName:= Buyer;
+									MessageOnError:= 'ReturnFunds error';
+									AmountToBeReleased := Price - AmountToBeReturned;
+								]]>
+							</Script>
+							<PersistVariable name="AmountToBeReturned" value="{AmountToBeReturned}" />
+							<PersistVariable name="AmountToBeReleased" value="{AmountToBeReleased}" />
+
+							<CallAction actionRef="TrySellEdaler" />
+							<CallAction actionRef="ReleaseFundsSellerAfterRefund" />
+						</Then>
+						<Else>
+							<LogEvent actor="{Seller}" eventId="Release Funds" level="Medium" message="Unable to return funds due to insuffiecent payment. " object="{Buyer}" type="Informational" />
+							<Error reason="{ 'Unable to return funds due to insuffiecent payment. nfeat:' + TokenId}" />
+						</Else>
+					</If>
+				</Action>
+				<Action id="ReleaseFundsSellerAfterRefund">
+					<If condition="AmountToBeReleased &lt; 0">
+						<Then>
+							<TextNote content="The amount paid is not sufficient" />
+						</Then>
+						<Else>
+							<Script>
+								<![CDATA[					
+									AmountToSell:= AmountToBeReleased;
+									BankAccountToSell:= SellerBankAccount;
+									SellEdalerFrom:= Seller;
+									ServiceProviderId:= SellerServiceProviderId;
+									ServiceProviderType:= SellerServiceProviderType;
+									AccountName:= SellerName;
+									MessageOnError:= 'ReleaseFundsToSeller after rufund buyer error';
+								]]>
+							</Script>
+							<CallAction actionRef="TrySellEdaler" />
+						</Else>
+					</If>
+				</Action>
+				<Action id="ReleaseFunds">
+					<If condition="TotalAmountPaid &lt; AmountToPay">
+						<Then>
+							<TextNote content="The amount paid is not sufficient" />
+						</Then>
+						<Else>
+							<Script>
+								<![CDATA[					
+									AmountToSell:= Price;
+									BankAccountToSell:= SellerBankAccount;
+									SellEdalerFrom:= Seller;
+									ServiceProviderId:= SellerServiceProviderId;
+									ServiceProviderType:= SellerServiceProviderType;
+									AccountName:= SellerName;
+									MessageOnError:= 'ReleaseFundsToSeller error';
+								]]>
+							</Script>
+							<CallAction actionRef="TrySellEdaler" />
+						</Else>
+					</If>
+				</Action>
+				<Action id="AuthorizeServer">
+					<AuthorizeSource source="{'OPPUser@' + NeuronDomain}" />
+				</Action>
+				<Action id="UnauthorizeServer">
+					<UnauthorizeSource source="{'OPPUser@' + NeuronDomain}" />
+				</Action>
+
+				<Action id="TransferFee">
+					<Try>
+						<Payment amount="{EscrowFee}" contract="{TokenContract}" currency="{Currency}" from="{Seller}" reference="{Reference:='nfeat:'+ TokenId}" to="{EscrowFeeJid}" validDays="3" />
+						<PersistVariable name="FeesTransfered" value="true" />
+						<TextNote content="{'Escrow fee of' + ' ' + EscrowFee + ' ' + Currency + ' of eDaler transferred.'}" />
+						<Catch exceptionVariable="ex">
+							<LogEvent actor="{Seller}" eventId="Transfer fee" level="Medium" message="Error when transferring fee" module="TransferFee" object="" type="Error" />
+							<Error reason="{ex.Message}" />
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="TrySellEdaler">
+					<Try>
+						<LogEvent actor="{SellEdalerFrom}"
+									eventId="TrySellEdaler"
+									level="Medium"
+									message="{'TrySellEdaler started - ' + ' Amount: ' + AmountToSell + ' Contract: ' + TokenContract + ' Currency: ' + Currency + ' From: ' + SellEdalerFrom + ' TokenId: ' + TokenId + ' ServiceProviderId: ' + ServiceProviderId + ' ServiceProviderType: ' + ServiceProviderType + ' BankAccount: ' + BankAccountToSell + ' AccountName: ' + AccountName }"
+									module="SellEDaler"
+									object=""
+									type="Informational" />
+						<SellEDaler amount="{AmountToSell}"
+									contract="{TokenContract}"
+									currency="{Currency}"
+									from="{SellEdalerFrom}"
+									reference="{Reference:='nfeat:'+TokenId}"
+									serviceId="{ServiceProviderId}"
+									serviceProvider="{ServiceProviderType}">
+							<Parameter key="Amount" value="{AmountToSell}" />
+							<Parameter key="Currency" value="{Currency}" />
+							<Parameter key="Account" value="{BankAccountToSell}" />
+							<Parameter key="AccountName" value="{AccountName}" />
+							<Parameter key="ContractId" value="{TokenContract}" />
+							<Parameter key="TokenId" value="{TokenId}" />
+							<Parameter key="Message" value="Vaulter" />
+						</SellEDaler>
+						<TextNote content="{'Amount of edaler: ' + AmountToSell + ' ' + Currency + ' sold. From: ' + SellEdalerFrom + ' to BankAccount: ' + BankAccountToSell}" />
+						<Catch exceptionVariable="ex">
+							<LogEvent actor="{SellEdalerFrom}" eventId="SellEDaler" level="Medium" message="{MessageOnError + ' - ' +ex.Message }" module="SellEDaler" object="" type="Error" />
+							<Error reason="{ex.Message}" />
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="End">
+					<End />
+				</Action>
+				<ReportPresent>
+					| Variable | Value |
+					|---------------------|-------------------------|
+					| AmountToPay | {{AmountToPay}} |
+					| Currency | {{Currency}} |
+					| TokenContract | {{TokenContract}} |
+					| Buyer | {{Buyer}} |
+					| Seller | {{Seller}} |
+				</ReportPresent>
+			</StateMachine>
+		</Definition>
+		<Tag name="Seller">
+			<RoleReference role="Creator" />
+		</Tag>
+		<Tag name="Buyer">
+			<ParameterReference parameter="BuyerFullName" />
+		</Tag>
+		<Tag name="BuyerEmail">
+			<ParameterReference parameter="BuyerEmail" />
+		</Tag>
+		<Tag name="CallBackUrl">
+			<ParameterReference parameter="CallBackUrl" />
+		</Tag>
+		<Tag name="Title">
+			<ParameterReference parameter="Title" />
+		</Tag>
+		<Tag name="Description">
+			<ParameterReference parameter="Description" />
+		</Tag>
+		<Tag name="Value">
+			<ParameterReference parameter="Value" />
+		</Tag>
+		<Tag name="Currency">
+			<ParameterReference parameter="Currency" />
+		</Tag>
+		<Tag name="SellerName">
+			<ParameterReference parameter="SellerName" />
+		</Tag>
+		<Tag name="SellerServiceProviderId">
+			<ParameterReference parameter="SellerServiceProviderId" />
+		</Tag>
+		<Tag name="SellerServiceProviderType">
+			<ParameterReference parameter="SellerServiceProviderType" />
+		</Tag>
+		<Tag name="SellerBankAccount">
+			<ParameterReference parameter="SellerBankAccount" />
+		</Tag>
+		<Tag name="BuyerServiceProviderId">
+			<ParameterReference parameter="BuyerServiceProviderId" />
+		</Tag>
+		<Tag name="BuyerServiceProviderType">
+			<ParameterReference parameter="BuyerServiceProviderType" />
+		</Tag>
+		<Tag name="BuyerBankAccount">
+			<ParameterReference parameter="BuyerBankAccount" />
+		</Tag>
+		<Tag name="BuyerPersonalNum">
+			<ParameterReference parameter="BuyerPersonalNum" />
+		</Tag>
+		<Tag name="AmountToPay">
+			<ParameterReference parameter="AmountToPay" />
+		</Tag>
+		<Tag name="PaymentDeadline">
+			<ParameterReference parameter="PaymentDeadline" />
+		</Tag>
+		<Tag name="DeliveryDate">
+			<ParameterReference parameter="DeliveryDate" />
+		</Tag>
+		<Tag name="EscrowFee">
+			<ParameterReference parameter="EscrowFee" />
+		</Tag>
+		<Tag name="AllowedServiceProviders">
+			<ParameterReference parameter="AllowedServiceProviders" />
+		</Tag>
+		<FriendlyName>
+			<ParameterReference parameter="Title" />
+		</FriendlyName>
+		<Category>
+			<String>Vaulter</String>
+		</Category>
+		<Description>
+			<ParameterReference parameter="Description" />
+		</Description>
+		<Glyph contentType="image/png">
+			iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAABFFJREFUeJztWU1IMlsYfrqTFmgLIb5yEURlLQo3YVZUCi1qFUFQUKt2QURWm7IgIkhqJ9IP1EIIWkWuIugPLIh0GVFUBC5SocCkEM2/uYvv3oPDNNM43Thwv3lgYM77d57zeI7nzEwBy7Is/mD8RZsAbSgC0CZAG4oAtAnQhiIAbQK0oQhAmwBtKALQJkAbigC0CdCGIgBtArShCECbAG0oAtAmQBuKALQJ0EahkCMYDGJpaQklJSV5F43H4+jr60NHRwfPNz8/j3g8jmw2i5qaGoyMjORdHwBSqRScTicODg5wfX2N19dXqNVqVFRUoLGxET09Pejv7/+6ECsAn8/HApB9LS4u8mo+PT3x4vJFJpNh29vbJfPY2dkRrSe4BL77uSCTyfBs4+PjPNvCwoLkmqenp2AYBufn55JzHh8fRf0FQh9G3t7ecHx8jOLiYo69tLQUZrOZtLe3t/Hr1y+k02liSyaTMBqNqKqq4nZWUAAA0Gg0iMVixC5FbK/XC6vVyrE1Nzdjbm4O3d3dYBiG2O/v77G7u4vZ2VlMT0/D4XAIF857Dv5mS65oNCopx+FwkBy73c5arVbS3t/fz6tPAOzt7a2kfgOBgHhdSVVEyITD4bxzYrEYe3R0RNoGg0E0d2BggJOfTCbl0P6cl6ykPAXIHWx1dfWndV5eXiT153K55FAWri0rKU8BGhoaSLzH4yF2u91O7ENDQ5/mer3eb+0aX+HHBYhGo6ID+GpwKysrxF9fXy+Hrih+/CRos9nI/dTUFM+fe1hyOp08fygUIvcGg0Fyv3V1dWhtbYXJZBIPlKMa8pgBubHpdJrn9/v9xM8wDM9vs9mIv7e3VxZHMfzoDFhdXSX3FouFs1f/C5PJBI1GA+D34eni4oLjLysrI/eBQOA/5yh4EBJN+udAAwDhcBjl5eWfxhUVFSGZTAIAlpeX0dbWhkQiwYnRarXY2trC5uYmAKCpqQk+n4/4Dw8P0dXVRdpS6eZyFM2RPKcEppfQEri8vJT9HPHx8SHY397eXt4cReOkDVm4uJAALS0tsgUYHR3l1LJYLHlvhVLjf2QJpNNpqFQq0na73UilUoJTkWEYPD8/Y2ZmhthyY6PRKHQ6HWmr1WrEYjEUFgo+zdNdAmNjY8RvNpsl19VqtSTP7XZzfGtra7yZMjg4yPr9fl4dj8dDdwnk+s/OziTXXV9fJ3k6nY7ndzqdspaU6Fgks8tNyikeDAY5PpfL9a2ja27uZ79uKBRia2trJQ++srJStD/hRSSCiYkJqFQqvL+/816ZJRIJTE5OIpvNcrYvqXC73bi6ukI2m8XDwwPvJKfX63F3d4dIJIKNjQ2cnJzg5uYGkUgEDMNAr9fDaDSis7MTw8PD5IwhBFl/gv8n/PFvhRUBaBOgDUUA2gRoQxGANgHaUASgTYA2FAFoE6ANRQDaBGhDEYA2AdpQBKBNgDYUAWgToA1FANoEaONve9o8PVvYS2AAAAAASUVORK5CYII=
+		</Glyph>
+	</Create>
+	<role maxCount="1" minCount="1" name="Creator">
+		<description xml:lang="en">
+			<paragraph>
+				<text>
+					This is the role of the part that acts as the creator and owner of the token
+					being created.
+				</text>
+			</paragraph>
+		</description>
+	</role>
+	<role maxCount="1" minCount="1" name="TrustProvider">
+		<description xml:lang="en">
+			<paragraph>
+				<text>
+					This is the role of the trust provider that acts will host the token and
+					approve its creation.
+				</text>
+			</paragraph>
+		</description>
+	</role>
+	<parts>
+		<templateOnly />
+	</parts>
+	<parameters>
+		<stringParameter name="Title" value="" guide="Title" minLength="2">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Title of item.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="Description" value="" guide="Description">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Description of item.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<numericalParameter name="Value" guide="Value of token" min="1" minIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>The initial value of the token.</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+		<numericalParameter name="EscrowFee" value="20" guide="Vaulter Fees" min="1" minIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Vaulter transaction fees.</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+		<stringParameter name="Currency" value="SEK" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
+			<description xml:lang="en">
+				<paragraph>
+					<text>The initial currency of the token.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="Country" value="SE" guide="Country" regEx="[A-Z]{2}" minLength="2" maxLength="2">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Country where token will be sold.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<numericalParameter name="CommissionPercent" value="0" guide="Commision (%)" min="0" minIncluded="true" max="100" maxIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>The commission the Trust Provider gets for creating the tokens.</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+		<calcParameter name="Commission" guide="Commission" exp="Value*CommissionPercent/100">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Commission to be paid to the Trust Provider</text>
+				</paragraph>
+			</description>
+		</calcParameter>
+		<dateParameter name="Expires" guide="Expiry date" exp="Expires&gt;Now.Date">
+			<description xml:lang="en">
+				<paragraph>
+					<text>When token expires.</text>
+				</paragraph>
+			</description>
+		</dateParameter>
+		<stringParameter name="SellerBankAccount" value="" guide="Seller's bank account number" minLength="8" maxLength="24">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Seller's bank account number</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SellerName" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Seller Name used to sellEdaler</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SellerServiceProviderId" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Seller Provider id used to sellEdaler</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SellerServiceProviderType" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Seller Provider type used to sellEdaler</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerBankAccount" value="" guide="Buyer's bank account number">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Buyer</text>
+					<text>’</text>
+					<text>s bank account number</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerServiceProviderId" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Buyer</text>
+					<text>’</text>
+					<text>s provider id used to buyEdaler</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerServiceProviderType" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Buyer</text>
+					<text>’</text>
+					<text>s Provider type used to buyEdaler</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerFullName" value="" minLength="2">
+			<description xml:lang="en">
+				<paragraph>
+					<text>First, Second and Last name of the buyer.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerPersonalNum" value="" minLength="10">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Full valid personal number of buyer.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerEmail">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Buyer Email.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<dateTimeParameter name="PaymentDeadline">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Date and time untill buyer can pay.</text>
+				</paragraph>
+			</description>
+		</dateTimeParameter>
+		<dateTimeParameter name="DeliveryDate" exp="DeliveryDate &gt;= Now &amp;&amp; DeliveryDate &gt;= PaymentDeadline">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Date and time when goods should be delivered.</text>
+				</paragraph>
+			</description>
+		</dateTimeParameter>
+		<calcParameter name="AmountToPay" exp="Value + EscrowFee">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Total amount to be paid, including fee.</text>
+				</paragraph>
+			</description>
+		</calcParameter>
+		<stringParameter name="RemoteId" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Id from remote system.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="CallBackUrl" value=" ">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Send info when transaction is completed.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="AllowedServiceProviders" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Service providers that buyer can use to buy eDaler for this contract. Delimited by ";"</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+	</parameters>
+	<humanReadableText xml:lang="en">
+		<section>
+			<header>
+				<text>Create Vaulter Item token</text>
+			</header>
+			<body>
+				<paragraph>
+					<text>This contract creates a Neuro-Feature™ token representing an item for sale 						on a remote site using the Vaulter™ app.</text>
+				</paragraph>
+				<paragraph>
+					<text>This contract creates a Neuro-Feature™ token representing an item for sale 						on a remote site using the Vaulter™ app.</text>
+				</paragraph>
+				<section>
+					<header>
+						<text>Information in token</text>
+					</header>
+					<body>
+						<paragraph>
+							<text>The token encodes the following information:</text>
+						</paragraph>
+						<bulletItems>
+							<item>
+								<text>A title to be displayed to viewers of the item: </text>
+								<bold>
+									<parameter name="Title" />
+								</bold>
+							</item>
+							<item>
+								<text>A textual description of the item to be displayed to viewers 								of the item: </text>
+								<bold>
+									<parameter name="Description" />
+								</bold>
+							</item>
+							<item>
+								<text>Bank account number: </text>
+								<bold>
+									<parameter name="SellerBankAccount" />
+								</bold>
+							</item>
+						</bulletItems>
+						<paragraph>
+							<text>Additional information that is specified by the creator:</text>
+						</paragraph>
+						<bulletItems>
+							<item>
+								<text>Initial Value and Currency of the token: </text>
+								<bold>
+									<parameter name="Value" />
+									<text>.</text>
+									<parameter name="Currency" />
+								</bold>
+							</item>
+							<item>
+								<text>Token creation commission, payed by the creator to the Trust 								Provider: </text>
+								<bold>
+									<parameter name="CommissionPercent" />
+									<text> %</text>
+								</bold>
+								<text>, corresponding to </text>
+								<bold>
+									<parameter name="Commission" />
+									<text>.</text>
+									<parameter name="Currency" />
+								</bold>
+								<text>.</text>
+							</item>
+							<item>
+								<text>A date when the token expires: </text>
+								<bold>
+									<parameter name="Expires" />
+								</bold>
+								<text>.</text>
+							</item>
+						</bulletItems>
+					</body>
+				</section>
+				<section>
+					<header>
+						<text>Ownership of token</text>
+					</header>
+					<body>
+						<paragraph>
+							<text>By signing this contract, the creator swears to be the owner of 								said item on the remote site. When the token is created, the owner 								becomes its first owner. The Creator is responsible for forwarding 								the responsabilities of the ownership of the token, unto the next 								owner, if transferred. The creator assures only to transfer the 								token to a new owner, as a sign that the ownership of the 								corresponding item on Limundo, has been sold to the corresponding 								buyer.</text>
+						</paragraph>
+					</body>
+				</section>
+				<section>
+					<header>
+						<text>Commission</text>
+					</header>
+					<body>
+						<paragraph>
+							<text>The token creation commission is paid by the Creator to the Trust 								Provider upon signature by both parties. Payment is done using 								eDaler®.</text>
+						</paragraph>
+					</body>
+				</section>
+				<section>
+					<header>
+						<text>Destruction of token</text>
+					</header>
+					<body>
+						<paragraph>
+							<text>The current owner of the token can destroy the token, when it 								chooses to. The destruction of the token will permit the creation of 								a new token with the same information. If not manually destroyed by 								the current owner of the token, the token expires at </text>
+							<parameter name="Expires" />
+							<text>. When the token expires, it is automatically destroyed. Records 								are only available for archiving purposes.</text>
+						</paragraph>
+					</body>
+				</section>
+				<section>
+					<header>
+						<text>Disclaimer</text>
+					</header>
+					<body>
+						<paragraph>
+							<text>This contract is an example on how a token creation contract may 								look like. For legal validity, a proper legal text must be provided.</text>
+						</paragraph>
+					</body>
+				</section>
+			</body>
+		</section>
+	</humanReadableText>
+</contract>
