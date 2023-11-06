@@ -32,6 +32,7 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.OPPUserLegalId",Posted.LegalId);
 	SetSetting("POWRS.PaymentLink.TrustProviderLegalId",Posted.TrustProviderLegalId);
 	SetSetting("POWRS.PaymentLink.ContactEmail",Posted.ContactEmail);
+	SetSetting("POWRS.PaymentLink.TemplateId",Posted.TemplateId);
 
 	
 	SeeOther("Settings.md");
@@ -73,6 +74,11 @@ if exists(Posted) then
 <p>
 <label for="ContactEmail">Contact Email:</label>  
 <input type="text" id="ContactEmail" name="ContactEmail" value='{{GetSetting("POWRS.PaymentLink.ContactEmail","")}}' autofocus required title="Contact Email will be used to recive emails when user send contact data on a Paylink Generator Contact Us Screen "/>
+</p>
+
+<p>
+<label for="TemplateId">Template ID:</label>  
+<input type="text" id="TemplateId" name="TemplateId" value='{{GetSetting("POWRS.PaymentLink.TemplateId","")}}' autofocus required title="TemplateId used for creating contracts. "/>
 </p>
 
 <button type="submit" class="posButton">Apply</button>

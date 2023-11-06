@@ -13,7 +13,8 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Required(String(PCallBackUrl))
+    "callbackUrl":Required(String(PCallBackUrl)),
+    "allowedServiceProviders": Optional(String(PAllowedServiceProviders))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
@@ -72,14 +73,31 @@ if(!isValid) then
     BadRequest("Personal number: " + PBuyerPersonalNum + " is not valid for the country: " + PBuyerCountryCode);
 );
 
-Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
-if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
+if(exists(PAllowedServiceProviders) and PAllowedServiceProviders != null) then 
 (
-  TemplateId:= "2cbfa254-0981-c304-e022-c3a208abf72f@legal.lab.neuron.vaulter.rs"
+    allowedServiceProviders:= Split(PAllowedServiceProviders, ";");
+    if(allowedServiceProviders != null and allowedServiceProviders.Length > 0) then 
+    (
+       availableServiceProviders:= GetServiceProvidersForBuyingEdaler(PBuyerCountryCode, PCurrency).BuyEDalerServiceProvider.Id;
+       foreach allowed in allowedServiceProviders do 
+       (
+          if(indexOf(availableServiceProviders, allowed) < 0) then 
+          (
+             BadRequest("Invalid service providers selected");
+          );
+       );
+    );   
 )
-else
+else 
 (
-  TemplateId:="2cbfa57b-33d1-0c37-cc1e-7c208ee5521e@legal.neuron.vaulter.se";
+    PAllowedServiceProviders:= "";
+);
+
+TemplateId = GetSetting("POWRS.PaymentLink.TemplateId","");
+
+if(System.String.IsNullOrWhiteSpace(TemplateId)) then 
+(
+    BadRequest("Not configured correctly");
 );
 
 ContractParameters:= select top 1 Parameters from Contracts where ContractId = TemplateId;
@@ -140,7 +158,8 @@ Contract:=CreateContract(PUserName, TemplateId, "Public",
         "BuyerFullName":PBuyerFirstName + " " + PBuyerLastName,
         "BuyerPersonalNum":PBuyerPersonalNum,
         "BuyerEmail":PBuyerEmail,
-        "CallBackUrl" : PCallBackUrl
+        "CallBackUrl" : PCallBackUrl,
+        "AllowedServiceProviders": PAllowedServiceProviders
     })
 catch
 BadRequest(Exception.Message);

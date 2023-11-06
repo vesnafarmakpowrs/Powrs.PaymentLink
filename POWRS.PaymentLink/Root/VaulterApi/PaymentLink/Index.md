@@ -100,6 +100,52 @@ Description of properties:
 }
 ```
 
+### Get Service providers 
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Payout/API/GetBuyEdalerServiceProviders.ws")}}`
+Method: `POST`
+
+Call this resource to read all service providers which buyer can use to pay for given contract.
+
+**Request**
+
+````
+{
+   "ContractId": Required(Str(PContractId))
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `ContractId`        | Id of the contract for which providers should be retrieved. |
+
+**Response Example**
+
+````
+{
+	 "ServiceProviders": [
+        {
+            "Name": "Mock Buy eDaler",
+            "Id": "VaulterBuyEdaler2",
+            "IconUrl": "https://VaulterBuyEdaler2.png",
+            "BuyEDalerServiceProvider.Id": "Test",
+            "BuyEDalerTemplateContractId": "815164cf097c@legal.lab.neuron.vaulter.rs",
+            "QRCode": true
+        },
+        {
+            "Name": "Mock Buy eDaler",
+            "Id": "VaulterBuyEdaler2",
+            "IconUrl": "https://VaulterBuyEdaler2.png",
+            "BuyEDalerServiceProvider.Id": "Test",
+            "BuyEDalerTemplateContractId": "815164cf097c@legal.lab.neuron.vaulter.rs",
+            "QRCode": true
+        }
+    ]	 
+}
+````
+
 ### Create Item
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/CreateItem.ws")}}`  
@@ -124,7 +170,8 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Optional(String(PCallbackUrl))
+    "callbackUrl":Optional(String(PCallbackUrl)),
+    "allowedServiceProviders": Optional(String(PAllowedServiceProviders))
 }
 ````
 
@@ -145,7 +192,7 @@ Description of properties:
 | `buyerPersonalNum`| Buyer personal number. |
 | `buyerCountryCode`| Buyer country code. |
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
-| `password`| Required for signature. |
+|`allowedServiceProviders`| List of ServiceProvider id's joined with ";" in single string. (BuyEdalerServiceProvider.Id)|
 
 **Response**
 
