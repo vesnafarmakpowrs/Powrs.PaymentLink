@@ -75,21 +75,37 @@ Method:  POST
 Read  **Authentication section** first.
 Call this resource to Login into the system using username and password provided by system administrators. 
 
-**Request**
+JSON
+-------
 
-````
-{
-   "userName":Required,
-   "password":Required
-}
-````
+Request
+
+:	```json
+:	{
+:		"userName":Required(Str(PUserName)),
+:		"nonce":Required(Str(PNonce)),
+:		"signature":Required(Str(PSignature)),
+:		"seconds":Required(Int(0 < PSeconds <= 3600))
+:	}
+:	```
+
+Response (if successful)
+
+:	```json
+:	{
+.		"jwt":Required(Str(PJwt)),
+.		"expires":Required(DateTime(PExpires))
+:	}
+:
 
 Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
 | `userName`        | Username of the user that should login into system. |
-| `password`        | Password required to login into the system.|
+| `nonce`           | A unique random string, at least 32 characters long, with sufficient entropy to not be reused again.|
+| `signature` 	    | Cryptographic signature of request. |
+| `seconds`         | Requested number of seconds before the JWT token that will be issued expires. |
 
 **Response**
 
@@ -99,6 +115,29 @@ Description of properties:
  "validUntil": Time in miliseconds when token should expire. (30 minutes).
 }
 ```
+
+Calculating Signature
+------------------------
+
+The signature in `PSignature` is calculated as follows.
+
+1. Concatenate the strings `PUserName ":" Host ":" PNonce` and call it `s`, where `Host` is the host/domain name of the server. It is taken from
+the HTTP `Host` request header, so it must be the same as is used in the URL of the
+request.
+
+2. UTF-8 encode the *password* of the account, and call it `Key`.
+
+3. UTF-8 encode the string `s`, and call it `Data`.
+
+4. Calculate the HMAC-SHA256 signature using `Key` and `Data`, and call it `H`.
+
+5. Base64-encode `H`. The result is the signature of the request.
+
+Javascript Library
+---------------------
+
+Use the following method in the [Javascript Library](GenerateSigniture.js) to calculate Signature.
+
 
 ### Get Service providers 
 

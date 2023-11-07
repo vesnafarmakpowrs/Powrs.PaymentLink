@@ -1,21 +1,17 @@
 ({
-    "userName":Required(Str(PUserName)),
-    "password":Required(Str(PPassword))
+   "userName": PUserName,
+   "nonce": Nonce,
+   "signature": Signature,
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
-if(System.String.IsNullOrWhiteSpace(PUserName) or System.String.IsNullOrWhiteSpace(PPassword)) then 
+if(System.String.IsNullOrWhiteSpace(PUserName) or System.String.IsNullOrWhiteSpace(Signature) or System.String.IsNullOrWhiteSpace(Nonce)) then 
 (
- BadRequest("Username and Password could not be empty");
+ BadRequest("Username, Nonce and Signature could not be empty");
 );
 
 validInSeconds:= 1800;
-
-Nonce := Base64Encode(RandomBytes(32));
-S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
-
-Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
 
 Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
                  {
@@ -28,8 +24,11 @@ Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Log
 
 domain:= "https://" + Gateway.Domain;
 
+Destroy(PUserName);
+Destroy(Nonce);
+Destroy(Signature);
+
 {	
     "jwt" : Resp.jwt,
     "validUntil": Now.AddSeconds(validInSeconds)
 }
-
