@@ -9,6 +9,29 @@ document.addEventListener("DOMContentLoaded", () => {
     GenerateServiceProvidersUI();
 });
 
+function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", resource, true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.setRequestHeader("Accept", "application/json");
+    xhttp.send(JSON.stringify(
+        {
+            requestBody
+        }));
+
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4) {
+            if (xhttp.status == 200 && onSuccess != null) {
+                let response = JSON.parse(xhttp.responseText);
+                onSuccess(response);
+            }
+            else {
+                if (onError != null) onError(xhttp);
+            }
+        };
+    };
+}
+
 function GenerateTranslations() {
     var element = document.getElementById("SelectedAccountOk");
     if (element == null) {
@@ -31,18 +54,10 @@ function GenerateLanguageDropdown() {
         return;
     }
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/GetAvailableLanguages.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
+    SendXmlHttpRequest("API/GetAvailableLanguages.ws",
         {
             "Namespace": document.getElementById("Namespace").value
-        }));
-
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            let response = JSON.parse(xhttp.responseText);
+        }, (response) => {
             if (response.Languages != null && response.Languages.length > 0) {
                 const languageDropdown = document.getElementById("languageDropdown");
                 response.Languages.forEach(language => {
@@ -60,8 +75,9 @@ function GenerateLanguageDropdown() {
                     window.location.href = url.toString();
                 });
             }
-        }
-    }
+        }, (error) => {
+            console.log(error.responseText);
+        });
 }
 
 function ShowAccountInfo(Accounts) {
@@ -78,56 +94,45 @@ function GenerateServiceProvidersUI() {
         return;
     }
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/GetBuyEdalerServiceProviders.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
+    SendXmlHttpRequest("API/GetBuyEdalerServiceProviders.ws",
         {
             "ContractId": document.getElementById("contractId").value,
-        }));
+        },
+        (response) => {
+            serviceProviders = response.ServiceProviders;
+            let selectInput = document.getElementById("serviceProvidersSelect");
 
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4) {
-            var response = JSON.parse(xhttp.responseText);
-            if (xhttp.status === 200) {
-                serviceProviders = response.ServiceProviders;
+            selectInput.onchange = function () {
+                var value = document.getElementById("serviceProvidersSelect").value;
+                let provider = serviceProviders.find(m => m.Name == value);
 
-                let selectInput = document.getElementById("serviceProvidersSelect");
-
-                selectInput.onchange = function () {
-                    var value = document.getElementById("serviceProvidersSelect").value;
-                    let provider = serviceProviders.find(m => m.Name == value);
-
-                    if (provider == null) {
-                        selectedServiceProvider = null;
-                        alert("Select valid bank.");
+                if (provider == null) {
+                    selectedServiceProvider = null;
+                    alert("Select valid bank.");
+                    return;
+                }
+                selectedServiceProvider = provider;
+                if (!Boolean(isMobileDevice) && !provider.QRCode) {
+                    ShowMessage(Translations.OpenLinkOnPhoneMessage);
+                }
+                else {
+                    ClearQrCodeDiv();
+                    if (provider.Name.includes('Stripe')) {
+                        StartCardPayment();
                         return;
                     }
-                    selectedServiceProvider = provider;
-                    if (!Boolean(isMobileDevice) && !provider.QRCode) {
-                        ShowMessage(Translations.OpenLinkOnPhoneMessage);
-                    }
-                    else {
-                        ClearQrCodeDiv();
-                        if (provider.Name.includes('Stripe')) {
-                            StartCardPayment();
-                            return;
-                        }
-                        GetAccountInfo();
-                    }
-                };
-                for (let i = 0; i < serviceProviders.length; i++) {
-                    const provider = serviceProviders[i];
-                    if (provider != null) {
-                        var option = document.createElement("option");
-                        option.text = provider.Name;
-                        selectInput.add(option);
-                    }
+                    GetAccountInfo();
+                }
+            };
+            for (let i = 0; i < serviceProviders.length; i++) {
+                const provider = serviceProviders[i];
+                if (provider != null) {
+                    var option = document.createElement("option");
+                    option.text = provider.Name;
+                    selectInput.add(option);
                 }
             }
-        }
-    }
+        }, null);
 }
 
 function ClearQrCodeDiv() {
@@ -190,28 +195,19 @@ function GenerateAccountsListUi(accounts) {
 }
 
 function GetAccountInfo() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/GetAccountInfo.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
-        {
-            "tabId": TabID,
-            "sessionId": "",
-            "requestFromMobilePhone": Boolean(isMobileDevice),
-            "bicFi": selectedServiceProvider.Id,
-            "bankName": selectedServiceProvider.Name,
-            "contractId": document.getElementById("contractId").value
-        }));
 
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4 && xhttp.status === 200) {
-            var response = JSON.parse(xhttp.responseText);
-            if (isMobileDevice) {
-                ShowAccountInfo(response.Results);
-            }
+    SendXmlHttpRequest("API/GetAccountInfo.ws", {
+        "tabId": TabID,
+        "sessionId": "",
+        "requestFromMobilePhone": Boolean(isMobileDevice),
+        "bicFi": selectedServiceProvider.Id,
+        "bankName": selectedServiceProvider.Name,
+        "contractId": document.getElementById("contractId").value
+    }, (response) => {
+        if (isMobileDevice) {
+            ShowAccountInfo(response.Results);
         }
-    }
+    }, null);
 }
 
 function StartPayment(iban, bic) {
@@ -225,35 +221,24 @@ function StartPayment(iban, bic) {
         return;
     }
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/InitiatePayment.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
-        {
-            "tabId": TabID,
-            "requestFromMobilePhone": Boolean(isMobileDevice),
-            "tokenId": document.getElementById("TokenId").value,
-            "bankAccount": iban,
-            "bic": bic
-        }));
-
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4) {
-            if (xhttp.status === 200) {
-                var response = JSON.parse(xhttp.responseText);
-                if (!response.OK) {
-                    TransactionFailed(null);
-                }
-            }
-            else {
-                if (xhttp.status === 408) {
-                    return;
-                }
+    SendXmlHttpRequest("API/InitiatePayment.ws", {
+        "tabId": TabID,
+        "requestFromMobilePhone": Boolean(isMobileDevice),
+        "tokenId": document.getElementById("TokenId").value,
+        "bankAccount": iban,
+        "bic": bic
+    },
+        (response) => {
+            if (!response.OK) {
                 TransactionFailed(null);
             }
-        }
-    }
+        },
+        (error) => {
+            if (error.status === 408) {
+                return;
+            }
+            TransactionFailed(null);
+        });
 }
 
 function TransactionInProgress(Result) {
@@ -413,23 +398,14 @@ function downloadPDF(base64Data, filename) {
 }
 
 function generatePDF() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/DealInfo.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
+    SendXmlHttpRequest("API/DealInfo.ws",
         {
             "contractId": document.getElementById("contractId").value,
             "countryCode": "EN"
-        }));
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4) {
-            if (xhttp.status === 200) {
-                var response = JSON.parse(xhttp.responseText);
-                downloadPDF(response.PDF, response.Name);
-            }
-        }
-    }
+        },
+        (response) => {
+            downloadPDF(response.PDF, response.Name);
+        }, null);
 }
 
 function AddStipeNameInput() {
@@ -580,32 +556,21 @@ function ShowBankPayment(show) {
     ToggleSpinner(false);
 }
 function StartCardPayment() {
-
     ShowBankPayment(false);
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/InitiateCardPayment.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
+    SendXmlHttpRequest("API/InitiateCardPayment.ws",
         {
             "tabId": TabID,
             "tokenId": document.getElementById("TokenId").value
-        }));
-
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4) {
-            if (xhttp.status === 200) {
-                var response = JSON.parse(xhttp.responseText);
-                if (!response.OK) {
-                    TransactionFailed(null);
-                }
-            }
-            else {
-                if (xhttp.status === 408) {
-                    return;
-                }
+        },
+        (response) => {
+            if (!response.OK) {
                 TransactionFailed(null);
             }
-        }
-    }
+        },
+        (error) => {
+            if (error.status === 408) {
+                return;
+            }
+            TransactionFailed(null);
+        })
 }
