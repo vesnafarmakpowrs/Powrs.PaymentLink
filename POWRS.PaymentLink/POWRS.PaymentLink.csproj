@@ -139,7 +139,7 @@
 		<Content Include="Root\Payout\js\Events.js">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\API\GetAccountInfo.ws">
+		<Content Include="Root\Payout\API\GetBankAccounts.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\js\PaymentLink.js">

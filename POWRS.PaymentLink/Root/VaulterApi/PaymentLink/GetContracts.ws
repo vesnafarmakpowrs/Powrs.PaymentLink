@@ -28,7 +28,7 @@ doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": tru
 contracts:= null;
 try 
 (
- contracts:= select top PTake t.TokenId, s.State, t.Created, exists(cancelAllowedStates[s.State]) as CanCancel, !exists(doneStates[s.State]) as IsActive,  s.VariableValues as 'Variables' from NeuroFeatureTokens as t join StateMachineCurrentStates as s on s.StateMachineId = t.TokenId where t.Creator = auth.legalId order by t.Created DESC offset PSkip;
+ contracts:= select top PTake t.TokenId, s.State, t.Created.ToString("s") as "Created", exists(cancelAllowedStates[s.State]) as CanCancel, !exists(doneStates[s.State]) as IsActive,  s.VariableValues as 'Variables' from NeuroFeatureTokens as t join StateMachineCurrentStates as s on s.StateMachineId = t.TokenId where t.Creator = auth.legalId order by t.Created DESC offset PSkip;
 )
 catch
 (
