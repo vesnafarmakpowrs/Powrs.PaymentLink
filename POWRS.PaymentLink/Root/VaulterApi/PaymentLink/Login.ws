@@ -1,7 +1,7 @@
 ({
    "userName": Required(Str(PUserName)),
    "nonce": Required(Str(PNonce)),
-   "signature": Required(Str(PSignature)),
+   "signature": Required(Str(PSignature))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 Response.SetHeader("Access-Control-Allow-Origin","*");
@@ -17,10 +17,10 @@ Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Log
                  {
                     "userName": PUserName,
                     "nonce": PNonce,
-	                "signature": PSignature,
-	                "seconds": validInSeconds
+	            "signature": PSignature,
+	            "seconds": validInSeconds
                   },
-		          {"Accept" : "application/json"});
+		   {"Accept" : "application/json"});
 
 domain:= "https://" + Gateway.Domain;
 
