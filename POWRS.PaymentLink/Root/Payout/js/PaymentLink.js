@@ -121,7 +121,7 @@ function GenerateServiceProvidersUI() {
                         StartCardPayment();
                         return;
                     }
-                    GetAccountInfo();
+                    GetBankAccounts();
                 }
             };
             for (let i = 0; i < serviceProviders.length; i++) {
@@ -194,9 +194,9 @@ function GenerateAccountsListUi(accounts) {
     container.appendChild(accountList);
 }
 
-function GetAccountInfo() {
+function GetBankAccounts() {
 
-    SendXmlHttpRequest("API/GetAccountInfo.ws", {
+    SendXmlHttpRequest("API/GetBankAccounts.ws", {
         "tabId": TabID,
         "sessionId": "",
         "requestFromMobilePhone": Boolean(isMobileDevice),
