@@ -267,6 +267,10 @@ BuyerFirstName := Before(BuyerFullName," ");
         <option value="none" selected disabled hidden>((LanguageNamespace.GetStringAsync(9) ))</option>
       </select>
    </div>
+<div id="QrCode"></div>
+<div id="spinnerContainer">
+  <img src="./resources/spinner.gif" alt="loadingSpinner">
+</div>
 </form>
 
  <form id="payment-form-card">
@@ -279,16 +283,14 @@ BuyerFirstName := Before(BuyerFullName," ");
            <input type="text" inputmode="text" name="linkLegalName" id="Field-linkLegalNameInput" 
             placeholder="First and last name" 
             autocomplete="billing name" 
-            aria-invalid="false" aria-required="false" class="stipe-name-input" value=""></div>
+            aria-invalid="false" aria-required="false" class="stipe-name-input" value=""/>
+       </div>
    <div>
    <div class="stripe-submit-div">
     <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
    </div>
   </form>
-<div id="QrCode"></div>
-<div id="spinnerContainer">
-  <img src="./resources/spinner.gif" alt="loadingSpinner">
-</div>
+
 </main>
 [[
 )
