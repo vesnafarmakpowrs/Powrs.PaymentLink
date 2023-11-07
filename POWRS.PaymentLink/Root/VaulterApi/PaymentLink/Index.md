@@ -84,8 +84,7 @@ Request
 :	{
 :		"userName":Required(Str(PUserName)),
 :		"nonce":Required(Str(PNonce)),
-:		"signature":Required(Str(PSignature)),
-:		"seconds":Required(Int(0 < PSeconds <= 3600))
+:		"signature":Required(Str(PSignature))
 :	}
 :	```
 
@@ -105,16 +104,7 @@ Description of properties:
 | `userName`        | Username of the user that should login into system. |
 | `nonce`           | A unique random string, at least 32 characters long, with sufficient entropy to not be reused again.|
 | `signature` 	    | Cryptographic signature of request. |
-| `seconds`         | Requested number of seconds before the JWT token that will be issued expires. |
 
-**Response**
-
-```
-{
- "jwt": Represents created token.
- "validUntil": Time in miliseconds when token should expire. (30 minutes).
-}
-```
 
 Calculating Signature
 ------------------------
