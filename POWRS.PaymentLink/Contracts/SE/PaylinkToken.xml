@@ -104,6 +104,9 @@
 				<Variable id="AllowedServiceProviders">
 					<TagReference tag="AllowedServiceProviders" />
 				</Variable>
+				<Variable id="ReferenceNumber">
+					<TagReference tag="RemoteId" />
+				</Variable>
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
@@ -459,6 +462,9 @@
 		</Tag>
 		<Tag name="EscrowFee">
 			<ParameterReference parameter="EscrowFee" />
+		</Tag>
+		<Tag name="RemoteId">
+			<ParameterReference parameter="RemoteId" />
 		</Tag>
 		<Tag name="AllowedServiceProviders">
 			<ParameterReference parameter="AllowedServiceProviders" />
