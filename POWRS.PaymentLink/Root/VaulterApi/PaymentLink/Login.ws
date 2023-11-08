@@ -12,8 +12,10 @@ if(System.String.IsNullOrWhiteSpace(PUserName) or System.String.IsNullOrWhiteSpa
 );
 
 validInSeconds:= 1800;
-
-Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
+Resp:= null;
+try 
+(
+  Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
                  {
                     "userName": PUserName,
                     "nonce": PNonce,
@@ -21,8 +23,12 @@ Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Log
 	            "seconds": validInSeconds
                   },
 		   {"Accept" : "application/json"});
-
-domain:= "https://" + Gateway.Domain;
+)
+catch
+(
+ Log.Error(Exception.Message, null);
+ BadRequest(Exception.Message);
+);
 
 Destroy(PUserName);
 Destroy(PNonce);
