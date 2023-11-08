@@ -93,7 +93,7 @@ else
     PAllowedServiceProviders:= "";
 );
 
-TemplateId = GetSetting("POWRS.PaymentLink.TemplateId","");
+TemplateId:= GetSetting("POWRS.PaymentLink.TemplateId","");
 
 if(System.String.IsNullOrWhiteSpace(TemplateId)) then 
 (
