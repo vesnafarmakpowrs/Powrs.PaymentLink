@@ -1,3 +1,5 @@
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
@@ -16,7 +18,6 @@ if !exists(Posted) then BadRequest("No payload.");
     "callbackUrl":Required(String(PCallBackUrl)),
     "allowedServiceProviders": Optional(String(PAllowedServiceProviders))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
-Response.SetHeader("Access-Control-Allow-Origin","*");
 
 Jwt:= null;
 try
