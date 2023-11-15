@@ -136,7 +136,7 @@ try
                      {name: "FIRST", value: PFirstName},
                      {name: "LAST", value: PLastName},
                      {name: "PNR", value: NormalizedPersonalNumber},
-                     {name: "COUNTRY", value: PCountryCode},
+                     {name: "COUNTRY", value: PCountryCode}
                     ];
    
     Nonce:= Base64Encode(RandomBytes(32));
@@ -154,17 +154,16 @@ try
 
     NewIdentity:= POST(neuronDomain + "/Agent/Legal/ApplyId",
                  {
-                    "keyId": PKeyId,
-	                "nonce": Nonce,
-	                "keySignature": KeySignature,
-	                "requestSignature": RequestSignature,
-		            "properties": PropertiesVector
-                  },
-		          {
-                    "Accept" : "application/json",
-		            "Authorization": "Bearer " + NewAccount.jwt, 
-		            "Referer": neuronDomain
-		          });
+                    "keyId": Str(PKeyId),
+	                "nonce": Str(Nonce),
+	                "keySignature":  Str(KeySignature),
+	                "requestSignature": Str(RequestSignature),
+		    "Properties":  PropertiesVector
+		 },
+		   {"Accept" : "application/json",
+		    "Authorization": "Bearer " + NewAccount.jwt,
+		    "Referer": neuronDomain + "/VaulterApi/PaymentLink/CreateAccount.ws"
+		   });
 
 )
 catch
@@ -201,14 +200,14 @@ try
 
             NewKey:= POST(neuronDomain + "/Agent/Legal/AddIdAttachment",
                     {
-                       "attachmentBase64": Document.content,
+                        "attachmentBase64": Document.content,
     				    "attachmentContentType": Document.contentType,
     				    "attachmentFileName": Document.fileName,
     				    "keyId": PKeyId,
     				    "keySignature": KeySignature,
     				    "legalId": NewIdentity.Id,
-                       "nonce": Nonce,
-                       "requestSignature": RequestSignature,
+                        "nonce": Nonce,
+                        "requestSignature": RequestSignature,
                      },
     		   {"Accept" : "application/json",
                "Authorization": "Bearer " + NewAccount.jwt});
@@ -228,6 +227,7 @@ try
 )
 catch
 (
+    BadRequest(Exception.Message);
 );
 
 Return("ok");
