@@ -9,12 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
     GenerateServiceProvidersUI();
 });
 
-function SendXmlHttpRequest(resource, json, onSuccess, onError) {
+function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", resource, true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(json);
+    xhttp.send(JSON.stringify(requestBody));
 
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4) {
@@ -52,9 +52,9 @@ function GenerateLanguageDropdown() {
     }
 
     SendXmlHttpRequest("API/GetAvailableLanguages.ws",
-        JSON.stringify({
+        {
             "Namespace": document.getElementById("Namespace").value
-        }), (response) => {
+        }, (response) => {
             if (response.Languages != null && response.Languages.length > 0) {
                 const languageDropdown = document.getElementById("languageDropdown");
                 response.Languages.forEach(language => {
@@ -92,9 +92,9 @@ function GenerateServiceProvidersUI() {
     }
 
     SendXmlHttpRequest("API/GetBuyEdalerServiceProviders.ws",
-        JSON.stringify({
+        {
             "ContractId": document.getElementById("contractId").value,
-        }),
+        },
         (response) => {
             serviceProviders = response.ServiceProviders;
             let selectInput = document.getElementById("serviceProvidersSelect");
@@ -193,14 +193,14 @@ function GenerateAccountsListUi(accounts) {
 
 function GetBankAccounts() {
 
-    SendXmlHttpRequest("API/GetBankAccounts.ws", JSON.stringify({
+    SendXmlHttpRequest("API/GetBankAccounts.ws", {
         "tabId": TabID,
         "sessionId": "",
         "requestFromMobilePhone": Boolean(isMobileDevice),
         "bicFi": selectedServiceProvider.Id,
         "bankName": selectedServiceProvider.Name,
         "contractId": document.getElementById("contractId").value
-    }), (response) => {
+    }, (response) => {
         if (isMobileDevice) {
             ShowAccountInfo(response.Results);
         }
@@ -218,13 +218,13 @@ function StartPayment(iban, bic) {
         return;
     }
 
-    SendXmlHttpRequest("API/InitiatePayment.ws", JSON.stringify({
+    SendXmlHttpRequest("API/InitiatePayment.ws", {
         "tabId": TabID,
         "requestFromMobilePhone": Boolean(isMobileDevice),
         "tokenId": document.getElementById("TokenId").value,
         "bankAccount": iban,
         "bic": bic
-    }),
+    },
         (response) => {
             if (!response.OK) {
                 TransactionFailed(null);
@@ -396,10 +396,10 @@ function downloadPDF(base64Data, filename) {
 
 function generatePDF() {
     SendXmlHttpRequest("API/DealInfo.ws",
-        JSON.stringify({
+        {
             "contractId": document.getElementById("contractId").value,
             "countryCode": "EN"
-        }),
+        },
         (response) => {
             downloadPDF(response.PDF, response.Name);
         }, null);
@@ -555,10 +555,10 @@ function ShowBankPayment(show) {
 function StartCardPayment() {
     ShowBankPayment(false);
     SendXmlHttpRequest("API/InitiateCardPayment.ws",
-        JSON.stringify({
+        {
             "tabId": TabID,
             "tokenId": document.getElementById("TokenId").value
-        }),
+        },
         (response) => {
             if (!response.OK) {
                 TransactionFailed(null);
