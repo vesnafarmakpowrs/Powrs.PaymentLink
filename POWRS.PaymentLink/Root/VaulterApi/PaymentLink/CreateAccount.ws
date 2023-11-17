@@ -129,6 +129,18 @@ finally
     Destroy(RequestSignature);
 );
 
+try
+(
+ if(!SetSetting(PUserName + ".KeyId","") or !SetSetting(PUserName + ".KeySecret","")) then 
+ (
+  Error("Unable to set key and password in settings");
+ );
+)
+catch
+(
+ Log.Error("Unable to save generated keys: " + Exception.Message, null);
+ BadRequest(Exception.Message);
+);
 
 try
 (  
