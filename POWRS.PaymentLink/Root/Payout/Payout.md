@@ -96,15 +96,12 @@ BuyerFirstName := Before(BuyerFullName," ");
 
 <table style="width:100%">
   <tr class="welcomeLbl">   
-    <td rowspan="2"><img class="vaulterLogo" src="./resources/vaulterlogo.svg" alt="Vaulter"/> </td>
-    <td>**((LanguageNamespace.GetStringAsync(22) )), ((BuyerFirstName))** </td>
-    <td rowspan="2"><select title="languageDropdown" id="languageDropdown"></select></td>
+    <td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
+    <td coolspan="2"><select title="languageDropdown" id="languageDropdown"></select></td>
   </tr>
-  <tr>
-    <td>
-       ((LanguageNamespace.GetStringAsync(6) ))
-    </td>
-  </tr>
+   <tr>
+     <td>**((LanguageNamespace.GetStringAsync(36) ))</td>
+</tr>
 </table>
 
 <input type="hidden" value="((lng ))" id="prefferedLanguage"/>
@@ -127,113 +124,81 @@ BuyerFirstName := Before(BuyerFullName," ");
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(34) ))" id="cardHolderTxt"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(35) ))" id="cardHolderNameTxt"/>
 
-<div class="payer-details">
-<table width="100%">
- <tr>
-  <td coolspan="2">
-    **((LanguageNamespace.GetStringAsync(31) ))**
-  </td>
- </tr>
-<tr>
-  <td class="payerName">
-    ((LanguageNamespace.GetStringAsync(4) )):
-  </td>
-  <td class="payerValue">
-  **((MarkdownEncode(BuyerFullName) ))**
-  </td>
- </tr>
-<tr>
-  <td class="payerName">
-    ((LanguageNamespace.GetStringAsync(3) )):
-  </td>
-  <td class="payerValue">
-   **((BuyerEmail ))**
-  </td>
- </tr>
-</table>
-</div>
-
-
 <br/>
 
 <div class="payment-details">
-<table style="width:100%">
- <tr>
-  <td colspan="2">
-    **((LanguageNamespace.GetStringAsync(32) ))**
-  </td>
- </tr>
-<tr>
-  <td class="payerName">
-    ((LanguageNamespace.GetStringAsync(11) )):
-  </td>
-  <td class="payerValue">
-  **((SellerName))****
-  </td>
- </tr>
-
- <tr class="spaceUnder"><td colspan="2"> </td></tr>
-<tr>
-  <td colspan="2" class="item border-radius" >
-      <table style="vertical-align:middle; width:100%;">
-         <tr>
+  <table style="width:100%">
+    <tr class="table-row">
+      <td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
+      <td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) ))<strong></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="item border-radius">
+        <table style="vertical-align:middle; width:100%;">
+          <tr>
             <td style="width:80%;"> ((Title))</td>
-            <td class="itemPrice"  rowspan="2" >((Value ))<td>
+            <td class="itemPrice" rowspan="2">((Value ))
+            <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-         </tr>
-         <tr>
+          </tr>
+          <tr>
             <td style="width:70%"> ((Description))</td>
-         </tr>
-      </table>
-  </td>
- </tr>
-
- <tr class="spaceUnder"><td colspan="2"> </td></tr>
-<tr class="spaceUnder">
-  <td colspan="2" class="item border-radius">
-      <table style="vertical-align:middle; width:100%;">
-         <tr>
-           <td style="width:80%">((LanguageNamespace.GetStringAsync(21) ))</td>
-           <td class="itemPrice"  rowspan="2" >((EscrowFee))<td>
-           <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-         </tr>
-      </table>
-  </td>
- </tr>
-
- <tr class="spaceUnder"><td colspan="2"> </td></tr>
-<tr>
-  <td colspan="2" class="item border-radius">
-      <table style="vertical-align:middle; width:100%;">
-         <tr>
-           <td style="width:80%">**((LanguageNamespace.GetStringAsync(20) ))**</td>
-           <td class="itemPrice"  rowspan="2" >((AmountToPay))<td>
-           <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-         </tr>
-      </table>
-  </td>
- </tr>
-</table>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr class="spaceUnder">
+      <td colspan="2"></td>
+    </tr>
+    <tr class="spaceUnder">
+      <td colspan="2" class="item border-radius">
+        <table style="vertical-align:middle; width:100%;">
+          <tr>
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(21) ))</td>
+            <td class="itemPrice" rowspan="2">((EscrowFee))
+            <td>
+            <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr class="spaceUnder">
+      <td colspan="2"></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="item border-radius">
+        <table style="vertical-align:middle; width:100%;">
+          <tr>
+            <td style="width:80%">**((LanguageNamespace.GetStringAsync(20) ))**</td>
+            <td class="itemPrice" rowspan="2">((AmountToPay))
+            <td>
+            <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </div>
-  
 <div class="spaceItem"></div>
-<br/>
-
+<br />
 <div class="vaulter-details">
 <table style="width:100%">
- <tr>
-  <td colspan="3"><img class="vaulter_Logo" src="./resources/vaulter_logo.svg" alt="Vaulter"/> </td>
- </tr>
+
  <tr >
   <td colspan="3">
-     <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();">
-     <label for="termsAndCondition"><a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label> 
-   </td>
+     <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();"> 
+     <label for="termsAndCondition"> 
+        <img class="logo_small" for="termsAndCondition" src="./resources/vaulter_txt.svg" alt="Vaulter"/> 
+        <a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
+ </td>
  </tr>
  <tr class="spaceUnder">
     <td colspan="3">
-      <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement" onclick="UserAgree();">
-      <label for="purchaseAgreement"><a href="#" onclick="generatePDF();event.preventDefault();" >**((LanguageNamespace.GetStringAsync(7) ))**</a></label> 
+      <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement" onclick="UserAgree();"/>
+      <label for="purchaseAgreement">
+         <img class="logo_small" for="termsAndCondition" src="./resources/vaulter_txt.svg" alt="Vaulter"/> 
+         <a href="#" onclick="generatePDF();event.preventDefault();" >**((LanguageNamespace.GetStringAsync(7) ))**</a>
+     </label> 
    </td>
  </tr>
  <tr class="spaceUnder"><td colspan="3"> </td></tr>
@@ -247,33 +212,55 @@ BuyerFirstName := Before(BuyerFullName," ");
  </table>
 
 </div>
-
 <div class="spaceItem"></div>
- <form id="payment-method">
-  <table id="payment-method-tbl">
-   <tr>
-    <td class="payment-method-tab" onclick="StartBankPayment()"><element id="stripe-method-bank" >Bank</element></td>
-    <td class="payment-method-tab" onclick="StartCardPayment()"><element id="stripe-method-card" >Card</element></td>
+<div>
+  <label class=""><strong>((LanguageNamespace.GetStringAsync(37) ))</strong></label>
+</div>
+
+<div class="payment-method">
+<form id="payment-method" >
+  <table class="payment-method-tbl">
+   <tr id="payment-direct-bank-btn" class="payment-method-btn" >
+    <td class="payment-method-txt" onclick="StartBankPayment()">
+       <element id="stripe-method-bank" >((LanguageNamespace.GetStringAsync(45) )) </element>      
+    </td>
+    <td class="payment-method-img">
+      <img class="bank-img"  src="./resources/direct_payment.svg" alt="bank"/> 
+    </td>
+   </tr>
+   <tr id="payment-notice-lbl" class="payment-notice-lbl">
+     <td colspan="2" >
+      ((LanguageNamespace.GetStringAsync(42) ))
+     </td>
+   </tr>
+   <tr id="payment-bank-btn" class="payment-bank-btn payment-bank-btn">
+     <td colspan="2" id="bank-list">
+         <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" >
+          <option value="none" selected disabled hidden>((LanguageNamespace.GetStringAsync(9) ))</option>
+      </select>
+     </td>
+   </tr>
+   <tr id="payment-other-methods" class="payment-other-methods">
+     <td onclick="ExpandOtherPaymentMethods(true)">
+      ((LanguageNamespace.GetStringAsync(44) ))
+     </td>
+     <td  class="payment-other-methods-img" >
+        <img class="expand-img"  src="./resources/expand.svg" alt="expand"/> 
+     </td>
    </tr>
   </table> 
  </form>
-
-<div class="spaceItem"></div>
-<br/>
-
-<form id="payment-form-bank">
- <div>
-     <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" >
-        <option value="none" selected disabled hidden>((LanguageNamespace.GetStringAsync(9) ))</option>
-      </select>
-   </div>
-<div id="QrCode"></div>
-<div id="spinnerContainer">
-  <img src="./resources/spinner.gif" alt="loadingSpinner">
-</div>
-</form>
-
- <form id="payment-form-card">
+  <table id="payment-card-tbl">
+   <tr id="payment-card-btn" class="payment-method-btn">
+     <td class="payment-method-txt" onclick="StartCardPayment()">
+        <element id="stripe-method-card" >Card</element>
+    </td>
+    <td class="payment-method-img">
+      <img class="card-img"  src="./resources/credit-card-payment.svg" alt="bank"/> 
+    </td>
+   </tr>
+  </table> 
+<form id="payment-form-card">
    <div id="link-authentication-element">
    </div>
    <div id="payment-element">
@@ -290,6 +277,17 @@ BuyerFirstName := Before(BuyerFullName," ");
     <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
    </div>
   </form>
+</div>
+
+
+<form id="payment-form-bank">
+  <div id="QrCode"></div>
+  <div id="spinnerContainer">
+  <img src="./resources/spinner.gif" alt="loadingSpinner">
+  </div>
+</form>
+
+ 
 
 </main>
 [[
