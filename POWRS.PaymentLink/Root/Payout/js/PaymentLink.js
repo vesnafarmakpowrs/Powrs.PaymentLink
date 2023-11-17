@@ -417,9 +417,10 @@ function AddStipeNameInput() {
 
     // Create the label and its container
     var labelContainer = document.createElement('div');
-    labelContainer.className = 'FormFieldGroup-labelContainer flex-container justify-content-space-between';
+    labelContainer.className = 'stripe-cardholder-name FormFieldGroup-labelContainer flex-container justify-content-space-between';
     var label = document.createElement('label');
     label.setAttribute('for', 'billingName');
+    label.setAttribute('style', 'align-self:flex-end');
     var labelText = document.createElement('span');
     labelText.className = 'Label Text-color--gray600 stipe-name-input';
 

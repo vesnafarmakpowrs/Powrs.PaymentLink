@@ -16,6 +16,14 @@ form {
   align-self: center;
 }
 
+.select-lng
+{
+   background-color: #ffffff !important;
+   color: #000000 !important;
+   padding: 2px !important;
+   height : 25px;
+}
+
 .item-header
 {
  text-align:left !important;
@@ -549,6 +557,12 @@ height:10px;
   box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
   width: 100%;
 }
+
+.stripe-cardholder-name
+{
+    height: 30px;
+}
+
 .stripe-submit-div
 {
   padding-top : 10px;
@@ -574,7 +588,7 @@ stripe-button:disabled {
 }
 
 
-.stipe-name-div
+.stripe-name-div
 {
    padding-top: 10px !important;
 }
@@ -646,14 +660,13 @@ height:inherit;
 margin: 0 auto;
 }
 
+
 #languageDropdown {
 width: auto;
 float: right;
 padding: 5px;
 font-size: 1rem !important;
 }
-
-
 
 .payer-details {
 width: 100%px;
@@ -699,13 +712,11 @@ box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
   font-family: 'RTDromo Medium';
   font-size: 1.2rem;
 }
-.payment-method
-{
-font-size:3rem !important;
-}
+
 
 .payment-method
 {
+font-size:3rem !important;
 width: 100%px;
 height: auto;
 border-radius: 8px;
@@ -739,6 +750,7 @@ width: 100%;
 .content {
 padding: 0 2% 5% 2%;
 width: 95%;
+margin: 0.5rem auto;
 }
 
 input[type="checkbox"] + label:before {
@@ -755,9 +767,13 @@ padding-bottom:0.3em;
 margin-right: 1em;
 }
 
+tr.spaceUnder>td {
+padding-bottom: 0.1em;
+}
+
 select {
-height: 6rem !important;
-font-size:3rem !important;
+height: 3rem !important;
+font-size:1rem !important;
 }
 
 .welcomeLbl {
@@ -767,6 +783,7 @@ font-family: 'RTDromo Medium';
 
 .itemPrice {
    padding-top : 5px;
+   font-size:1.5rem !important;
 }
 
 .account-item{
@@ -775,7 +792,7 @@ font-size:3rem;
 }
 
 .vaulterLogo{
-width:0px;
+width:100px;
 }
 
 
@@ -792,12 +809,57 @@ margin: 0 auto;
 height: 15rem !important;
 }
 
-
-#languageDropdown {
-width: auto;
-float: right;
-padding: 5px;
+.item
+{
+  padding : 5px;  
 }
+
+.select-lng
+{
+   background-color: #ffffff !important;
+   color: #000000 !important;
+   padding: 2px !important;
+   height : 2rem !important;
+}
+
+.border-radius
+{
+ border-radius: 1.2rem !important;
+}
+
+.payment-method
+{
+  font-size:1.2rem !important;
+  border-spacing: 0px;
+}
+
+.stripe-name-div
+{
+   padding:10px !important;
+   font-size:1.2rem !important;
+}
+
+.payment-details
+{ 
+  padding:5px;
+}
+
+.payment-method-btn
+{
+ border-radius: 15px !important;
+}
+
+.payment-direct-bank-btn
+{
+  border-radius: 15px !important;
+}
+
+
+.payment-method-tbl
+{
+  border-spacing: 5px;
+}
+
 
 }
 

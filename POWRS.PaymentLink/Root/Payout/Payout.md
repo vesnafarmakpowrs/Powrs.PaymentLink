@@ -16,9 +16,7 @@ JavaScript: https://js.stripe.com/v3/
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <div class="content">
-<b><h2></h2></b>
 {{
-
  Language:= null;
 if(exists(lng)) then 
 (
@@ -79,7 +77,6 @@ if ContractState == "AwaitingForPayment" then
 
     FileName:= SellerId + Token.ShortId;
 
-
     foreach Parameter in (Contract.Parameters ?? []) do 
       (
         Parameter.Name like "Title" ?   Title := Parameter.MarkdownValue;
@@ -94,12 +91,11 @@ if ContractState == "AwaitingForPayment" then
         Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.ObjectValue.ToString("N2");
       );
 BuyerFirstName := Before(BuyerFullName," ");
-]]
-
-<table style="width:100%">
+]] <table style="width:100%">
   <tr class="welcomeLbl">   
     <td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
-    <td coolspan="2"><select title="languageDropdown" id="languageDropdown"></select></td>
+    <td coolspan="2">
+       <select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
   </tr>
    <tr>
      <td>**((LanguageNamespace.GetStringAsync(36) ))</td>
@@ -125,8 +121,6 @@ BuyerFirstName := Before(BuyerFullName," ");
 <input type="hidden" value="((FileName))" id="fileName"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(34) ))" id="cardHolderTxt"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(35) ))" id="cardHolderNameTxt"/>
-
-<br/>
 
 <div class="payment-details">
   <table style="width:100%">
@@ -182,7 +176,6 @@ BuyerFirstName := Before(BuyerFullName," ");
   </table>
 </div>
 <div class="spaceItem"></div>
-<br />
 <div class="vaulter-details">
 <table style="width:100%">
 
@@ -235,7 +228,7 @@ BuyerFirstName := Before(BuyerFullName," ");
       ((LanguageNamespace.GetStringAsync(42) ))
      </td>
    </tr>
-   <tr id="payment-bank-btn" class="payment-bank-btn payment-bank-btn">
+   <tr id="payment-bank-btn" class="payment-bank-btn">
      <td colspan="2" id="bank-list">
          <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" >
           <option value="none" selected disabled hidden>((LanguageNamespace.GetStringAsync(9) ))</option>
@@ -267,7 +260,7 @@ BuyerFirstName := Before(BuyerFullName," ");
    </div>
    <div id="payment-element">
    </div>
-   <div class="stipe-name-div">
+    <div class="stripe-name-div">
          <div class=">
            <input type="text" inputmode="text" name="linkLegalName" id="Field-linkLegalNameInput" 
             placeholder="First and last name" 
@@ -279,8 +272,6 @@ BuyerFirstName := Before(BuyerFullName," ");
     <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
    </div>
   </form>
-</div>
-
 
 <form id="payment-form-bank">
   <div id="QrCode"></div>
@@ -288,7 +279,8 @@ BuyerFirstName := Before(BuyerFullName," ");
   <img src="./resources/spinner.gif" alt="loadingSpinner">
   </div>
 </form>
-
+</div>
+<div class="spaceItem"></div>
  
 
 </main>
