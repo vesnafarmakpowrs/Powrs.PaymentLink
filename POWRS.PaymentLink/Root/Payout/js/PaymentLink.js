@@ -537,6 +537,7 @@ function GeneratePaymentForm(Data) {
 }
 
 function StartBankPayment() {
+    SelectDirectPayment();
     ShowBankPayment(true);
 }
 
@@ -553,6 +554,7 @@ function ShowBankPayment(show) {
     ToggleSpinner(false);
 }
 function StartCardPayment() {
+    SelectCardPayment(true);
     ShowBankPayment(false);
     SendXmlHttpRequest("API/InitiateCardPayment.ws",
         {
@@ -571,3 +573,45 @@ function StartCardPayment() {
             TransactionFailed(null);
         })
 }
+
+function SelectDirectPayment() {
+    SelectCardPayment(false);
+    ExpandOtherPaymentMethods(false);
+}
+
+function ExpandOtherPaymentMethods(expand) {
+    if (expand) {
+        document.getElementById("payment-other-methods").style.display = "none";
+        document.getElementById("payment-card-tbl").style.display = "block";
+    }
+    else {
+        document.getElementById("payment-other-methods").style.display = null;
+        document.getElementById("payment-card-tbl").style.display = "none";
+    }
+}
+
+function SelectCardPayment(selected) {
+    if (selected) {
+        document.getElementById("payment-notice-lbl").style.display = "none";
+        document.getElementById("payment-bank-btn").style.display = "none";
+        selectPaymentBtn("payment-card-btn");
+        unSelectPaymentBtn("payment-direct-bank-btn");
+    }
+    else {
+        document.getElementById("payment-notice-lbl").style.display = null;
+        document.getElementById("payment-bank-btn").style.display = null;
+        selectPaymentBtn("payment-direct-bank-btn");
+        unSelectPaymentBtn("payment-card-btn");
+    }
+}
+
+function selectPaymentBtn(elementId) {
+    var cardBtn = document.getElementById(elementId);
+    cardBtn.classList.add("payment-btn-selected");
+}
+
+function unSelectPaymentBtn(elementId) {
+    var directBankBtn = document.getElementById(elementId);
+    directBankBtn.classList.remove("payment-btn-selected");
+}
+

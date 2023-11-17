@@ -14,9 +14,18 @@ color:¤TextColor¤;
 form {
   width: 30vw;
   align-self: center;
-  box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
-  0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
-  border-radius: 7px;
+}
+
+.item-header
+{
+ text-align:left !important;
+ padding-left:15px !important;  
+}
+
+.price-header
+{
+ text-align:right !important;
+ padding-right:20px !important;  
 }
 
 #stripe-method
@@ -29,6 +38,7 @@ form {
   padding: 10px;
 }
 
+
 #payment-method
 {
   width : 100%;
@@ -36,20 +46,82 @@ form {
 }
 
 
-#payment-method-tbl
+
+.payment-method-tbl
 {
   width : 100%;
- border-spacing: 30px;
+  border-spacing: 10px;
 }
 
-.payment-method-tab
+#payment-card-tbl
 {
- width : 50%;
-box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
-  0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
-  border-radius: 7px;
-  padding: 10px;
+  width : 100%;
+  border-spacing: 10px;
+  display: none
 }
+
+.payment-method-txt
+{
+  padding : 5px 0px 5px 20px;
+  width : 100%;
+}
+
+.payment-method-img
+{
+  text-align:right;
+  padding : 5px 15px 5px 0px;
+}
+
+.expand-img
+{
+  align:center;
+}
+
+.payment-notice-lbl
+{
+  font-family: 'RTDromo';
+  font-style: italic;
+  border-radius: 20px;
+  font-size: 0.9rem !important;
+}
+
+.payment-bank-btn
+{
+  border-radius: 20px;
+  border: 2px solid rgba(0,0,0,1) !important;
+  font-size: 1rem !important;
+}
+
+.payment-method-btn
+{
+  border-radius: 20px;
+  outline: thin solid;
+  padding: 0px;
+  border: 2px solid rgba(0,0,0,1) !important;
+  font-size: 1rem !important;  
+}
+
+.payment-btn-selected
+{
+  box-shadow: 0px 3px 3px 3px rgba(50, 50, 93, 0.1), 0px 3px 3px 1px rgba(50, 50, 93, 0.1), 0px 1px 3px 1px rgb(0, 0, 0 ,0.3);
+}
+
+.payment-other-methods
+{
+  font-family: 'RTDromo';
+  font-style: italic;
+  font-size: 0.9rem !important;
+  text-align:right;
+  padding: 0px;
+}
+
+.payment-other-methods-img
+{ 
+  text-align:left;
+  width: 10px !important;
+   padding : 5px 5px 5px 0px;
+}
+
 
 #payment-form-bank
 {
@@ -126,6 +198,9 @@ font-style: normal;
 
 select {
 border: 1px solid #BBC4CE !important;
+width : 100%;
+background-color: #000000 !important;
+color: #ffffff !important;
 }
 
 .content {
@@ -139,6 +214,7 @@ z-index:2;
 margin: 3rem auto 0rem auto;
 box-sizing: border-box;
 border-radius: 0.5rem !important;
+border : 1px solid black;
 }
 
 
@@ -186,6 +262,10 @@ box-sizing: content-box;
 }
 
 .vaulterLogo{
+width:150px;
+}
+
+.logo_small{
 width:50px;
 }
 
@@ -208,12 +288,13 @@ margin: 0 auto;
 
 a
 {
-color: ¤LinkColorUnvisited¤;
+color: #120FBC !important;
+font-family: 'RTDromo Medium' !important;
 }
 
 a:hover
 {
-color: ¤LinkColorHot¤;
+color: #2b6fba;
 }
 
 .active
@@ -369,7 +450,7 @@ color: #fff;
 .item {
 width: 100%;
 min-height: 40px;
-background: rgba(179,146,146,0.1);
+background: #F1F1F1;
 opacity: 1;
 position: relative;
 top: 0px;
@@ -545,7 +626,7 @@ border-radius:1rem;
 }
 
 .border-radius {
-border-radius:0.5rem !important;
+border-radius:1.5rem !important;
 }
 .border-solid {
 border:1px solid darkgray;
@@ -597,23 +678,41 @@ height: auto;
 .payment-details {
 width: 100%px;
 height: auto;
-border-radius: 3px;
+border-radius: 8px;
 border: 1px solid rgba(0, 0, 0, 0.50);
 padding: 10px;
-background: #FFFCFC;
-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
 }
 
 .vaulter-details {
 width: 100%px;
 height: auto;
-border-radius: 3px;
+border-radius: 8px;
 border: 1px solid rgba(0, 0, 0, 0.50);
 padding: 10px;
-background: #FFFCFC;
-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
 }
 
+
+.payment-method-lbl
+{
+  font-family: 'RTDromo Medium';
+  font-size: 1.2rem;
+}
+.payment-method
+{
+font-size:3rem !important;
+}
+
+.payment-method
+{
+width: 100%px;
+height: auto;
+border-radius: 8px;
+border: 1px solid rgba(0, 0, 0, 0.50);
+padding: 10px;
+box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
+}
 tr.spaceUnder>td {
 padding-bottom: 0.5em;
 }
