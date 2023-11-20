@@ -17,7 +17,7 @@ JavaScript: https://js.stripe.com/v3/
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <div class="content">
 {{
- Language:= null;
+  Language:= null;
 if(exists(lng)) then 
 (
   Language:= Translator.GetLanguageAsync(lng);
@@ -83,6 +83,7 @@ if ContractState == "AwaitingForPayment" then
         Parameter.Name like "Description" ?   Description := Parameter.MarkdownValue;
         Parameter.Name like "Value" ?   Value := Parameter.ObjectValue.ToString("N2");
         Parameter.Name like "Currency" ?   Currency := Parameter.MarkdownValue;
+        Parameter.Name like "Country" ?   Country := Parameter.MarkdownValue;
         Parameter.Name like "Commission" ?   Commission := Parameter.MarkdownValue;
         Parameter.Name like "BuyerFullName" ?   BuyerFullName := Parameter.MarkdownValue;
         Parameter.Name like "BuyerEmail" ?  BuyerEmail := Parameter.MarkdownValue;
@@ -90,10 +91,10 @@ if ContractState == "AwaitingForPayment" then
         Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.ObjectValue.ToString("N2");
         Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.ObjectValue.ToString("N2");
       );
-BuyerFirstName := Before(BuyerFullName," ");
-]] <table style="width:100%">
-  <tr class="welcomeLbl">   
-    <td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
+     BuyerFirstName := Before(BuyerFullName," ");
+      ]]  <table style="width:100%">
+         <tr class="welcomeLbl">   
+         <td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
     <td coolspan="2">
        <select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
   </tr>
@@ -210,10 +211,11 @@ BuyerFirstName := Before(BuyerFullName," ");
 <div class="spaceItem"></div>
 <div>
   <label class=""><strong>((LanguageNamespace.GetStringAsync(37) ))</strong></label>
-</div>
-
-<div class="payment-method">
-<form id="payment-method" >
+</div>[[;
+if (Country == 'SE') then 
+(
+ ]] <div class="payment-method">
+ <form id="payment-method" >
   <table class="payment-method-tbl">
    <tr id="payment-direct-bank-btn" class="payment-method-btn" >
     <td class="payment-method-txt" onclick="StartBankPayment()">
@@ -277,33 +279,32 @@ BuyerFirstName := Before(BuyerFullName," ");
    <div class="stripe-submit-div">
     <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
    </div>
-  </form>
-
-
-</div>
-<div class="spaceItem"></div>
- 
-
-</main>
-[[
+  </form> [[;
+)
+else if (Country == 'RS') then
+(
+  ]] <div class="payment-method"> 
+        Serbia Pay spot Implementation 
+      </div>
+   [[;
+)
 )
 else if ContractState == "PaymentCompleted" then 
 (
-]]**((LanguageNamespace.GetStringAsync(16) ))**[[
+]]**((LanguageNamespace.GetStringAsync(16) ))**[[;
 )
 else if ContractState == "PaymentCanceled" then 
 (
-]]**((LanguageNamespace.GetStringAsync(14) ))**ed[[
+]]**((LanguageNamespace.GetStringAsync(14) ))**ed[[;
 )
 else 
 (
-]]**((LanguageNamespace.GetStringAsync(23) ))**[[
+]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
 )
-
 }}
 
 </div>
-
+</main>
 
 <div class="footer-parent">
   <div class="footer">
