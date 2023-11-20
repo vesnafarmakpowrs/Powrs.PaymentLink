@@ -255,6 +255,12 @@ BuyerFirstName := Before(BuyerFullName," ");
     </td>
    </tr>
   </table> 
+<form id="payment-form-bank">
+  <div id="QrCode" class="center_qr_img"></div>
+  <div id="spinnerContainer">
+  <img src="./resources/spinner.gif" alt="loadingSpinner">
+  </div>
+</form>
 <form id="payment-form-card">
    <div id="link-authentication-element">
    </div>
@@ -273,12 +279,7 @@ BuyerFirstName := Before(BuyerFullName," ");
    </div>
   </form>
 
-<form id="payment-form-bank">
-  <div id="QrCode"></div>
-  <div id="spinnerContainer">
-  <img src="./resources/spinner.gif" alt="loadingSpinner">
-  </div>
-</form>
+
 </div>
 <div class="spaceItem"></div>
  

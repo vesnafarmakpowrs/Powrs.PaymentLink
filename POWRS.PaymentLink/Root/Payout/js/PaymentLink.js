@@ -100,6 +100,7 @@ function GenerateServiceProvidersUI() {
             let selectInput = document.getElementById("serviceProvidersSelect");
 
             selectInput.onchange = function () {
+                StartBankPayment();
                 var value = document.getElementById("serviceProvidersSelect").value;
                 let provider = serviceProviders.find(m => m.Name == value);
 
@@ -411,6 +412,7 @@ function AddStipeNameInput() {
     var outerDiv = document.createElement('div');
     outerDiv.className = 'flex-item width-12 stipe-name-div';
 
+    outerDiv.setAttribute('style', 'line-height:20px');
     // Create the FormFieldGroup div
     var formFieldGroupDiv = document.createElement('div');
     formFieldGroupDiv.className = 'FormFieldGroup';
@@ -446,7 +448,7 @@ function AddStipeNameInput() {
     // Create the FormFieldInput div
     var formFieldInputDiv = document.createElement('div');
     formFieldInputDiv.className = 'p-FieldLabel';
-
+    fieldsetDiv.setAttribute('style', 'vertical-align:bottom');
     // Create the CheckoutInputContainer div and its contents
     var checkoutInputContainerDiv = document.createElement('div');
     checkoutInputContainerDiv.className = 'CheckoutInputContainer';
@@ -480,7 +482,6 @@ function AddStipeNameInput() {
     formFieldGroupDiv.appendChild(fieldsetDiv);
     outerDiv.appendChild(formFieldGroupDiv);
 
-    console.log(t);
     t.appendChild(outerDiv);
 }
 
