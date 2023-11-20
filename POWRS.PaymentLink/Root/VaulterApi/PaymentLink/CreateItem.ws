@@ -3,21 +3,21 @@ Response.SetHeader("Access-Control-Allow-Origin","*");
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
-    "orderNum":Required(String(PRemoteId)),
-    "title":Required(String(PTitle)),
+    "orderNum":Required(String(PRemoteId) like "^(?!.*--)[a-zA-Z0-9-]{1,50}$"),
+    "title":Required(String(PTitle) like "[a-zA-Z0-9.,;:!?()'\" -]{1,30}"),
     "price":Required(Double(PPrice) >= 0.1),
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
-    "description":Required(String(PDescription)),
-    "deliveryDate":Required(String(PDeliveryDate)),
+    "description":Required(String(PDescription)  like "[a-zA-Z0-9.,;:!?()'\" -]{1,100}"),
+    "deliveryDate":Required(String(PDeliveryDate) like "^(0[1-9]|1[0-2])\\/(0[1-9]|[12][0-9]|3[01])\\/\\d{4}$"),
     "sellerBankAccount":Required(String(PClientBankAccount)),
-    "buyerFirstName":Required(String(PBuyerFirstName)),
-    "buyerLastName":Required(String(PBuyerLastName)),
-    "buyerEmail":Required(String(PBuyerEmail)),
-    "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
-    "buyerCountryCode":Required(String(PBuyerCountryCode)),
+    "buyerFirstName":Required(String(PBuyerFirstName) like "[\\p{L}\\s]{2,20}"),
+    "buyerLastName":Required(String(PBuyerLastName) like "[\\p{L}\\s]{2,20}"),
+    "buyerEmail":Required(String(PBuyerEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
+    "buyerPersonalNum":Required(String(PBuyerPersonalNum)  like "\\d*-?\\d*"),
+    "buyerCountryCode":Required(String(PBuyerCountryCode)  like "[A-Z]{2}"),
     "callbackUrl":Required(String(PCallBackUrl)),
     "allowedServiceProviders": Optional(String(PAllowedServiceProviders))
-}:=Posted) ??? BadRequest("Payload does not conform to specification.");
+}:=Posted) ??? BadRequest(Exception.Message);
 
 Jwt:= null;
 try
@@ -69,7 +69,7 @@ if(System.String.IsNullOrEmpty(KeyId) || System.String.IsNullOrEmpty(KeyPassword
 normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PBuyerCountryCode, PBuyerPersonalNum);
 isValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PBuyerCountryCode ,normalizedPersonalNumber);
 
-if(!isValid) then 
+if(isValid != true) then 
 (
     BadRequest("Personal number: " + PBuyerPersonalNum + " is not valid for the country: " + PBuyerCountryCode);
 );
