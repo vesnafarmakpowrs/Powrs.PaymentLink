@@ -188,7 +188,10 @@ if ContractState == "AwaitingForPayment" then
         <a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
  </td>
  </tr>
- <tr class="spaceUnder">
+[[;
+if (Country == 'SE') then 
+(
+ ]]<tr class="spaceUnder">
     <td colspan="3">
       <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement" onclick="UserAgree();"/>
       <label for="purchaseAgreement">
@@ -196,15 +199,17 @@ if ContractState == "AwaitingForPayment" then
          <a href="#" onclick="generatePDF();event.preventDefault();" >**((LanguageNamespace.GetStringAsync(7) ))**</a>
      </label> 
    </td>
- </tr>
- <tr class="spaceUnder"><td colspan="3"> </td></tr>
+  </tr>
+  <tr class="spaceUnder"><td colspan="3"> </td></tr>
   <tr class="safeguarded" >
      <td style="width:80%; text-align:left">((LanguageNamespace.GetStringAsync(1) ))</td>
      <td class="moneyRight itemPrice">((Value))</td>
      <td class="currencyLeft" style="width:10%;" >((Currency ))</td>
- </tr>
- <tr class="spaceUnder"><td colspan="3"> </td></tr>
- 
+  </tr>
+  <tr class="spaceUnder"><td colspan="3"> </td></tr>
+ [[;
+ );
+]]
  </table>
 
 </div>
@@ -301,6 +306,9 @@ else
 (
 ]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
 )
+
+
+
 }}
 
 </div>
