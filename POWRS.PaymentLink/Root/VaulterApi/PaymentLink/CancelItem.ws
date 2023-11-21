@@ -1,37 +1,53 @@
 ({
-    "userName":Required(Str(PUserName)),
-    "password":Required(Str(PPassword)),
-    "contractId":Required(Str(PContractId))
-	
+    "contractId":Required(Str(PContractId)),
+    "refundAmount" : Optional(int(PRefundAmount))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
+
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
+Jwt:= null;
+try
+(
+    header:= null;
+    Request.Header.TryGetHeaderField("Authorization", header);
+    Jwt:= header.Value;
+    auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", 
+            {"includeInfo": false}, {"Accept": "application/json", "Authorization": header.Value});
+)
+catch
+(
+  Forbidden("Token not valid");
+);
 
 PContractId := PContractId + "@legal." + Waher.IoTGateway.Gateway.Domain;
 
-contractParameters:= select top 1 Parameters from IoTBroker.Legal.Contracts.Contract where ContractId = PContractId;
-TokenId:= select top 1 TokenId from NeuroFeatureTokens where OwnershipContract = PContractId;
+Token := select top 1 TokenId, Value from NeuroFeatureTokens where OwnershipContract = PContractId;
+TokenId := Token[0][0];
+TokenValue := Token[0][1];
 
-if(contractParameters == null || System.String.IsNullOrEmpty(TokenId)) then
+if (PRefundAmount > TokenValue) then
+(
+   BadRequest("Refund amount can't be bigger than item value ");
+);
+
+
+if(System.String.IsNullOrEmpty(TokenId)) then
 (
    BadRequest("Parameters or token for given contract do not exists");
 );
 
-Nonce := Base64Encode(RandomBytes(32));
-S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
-
-Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
-
-Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
-                 {
-                    "userName": PUserName,
-                     "nonce": Nonce,
-	                "signature": Signature,
-	                "seconds": 5
-                  },
-		   {"Accept" : "application/json"});
-
 domain:= "https://" + Gateway.Domain;
 namespace:= domain + "/Downloads/EscrowRebnis.xsd";
-xmlNote := "<Cancel xmlns='" + namespace + "' />";
+
+
+if exists(PRefundAmount)  then
+(
+  xmlNote := "<ReturnFunds xmlns='" + namespace + "' amountToBeReturned='" + PRefundAmount + "' />";
+)
+else
+(
+  xmlNote := "<ReturnFunds xmlns='" + namespace + "' amountToBeReturned='" + TokenValue + "' />";
+);
 
 xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",
                  {
@@ -39,10 +55,10 @@ xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",
 	              "note":xmlNote,
 	              "personal":false
                   },
-		        {"Accept" : "application/json",
-                "Authorization":"Bearer " + Response.jwt});
+		 {"Accept" : "application/json",
+                  "Authorization": header.Value});
 
 {	
-    "xmlNote" : xmlNoteResponse
+    "canceled" : true
 }
 

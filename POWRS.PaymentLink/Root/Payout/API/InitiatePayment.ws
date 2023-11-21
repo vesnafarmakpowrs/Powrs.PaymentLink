@@ -1,22 +1,36 @@
 ﻿({
-    "tabId": Required(Str(PTabID)),
-	"requestFromMobilePhone": Required(Boolean(PRequestFromMobilePhone)),
+        "tabId": Required(Str(PTabID)),
 	"tokenId": Required(Str(PTokenId)),
-	"bankAccount": Required(Str(PBuyerBankAccount)),
-	"bic" :Required(Str(PBic))
+	"requestFromMobilePhone": Optional(Boolean(PRequestFromMobilePhone)),
+	"bankAccount": Optional(Str(PBuyerBankAccount)),
+	"bic" :Optional(Str(PBic)),
+	"stripe" : Optional(Boolean(PStripePayment))
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-P:=GetServiceProvidersForSellingEDaler('SE','SEK');
+P:=GetServiceProvidersForBuyingEDaler('SE','SEK');
 ServiceProviderId := "";
 ServiceProviderType := "";
+
+PStripePayment == null ? PStripePayment:= false;
+PRequestFromMobilePhone == null ? PRequestFromMobilePhone:= false;
+PBic == null ? PBic := "";
+PBuyerBankAccount == null ? PBuyerBankAccount := "";
+
 foreach asp in P do
-  if Contains(asp.Id,PBic) then 
+
+   if (PStripePayment && Contains(asp.Id,"Stripe") ) then
     (
 	  ServiceProviderId := asp.Id;
-	  ServiceProviderType := asp.SellEDalerServiceProvider.Id + ".OpenPaymentsPlatformServiceProvider";
+	  ServiceProviderType := asp.BuyEDalerServiceProvider.Id + ".StripeServiceProvider";
+    )
+   else if (!PStripePayment && Contains(asp.Id,PBic)) then
+    (
+	  ServiceProviderId := asp.Id;
+	  ServiceProviderType := asp.BuyEDalerServiceProvider.Id + ".OpenPaymentsPlatformServiceProvider";
     );
 
+  
 PUserName := GetSetting("POWRS.PaymentLink.OPPUser","");
 PPassword := GetSetting("POWRS.PaymentLink.OPPUserPass","");
 
@@ -36,7 +50,15 @@ R := POST(NeuronAddress + "/Agent/Account/Login",
 		          {"Accept" : "application/json"});
 
 escrowDomain:= "https://" + Gateway.Domain + "/Downloads/EscrowRebnis.xsd";
-xmlNote:= "<InitiatePayment xmlns='" + escrowDomain + "' buyerBankAccount='" + PBuyerBankAccount + "' buyEdalerServiceProviderId='" + ServiceProviderId + "' buyEdalerServiceProviderType='" + ServiceProviderType + "' fromMobilePhone='" + PRequestFromMobilePhone + "'  tabId='" + PTabID + "' />";
+
+if (PStripePayment) then
+(
+   xmlNote:= "<InitiateCardPayment xmlns='" + escrowDomain + "' buyEdalerServiceProviderId='" + ServiceProviderId + "' buyEdalerServiceProviderType='" + ServiceProviderType + "'  tabId='" + PTabID + "' />";
+)else
+(
+   xmlNote:= "<InitiatePayment xmlns='" + escrowDomain + "' buyerBankAccount='" + PBuyerBankAccount + "' buyEdalerServiceProviderId='" + ServiceProviderId + "' buyEdalerServiceProviderType='" + ServiceProviderType + "' fromMobilePhone='" + PRequestFromMobilePhone + "'  tabId='" + PTabID + "' />";
+);
+
 
 xmlNoteResponse := POST(NeuronAddress + "/Agent/Tokens/AddXmlNote",
                  {
@@ -44,7 +66,7 @@ xmlNoteResponse := POST(NeuronAddress + "/Agent/Tokens/AddXmlNote",
 	              "note":xmlNote,
 	              "personal":false
                   },
-		        {"Accept" : "application/json",
+		{"Accept" : "application/json",
                 "Authorization":"Bearer " + R.jwt});
 {
   "OK": true

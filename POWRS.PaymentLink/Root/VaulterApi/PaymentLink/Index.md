@@ -1,12 +1,11 @@
 Title: Vaulter API v1
 Description: This document contains information about the Vaulter API (v1)
-Author: Vesna Farmak
+Author:  POWRS DOO
 Date: 2023-06-16
 Master: \Master.md
 Copyright: \Copyright.md
 
 ============================================================================
-
 Vaulter API (v1)
 ==================
 
@@ -23,14 +22,12 @@ at a time.
 
 The Vaulter API is accessed via HTTPS.
 
-### Encryption
-
-Unecnrypted requests will be rejected. Minimum cipher strength used in TLS layer is 128 bits of security.
 
 ### Authentication
-
-Clients of the API will be authenticated using the `WWW-Authentication` mechanism `BASIC`. Each client
-needs to [request an acccount](/Feedback.md), to get credentials to integrate with the API.
+Client needs `JWT` Token in order to access all the resources.
+Token must be sent in **Authorization** header in next format: **"Bearer exampleTokenRetrieved"**.
+To get an access token, client must login with provided credentials. Token is valid next 30 minutes.
+Token refresh must be initiated manually and not before token expiration since it is possible to system block account and throw `Too Many Requests` exception.
 
 ### Return Codes
 
@@ -45,7 +42,6 @@ Following is a list of common HTTP response codes used by the API:
 | 404  | Not Found          | Client has tried to access a resource that does not exist. |
 | 405  | Method Not Allowed | Client has attempted to access a resource using an HTTP Method that is not supported, for instance using `GET` on a resource that expects `POST`. |
 | 406  | Not Acceptable     | Client has requested information in a format that is not accepted by the API. |
-| 418  | I'm a teapot       | Client is a teapot. This is not permitted. |
 | 429  | Too Many Requests  | Client has issued too many failed authentication attempts. |
 
 ### Methods
@@ -57,34 +53,140 @@ Access to the API resources are done using `POST` if nothing else is explicitly 
 Payloads will be JSON, both in requests and in responses. This means the following headers must be present
 in all requests:
 
+Headers that must be included in every header so the server knows how to encode and decode data:
+### Mandatory headers
 ```
 Content-Type: application/json
 Accept: application/json
 ```
 
-#### Descriptive short-hand JSON syntax
+#### Mandatory Authorization Headers ( Except Login )
 
-When showing JSON structure format in the sections below, a short-hand format explaining the structure
-will be used. It should not be confused with real JSON that is being communicated to and from the API.
-The basic structure is normal JSON Object-ex-nihilo format. Simplified datatypes will be 
-noted as `string`, `integer`, `boolean`, etc. The Datatype may be in composition with `Required(...)`
-and `Optional(...)` to denote the corresponding property is required or optional accordingly. If
-validation rules apply, they will be included in the description, using one or two comparison operators,
-such as `integer>=10`, or `20<integer<100`. Embedded vectors are denoted using `[]`. Embedded objects
-are themselves also described as JSON objects.
+````
+Authorization: Bearer ...
+````
 
-SellIItem.ws
---------------
+### Login
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/SellItem.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Login.ws")}}`
+
+Method:  POST
+
+Read  **Authentication section** first.
+Call this resource to Login into the system using username and password provided by system administrators. 
+
+JSON
+-------
+
+Request
+
+:	```json
+:	{
+:		"userName":Required(Str(PUserName)),
+:		"nonce":Required(Str(PNonce)),
+:		"signature":Required(Str(PSignature))
+:	}
+:	```
+
+Response (if successful)
+
+:	```json
+:	{
+.		"jwt":Required(Str(PJwt)),
+.		"expires":Required(DateTime(PExpires))
+:	}
+:
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `userName`        | Username of the user that should login into system. |
+| `nonce`           | A unique random string, at least 32 characters long, with sufficient entropy to not be reused again.|
+| `signature` 	    | Cryptographic signature of request. |
+
+
+Calculating Signature
+------------------------
+
+The signature in `PSignature` is calculated as follows.
+
+1. Concatenate the strings `PUserName ":" Host ":" PNonce` and call it `s`, where `Host` is the host/domain name of the server. It is taken from
+the HTTP `Host` request header, so it must be the same as is used in the URL of the
+request.
+
+2. UTF-8 encode the *password* of the account, and call it `Key`.
+
+3. UTF-8 encode the string `s`, and call it `Data`.
+
+4. Calculate the HMAC-SHA256 signature using `Key` and `Data`, and call it `H`.
+
+5. Base64-encode `H`. The result is the signature of the request.
+
+Javascript Library
+---------------------
+
+Use the following method in the [Javascript Library](GenerateSigniture.js) to calculate Signature.
+
+
+### Get Service providers 
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Payout/API/GetBuyEdalerServiceProviders.ws")}}`
 Method: `POST`
+
+Call this resource to read all service providers which buyer can use to pay for given contract.
+
+**Request**
+
+````
+{
+   "ContractId": Required(Str(PContractId))
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `ContractId`        | Id of the contract for which providers should be retrieved. |
+
+**Response Example**
+
+````
+{
+	 "ServiceProviders": [
+        {
+            "Name": "Mock Buy eDaler",
+            "Id": "VaulterBuyEdaler2",
+            "IconUrl": "https://VaulterBuyEdaler2.png",
+            "BuyEDalerServiceProvider.Id": "Test",
+            "BuyEDalerTemplateContractId": "815164cf097c@legal.lab.neuron.vaulter.rs",
+            "QRCode": true
+        },
+        {
+            "Name": "Mock Buy eDaler",
+            "Id": "VaulterBuyEdaler2",
+            "IconUrl": "https://VaulterBuyEdaler2.png",
+            "BuyEDalerServiceProvider.Id": "Test",
+            "BuyEDalerTemplateContractId": "815164cf097c@legal.lab.neuron.vaulter.rs",
+            "QRCode": true
+        }
+    ]	 
+}
+````
+
+### Create Item
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/CreateItem.ws")}}`  
+Method: `POST`
+
 
 Call this resource to register a new Item in Vaulter. JSON in the following format is expected in the call.
 
-```
+**Request**
+
+````
 {
-    "userName": Required(String(PUserName)),
-    "password": Required(String(PPassword)),
     "orderNum":Required(String(PRemoteId)),
     "title":Required(String(PTitle)),
     "price":Required(Integer(PPrice)),
@@ -97,16 +199,15 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Optional(String(PCallbackUrl))
+    "callbackUrl":Optional(String(PCallbackUrl)),
+    "allowedServiceProviders": Optional(String(PAllowedServiceProviders))
 }
-```
+````
 
 Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
-| `userName`        | Client User Name on Vaulter neuron. |
-| `password`        | Client Password on Vaulter Neuron. |
 | `orderNum`        | ID of item in the caller's system. |
 | `title`           | Displayable name of item. |
 | `price`           | Price of the item. |
@@ -120,28 +221,253 @@ Description of properties:
 | `buyerPersonalNum`| Buyer personal number. |
 | `buyerCountryCode`| Buyer country code. |
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
+|`allowedServiceProviders`| List of ServiceProvider id's joined with ";" in single string. (BuyEdalerServiceProvider.Id)|
+
+**Response**
+
+````
+{
+	 "Link": "Represents payment link generated for the created item.",
+	 "EscrowFee": "Calculated fee that will be added on the item price.".
+	 "Currency": "Represents currency which will be used by buyer to pay"	 
+}
+````
 
 
-CancelItem.ws
---------------
+### Cancel Item
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/CancelItem.ws")}}`  
 Method: `POST`
 
 Call this resource to cancel an Item in Vaulter. JSON in the following format is expected in the call.
 
-```
+**Request**
+
+````
 {
-    "userName": Required(String(userName)),
-    "password": Required(String(password)),
-    "contractId": Required(String(contractId))
+    "contractId": Required(String(contractId)),
+    "refundAmount" : Optional(int(PRefundAmount))
 }
-```
+````
 
 Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
-| `userName`        | Same username used to register an item in our system |
-| `password`        | Same password used to register an item in our system |
 | `contractId`      | Contract Id. This id is returned as a response of sellItem |
+| `refundAmount`      | If payment is aleady done from the buyer side, how much to refunt to buyer. Rest of it will be released to seller's bank account. Could not be more than |
+
+**Response**
+
+````
+{
+ 200 OK 
+ {
+   "canceled" : true
+ }
+ 403 Forbidden
+ {
+	   // Token not valid.
+ }
+ 400 Bad Request
+ {
+	 // Amount not valid or contract not valid.
+ }
+}
+````
+
+
+### Get Contracts
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/GetContracts.ws")}}`  
+Method: `POST`
+
+Call this resource to  fetch items created by the owner of the `JWT Token` from the header section of the request.
+If token is not provided, or token is invalid, `Bad request` will be thrown, Also if token is expired, or something is wrong with logged party, `Forbidden` will be thrown.
+
+**Request**
+
+````
+{
+  "skip":Required(Int(PSkip)),
+  "take":Required(Int(PTake))
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `skip`      | How many items should be skipped when fetching data. ( Used for pagination. ) If none, use 0. |
+| `take`      | How many items should be retrieved when fetching data. If all records, use -1.|
+
+**Response**
+
+````
+{
+ "TokenId": (String),
+ "State":  (String),
+ "Created": (Decimal)(Date in miliseconds),
+ "CanCancel": (Boolean),
+ "IsActive": (Boolean),
+ "Variables": (Array)
+	  [
+		  {
+			   "Name": "VariableName",
+			   "Value": "VariableValue"
+		  },
+		  {
+			   "Name": "VariableName2",
+			   "Value": "VariableValue2"
+		  },
+	  ]
+}
+````
+
+### Get Account Info
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/GetAccountInfo.ws")}}`  
+Method: `POST`
+
+Call this resource to  fetch items created by the owner of the `JWT Token` from the header section of the request.
+If token is not provided, or token is invalid, `Bad request` will be thrown, Also if token is expired, or something is wrong with logged party, `Forbidden` will be thrown.
+
+**Request**
+
+````
+{
+}
+````
+
+There is no need of properties to be send in a request
+
+
+**Response**
+
+````
+{
+ "FIRST": (String),
+ "MIDDLE": (String),
+ "LAST":  (String),
+ "PNR": (String),
+ "COUNTRY": (String),
+ "ADDR" : (String),
+ "ADDR2" : (String),
+ "ZIP" : (String),
+ "AREA" : (String),
+ "CITY" : (String),
+ "REGION" : (String),
+ "JID": (String),
+ "AGENT" : (String),
+ "ORGNAME" : (String),
+ "ORGDEPT" : (String),
+ "ORGROLE" : (String),
+ "ORGCOUNTRY" : (String),
+ "ORGNR" : (String),
+ "ORGADDR" : (String),
+ "ORGADDR2" : (String),
+ "ORGZIP" : (String),
+ "ORGAREA" : (String),
+ "ORGCITY" : (String),
+ "ORGREGION" : (String),
+ "ORGCOUNTRY" : (String),
+}
+````
+
+### Verify Token
+---------------------------
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/VerifyToken.ws")}}`  
+Method: `POST`
+
+Read **Authorization section**.
+
+**Request**
+
+````
+{
+	 // Empty request body
+}
+````
+
+**Response**
+
+````
+200 OK
+	{
+		 "authorized": true
+	}
+403 Forbidden
+	{
+		 // This can mean that token is not valid, user not approved or blocked.
+		 // Must try to login again, if 200 OK is not returned, 
+		 // User is probably blocked or not permitted.
+	}
+400 Bad Request
+	{
+		 //This means that token is not presented, not valid or broken.
+	}
+````
+
+### Bank Identifier Code
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/GetBic.ws")}}`  
+Method: `POST`
+
+Call this resource to fetch Open payment service providers for given bankAccount. ***(Only works for sweden)***
+
+**Request**
+
+````
+{
+   "bankAccount":Required(String(PBankAccount))"
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `bankAccount`      | Valid bank account in Swedish IBAN format. (SE\\d{22})|
+
+**Response**
+
+
+````
+{
+	 "bic": (String) "Bank identifier code", 
+	 "serviceProviderId": (String) "Id of Open payment provider",
+     "eDalerServiceProviderId": (String) "Edaler service provider",
+     "serviceProviderType": (String) "Type of Open payment provider"
+}
+````
+
+
+### Send Contact Us Email 
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/SendContactUsEmail.ws")}}`  
+Method: `POST`
+
+Call this resource to send contact us email.
+
+**Request**
+
+````
+{
+  "userEmail":Required(String(PUserEmail)),
+  "body":Required(String(PBody))
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `userEmail`       | Email from the user which should be used when Powers want to contact. |
+| `body`            | Email body that should be send to Powrs info email. |
+
+**Response**
+
+
+````
+{
+	 "Success": (Bool) 
+}
+````
+

@@ -1,25 +1,40 @@
 ({
-    "userName":Required(Str(PUserName)),
-    "password":Required(Str(PPassword))	
+   "userName": Required(Str(PUserName)),
+   "nonce": Required(Str(PNonce)),
+   "signature": Required(Str(PSignature))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-Nonce := Base64Encode(RandomBytes(32));
-S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
+Response.SetHeader("Access-Control-Allow-Origin","*");
 
-Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
+if(System.String.IsNullOrWhiteSpace(PUserName) or System.String.IsNullOrWhiteSpace(PSignature) or System.String.IsNullOrWhiteSpace(PNonce)) then 
+(
+ BadRequest("Username, Nonce and Signature could not be empty");
+);
 
-Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
+validInSeconds:= 1800;
+Resp:= null;
+try 
+(
+  Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
                  {
                     "userName": PUserName,
-                     "nonce": Nonce,
-	                "signature": Signature,
-	                "seconds": 5
+                    "nonce": PNonce,
+	            "signature": PSignature,
+	            "seconds": validInSeconds
                   },
 		   {"Accept" : "application/json"});
+)
+catch
+(
+ Log.Error(Exception.Message, null);
+ BadRequest(Exception.Message);
+);
 
-domain:= "https://" + Gateway.Domain;
+Destroy(PUserName);
+Destroy(PNonce);
+Destroy(PSignature);
 
 {	
-    "jwt" : Response.jwt
+    "jwt" : Resp.jwt,
+    "validUntil": Now.AddSeconds(validInSeconds)
 }
-

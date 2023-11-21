@@ -31,6 +31,11 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.Secret",Posted.Secret);
 	SetSetting("POWRS.PaymentLink.OPPUserLegalId",Posted.LegalId);
 	SetSetting("POWRS.PaymentLink.TrustProviderLegalId",Posted.TrustProviderLegalId);
+	SetSetting("POWRS.PaymentLink.ContactEmail",Posted.ContactEmail);
+	SetSetting("POWRS.PaymentLink.TemplateId",Posted.TemplateId);
+	SetSetting("POWRS.PaymentLink.ApiKey",Posted.ApiKey);
+	SetSetting("POWRS.PaymentLink.ApiKeySecret",Posted.ApiKeySecret);
+
 	
 	SeeOther("Settings.md");
 );
@@ -66,6 +71,26 @@ if exists(Posted) then
 <p>
 <label for="TrustProviderLegalId">TrustProvider LegalId:</label>  
 <input type="text" id="TrustProviderLegalId" name="TrustProviderLegalId" value='{{GetSetting("POWRS.PaymentLink.TrustProviderLegalId","")}}' autofocus required title="Identity of Trust provider to use for signing the contracts"/>
+</p>
+
+<p>
+<label for="ContactEmail">Contact Email:</label>  
+<input type="text" id="ContactEmail" name="ContactEmail" value='{{GetSetting("POWRS.PaymentLink.ContactEmail","")}}' autofocus required title="Contact Email will be used to recive emails when user send contact data on a Paylink Generator Contact Us Screen "/>
+</p>
+
+<p>
+<label for="TemplateId">Template ID:</label>  
+<input type="text" id="TemplateId" name="TemplateId" value='{{GetSetting("POWRS.PaymentLink.TemplateId","")}}' autofocus required title="TemplateId used for creating contracts. "/>
+</p>
+
+<p>
+<label for="ApiKey">ApiKey:</label>  
+<input type="text" id="ApiKey" name="ApiKey" value='{{GetSetting("POWRS.PaymentLink.ApiKey","")}}' autofocus required title="ApiKey used to create legal identities"/>
+</p>
+
+<p>
+<label for="ApiKeySecret">ApiKeySecret: </label>  
+<input type="text" id="ApiKeySecret" name="ApiKeySecret" value='{{GetSetting("POWRS.PaymentLink.ApiKeySecret","")}}' autofocus required title="ApiKeySecret used in pair with api key to create legal identities. "/>
 </p>
 
 <button type="submit" class="posButton">Apply</button>

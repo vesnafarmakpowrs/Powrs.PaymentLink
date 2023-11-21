@@ -1,22 +1,51 @@
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
-    "userName": Required(String(PUserName)),
-    "password": Required(String(PPassword)),
-    "orderNum":Required(String(PRemoteId)),
-    "title":Required(String(PTitle)),
+    "orderNum":Required(String(PRemoteId) like "^(?!.*--)[a-zA-Z0-9-]{1,50}$"),
+    "title":Required(String(PTitle) like "[a-zA-Z0-9.,;:!?()'\" -]{1,30}"),
     "price":Required(Double(PPrice) >= 0.1),
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
-    "description":Required(String(PDescription)),
-    "deliveryDate":Required(String(PDeliveryDate)),
+    "description":Required(String(PDescription)  like "[a-zA-Z0-9.,;:!?()'\" -]{1,100}"),
+    "deliveryDate":Required(String(PDeliveryDate) like "^(0[1-9]|1[0-2])\\/(0[1-9]|[12][0-9]|3[01])\\/\\d{4}$"),
     "sellerBankAccount":Required(String(PClientBankAccount)),
-    "buyerFirstName":Required(String(PBuyerFirstName)),
-    "buyerLastName":Required(String(PBuyerLastName)),
-    "buyerEmail":Required(String(PBuyerEmail)),
-    "buyerPersonalNum":Required(String(PBuyerPersonalNum)),
-    "buyerCountryCode":Required(String(PBuyerCountryCode)),
-    "callbackUrl":Required(String(PCallBackUrl))
-}:=Posted) ??? BadRequest("Payload does not conform to specification.");
+    "buyerFirstName":Required(String(PBuyerFirstName) like "[\\p{L}\\s]{2,20}"),
+    "buyerLastName":Required(String(PBuyerLastName) like "[\\p{L}\\s]{2,20}"),
+    "buyerEmail":Required(String(PBuyerEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
+    "buyerPersonalNum":Required(String(PBuyerPersonalNum)  like "\\d*-?\\d*"),
+    "buyerCountryCode":Required(String(PBuyerCountryCode)  like "[A-Z]{2}"),
+    "callbackUrl":Required(String(PCallBackUrl)),
+    "allowedServiceProviders": Optional(String(PAllowedServiceProviders))
+}:=Posted) ??? BadRequest(Exception.Message);
+
+Jwt:= null;
+try
+(
+    header:= null;
+    Request.Header.TryGetHeaderField("Authorization", header);
+    auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", 
+            {"includeInfo": true}, {"Accept": "application/json", "Authorization": header.Value});
+   
+    Jwt:= header.Value;   
+    PUserName:= auth.userName;
+)
+catch
+(
+  Forbidden("Token not valid");
+);
+
+PPassword:= select top 1 Password from BrokerAccounts where UserName = PUserName;
+if(System.String.IsNullOrWhiteSpace(PPassword)) then 
+(
+    BadRequest("No user with given username");
+);
+
+LegalId := select top 1 Id from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc;
+if(System.String.IsNullOrEmpty(LegalId)) then
+(
+    BadRequest("User does not have approved legal identity so it is unable to sign contracts");
+);
 
 ParsedDeliveryDate:= null;
 if(!System.DateTime.TryParse(PDeliveryDate, ParsedDeliveryDate)) then
@@ -24,10 +53,9 @@ if(!System.DateTime.TryParse(PDeliveryDate, ParsedDeliveryDate)) then
   BadRequest("Delivery date must be in MM/dd/yyyy format");
 );
 
-LegalId := select top 1 Id from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc;
-if(System.String.IsNullOrEmpty(LegalId)) then
+if(ParsedDeliveryDate < Now) then 
 (
-    BadRequest("User " + PUserName + " does not have approved legal identity so it is unable to sign contracts");
+ BadRequest("Delivery date must be in the future");
 );
 
 KeyId := GetSetting(PUserName + ".KeyId","");
@@ -41,37 +69,36 @@ if(System.String.IsNullOrEmpty(KeyId) || System.String.IsNullOrEmpty(KeyPassword
 normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PBuyerCountryCode, PBuyerPersonalNum);
 isValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PBuyerCountryCode ,normalizedPersonalNumber);
 
-if(!isValid) then 
+if(isValid != true) then 
 (
     BadRequest("Personal number: " + PBuyerPersonalNum + " is not valid for the country: " + PBuyerCountryCode);
 );
 
-Nonce := Base64Encode(RandomBytes(32));
-S := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + Nonce;
-
-Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(PPassword)));
-NeuronAddress:= "https://" + Waher.IoTGateway.Gateway.Domain;
-
-R := POST(NeuronAddress + "/Agent/Account/Login",
-
-                 {
-                  "userName": PUserName,
-                  "nonce": Nonce,
-	              "signature": Signature,
-	              "seconds": 10
-                  },
-		{"Accept" : "application/json"});
-
-Token := "Bearer " + R.jwt;
-
-Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
-if Mode == TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox then
+if(exists(PAllowedServiceProviders) and PAllowedServiceProviders != null) then 
 (
-  TemplateId:= "2cbfa254-0981-c304-e022-c3a208abf72f@legal.lab.neuron.vaulter.rs"
+    allowedServiceProviders:= Split(PAllowedServiceProviders, ";");
+    if(allowedServiceProviders != null and allowedServiceProviders.Length > 0) then 
+    (
+       availableServiceProviders:= GetServiceProvidersForBuyingEdaler(PBuyerCountryCode, PCurrency).BuyEDalerServiceProvider.Id;
+       foreach allowed in allowedServiceProviders do 
+       (
+          if(indexOf(availableServiceProviders, allowed) < 0) then 
+          (
+             BadRequest("Invalid service providers selected");
+          );
+       );
+    );   
 )
-else
+else 
 (
-  TemplateId:="2cbfa57b-33d1-0c37-cc1e-7c208ee5521e@legal.neuron.vaulter.se";
+    PAllowedServiceProviders:= "";
+);
+
+TemplateId:= GetSetting("POWRS.PaymentLink.TemplateId","");
+
+if(System.String.IsNullOrWhiteSpace(TemplateId)) then 
+(
+    BadRequest("Not configured correctly");
 );
 
 ContractParameters:= select top 1 Parameters from Contracts where ContractId = TemplateId;
@@ -92,14 +119,14 @@ if(EscrowFee <= 0) then
 );
 
 
-Response := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/GetBic.ws",
+GetBicResponse := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/GetBic.ws",
                  {
                     "bankAccount":  PClientBankAccount
                   },
-		   {"Accept" : "application/json"});
+		   {"Accept" : "application/json", "Authorization": Jwt});
 
-PSellerServiceProviderId := Response.serviceProviderId;
-PSellerServiceProviderType := Response.serviceProviderType;
+PSellerServiceProviderId := GetBicResponse.serviceProviderId;
+PSellerServiceProviderType := GetBicResponse.serviceProviderType;
 
  Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = PUserName And State = 'Approved';
 
@@ -117,12 +144,13 @@ try
 Contract:=CreateContract(PUserName, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
-	 "Title": PTitle,
+	    "Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
         "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00),
         "DeliveryDate" : DateTime(ParsedDeliveryDate.Year, ParsedDeliveryDate.Month, ParsedDeliveryDate.Day, 23, 59, 59, 00),
         "Currency": PCurrency,
+        "Country": PBuyerCountryCode,
         "Expires": Today.AddDays(364),
         "SellerBankAccount" : PClientBankAccount,
         "SellerName" : SellerName,
@@ -131,10 +159,11 @@ Contract:=CreateContract(PUserName, TemplateId, "Public",
         "BuyerFullName":PBuyerFirstName + " " + PBuyerLastName,
         "BuyerPersonalNum":PBuyerPersonalNum,
         "BuyerEmail":PBuyerEmail,
-        "CallBackUrl" : PCallBackUrl
+        "CallBackUrl" : PCallBackUrl,
+        "AllowedServiceProviders": PAllowedServiceProviders
     })
 catch
-BadRequest("Check parameters and try again.");
+BadRequest(Exception.Message);
 
 Nonce := Base64Encode(RandomBytes(32));
 
@@ -149,6 +178,7 @@ Role := "Creator";
 
 S2 := S1 + ":" + KeySignature + ":" + Nonce + ":" + LegalId + ":" + ContractId + ":" + Role;
 RequestSignature := Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
+NeuronAddress:= "https://" + Waher.IoTGateway.Gateway.Domain;
 
 POST(NeuronAddress + "/Agent/Legal/SignContract",
                              {
@@ -161,8 +191,8 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
 	                        "requestSignature": RequestSignature
                                 },
 			      {
-				"Accept" : "application/json",
-                           "Authorization": Token
+			       "Accept" : "application/json",		       
+                               "Authorization": Jwt
                               });
 
 {

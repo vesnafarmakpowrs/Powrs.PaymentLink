@@ -35,6 +35,8 @@
 			<String id="30">För att betala med denna bank, vänligen öppna betalningslänken på telefonen där du har installerat Bank-ID.</String>
 			<String id="31">Betalaruppgifter</String>			
 			<String id="32">Betalningsinformation</String>
+			<String id="34">Kortinnehavarens namn</String>
+			<String id="35">Fullständigt namn på kortet</String>
 		</Namespace>
 	</Language>
 </Translation>

@@ -9,6 +9,26 @@ document.addEventListener("DOMContentLoaded", () => {
     GenerateServiceProvidersUI();
 });
 
+function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", resource, true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.setRequestHeader("Accept", "application/json"); 
+    xhttp.send(JSON.stringify(requestBody)); 
+
+    xhttp.onreadystatechange = function () { 
+        if (xhttp.readyState == 4) {
+            if (xhttp.status == 200 && onSuccess != null) {
+                let response = JSON.parse(xhttp.responseText);
+                onSuccess(response);
+            }
+            else {
+                if (onError != null) onError(xhttp);
+            }
+        };
+    };
+}
+
 function GenerateTranslations() {
     var element = document.getElementById("SelectedAccountOk");
     if (element == null) {
@@ -31,18 +51,10 @@ function GenerateLanguageDropdown() {
         return;
     }
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/GetAvailableLanguages.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
+    SendXmlHttpRequest("API/GetAvailableLanguages.ws",
         {
             "Namespace": document.getElementById("Namespace").value
-        }));
-
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            let response = JSON.parse(xhttp.responseText);
+        }, (response) => {
             if (response.Languages != null && response.Languages.length > 0) {
                 const languageDropdown = document.getElementById("languageDropdown");
                 response.Languages.forEach(language => {
@@ -60,8 +72,9 @@ function GenerateLanguageDropdown() {
                     window.location.href = url.toString();
                 });
             }
-        }
-    }
+        }, (error) => {
+            console.log(error.responseText);
+        });
 }
 
 function ShowAccountInfo(Accounts) {
@@ -78,65 +91,58 @@ function GenerateServiceProvidersUI() {
         return;
     }
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/GetBuyEdalerServiceProviders.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
+    SendXmlHttpRequest("API/GetBuyEdalerServiceProviders.ws",
         {
-            "Country": "SE",
-            "Currency": "SEK"
-        }));
+            "ContractId": document.getElementById("contractId").value,
+        },
+        (response) => {
+            serviceProviders = response.ServiceProviders;
+            let selectInput = document.getElementById("serviceProvidersSelect");
 
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4) {
-            var response = JSON.parse(xhttp.responseText);
-            if (xhttp.status === 200) {
-                serviceProviders = response.ServiceProviders;
+            selectInput.onchange = function () {
+                StartBankPayment();
+                var value = document.getElementById("serviceProvidersSelect").value;
+                let provider = serviceProviders.find(m => m.Name == value);
 
-                let selectInput = document.getElementById("serviceProvidersSelect");
-
-                selectInput.onchange = function () {
-                    var value = document.getElementById("serviceProvidersSelect").value;
-                    let provider = serviceProviders.find(m => m.Name == value);
-
-                    if (provider == null) {
-                        selectedServiceProvider = null;
-                        alert("Select valid bank.");
+                if (provider == null) {
+                    selectedServiceProvider = null;
+                    alert("Select valid bank.");
+                    return;
+                }
+                selectedServiceProvider = provider;
+                if (!Boolean(isMobileDevice) && !provider.QRCode) {
+                    ShowMessage(Translations.OpenLinkOnPhoneMessage);
+                }
+                else {
+                    ClearQrCodeDiv();
+                    if (provider.Name.includes('Stripe')) {
+                        StartCardPayment();
                         return;
                     }
-                    selectedServiceProvider = provider;
-                    if (!Boolean(isMobileDevice) && !provider.QRCode) {
-                        ShowMessage(Translations.OpenLinkOnPhoneMessage);
-                    }
-                    else {
-                        ClearQrCodeDiv();
-                        GetAccountInfo(); 
-                    }
-                };
-                for (let i = 0; i < serviceProviders.length; i++) {
-                    const provider = serviceProviders[i];
-                    if (provider != null) {
-                        var option = document.createElement("option");
-                        option.text = provider.Name;
-                        selectInput.add(option);
-                    }
+                    GetBankAccounts();
+                }
+            };
+            for (let i = 0; i < serviceProviders.length; i++) {
+                const provider = serviceProviders[i];
+                if (provider != null) {
+                    var option = document.createElement("option");
+                    option.text = provider.Name;
+                    selectInput.add(option);
                 }
             }
-        }
-    }
+        }, null);
 }
 
 function ClearQrCodeDiv() {
     var container = document.getElementById('QrCode');
     container.innerHTML = "";
-    ToggleSpinner(true);
 
     return container;
 }
 
 function GenerateAccountsListUi(accounts) {
     var container = ClearQrCodeDiv();
+    ToggleSpinner(true);
     var accountList = document.createElement('div');
     accountList.className = "account-list";
 
@@ -186,35 +192,26 @@ function GenerateAccountsListUi(accounts) {
     container.appendChild(accountList);
 }
 
-function GetAccountInfo() {
-    const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/GetAccountInfo.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
-        {
-            "tabId": TabID,
-            "sessionId": "",
-            "requestFromMobilePhone": Boolean(isMobileDevice),
-            "bicFi": selectedServiceProvider.Id,
-            "bankName": selectedServiceProvider.Name,
-            "contractId": document.getElementById("contractId").value
-        }));
+function GetBankAccounts() {
 
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4 && xhttp.status === 200) {
-            var response = JSON.parse(xhttp.responseText);
-            if (isMobileDevice) {
-                ShowAccountInfo(response.Results);
-            }
+    SendXmlHttpRequest("API/GetBankAccounts.ws", {
+        "tabId": TabID,
+        "sessionId": "",
+        "requestFromMobilePhone": Boolean(isMobileDevice),
+        "bicFi": selectedServiceProvider.Id,
+        "bankName": selectedServiceProvider.Name,
+        "contractId": document.getElementById("contractId").value
+    }, (response) => {
+        if (isMobileDevice) {
+            ShowAccountInfo(response.Results);
         }
-    }
+    }, null);
 }
 
 function StartPayment(iban, bic) {
     ToggleServiceProviderSelect(true);
     ClearQrCodeDiv();
+    ToggleSpinner(true);
     let contractId = document.getElementById('contractId').value;
 
     if (!contractId || !iban || !bic) {
@@ -222,33 +219,24 @@ function StartPayment(iban, bic) {
         return;
     }
 
-    const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/InitiatePayment.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
-        {
-            "tabId": TabID,
-            "requestFromMobilePhone": Boolean(isMobileDevice),
-            "tokenId": document.getElementById("TokenId").value,
-            "bankAccount": iban,
-            "bic": bic
-        }));
-
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4) {
-            if (xhttp.status === 200) {
-                var response = JSON.parse(xhttp.responseText);
-                if (!response.OK) {
-                    TransactionFailed(null);
-                }
-            }
-            else {
+    SendXmlHttpRequest("API/InitiatePayment.ws", {
+        "tabId": TabID,
+        "requestFromMobilePhone": Boolean(isMobileDevice),
+        "tokenId": document.getElementById("TokenId").value,
+        "bankAccount": iban,
+        "bic": bic
+    },
+        (response) => {
+            if (!response.OK) {
                 TransactionFailed(null);
             }
-        }
-    }
+        },
+        (error) => {
+            if (error.status === 408) {
+                return;
+            }
+            TransactionFailed(null);
+        });
 }
 
 function TransactionInProgress(Result) {
@@ -353,10 +341,13 @@ function PaymentError(Data) {
 function UserAgree() {
     if (!document.getElementById("purchaseAgreement").checked ||
         !document.getElementById("termsAndCondition").checked) {
-        document.getElementById("serviceProvidersSelect").disabled = true;
+        document.getElementById("payment-form-bank").disabled = true;
+        document.getElementById("payment-form-card").disabled = true;
     }
     else {
-        document.getElementById("serviceProvidersSelect").disabled = false;
+
+        document.getElementById("payment-form-bank").disabled = false;
+        document.getElementById("payment-form-card").disabled = false;
         var container = document.getElementById('QrCode');
         container.innerHTML = "";
     }
@@ -405,21 +396,224 @@ function downloadPDF(base64Data, filename) {
 }
 
 function generatePDF() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/DealInfo.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
+    SendXmlHttpRequest("API/DealInfo.ws",
         {
             "contractId": document.getElementById("contractId").value,
             "countryCode": "EN"
-        }));
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4) {
-            if (xhttp.status === 200) {
-                var response = JSON.parse(xhttp.responseText);
-                downloadPDF(response.PDF, response.Name);
-            }
+        },
+        (response) => {
+            downloadPDF(response.PDF, response.Name);
+        }, null);
+}
+
+function AddStipeNameInput() {
+    var t = document.getElementById("payment-element");
+
+    var outerDiv = document.createElement('div');
+    outerDiv.className = 'flex-item width-12 stipe-name-div';
+
+    outerDiv.setAttribute('style', 'line-height:20px');
+    // Create the FormFieldGroup div
+    var formFieldGroupDiv = document.createElement('div');
+    formFieldGroupDiv.className = 'FormFieldGroup';
+
+    // Create the label and its container
+    var labelContainer = document.createElement('div');
+    labelContainer.className = 'stripe-cardholder-name FormFieldGroup-labelContainer flex-container justify-content-space-between';
+    var label = document.createElement('label');
+    label.setAttribute('for', 'billingName');
+    label.setAttribute('style', 'align-self:flex-end');
+    var labelText = document.createElement('span');
+    labelText.className = 'Label Text-color--gray600 stipe-name-input';
+
+    const cardHolderTxt = document.getElementById("cardHolderTxt");
+    const cardHolderNameTxt = document.getElementById("cardHolderNameTxt");
+
+    labelText.textContent = cardHolderTxt.value;
+    label.appendChild(labelText);
+    labelContainer.appendChild(label);
+
+    // Create the Fieldset div with an inner container
+    var fieldsetDiv = document.createElement('div');
+    fieldsetDiv.className = 'FormFieldGroup-Fieldset';
+    fieldsetDiv.id = 'billingName-fieldset';
+    var fieldsetInnerDiv = document.createElement('div');
+    fieldsetInnerDiv.className = 'FormFieldGroup-container';
+    fieldsetInnerDiv.id = 'billingName-fieldset-inner';
+
+    // Create the FormFieldGroup-child div
+    var formFieldChildDiv = document.createElement('div');
+    formFieldChildDiv.className = 'FormFieldGroup-child FormFieldGroup-child--width-12 FormFieldGroup-childLeft FormFieldGroup-childRight FormFieldGroup-childTop FormFieldGroup-childBottom';
+
+    // Create the FormFieldInput div
+    var formFieldInputDiv = document.createElement('div');
+    formFieldInputDiv.className = 'p-FieldLabel';
+    fieldsetDiv.setAttribute('style', 'vertical-align:bottom');
+    // Create the CheckoutInputContainer div and its contents
+    var checkoutInputContainerDiv = document.createElement('div');
+    checkoutInputContainerDiv.className = 'CheckoutInputContainer';
+    var inputContainerSpan = document.createElement('span');
+    inputContainerSpan.className = 'InputContainer';
+    inputContainerSpan.setAttribute('data-max', '');
+
+    // Create the input element
+    var inputElement = document.createElement('input');
+    inputElement.className = 'CheckoutInput Input Input--empty';
+    inputElement.setAttribute('autocomplete', 'ccname');
+    inputElement.setAttribute('autocorrect', 'off');
+    inputElement.setAttribute('spellcheck', 'false');
+    inputElement.id = 'billingName';
+    inputElement.name = 'billingName';
+    inputElement.type = 'text';
+    inputElement.setAttribute('placeholder', cardHolderNameTxt.value);
+    inputElement.setAttribute('aria-invalid', 'false');
+    inputElement.value = '';
+
+    // Append the input element to the input container
+    inputContainerSpan.appendChild(inputElement);
+
+    // Append all elements together to create the desired structure
+    checkoutInputContainerDiv.appendChild(inputContainerSpan);
+    formFieldInputDiv.appendChild(checkoutInputContainerDiv);
+    formFieldChildDiv.appendChild(formFieldInputDiv);
+    fieldsetInnerDiv.appendChild(formFieldChildDiv);
+    fieldsetDiv.appendChild(fieldsetInnerDiv);
+    formFieldGroupDiv.appendChild(labelContainer);
+    formFieldGroupDiv.appendChild(fieldsetDiv);
+    outerDiv.appendChild(formFieldGroupDiv);
+
+    t.appendChild(outerDiv);
+}
+
+function GeneratePaymentForm(Data) {
+    var stripe = Stripe(Data.PublishableKey);
+    const clientSecret = Data.ClientSecret;
+
+    const appearance = {
+        theme: 'stripe',
+        variables: { colorPrimaryText: '#262626' }
+    };
+
+    const elements = stripe.elements({ appearance, clientSecret });
+
+    const languageDropdown = document.getElementById("languageDropdown");
+    elements.update({ locale: languageDropdown.value });
+
+    const paymentElement = elements.create('payment');
+    document.getElementById("stripe-submit").style.display = "block";
+    // Add an instance of the card Element into the card-element div.
+    paymentElement.mount('#payment-element');
+
+
+    const form = document.getElementById('payment-form-card');
+    AddStipeNameInput();
+    // Handle form submission.
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        let error = null;
+        try {
+
+            stripe.confirmPayment({
+                elements,
+
+                redirect: "if_required",
+                payment_method_data: {
+                    billing_details: {
+                        name: document.getElementById("buyerFullName"),
+                        email: document.getElementById("buyerEmail")
+                    }
+                },
+            })
+                .then(function (result) {
+                    console.log(result);
+                    error = result.error;
+                    if (error) {
+                        console.error(error.message);
+                    }
+                });
+        } catch (error) {
+            console.error(error);
         }
+    });
+}
+
+function StartBankPayment() {
+    SelectDirectPayment();
+    ShowBankPayment(true);
+}
+
+function ShowBankPayment(show) {
+    if (show) {
+        document.getElementById("payment-form-card").style.display = "none";
+        document.getElementById("payment-form-bank").style.display = "block";
+    }
+    else {
+        document.getElementById("payment-form-card").style.display = "block";
+        document.getElementById("payment-form-bank").style.display = "none";
+    }
+    ClearQrCodeDiv();
+    ToggleSpinner(false);
+}
+function StartCardPayment() {
+    SelectCardPayment(true);
+    ShowBankPayment(false);
+    SendXmlHttpRequest("API/InitiateCardPayment.ws",
+        {
+            "tabId": TabID,
+            "tokenId": document.getElementById("TokenId").value
+        },
+        (response) => {
+            if (!response.OK) {
+                TransactionFailed(null);
+            }
+        },
+        (error) => {
+            if (error.status === 408) {
+                return;
+            }
+            TransactionFailed(null);
+        })
+}
+
+function SelectDirectPayment() {
+    SelectCardPayment(false);
+    ExpandOtherPaymentMethods(false);
+}
+
+function ExpandOtherPaymentMethods(expand) {
+    if (expand) {
+        document.getElementById("payment-other-methods").style.display = "none";
+        document.getElementById("payment-card-tbl").style.display = "block";
+    }
+    else {
+        document.getElementById("payment-other-methods").style.display = null;
+        document.getElementById("payment-card-tbl").style.display = "none";
     }
 }
+
+function SelectCardPayment(selected) {
+    if (selected) {
+        document.getElementById("payment-notice-lbl").style.display = "none";
+        document.getElementById("payment-bank-btn").style.display = "none";
+        selectPaymentBtn("payment-card-btn");
+        unSelectPaymentBtn("payment-direct-bank-btn");
+    }
+    else {
+        document.getElementById("payment-notice-lbl").style.display = null;
+        document.getElementById("payment-bank-btn").style.display = null;
+        selectPaymentBtn("payment-direct-bank-btn");
+        unSelectPaymentBtn("payment-card-btn");
+    }
+}
+
+function selectPaymentBtn(elementId) {
+    var cardBtn = document.getElementById(elementId);
+    cardBtn.classList.add("payment-btn-selected");
+}
+
+function unSelectPaymentBtn(elementId) {
+    var directBankBtn = document.getElementById(elementId);
+    directBankBtn.classList.remove("payment-btn-selected");
+}
+

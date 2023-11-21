@@ -74,6 +74,7 @@
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\GetAvailableLanguages.ws" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\ContactUs.html" />
 		<None Remove="Root\Payout\HtmlTemplates\EN\ReleaseFundsReport.html" />
 		<None Remove="Root\Payout\InitiatePayment.ws" />
 		<None Remove="Root\Payout\PaymentLink.js" />
@@ -85,15 +86,39 @@
 		<None Remove="Root\Payout\Settings.md" />
 		<None Remove="Root\Payout\vaulter_logo.svg" />
 		<None Remove="Root\Payout\vaulterlogo.svg" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\purchase_agreement.html" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentCompleted.html" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentNotPerformed.html" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentReimbursed.html" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\ReleaseFunds.html" />
+		<None Remove="Root\VaulterApi\PaymentLink\CreateItem.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\GetAccountInfo.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Index.md" />
-		<None Remove="Root\VaulterApi\PaymentLink\SellItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\ReportNewState.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetBic.ws" />
 		<None Remove="POWRS.PaymentLink.manifest" />
+		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
 	</ItemGroup>
 	<ItemGroup>
-		<Content Include="Root\VaulterApi\PaymentLink\SellItem.ws">
+	  <Content Include="Root\Payout\HtmlTemplates\EN\ContactUs.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Root\Payout\HtmlTemplates\EN\Reports\ReleaseFundsReport.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Root\Payout\HtmlTemplates\EN\Reports\PaymentReimbursedReport.html">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\GetAccountInfo.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\CreateItem.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\GetBic.ws">
@@ -114,7 +139,7 @@
 		<Content Include="Root\Payout\js\Events.js">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\Payout\API\GetAccountInfo.ws">
+		<Content Include="Root\Payout\API\GetBankAccounts.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\js\PaymentLink.js">
@@ -163,6 +188,9 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\API\GetAvailableLanguages.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\API\InitiateCardPayment.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\API\InitiatePayment.ws">

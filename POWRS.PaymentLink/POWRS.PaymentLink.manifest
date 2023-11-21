@@ -8,6 +8,7 @@
 				<Content fileName="SellItem.ws"/>
 				<Content fileName="GetBic.ws"/>
 				<Content fileName="Index.md"/>
+				<Content fileName="CreateItem.md"/>
 			</Folder>
 		</Folder>
 		    <Folder name="Payout">
@@ -15,12 +16,16 @@
 				<Content fileName="Settings.md"/>
 				<Folder name="API">
 					<Content fileName="InitiatePayment.ws"/>
-					<Content fileName="GetAccountInfo.ws"/>
+					<Content fileName="GetBankAccounts.ws"/>
 					<Content fileName="GetBuyEdalerServiceProviders.ws"/>
+					<Content fileName="InitiateCardPayment.ws"/>
+					<Content fileName="InitiatePayment.ws"/>
 					<Content fileName="RegisterUpdates.ws"/>
 					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="DealInfo.ws"/>
 					<Content fileName="GetAvailableLanguages.ws"/>
+					<Content fileName="VerifyToken.ws"/>
+					<Content fileName="GetContracts.ws"/>
 				</Folder>
 				<Folder name="js">
 					<Content fileName="Events.js"/>
