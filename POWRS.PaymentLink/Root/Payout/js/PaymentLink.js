@@ -14,7 +14,7 @@ function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     xhttp.open("POST", resource, true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(requestBody));
+    xhttp.send(JSON.stringify(requestBody)); 
 
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4) {
