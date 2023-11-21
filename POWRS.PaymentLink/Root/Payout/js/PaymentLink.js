@@ -13,10 +13,10 @@ function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", resource, true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
+    xhttp.setRequestHeader("Accept", "application/json"); 
     xhttp.send(JSON.stringify(requestBody)); 
 
-    xhttp.onreadystatechange = function () {
+    xhttp.onreadystatechange = function () { 
         if (xhttp.readyState == 4) {
             if (xhttp.status == 200 && onSuccess != null) {
                 let response = JSON.parse(xhttp.responseText);
