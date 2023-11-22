@@ -289,17 +289,8 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 
 ````
 {
-  "skip":Required(Int(PSkip)),
-  "take":Required(Int(PTake))
 }
 ````
-
-Description of properties:
-
-| Name              | Description |
-|:------------------|:------------|
-| `skip`      | How many items should be skipped when fetching data. ( Used for pagination. ) If none, use 0. |
-| `take`      | How many items should be retrieved when fetching data. If all records, use -1.|
 
 **Response**
 
@@ -310,6 +301,7 @@ Description of properties:
  "Created": (Decimal)(Date in miliseconds),
  "CanCancel": (Boolean),
  "IsActive": (Boolean),
+ "Paylink": (String),
  "Variables": (Array)
 	  [
 		  {
