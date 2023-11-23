@@ -37,17 +37,10 @@ if(System.String.IsNullOrEmpty(TokenId)) then
 );
 
 domain:= "https://" + Gateway.Domain;
-namespace:= domain + "/Downloads/EscrowRebnis.xsd";
+namespace:= domain + "/Downloads/EscrowPaylink.xsd";
 
-
-if exists(PRefundAmount)  then
-(
-  xmlNote := "<ReturnFunds xmlns='" + namespace + "' amountToBeReturned='" + PRefundAmount + "' />";
-)
-else
-(
-  xmlNote := "<ReturnFunds xmlns='" + namespace + "' amountToBeReturned='" + TokenValue + "' />";
-);
+AmountToRefund:= exists(PRefundAmount) ? PRefundAmount : TokenValue;
+xmlNote := "<ReturnFunds xmlns='" + namespace + "' amountToBeReturned='" + AmountToRefund + "' />";
 
 xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",
                  {
