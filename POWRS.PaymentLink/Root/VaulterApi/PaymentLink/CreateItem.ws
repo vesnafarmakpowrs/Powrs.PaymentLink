@@ -47,15 +47,17 @@ if(System.String.IsNullOrEmpty(LegalId)) then
     BadRequest("User does not have approved legal identity so it is unable to sign contracts");
 );
 
-ParsedDeliveryDate:= null;
-if(!System.DateTime.TryParse(PDeliveryDate, ParsedDeliveryDate)) then
+try 
 (
-  BadRequest("Delivery date must be in MM/dd/yyyy format");
-);
-
-if(ParsedDeliveryDate < Now) then 
+ ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "MM/dd/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
+ if(ParsedDeliveryDate < Now) then 
+ (
+    Error("Delivery date must be in the future");
+ );
+)
+catch
 (
- BadRequest("Delivery date must be in the future");
+  BadRequest(Exception.Message);
 );
 
 KeyId := GetSetting(PUserName + ".KeyId","");
@@ -147,11 +149,11 @@ Contract:=CreateContract(PUserName, TemplateId, "Public",
 	    "Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
-        "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00),
-        "DeliveryDate" : DateTime(ParsedDeliveryDate.Year, ParsedDeliveryDate.Month, ParsedDeliveryDate.Day, 23, 59, 59, 00),
+        "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00).ToUniversalTime(),
+        "DeliveryDate" : DateTime(ParsedDeliveryDate.Year, ParsedDeliveryDate.Month, ParsedDeliveryDate.Day, 23, 59, 59, 00).ToUniversalTime(),
         "Currency": PCurrency,
         "Country": PBuyerCountryCode,
-        "Expires": Today.AddDays(364),
+        "Expires": TodayUtc.AddDays(364),
         "SellerBankAccount" : PClientBankAccount,
         "SellerName" : SellerName,
         "SellerServiceProviderId" : PSellerServiceProviderId,
