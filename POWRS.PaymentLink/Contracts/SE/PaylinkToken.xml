@@ -115,7 +115,7 @@
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
-					<OnEvent newState="Cancel">
+					<OnEvent newState="PaymentCanceled">
 						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" />
 					</OnEvent>
 					<OnEvent actionRef="InitiatePayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
@@ -134,7 +134,7 @@
 					<OnEvent newState="ServiceDelivered">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
-					<OnEvent actionRef="ReturnFunds" failureState="PaymentCompleted" newState="Cancel">
+					<OnEvent actionRef="ReturnFunds" failureState="PaymentCompleted" newState="PaymentCanceled">
 						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" />
 					</OnEvent>
 				</State>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Translation xmlns="http://waher.se/Schema/Translation.xsd">
+	<Language code="rs" name="Serbian">
+		<Namespace name="POWRS.PaymentLink">
+			<String id="1">Iznos koji vaulter čuva do kraja perioda za otkazivanja koji je odredio prodavac</String>
+			<String id="2">Autorizacija primaoca </String>
+			<String id="3">Adresa E-pošte </String>
+			<String id="4">Ime </String>
+			<String id="5">Link za plaćanje je istekao. Kontaktiraj prodavca za dobijanje novog </String>
+			<String id="6">Zaštiti svoj novac uz pomoć Vaultera </String>
+			<String id="7">Kupoprodajni ugovor </String>
+			<String id="8">Skenirajte QR kod pomoću BANK-ID aplikacije ili kliknite na njega ako je vaš Bank-ID instaliran na vašem računaru </String>
+			<String id="9">Izaberite banku</String>
+			<String id="10">Izabrali ste račun: {0}. Da li ste sigurni? </String>
+			<String id="11">Prodavac </String>
+			<String id="12">Prodaje </String>
+			<String id="13">Čeka se plaćanje </String>
+			<String id="14">Otkazano </String>
+			<String id="15">Završeno </String>
+			<String id="16">Plaćanje uspešno završeno </String>
+			<String id="17">Plaćanje nije izvršeno </String>
+			<String id="18">Pružanje usluga </String>
+			<String id="19">Uslovi korišćenja </String>
+			<String id="20">Ukupno za naplatu </String>
+			<String id="21">Vaulter naknada </String>
+			<String id="22">Dobrodošli na Vaulter naplatu </String>
+			<String id="23">Link za plaćanje je istekao. Kontaktiraj prodavca za dobijanje novog </String>
+			<String id="24">Nije moguće izabrati ovaj račun. Nemate dovoljno sredstava.</String>
+			<String id="25">Skenirajte QR kod pomoću Bank-ID aplikacije.</String>
+			<String id="26">Bank-ID Autorizacija</String>
+			<String id="27">Plaćanje je uspešno. Hvala što koristite Vaulter!</String>
+			<String id="28">Plaćanje nije moguće. Izaberite drugi račun i pokušajte ponovo!</String>
+			<String id="29">Plaćanje je u toku. Ne osvežavajte stranicu!</String>
+			<String id="30">Da biste platili preko ove banke, otvorite link za plaćanje na telefonu na koji ste podesili svoj Bank-ID.</String>
+			<String id="31">Detalji platioca</String>
+			<String id="32">Detalji za plaćanje</String>
+			<String id="34">Ime vlasnika kartice</String>
+			<String id="35">Puno ime na kartici</String>
+			<String id="36">Pametna plaćanja</String>
+			<String id="37">Preostalo za plaćanje</String>
+			<String id="38">Pregled plaćanja</String>
+			<String id="39">Proizvod</String>
+			<String id="40">Cena</String>
+			<String id="41">Način plaćanja</String>
+			<String id="42">Stanje na bankovnom računu je vidljivo samo vama. Nemamo uvid niti čuvamo te informacije.</String>
+			<String id="43">-- izaberite banku --</String>
+			<String id="44">Ostali načini plaćanja</String>
+			<String id="45">Instant plaćanja preko bankovnog računa</String>
+			<String id="46">Plaćanje karticom</String>
+		</Namespace>
+	</Language>
+</Translation>
