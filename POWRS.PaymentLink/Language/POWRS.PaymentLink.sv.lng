@@ -37,6 +37,17 @@
 			<String id="32">Betalningsinformation</String>
 			<String id="34">Kortinnehavarens namn</String>
 			<String id="35">Fullständigt namn på kortet</String>
+			<String id="36">Smart payments checkout</String>
+			<String id="37">tid kvar </String>
+			<String id="38">Betalningssuma</String>
+			<String id="39">Produkt</String>
+			<String id="40">Pris</String>
+			<String id="41">Payment method</String>
+			<String id="42">Bankkontot är bara synligt för dig. Vi kan inte se eller spara denna information.</String>
+			<String id="43">-- Välj bank --</String>
+			<String id="44">andra betalningsmetoder</String>
+			<String id="45">Direct payment from your bank account</String>
+			<String id="46">Card payment</String>
 		</Namespace>
 	</Language>
 </Translation>

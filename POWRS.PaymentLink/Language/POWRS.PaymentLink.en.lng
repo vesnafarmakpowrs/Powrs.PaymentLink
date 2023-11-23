@@ -36,6 +36,17 @@
 			<String id="32">Payment details</String>
 			<String id="34">Cardholder name</String>
 			<String id="35">Full name on card</String>
+			<String id="36">Smart payments checkout</String>
+			<String id="37">Left to pay</String>
+			<String id="38">Payment summary</String>
+			<String id="39">Item</String>
+			<String id="40">Price</String>
+			<String id="41">Payment method</String>
+			<String id="42">The bank account balance is visible only to you. We are not viewing or saving this information.</String>
+			<String id="43">-- please select bank --</String>
+			<String id="44">other payment methodes</String>
+			<String id="45">Direct payment from your bank account</String>
+			<String id="46">Card payment</String>
 		</Namespace>
 	</Language>
 </Translation>
