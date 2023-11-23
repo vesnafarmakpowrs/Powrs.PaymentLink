@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Translation xmlns="http://waher.se/Schema/Translation.xsd">
 	<Language code="sv" name="Svenska">
-		<Namespace name="POWRS.PaymentLink">
-			
+		<Namespace name="POWRS.PaymentLink">			
 			<String id="1">Summan som skyddas av Vaulter tills uppsägningstiden som säljaren stipulerar löper ut</String>
 		    <String id="2">Auktoriserad mottagare</String>
 		    <String id="3">Email-adress</String>

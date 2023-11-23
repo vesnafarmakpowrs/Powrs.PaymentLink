@@ -5,27 +5,30 @@
 		    <Folder name="VaulterApi">
 			<Folder name="PaymentLink">
 				<Content fileName="CancelItem.ws"/>
-				<Content fileName="SellItem.ws"/>
+				<Content fileName="CreateAccount.ws"/>
+				<Content fileName="GetAccountInfo.ws"/>
+				<Content fileName="CreateItem.ws"/>
 				<Content fileName="GetBic.ws"/>
+				<Content fileName="GetContracts.ws"/>
 				<Content fileName="Index.md"/>
-				<Content fileName="CreateItem.md"/>
+				<Content fileName="Login.ws"/>
+				<Content fileName="ReportNewState.ws"/>
+				<Content fileName="SendContactUsEmail.ws"/>
+				<Content fileName="VerifyToken.ws"/>
 			</Folder>
 		</Folder>
 		    <Folder name="Payout">
 				<Content fileName="Payout.md"/>
 				<Content fileName="Settings.md"/>
 				<Folder name="API">
-					<Content fileName="InitiatePayment.ws"/>
+					<Content fileName="DealInfo.ws"/>
+					<Content fileName="GetAvailableLanguages.ws"/>
 					<Content fileName="GetBankAccounts.ws"/>
 					<Content fileName="GetBuyEdalerServiceProviders.ws"/>
 					<Content fileName="InitiateCardPayment.ws"/>
 					<Content fileName="InitiatePayment.ws"/>
+					<Content fileName="InitiatePayment.ws"/>
 					<Content fileName="RegisterUpdates.ws"/>
-					<Content fileName="ReportNewState.ws"/>
-					<Content fileName="DealInfo.ws"/>
-					<Content fileName="GetAvailableLanguages.ws"/>
-					<Content fileName="VerifyToken.ws"/>
-					<Content fileName="GetContracts.ws"/>
 				</Folder>
 				<Folder name="js">
 					<Content fileName="Events.js"/>
@@ -64,6 +67,6 @@
 	<Folder name="Language">
 		<Content fileName="POWRS.PaymentLink.en.lng"/>
 		<Content fileName="POWRS.PaymentLink.sv.lng"/>
-		<Content fileName="POWRS.PaymentLink.rs.lng"/>
+		<Content fileName="POWRS.PaymentLink.sr.lng"/>
 	</Folder>
 </Module>

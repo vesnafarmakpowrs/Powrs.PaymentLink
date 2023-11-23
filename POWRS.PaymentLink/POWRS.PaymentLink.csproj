@@ -76,6 +76,8 @@
 
 	
 	<ItemGroup>
+		<None Remove="Root\Payout\API\GetAvailableLanguages.ws" />
+		<None Remove="Root\Payout\API\InitiatePayment.ws" />
 		<None Remove="Root\Payout\DealInfo.ws" />
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
@@ -103,6 +105,12 @@
 		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
 	</ItemGroup>
 	<ItemGroup>
+		<Content Include="Root\Payout\API\GetAvailableLanguages.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\Payout\API\InitiatePayment.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -168,26 +176,23 @@
 	<ItemGroup>
 		<PackageReference Include="Waher.Content" Version="2.6.5" />
 		<PackageReference Include="Waher.Events" Version="1.1.3" />
-		<PackageReference Include="Waher.Persistence" Version="1.10.0" />		
+		<PackageReference Include="Waher.Persistence" Version="1.10.1" />		
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Update="Language\POWRS.PaymentLink.en.lng">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Language\POWRS.PaymentLink.rs.lng">
+	  <None Update="Language\POWRS.PaymentLink.sr.lng">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Language\POWRS.PaymentLink.sv.lng">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\Payout\API\GetAvailableLanguages.ws">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Root\Payout\API\InitiateCardPayment.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\Payout\API\InitiatePayment.ws">
+	  <None Update="Root\Payout\css\Stripe.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\Fonts\Coanda-Bold.ttf">
@@ -199,12 +204,48 @@
 	  <None Update="Root\Payout\Fonts\RTDromo-Medium.woff2">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\PaymentCompleted.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\PaymentReimbursed.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\purchase_agreement.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\ReleaseFunds.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\SE\PaymentCompleted.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\SE\PaymentReimbursed.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\SE\purchase_agreement.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\SE\ReleaseFunds.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\CreateAccount.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\GetContracts.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Login.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\VerifyToken.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 
 	<PropertyGroup>
 
-		<TargetFramework>netcoreapp2.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 	</PropertyGroup>
 	
 </Project>
