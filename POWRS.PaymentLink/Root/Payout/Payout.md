@@ -53,13 +53,7 @@ if ContractState == "AwaitingForPayment" then
    
     if !exists(Contract) then
     (
-	NotFound("Contract not found.");
-    )
-    else
-    (
-	    v:=Create(Waher.Script.Variables,[]);
-	    foreach Parameter in Contract.Parameters do Parameter.Populate(v);
-	    foreach Parameter in Contract.Parameters do Parameter.IsParameterValid(v);
+	 NotFound("Contract not found.");
     );
 
     Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
@@ -77,19 +71,19 @@ if ContractState == "AwaitingForPayment" then
 
     FileName:= SellerId + Token.ShortId;
 
-    foreach Parameter in (Contract.Parameters ?? []) do 
+    foreach Variable in (CurrentState.VariableValues ?? []) do 
       (
-        Parameter.Name like "Title" ?   Title := Parameter.MarkdownValue;
-        Parameter.Name like "Description" ?   Description := Parameter.MarkdownValue;
-        Parameter.Name like "Value" ?   Value := Parameter.ObjectValue.ToString("N2");
-        Parameter.Name like "Currency" ?   Currency := Parameter.MarkdownValue;
-        Parameter.Name like "Country" ?   Country := Parameter.MarkdownValue;
-        Parameter.Name like "Commission" ?   Commission := Parameter.MarkdownValue;
-        Parameter.Name like "BuyerFullName" ?   BuyerFullName := Parameter.MarkdownValue;
-        Parameter.Name like "BuyerEmail" ?  BuyerEmail := Parameter.MarkdownValue;
-        Parameter.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Parameter.MarkdownValue;
-        Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.ObjectValue.ToString("N2");
-        Parameter.Name like "AmountToPay" ?   AmountToPay := Parameter.ObjectValue.ToString("N2");
+        Variable.Name like "Title" ?   Title := Variable.Value;
+        Variable.Name like "Description" ?   Description := Variable.Value;
+        Variable.Name like "Value" ?   Value := Variable.Value.ToString("N2");
+        Variable.Name like "Currency" ?   Currency := Variable.Value;
+        Variable.Name like "Country" ?   Country := Variable.Value;
+        Variable.Name like "Commission" ?   Commission := Variable.Value;
+        Variable.Name like "BuyerFullName" ?   BuyerFullName := Variable.Value;
+        Variable.Name like "BuyerEmail" ?  BuyerEmail := Variable.Value;
+        Variable.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Variable.Value;
+        Variable.Name like "EscrowFee" ?   EscrowFee := Variable.Value.ToString("N2");
+        Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString("N2");
       );
      BuyerFirstName := Before(BuyerFullName," ");
       ]]  <table style="width:100%">
