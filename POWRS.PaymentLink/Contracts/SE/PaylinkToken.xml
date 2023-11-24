@@ -107,6 +107,9 @@
 				<Variable id="ReferenceNumber">
 					<TagReference tag="RemoteId" />
 				</Variable>
+				<Variable id="Country">
+					<TagReference tag="Country"/>
+				</Variable>
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
@@ -468,6 +471,9 @@
 		</Tag>
 		<Tag name="AllowedServiceProviders">
 			<ParameterReference parameter="AllowedServiceProviders" />
+		</Tag>
+		<Tag name="Country">
+			<ParameterReference parameter="Country" />
 		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />

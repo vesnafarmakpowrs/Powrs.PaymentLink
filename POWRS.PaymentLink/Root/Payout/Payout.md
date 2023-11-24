@@ -75,11 +75,11 @@ if ContractState == "AwaitingForPayment" then
       (
         Variable.Name like "Title" ?   Title := Variable.Value;
         Variable.Name like "Description" ?   Description := Variable.Value;
-        Variable.Name like "Value" ?   Value := Variable.Value.ToString("N2");
+        Variable.Name like "Price" ?   ContractValue := Variable.Value.ToString("N2");
         Variable.Name like "Currency" ?   Currency := Variable.Value;
-        Variable.Name like "Country" ?   Country := Variable.Value;
+        Variable.Name like "Country" ?   Country := Variable.Value.ToString();
         Variable.Name like "Commission" ?   Commission := Variable.Value;
-        Variable.Name like "BuyerFullName" ?   BuyerFullName := Variable.Value;
+        Variable.Name like "Buyer" ?   BuyerFullName := Variable.Value;
         Variable.Name like "BuyerEmail" ?  BuyerEmail := Variable.Value;
         Variable.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Variable.Value;
         Variable.Name like "EscrowFee" ?   EscrowFee := Variable.Value.ToString("N2");
@@ -128,7 +128,7 @@ if ContractState == "AwaitingForPayment" then
         <table style="vertical-align:middle; width:100%;">
           <tr>
             <td style="width:80%;"> ((Title))</td>
-            <td class="itemPrice" rowspan="2">((Value ))
+            <td class="itemPrice" rowspan="2">((ContractValue))
             <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
           </tr>
@@ -197,7 +197,7 @@ if (Country == 'SE') then
   <tr class="spaceUnder"><td colspan="3"> </td></tr>
   <tr class="safeguarded" >
      <td style="width:80%; text-align:left">((LanguageNamespace.GetStringAsync(1) ))</td>
-     <td class="moneyRight itemPrice">((Value))</td>
+     <td class="moneyRight itemPrice">((ContractValue))</td>
      <td class="currencyLeft" style="width:10%;" >((Currency ))</td>
   </tr>
   <tr class="spaceUnder"><td colspan="3"> </td></tr>
