@@ -4,15 +4,15 @@ var Translations = {};
 const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
 
 document.addEventListener("DOMContentLoaded", () => {
-    GenerateTranslations();
     GenerateLanguageDropdown();
+    GenerateTranslations();   
     GenerateServiceProvidersUI();
 });
 
 function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", resource, true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
     xhttp.setRequestHeader("Accept", "application/json"); 
     xhttp.send(JSON.stringify(requestBody)); 
 
@@ -55,9 +55,9 @@ function GenerateLanguageDropdown() {
         {
             "Namespace": document.getElementById("Namespace").value
         }, (response) => {
-            if (response.Languages != null && response.Languages.length > 0) {
+            if (response != null && response.length > 0) {
                 const languageDropdown = document.getElementById("languageDropdown");
-                response.Languages.forEach(language => {
+                response.forEach(language => {
                     let option = document.createElement("option");
                     option.value = language.Code;
                     option.textContent = language.Code;
