@@ -60,7 +60,7 @@ Authorization: Bearer ...
 
 ### Login
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Login.ws")}}`
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Auth/Login.ws")}}`
 
 Method:  POST
 
@@ -169,7 +169,7 @@ Description of properties:
 
 ### Create Item
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/CreateItem.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/CreateItem.ws")}}`  
 Method: `POST`
 
 
@@ -224,7 +224,7 @@ Description of properties:
 ````
 {
 	 "Link": "Represents payment link generated for the created item.",
-	 "EscrowFee": "Calculated fee that will be added on the item price.".
+	 "EscrowFee": "Calculated fee that will be added on the item price.",
 	 "Currency": "Represents currency which will be used by buyer to pay"	 
 }
 ````
@@ -232,7 +232,7 @@ Description of properties:
 
 ### Cancel Item
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/CancelItem.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/CancelItem.ws")}}`  
 Method: `POST`
 
 Call this resource to cancel an Item in Vaulter. JSON in the following format is expected in the call.
@@ -275,7 +275,7 @@ Description of properties:
 
 ### Get Contracts
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/GetContracts.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/GetContracts.ws")}}`  
 Method: `POST`
 
 Call this resource to  fetch items created by the owner of the `JWT Token` from the header section of the request.
@@ -314,7 +314,7 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 
 ### Get Account Info
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/GetAccountInfo.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/GetAccountInfo.ws")}}`  
 Method: `POST`
 
 Call this resource to  fetch items created by the owner of the `JWT Token` from the header section of the request.
@@ -365,7 +365,7 @@ There is no need of properties to be send in a request
 ### Verify Token
 ---------------------------
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/VerifyToken.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Auth/VerifyToken.ws")}}`  
 Method: `POST`
 
 Read **Authorization section**.
@@ -399,7 +399,7 @@ Read **Authorization section**.
 
 ### Bank Identifier Code
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/GetBic.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Bank/GetBic.ws")}}`
 Method: `POST`
 
 Call this resource to fetch Open payment service providers for given bankAccount. ***(Only works for sweden)***
@@ -431,7 +431,7 @@ Call this resource to fetch Open payment service providers for given bankAccount
 
 ### Send Contact Us Email 
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/SendContactUsEmail.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Mail/SendContactUsEmail.ws")}}`  
 Method: `POST`
 
 Call this resource to send contact us email.

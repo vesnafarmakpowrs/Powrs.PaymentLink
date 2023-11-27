@@ -111,22 +111,22 @@
 		<Content Include="Root\Payout\API\InitiatePayment.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws">
+		<Content Include="Root\VaulterApi\PaymentLink\Mail\SendContactUsEmail.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\GetAccountInfo.ws">
+		<Content Include="Root\VaulterApi\PaymentLink\Account\GetAccountInfo.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\CreateItem.ws">
+		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateItem.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\GetBic.ws">
+		<Content Include="Root\VaulterApi\PaymentLink\Bank\GetBic.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\ReportNewState.ws">
+		<Content Include="Root\VaulterApi\PaymentLink\Mail\ReportNewState.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\CancelItem.ws">
+		<Content Include="Root\VaulterApi\PaymentLink\Contract\CancelItem.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Index.md">
@@ -228,16 +228,16 @@
 	  <None Update="Root\Payout\HtmlTemplates\SE\ReleaseFunds.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\CreateAccount.ws">
+	  <None Update="Root\VaulterApi\PaymentLink\Account\CreateAccount.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\GetContracts.ws">
+	  <None Update="Root\VaulterApi\PaymentLink\Contract\GetContracts.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Login.ws">
+	  <None Update="Root\VaulterApi\PaymentLink\Auth\Login.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\VerifyToken.ws">
+	  <None Update="Root\VaulterApi\PaymentLink\Auth\VerifyToken.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

@@ -157,7 +157,7 @@
 				<Action id="ReportNewState">
 					<Try>
 						<Script>
-							endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/ReportNewState.ws";
+							endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/MailReportNewState.ws";
 							Json:= {
 							"Status":  NewStatus,
 							"ContractId": TokenContract,

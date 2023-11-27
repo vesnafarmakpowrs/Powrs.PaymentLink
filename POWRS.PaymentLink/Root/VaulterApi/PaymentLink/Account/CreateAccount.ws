@@ -174,7 +174,7 @@ try
 		 },
 		   {"Accept" : "application/json",
 		    "Authorization": "Bearer " + NewAccount.jwt,
-		    "Referer": neuronDomain + "/VaulterApi/PaymentLink/CreateAccount.ws"
+		    "Referer": neuronDomain + "/VaulterApi/PaymentLink/Account/CreateAccount.ws"
 		   });
 
 )
