@@ -52,7 +52,7 @@ if(System.String.IsNullOrEmpty(LegalId)) then
 try 
 (
  ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "MM/dd/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
- if(ParsedDeliveryDate < Now) then 
+ if(ParsedDeliveryDate < Today) then 
  (
     Error("Delivery date must be in the future");
  );
