@@ -13,9 +13,11 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerFirstName":Required(String(PBuyerFirstName) like "[\\p{L}\\s]{2,20}"),
     "buyerLastName":Required(String(PBuyerLastName) like "[\\p{L}\\s]{2,20}"),
     "buyerEmail":Required(String(PBuyerEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
-    "buyerPersonalNum":Required(String(PBuyerPersonalNum)  like "\\d*-?\\d*"),
+    "buyerPersonalNum":Optional(String(PBuyerPersonalNum)  like "\\d*-?\\d*"),
+    "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber)  like "^\\+[0-9]{6,15}$"),
     "buyerCountryCode":Required(String(PBuyerCountryCode)  like "[A-Z]{2}"),
-    "callbackUrl":Required(String(PCallBackUrl)),
+    "callbackUrl":Optional(String(PCallBackUrl)),
+    "webPageUrl":Optional(String(PWebPageUrl)),
     "allowedServiceProviders": Optional(String(PAllowedServiceProviders))
 }:=Posted) ??? BadRequest(Exception.Message);
 
@@ -68,12 +70,23 @@ if(System.String.IsNullOrEmpty(KeyId) || System.String.IsNullOrEmpty(KeyPassword
     BadRequest("No signing keys or password available for user: " + PUserName);
 );
 
-normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PBuyerCountryCode, PBuyerPersonalNum);
-isValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PBuyerCountryCode ,normalizedPersonalNumber);
 
-if(isValid != true) then 
+if(exists(PBuyerPersonalNum) || PBuyerCountryCode.ToLower() == "se") then 
 (
-    BadRequest("Personal number: " + PBuyerPersonalNum + " is not valid for the country: " + PBuyerCountryCode);
+  try
+  (
+    normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PBuyerCountryCode, PBuyerPersonalNum);
+	isValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PBuyerCountryCode ,normalizedPersonalNumber);
+
+	if(isValid != true) then 
+	(
+    	 Error("Personal number: " + PBuyerPersonalNum + " is not valid for the country: " + PBuyerCountryCode);
+	);
+  )
+  catch
+  (
+    BadRequest(Exception.Message);
+  );	
 );
 
 if(exists(PAllowedServiceProviders) and PAllowedServiceProviders != null) then 
@@ -89,7 +102,7 @@ if(exists(PAllowedServiceProviders) and PAllowedServiceProviders != null) then
              BadRequest("Invalid service providers selected");
           );
        );
-    );   
+    );
 )
 else 
 (
@@ -143,10 +156,16 @@ PSellerServiceProviderType := GetBicResponse.serviceProviderType;
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
 
 try
+(
+BuyerPersonalNum:= PBuyerPersonalNum ?? " ";
+BuyerPhoneNumber:= PBuyerPhoneNumber ?? " ";
+CallBackUrl:=  PCallBackUrl ?? "";
+WebPageUrl:=  PWebPageUrl ?? "";
+
 Contract:=CreateContract(PUserName, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
-	    "Title": PTitle,
+	"Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
         "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00).ToUniversalTime(),
@@ -158,15 +177,20 @@ Contract:=CreateContract(PUserName, TemplateId, "Public",
         "SellerName" : SellerName,
         "SellerServiceProviderId" : PSellerServiceProviderId,
         "SellerServiceProviderType" : PSellerServiceProviderType,
-        "BuyerFullName":PBuyerFirstName + " " + PBuyerLastName,
-        "BuyerPersonalNum":PBuyerPersonalNum,
+        "BuyerFullName": PBuyerFirstName + " " + PBuyerLastName,
+        "BuyerPersonalNum": BuyerPersonalNum,
+        "BuyerPhoneNumber": BuyerPhoneNumber,
         "BuyerEmail":PBuyerEmail,
-        "CallBackUrl" : PCallBackUrl,
+        "CallBackUrl" : CallBackUrl,
+        "WebPageUrl" : WebPageUrl,
         "AllowedServiceProviders": PAllowedServiceProviders
     })
+)
 catch
-BadRequest(Exception.Message);
-
+(
+  BadRequest(Exception.Message);
+  Log.Error(Exception, null);
+);
 Nonce := Base64Encode(RandomBytes(32));
 
 LocalName := "ed448";

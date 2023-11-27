@@ -116,6 +116,12 @@
 				<Variable id="NeuronDomain">
 					<Calc><![CDATA[Gateway.Domain]]></Calc>
 				</Variable>
+				<Variable id="WebPageUrl">
+					<TagReference tag="WebPageUrl" />
+				</Variable>
+				<Variable id="BuyerPhoneNumber">
+					<TagReference tag="BuyerPhoneNumber" />
+				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
 					<OnEvent newState="PaymentCanceled">
@@ -418,6 +424,9 @@
 		<Tag name="CallBackUrl">
 			<ParameterReference parameter="CallBackUrl" />
 		</Tag>
+		<Tag name="WebPageUrl">
+			<ParameterReference parameter="WebPageUrl" />
+		</Tag>
 		<Tag name="Title">
 			<ParameterReference parameter="Title" />
 		</Tag>
@@ -453,6 +462,9 @@
 		</Tag>
 		<Tag name="BuyerPersonalNum">
 			<ParameterReference parameter="BuyerPersonalNum" />
+		</Tag>
+		<Tag name="BuyerPhoneNumber">
+			<ParameterReference parameter="BuyerPhoneNumber" />
 		</Tag>
 		<Tag name="AmountToPay">
 			<ParameterReference parameter="AmountToPay" />
@@ -637,7 +649,7 @@
 				</paragraph>
 			</description>
 		</stringParameter>
-		<stringParameter name="BuyerPersonalNum" value="" minLength="10">
+		<stringParameter name="BuyerPersonalNum" value="">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Full valid personal number of buyer.</text>
@@ -648,6 +660,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Buyer Email.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerPhoneNumber" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Buyer phone number where to send notification.</text>
 				</paragraph>
 			</description>
 		</stringParameter>
@@ -683,6 +702,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Send info when transaction is completed.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="WebPageUrl" value=" ">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Web page of selling product.</text>
 				</paragraph>
 			</description>
 		</stringParameter>
