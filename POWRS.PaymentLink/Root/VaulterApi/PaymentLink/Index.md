@@ -450,6 +450,27 @@ Call this resource to send contact us email.
 | `userEmail`       | Email from the user which should be used when Powers want to contact. |
 | `body`            | Email body that should be send to Powrs info email. |
 
+### Send Verification Email code 
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/SendVerificationEmail.ws")}}`  
+Method: `POST`
+
+Call this resource to send email with verification code.
+
+**Request**
+
+````
+{
+  "email":Required(String(PUserEmail)),
+  "countryCode":Required(String(PCountryCode))
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `email`       | Email from the user which should be verified. |
+| `countryCode` | Country code will be user for email body text language body. |
+
 **Response**
 
 

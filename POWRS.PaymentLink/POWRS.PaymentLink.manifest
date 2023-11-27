@@ -7,6 +7,7 @@
 				<Folder name="Account">
 					<Content fileName="CreateAccount.ws"/>
 					<Content fileName="GetAccountInfo.ws"/>
+					<Content fileName="SendVerificationEmail.ws"/>
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="GetBic.ws"/>
@@ -57,12 +58,14 @@
 						<Content fileName="ReleaseFunds.html"></Content>
 						<Content fileName="PaymentReimbursed.html"></Content>
 						<Content fileName="purchase_agreement.html"></Content>
+						<Content fileName="VerifyEmail.html"></Content>
 					</Folder>
 					<Folder name="SE">
 						<Content fileName="PaymentCompleted.html"></Content>
 						<Content fileName="ReleaseFunds.html"></Content>
 						<Content fileName="PaymentReimbursed.html"></Content>
 						<Content fileName="purchase_agreement.html"></Content>
+						<Content fileName="VerifyEmail.html"></Content>
 					</Folder>
 				</Folder>
 				<Folder name="resources">
