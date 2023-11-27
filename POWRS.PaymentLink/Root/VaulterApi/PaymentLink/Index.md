@@ -480,3 +480,32 @@ Call this resource to send email with verification code.
 }
 ````
 
+### Verify Email with code 
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/SendVerificationEmail.ws")}}`  
+Method: `POST`
+
+Call this resource to verify email with code.
+
+**Request**
+
+````
+{
+  "email":Required(String(PUserEmail)),
+  "code":Required(Int(PCountryCode))
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `email`       | Email from the user which should be verified. |
+| `code`        | Code that user get in email . |
+
+**Response**
+
+
+````
+{
+	 "Message": (String) 
+}
+````

@@ -8,6 +8,7 @@
 					<Content fileName="CreateAccount.ws"/>
 					<Content fileName="GetAccountInfo.ws"/>
 					<Content fileName="SendVerificationEmail.ws"/>
+					<Content fileName="VerifiyEmail.ws"/>					
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="GetBic.ws"/>
