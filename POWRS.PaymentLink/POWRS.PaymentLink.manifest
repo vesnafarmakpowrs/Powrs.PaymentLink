@@ -4,6 +4,7 @@
 	<Folder name="Root">
 		    <Folder name="VaulterApi">
 			<Folder name="PaymentLink">
+				<Content fileName="Index.md"/>
 				<Folder name="Account">
 					<Content fileName="CreateAccount.ws"/>
 					<Content fileName="GetAccountInfo.ws"/>
@@ -11,20 +12,21 @@
 					<Content fileName="VerifiyEmail.ws"/>					
 				</Folder>
 				<Folder name="Auth">
-					<Content fileName="GetBic.ws"/>
 					<Content fileName="Login.ws"/>
 					<Content fileName="VerifyToken.ws"/>
+				</Folder>
+				<Folder name="Bank">
+					<Content fileName="GetBic.ws"/>
 				</Folder>
 				<Folder name="Contract">
 					<Content fileName="CancelItem.ws"/>
 					<Content fileName="CreateItem.ws"/>
 					<Content fileName="GetContracts.ws"/>
 				</Folder>
-				<Foler name="Mail">
+				<Folder name="Mail">
 					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="SendContactUsEmail.ws"/>
-				</Foler>
-				<Content fileName="Index.md"/>												
+				</Folder>							
 			</Folder>
 		</Folder>
 		    <Folder name="Payout">
@@ -59,6 +61,9 @@
 						<Content fileName="ReleaseFunds.html"></Content>
 						<Content fileName="PaymentReimbursed.html"></Content>
 						<Content fileName="purchase_agreement.html"></Content>
+						<Content fileName="VerifyEmail.html"></Content>
+					</Folder>
+					<Folder name="RS">
 						<Content fileName="VerifyEmail.html"></Content>
 					</Folder>
 					<Folder name="SE">

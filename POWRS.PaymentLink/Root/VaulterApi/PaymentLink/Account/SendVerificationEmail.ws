@@ -1,9 +1,27 @@
+Response.SetHeader("Access-Control-Allow-Origin","*");
 ({
     "email":Optional(String(PEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
     "countryCode":Required(String(PCountryCode)  like "[A-Z]{2}")    
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 portal := "paylink." + After(domain,"neuron.");
+remoteEndpoint:= Request.RemoteEndPoint.Split(':', null)[0];
+
+if !exists(Global.VerifyingEmailIP) then
+  Global.VerifyingEmailIP :=Create(Waher.Runtime.Cache.Cache,System.String,System.Int32,System.Int32.MaxValue,System.TimeSpan.MaxValue,System.TimeSpan.FromHours(1));
+
+message := "";
+value := 0;
+maxAttemptsInHour := 10;
+
+Global.VerifyingEmailIP.TryGetValue(remoteEndpoint , value);
+
+if value > 0 then value := value + 1;
+
+if value > maxAttemptsInHour then 
+  BadRequest('Too many attempts. Try again in a hour.')
+else
+  Global.VerifyingEmailIP.Add(remoteEndpoint, value);
 
 if !exists(Global.VerifyingNumbers) then
 	Global.VerifyingNumbers:=Create(Waher.Runtime.Cache.Cache,System.String,System.Double,System.Int32.MaxValue,System.TimeSpan.MaxValue,System.TimeSpan.FromHours(1));
