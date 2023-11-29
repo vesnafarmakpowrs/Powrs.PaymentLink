@@ -35,7 +35,7 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.TemplateId",Posted.TemplateId);
 	SetSetting("POWRS.PaymentLink.ApiKey",Posted.ApiKey);
 	SetSetting("POWRS.PaymentLink.ApiKeySecret",Posted.ApiKeySecret);
-
+	SetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", Str(Posted.PayoutPageTokenDuration));
 	
 	SeeOther("Settings.md");
 );
@@ -91,6 +91,11 @@ if exists(Posted) then
 <p>
 <label for="ApiKeySecret">ApiKeySecret: </label>  
 <input type="text" id="ApiKeySecret" name="ApiKeySecret" value='{{GetSetting("POWRS.PaymentLink.ApiKeySecret","")}}' autofocus required title="ApiKeySecret used in pair with api key to create legal identities. "/>
+</p>
+
+<p>
+<label for="PayoutPageTokenDuration">Token duration: </label>  
+<input type="number" min="5" max="15" id="PayoutPageTokenDuration" name="PayoutPageTokenDuration" value='{{GetSetting("POWRS.PaymentLink.PayoutPageTokenDuration","")}}' autofocus required title="Duration of jwt token for initiating payment on payout page. "/>
 </p>
 
 <button type="submit" class="posButton">Apply</button>

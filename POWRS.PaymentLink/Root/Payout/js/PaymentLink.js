@@ -5,25 +5,36 @@ const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi")
 
 document.addEventListener("DOMContentLoaded", () => {
     GenerateLanguageDropdown();
-    GenerateTranslations();   
+    GenerateTranslations();
     GenerateServiceProvidersUI();
 });
 
 function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
+    let jwt = document.getElementById("jwt");
+    if (!jwt.value.trim() === "") {
+        alert("Session token not found, refresh the page and try again");
+    }
+
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", resource, true);
     xhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-    xhttp.setRequestHeader("Accept", "application/json"); 
-    xhttp.send(JSON.stringify(requestBody)); 
+    xhttp.setRequestHeader("Accept", "application/json");
+    xhttp.setRequestHeader("Authorization", "Bearer " + jwt.value);
+    xhttp.send(JSON.stringify(requestBody));
 
-    xhttp.onreadystatechange = function () { 
+    xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4) {
             if (xhttp.status == 200 && onSuccess != null) {
                 let response = JSON.parse(xhttp.responseText);
                 onSuccess(response);
             }
             else {
-                if (onError != null) onError(xhttp);
+                if (xhttp.status == 403) {
+                    alert(Translations.SessionTokenExpiredMessage);
+                }
+                else if (onError != null) {
+                    onError(xhttp);
+                }
             }
         };
     };
@@ -43,6 +54,7 @@ function GenerateTranslations() {
     Translations.TransactionFailed = document.getElementById("TransactionFailed").value;
     Translations.TransactionInProgress = document.getElementById("TransactionInProgress").value;
     Translations.OpenLinkOnPhoneMessage = document.getElementById("OpenLinkOnPhoneMessage").value;
+    Translations.SessionTokenExpiredMessage = document.getElementById("SessionTokenExpired").value;
 }
 
 function GenerateLanguageDropdown() {
@@ -92,9 +104,7 @@ function GenerateServiceProvidersUI() {
     }
 
     SendXmlHttpRequest("API/GetBuyEdalerServiceProviders.ws",
-        {
-            "ContractId": document.getElementById("contractId").value,
-        },
+        {},
         (response) => {
             serviceProviders = response.ServiceProviders;
             let selectInput = document.getElementById("serviceProvidersSelect");
@@ -199,8 +209,7 @@ function GetBankAccounts() {
         "sessionId": "",
         "requestFromMobilePhone": Boolean(isMobileDevice),
         "bicFi": selectedServiceProvider.Id,
-        "bankName": selectedServiceProvider.Name,
-        "contractId": document.getElementById("contractId").value
+        "bankName": selectedServiceProvider.Name
     }, (response) => {
         if (isMobileDevice) {
             ShowAccountInfo(response.Results);
@@ -212,17 +221,15 @@ function StartPayment(iban, bic) {
     ToggleServiceProviderSelect(true);
     ClearQrCodeDiv();
     ToggleSpinner(true);
-    let contractId = document.getElementById('contractId').value;
 
-    if (!contractId || !iban || !bic) {
-        alert("Contract, template or account missing.");
+    if (!iban || !bic) {
+        alert("Template or account missing.");
         return;
     }
 
     SendXmlHttpRequest("API/InitiatePayment.ws", {
         "tabId": TabID,
         "requestFromMobilePhone": Boolean(isMobileDevice),
-        "tokenId": document.getElementById("TokenId").value,
         "bankAccount": iban,
         "bic": bic
     },
@@ -397,10 +404,7 @@ function downloadPDF(base64Data, filename) {
 
 function generatePDF() {
     SendXmlHttpRequest("API/DealInfo.ws",
-        {
-            "contractId": document.getElementById("contractId").value,
-            "countryCode": "EN"
-        },
+        {},
         (response) => {
             downloadPDF(response.PDF, response.Name);
         }, null);
@@ -560,8 +564,7 @@ function StartCardPayment() {
     ShowBankPayment(false);
     SendXmlHttpRequest("API/InitiateCardPayment.ws",
         {
-            "tabId": TabID,
-            "tokenId": document.getElementById("TokenId").value
+            "tabId": TabID
         },
         (response) => {
             if (!response.OK) {
@@ -572,6 +575,7 @@ function StartCardPayment() {
             if (error.status === 408) {
                 return;
             }
+            alert(error);
             TransactionFailed(null);
         })
 }

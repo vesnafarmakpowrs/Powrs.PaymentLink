@@ -1,5 +1,5 @@
 ﻿({
-   "Namespace":Required(Str(PNamespace))	
+   "Namespace":Required(Str(PNamespace))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 if(System.String.IsNullOrWhiteSpace(PNamespace)) then 

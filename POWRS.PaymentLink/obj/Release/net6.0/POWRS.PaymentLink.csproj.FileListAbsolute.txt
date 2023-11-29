@@ -146,12 +146,6 @@ C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\scopedcss\pro
 C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\TAG.Payments.OpenPaymentsPlatform.dll
 C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\refint\TAG.Payments.OpenPaymentsPlatform.dll
 C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\obj\Release\net6.0\TAG.Payments.OpenPaymentsPlatform.pdb
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\SendContactUsEmail.ws
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\GetAccountInfo.ws
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\CreateItem.ws
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\GetBic.ws
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\ReportNewState.ws
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\CancelItem.ws
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Index.md
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\API\DealInfo.ws
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\js\Events.js
@@ -186,10 +180,6 @@ D:\GIT\Test\POWRS.PaymentLink\obj\Release\net6.0\POWRS.PaymentLink.dll
 D:\GIT\Test\POWRS.PaymentLink\obj\Release\net6.0\refint\POWRS.PaymentLink.dll
 D:\GIT\Test\POWRS.PaymentLink\obj\Release\net6.0\POWRS.PaymentLink.pdb
 D:\GIT\Test\POWRS.PaymentLink\obj\Release\net6.0\ref\POWRS.PaymentLink.dll
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\CreateAccount.ws
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\GetContracts.ws
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Login.ws
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\VerifyToken.ws
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\css\Stripe.css
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\EN\PaymentCompleted.html
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\EN\PaymentReimbursed.html
@@ -200,3 +190,13 @@ D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\SE\Pa
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\SE\purchase_agreement.html
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\SE\ReleaseFunds.html
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Language\POWRS.PaymentLink.sr.lng
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Mail\SendContactUsEmail.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Account\GetAccountInfo.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Bank\GetBic.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Mail\ReportNewState.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Account\CreateAccount.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Auth\Login.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Auth\VerifyToken.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Contract\GetContracts.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Contract\CreateItem.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Contract\CancelItem.ws

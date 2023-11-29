@@ -3,10 +3,30 @@
 	"sessionId": Required(Str(PSessionId)),
 	"requestFromMobilePhone": Required(Boolean(PRequestFromMobilePhone)),
     "bicFi": Required(Str(PBicFi)),
-    "bankName": Required(Str(PBankName)),
-	"contractId":Required(Str(PContractId))
+    "bankName": Required(Str(PBankName))
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
+
+header:= null;
+try
+(
+    Request.Header.TryGetHeaderField("Authorization", header);
+    SessionToken:= ValidateJwt(Replace(header.Value, "Bearer ", ""));
+
+	requestEndPoint:= Split(Str(Request.RemoteEndPoint), ":")[0];
+    claimsEndpoint:= Split(SessionToken.Claims.ip, ":")[0];
+
+    if(requestEndPoint != claimsEndpoint) then 
+	(
+	 Error("");
+	);
+
+	PContractId:= SessionToken.Claims.contractId;
+)
+catch
+(
+    Forbidden("Session token expired or not valid");
+);
 
 contractParameters:= select top 1 Parameters from IoTBroker.Legal.Contracts.Contract where ContractId = PContractId;
 if(contractParameters == null) then

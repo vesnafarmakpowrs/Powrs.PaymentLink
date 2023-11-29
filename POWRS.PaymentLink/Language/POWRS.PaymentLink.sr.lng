@@ -47,6 +47,7 @@
 			<String id="44">Ostali načini plaćanja</String>
 			<String id="45">Instant plaćanja preko bankovnog računa</String>
 			<String id="46">Plaćanje karticom</String>
+			<String id="47">Sesija je istekla, osvežite stranicu da bi pokušali ponovo.</String>
 		</Namespace>
 	</Language>
 </Translation>

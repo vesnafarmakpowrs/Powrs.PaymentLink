@@ -45,8 +45,7 @@ if(!System.String.IsNullOrEmpty(r.CallBackUrl) && (r.Status in SendCallBackOnSta
 
 CountryCode := "SE";
 if (exists(r.SendEmail) &&  r.SendEmail) then
-(
- 
+( 
    contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= r.ContractId;
 
    if (contract == null) then

@@ -31,7 +31,8 @@ if(Language == null) then
 LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
 if(LanguageNamespace == null) then 
 (
- BadRequest("Page is not available at the moment");
+ ]]<b>Page is not available at the moment</b>[[;
+ Return("");
 );
 
 ID += "@legal." + Gateway.Domain; 
@@ -39,7 +40,10 @@ ID += "@legal." + Gateway.Domain;
 Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
 
 if !exists(Token) then 
-	NotFound("Item does not found.");
+(
+  ]]<b>Payment link is not valid</b>[[;
+  Return("");
+);
 
 if Token.HasStateMachine then
 (
@@ -53,7 +57,8 @@ if ContractState == "AwaitingForPayment" then
    
     if !exists(Contract) then
     (
-	 NotFound("Contract not found.");
+	 ]]<b>Payment link is not valid</b>[[;
+         Return("");
     );
 
     Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
@@ -86,6 +91,22 @@ if ContractState == "AwaitingForPayment" then
         Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString("N2");
       );
      BuyerFirstName := Before(BuyerFullName," ");
+
+     tokenDurationInMinutes:= Int(GetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", 5));
+
+     PageToken:= CreateJwt(
+            {
+                "iss":Gateway.Domain, 
+                "contractId": ID,
+                "tokenId": Token.TokenId,
+                "sub": BuyerFullName, 
+                "id": NewGuid().ToString(),
+	            "ip": Request.RemoteEndPoint,
+                "pnr": BuyerPersonalNum,
+                "country": Country,
+                "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
+            });
+
       ]]  <table style="width:100%">
          <tr class="welcomeLbl">   
          <td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
@@ -98,6 +119,7 @@ if ContractState == "AwaitingForPayment" then
 </table>
 
 <input type="hidden" value="((lng ))" id="prefferedLanguage"/>
+<input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(10) ))" id="SelectedAccountOk"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(24) ))" id="SelectedAccountNotOk"/>
@@ -107,10 +129,9 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(28) ))" id="TransactionFailed"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>
 
-<input type="hidden" value="((Token.TokenId))" id="TokenId"/>
-<input type="hidden" value="((Contract.ContractId))" id="contractId"/>
-<input type="hidden" value="((BuyerPersonalNum))" id="personalNumber"/>
+<input type="hidden" value="((Request.RemoteEndPoint))" id="currentIp"/>
 <input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
