@@ -216,6 +216,12 @@
 	  <None Update="Root\Payout\HtmlTemplates\EN\ReleaseFunds.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\VerifyEmail.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\RS\VerifyEmail.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\SE\PaymentCompleted.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -228,7 +234,16 @@
 	  <None Update="Root\Payout\HtmlTemplates\SE\ReleaseFunds.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\SE\VerifyEmail.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Account\CreateAccount.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Account\SendVerificationEmail.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Account\VerifiyEmail.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\GetContracts.ws">
@@ -238,6 +253,12 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Auth\VerifyToken.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Scripts\StartupScripts\ValidateAgentApiToken.config">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Scripts\StartupScripts\ValidatePayoutJWT.config">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

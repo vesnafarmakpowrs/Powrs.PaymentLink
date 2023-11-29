@@ -200,3 +200,10 @@ D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Aut
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Contract\GetContracts.ws
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Contract\CreateItem.ws
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Contract\CancelItem.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Scripts\StartupScripts\ValidateAgentApiToken.config
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Scripts\StartupScripts\ValidatePayoutJWT.config
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Account\SendVerificationEmail.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Account\VerifiyEmail.ws
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\EN\VerifyEmail.html
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\RS\VerifyEmail.html
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\SE\VerifyEmail.html
