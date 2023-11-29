@@ -19,11 +19,31 @@ contracts:= null;
 template:= "https://" + Gateway.Domain + "/Payout/Payout.md?ID={0}";
 try 
 (
- contracts:= select t.TokenId, s.State, t.Created.ToString("s") as "Created", exists(cancelAllowedStates[s.State]) as CanCancel, !exists(doneStates[s.State]) as IsActive, Replace(template, "{0}", Before(t.OwnershipContract, "@")) as "Paylink", s.VariableValues as 'Variables' from NeuroFeatureTokens as t join StateMachineCurrentStates as s on s.StateMachineId = t.TokenId where t.Creator = auth.legalId order by t.Created DESC;
+
+cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
+doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
+template:= "https://" + Gateway.Domain + "/Payout/Payout.md?ID={0}";
+
+list:= Create(System.Collections.Generic.List, System.Object);
+tokens:= select * from IoTBroker.NeuroFeatures.Token t where t.Creator = auth.legalId;
+
+foreach token in tokens do 
+(
+ variables:= token.GetCurrentStateVariables();
+ list.Add({
+        "TokenId": token.TokenId,
+        "CanCancel": exists(cancelAllowedStates[s.State]),
+        "IsActive": !exists(doneStates[s.State]),
+        "Paylink": Replace(template, "{0}", Before(token.OwnershipContract, "@")),
+        "Created": token.Created.ToString("s"),
+        "State": variables.State,
+        "Variables": variables.VariableValues
+        });
+);
 )
 catch
 (
  InternalServerError(Exception.Message)
 );
 
-contracts;
+Return(list);
