@@ -194,7 +194,6 @@ D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Mai
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Account\GetAccountInfo.ws
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Bank\GetBic.ws
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Mail\ReportNewState.ws
-D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Account\CreateAccount.ws
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Auth\Login.ws
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Auth\VerifyToken.ws
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Contract\GetContracts.ws
@@ -208,3 +207,4 @@ D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\EN\Ve
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\RS\VerifyEmail.html
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\SE\VerifyEmail.html
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Scripts\StartupScripts\EncodeContractId.config
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Account\CreateAccount.ws

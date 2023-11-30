@@ -4,14 +4,15 @@
 	<Content fileName="./Scripts/StartupScripts/ValidateAgentApiToken.config" />
 	<Content fileName="./Scripts/StartupScripts/ValidatePayoutJWT.config" />
 	<Folder name="Root">
-		    <Folder name="VaulterApi">
+		<Folder name="VaulterApi">
 			<Folder name="PaymentLink">
 				<Content fileName="Index.md"/>
 				<Folder name="Account">
+					<Content fileName="ApplyForLegalId.ws"/>
 					<Content fileName="CreateAccount.ws"/>
 					<Content fileName="GetAccountInfo.ws"/>
 					<Content fileName="SendVerificationEmail.ws"/>
-					<Content fileName="VerifiyEmail.ws"/>	
+					<Content fileName="VerifiyEmail.ws"/>
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>
@@ -28,60 +29,60 @@
 				<Folder name="Mail">
 					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="SendContactUsEmail.ws"/>
-				</Folder>							
+				</Folder>
 			</Folder>
 		</Folder>
-		    <Folder name="Payout">
-				<Content fileName="Payout.md"/>
-				<Content fileName="Settings.md"/>
-				<Folder name="API">
-					<Content fileName="DealInfo.ws"/>
-					<Content fileName="GetAvailableLanguages.ws"/>
-					<Content fileName="GetBankAccounts.ws"/>
-					<Content fileName="GetBuyEdalerServiceProviders.ws"/>
-					<Content fileName="InitiateCardPayment.ws"/>
-					<Content fileName="InitiatePayment.ws"/>
-					<Content fileName="InitiatePayment.ws"/>
-					<Content fileName="RegisterUpdates.ws"/>
-				</Folder>
-				<Folder name="js">
-					<Content fileName="Events.js"/>
-					<Content fileName="PaymentLink.js"/>
-				</Folder>
-				<Folder name="css">
-					<Content fileName="Payout.cssx"/>
-					<Content fileName="Stripe.css"/>
-				</Folder>
-				<Folder name="Fonts">
-					<Content fileName="Coanda-Bold.ttf"/>
-					<Content fileName="RTDromo-Medium.woff2"/>
-					<Content fileName="RTDromo-Medium.woff"/>
-				</Folder>
-				<Folder name="HtmlTemplates">
-					<Folder name="EN">
-						<Content fileName="PaymentCompleted.html"></Content>
-						<Content fileName="ReleaseFunds.html"></Content>
-						<Content fileName="PaymentReimbursed.html"></Content>
-						<Content fileName="purchase_agreement.html"></Content>
-						<Content fileName="VerifyEmail.html"></Content>
-					</Folder>
-					<Folder name="RS">
-						<Content fileName="VerifyEmail.html"></Content>
-					</Folder>
-					<Folder name="SE">
-						<Content fileName="PaymentCompleted.html"></Content>
-						<Content fileName="ReleaseFunds.html"></Content>
-						<Content fileName="PaymentReimbursed.html"></Content>
-						<Content fileName="purchase_agreement.html"></Content>
-						<Content fileName="VerifyEmail.html"></Content>
-					</Folder>
-				</Folder>
-				<Folder name="resources">
-					<Content fileName="vaulter_logo.svg"/>
-					<Content fileName="vaulterlogo.svg"/>
-					<Content fileName="spinner.gif"/>
-				</Folder>											
+		<Folder name="Payout">
+			<Content fileName="Payout.md"/>
+			<Content fileName="Settings.md"/>
+			<Folder name="API">
+				<Content fileName="DealInfo.ws"/>
+				<Content fileName="GetAvailableLanguages.ws"/>
+				<Content fileName="GetBankAccounts.ws"/>
+				<Content fileName="GetBuyEdalerServiceProviders.ws"/>
+				<Content fileName="InitiateCardPayment.ws"/>
+				<Content fileName="InitiatePayment.ws"/>
+				<Content fileName="InitiatePayment.ws"/>
+				<Content fileName="RegisterUpdates.ws"/>
 			</Folder>
+			<Folder name="js">
+				<Content fileName="Events.js"/>
+				<Content fileName="PaymentLink.js"/>
+			</Folder>
+			<Folder name="css">
+				<Content fileName="Payout.cssx"/>
+				<Content fileName="Stripe.css"/>
+			</Folder>
+			<Folder name="Fonts">
+				<Content fileName="Coanda-Bold.ttf"/>
+				<Content fileName="RTDromo-Medium.woff2"/>
+				<Content fileName="RTDromo-Medium.woff"/>
+			</Folder>
+			<Folder name="HtmlTemplates">
+				<Folder name="EN">
+					<Content fileName="PaymentCompleted.html"></Content>
+					<Content fileName="ReleaseFunds.html"></Content>
+					<Content fileName="PaymentReimbursed.html"></Content>
+					<Content fileName="purchase_agreement.html"></Content>
+					<Content fileName="VerifyEmail.html"></Content>
+				</Folder>
+				<Folder name="RS">
+					<Content fileName="VerifyEmail.html"></Content>
+				</Folder>
+				<Folder name="SE">
+					<Content fileName="PaymentCompleted.html"></Content>
+					<Content fileName="ReleaseFunds.html"></Content>
+					<Content fileName="PaymentReimbursed.html"></Content>
+					<Content fileName="purchase_agreement.html"></Content>
+					<Content fileName="VerifyEmail.html"></Content>
+				</Folder>
+			</Folder>
+			<Folder name="resources">
+				<Content fileName="vaulter_logo.svg"/>
+				<Content fileName="vaulterlogo.svg"/>
+				<Content fileName="spinner.gif"/>
+			</Folder>
+		</Folder>
 	</Folder>
 	<Folder name="Language">
 		<Content fileName="POWRS.PaymentLink.en.lng"/>
