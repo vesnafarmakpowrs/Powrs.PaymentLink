@@ -1,21 +1,8 @@
-if !exists(Posted) then BadRequest("No payload.");
-
 ({
     "bankAccount":Required(String(PBankAccount)) like "SE\\d{22}"
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-Response.SetHeader("Access-Control-Allow-Origin","*");
-
-try
-(
-	header:= null;
-	Request.Header.TryGetHeaderField("Authorization", header);
-	auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", {"includeInfo": false}, {"Accept": "application/json",  "Authorization": header.Value});
-)
-catch
-(
-  Forbidden("Token not valid");
-);
+Global.ValidateAgentApiToken(Request, Response);
 
 bankAccountInformationList := [
          { 'ClearingNumberFrom' : 1100, 'ClearingNumberTo' : 1199, 'Method' : 1, 'IbanId' : "300", 'Bic' :"NDEASESS" },

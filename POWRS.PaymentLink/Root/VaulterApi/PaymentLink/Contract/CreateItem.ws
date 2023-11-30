@@ -21,33 +21,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "allowedServiceProviders": Optional(String(PAllowedServiceProviders))
 }:=Posted) ??? BadRequest(Exception.Message);
 
-Jwt:= null;
-try
-(
-    header:= null;
-    Request.Header.TryGetHeaderField("Authorization", header);
-    auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", 
-            {"includeInfo": true}, {"Accept": "application/json", "Authorization": header.Value});
-   
-    Jwt:= header.Value;   
-    PUserName:= auth.userName;
-)
-catch
-(
-  Forbidden("Token not valid");
-);
-
-PPassword:= select top 1 Password from BrokerAccounts where UserName = PUserName;
-if(System.String.IsNullOrWhiteSpace(PPassword)) then 
-(
-    BadRequest("No user with given username");
-);
-
-LegalId := select top 1 Id from IoTBroker.Legal.Identity.LegalIdentity I where I.Account = PUserName and State = 'Approved' order by Created desc;
-if(System.String.IsNullOrEmpty(LegalId)) then
-(
-    BadRequest("User does not have approved legal identity so it is unable to sign contracts");
-);
+SessionUser:= Global.ValidateAgentApiToken(Request, Response);
 
 try 
 (
@@ -62,12 +36,12 @@ catch
   BadRequest(Exception.Message);
 );
 
-KeyId := GetSetting(PUserName + ".KeyId","");
-KeyPassword:= GetSetting(PUserName + ".KeySecret","");
+KeyId := GetSetting(SessionUser.username + ".KeyId","");
+KeyPassword:= GetSetting(SessionUser.username + ".KeySecret","");
 
 if(System.String.IsNullOrEmpty(KeyId) || System.String.IsNullOrEmpty(KeyPassword)) then 
 (
-    BadRequest("No signing keys or password available for user: " + PUserName);
+    BadRequest("No signing keys or password available for user: " + SessionUser.username);
 );
 
 
@@ -138,12 +112,12 @@ GetBicResponse := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Vaulter
                  {
                     "bankAccount":  PClientBankAccount
                   },
-		   {"Accept" : "application/json", "Authorization": Jwt});
+		   {"Accept" : "application/json", "Authorization": SessionUser.jwt});
 
 PSellerServiceProviderId := GetBicResponse.serviceProviderId;
 PSellerServiceProviderType := GetBicResponse.serviceProviderType;
 
- Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = PUserName And State = 'Approved';
+ Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = SessionUser.username And State = 'Approved';
 
     AgentName := "";
     OrgName := "";
@@ -162,10 +136,10 @@ BuyerPhoneNumber:= PBuyerPhoneNumber ?? " ";
 CallBackUrl:=  PCallBackUrl ?? "";
 WebPageUrl:=  PWebPageUrl ?? "";
 
-Contract:=CreateContract(PUserName, TemplateId, "Public",
+Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
-	"Title": PTitle,
+	    "Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
         "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00).ToUniversalTime(),
@@ -196,20 +170,20 @@ Nonce := Base64Encode(RandomBytes(32));
 LocalName := "ed448";
 Namespace := "urn:ieee:iot:e2e:1.0";
 
-S1 := PUserName + ":" + Waher.IoTGateway.Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
+S1 := SessionUser.username + ":" + Waher.IoTGateway.Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
 KeySignature := Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(KeyPassword)));
 
 ContractId := Contract.ContractId;
 Role := "Creator";
 
-S2 := S1 + ":" + KeySignature + ":" + Nonce + ":" + LegalId + ":" + ContractId + ":" + Role;
+S2 := S1 + ":" + KeySignature + ":" + Nonce + ":" + SessionUser.legalId + ":" + ContractId + ":" + Role;
 RequestSignature := Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
 NeuronAddress:= "https://" + Waher.IoTGateway.Gateway.Domain;
 
 POST(NeuronAddress + "/Agent/Legal/SignContract",
                              {
 	                        "keyId": KeyId,
-	                        "legalId": LegalId,
+	                        "legalId": SessionUser.legalId,
 	                        "contractId": ContractId,
 	                        "role": Role,
 	                        "nonce": Nonce,
@@ -218,7 +192,7 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
                                 },
 			      {
 			       "Accept" : "application/json",		       
-                               "Authorization": Jwt
+                               "Authorization": SessionUser.jwt
                               });
 
 {

@@ -207,3 +207,4 @@ D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\VaulterApi\PaymentLink\Acc
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\EN\VerifyEmail.html
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\RS\VerifyEmail.html
 D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Root\Payout\HtmlTemplates\SE\VerifyEmail.html
+D:\GIT\Test\POWRS.PaymentLink\bin\Release\net6.0\Scripts\StartupScripts\EncodeContractId.config

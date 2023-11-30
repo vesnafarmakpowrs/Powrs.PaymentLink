@@ -6,27 +6,8 @@
 	"stripe" : Optional(Boolean(PStripePayment))
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
-
-header:= null;
-try
-(
-    Request.Header.TryGetHeaderField("Authorization", header);
-    SessionToken:= ValidateJwt(Replace(header.Value, "Bearer ", ""));
-
-	requestEndPoint:= Split(Str(Request.RemoteEndPoint), ":")[0];
-    claimsEndpoint:= Split(SessionToken.Claims.ip, ":")[0];
-
-    if(requestEndPoint != claimsEndpoint) then 
-	(
-	 Error("");
-	);
-
-	PTokenId:= SessionToken.Claims.tokenId;
-)
-catch
-(
-   Forbidden("Session token expired or not valid");
-);
+SessionToken:= ValidatePayoutJWT(Request);
+PTokenId:= SessionToken.Claims.tokenId;
 
 P:=GetServiceProvidersForBuyingEDaler('SE','SEK');
 ServiceProviderId := "";

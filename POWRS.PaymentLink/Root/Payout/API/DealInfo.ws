@@ -1,24 +1,6 @@
-header:= null;
-try
-(
-    Request.Header.TryGetHeaderField("Authorization", header);
-    SessionToken:= ValidateJwt(Replace(header.Value, "Bearer ", ""));
-
-	requestEndPoint:= Split(Str(Request.RemoteEndPoint), ":")[0];
-    claimsEndpoint:= Split(SessionToken.Claims.ip, ":")[0];
-
-    if(requestEndPoint != claimsEndpoint) then 
-	(
-	 Error("");
-	);
-
+	SessionToken:= ValidatePayoutJWT(Request);
 	PContractId:= SessionToken.Claims.contractId;
 	PCountryCode:= UpperCase(SessionToken.Claims.country);
-)
-catch
-(
-   Forbidden("Session token expired or not valid");
-);
 
    contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= PContractId;
 

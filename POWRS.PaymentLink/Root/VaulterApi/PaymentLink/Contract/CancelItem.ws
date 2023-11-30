@@ -3,21 +3,7 @@
     "refundAmount" : Optional(int(PRefundAmount))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-Response.SetHeader("Access-Control-Allow-Origin","*");
-
-Jwt:= null;
-try
-(
-    header:= null;
-    Request.Header.TryGetHeaderField("Authorization", header);
-    Jwt:= header.Value;
-    auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", 
-            {"includeInfo": false}, {"Accept": "application/json", "Authorization": header.Value});
-)
-catch
-(
-  Forbidden("Token not valid");
-);
+SessionUser:= Global.ValidateAgentApiToken(Request, Response);
 
 PContractId := PContractId + "@legal." + Waher.IoTGateway.Gateway.Domain;
 
@@ -49,7 +35,7 @@ xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",
 	              "personal":false
                   },
 		 {"Accept" : "application/json",
-                  "Authorization": header.Value});
+                  "Authorization": SessionUser.jwt});
 
 {	
     "canceled" : true

@@ -4,9 +4,7 @@
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 Response.SetHeader("Access-Control-Allow-Origin","*");
-
 success := false;
-
 
 ContactEmail := GetSetting("POWRS.PaymentLink.ContactEmail","");
 

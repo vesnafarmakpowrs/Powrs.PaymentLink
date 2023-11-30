@@ -1,16 +1,4 @@
-﻿Response.SetHeader("Access-Control-Allow-Origin","*");
-
-header:= null;
-try
-(
-    Request.Header.TryGetHeaderField("Authorization", header);
-    auth:= POST("https://" + Gateway.Domain + "/VaulterApi/PaymentLink/VerifyToken.ws", 
-            {"includeInfo": true}, {"Accept": "application/json","Authorization": header.Value});
-)
-catch
-(
-   Forbidden("Token not valid");
-);
+﻿SessionUser:= Global.ValidateAgentApiToken(Request, Response);
 
 cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
 doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
@@ -25,7 +13,7 @@ doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": tru
 template:= "https://" + Gateway.Domain + "/Payout/Payout.md?ID={0}";
 
 list:= Create(System.Collections.Generic.List, System.Object);
-tokens:= select * from IoTBroker.NeuroFeatures.Token t where t.Creator = auth.legalId;
+tokens:= select * from IoTBroker.NeuroFeatures.Token t where t.Creator = SessionUser.legalId;
 
 foreach token in (select * from tokens order by Created desc) do 
 (
