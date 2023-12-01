@@ -269,6 +269,4 @@ FakesAssemblies/
 /POWRS.PaymentLink/.vs/ProjectEvaluation/powrs.paymentlink.projects.v7.bin
 /POWRS.PaymentLink/.vs/POWRS.PaymentLink/v17/.futdcache.v2
 /POWRS.PaymentLink/obj/POWRS.PaymentLink.csproj.nuget.g.targets
-/POWRS.PaymentLink/obj/Release/net6.0/POWRS.PaymentLink.csproj.FileListAbsolute.txt
-/POWRS.PaymentLink/obj/Release/net6.0/POWRS.PaymentLink.csproj.FileListAbsolute.txt
-/POWRS.PaymentLink/obj/Release/net6.0/POWRS.PaymentLink.csproj.FileListAbsolute.txt
+/POWRS.PaymentLink/obj/Release/net6.0/*
