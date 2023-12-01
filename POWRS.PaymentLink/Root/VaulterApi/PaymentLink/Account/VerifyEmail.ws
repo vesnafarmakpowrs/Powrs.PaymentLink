@@ -30,12 +30,11 @@ try
         Global.VerifyingEmailIP.Add(remoteEndpoint, value);
     );  
     
-    if (!exists(Global.VerifyingNumbers[PEmail])) then
+    Code:= 0;
+    if (!exists(Code:= Global.VerifyingNumbers[PEmail])) then
     (
         Error("No pending verification code. You have to send a new verification code.");
-    );
-    
-    Code := Global.VerifyingNumbers[PEmail];
+    );    
     
     if PCode != Code then 
     (
