@@ -23,7 +23,7 @@ try
     
     if value > maxAttemptsInHour then
     (
-        Error('Too many attempts. Try again in a hour.')
+        Error('Too many attempts. Try again in a hour.');
     ) 
     else 
     (

@@ -1,3 +1,11 @@
+Title: Vaulter API v1
+Description: This document contains information about the Vaulter API (v1)
+Author:  POWRS DOO
+Date: 2023-06-16
+Master: \Master.md
+Copyright: \Copyright.md
+
+============================================================================
 Vaulter API (v1)
 ==================
 
@@ -480,9 +488,9 @@ Call this resource to send email with verification code.
 }
 ````
 
-### Verify Email with code 
+### Verify Email with code
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/SendVerificationEmail.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/VerifyEmail.ws")}}`  
 Method: `POST`
 
 Call this resource to verify email with code.
@@ -491,8 +499,7 @@ Call this resource to verify email with code.
 
 ````
 {
-  "email":Required(String(PUserEmail)),
-  "code":Required(Int(PCountryCode))
+   "Message" : "ok"
 }
 ````
 
