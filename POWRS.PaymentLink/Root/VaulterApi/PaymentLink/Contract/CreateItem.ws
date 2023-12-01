@@ -4,10 +4,10 @@ if !exists(Posted) then BadRequest("No payload.");
 
 ({
     "orderNum":Required(String(PRemoteId) like "^(?!.*--)[a-zA-Z0-9-]{1,50}$"),
-    "title":Required(String(PTitle) like "[a-zA-Z0-9.,;:!?()'\" -]{1,30}"),
+    "title":Required(String(PTitle) like "[a-zA-Z0-9.,;:!?()'\" -]{2,30}"),
     "price":Required(Double(PPrice) >= 0.1),
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
-    "description":Required(String(PDescription)  like "[a-zA-Z0-9.,;:!?()'\" -]{1,100}"),
+    "description":Required(String(PDescription)  like "[a-zA-Z0-9.,;:!?()'\" -]{2,100}"),
     "deliveryDate":Required(String(PDeliveryDate) like "^(0[1-9]|1[0-2])\\/(0[1-9]|[12][0-9]|3[01])\\/\\d{4}$"),
     "sellerBankAccount":Required(String(PClientBankAccount)),
     "buyerFirstName":Required(String(PBuyerFirstName) like "[\\p{L}\\s]{2,20}"),
@@ -22,6 +22,12 @@ if !exists(Posted) then BadRequest("No payload.");
 }:=Posted) ??? BadRequest(Exception.Message);
 
 SessionUser:= Global.ValidateAgentApiToken(Request, Response);
+
+PPassword:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
+if(System.String.IsNullOrWhiteSpace(PPassword)) then 
+(
+    BadRequest("No user with given username");
+);
 
 try 
 (
@@ -108,11 +114,11 @@ if(EscrowFee <= 0) then
 );
 
 
-GetBicResponse := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/GetBic.ws",
+GetBicResponse := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/Bank/GetBic.ws",
                  {
                     "bankAccount":  PClientBankAccount
                   },
-		   {"Accept" : "application/json", "Authorization": SessionUser.jwt});
+		   {"Accept" : "application/json", "Authorization": "Bearer " + SessionUser.jwt});
 
 PSellerServiceProviderId := GetBicResponse.serviceProviderId;
 PSellerServiceProviderType := GetBicResponse.serviceProviderType;
@@ -191,8 +197,8 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
 	                        "requestSignature": RequestSignature
                                 },
 			      {
-			       "Accept" : "application/json",		       
-                               "Authorization": SessionUser.jwt
+			       "Accept" : "application/json",
+			       "Authorization": "Bearer " + SessionUser.jwt
                               });
 
 {
