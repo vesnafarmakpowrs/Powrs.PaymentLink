@@ -35,9 +35,17 @@ if(LanguageNamespace == null) then
  Return("");
 );
 
-ID:= Global.DecodeContractId(ID);
-Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
+try
+(
+ ID:= Global.DecodeContractId(ID);
+)
+catch
+(
+    ]]<b>Payment link is not valid</b>[[;
+  Return("");
+);
 
+Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
 if !exists(Token) then
 (
   ]]<b>Payment link is not valid</b>[[;
