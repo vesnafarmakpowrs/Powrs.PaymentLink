@@ -25,10 +25,8 @@ try
     (
         Error('Too many attempts. Try again in a hour.');
     ) 
-    else 
-    (
-        Global.VerifyingEmailIP.Add(remoteEndpoint, value);
-    );  
+
+    Global.VerifyingEmailIP.Add(remoteEndpoint, value);
     
     Code:= 0;
     if (!exists(Code:= Global.VerifyingNumbers[PEmail])) then
