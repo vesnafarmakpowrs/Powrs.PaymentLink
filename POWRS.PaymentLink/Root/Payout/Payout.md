@@ -35,11 +35,10 @@ if(LanguageNamespace == null) then
  Return("");
 );
 
-ID += "@legal." + Gateway.Domain; 
-
+ID:= Global.DecodeContractId(ID);
 Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
 
-if !exists(Token) then 
+if !exists(Token) then
 (
   ]]<b>Payment link is not valid</b>[[;
   Return("");

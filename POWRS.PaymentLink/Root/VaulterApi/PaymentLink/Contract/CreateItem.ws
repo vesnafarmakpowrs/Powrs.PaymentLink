@@ -183,7 +183,7 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
                               });
 
 {
-    "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Replace(ContractId,"@legal." + Waher.IoTGateway.Gateway.Domain,""),
+    "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Global.EncodeContractId(ContractId),
     "EscrowFee": EscrowFee,
     "Currency": PCurrency
 }

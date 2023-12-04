@@ -22,7 +22,7 @@ foreach token in (select * from tokens order by Created desc) do
   "TokenId": token.TokenId,
   "CanCancel": exists(cancelAllowedStates[s.State]),
   "IsActive": !exists(doneStates[s.State]),
-  "Paylink": Replace(template, "{0}", Before(token.OwnershipContract, "@")),
+  "Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
   "Created": token.Created.ToString("s"),
   "State": variables.State,
   "Variables": variables.VariableValues
