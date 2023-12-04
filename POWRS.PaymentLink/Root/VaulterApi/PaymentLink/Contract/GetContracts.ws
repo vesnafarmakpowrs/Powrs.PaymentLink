@@ -31,6 +31,7 @@ foreach token in (select * from tokens order by Created desc) do
 )
 catch
 (
+ Log.Error(Exception, null);
  InternalServerError(Exception.Message)
 );
 

@@ -1,12 +1,13 @@
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 ({
    "userEmail":Required(String(PUserEmail)),
    "body":Required(String(PBody))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-Response.SetHeader("Access-Control-Allow-Origin","*");
-success := false;
-
-ContactEmail := GetSetting("POWRS.PaymentLink.ContactEmail","");
+try
+(
+ ContactEmail := GetSetting("POWRS.PaymentLink.ContactEmail","");
 
  htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\EN\\ContactUs.html";
  html:= System.IO.File.ReadAllText(htmlTemplatePath);
@@ -17,7 +18,13 @@ ContactEmail := GetSetting("POWRS.PaymentLink.ContactEmail","");
  ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
  Config := ConfigClass.Instance;
  POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContactEmail, "PLG Contact ", html);
- success := true;
 {    	
-    "Success": success
+    "Success": true
 }
+
+)
+catch
+(
+ Log.Error(Exception, null);
+ BadRequest(Exception.Message);
+);

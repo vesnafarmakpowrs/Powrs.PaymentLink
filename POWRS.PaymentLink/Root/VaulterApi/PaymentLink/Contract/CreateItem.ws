@@ -23,23 +23,19 @@ if !exists(Posted) then BadRequest("No payload.");
 
 SessionUser:= Global.ValidateAgentApiToken(Request, Response);
 
+try
+(
+
 PPassword:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
 if(System.String.IsNullOrWhiteSpace(PPassword)) then 
 (
-    BadRequest("No user with given username");
+    Error("No user with given username");
 );
 
-try 
+ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "MM/dd/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
+if(ParsedDeliveryDate < Today) then 
 (
- ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "MM/dd/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
- if(ParsedDeliveryDate < Today) then 
- (
     Error("Delivery date must be in the future");
- );
-)
-catch
-(
-  BadRequest(Exception.Message);
 );
 
 KeyId := GetSetting(SessionUser.username + ".KeyId","");
@@ -47,14 +43,12 @@ KeyPassword:= GetSetting(SessionUser.username + ".KeySecret","");
 
 if(System.String.IsNullOrEmpty(KeyId) || System.String.IsNullOrEmpty(KeyPassword)) then 
 (
-    BadRequest("No signing keys or password available for user: " + SessionUser.username);
+    Error("No signing keys or password available for user: " + SessionUser.username);
 );
 
 
 if(exists(PBuyerPersonalNum) || PBuyerCountryCode.ToLower() == "se") then 
 (
-  try
-  (
     normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PBuyerCountryCode, PBuyerPersonalNum);
 	isValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PBuyerCountryCode ,normalizedPersonalNumber);
 
@@ -62,11 +56,6 @@ if(exists(PBuyerPersonalNum) || PBuyerCountryCode.ToLower() == "se") then
 	(
     	 Error("Personal number: " + PBuyerPersonalNum + " is not valid for the country: " + PBuyerCountryCode);
 	);
-  )
-  catch
-  (
-    BadRequest(Exception.Message);
-  );	
 );
 
 if(exists(PAllowedServiceProviders) and PAllowedServiceProviders != null) then 
@@ -79,7 +68,7 @@ if(exists(PAllowedServiceProviders) and PAllowedServiceProviders != null) then
        (
           if(indexOf(availableServiceProviders, allowed) < 0) then 
           (
-             BadRequest("Invalid service providers selected");
+             Error("Invalid service providers selected");
           );
        );
     );
@@ -93,13 +82,13 @@ TemplateId:= GetSetting("POWRS.PaymentLink.TemplateId","");
 
 if(System.String.IsNullOrWhiteSpace(TemplateId)) then 
 (
-    BadRequest("Not configured correctly");
+    Error("Not configured correctly");
 );
 
 ContractParameters:= select top 1 Parameters from Contracts where ContractId = TemplateId;
 if(ContractParameters == null) then 
 (
- BadRequest("Parameters for the contract does not exists.");
+ Error("Parameters for the contract does not exists.");
 );
 
 EscrowFee:= 0;
@@ -110,9 +99,8 @@ foreach Parameter in ContractParameters do
 
 if(EscrowFee <= 0) then 
 (
- BadRequest("Fee not properly configured");
+ Error("Fee not properly configured");
 );
-
 
 GetBicResponse := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/Bank/GetBic.ws",
                  {
@@ -135,8 +123,6 @@ PSellerServiceProviderType := GetBicResponse.serviceProviderType;
 
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
 
-try
-(
 BuyerPersonalNum:= PBuyerPersonalNum ?? " ";
 BuyerPhoneNumber:= PBuyerPhoneNumber ?? " ";
 CallBackUrl:=  PCallBackUrl ?? "";
@@ -164,13 +150,8 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
         "CallBackUrl" : CallBackUrl,
         "WebPageUrl" : WebPageUrl,
         "AllowedServiceProviders": PAllowedServiceProviders
-    })
-)
-catch
-(
-  BadRequest(Exception.Message);
-  Log.Error(Exception, null);
-);
+    });
+
 Nonce := Base64Encode(RandomBytes(32));
 
 LocalName := "ed448";
@@ -206,3 +187,10 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
     "EscrowFee": EscrowFee,
     "Currency": PCurrency
 }
+
+)
+catch
+(
+    Log.Error(Exception, null);
+    BadRequest(Exception.Message);
+);

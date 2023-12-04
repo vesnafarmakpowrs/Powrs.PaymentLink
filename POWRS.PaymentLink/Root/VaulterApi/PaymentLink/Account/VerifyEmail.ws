@@ -34,7 +34,12 @@ try
     if (!exists(Code:= Global.VerifyingNumbers[PEmail])) then
     (
         Error("No pending verification code. You have to send a new verification code.");
-    );    
+    );
+
+    if(Code < 0) then 
+    (
+       Error("Email already verified.");
+    );
     
     if PCode != Code then 
     (

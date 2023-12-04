@@ -5,6 +5,8 @@
 
 SessionUser:= Global.ValidateAgentApiToken(Request, Response);
 
+try
+(
 PContractId := PContractId + "@legal." + Waher.IoTGateway.Gateway.Domain;
 
 Token := select top 1 TokenId, Value from NeuroFeatureTokens where OwnershipContract = PContractId;
@@ -40,4 +42,10 @@ xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",
 {	
     "canceled" : true
 }
+)
+catch
+(
+ Log.Error(Exception, null);
+ BadRequest(Exception.Message, null);
+);
 
