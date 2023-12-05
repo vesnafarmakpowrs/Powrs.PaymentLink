@@ -20,19 +20,22 @@ try
                  {
                     "userName": PUserName,
                     "nonce": PNonce,
-	            "signature": PSignature,
-	            "seconds": validInSeconds
+	                "signature": PSignature,
+	                "seconds": validInSeconds
                   },
 		   {"Accept" : "application/json"});
+    
+
+     legalIdentity:= select top 1 Id from LegalIdentities where Account = PUserName and State = "Approved";
 
      Destroy(PUserName);
      Destroy(PNonce);
      Destroy(PSignature);
-
      
 {	
     "jwt" : Resp.jwt,
-    "validUntil": Now.AddSeconds(validInSeconds)
+    "validUntil": Now.AddSeconds(validInSeconds),
+    "isApproved": !System.String.IsNullOrWhiteSpace(legalIdentity)
 }
 
 )

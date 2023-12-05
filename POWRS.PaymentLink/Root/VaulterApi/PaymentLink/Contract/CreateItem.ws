@@ -21,7 +21,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "allowedServiceProviders": Optional(String(PAllowedServiceProviders))
 }:=Posted) ??? BadRequest(Exception.Message);
 
-SessionUser:= Global.ValidateAgentApiToken(Request, Response);
+SessionUser:= Global.ValidateAgentApiToken(true);
 
 try
 (

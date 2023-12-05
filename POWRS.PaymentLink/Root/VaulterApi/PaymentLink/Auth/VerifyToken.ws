@@ -1,5 +1,6 @@
-SessionUser:= Global.ValidateAgentApiToken(Request, Response);
+SessionUser:= Global.ValidateAgentApiToken(false);
 
  {
-  "authenticated": true
+  "authenticated": true,
+  "isApproved": SessionUser.isApproved
  }

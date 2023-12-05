@@ -92,7 +92,8 @@ Response (if successful)
 :	```json
 :	{
 .		"jwt":Required(Str(PJwt)),
-.		"expires":Required(DateTime(PExpires))
+.		"expires":Required(DateTime(PExpires)),
+        "isApproved":Required(Bool)
 :	}
 :
 
@@ -390,7 +391,8 @@ Read **Authorization section**.
 ````
 200 OK
 	{
-		 "authorized": true
+		 "authorized": true,
+         "isApproved": Bool
 	}
 403 Forbidden
 	{
@@ -498,7 +500,8 @@ Call this resource to verify email with code.
 
 ````
 {
-   "Message" : "ok"
+   "email":Required(String(PEmail)),
+   "code":Required(String(PCode))
 }
 ````
 

@@ -1,4 +1,4 @@
-	SessionToken:= ValidatePayoutJWT(Request);
+	SessionToken:= ValidatePayoutJWT();
 	PContractId:= SessionToken.Claims.contractId;
 	PCountryCode:= UpperCase(SessionToken.Claims.country);
 

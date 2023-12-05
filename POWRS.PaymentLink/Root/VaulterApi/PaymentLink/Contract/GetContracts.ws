@@ -1,4 +1,4 @@
-﻿SessionUser:= Global.ValidateAgentApiToken(Request, Response);
+﻿SessionUser:= Global.ValidateAgentApiToken(true);
 
 cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
 doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
@@ -19,13 +19,13 @@ foreach token in (select * from tokens order by Created desc) do
 (
  variables:= token.GetCurrentStateVariables();
  list.Add({
-  "TokenId": token.TokenId,
-  "CanCancel": exists(cancelAllowedStates[s.State]),
-  "IsActive": !exists(doneStates[s.State]),
-  "Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
-  "Created": token.Created.ToString("s"),
-  "State": variables.State,
-  "Variables": variables.VariableValues
+	"TokenId": token.TokenId,
+	"CanCancel": exists(cancelAllowedStates[s.State]),
+	"IsActive": !exists(doneStates[s.State]),
+	"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
+	"Created": token.Created.ToString("s"),
+	"State": variables.State,
+	"Variables": variables.VariableValues
  });
 );
 )

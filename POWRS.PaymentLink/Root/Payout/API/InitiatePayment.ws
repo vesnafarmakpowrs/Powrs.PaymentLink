@@ -6,7 +6,8 @@
 	"stripe" : Optional(Boolean(PStripePayment))
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
-SessionToken:= ValidatePayoutJWT(Request);
+
+SessionToken:= ValidatePayoutJWT();
 PTokenId:= SessionToken.Claims.tokenId;
 
 P:=GetServiceProvidersForBuyingEDaler('SE','SEK');
