@@ -182,6 +182,18 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
 			       "Authorization": "Bearer " + SessionUser.jwt
                               });
 
+StateMachineInitialized:= false;
+Counter:= 0;
+while StateMachineInitialized == false and Counter < 10 do 
+(
+ Token:= select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract= Contract.ContractId;
+ if(Token != null) then 
+ (
+    StateMachineInitialized:= Token.HasStateMachine;    
+ );
+ Counter += 1;
+);
+
 {
     "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Global.EncodeContractId(ContractId),
     "EscrowFee": EscrowFee,
