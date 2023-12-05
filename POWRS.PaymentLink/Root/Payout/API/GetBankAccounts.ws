@@ -7,7 +7,7 @@
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-SessionToken:= ValidatePayoutJWT();
+SessionToken:= Global.ValidatePayoutJWT();
 PContractId:= SessionToken.Claims.contractId;
 
 contractParameters:= select top 1 Parameters from IoTBroker.Legal.Contracts.Contract where ContractId = PContractId;

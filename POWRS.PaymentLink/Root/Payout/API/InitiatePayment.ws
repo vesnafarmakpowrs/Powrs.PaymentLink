@@ -7,7 +7,7 @@
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-SessionToken:= ValidatePayoutJWT();
+SessionToken:=  Global.ValidatePayoutJWT();
 PTokenId:= SessionToken.Claims.tokenId;
 
 P:=GetServiceProvidersForBuyingEDaler('SE','SEK');
