@@ -98,7 +98,7 @@ if ContractState == "AwaitingForPayment" then
         Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString("N2");
       );
      BuyerFirstName := Before(BuyerFullName," ");
-
+     PayspotId := Before(ID,"@");
      tokenDurationInMinutes:= Int(GetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", 5));
 
      PageToken:= CreateJwt(
@@ -125,6 +125,10 @@ if ContractState == "AwaitingForPayment" then
 </tr>
 </table>
 
+<input type="hidden" value="((AmountToPay ))" id="AmountToPay"/>
+
+<input type="hidden" value="((PayspotId ))" id="Id"/>
+
 <input type="hidden" value="((lng ))" id="prefferedLanguage"/>
 <input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
@@ -144,14 +148,15 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((FileName))" id="fileName"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(34) ))" id="cardHolderTxt"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(35) ))" id="cardHolderNameTxt"/>
+<input type="hidden" value="((Country ))" id="country"/>
 
 <div class="payment-details">
   <table style="width:100%">
-    <tr class="table-row">
+    <tr id="tr_header" class="table-row">
       <td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
       <td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) ))<strong></td>
     </tr>
-    <tr>
+    <tr id="tr_header_title">
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
           <tr>
@@ -166,10 +171,10 @@ if ContractState == "AwaitingForPayment" then
         </table>
       </td>
     </tr>
-    <tr class="spaceUnder">
+    <tr id="tr_space" class="spaceUnder">
       <td colspan="2"></td>
     </tr>
-    <tr class="spaceUnder">
+    <tr id="tr_fees" class="spaceUnder">
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
           <tr>
@@ -184,7 +189,7 @@ if ContractState == "AwaitingForPayment" then
     <tr class="spaceUnder">
       <td colspan="2"></td>
     </tr>
-    <tr>
+    <tr id="tr_summary">
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
           <tr>
@@ -236,12 +241,12 @@ if (Country == 'SE') then
 
 </div>
 <div class="spaceItem"></div>
-<div>
+<div id="left-to-pay" style="display:none">
   <label class=""><strong>((LanguageNamespace.GetStringAsync(37) ))</strong></label>
 </div>[[;
 if (Country == 'SE') then 
 (
- ]] <div class="payment-method">
+ ]] <div class="payment-method" >
  <form id="payment-method" >
   <table class="payment-method-tbl">
    <tr id="payment-direct-bank-btn" class="payment-method-btn" >
@@ -296,7 +301,7 @@ if (Country == 'SE') then
    <div id="payment-element">
    </div>
     <div class="stripe-name-div">
-         <div class=">
+         <div >
            <input type="text" inputmode="text" name="linkLegalName" id="Field-linkLegalNameInput" 
             placeholder="First and last name" 
             autocomplete="billing name" 
@@ -310,8 +315,15 @@ if (Country == 'SE') then
 )
 else if (Country == 'RS') then
 (
-  ]] <div class="payment-method"> 
-        Serbia Pay spot Implementation 
+  ]] <div class="payment-method" id="ctn-payment-method-rs" style="display:none"> 
+       <table style="width:100%">
+         <tr>
+           <td> <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="GetLink()">Pay now</button><td/>
+         </tr>
+          <tr>
+           <td> <iframe src="url" id="payspot_iframe" style= "display: none; width:100%; min-height: 500px" title="description"></iframe><td/>
+         </tr>
+       </table>
       </div>
    [[;
 )

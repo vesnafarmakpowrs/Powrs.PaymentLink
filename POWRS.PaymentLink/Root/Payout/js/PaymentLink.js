@@ -143,6 +143,8 @@ function GenerateServiceProvidersUI() {
         }, null);
 }
 
+
+
 function ClearQrCodeDiv() {
     var container = document.getElementById('QrCode');
     container.innerHTML = "";
@@ -346,17 +348,31 @@ function PaymentError(Data) {
 }
 
 function UserAgree() {
-    if (!document.getElementById("purchaseAgreement").checked ||
-        !document.getElementById("termsAndCondition").checked) {
-        document.getElementById("payment-form-bank").disabled = true;
-        document.getElementById("payment-form-card").disabled = true;
+
+    var Country = document.getElementById("country").value
+
+    if (Country == "RS" && document.getElementById("termsAndCondition").checked) {
+        document.getElementById("payspot-submit").removeAttribute("disabled");
+        document.getElementById("left-to-pay").style.display = "block";
+        document.getElementById("ctn-payment-method-rs").style.display = "block";
+    }
+    else if (Country == "RS" && !document.getElementById("termsAndCondition").checked) {
+        document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
+        document.getElementById("left-to-pay").style.display = "none";
+        document.getElementById("ctn-payment-method-rs").style.display = "none";
     }
     else {
-
-        document.getElementById("payment-form-bank").disabled = false;
-        document.getElementById("payment-form-card").disabled = false;
-        var container = document.getElementById('QrCode');
-        container.innerHTML = "";
+        if (!document.getElementById("purchaseAgreement").checked ||
+            !document.getElementById("termsAndCondition").checked) {
+            document.getElementById("payment-form-bank").disabled = true;
+            document.getElementById("payment-form-card").disabled = true;
+        }
+        else {
+            document.getElementById("payment-form-bank").disabled = false;
+            document.getElementById("payment-form-card").disabled = false;
+            var container = document.getElementById('QrCode');
+            container.innerHTML = "";
+        }
     }
 }
 
@@ -619,5 +635,52 @@ function selectPaymentBtn(elementId) {
 function unSelectPaymentBtn(elementId) {
     var directBankBtn = document.getElementById(elementId);
     directBankBtn.classList.remove("payment-btn-selected");
+}
+
+function GetLink() {
+    CollapseDetails();
+    AmountToPay = document.getElementById("AmountToPay").value;
+    Id = document.getElementById("Id").value;
+    console.log(AmountToPay);
+    SendXmlHttpRequest("../VaulterApi/PaymentLink/PaySpotPaylink.ws", {
+        "merchantOrderID": Id,
+        "merchantOrderAmount": AmountToPay,
+        "merchantCurrencyCode": 941,
+        "errorURL": "https://online-test.payspot.rs/login",
+        "email": "vesna.farmak@gmail.com",
+        "requestType": 11,
+        "successURL": "https://lab.neuron.vaulter.nu/Payout/success.md",
+        "cancelURL": "https://online-test.payspot.rs/login"
+    },
+        (response) => {
+            document.getElementById("payspot_iframe").src = response.Link;
+            document.getElementById("payspot_iframe").style.display = null;
+            document.getElementById("payspot-submit").style.display = "none";
+        },
+        (error) => {
+            if (error.status === 408) {
+                return;
+            }
+            TransactionFailed(null);
+        });
+}
+
+
+function CollapseDetails() {
+    document.getElementById("tr_header").style.display = "none";
+    document.getElementById("tr_header_title").style.display = "none";
+    document.getElementById("tr_fees").style.display = "none";
+    document.getElementById("tr_space").style.display = "none";
+    document.getElementById("tr_summary").addEventListener("click", ExpandDetails);
+}
+
+function ExpandDetails() {
+    document.getElementById("tr_header").style.display = null;
+    document.getElementById("tr_header_title").style.display = null;
+    document.getElementById("tr_summary").style.display = null;
+    document.getElementById("tr_fees").style.display = null;
+    document.getElementById("tr_space").style.display = null;
+    document.getElementById("tr_header").addEventListener("click", CollapseDetails);
+    document.getElementById("tr_header_title").addEventListener("click", CollapseDetails);
 }
 
