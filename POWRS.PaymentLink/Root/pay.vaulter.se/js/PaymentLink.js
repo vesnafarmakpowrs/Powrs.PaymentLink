@@ -63,7 +63,7 @@ function GenerateLanguageDropdown() {
         return;
     }
 
-    SendXmlHttpRequest("API/GetAvailableLanguages.ws",
+    SendXmlHttpRequest("../Payout/API/GetAvailableLanguages.ws",
         {
             "Namespace": document.getElementById("Namespace").value
         }, (response) => {
@@ -103,7 +103,7 @@ function GenerateServiceProvidersUI() {
         return;
     }
 
-    SendXmlHttpRequest("API/GetBuyEdalerServiceProviders.ws",
+    SendXmlHttpRequest("../Payout/API/GetBuyEdalerServiceProviders.ws",
         {},
         (response) => {
             serviceProviders = response.ServiceProviders;
@@ -206,7 +206,7 @@ function GenerateAccountsListUi(accounts) {
 
 function GetBankAccounts() {
 
-    SendXmlHttpRequest("API/GetBankAccounts.ws", {
+    SendXmlHttpRequest("../Payout/API/GetBankAccounts.ws", {
         "tabId": TabID,
         "sessionId": "",
         "requestFromMobilePhone": Boolean(isMobileDevice),
@@ -229,7 +229,7 @@ function StartPayment(iban, bic) {
         return;
     }
 
-    SendXmlHttpRequest("API/InitiatePayment.ws", {
+    SendXmlHttpRequest("../Payout/API/InitiatePayment.ws", {
         "tabId": TabID,
         "requestFromMobilePhone": Boolean(isMobileDevice),
         "bankAccount": iban,
@@ -380,7 +380,7 @@ var updateTimer = null;
 
 function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUsed) {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "API/RegisterUpdates.ws", true);
+    xhttp.open("POST", "../Payout/API/RegisterUpdates.ws", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.send(JSON.stringify(
@@ -419,7 +419,7 @@ function downloadPDF(base64Data, filename) {
 }
 
 function generatePDF() {
-    SendXmlHttpRequest("API/DealInfo.ws",
+    SendXmlHttpRequest("../Payout/API/DealInfo.ws",
         {},
         (response) => {
             downloadPDF(response.PDF, response.Name);
@@ -578,7 +578,7 @@ function ShowBankPayment(show) {
 function StartCardPayment() {
     SelectCardPayment(true);
     ShowBankPayment(false);
-    SendXmlHttpRequest("API/InitiateCardPayment.ws",
+    SendXmlHttpRequest("../Payout/API/InitiateCardPayment.ws",
         {
             "tabId": TabID
         },
