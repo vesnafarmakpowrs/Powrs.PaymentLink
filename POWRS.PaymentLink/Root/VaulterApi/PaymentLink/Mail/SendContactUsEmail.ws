@@ -8,8 +8,9 @@ Response.SetHeader("Access-Control-Allow-Origin","*");
 try
 (
  ContactEmail := GetSetting("POWRS.PaymentLink.ContactEmail","");
-
- htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\EN\\ContactUs.html";
+ 
+ PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
+ htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + PaylinkDomain + "\\HtmlTemplates\\EN\\ContactUs.html";
  html:= System.IO.File.ReadAllText(htmlTemplatePath);
  html := html.Replace("{UserName}",auth.userName);
  html := html.Replace("{UserEmail}", PUserEmail);

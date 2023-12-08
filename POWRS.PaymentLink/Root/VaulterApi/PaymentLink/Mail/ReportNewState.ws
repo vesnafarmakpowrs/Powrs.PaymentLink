@@ -71,8 +71,8 @@ if (exists(r.SendEmail) &&  r.SendEmail) then
    IdentityProperties.Add("ORGNAME", Identity.ORGNAME);
    IdentityProperties.Add("CountryCode", CountryCode);
    IdentityProperties.Add("Domain", Gateway.Domain);
-
-   htmlTemplateRoot := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + CountryCode + "\\";
+   PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
+   htmlTemplateRoot := Waher.IoTGateway.Gateway.RootFolder + "PaylinkDomain\\" +"HtmlTemplates\\" + CountryCode + "\\";
 
    htmlTemplatePath:= htmlTemplateRoot + r.Status + ".html";
    html:= System.IO.File.ReadAllText(htmlTemplatePath);

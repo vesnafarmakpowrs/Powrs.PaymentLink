@@ -40,7 +40,8 @@ try
     
     Global.VerifyingNumbers.Add(PEmail,VerificationCode);
     
-    htmlTemplateRoot := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + PCountryCode + "\\";
+    PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
+    htmlTemplateRoot := Waher.IoTGateway.Gateway.RootFolder +  PaylinkDomain + "\\HtmlTemplates\\" + PCountryCode + "\\";
     htmlTemplatePath:= htmlTemplateRoot +  + "VerifyEmail.html";
     html:= System.IO.File.ReadAllText(htmlTemplatePath);
     

@@ -166,7 +166,7 @@ Role := "Creator";
 S2 := S1 + ":" + KeySignature + ":" + Nonce + ":" + SessionUser.legalId + ":" + ContractId + ":" + Role;
 RequestSignature := Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
 NeuronAddress:= "https://" + Waher.IoTGateway.Gateway.Domain;
-
+PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 POST(NeuronAddress + "/Agent/Legal/SignContract",
                              {
 	                        "keyId": KeyId,
@@ -195,7 +195,7 @@ while StateMachineInitialized == false and Counter < 10 do
 );
 
 {
-    "Link" : NeuronAddress + "/Payout/Payout.md?ID=" + Global.EncodeContractId(ContractId),
+    "Link" : PaymentLinkAddress + "/Payout.md?ID=" + Global.EncodeContractId(ContractId),
     "EscrowFee": EscrowFee,
     "Currency": PCurrency
 }

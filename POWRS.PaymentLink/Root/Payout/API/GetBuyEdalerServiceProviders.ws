@@ -37,7 +37,8 @@ Providers:=GetServiceProvidersForBuyingEDaler(CountryCode,Currency);
 Mode:=GetSetting("TAG.Payments.OpenPaymentsPlatform.Mode",TAG.Payments.OpenPaymentsPlatform.OperationMode.Sandbox);
 QRcode := true;
 Name := "";
-ProviderList:= Create(System.Collections.Generic.List, System.Object);
+ProviderList := Create(System.Collections.Generic.List, System.Object);
+PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
 
 foreach P in Providers do 
  ( 
@@ -55,7 +56,7 @@ foreach P in Providers do
           ProviderList.Add({
       	        "Name": Name, 
 	            "Id": P.Id, 
-	            "IconUrl": "https://" + P.Id.Replace("Production.",Waher.IoTGateway.Gateway.Domain + "/Payout/Bank/") + ".png",
+	            "IconUrl": "https://" + P.Id.Replace("Production.","/" + PaylinkDomain + "/Bank/") + ".png",
 	            "BuyEDalerServiceProviderId": P.BuyEDalerServiceProvider.Id, 
 	            "BuyEDalerTemplateContractId": P.BuyEDalerTemplateContractId, 
 	            "QRCode" :QRcode

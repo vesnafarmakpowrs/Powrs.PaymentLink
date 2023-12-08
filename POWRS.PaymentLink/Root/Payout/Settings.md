@@ -24,7 +24,8 @@ By providing such an integration, direct bank payments can be performed on the n
 {{
 if exists(Posted) then
 (
-
+    
+	SetSetting("POWRS.PaymentLink.PayDomain",Posted.PayDomain);
 	SetSetting("POWRS.PaymentLink.OPPUser",Posted.UserName);
 	SetSetting("POWRS.PaymentLink.OPPUserPass",Posted.Password);
 	SetSetting("POWRS.PaymentLink.KeyId",Posted.KeyId);
@@ -41,7 +42,10 @@ if exists(Posted) then
 );
 }}
 
-
+<p>
+ <label for="PayDomain">Pay Domain:</label>  
+<input type="text" id="PayDomain" name="PayDomain" value='{{GetSetting("POWRS.PaymentLink.PayDomain","")}}' autofocus required title="Domain where users can reach payment link."/>
+</p>
 
 <p>
 <label for="ClientID">User Name:</label>  

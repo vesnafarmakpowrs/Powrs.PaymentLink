@@ -4,13 +4,14 @@ cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
 doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
 
 contracts:= null;
-template:= "https://" + Gateway.Domain + "/Payout/Payout.md?ID={0}";
+PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
+template:= "https://" + PaylinkDomain + "/Payout.md?ID={0}";
 try 
 (
 
 cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
 doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
-template:= "https://" + Gateway.Domain + "/Payout/Payout.md?ID={0}";
+template:= "https://" + PaylinkDomain + "/Payout.md?ID={0}";
 
 list:= Create(System.Collections.Generic.List, System.Object);
 tokens:= select * from IoTBroker.NeuroFeatures.Token t where t.Creator = SessionUser.legalId;
