@@ -1,7 +1,5 @@
-var serviceProviders = null;
-var selectedServiceProvider = null;
+
 var Translations = {};
-const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
 
 document.addEventListener("DOMContentLoaded", () => {
     GenerateLanguageDropdown();
@@ -196,35 +194,6 @@ function StartPayment() {
         })
 }
 
-function GetLink() {
-    CollapseDetails();
-    AmountToPay = document.getElementById("AmountToPay").value;
-    Id = document.getElementById("Id").value;
-    console.log(AmountToPay);
-    SendXmlHttpRequest("../VaulterApi/PaymentLink/PaySpotPaylink.ws", {
-        "merchantOrderID": Id,
-        "merchantOrderAmount": AmountToPay,
-        "merchantCurrencyCode": 941,
-        "errorURL": "https://online-test.payspot.rs/login",
-        "email": "vesna.farmak@gmail.com",
-        "requestType": 11,
-        "successURL": "https://lab.neuron.vaulter.nu/Payout/success.md",
-        "cancelURL": "https://online-test.payspot.rs/login"
-    },
-        (response) => {
-            document.getElementById("payspot_iframe").src = response.Link;
-            document.getElementById("payspot_iframe").style.display = null;
-            document.getElementById("payspot-submit").style.display = "none";
-        },
-        (error) => {
-            if (error.status === 408) {
-                return;
-            }
-            TransactionFailed(null);
-        });
-}
-
-
 function CollapseDetails() {
     document.getElementById("tr_header").style.display = "none";
     document.getElementById("tr_header_title").style.display = "none";
@@ -242,4 +211,3 @@ function ExpandDetails() {
     document.getElementById("tr_header").addEventListener("click", CollapseDetails);
     document.getElementById("tr_header_title").addEventListener("click", CollapseDetails);
 }
-
