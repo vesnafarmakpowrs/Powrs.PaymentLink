@@ -5,6 +5,7 @@ Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
 CSS: css/Status.css
+CSS: css/Payout.cssx
 viewport : Width=device-width, initial-scale=1
 
 <main class="border-radius">
@@ -14,7 +15,7 @@ viewport : Width=device-width, initial-scale=1
             <div class="imageContainer">
                 <img src="../resources/error_red.png" alt="successpng" width="50" />
             </div>
-            <div class="textHeader">
+            <div class="welcomeLbl textHeader">
                 <span>Transaction cancelled</span>
             </div>
         </div>
