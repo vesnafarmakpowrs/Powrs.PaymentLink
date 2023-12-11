@@ -5,13 +5,11 @@ Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
 CSS: css/Payout.cssx
-CSS: css/Stripe.css
 viewport : Width=device-width, initial-scale=1
 Parameter: ID
 Parameter: lng
 JavaScript: js/Events.js
 JavaScript: js/PaymentLink.js
-JavaScript: https://js.stripe.com/v3/
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,8 +22,8 @@ if(exists(lng)) then
 );
 if(Language == null) then 
 (
- lng:= "sv";
- Language:= Translator.GetLanguageAsync("sv");
+ lng:= "rs";
+ Language:= Translator.GetLanguageAsync("rs");
 );
 
 LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
@@ -125,10 +123,6 @@ if ContractState == "AwaitingForPayment" then
 </tr>
 </table>
 
-<input type="hidden" value="((AmountToPay ))" id="AmountToPay"/>
-
-<input type="hidden" value="((PayspotId ))" id="Id"/>
-
 <input type="hidden" value="((lng ))" id="prefferedLanguage"/>
 <input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
@@ -146,8 +140,6 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(34) ))" id="cardHolderTxt"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(35) ))" id="cardHolderNameTxt"/>
 <input type="hidden" value="((Country ))" id="country"/>
 
 <div class="payment-details">
@@ -215,118 +207,23 @@ if ContractState == "AwaitingForPayment" then
         <a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
  </td>
  </tr>
-[[;
-if (Country == 'SE') then 
-(
- ]]<tr class="spaceUnder">
-    <td colspan="3">
-      <input type="checkbox" id="purchaseAgreement" name="purchaseAgreement" onclick="UserAgree();"/>
-      <label for="purchaseAgreement">
-         <img class="logo_small" for="termsAndCondition" src="./resources/vaulter_txt.svg" alt="Vaulter"/> 
-         <a href="#" onclick="generatePDF();event.preventDefault();" >**((LanguageNamespace.GetStringAsync(7) ))**</a>
-     </label> 
-   </td>
-  </tr>
-  <tr class="spaceUnder"><td colspan="3"> </td></tr>
-  <tr class="safeguarded" >
-     <td style="width:80%; text-align:left">((LanguageNamespace.GetStringAsync(1) ))</td>
-     <td class="moneyRight itemPrice">((ContractValue))</td>
-     <td class="currencyLeft" style="width:10%;" >((Currency ))</td>
-  </tr>
-  <tr class="spaceUnder"><td colspan="3"> </td></tr>
- [[;
- );
-]]
  </table>
-
 </div>
 <div class="spaceItem"></div>
 <div id="left-to-pay" style="display:none">
   <label class=""><strong>((LanguageNamespace.GetStringAsync(37) ))</strong></label>
-</div>[[;
-if (Country == 'SE') then 
-(
- ]] <div class="payment-method" >
- <form id="payment-method" >
-  <table class="payment-method-tbl">
-   <tr id="payment-direct-bank-btn" class="payment-method-btn" >
-    <td class="payment-method-txt" onclick="StartBankPayment()">
-       <element id="stripe-method-bank" >((LanguageNamespace.GetStringAsync(45) )) </element>      
-    </td>
-    <td class="payment-method-img">
-      <img class="bank-img"  src="./resources/direct_payment.svg" alt="bank"/> 
-    </td>
-   </tr>
-   <tr id="payment-notice-lbl" class="payment-notice-lbl">
-     <td colspan="2" >
-      ((LanguageNamespace.GetStringAsync(42) ))
-     </td>
-   </tr>
-   <tr id="payment-bank-btn" class="payment-bank-btn">
-     <td colspan="2" id="bank-list">
-         <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" >
-          <option value="none" selected disabled hidden>((LanguageNamespace.GetStringAsync(9) ))</option>
-      </select>
-     </td>
-   </tr>
-   <tr id="payment-other-methods" class="payment-other-methods">
-     <td onclick="ExpandOtherPaymentMethods(true)">
-      ((LanguageNamespace.GetStringAsync(44) ))
-     </td>
-     <td  class="payment-other-methods-img" >
-        <img class="expand-img"  src="./resources/expand.svg" alt="expand"/> 
-     </td>
-   </tr>
-  </table> 
- </form>
-  <table id="payment-card-tbl">
-   <tr id="payment-card-btn" class="payment-method-btn">
-     <td class="payment-method-txt" onclick="StartCardPayment()">
-        <element id="stripe-method-card" >Card</element>
-    </td>
-    <td class="payment-method-img">
-      <img class="card-img"  src="./resources/credit-card-payment.svg" alt="bank"/> 
-    </td>
-   </tr>
-  </table> 
-<form id="payment-form-bank">
-  <div id="QrCode" class="center_qr_img"></div>
-  <div id="spinnerContainer">
-  <img src="./resources/spinner.gif" alt="loadingSpinner">
-  </div>
-</form>
-<form id="payment-form-card">
-   <div id="link-authentication-element">
-   </div>
-   <div id="payment-element">
-   </div>
-    <div class="stripe-name-div">
-         <div >
-           <input type="text" inputmode="text" name="linkLegalName" id="Field-linkLegalNameInput" 
-            placeholder="First and last name" 
-            autocomplete="billing name" 
-            aria-invalid="false" aria-required="false" class="stipe-name-input" value=""/>
-       </div>
-   <div>
-   <div class="stripe-submit-div">
-    <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
-   </div>
-  </form> [[;
-)
-else if (Country == 'RS') then
-(
-  ]] <div class="payment-method" id="ctn-payment-method-rs" style="display:none"> 
+</div>
+<div class="payment-method" id="ctn-payment-method-rs" style="display:none"> 
        <table style="width:100%">
          <tr>
-           <td> <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="GetLink()">Pay now</button><td/>
+           <td> <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button><td/>
          </tr>
           <tr>
-           <td> <iframe src="url" id="payspot_iframe" style= "display: none; width:100%; min-height: 500px" title="description"></iframe><td/>
+           <td> <iframe id="payspot_iframe" style= "display: none; width:100%; min-height: 500px" title="description"></iframe><td/>
          </tr>
        </table>
       </div>
    [[;
-)
 )
 else if ContractState == "PaymentCompleted" then 
 (

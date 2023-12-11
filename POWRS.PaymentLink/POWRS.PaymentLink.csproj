@@ -274,9 +274,6 @@
 	  <None Update="Language\POWRS.PaymentLink.sv.lng">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\css\Stripe.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Root\pay.lab.vaulter.rs\resources\credit-card-payment.svg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
