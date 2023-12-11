@@ -34,10 +34,14 @@
 		</Folder>
 		<Folder name="pay.vaulter.se">
 			<Content fileName="Payout.md"/>
+			<Content fileName="Cancel.md"/>
+			<Content fileName="Error.md"/>
+			<Content fileName="Success.md"/>
 			<Content fileName="Terms_and_Conditions.html"/>
 			<Folder name="css">
 				<Content fileName="Payout.cssx"/>
 				<Content fileName="Stripe.css"/>
+				<Content fileName="Status.css"/>
 			</Folder>
 			<Folder name="js">
 				<Content fileName="Events.js"/>
@@ -51,6 +55,8 @@
 				<Content fileName="vaulter_logo.svg"/>
 				<Content fileName="vaulter_txt.svg"/>
 				<Content fileName="vaulterlogo.svg"/>
+				<Content fileName="error_red.png"/>
+				<Content fileName="success_green.png"/>
 			</Folder>
 		</Folder>
 		<Folder name="payout">
