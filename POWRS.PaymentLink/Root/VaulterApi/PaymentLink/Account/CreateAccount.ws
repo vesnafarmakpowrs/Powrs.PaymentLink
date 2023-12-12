@@ -1,12 +1,17 @@
 ﻿({
-    "userName":Required(Str(PUserName) like "[\\p{L}\\s]{2,20}"),
-    "password":Required(Str(PPassword) like [.{15,}]),
-    "repeatedPassword":Required(Str(PRepeatedPassword) like [.{15,}]),
-    "email" : Required(Str(PEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}")
+    "userName":Required(Str(PUserName)),
+    "password":Required(Str(PPassword)),
+    "repeatedPassword":Required(Str(PRepeatedPassword)),
+    "email" : Required(Str(PEmail))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 try
 (
+    if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
+    (
+      Error("Email in not valid format.")
+    );    
+
     Code:= 0;
     if (!exists(Code:= Global.VerifyingNumbers[PEmail]) or Code >= 0) then 
     (
@@ -15,9 +20,18 @@ try
 
     Global.VerifyingNumbers.Remove(PEmail);
 
+    if(PUserName not like "^[\\p{L}\\p{N}]{8,20}$") then 
+    (
+     Error("Username could only contain letters and numbers.")
+    );
     if(PPassword != PRepeatedPassword) then
     (
         Error("Passwords does not match.");
+    );
+
+    if(PPassword not like "^(?=.*[\\p{Ll}])(?=.*[\\p{Lu}])(?=.*[\\p{N}])(?=.*[^\\p{L}\\p{N}])[^\\s]{8,}$") then 
+    (
+        Error("Password must contain at least one uppercase, lowercase, special char and number, and must be at least 8 characters long.")
     );
 
     if(!System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = PUserName)) then 
@@ -36,7 +50,8 @@ try
     Nonce:= Base64Encode(RandomBytes(32));
     S:= PUserName + ":" + Gateway.Domain + ":" + PEmail + ":" + PPassword + ":" + apiKey + ":" + Nonce;
     Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(apiKeySecret)));
-
+    
+    neuronDomain:= "https://" + Gateway.Domain;
     NewAccount:= POST(neuronDomain + "/Agent/Account/Create",
                  {
                     "apiKey": apiKey,
@@ -47,7 +62,7 @@ try
                     "signature": Signature,
                     "userName": PUserName
                   },
-		   {"Accept" : "application/json"}, {"Host": neuronDomain});
+		   {"Accept" : "application/json" });
 
     enabled:= Update BrokerAccounts set Enabled = true where UserName = PUserName;
 
