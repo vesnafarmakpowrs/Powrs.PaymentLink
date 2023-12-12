@@ -42,7 +42,7 @@
 					<TagReference tag="AmountToPay" />
 				</Variable>
 				<Variable id="EscrowFeeJid">
-					<Calc><![CDATA['fees@' + Gateway.Domain]]></Calc>
+					<Calc><![CDATA['feesRSD@' + Gateway.Domain]]></Calc>
 				</Variable>
 				<Variable id="Price">
 					<TagReference tag="Value" />
