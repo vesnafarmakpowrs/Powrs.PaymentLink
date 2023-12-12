@@ -214,13 +214,20 @@ if ContractState == "AwaitingForPayment" then
   <label class=""><strong>((LanguageNamespace.GetStringAsync(37) ))</strong></label>
 </div>
 <div class="payment-method" id="ctn-payment-method-rs" style="display:none"> 
-       <table style="width:100%">
+       <table style="width:100%; text-align:center">
          <tr>
-           <td> <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button><td/>
+           <td> 
+             <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button>
+            </td>
+          </tr>
+          <tr id="tr_spinner" style= "display: none;" >
+           <td> <img src="../resources/spin.svg" alt="loadingSpinner" > </td>
          </tr>
-          <tr>
-           <td> <iframe id="payspot_iframe" style= "display: none; width:100%; min-height: 500px" title="description"></iframe><td/>
-         </tr>
+         <tr>             
+          <td> 
+            <iframe id="payspot_iframe" style= "display: none; width:100%; min-height: 500px" title="description"></iframe>
+          </td>
+        </tr>
        </table>
       </div>
    [[;

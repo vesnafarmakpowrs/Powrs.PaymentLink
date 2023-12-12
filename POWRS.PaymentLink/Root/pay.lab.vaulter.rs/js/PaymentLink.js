@@ -86,19 +86,6 @@ function GenerateLanguageDropdown() {
         });
 }
 
-function ShowPayspotPage(Data) {
-    if (Data == null) {
-        console.log("data is empty");
-        return;
-    }
-
-    console.log(Data);
-    document.getElementById("payspot_iframe").src = Data.link;
-    document.getElementById("payspot_iframe").style.display = null;
-
-}
-
-
 function TransactionInProgress(Result) {
     let res = {
         IsCompleted: false,
@@ -174,9 +161,11 @@ function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUs
 
 function StartPayment() {
     document.getElementById("payspot-submit").style.display = "none";
+    document.getElementById("tr_spinner").style.display = null;
     let jwt = document.getElementById("jwt");
     CollapseDetails();
-    SendXmlHttpRequest("../Payout/API/InitiateCardPayment-rs.ws",
+    
+     SendXmlHttpRequest("../Payout/API/InitiateCardPayment-rs.ws",
         {
             "tabId": TabID
         },
@@ -192,6 +181,19 @@ function StartPayment() {
             alert(error);
             TransactionFailed(null);
         })
+}
+
+function ShowPayspotPage(Data) {
+    if (Data == null) {
+        console.log("data is empty");
+        return;
+    }
+
+    console.log(Data);
+    document.getElementById("tr_spinner").style.display = "none";
+    document.getElementById("payspot_iframe").src = Data.link;
+    document.getElementById("payspot_iframe").style.display = null;
+    
 }
 
 function CollapseDetails() {
