@@ -242,7 +242,7 @@
 						       contract="{TokenContract}"
 							   serviceId="{BuyerEdalerServiceProviderId}"
 							   serviceProvider="{BuyerEdalerServiceProviderType}">
-							<Parameter key="TotalAmountToPay" value="{AmountToPay}"></Parameter>
+							<Parameter key="Amount" value="{AmountToPay}"></Parameter>
 							<Parameter key="Price" value="{Price}"></Parameter>
 							<Parameter key="VaulterFee" value="{EscrowFee}"></Parameter>
 							<Parameter key="Currency" value="{Currency}"></Parameter>
