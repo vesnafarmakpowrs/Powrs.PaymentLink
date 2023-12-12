@@ -113,6 +113,9 @@
 				<Variable id="BuyerPhoneNumber">
 					<TagReference tag="BuyerPhoneNumber" />
 				</Variable>
+				<Variable id="SupportedPaymentMethods">
+					<TagReference tag="SupportedPaymentMethods" />
+				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
 					<OnEvent newState="Cancel">
@@ -471,6 +474,9 @@
 		<Tag name="EscrowFee">
 			<ParameterReference parameter="EscrowFee" />
 		</Tag>
+		<Tag name="SupportedPaymentMethods">
+			<ParameterReference parameter="SupportedPaymentMethods" />
+		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
 		</FriendlyName>
@@ -693,6 +699,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Web page of selling product.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SupportedPaymentMethods" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Payment methods which are supported for this contract (Card, BankTransfer)</text>
 				</paragraph>
 			</description>
 		</stringParameter>
