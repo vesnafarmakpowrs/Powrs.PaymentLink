@@ -101,14 +101,17 @@
 				<Variable id="EscrowFee">
 					<TagReference tag="EscrowFee" />
 				</Variable>
-				<Variable id="AllowedServiceProviders">
-					<TagReference tag="AllowedServiceProviders" />
-				</Variable>
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
 				<Variable id="NeuronDomain">
 					<Calc><![CDATA[Gateway.Domain]]></Calc>
+				</Variable>
+				<Variable id="WebPageUrl">
+					<TagReference tag="WebPageUrl" />
+				</Variable>
+				<Variable id="BuyerPhoneNumber">
+					<TagReference tag="BuyerPhoneNumber" />
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
@@ -236,7 +239,9 @@
 						       contract="{TokenContract}"
 							   serviceId="{BuyerEdalerServiceProviderId}"
 							   serviceProvider="{BuyerEdalerServiceProviderType}">
-							<Parameter key="Amount" value="{AmountToPay}"></Parameter>
+							<Parameter key="TotalAmountToPay" value="{AmountToPay}"></Parameter>
+							<Parameter key="Price" value="{Price}"></Parameter>
+							<Parameter key="VaulterFee" value="{EscrowFee}"></Parameter>
 							<Parameter key="Currency" value="{Currency}"></Parameter>
 							<Parameter key="Account" value="{BuyerBankAccount}"></Parameter>
 							<Parameter key="Message" value="Vaulter"></Parameter>
@@ -244,6 +249,8 @@
 							<Parameter key="tabId" value="{TabId}"></Parameter>
 							<Parameter key="callBackUrl" value="{CallBackUrl}"></Parameter>
 							<Parameter key="personalNumber" value="{BuyerPersonalNum}"></Parameter>
+							<Parameter key="buyerName" value="{Buyer}"></Parameter>
+							<Parameter key="buyerEmail" value="{BuyerEmail}"></Parameter>
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
 							<Parameter key="TokenId" value="{TokenId}"></Parameter>
 						</BuyEDaler>
@@ -410,6 +417,12 @@
 		<Tag name="CallBackUrl">
 			<ParameterReference parameter="CallBackUrl" />
 		</Tag>
+		<Tag name="WebPageUrl">
+			<ParameterReference parameter="WebPageUrl" />
+		</Tag>
+		<Tag name="BuyerPhoneNumber">
+			<ParameterReference parameter="BuyerPhoneNumber" />
+		</Tag>
 		<Tag name="Title">
 			<ParameterReference parameter="Title" />
 		</Tag>
@@ -457,9 +470,6 @@
 		</Tag>
 		<Tag name="EscrowFee">
 			<ParameterReference parameter="EscrowFee" />
-		</Tag>
-		<Tag name="AllowedServiceProviders">
-			<ParameterReference parameter="AllowedServiceProviders" />
 		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
@@ -664,7 +674,7 @@
 					<text>Id from remote system.</text>
 				</paragraph>
 			</description>
-		</stringParameter>
+		</stringParameter>		
 		<stringParameter name="CallBackUrl" value=" ">
 			<description xml:lang="en">
 				<paragraph>
@@ -672,10 +682,17 @@
 				</paragraph>
 			</description>
 		</stringParameter>
-		<stringParameter name="AllowedServiceProviders" value="">
+		<stringParameter name="BuyerPhoneNumber" value="">
 			<description xml:lang="en">
 				<paragraph>
-					<text>Service providers that buyer can use to buy eDaler for this contract. Delimited by ";"</text>
+					<text>Buyer phone number where to send notification.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="WebPageUrl" value=" ">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Web page of selling product.</text>
 				</paragraph>
 			</description>
 		</stringParameter>
