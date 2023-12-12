@@ -518,3 +518,38 @@ Call this resource to verify email with code.
 	 "Message": (String) 
 }
 ````
+
+### Create account
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/CreateAccount.ws")}}`  
+Method: `POST`
+
+Call this resource to verify email with code.
+
+**Request**
+
+````
+{
+    "userName":Required(Str(PUserName)),
+    "password":Required(Str(PPassword)),
+    "repeatedPassword":Required(Str(PRepeatedPassword)),
+    "email" : Required(Str(PEmail))
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `userName`       | Username for the user, must contains only letters and numbers |
+| `password`        | Password for the user |
+| `repeatedPassword`        | Repeated Password for the user |
+| `email`        | Previously verified email with which user will be created |
+
+**Response**
+
+
+````
+{
+	 "userName": (String),
+     "jwt": (String)
+} 
+````
