@@ -639,7 +639,7 @@
 				</paragraph>
 			</description>
 		</stringParameter>
-		<stringParameter name="BuyerPersonalNum" value="" minLength="10">
+		<stringParameter name="BuyerPersonalNum" value="">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Full valid personal number of buyer.</text>
