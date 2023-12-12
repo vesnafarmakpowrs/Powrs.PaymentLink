@@ -18,7 +18,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerCountryCode":Required(String(PBuyerCountryCode)  like "[A-Z]{2}"),
     "callbackUrl":Optional(String(PCallBackUrl)),
     "webPageUrl":Optional(String(PWebPageUrl)),
-    "allowedServiceProviders": Optional(String(PAllowedServiceProviders))
+    "supportedPaymentMethods": Optional(String(PSupportedPaymentMethods))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 SessionUser:= Global.ValidateAgentApiToken(true);
@@ -58,15 +58,15 @@ if(exists(PBuyerPersonalNum) || PBuyerCountryCode.ToLower() == "se") then
 	);
 );
 
-if(exists(PAllowedServiceProviders) and PAllowedServiceProviders != null) then 
+if(exists(PSupportedPaymentMethods) and PSupportedPaymentMethods != null) then 
 (
-    allowedServiceProviders:= Split(PAllowedServiceProviders, ";");
-    if(allowedServiceProviders != null and allowedServiceProviders.Length > 0) then 
+    supportedPaymentMethods:= Split(PSupportedPaymentMethods, ";");
+    if(supportedPaymentMethods != null and supportedPaymentMethods.Length > 0) then 
     (
-       availableServiceProviders:= GetServiceProvidersForBuyingEdaler(PBuyerCountryCode, PCurrency).BuyEDalerServiceProvider.Id;
-       foreach allowed in allowedServiceProviders do 
+       supportedPaymentMethods:= GetServiceProvidersForBuyingEdaler(PBuyerCountryCode, PCurrency).BuyEDalerServiceProvider.Id;
+       foreach allowed in supportedPaymentMethods do 
        (
-          if(indexOf(availableServiceProviders, allowed) < 0) then 
+          if(indexOf(supportedPaymentMethods, allowed) < 0) then 
           (
              Error("Invalid service providers selected");
           );
@@ -75,7 +75,7 @@ if(exists(PAllowedServiceProviders) and PAllowedServiceProviders != null) then
 )
 else 
 (
-    PAllowedServiceProviders:= "";
+    PSupportedPaymentMethods:= "";
 );
 
 TemplateId:= GetSetting("POWRS.PaymentLink.TemplateId","");
@@ -131,7 +131,7 @@ WebPageUrl:=  PWebPageUrl ?? "";
 Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
-	    "Title": PTitle,
+	"Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
         "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00).ToUniversalTime(),
@@ -149,7 +149,7 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
         "BuyerEmail":PBuyerEmail,
         "CallBackUrl" : CallBackUrl,
         "WebPageUrl" : WebPageUrl,
-        "AllowedServiceProviders": PAllowedServiceProviders
+        "SupportedPaymentMethods": PSupportedPaymentMethods
     });
 
 Nonce := Base64Encode(RandomBytes(32));
