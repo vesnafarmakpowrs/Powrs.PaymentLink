@@ -126,6 +126,7 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((lng ))" id="prefferedLanguage"/>
 <input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
+
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(10) ))" id="SelectedAccountOk"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(24) ))" id="SelectedAccountNotOk"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(25) ))" id="QrCodeScanMessage"/>
@@ -213,23 +214,26 @@ if ContractState == "AwaitingForPayment" then
 <div id="left-to-pay" style="display:none">
   <label class=""><strong>((LanguageNamespace.GetStringAsync(37) ))</strong></label>
 </div>
-<div class="payment-method" id="ctn-payment-method-rs" style="display:none"> 
-       <table style="width:100%; text-align:center">
-         <tr>
-           <td> 
-             <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button>
-            </td>
-          </tr>
-          <tr id="tr_spinner" style= "display: none;" >
-           <td> <img src="../resources/spin.svg" alt="loadingSpinner" > </td>
-         </tr>
-         <tr>             
-          <td> 
-            <iframe id="payspot_iframe" style= "display: none; width:100%; min-height: 500px" title="description"></iframe>
-          </td>
-        </tr>
-       </table>
-      </div>
+
+<div class="payment-method-rs"  id="ctn-payment-method-rs" style="display:none">
+  <table style="width:100%; text-align:center">
+    <tr>
+      <td>
+        <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button>
+      </td>
+    </tr>
+    <tr id="tr_spinner" style="display: none;">
+      <td>
+        <img src="../resources/spin.svg" alt="loadingSpinner">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <iframe id="payspot_iframe" class="payspot_iframe" style="display:none"></iframe>
+      </td>
+    </tr>
+  </table>
+</div>
    [[;
 )
 else if ContractState == "PaymentCompleted" then 
