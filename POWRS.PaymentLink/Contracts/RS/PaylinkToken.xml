@@ -116,6 +116,9 @@
 				<Variable id="SupportedPaymentMethods">
 					<TagReference tag="SupportedPaymentMethods" />
 				</Variable>
+				<Variable id="RemoteId">
+					<TagReference tag="RemoteId" />
+				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
 					<OnEvent newState="Cancel">
@@ -476,6 +479,9 @@
 		</Tag>
 		<Tag name="SupportedPaymentMethods">
 			<ParameterReference parameter="SupportedPaymentMethods" />
+		</Tag>
+		<Tag name="RemoteId">
+			<ParameterReference parameter="RemoteId" />
 		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
