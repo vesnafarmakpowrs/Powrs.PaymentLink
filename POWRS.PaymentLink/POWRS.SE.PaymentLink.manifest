@@ -78,6 +78,7 @@
 			</Folder>
 			<Folder name="HtmlTemplates">
 				<Folder name="EN">
+					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
 					<Content fileName="ReleaseFunds.html"></Content>
 					<Content fileName="PaymentReimbursed.html"></Content>

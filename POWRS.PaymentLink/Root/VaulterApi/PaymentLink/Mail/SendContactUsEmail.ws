@@ -7,18 +7,21 @@ Response.SetHeader("Access-Control-Allow-Origin","*");
 
 try
 (
- ContactEmail := GetSetting("POWRS.PaymentLink.ContactEmail","");
- 
- PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
- htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + PaylinkDomain + "\\HtmlTemplates\\EN\\ContactUs.html";
+ ContactEmail := GetSetting("POWRS.PaymentLink.ContactEmail","");  
+ htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\EN\\ContactUs.html";
+
+ if (!File.Exists(htmlTemplatePath)) then
+    Error("Template path does not exist");
+
  html:= System.IO.File.ReadAllText(htmlTemplatePath);
- html := html.Replace("{UserName}",auth.userName);
+ html := html.Replace("{UserName}",PUserEmail);
  html := html.Replace("{UserEmail}", PUserEmail);
  html := html.Replace("{Comment}", PBody);
 
  ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
  Config := ConfigClass.Instance;
- POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContactEmail, "PLG Contact ", html);
+ POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContactEmail, "PLG Contact ", html, null, null);
+
 {    	
     "Success": true
 }
