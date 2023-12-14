@@ -108,7 +108,6 @@
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\GetAvailableLanguages.ws" />
-		<None Remove="Root\Payout\HtmlTemplates\EN\ContactUs.html" />
 		<None Remove="Root\Payout\HtmlTemplates\EN\ReleaseFundsReport.html" />
 		<None Remove="Root\Payout\InitiatePayment.ws" />
 		<None Remove="Root\Payout\PaymentLink.js" />
