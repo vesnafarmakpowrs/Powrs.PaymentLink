@@ -2,14 +2,25 @@
 * {
   box-sizing: border-box;
 }
+html {
+   height: 100%;
+}
+
 body
 {
-font-family: ¤Theme.FontFamily¤;
-font-size: 1rem !important;
-background-color: #f3f3f3;
-color:¤TextColor¤;
-
+   font-family: ¤Theme.FontFamily¤;
+   font-size: 1rem !important;  
+   background-color: #f3f3f3;
+    color:¤TextColor¤;
+    margin:0;
+    padding:0;
+    min-height:100%;
 }
+.container {
+    min-height:100%;
+    position:relative;
+}
+
 
 form {
   width: 30vw;
@@ -271,9 +282,7 @@ text-align:left;
 }
 
 .footer {
-position: fixed;
 font-size: 0.8em;
-bottom: 0;
 width: 90%;
 margin-left: auto;
 margin-right: auto;
@@ -776,13 +785,21 @@ padding: 10px;
 }
 
 
+@media only screen and (min-width: 1025px) {
+.footer {
+position: fixed;
+bottom: 0;
+}
 
+}
 
 @media only screen and (max-width: 1024px) {
 main {
-margin: 0 auto 0rem auto;
-width: 100%;
+ margin: 0 auto 0rem auto;
+ width: 100%;
+ min-height:85vh;
 }
+
 
 .form {
   width: 100%;
@@ -792,6 +809,7 @@ width: 100%;
 .content {
 padding: 0 2% 1% 2%;
 width: 95%;
+min-height:100%;
 margin: 0.5rem auto;
 }
 
@@ -843,6 +861,8 @@ width:10em;
 }
 
 .footer {
+  position: relative;
+   bottom: 0pt;
 width: 100%;
 margin: 0 auto;
 }

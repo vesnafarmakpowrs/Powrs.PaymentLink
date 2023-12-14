@@ -13,6 +13,7 @@ JavaScript: js/PaymentLink.js
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<div class="container">
 <div class="content">
 {{
   Language:= null;
@@ -260,4 +261,5 @@ else
   <div class="footer">
    Powrs AB, (org.no 559302-8045), Hammarbybacken 27, Stockholm <br/>Sweden ©2021 - 2023 POWRS 
   </div>
+</div>
 </div>
