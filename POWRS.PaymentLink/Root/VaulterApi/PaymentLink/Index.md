@@ -193,7 +193,6 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
     "description":Required(String(PDescription)),
     "deliveryDate":Required(DateTime(PDeliveryDate)),
-    "sellerBankAccount":Required(String(PClientBankAccount)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
@@ -216,7 +215,6 @@ Description of properties:
 | `currency`        | Currency used by the price. Must be a 3-upper-case-letter currency symbol. |
 | `description`     | Displayable description of item. |
 | `deliveryDate`    | Delivery Date of item. MM//dd/YYY |
-| `sellerBankAccount`| Sellers bank account. |
 | `buyerFirstName`  | Buyer First name. |
 | `buyerLastName`   | Buyer Last name. |
 | `buyerEmail`      | Buyer email. |

@@ -9,7 +9,6 @@ if !exists(Posted) then BadRequest("No payload.");
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
     "description":Required(String(PDescription)  like "[a-zA-Z0-9.,;:!?()'\" -]{2,100}"),
     "deliveryDate":Required(String(PDeliveryDate) like "^(0[1-9]|1[0-2])\\/(0[1-9]|[12][0-9]|3[01])\\/\\d{4}$"),
-    "sellerBankAccount":Required(String(PClientBankAccount)),
     "buyerFirstName":Required(String(PBuyerFirstName) like "[\\p{L}\\s]{2,20}"),
     "buyerLastName":Required(String(PBuyerLastName) like "[\\p{L}\\s]{2,20}"),
     "buyerEmail":Required(String(PBuyerEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
@@ -102,36 +101,42 @@ if(EscrowFee <= 0) then
  Error("Fee not properly configured");
 );
 
-GetBicResponse := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/Bank/GetBic.ws",
-                 {
-                    "bankAccount":  PClientBankAccount
-                  },
-		   {"Accept" : "application/json", "Authorization": "Bearer " + SessionUser.jwt});
+  Identity := select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = SessionUser.username And State = 'Approved';
 
-PSellerServiceProviderId := GetBicResponse.serviceProviderId;
-PSellerServiceProviderType := GetBicResponse.serviceProviderType;
-
- Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = SessionUser.username And State = 'Approved';
-
-    AgentName := "";
-    OrgName := "";
-    foreach I in Identities do
-    (
-       AgentName := I.FIRST + " " + I.MIDDLE + " " + I.LAST;
-       OrgName  := I.ORGNAME;
-    );
-
+    AgentName := Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST;
+    OrgName  := Identity.ORGNAME;
+   
+    if (System.String.IsNullOrEmpty(Identity.ORGBANKNUM)) then
+       Error("Legal identity for this " + SessionUser.username + " mising bank account number");
+    
+    SellerBankAccount := Identity.ORGBANKNUM;
+    SellerCountry := Identity.ORGCOUNTRY;
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
 
-BuyerPersonalNum:= PBuyerPersonalNum ?? " ";
-BuyerPhoneNumber:= PBuyerPhoneNumber ?? " ";
+    PSellerServiceProviderId := "";
+    PSellerServiceProviderType := "";
+    
+    if (SellerCountry == 'SE') then
+    (
+           GetBicResponse := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/Bank/GetBic.ws",
+                   {
+                    "bankAccount":  SellerBankAccount
+                   },
+		   {"Accept" : "application/json", "Authorization": "Bearer " + SessionUser.jwt});
+
+          PSellerServiceProviderId := GetBicResponse.serviceProviderId;
+          PSellerServiceProviderType := GetBicResponse.serviceProviderType;
+     );
+
+BuyerPersonalNum:= PBuyerPersonalNum ?? "";
+BuyerPhoneNumber:= PBuyerPhoneNumber ?? "";
 CallBackUrl:=  PCallBackUrl ?? "";
 WebPageUrl:=  PWebPageUrl ?? "";
 
 Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
-	"Title": PTitle,
+	    "Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
         "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00).ToUniversalTime(),
@@ -139,7 +144,7 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
         "Currency": PCurrency,
         "Country": PBuyerCountryCode,
         "Expires": TodayUtc.AddDays(364),
-        "SellerBankAccount" : PClientBankAccount,
+        "SellerBankAccount" : SellerBankAccount,
         "SellerName" : SellerName,
         "SellerServiceProviderId" : PSellerServiceProviderId,
         "SellerServiceProviderType" : PSellerServiceProviderType,
