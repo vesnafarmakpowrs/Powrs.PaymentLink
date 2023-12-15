@@ -139,7 +139,6 @@
 					</OnEvent>
 				</State>
 				<State id="ServiceDelivered">
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='ServiceDelivered'" />
 					<OnEvent actionRef="ReleaseFunds" newState="Done">
 						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
@@ -155,7 +154,9 @@
 							"Status":  NewStatus,
 							"ContractId": TokenContract,
 							"CallBackUrl": CallBackUrl,
-							"TokenId": TokenId
+							"TokenId": TokenId,
+							"SendEmail" : BuyerEmail,
+							"CountryCode" : "RS"
 							};
 						</Script>
 						<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
@@ -439,21 +440,21 @@
 				</paragraph>
 			</description>
 		</numericalParameter>
-		<numericalParameter name="EscrowFee" value="20" guide="Vaulter Fees" min="1" minIncluded="true">
+		<numericalParameter name="EscrowFee" value="950" guide="Vaulter Fees" min="1" minIncluded="true">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Vaulter transaction fees.</text>
 				</paragraph>
 			</description>
 		</numericalParameter>
-		<stringParameter name="Currency" value="SEK" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
+		<stringParameter name="Currency" value="RSD" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
 			<description xml:lang="en">
 				<paragraph>
 					<text>The initial currency of the token.</text>
 				</paragraph>
 			</description>
 		</stringParameter>
-		<stringParameter name="Country" value="SE" guide="Country" regEx="[A-Z]{2}" minLength="2" maxLength="2">
+		<stringParameter name="Country" value="RS" guide="Country" regEx="[A-Z]{2}" minLength="2" maxLength="2">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Country where token will be sold.</text>

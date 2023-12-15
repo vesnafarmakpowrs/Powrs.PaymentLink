@@ -1,122 +1,141 @@
 remoteEndpoint:= Request.RemoteEndPoint.Split(':', null)[0];
 blocked:= select Blocked from RemoteEndpoints where Endpoint = remoteEndpoint;
 
-if(blocked != null && blocked == true) then 
+
+try
 (
- Sleep(30000);
- NotFound("");
-);
+        if(blocked != null && blocked == true) then 
+        (
+         Sleep(30000);
+         NotFound("");
+        );
 
-if !exists(Posted) then BadRequest("No payload.");
-r:= Request.DecodeData();
+        if !exists(Posted) then BadRequest("No payload.");
+        r:= Request.DecodeData();
 
-if(!exists(r.Status) || !exists(r.ContractId) || !exists(r.CallBackUrl) || !exists(r.TokenId)) then
-(
-  BadRequest("Payload does not conform to specification.");
-);
+        if(!exists(r.Status) || !exists(r.ContractId) || !exists(r.CallBackUrl) || !exists(r.TokenId)) then
+        (
+          BadRequest("Payload does not conform to specification.");
+        );
 
-if(System.String.IsNullOrEmpty(r.Status) || System.String.IsNullOrEmpty(r.ContractId)) then 
-(
- BadRequest("Payload does not conform to specification.");
-);
+        if(System.String.IsNullOrEmpty(r.Status) || System.String.IsNullOrEmpty(r.ContractId)) then 
+        (
+         BadRequest("Payload does not conform to specification.");
+        );
 
-SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted"};
+        SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted"};
 
-success:= false;
+        success:= false;
 
-if(!System.String.IsNullOrEmpty(r.CallBackUrl) && (r.Status in SendCallBackOnStatusList)) then
-(
-  try
-    (
- 	Log.Informational("Sending state update request to: " + r.CallBackUrl + " State: " + r.Status, null);
- 	POST(r.CallBackUrl,
-                 {
-	           "status": r.Status
-                  },
-		  {
-	           "Accept" : "application/json"
-                  });
- 	success:= true;
- 	Log.Informational("Sending state update request finished to: " + r.CallBackUrl + " State: " + r.Status, null);
-    )catch
-       Log.Informational("Sending state update request finished  to: " + r.CallBackUrl + "failed",null);
+        if(!System.String.IsNullOrEmpty(r.CallBackUrl) && (r.Status in SendCallBackOnStatusList)) then
+        (
+          try
+            (
+ 	        Log.Informational("Sending state update request to: " + r.CallBackUrl + " State: " + r.Status, null);
+ 	        POST(r.CallBackUrl,
+                         {
+	                   "status": r.Status
+                          },
+		          {
+	                   "Accept" : "application/json"
+                          });
+ 	        success:= true;
+ 	        Log.Informational("Sending state update request finished to: " + r.CallBackUrl + " State: " + r.Status, null);
+            )catch
+               Log.Informational("Sending state update request finished  to: " + r.CallBackUrl + "failed",null);
   
-);
+        );
 
-CountryCode := "SE";
-if (exists(r.SendEmail) &&  r.SendEmail) then
-( 
-   contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= r.ContractId;
+        CountryCode := "RS";
+        if (exists(r.CountryCode) and  !System.String.IsNullOrEmpty(r.CountryCode)) then
+        (
+           CountryCode := r.CountryCode;
+        );
 
-   if (contract == null) then
-	Error("Contract is missing");
+        if (exists(r.SendEmail) and  !System.String.IsNullOrEmpty(r.SendEmail)) then
+        ( 
+           contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= r.ContractId;
 
-   ShortId := select top 1 ShortId from NeuroFeatureTokens where TokenId = r.TokenId;
-   ContractParams:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object);
+           if (contract == null) then
+	        Error("Contract is missing");
 
- StateMachine:= select top 1 * from StateMachineCurrentStates where StateMachineId= r.TokenId;
-   foreach variable in StateMachine.VariableValues DO   
-     variable.Name == "PaymentDateTime" ? ContractParams.Add(variable.Name,variable.Value); 
+           ShortId := select top 1 ShortId from NeuroFeatureTokens where TokenId = r.TokenId;
+           ContractParams:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object);
+
+         StateMachine:= select top 1 * from StateMachineCurrentStates where StateMachineId= r.TokenId;
+           foreach variable in StateMachine.VariableValues DO   
+             variable.Name == "PaymentDateTime" ? ContractParams.Add(variable.Name,variable.Value); 
     
    
-   ContractParams.Add("Created",contract.Created.ToShortDateString());
-   ContractParams.Add("ShortId",ShortId);
-   ContractParams.Add("ContractId",r.ContractId.ToString());
-   foreach Parameter in contract.Parameters do 
-    Parameter.ObjectValue != null ? ContractParams.Add(Parameter.Name, Parameter.ObjectValue);
+           ContractParams.Add("Created",contract.Created.ToShortDateString());
+           ContractParams.Add("ShortId",ShortId);
+           ContractParams.Add("ContractId",r.ContractId.ToString());
+           foreach Parameter in contract.Parameters do 
+            Parameter.ObjectValue != null ? ContractParams.Add(Parameter.Name, Parameter.ObjectValue);
 
-   Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
-   IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
-   IdentityProperties.Add("AgentName", Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
-   IdentityProperties.Add("ORGNAME", Identity.ORGNAME);
-   IdentityProperties.Add("CountryCode", CountryCode);
-   IdentityProperties.Add("Domain", Gateway.Domain);
-   PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
-   htmlTemplateRoot := Waher.IoTGateway.Gateway.RootFolder + "PaylinkDomain\\" +"HtmlTemplates\\" + CountryCode + "\\";
+           Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
+           IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
+           IdentityProperties.Add("AgentName", Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
+           IdentityProperties.Add("ORGNAME", Identity.ORGNAME);
+           IdentityProperties.Add("CountryCode", CountryCode);
+           IdentityProperties.Add("Domain", Gateway.Domain);
+           PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
+           htmlTemplateRoot := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + CountryCode + "\\";
 
-   htmlTemplatePath:= htmlTemplateRoot + r.Status + ".html";
-   html:= System.IO.File.ReadAllText(htmlTemplatePath);
+           htmlTemplatePath:= htmlTemplateRoot + r.Status + ".html";
+
+           if (!File.Exists(htmlTemplatePath)) then
+            Error("Template path does not exist   " + htmlTemplatePath);
+
+           html:= System.IO.File.ReadAllText(htmlTemplatePath);
   
-   FormatedHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
+           FormatedHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
    
-   Base64Attachment := null;
-   FileName := null;
+           Base64Attachment := null;
+           FileName := null;
    
-   if (r.Status == "PaymentCompleted") then
-   (
-     htmlTemplatePath:= htmlTemplateRoot + "purchase_agreement.html"; 
-     html:= System.IO.File.ReadAllText(htmlTemplatePath);
-     FormatedPurchaseAgreementHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
+           if (r.Status == "PaymentCompleted" and CountryCode == "SE";) then
+           (
+             htmlTemplatePath:= htmlTemplateRoot + "purchase_agreement.html"; 
+             html:= System.IO.File.ReadAllText(htmlTemplatePath);
+             FormatedPurchaseAgreementHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
    
-     htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
+             htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
    
-     FileName:= POWRS.PaymentLink.DealInfo.GetInvoiceNo(IdentityProperties, ShortId) + ".pdf";
-     url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ FileName);
+             FileName:= POWRS.PaymentLink.DealInfo.GetInvoiceNo(IdentityProperties, ShortId) + ".pdf";
+             url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ FileName);
 
-     htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
-     System.IO.File.WriteAllText(htmlToGeneratePath, FormatedPurchaseAgreementHtml , System.Text.Encoding.UTF8);
+             htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
+             System.IO.File.WriteAllText(htmlToGeneratePath, FormatedPurchaseAgreementHtml , System.Text.Encoding.UTF8);
    
-     pdfPath:= htmlTemplateRoot + FileName;
-     ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
-     "\"" + htmlToGeneratePath +"\"" + " \"" +  pdfPath + "\"", htmlTemplateRoot);
+             pdfPath:= htmlTemplateRoot + FileName;
+             ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
+             "\"" + htmlToGeneratePath +"\"" + " \"" +  pdfPath + "\"", htmlTemplateRoot);
      
-     byteArray := System.IO.File.ReadAllBytes(pdfPath);
-     Base64Attachment := System.Convert.ToBase64String(byteArray);
-     Log.Informational("Sending pruchase agreement attached file " + FileName ,null);
+             byteArray := System.IO.File.ReadAllBytes(pdfPath);
+             Base64Attachment := System.Convert.ToBase64String(byteArray);
+             Log.Informational("Sending pruchase agreement attached file " + FileName ,null);
 
-     System.IO.File.Delete(htmlToGeneratePath);
-     System.IO.File.Delete(pdfPath);
+             System.IO.File.Delete(htmlToGeneratePath);
+             System.IO.File.Delete(pdfPath);
 
-   );
+           );
 
-   Log.Informational("Sending email for " + r.Status  ,null);
-   ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
-   Config := ConfigClass.Instance;
-   POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
+           Log.Informational("Sending email for " + r.Status  ,null);
+           ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
+           Config := ConfigClass.Instance;
+           POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
    
-);
+        );
 
-{    	
-    "Status" : r.Status,
-    "Success": success
-}
+        {    	
+            "Status" : r.Status,
+            "Success": success
+        }
+
+)
+catch
+(
+    Log.Error(Exception, null);
+    BadRequest(Exception.Message);
+);

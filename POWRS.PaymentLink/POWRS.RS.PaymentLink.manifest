@@ -86,6 +86,9 @@
 					<Content fileName="VerifyEmail.html"></Content>
 				</Folder>
 				<Folder name="RS">
+					<Content fileName="PaymentCompleted.html"></Content>
+					<Content fileName="ReleaseFunds.html"></Content>
+					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 				</Folder>
 				<Folder name="SE">
