@@ -121,9 +121,6 @@
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
-					<OnEvent newState="Cancel">
-						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" />
-					</OnEvent>
 					<OnEvent actionRef="InitiatePayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="InitiatePayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -131,30 +128,20 @@
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
 				</State>
+				<State id="PaymentNotPerformed">
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentNotPerformed'" />
+				</State>
 				<State id="PaymentCompleted">
 					<OnEnter actionRef="UnauthorizeServer" />
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
 					<OnEvent newState="ServiceDelivered">
-						<OnDateTime>{DeliveryDate}</OnDateTime>
+						<OnDuration>PT10S</OnDuration>
 					</OnEvent>
-					<OnEvent actionRef="ReturnFunds" failureState="PaymentCompleted" newState="Cancel">
-						<OnXmlNote localName="ReturnFunds" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" />
-					</OnEvent>
-				</State>
-				<State id="PaymentNotPerformed">
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentNotPerformed'" />
 				</State>
 				<State id="ServiceDelivered">
-					<OnEnter actionRef="ReleaseFunds" />
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='ReleaseFunds'" />
-					<OnEvent newState="Done">
-						<OnDuration>PT10S</OnDuration>
-					</OnEvent>
-				</State>
-				<State id="Cancel">
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentReimbursed'" />
-					<OnEvent newState="Done">
-						<OnDuration>PT10S</OnDuration>
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='ServiceDelivered'" />
+					<OnEvent actionRef="ReleaseFunds" newState="Done">
+						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
 				</State>
 				<State id="Done">
@@ -167,7 +154,8 @@
 							Json:= {
 							"Status":  NewStatus,
 							"ContractId": TokenContract,
-							"CallBackUrl": CallBackUrl
+							"CallBackUrl": CallBackUrl,
+							"TokenId": TokenId
 							};
 						</Script>
 						<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
@@ -176,8 +164,8 @@
 						<Script>
 							if(!exists(Response.State) || !exists(Response.Success)) then
 							(
-							success:= Boolean(Response.Success);
-							Notifications[NewStatus]:= success;
+								success:= Boolean(Response.Success);
+								Notifications[NewStatus]:= success;
 							);
 						</Script>
 						<Catch exceptionVariable="ex">
@@ -193,25 +181,25 @@
 					<Script>
 						BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
 						BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderType');
+						SellerServiceProviderId:= SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
+						SellerServiceProviderType:= SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderType');
 						TabId:= SelectXmlStr(Note,'/default:InitiatePayment/@tabId');
-						FromMobilePhone:=  SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
 						BuyerBankAccount:= SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
 					</Script>
 					<Try>
-						<BuyEDaler to="{Seller}"
+						<BuyEDaler to="{Seller}"							   
 							   amount="{AmountToPay}"
 							   currency="{Currency}"
 							   reference="{'nfeat: ' + TokenId}"
 						       contract="{TokenContract}"
 							   serviceId="{BuyerEdalerServiceProviderId}"
 							   serviceProvider="{BuyerEdalerServiceProviderType}">
-							<Parameter key="Amount" value="{AmountToPay}"></Parameter>
+							<Parameter key="TotalAmountToPay" value="{AmountToPay}"></Parameter>
 							<Parameter key="Price" value="{Price}"></Parameter>
-							<Parameter key="VaulterFee" value="{EscrowFee}"></Parameter>
+							<Parameter key="EscrowFee" value="{EscrowFee}"></Parameter>
 							<Parameter key="Currency" value="{Currency}"></Parameter>
 							<Parameter key="Account" value="{BuyerBankAccount}"></Parameter>
 							<Parameter key="Message" value="Vaulter"></Parameter>
-							<Parameter key="requestFromMobilePhone" value="{LowerCase(FromMobilePhone)}"></Parameter>
 							<Parameter key="tabId" value="{TabId}"></Parameter>
 							<Parameter key="callBackUrl" value="{CallBackUrl}"></Parameter>
 							<Parameter key="personalNumber" value="{BuyerPersonalNum}"></Parameter>
@@ -224,6 +212,8 @@
 						<PersistVariable name="BuyerBankAccount" value="{BuyerBankAccount}" />
 						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
+						<PersistVariable name="SellerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
+						<PersistVariable name="SellerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{Now}" />
 						<CallAction actionRef="TransferFee" />
@@ -235,58 +225,6 @@
 						</Catch>
 					</Try>
 				</Action>
-				<Action id="ReturnFunds">
-					<Script>
-						AmountToBeReturned:=Num(SelectXmlStr(Note,'/default:ReturnFunds/@amountToBeReturned'));
-					</Script>
-					<LogEvent actor="{Seller}" eventId="ReturnFunds" level="Medium" message="Funds return in progress..." object="{Buyer}" type="Informational" />
-					<If condition="TotalAmountPaid &gt;= Price">
-						<Then>
-							<Script>
-								<![CDATA[					
-									AmountToSell:= AmountToBeReturned;
-									BankAccountToSell:= BuyerBankAccount;
-									SellEdalerFrom:= Seller;
-									ServiceProviderId:= BuyerServiceProviderId;
-									ServiceProviderType:= BuyerServiceProviderType;
-									AccountName:= Buyer;
-									MessageOnError:= 'ReturnFunds error';
-									AmountToBeReleased := Price - AmountToBeReturned;
-								]]>
-							</Script>
-							<PersistVariable name="AmountToBeReturned" value="{AmountToBeReturned}" />
-							<PersistVariable name="AmountToBeReleased" value="{AmountToBeReleased}" />
-
-							<CallAction actionRef="TrySellEdaler" />
-							<CallAction actionRef="ReleaseFundsSellerAfterRefund" />
-						</Then>
-						<Else>
-							<LogEvent actor="{Seller}" eventId="Release Funds" level="Medium" message="Unable to return funds due to insuffiecent payment. " object="{Buyer}" type="Informational" />
-							<Error reason="{ 'Unable to return funds due to insuffiecent payment. nfeat:' + TokenId}" />
-						</Else>
-					</If>
-				</Action>
-				<Action id="ReleaseFundsSellerAfterRefund">
-					<If condition="AmountToBeReleased &lt; 0">
-						<Then>
-							<TextNote content="The amount paid is not sufficient" />
-						</Then>
-						<Else>
-							<Script>
-								<![CDATA[					
-									AmountToSell:= AmountToBeReleased;
-									BankAccountToSell:= SellerBankAccount;
-									SellEdalerFrom:= Seller;
-									ServiceProviderId:= SellerServiceProviderId;
-									ServiceProviderType:= SellerServiceProviderType;
-									AccountName:= SellerName;
-									MessageOnError:= 'ReleaseFundsToSeller after rufund buyer error';
-								]]>
-							</Script>
-							<CallAction actionRef="TrySellEdaler" />
-						</Else>
-					</If>
-				</Action>
 				<Action id="ReleaseFunds">
 					<If condition="TotalAmountPaid &lt; AmountToPay">
 						<Then>
@@ -295,8 +233,8 @@
 						<Else>
 							<Script>
 								<![CDATA[					
-									AmountToSell:= Price;
-									BankAccountToSell:= SellerBankAccount;
+									AmountToSell:= AmountToPay;
+									BankAccountToSell:= "";
 									SellEdalerFrom:= Seller;
 									ServiceProviderId:= SellerServiceProviderId;
 									ServiceProviderType:= SellerServiceProviderType;
@@ -646,7 +584,7 @@
 					<text>Id from remote system.</text>
 				</paragraph>
 			</description>
-		</stringParameter>		
+		</stringParameter>
 		<stringParameter name="CallBackUrl" value=" ">
 			<description xml:lang="en">
 				<paragraph>
