@@ -548,6 +548,7 @@ Call this resource to verify email with code.
 ````
 {
 	 "userName": (String),
-     "jwt": (String)
+     "jwt": (String),
+     "isApproved": (bool)
 } 
 ````

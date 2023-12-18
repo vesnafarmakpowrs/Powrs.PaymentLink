@@ -70,7 +70,8 @@ try
 
     {
         "userName": PUserName,
-        "jwt": NewAccount.jwt
+        "jwt": NewAccount.jwt,
+        "isApproved": false
     }
 )
 catch
