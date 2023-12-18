@@ -121,11 +121,17 @@
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
-					<OnEvent actionRef="InitiatePayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
+					<OnEvent actionRef="InitiatePayment" newState="PaymentCompleted" failureState="ProcessingPayment">
 						<OnExternalXmlNote localName="InitiatePayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
+					</OnEvent>
+				</State>
+				<State id="ProcessingPayment">
+					<OnEnter actionRef="ReportNewState" />
+					<OnEvent actionRef="ProcessingPaymentFailure" newState="AwaitingForPayment" failureState="PaymentCompleted">
+						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
 				</State>
 				<State id="PaymentNotPerformed">
@@ -135,7 +141,7 @@
 					<OnEnter actionRef="UnauthorizeServer" />
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
 					<OnEvent newState="ServiceDelivered">
-						<OnDuration>PT10S</OnDuration>
+						<OnDuration>PT300S</OnDuration>
 					</OnEvent>
 				</State>
 				<State id="ServiceDelivered">
@@ -226,6 +232,15 @@
 						</Catch>
 					</Try>
 				</Action>
+				<Action id="ProcessingPaymentFailure">
+					<Script>
+	                  if (!exsts(PaymentDateTime)) then
+						(
+						    Error(Payment is already completed);
+						);
+					</Script>
+				</Action>
+
 				<Action id="ReleaseFunds">
 					<If condition="TotalAmountPaid &lt; AmountToPay">
 						<Then>
