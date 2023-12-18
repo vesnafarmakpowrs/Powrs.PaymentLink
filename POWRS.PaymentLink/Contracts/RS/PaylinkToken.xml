@@ -130,7 +130,7 @@
 				</State>
 				<State id="ProcessingPayment">
 					<OnEnter actionRef="ReportNewState" />
-					<OnEvent actionRef="ProcessingPaymentFailure" newState="PaymentCompleted" failureState="AwaitingForPayment">
+					<OnEvent actionRef="ProcessingPaymentFailure" newState="AwaitingForPayment" failureState="PaymentCompleted">
 						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
 				</State>
@@ -234,7 +234,7 @@
 				</Action>
 				<Action id="ProcessingPaymentFailure">
 					<Script>
-						if(exists(PaymentDateTime)) then
+	                  if (!exsts(PaymentDateTime)) then
 						(
 						    Error(Payment is already completed);
 						);

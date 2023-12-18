@@ -117,7 +117,6 @@ function TransactionCompleted(Result) {
 function DisplayTransactionResult(Result) {
 
     if (Result.IsCompleted) {
-        ToggleSpinner(false);
         if (Result.IsSuccess) {
             setTimeout(function () {
                 location.reload();
