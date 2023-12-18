@@ -1,4 +1,6 @@
-﻿({
+﻿Response.SetHeader("Access-Control-Allow-Origin","*");
+
+({
     "userName":Required(Str(PUserName)),
     "password":Required(Str(PPassword)),
     "repeatedPassword":Required(Str(PRepeatedPassword)),
@@ -11,7 +13,7 @@ try
     (
       Error("Email in not valid format.")
     );    
-
+     
     Code:= 0;
     if (!exists(Code:= Global.VerifyingNumbers[PEmail]) or Code >= 0) then 
     (
