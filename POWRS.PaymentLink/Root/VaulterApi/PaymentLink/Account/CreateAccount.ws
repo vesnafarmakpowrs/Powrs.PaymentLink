@@ -20,8 +20,6 @@ try
         Error("Email must be verified in order to create account");
     );
 
-    Global.VerifyingNumbers.Remove(PEmail);
-
     if(PUserName not like "^[\\p{L}\\p{N}]{8,20}$") then 
     (
      Error("Username could only contain letters and numbers.")
@@ -67,6 +65,7 @@ try
 		   {"Accept" : "application/json" });
 
     enabled:= Update BrokerAccounts set Enabled = true where UserName = PUserName;
+    Global.VerifyingNumbers.Remove(PEmail);
 
     {
         "userName": PUserName,
