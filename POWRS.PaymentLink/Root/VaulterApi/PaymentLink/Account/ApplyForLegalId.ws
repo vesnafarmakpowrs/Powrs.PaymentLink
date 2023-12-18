@@ -115,11 +115,6 @@ try
 
     S2:= S1 + ":" + KeySignature + ":" + Nonce;
      
-    S2 += ":FIRST:" + PFirstName;
-    S2 += ":LAST:" + PLastName;
-    S2 += ":PNR:" + NormalizedPersonalNumber;
-    S2 += ":COUNTRY:" + PCountryCode;
-
     foreach p in PropertiesVector do
     (
        S2 := S2 + ":" + p.name + ":" + p.value;
