@@ -129,7 +129,6 @@
 					</OnEvent>
 				</State>
 				<State id="ProcessingPayment">
-					<OnEnter actionRef="ReportNewState" />
 					<OnEvent actionRef="ProcessingPaymentFailure" newState="AwaitingForPayment" failureState="PaymentCompleted">
 						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
@@ -153,39 +152,47 @@
 					<OnEnter actionRef="End" />
 				</State>
 				<Action id="ReportNewState">
-					<Try>
-						<Script>
-							endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/Mail/ReportNewState.ws";
-							Json:= {
-							"Status":  NewStatus,
-							"ContractId": TokenContract,
-							"CallBackUrl": CallBackUrl,
-							"TokenId": TokenId,
-							"SendEmail" : BuyerEmail,
-							"CountryCode" : "RS"
-							};
-						</Script>
-						<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
-							<Header key="Accept" value="application/json"/>
-						</HttpPost>
-						<Script>
-							if(!exists(Response.State) || !exists(Response.Success)) then
-							(
-								success:= Boolean(Response.Success);
-								Notifications[NewStatus]:= success;
-							);
-						</Script>
-						<Catch exceptionVariable="ex">
-							<Script>
-								Notifications[NewStatus]:= false;
-							</Script>
-							<LogEvent actor="{Seller}" eventId="ReportNewState" level="Medium" message="{'Error while notifying client about state changed: ' + ex.Message}" module="ReportNewState" object="" type="Error" />
-						</Catch>
-					</Try>
-					<PersistVariable name="Notifications" value="{Notifications}"/>
+					<If condition="!exists(Notifications[NewStatus])">
+						<Then>
+							<Try>
+								<Script>
+									endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/Mail/ReportNewState.ws";
+									Json:= {
+									"Status":  NewStatus,
+									"ContractId": TokenContract,
+									"CallBackUrl": CallBackUrl,
+									"TokenId": TokenId,
+									"SendEmail" : BuyerEmail,
+									"CountryCode" : "RS"
+									};
+								</Script>
+								<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
+									<Header key="Accept" value="application/json"/>
+								</HttpPost>
+								<Script>
+									if(!exists(Response.State) || !exists(Response.Success)) then
+									(
+									success:= Boolean(Response.Success);
+									Notifications[NewStatus]:= success;
+									);
+								</Script>
+								<Catch exceptionVariable="ex">
+									<Script>
+										Notifications[NewStatus]:= false;
+									</Script>
+									<LogEvent actor="{Seller}" eventId="ReportNewState" level="Medium" message="{'Error while notifying client about state changed: ' + ex.Message}" module="ReportNewState" object="" type="Error" />
+								</Catch>
+							</Try>
+							<PersistVariable name="Notifications" value="{Notifications}"/>
+						</Then>
+					</If>
 				</Action>
 				<Action id="InitiatePayment">
 					<Script>
+						if(exists(PaymentDateTime)) then 
+						(
+						  Error("Payment already completed for this contract");
+						);
 						BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
 						BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderType');
 						SellerServiceProviderId:= SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
@@ -194,11 +201,11 @@
 						BuyerBankAccount:= SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
 					</Script>
 					<Try>
-						<BuyEDaler to="{Seller}"							   
+						<BuyEDaler to="{Seller}"
 							   amount="{AmountToPay}"
 							   currency="{Currency}"
 							   reference="{'nfeat: ' + TokenId}"
-						       contract="{TokenContract}"
+							   contract="{TokenContract}"
 							   serviceId="{BuyerEdalerServiceProviderId}"
 							   serviceProvider="{BuyerEdalerServiceProviderType}">
 							<Parameter key="TotalAmountToPay" value="{AmountToPay}"></Parameter>
@@ -222,7 +229,7 @@
 						<PersistVariable name="SellerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
 						<PersistVariable name="SellerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
-						<PersistVariable name="PaymentDateTime" value="{Now}" />
+						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
 						<CallAction actionRef="TransferFee" />
 
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
@@ -234,9 +241,9 @@
 				</Action>
 				<Action id="ProcessingPaymentFailure">
 					<Script>
-	                  if (!exsts(PaymentDateTime)) then
+						if (!exsts(PaymentDateTime)) then
 						(
-						    Error(Payment is already completed);
+						Error(Payment is already completed);
 						);
 					</Script>
 				</Action>
