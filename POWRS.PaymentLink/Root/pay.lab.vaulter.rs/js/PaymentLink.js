@@ -1,5 +1,6 @@
 
 var Translations = {};
+const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
 
 document.addEventListener("DOMContentLoaded", () => {
     GenerateLanguageDropdown();
@@ -188,10 +189,15 @@ function ShowPayspotPage(Data) {
         return;
     }
 
-    console.log(Data);
-    document.getElementById("tr_spinner").style.display = "none";
-    document.getElementById("payspot_iframe").src = Data.link;
-    document.getElementById("payspot_iframe").style.display = null;
+    if (!Boolean(isMobileDevice)) {
+        window.open(Data.link, '_self').focus();
+    }
+    else {
+        document.getElementById("tr_spinner").style.display = "none";
+        document.getElementById("payspot_iframe").src = Data.link;
+        document.getElementById("payspot_iframe").style.display = null;
+    }
+
     
 }
 
