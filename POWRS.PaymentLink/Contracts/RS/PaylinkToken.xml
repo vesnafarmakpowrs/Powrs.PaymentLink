@@ -231,9 +231,10 @@
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
 						<CallAction actionRef="TransferFee" />
-
+						
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
 						<Catch exceptionVariable="ex">
+							<PersistVariable name="PaymentDateTime" value="" />
 							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>
 						</Catch>
@@ -241,9 +242,9 @@
 				</Action>
 				<Action id="ProcessingPaymentFailure">
 					<Script>
-						if (!exsts(PaymentDateTime)) then
+						if (exists(PaymentDateTime) and PaymentDateTime != "") then
 						(
-						Error(Payment is already completed);
+							Error(Payment is already completed);
 						);
 					</Script>
 				</Action>
