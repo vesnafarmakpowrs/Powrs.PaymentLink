@@ -552,3 +552,58 @@ Call this resource to verify email with code.
      "isApproved": (bool)
 } 
 ````
+
+### Apply for legal Id
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/ApplyForLegalId.ws")}}`  
+Method: `POST`
+
+Call this resource to verify email with code.
+
+**Request**
+
+````
+{
+    "firstName" : Required(Str(PFirstName) like "[\\p{L}\\s]{2,20}"),
+    "lastName" : Required(Str(PLastName) like "[\\p{L}\\s]{2,20}"),
+    "personalNumber" : Required(Str(PPersonalNumber) like "\\d*-?\\d*"),
+    "country" : Required(Str(PCountryCode) like "[A-Z]{2}"),
+    "orgName": Required(Str(POrgName)),
+    "orgNumber": Required(Str(POrgNumber)),
+    "orgCity": Required(Str(POrgCity)),
+    "orgCountry": Required(Str(POrgCountry)),
+    "orgAddr": Required(Str(POrgAddress)),
+    "orgAddr2": Required(Str(POrgAddress2)),
+    "orgBankNum": Required(Str(POrgBankNum)),
+    "orgDept": Required(Str(POrgDept)),
+    "orgRole": Required(Str(POrgRole))
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+
+| `firstName`       | First Name for the user. |
+| `lastName`        | Last Name for the user.|
+| `personalNumber`  | Personal Number for the user |
+| `country`         | Country for the user.|
+| `orgName`         | Organization name  |
+| `orgNumber`       | Organization number |
+| `orgCity`         | Organization city |
+| `orgCountry`      | Organization country |
+| `orgAddr`         | Organization address |
+| `orgAddr2`        | Organization address 2 |
+| `orgBankNum`      | Organization bank number |
+| `orgDept`         | Organization department |
+| `orgRole`         | Organization role |
+
+**Response**
+
+
+````
+{
+	 "userName": (String),
+     "jwt": (String),
+     "isApproved": (bool)
+} 
+````

@@ -67,11 +67,60 @@ try
     enabled:= Update BrokerAccounts set Enabled = true where UserName = PUserName;
     Global.VerifyingNumbers.Remove(PEmail);
 
-    {
+   
+ neuronDomain:= "https://" + Gateway.Domain;
+
+try
+(
+    if(!exists(NewAccount.jwt)) then 
+    (
+	    BadRequest("Token not available in response.");
+    );
+
+    PLocalName:= "ed448";
+    PNamespace:= "urn:ieee:iot:e2e:1.0";
+    PKeyId:= NewGuid().ToString();
+    KeyPassword:= Base64Encode(RandomBytes(20)).ToString();
+    Nonce:= Base64Encode(RandomBytes(32)).ToString();
+
+    S1:= PUserName + ":" + Gateway.Domain + ":" + PLocalName + ":" + PNamespace + ":" + PKeyId;
+    KeySignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(KeyPassword)));
+
+    S2:= S1 + ":" + KeySignature + ":" + Nonce;
+    RequestSignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
+
+    NewKey:= POST(neuronDomain + "/Agent/Crypto/CreateKey",
+                 {
+                   "localName": PLocalName,
+				    "namespace": PNamespace,
+				    "id": PKeyId,
+				    "nonce": Nonce,
+				    "keySignature": KeySignature,
+				    "requestSignature": RequestSignature
+                  },
+		   {"Accept" : "application/json",
+            "Authorization": "Bearer " + NewAccount.jwt});
+)
+catch
+(
+  Log.Error("Unable to create key: " + Exception.Message, null);
+  BadRequest(Exception.Message);
+)
+finally
+(
+    Destroy(Nonce);
+    Destroy(S1);
+    Destroy(KeySignature);
+    Destroy(S2);
+    Destroy(RequestSignature);
+);
+
+ {
         "userName": PUserName,
         "jwt": NewAccount.jwt,
         "isApproved": false
-    }
+ }
+
 )
 catch
 (
