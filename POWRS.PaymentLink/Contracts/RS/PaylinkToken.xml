@@ -189,10 +189,6 @@
 				</Action>
 				<Action id="InitiatePayment">
 					<Script>
-						if(exists(PaymentDateTime)) then 
-						(
-						  Error("Payment already completed for this contract");
-						);
 						BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
 						BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderType');
 						SellerServiceProviderId:= SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
