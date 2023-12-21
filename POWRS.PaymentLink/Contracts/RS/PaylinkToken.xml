@@ -194,6 +194,7 @@
 						SellerServiceProviderId:= SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
 						SellerServiceProviderType:= SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderType');
 						TabId:= SelectXmlStr(Note,'/default:InitiatePayment/@tabId');
+						FromMobilePhone:= SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
 						BuyerBankAccount:= SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
 					</Script>
 					<Try>
@@ -211,6 +212,7 @@
 							<Parameter key="Account" value="{BuyerBankAccount}"></Parameter>
 							<Parameter key="Message" value="Vaulter"></Parameter>
 							<Parameter key="tabId" value="{TabId}"></Parameter>
+							<Parameter key="requestFromMobilePhone" value="{LowerCase(FromMobilePhone)}"></Parameter>
 							<Parameter key="callBackUrl" value="{CallBackUrl}"></Parameter>
 							<Parameter key="personalNumber" value="{BuyerPersonalNum}"></Parameter>
 							<Parameter key="buyerName" value="{Buyer}"></Parameter>
@@ -230,7 +232,14 @@
 						
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
 						<Catch exceptionVariable="ex">
-							<PersistVariable name="PaymentDateTime" value="" />
+							<Script>
+								timeToSave:= "";
+								if(exists(PaymentDateTime) and PaymentDateTime != "") then
+								(
+									timeToSave:= PaymentDateTime;
+								);
+							</Script>
+							<PersistVariable name="PaymentDateTime" value="{timeToSave}" />
 							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>
 						</Catch>
