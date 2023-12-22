@@ -48,6 +48,10 @@
 			<String id="45">Instant plaćanja preko bankovnog računa</String>
 			<String id="46">Plaćanje karticom</String>
 			<String id="47">Sesija je istekla, osvežite stranicu da bi pokušali ponovo.</String>
+			<String id="48">Transakcija je otkazana.</String>
+			<String id="49">Vaša transakcija ne može da se završi.</String>
+			<String id="50">Transakcija je uspešno završena.</String>
+			<String id="51">Hvala vam na naplati.</String>
 		</Namespace>
 	</Language>
 </Translation>

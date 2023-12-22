@@ -48,6 +48,10 @@
 			<String id="45">Direct payment from your bank account</String>
 			<String id="46">Card payment</String>
 			<String id="47">Session expired, refresh the page to try again.</String>
+			<String id="48">Transaction cancelled.</String>
+			<String id="49">Your transaction cannot be completed.</String>
+			<String id="50">Transaction completed successfully.</String>
+			<String id="51">Thank you for your billing.</String>
 		</Namespace>
 	</Language>
 </Translation>

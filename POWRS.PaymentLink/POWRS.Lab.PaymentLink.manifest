@@ -34,10 +34,17 @@
 		</Folder>
 		<Folder name="pay.lab.vaulter.rs">
 			<Content fileName="Payout.md"/>
-			<Content fileName="Cancel.md"/>
-			<Content fileName="Error.md"/>
-			<Content fileName="Success.md"/>
 			<Content fileName="Terms_and_Conditions.html"/>
+			<Folder name="Mobile">
+				<Content fileName="Success.md"/>
+				<Content fileName="Cancel.md"/>
+				<Content fileName="Error.md"/>				
+			</Folder>
+			<Folder name="Redirect">
+				<Content fileName="Success.md"/>
+				<Content fileName="Cancel.md"/>
+				<Content fileName="Error.md"/>
+			</Folder>
 			<Folder name="css">
 				<Content fileName="Payout.cssx"/>
 				<Content fileName="Stripe.css"/>
