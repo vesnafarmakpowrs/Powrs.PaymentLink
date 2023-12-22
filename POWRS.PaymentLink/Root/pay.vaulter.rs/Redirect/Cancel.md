@@ -1,24 +1,22 @@
-Title: Payment Link Success
+Title: Payment Link Cancel
 Description: Displays information about a contract.
 Date: 2023-12-06
 Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
 CSS: css/Status.css
+CSS: css/Payout.cssx
 viewport : Width=device-width, initial-scale=1
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
- <div class="container">
+<div class="container">
         <div class="messageContainer messageContainer_width">
             <div class="imageContainer">
-                <img src="../resources/success_green.png" alt="successpng" width="50" />
+                <img src="../resources/error_red.png" alt="successpng" width="50" />
             </div>
-            <div class="textHeader">
-                <span>Transaction completed successfully</span>
-            </div>
-            <div class="textBody">
-                <span>Thank you for your billing.</span>
+            <div class="welcomeLbl textHeader">
+                <span>Transaction cancelled</span>
             </div>
         </div>
     </div>

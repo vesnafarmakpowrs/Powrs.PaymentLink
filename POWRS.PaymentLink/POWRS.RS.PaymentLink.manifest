@@ -22,9 +22,16 @@
 					<Content fileName="GetBic.ws"/>
 				</Folder>
 				<Folder name="Contract">
-					<Content fileName="CancelItem.ws"/>
-					<Content fileName="CreateItem.ws"/>
-					<Content fileName="GetContracts.ws"/>
+					<Folder name="RS">
+						<Content fileName="CancelItem.ws"/>
+						<Content fileName="CreateItem.ws"/>
+						<Content fileName="GetContracts.ws"/>
+					</Folder>
+					<Folder name="SE">
+						<Content fileName="CancelItem.ws"/>
+						<Content fileName="CreateItem.ws"/>
+						<Content fileName="GetContracts.ws"/>
+					</Folder>
 				</Folder>
 				<Folder name="Mail">
 					<Content fileName="ReportNewState.ws"/>
@@ -34,10 +41,17 @@
 		</Folder>
 		<Folder name="pay.vaulter.rs">
 			<Content fileName="Payout.md"/>
-			<Content fileName="Cancel.md"/>
-			<Content fileName="Error.md"/>
-			<Content fileName="Success.md"/>
 			<Content fileName="Terms_and_Conditions.html"/>
+			<Folder name="Mobile">
+				<Content fileName="Success.md"/>
+				<Content fileName="Cancel.md"/>
+				<Content fileName="Error.md"/>
+			</Folder>
+			<Folder name="Redirect">
+				<Content fileName="Success.md"/>
+				<Content fileName="Cancel.md"/>
+				<Content fileName="Error.md"/>
+			</Folder>
 			<Folder name="css">
 				<Content fileName="Payout.cssx"/>
 				<Content fileName="Stripe.css"/>
@@ -56,10 +70,11 @@
 				<Content fileName="vaulter_txt.svg"/>
 				<Content fileName="vaulterlogo.svg"/>
 				<Content fileName="error_red.png"/>
-				<Content fileName="success_green.png"/>				
+				<Content fileName="success_green.png"/>
+
 			</Folder>
 		</Folder>
-		<Folder name="payout">
+		<Folder name="Payout">
 			<Content fileName="Settings.md"/>
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>

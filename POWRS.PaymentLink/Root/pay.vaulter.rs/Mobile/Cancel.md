@@ -4,12 +4,11 @@ Date: 2023-08-04
 Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
-CSS: css/Payout.cssx
+CSS: ../css/Payout.cssx
+CSS: ../css/Status.css
 viewport : Width=device-width, initial-scale=1
-Parameter: ID
+Parameter: ORDERID
 Parameter: lng
-JavaScript: js/Events.js
-JavaScript: js/PaymentLink.js
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -34,17 +33,11 @@ if(LanguageNamespace == null) then
  Return("");
 );
 
-try
-(
- ID:= Global.DecodeContractId(ID);
-)
-catch
-(
-    ]]<b>Payment link is not valid</b>[[;
-  Return("");
-);
+Order := select top 1 OrderId, ContractId, TokenId from PayspotPayments where OrderId = ORDERID;
+TokenID := Order.TokenId[0];
+ID := Order.ContractId[0];
 
-Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
+Token := select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId=TokenID;
 if !exists(Token) then
 (
   ]]<b>Payment link is not valid</b>[[;
@@ -57,9 +50,9 @@ if Token.HasStateMachine then
 	if exists(CurrentState) then
 		ContractState:= CurrentState.State;
 );
-if ContractState == "AwaitingForPayment" then 
+if (ContractState == "AwaitingForPayment") then 
 (
-    Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
+    Contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= Token.OwnershipContract;
    
     if !exists(Contract) then
     (
@@ -97,22 +90,6 @@ if ContractState == "AwaitingForPayment" then
         Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString("N2");
       );
      BuyerFirstName := Before(BuyerFullName," ");
-     PayspotId := Before(ID,"@");
-     tokenDurationInMinutes:= Int(GetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", 5));
-
-     PageToken:= CreateJwt(
-            {
-                "iss":Gateway.Domain, 
-                "contractId": ID,
-                "tokenId": Token.TokenId,
-                "sub": BuyerFullName, 
-                "id": NewGuid().ToString(),
-	            "ip": Request.RemoteEndPoint,
-                "pnr": BuyerPersonalNum,
-                "country": Country,
-                "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
-            });
-
       ]]  <table style="width:100%">
          <tr class="welcomeLbl">   
          <td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
@@ -128,20 +105,11 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
 
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(10) ))" id="SelectedAccountOk"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(24) ))" id="SelectedAccountNotOk"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(25) ))" id="QrCodeScanMessage"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(26) ))" id="QrCodeScanTitle"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(27) ))" id="TransactionCompleted"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(28) ))" id="TransactionFailed"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>
 
-<input type="hidden" value="((Request.RemoteEndPoint))" id="currentIp"/>
-<input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
-<input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
-<input type="hidden" value="((FileName))" id="fileName"/>
 <input type="hidden" value="((Country ))" id="country"/>
 
 <div class="payment-details">
@@ -198,60 +166,26 @@ if ContractState == "AwaitingForPayment" then
   </table>
 </div>
 <div class="spaceItem"></div>
-<div class="vaulter-details">
-<table style="width:100%">
 
- <tr >
-  <td colspan="3">
-     <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();"> 
-     <label for="termsAndCondition"> 
-        <img class="logo_small" for="termsAndCondition" src="./resources/vaulter_txt.svg" alt="Vaulter"/> 
-        <a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
- </td>
- </tr>
- </table>
-</div>
-<div class="spaceItem"></div>
-<div id="left-to-pay" style="display:none">
-  <label class=""><strong>((LanguageNamespace.GetStringAsync(37) ))</strong></label>
+
+ <div class="vaulter-details container">
+        <div class="messageContainer messageContainer_width">
+            <div class="imageContainer">
+                <img src="../resources/error_red.png" alt="successpng" width="50" />
+            </div>
+            <div class="welcomeLbl textHeader">
+                <span>((LanguageNamespace.GetStringAsync(48) ))</span>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="payment-method-rs"  id="ctn-payment-method-rs" style="display:none">
-  <table style="width:100%; text-align:center">
-    <tr>
-      <td>
-        <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button>
-      </td>
-    </tr>
-    <tr id="tr_spinner" style="display: none;">
-      <td>
-        <img src="../resources/spin.svg" alt="loadingSpinner">
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <iframe id="payspot_iframe" class="payspot_iframe" style="display:none"></iframe>
-      </td>
-    </tr>
-  </table>
-</div>
    [[;
-)
-else if ContractState == "PaymentCompleted" then 
-(
-]]**((LanguageNamespace.GetStringAsync(16) ))**[[;
-)
-else if ContractState == "PaymentCanceled" then 
-(
-]]**((LanguageNamespace.GetStringAsync(14) ))**ed[[;
 )
 else 
 (
 ]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
 )
-
-
-
 }}
 
 </div>
