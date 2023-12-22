@@ -10,13 +10,25 @@ viewport : Width=device-width, initial-scale=1
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+{{
+  Language:= null;
+if(exists(lng)) then 
+(
+  Language:= Translator.GetLanguageAsync(lng);
+);
+if(Language == null) then 
+(
+ lng:= "rs";
+ Language:= Translator.GetLanguageAsync("rs");
+);
+}}
 <div class="container">
         <div class="messageContainer messageContainer_width">
             <div class="imageContainer">
                 <img src="../resources/error_red.png" alt="successpng" width="50" />
             </div>
             <div class="welcomeLbl textHeader">
-                <span>Transaction cancelled</span>
+                <span>((LanguageNamespace.GetStringAsync(48) ))</span>
             </div>
         </div>
     </div>
