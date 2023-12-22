@@ -5,8 +5,7 @@
 	<Content fileName="./Scripts/StartupScripts/ValidatePayoutJWT.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
-			<Folder name="PaymentLink">
-				<Content fileName="Index.md"/>
+			<Folder name="PaymentLink">				
 				<Folder name="Account">
 					<Content fileName="ApplyForLegalId.ws"/>
 					<Content fileName="CreateAccount.ws"/>
@@ -37,11 +36,17 @@
 					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="SendContactUsEmail.ws"/>
 				</Folder>
+				<Folder name="RS">
+					<Content fileName="Index.md"/>
+				</Folder>
+				<Folder name="SE">
+					<Content fileName="Index.md"/>
+				</Folder>
 			</Folder>
 		</Folder>
 		<Folder name="pay.vaulter.rs">
 			<Content fileName="Payout.md"/>
-			<Content fileName="Terms_and_Conditions.html"/>
+			<Content fileName="Terms_and_Conditions.html" />
 			<Folder name="Mobile">
 				<Content fileName="Success.md"/>
 				<Content fileName="Cancel.md"/>
@@ -83,7 +88,7 @@
 				<Content fileName="GetBuyEdalerServiceProviders.ws"/>
 				<Content fileName="InitiateCardPayment.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
-				<Content fileName="InitiatePayment.ws"/>
+				<Content fileName="InitiatePaySpotPayment.ws"/>
 				<Content fileName="RegisterUpdates.ws"/>
 			</Folder>
 			<Folder name="Fonts">

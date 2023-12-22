@@ -165,7 +165,7 @@ function StartPayment() {
     let jwt = document.getElementById("jwt");
     CollapseDetails();
     
-     SendXmlHttpRequest("../Payout/API/InitiateCardPayment-rs.ws",
+    SendXmlHttpRequest("../Payout/API/InitiatePaySpotPayment.ws",
         {
             "tabId": TabID
         },

@@ -119,14 +119,19 @@
 		<None Remove="Root\Payout\vaulter_logo.svg" />
 		<None Remove="Root\Payout\vaulterlogo.svg" />
 		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentNotPerformed.html" />
+		<None Remove="Root\VaulterApi\PaymentLink\Contract\RS\CancelItem.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Contract\RS\CreateItem.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Contract\SE\CancelItem.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Contract\SE\CreateItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CreateItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetAccountInfo.ws" />
-		<None Remove="Root\VaulterApi\PaymentLink\Index.md" />
 		<None Remove="Root\VaulterApi\PaymentLink\ReportNewState.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetBic.ws" />
 		<None Remove="POWRS.PaymentLink.manifest" />
+		<None Remove="Root\VaulterApi\PaymentLink\RS\Index.md" />
 		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\SE\Index.md" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Include="POWRS.SE.PaymentLink.manifest">
@@ -207,25 +212,28 @@
 		<Content Include="Root\Payout\API\InitiatePayment.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\Contract\RS\CancelItem.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\Contract\RS\CreateItem.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\Contract\SE\CancelItem.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\Contract\SE\CreateItem.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Mail\SendContactUsEmail.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Account\GetAccountInfo.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateItem.ws">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Bank\GetBic.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Mail\ReportNewState.ws">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\Contract\CancelItem.ws">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\Index.md">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\API\DealInfo.ws">
@@ -255,6 +263,12 @@
 		<Content Include="POWRS.Lab.PaymentLink.manifest">
 		    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\RS\Index.md">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\SE\Index.md">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -273,13 +287,43 @@
 	  <None Update="Language\POWRS.PaymentLink.sv.lng">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\css\Status.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Cancel.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Error.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Success.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Cancel.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Error.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Success.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.lab.vaulter.rs\resources\credit-card-payment.svg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.lab.vaulter.rs\resources\direct_payment.svg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\resources\error_red.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.lab.vaulter.rs\resources\expand.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\resources\spin.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\resources\success_green.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.lab.vaulter.rs\resources\vaulter_txt.svg">
@@ -289,6 +333,48 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\css\Stripe.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\Mobile\Cancel.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\Mobile\Error.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\Mobile\Success.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\Redirect\Cancel.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\Redirect\Error.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\Redirect\Success.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\credit-card-payment.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\direct_payment.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\error_red.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\expand.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\spin.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\success_green.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\vaulter_txt.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\Terms_and_Conditions.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.se\css\Stripe.css">
@@ -319,6 +405,9 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\EN\VerifyEmail.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\RS\ContactUs.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\PaymentCompleted.html">
@@ -357,13 +446,16 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Account\VerifyEmail.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Contract\GetContracts.ws">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Auth\Login.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Auth\VerifyToken.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Contract\RS\GetContracts.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Contract\SE\GetContracts.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Scripts\StartupScripts\EncodeContractId.config">
