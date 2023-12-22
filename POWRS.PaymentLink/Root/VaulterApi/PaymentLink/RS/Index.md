@@ -177,7 +177,7 @@ Description of properties:
 
 ### Create Item
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/CreateItem.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/RS/CreateItem.ws")}}`  
 Method: `POST`
 
 
