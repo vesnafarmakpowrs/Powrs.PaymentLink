@@ -23,8 +23,13 @@
 				</Folder>
 				<Folder name="Contract">
 					<Content fileName="CancelItem.ws"/>
-					<Content fileName="CreateItem.ws"/>
 					<Content fileName="GetContracts.ws"/>
+					<Folder name="RS">
+						<Content fileName="CreateItem.ws"/>
+					</Folder>
+					<Folder name="SE">
+						<Content fileName="CreateItem.ws"/>
+					</Folder>
 				</Folder>
 				<Folder name="Mail">
 					<Content fileName="ReportNewState.ws"/>
