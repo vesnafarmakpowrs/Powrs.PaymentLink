@@ -190,7 +190,7 @@ function ShowPayspotPage(Data) {
         return;
     }
 
-    if (!Boolean(isMobileDevice)) {
+    if (isMobileDevice) {
         window.open(Data.link, '_self').focus();
     }
     else {
