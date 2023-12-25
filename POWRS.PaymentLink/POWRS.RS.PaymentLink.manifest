@@ -11,7 +11,7 @@
 					<Content fileName="CreateAccount.ws"/>
 					<Content fileName="GetAccountInfo.ws"/>
 					<Content fileName="SendVerificationEmail.ws"/>
-					<Content fileName="VerifiyEmail.ws"/>
+					<Content fileName="VerifyEmail.ws"/>
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>

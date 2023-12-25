@@ -206,7 +206,7 @@ if ContractState == "AwaitingForPayment" then
      <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();"> 
      <label for="termsAndCondition"> 
         <img class="logo_small" for="termsAndCondition" src="./resources/vaulter_txt.svg" alt="Vaulter"/> 
-        <a href="https://www.powrs.se/terms-and-conditions-payment-link" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
+        <a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
  </td>
  </tr>
  </table>
