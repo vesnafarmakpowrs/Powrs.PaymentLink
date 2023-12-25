@@ -167,7 +167,8 @@ function StartPayment() {
     
     SendXmlHttpRequest("../Payout/API/InitiatePaySpotPayment.ws",
         {
-            "tabId": TabID
+            "tabId": TabID,
+            "fromMobilePhone": isMobileDevice
         },
         (response) => {
             if (!response.OK) {

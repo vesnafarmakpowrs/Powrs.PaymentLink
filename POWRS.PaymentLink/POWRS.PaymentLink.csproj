@@ -292,6 +292,9 @@
 	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Success.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\PrivacyPolicy.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Cancel.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -322,7 +325,10 @@
 	  <None Update="Root\pay.lab.vaulter.rs\resources\vaulter_txt.svg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Terms_and_Conditions.html">
+	  <None Update="Root\pay.lab.vaulter.rs\TermsAndCondition.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\css\Status.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\css\Stripe.css">
@@ -335,6 +341,9 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\Mobile\Success.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\PrivacyPolicy.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\Redirect\Cancel.md">
@@ -367,7 +376,7 @@
 	  <None Update="Root\pay.vaulter.rs\resources\vaulter_txt.svg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.vaulter.rs\Terms_and_Conditions.html">
+	  <None Update="Root\pay.vaulter.rs\TermsAndCondition.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.se\css\Stripe.css">
@@ -387,6 +396,9 @@
 	  </None>
 	  <None Update="Root\Payout\Fonts\RTDromo-Medium.woff2">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\ContactUs.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\EN\PaymentCompleted.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -467,7 +479,7 @@
 
 		<TargetFramework>net6.0</TargetFramework>
 
-		<ApplicationManifest>POWRS.RS.PaymentLink.manifest</ApplicationManifest>
+		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
 	</PropertyGroup>
 	
 </Project>

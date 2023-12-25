@@ -61,7 +61,6 @@
 			</Folder>
 			<Folder name="css">
 				<Content fileName="Payout.cssx"/>
-				<Content fileName="Stripe.css"/>
 				<Content fileName="Status.css"/>
 			</Folder>
 			<Folder name="js">
@@ -73,6 +72,7 @@
 				<Content fileName="direct_payment.svg"/>
 				<Content fileName="expand.svg"/>
 				<Content fileName="spinner.gif"/>
+				<Content fileName="spin.svg" />
 				<Content fileName="vaulter_logo.svg"/>
 				<Content fileName="vaulter_txt.svg"/>
 				<Content fileName="vaulterlogo.svg"/>

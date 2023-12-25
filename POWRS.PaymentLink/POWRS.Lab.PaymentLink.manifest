@@ -9,7 +9,6 @@
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="PaymentLink">
-				<Content fileName="Index.md"/>
 				<Folder name="Account">
 					<Content fileName="ApplyForLegalId.ws"/>
 					<Content fileName="CreateAccount.ws"/>
@@ -38,6 +37,12 @@
 					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="SendContactUsEmail.ws"/>
 				</Folder>
+				<Folder name="RS">
+					<Content fileName="Index.md"/>
+				</Folder>
+				<Folder name="SE">
+					<Content fileName="Index.md"/>
+				</Folder>
 			</Folder>
 		</Folder>
 		<Folder name="pay.lab.vaulter.rs">
@@ -56,7 +61,6 @@
 			</Folder>
 			<Folder name="css">
 				<Content fileName="Payout.cssx"/>
-				<Content fileName="Stripe.css"/>
 				<Content fileName="Status.css"/>
 			</Folder>
 			<Folder name="js">
@@ -67,6 +71,7 @@
 				<Content fileName="credit-card-payment.svg"/>
 				<Content fileName="direct_payment.svg"/>
 				<Content fileName="expand.svg"/>
+				<Content fileName="spin.svg" />
 				<Content fileName="spinner.gif"/>				
 				<Content fileName="vaulter_logo.svg"/>
 				<Content fileName="vaulter_txt.svg"/>
