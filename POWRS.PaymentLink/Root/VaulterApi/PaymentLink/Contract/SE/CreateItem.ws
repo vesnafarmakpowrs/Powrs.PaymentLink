@@ -1,4 +1,5 @@
 Response.SetHeader("Access-Control-Allow-Origin","*");
+SessionUser:= Global.ValidateAgentApiToken(true);
 
 if !exists(Posted) then BadRequest("No payload.");
 
@@ -12,15 +13,12 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerFirstName":Required(String(PBuyerFirstName) like "[\\p{L}\\s]{2,20}"),
     "buyerLastName":Required(String(PBuyerLastName) like "[\\p{L}\\s]{2,20}"),
     "buyerEmail":Required(String(PBuyerEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
-    "buyerPersonalNum":Optional(String(PBuyerPersonalNum)  like "\\d*-?\\d*"),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber)  like "^\\+[0-9]{6,15}$"),
     "buyerCountryCode":Required(String(PBuyerCountryCode)  like "[A-Z]{2}"),
     "callbackUrl":Optional(String(PCallBackUrl)),
     "webPageUrl":Optional(String(PWebPageUrl)),
     "supportedPaymentMethods": Optional(String(PSupportedPaymentMethods))
 }:=Posted) ??? BadRequest(Exception.Message);
-
-SessionUser:= Global.ValidateAgentApiToken(true);
 
 try
 (
@@ -43,18 +41,6 @@ KeyPassword:= GetSetting(SessionUser.username + ".KeySecret","");
 if(System.String.IsNullOrEmpty(KeyId) || System.String.IsNullOrEmpty(KeyPassword)) then 
 (
     Error("No signing keys or password available for user: " + SessionUser.username);
-);
-
-
-if(exists(PBuyerPersonalNum) || PBuyerCountryCode.ToLower() == "se") then 
-(
-    normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PBuyerCountryCode, PBuyerPersonalNum);
-	isValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PBuyerCountryCode ,normalizedPersonalNumber);
-
-	if(isValid != true) then 
-	(
-    	 Error("Personal number: " + PBuyerPersonalNum + " is not valid for the country: " + PBuyerCountryCode);
-	);
 );
 
 if(exists(PSupportedPaymentMethods) and PSupportedPaymentMethods != null) then 
@@ -128,7 +114,6 @@ if(EscrowFee <= 0) then
           PSellerServiceProviderType := GetBicResponse.serviceProviderType;
      );
 
-BuyerPersonalNum:= PBuyerPersonalNum ?? "";
 BuyerPhoneNumber:= PBuyerPhoneNumber ?? "";
 CallBackUrl:=  PCallBackUrl ?? "";
 WebPageUrl:=  PWebPageUrl ?? "";
@@ -149,7 +134,6 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
         "SellerServiceProviderId" : PSellerServiceProviderId,
         "SellerServiceProviderType" : PSellerServiceProviderType,
         "BuyerFullName": PBuyerFirstName + " " + PBuyerLastName,
-        "BuyerPersonalNum": BuyerPersonalNum,
         "BuyerPhoneNumber": BuyerPhoneNumber,
         "BuyerEmail":PBuyerEmail,
         "CallBackUrl" : CallBackUrl,

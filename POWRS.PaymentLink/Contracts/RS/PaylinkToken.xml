@@ -89,9 +89,6 @@
 				<Variable id="BuyerBankAccount">
 					<TagReference tag="BuyerBankAccount" />
 				</Variable>
-				<Variable id="BuyerPersonalNum">
-					<TagReference tag="BuyerPersonalNum" />
-				</Variable>
 				<Variable id="PaymentDeadline">
 					<TagReference tag="PaymentDeadline" />
 				</Variable>
@@ -213,8 +210,7 @@
 							<Parameter key="Message" value="Vaulter"></Parameter>
 							<Parameter key="tabId" value="{TabId}"></Parameter>
 							<Parameter key="requestFromMobilePhone" value="{LowerCase(FromMobilePhone)}"></Parameter>
-							<Parameter key="callBackUrl" value="{CallBackUrl}"></Parameter>
-							<Parameter key="personalNumber" value="{BuyerPersonalNum}"></Parameter>
+							<Parameter key="callBackUrl" value="{CallBackUrl}"></Parameter>							
 							<Parameter key="buyerName" value="{Buyer}"></Parameter>
 							<Parameter key="buyerEmail" value="{BuyerEmail}"></Parameter>
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
@@ -388,9 +384,6 @@
 		</Tag>
 		<Tag name="BuyerBankAccount">
 			<ParameterReference parameter="BuyerBankAccount" />
-		</Tag>
-		<Tag name="BuyerPersonalNum">
-			<ParameterReference parameter="BuyerPersonalNum" />
 		</Tag>
 		<Tag name="AmountToPay">
 			<ParameterReference parameter="AmountToPay" />
@@ -569,13 +562,6 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>First, Second and Last name of the buyer.</text>
-				</paragraph>
-			</description>
-		</stringParameter>
-		<stringParameter name="BuyerPersonalNum" value="">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Full valid personal number of buyer.</text>
 				</paragraph>
 			</description>
 		</stringParameter>

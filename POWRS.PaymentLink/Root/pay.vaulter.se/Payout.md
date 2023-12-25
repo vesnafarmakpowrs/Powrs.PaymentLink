@@ -140,14 +140,16 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(28) ))" id="TransactionFailed"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(34) ))" id="cardHolderTxt"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(35) ))" id="cardHolderNameTxt"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(52) ))" id="EnterPersonalNumber"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(53) ))" id="PersonalNumberInvalid"/>
 
 <input type="hidden" value="((Request.RemoteEndPoint))" id="currentIp"/>
 <input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(34) ))" id="cardHolderTxt"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(35) ))" id="cardHolderNameTxt"/>
 <input type="hidden" value="((Country ))" id="country"/>
 
 <div class="payment-details">

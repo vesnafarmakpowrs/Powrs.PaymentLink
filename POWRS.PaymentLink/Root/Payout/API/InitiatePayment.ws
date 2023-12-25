@@ -3,12 +3,21 @@
 	"requestFromMobilePhone": Optional(Boolean(PRequestFromMobilePhone)),
 	"bankAccount": Optional(Str(PBuyerBankAccount)),
 	"bic" :Optional(Str(PBic)),
-	"stripe" : Optional(Boolean(PStripePayment))
+	"stripe" : Optional(Boolean(PStripePayment)),
+	"personalNumber": Required(Str(PPersonalNumber) like "(19|20)?[0-9]{6}[-+]{0,1}[0-9]{4}$")
 	
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 SessionToken:=  Global.ValidatePayoutJWT();
 PTokenId:= SessionToken.Claims.tokenId;
+
+normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize("SE", PBuyerPersonalNum);
+isValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid("SE" ,normalizedPersonalNumber);
+
+if(!isValid) then 
+(
+ BadRequest("Personal number not valid for Sweden.")
+);
 
 P:=GetServiceProvidersForBuyingEDaler('SE','SEK');
 ServiceProviderId := "";
@@ -58,9 +67,8 @@ if (PStripePayment) then
    xmlNote:= "<InitiateCardPayment xmlns='" + escrowDomain + "' buyEdalerServiceProviderId='" + ServiceProviderId + "' buyEdalerServiceProviderType='" + ServiceProviderType + "'  tabId='" + PTabID + "' />";
 )else
 (
-   xmlNote:= "<InitiatePayment xmlns='" + escrowDomain + "' buyerBankAccount='" + PBuyerBankAccount + "' buyEdalerServiceProviderId='" + ServiceProviderId + "' buyEdalerServiceProviderType='" + ServiceProviderType + "' fromMobilePhone='" + PRequestFromMobilePhone + "'  tabId='" + PTabID + "' />";
+   xmlNote:= "<InitiatePayment xmlns='" + escrowDomain + "' buyerBankAccount='" + PBuyerBankAccount + "' buyEdalerServiceProviderId='" + ServiceProviderId + "' buyEdalerServiceProviderType='" + ServiceProviderType + "' fromMobilePhone='" + PRequestFromMobilePhone + "'  tabId='" + PTabID + "' buyerPersonalNumber='" + normalizedPersonalNumber + "'  />";
 );
-
 
 xmlNoteResponse := POST(NeuronAddress + "/Agent/Tokens/AddXmlNote",
                  {

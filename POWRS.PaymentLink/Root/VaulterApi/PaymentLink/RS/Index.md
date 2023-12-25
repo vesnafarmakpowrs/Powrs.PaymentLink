@@ -196,7 +196,6 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
-    "buyerPersonalNum":Optional(String(PBuyerPersonalNum)),
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber),
     "callbackUrl":Optional(String(PCallbackUrl)),
@@ -218,7 +217,6 @@ Description of properties:
 | `buyerFirstName`  | Buyer First name. |
 | `buyerLastName`   | Buyer Last name. |
 | `buyerEmail`      | Buyer email. |
-| `buyerPersonalNum`| Buyer personal number. Mandatory only for sweden and direct bank transfer |
 | `buyerPhoneNumber`| Buyer phone number to send notification. |
 | `buyerCountryCode`| Buyer country code. |
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |

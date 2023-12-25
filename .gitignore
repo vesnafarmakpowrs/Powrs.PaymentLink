@@ -270,3 +270,5 @@ FakesAssemblies/
 /POWRS.PaymentLink/.vs/POWRS.PaymentLink/v17/.futdcache.v2
 /POWRS.PaymentLink/obj/POWRS.PaymentLink.csproj.nuget.g.targets
 /POWRS.PaymentLink/obj/Release/net6.0/
+/POWRS.PaymentLink/Root/VaulterApi/PaymentLink/Contract/SE/CancelItem.ws
+/POWRS.PaymentLink/Root/VaulterApi/PaymentLink/Contract/RS/CancelItem.ws

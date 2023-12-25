@@ -89,9 +89,6 @@
 				<Variable id="BuyerBankAccount">
 					<TagReference tag="BuyerBankAccount" />
 				</Variable>
-				<Variable id="BuyerPersonalNum">
-					<TagReference tag="BuyerPersonalNum" />
-				</Variable>
 				<Variable id="PaymentDeadline">
 					<TagReference tag="PaymentDeadline" />
 				</Variable>
@@ -216,7 +213,6 @@
 							<Parameter key="Amount" value="{AmountToPay}"></Parameter>
 							<Parameter key="Currency" value="{Currency}"></Parameter>
 							<Parameter key="tabId" value="{TabId}"></Parameter>
-							<Parameter key="personalNumber" value="{BuyerPersonalNum}"></Parameter>
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
 							<Parameter key="TokenId" value="{TokenId}"></Parameter>
 						</BuyEDaler>
@@ -241,6 +237,7 @@
 						TabId:= SelectXmlStr(Note,'/default:InitiatePayment/@tabId');
 						FromMobilePhone:=  SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
 						BuyerBankAccount:= SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
+						PBuyerPersonalNumber:= SelectXmlStr(Note,'/default:InitiatePayment/@buyerPersonalNumber');
 					</Script>
 					<Try>
 						<BuyEDaler to="{Seller}"
@@ -257,7 +254,7 @@
 							<Parameter key="requestFromMobilePhone" value="{LowerCase(FromMobilePhone)}"></Parameter>
 							<Parameter key="tabId" value="{TabId}"></Parameter>
 							<Parameter key="callBackUrl" value="{CallBackUrl}"></Parameter>
-							<Parameter key="personalNumber" value="{BuyerPersonalNum}"></Parameter>
+							<Parameter key="personalNumber" value="{PBuyerPersonalNumber}"></Parameter>
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
 							<Parameter key="TokenId" value="{TokenId}"></Parameter>
 						</BuyEDaler>
@@ -459,10 +456,7 @@
 		</Tag>
 		<Tag name="BuyerBankAccount">
 			<ParameterReference parameter="BuyerBankAccount" />
-		</Tag>
-		<Tag name="BuyerPersonalNum">
-			<ParameterReference parameter="BuyerPersonalNum" />
-		</Tag>
+		</Tag>		
 		<Tag name="BuyerPhoneNumber">
 			<ParameterReference parameter="BuyerPhoneNumber" />
 		</Tag>
@@ -646,13 +640,6 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>First, Second and Last name of the buyer.</text>
-				</paragraph>
-			</description>
-		</stringParameter>
-		<stringParameter name="BuyerPersonalNum" value="">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Full valid personal number of buyer.</text>
 				</paragraph>
 			</description>
 		</stringParameter>

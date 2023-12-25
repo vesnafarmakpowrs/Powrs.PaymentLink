@@ -52,6 +52,8 @@
 			<String id="49">Your transaction cannot be completed.</String>
 			<String id="50">Transaction completed successfully.</String>
 			<String id="51">Thank you for your billing.</String>
+			<String id="52">Please enter your personal-number! This information will not be stored and it's purpose is to initate bank-id authorization.</String>
+			<String id="53">Personal number not in valid format.</String>
 		</Namespace>
 	</Language>
 </Translation>

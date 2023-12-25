@@ -55,6 +55,8 @@ function GenerateTranslations() {
     Translations.TransactionInProgress = document.getElementById("TransactionInProgress").value;
     Translations.OpenLinkOnPhoneMessage = document.getElementById("OpenLinkOnPhoneMessage").value;
     Translations.SessionTokenExpiredMessage = document.getElementById("SessionTokenExpired").value;
+    Translations.EnterPersonalNumber = document.getElementById("EnterPersonalNumber").value;
+    Translations.PersonalNumberInvalid = document.getElementById("PersonalNumberInvalid").value;
 }
 
 function GenerateLanguageDropdown() {
@@ -219,7 +221,18 @@ function GetBankAccounts() {
     }, null);
 }
 
+const isValidSwedishPersonalNumber = (personalNumber) => {
+    const swedishPersonalNumberRegex = /^(19|20)?[0-9]{6}[-+]{0,1}[0-9]{4}$/;
+    return swedishPersonalNumberRegex.test(personalNumber);
+};
+
 function StartPayment(iban, bic) {
+    var personalNumber = window.prompt(Translations.EnterPersonalNumber);
+    if (!isValidSwedishPersonalNumber(personalNumber)) {
+        alert(Translations.PersonalNumberInvalid);
+        return;
+    }
+
     ToggleServiceProviderSelect(true);
     ClearQrCodeDiv();
     ToggleSpinner(true);
@@ -233,7 +246,8 @@ function StartPayment(iban, bic) {
         "tabId": TabID,
         "requestFromMobilePhone": Boolean(isMobileDevice),
         "bankAccount": iban,
-        "bic": bic
+        "bic": bic,
+        "personalNumber": personalNumber
     },
         (response) => {
             if (!response.OK) {

@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://lab.neuron.vaulter.rs/Downloads/EscrowPaylink.xsd" targetNamespace="https://lab.neuron.vaulter.rs/Downloads/EscrowPaylink.xsd" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://lab.neuron.vaulter.nu/Downloads/EscrowPaylink.xsd" targetNamespace="https://lab.neuron.vaulter.nu/Downloads/EscrowPaylink.xsd" elementFormDefault="qualified">
 	<xs:complexType name="Empty" />
 	<xs:element name="Cancel" type="Empty" />
 	<xs:element name="InitiatePayment">
@@ -8,6 +8,7 @@
 			<xs:attribute name="buyerBankAccount" type="xs:string" use="optional" />
 			<xs:attribute name="fromMobilePhone" type="xs:string" use="optional" />
 			<xs:attribute name="tabId" type="xs:string" use="required" />
+			<xs:attribute name="buyerPersonalNumber" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="InitiateCardPayment">

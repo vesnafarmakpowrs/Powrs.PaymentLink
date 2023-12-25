@@ -52,6 +52,8 @@
 			<String id="49">Vaša transakcija ne može da se završi.</String>
 			<String id="50">Transakcija je uspešno završena.</String>
 			<String id="51">Hvala vam na naplati.</String>
+			<String id="52">Unesite vas personalni broj. Informacija neće biti sačuvana, služi za autorizaciju preko Bank-Id aplikacije.</String>
+			<String id="53">Personalni broj nije u validnom formatu!</String>
 		</Namespace>
 	</Language>
 </Translation>

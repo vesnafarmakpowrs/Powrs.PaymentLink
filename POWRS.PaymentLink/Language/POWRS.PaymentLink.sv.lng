@@ -45,13 +45,15 @@
 			<String id="42">Bankkontot är bara synligt för dig. Vi kan inte se eller spara denna information.</String>
 			<String id="43">-- Välj bank --</String>
 			<String id="44">andra betalningsmetoder</String>
-			<String id="45">Direct payment from your bank account</String>
-			<String id="46">Card payment</String>
+			<String id="45">Direktbetalning från ditt bankkonto</String>
+			<String id="46">Kortbetalning</String>
 			<String id="47">Sessionen har löpt ut. Uppdatera sidan för att försöka igen.</String>
 			<String id="48">Transaktionen avbruten.</String>
 			<String id="49">Din transaktion kan inte slutföras.</String>
 			<String id="50">Transaktionen slutförd.</String>
 			<String id="51">Tack för din fakturering.</String>
+			<String id="52">Ange ditt personliga nummer! Denna information kommer inte att lagras och dess syfte är att initiera bank-ID-auktorisering.</String>
+			<String id="53">Personnummer är inte i giltigt format.</String>
 		</Namespace>
 	</Language>
 </Translation>

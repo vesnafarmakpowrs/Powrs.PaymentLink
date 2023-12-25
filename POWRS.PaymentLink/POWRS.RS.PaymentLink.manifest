@@ -3,6 +3,9 @@
 	<Content fileName="./Scripts/StartupScripts/EncodeContractId.config" />
 	<Content fileName="./Scripts/StartupScripts/ValidateAgentApiToken.config" />
 	<Content fileName="./Scripts/StartupScripts/ValidatePayoutJWT.config" />
+	<Content fileName="./Scripts/StartupScripts/CreateLanguageIndex.config" />
+	<Content fileName="./Scripts/StartupScripts/CreateNeuroFeatureCreatorIndex.config" />
+	<Content fileName="./Scripts/StartupScripts/CreateStateMachineCurrentStateIndex.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="PaymentLink">				
