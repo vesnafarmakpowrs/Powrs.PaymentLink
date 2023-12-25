@@ -93,7 +93,6 @@ if ContractState == "AwaitingForPayment" then
         Variable.Name like "Commission" ?   Commission := Variable.Value;
         Variable.Name like "Buyer" ?   BuyerFullName := Variable.Value;
         Variable.Name like "BuyerEmail" ?  BuyerEmail := Variable.Value;
-        Variable.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Variable.Value;
         Variable.Name like "EscrowFee" ?   EscrowFee := Variable.Value.ToString("N2");
         Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString("N2");
       );
@@ -109,7 +108,6 @@ if ContractState == "AwaitingForPayment" then
                 "sub": BuyerFullName, 
                 "id": NewGuid().ToString(),
 	            "ip": Request.RemoteEndPoint,
-                "pnr": BuyerPersonalNum,
                 "country": Country,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
