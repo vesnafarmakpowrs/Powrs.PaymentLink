@@ -118,16 +118,11 @@
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="AuthorizeServer" />
-					<OnEvent actionRef="InitiatePayment" newState="PaymentCompleted" failureState="ProcessingPayment">
-						<OnExternalXmlNote localName="InitiatePayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					<OnEvent actionRef="ProceedToBuyEdaler" newState="PaymentCompleted" failureState="AwaitingForPayment">
+						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylink.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
-					</OnEvent>
-				</State>
-				<State id="ProcessingPayment">
-					<OnEvent actionRef="ProcessingPaymentFailure" newState="AwaitingForPayment" failureState="PaymentCompleted">
-						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
 				</State>
 				<State id="PaymentNotPerformed">
@@ -184,15 +179,11 @@
 						</Then>
 					</If>
 				</Action>
-				<Action id="InitiatePayment">
+				<Action id="ProceedToBuyEdaler">
 					<Script>
-						BuyerEdalerServiceProviderId:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
-						BuyerEdalerServiceProviderType:=SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderType');
-						SellerServiceProviderId:= SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderId');
-						SellerServiceProviderType:= SelectXmlStr(Note,'/default:InitiatePayment/@buyEdalerServiceProviderType');
-						TabId:= SelectXmlStr(Note,'/default:InitiatePayment/@tabId');
-						FromMobilePhone:= SelectXmlStr(Note,'/default:InitiatePayment/@fromMobilePhone');
-						BuyerBankAccount:= SelectXmlStr(Note,'/default:InitiatePayment/@buyerBankAccount');
+						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
+						BuyerEdalerServiceProviderId:= "POWRS.Payment.PaySpot.PayspotService.Test";
+						BuyerEdalerServiceProviderType:= "POWRS.Payment.PaySpot.PayspotServiceProvider";
 					</Script>
 					<Try>
 						<BuyEDaler to="{Seller}"
@@ -203,21 +194,11 @@
 							   serviceId="{BuyerEdalerServiceProviderId}"
 							   serviceProvider="{BuyerEdalerServiceProviderType}">
 							<Parameter key="TotalAmountToPay" value="{AmountToPay}"></Parameter>
-							<Parameter key="Price" value="{Price}"></Parameter>
-							<Parameter key="EscrowFee" value="{EscrowFee}"></Parameter>
 							<Parameter key="Currency" value="{Currency}"></Parameter>
-							<Parameter key="Account" value="{BuyerBankAccount}"></Parameter>
-							<Parameter key="Message" value="Vaulter"></Parameter>
-							<Parameter key="tabId" value="{TabId}"></Parameter>
-							<Parameter key="requestFromMobilePhone" value="{LowerCase(FromMobilePhone)}"></Parameter>
-							<Parameter key="callBackUrl" value="{CallBackUrl}"></Parameter>							
-							<Parameter key="buyerName" value="{Buyer}"></Parameter>
-							<Parameter key="buyerEmail" value="{BuyerEmail}"></Parameter>
+							<Parameter key="OrderId" value="{OrderId}"></Parameter>
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
-							<Parameter key="TokenId" value="{TokenId}"></Parameter>
 						</BuyEDaler>
 
-						<PersistVariable name="BuyerBankAccount" value="{BuyerBankAccount}" />
 						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
 						<PersistVariable name="SellerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
@@ -225,29 +206,13 @@
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
 						<CallAction actionRef="TransferFee" />
-						
+
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
-						<Catch exceptionVariable="ex">
-							<Script>
-								timeToSave:= "";
-								if(exists(PaymentDateTime) and PaymentDateTime != "") then
-								(
-									timeToSave:= PaymentDateTime;
-								);
-							</Script>
-							<PersistVariable name="PaymentDateTime" value="{timeToSave}" />
+						<Catch exceptionVariable="ex">					
 							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>
 						</Catch>
 					</Try>
-				</Action>
-				<Action id="ProcessingPaymentFailure">
-					<Script>
-						if (exists(PaymentDateTime) and PaymentDateTime != "") then
-						(
-							Error(Payment is already completed);
-						);
-					</Script>
 				</Action>
 
 				<Action id="ReleaseFunds">

@@ -15,4 +15,9 @@
 			<xs:attribute name="amountToBeReturned" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="PayspotPaymentCompleted">
+		<xs:complexType>
+			<xs:attribute name="orderId" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
 </xs:schema>
