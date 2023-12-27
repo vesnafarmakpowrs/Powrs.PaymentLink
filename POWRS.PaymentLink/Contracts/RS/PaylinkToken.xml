@@ -198,13 +198,14 @@
 							<Parameter key="OrderId" value="{OrderId}"></Parameter>
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
 						</BuyEDaler>
-
+						
 						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
 						<PersistVariable name="SellerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
 						<PersistVariable name="SellerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
+						<PersistVariable name="PayspotOrderId" value="{OrderId}" />
 						<CallAction actionRef="TransferFee" />
 
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
@@ -277,6 +278,7 @@
 							<Parameter key="ContractId" value="{TokenContract}" />
 							<Parameter key="TokenId" value="{TokenId}" />
 							<Parameter key="Message" value="Vaulter" />
+							<Parameter key="OrderId" value="{PayspotOrderId}" />
 						</SellEDaler>
 						<TextNote content="{'Amount of edaler: ' + AmountToSell + ' ' + Currency + ' sold. From: ' + SellEdalerFrom + ' to BankAccount: ' + BankAccountToSell}" />
 						<Catch exceptionVariable="ex">
