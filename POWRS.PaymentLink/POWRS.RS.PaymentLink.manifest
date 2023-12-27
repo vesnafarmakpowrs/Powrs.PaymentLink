@@ -46,6 +46,7 @@
 			</Folder>
 		</Folder>
 		<Folder name="pay.vaulter.rs">
+			<Content fileName="Index.html"/>
 			<Content fileName="Payout.md"/>
 			<Content fileName="TermsAndCondition.html"/>
 			<Content fileName="PrivacyPolicy.html"/>

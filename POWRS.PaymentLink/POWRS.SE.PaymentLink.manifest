@@ -41,6 +41,7 @@
 			</Folder>
 		</Folder>
 		<Folder name="pay.vaulter.se">
+			<Content fileName="Index.html"/>
 			<Content fileName="Payout.md"/>
 			<Content fileName="Cancel.md"/>
 			<Content fileName="Error.md"/>
