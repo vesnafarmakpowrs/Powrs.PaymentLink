@@ -100,6 +100,9 @@ try
                   },
 		   {"Accept" : "application/json",
             "Authorization": "Bearer " + NewAccount.jwt});
+   
+   SetSetting(PUserName  + ".KeyId", PKeyId);
+   SetSetting(PUserName  + ".KeySecret", KeyPassword);
 )
 catch
 (
@@ -113,6 +116,8 @@ finally
     Destroy(KeySignature);
     Destroy(S2);
     Destroy(RequestSignature);
+    Destroy(PKeyId);
+    Destroy(KeySignature);
 );
 
  {
