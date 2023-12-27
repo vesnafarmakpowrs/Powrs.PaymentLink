@@ -1,3 +1,5 @@
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 SessionUser:= Global.ValidateAgentApiToken(false);
 
  {

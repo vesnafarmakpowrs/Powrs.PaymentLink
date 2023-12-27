@@ -1,4 +1,6 @@
-﻿SessionUser:= Global.ValidateAgentApiToken(true);
+﻿Response.SetHeader("Access-Control-Allow-Origin","*");
+
+SessionUser:= Global.ValidateAgentApiToken(true);
 
 cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
 doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
