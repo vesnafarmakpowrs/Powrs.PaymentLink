@@ -167,7 +167,6 @@ function StartPayment() {
         (response) => {
             if (!response.OK) {
                 TransactionFailed(null);
-                return;
             }
             ShowPayspotPage(response);
         },
@@ -180,22 +179,20 @@ function StartPayment() {
         })
 }
 
-function ShowPayspotPage(Url) {
-    if (Url == null) {
+function ShowPayspotPage(Data) {
+    if (Data == null) {
         console.log("data is empty");
         return;
     }
 
     if (isMobileDevice) {
-        window.open(Url, '_self').focus();
+        window.open(Data, '_self').focus();
     }
     else {
         document.getElementById("tr_spinner").style.display = "none";
-        document.getElementById("payspot_iframe").src = Url;
+        document.getElementById("payspot_iframe").src = Data;
         document.getElementById("payspot_iframe").style.display = null;
     }
-
-
 }
 
 function CollapseDetails() {
