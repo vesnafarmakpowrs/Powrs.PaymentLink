@@ -1,4 +1,6 @@
-﻿({
+﻿Response.SetHeader("Access-Control-Allow-Origin","*");
+
+({
     "email" : Required(Str(PEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
     "firstName" : Required(Str(PFirstName) like "[\\p{L}\\s]{2,20}"),
     "lastName" : Required(Str(PLastName) like "[\\p{L}\\s]{2,20}"),
@@ -39,16 +41,18 @@ try
                           {name: "LAST", value: PLastName},
                           {name: "PNR", value: NormalizedPersonalNumber},
                           {name: "COUNTRY", value: PCountryCode},
-		          {name: "ORGNAME", value: POrgName},
-		          {name: "ORGNR", value: POrgNumber},
+		                  {name: "ORGNAME", value: POrgName},
+		                  {name: "ORGNR", value: POrgNumber},
                           {name: "ORGCITY", value: POrgCity},
- 		          {name: "ORGCOUNTRY", value: POrgCountry},
-		          {name: "ORGADDR", value: POrgAddress},
-           	          {name: "ORGADDR2", value: POrgAddress2},
+ 		                  {name: "ORGCOUNTRY", value: POrgCountry},
+		                  {name: "ORGADDR", value: POrgAddress},
+           	              {name: "ORGADDR2", value: POrgAddress2},
                           {name: "ORGBANKNUM", value: POrgBankNum},
                           {name: "ORGDEPT", value: POrgDept},
                           {name: "ORGROLE", value: POrgRole}
                     ];
+    PLocalName:= "ed448";
+    PNamespace:= "urn:ieee:iot:e2e:1.0";
 
     KeyId := GetSetting(SessionUser.username + ".KeyId","");
     KeyPassword:= GetSetting(SessionUser.username + ".KeySecret","");
@@ -78,7 +82,7 @@ try
 	             "Properties":  PropertiesVector
 		 },
 		   {"Accept" : "application/json",
-		    "Authorization": "Bearer " + NewAccount.jwt,
+		    "Authorization": "Bearer " + SessionUser.jwt,
 		    "Referer": neuronDomain + "/VaulterApi/PaymentLink/Account/CreateAccount.ws"
 		   });
 
