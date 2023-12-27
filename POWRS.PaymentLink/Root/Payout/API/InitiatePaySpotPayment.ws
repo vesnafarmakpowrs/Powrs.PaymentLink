@@ -10,7 +10,6 @@ SessionToken:=  Global.ValidatePayoutJWT();
 PContractId:= SessionToken.Claims.contractId;
 PTokenId:= SessionToken.Claims.tokenId;
 
-Log.Informational("PTokenId " + PTokenId + "PContractId" + PContractId ,null);
 PUserName := GetSetting("POWRS.PaymentLink.OPPUser","");
 PPassword := GetSetting("POWRS.PaymentLink.OPPUserPass","");
 

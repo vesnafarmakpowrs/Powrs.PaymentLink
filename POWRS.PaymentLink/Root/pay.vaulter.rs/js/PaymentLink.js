@@ -156,24 +156,20 @@ function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUs
             "functionName": "SessionUpdated"
         }));
 }
-
-
-
 function StartPayment() {
     document.getElementById("payspot-submit").style.display = "none";
     document.getElementById("tr_spinner").style.display = null;
     let jwt = document.getElementById("jwt");
     CollapseDetails();
-    
-    SendXmlHttpRequest("../Payout/API/InitiatePaySpotPayment.ws",
-        {
-            "tabId": TabID,
-            "fromMobilePhone": isMobileDevice
-        },
+
+    SendXmlHttpRequest("../Payout/API/GeneratePayspotLink.ws",
+        {},
         (response) => {
             if (!response.OK) {
                 TransactionFailed(null);
+                return;
             }
+            ShowPayspotPage(response);
         },
         (error) => {
             if (error.status === 408) {
@@ -184,22 +180,22 @@ function StartPayment() {
         })
 }
 
-function ShowPayspotPage(Data) {
-    if (Data == null) {
+function ShowPayspotPage(Url) {
+    if (Url == null) {
         console.log("data is empty");
         return;
     }
 
     if (isMobileDevice) {
-        window.open(Data.link, '_self').focus();
+        window.open(Url, '_self').focus();
     }
     else {
         document.getElementById("tr_spinner").style.display = "none";
-        document.getElementById("payspot_iframe").src = Data.link;
+        document.getElementById("payspot_iframe").src = Url;
         document.getElementById("payspot_iframe").style.display = null;
     }
 
-    
+
 }
 
 function CollapseDetails() {
