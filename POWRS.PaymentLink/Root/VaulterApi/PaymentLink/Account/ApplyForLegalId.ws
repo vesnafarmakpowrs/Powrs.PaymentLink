@@ -1,7 +1,6 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
 
 ({
-    "email" : Required(Str(PEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
     "firstName" : Required(Str(PFirstName) like "[\\p{L}\\s]{2,20}"),
     "lastName" : Required(Str(PLastName) like "[\\p{L}\\s]{2,20}"),
     "personalNumber" : Required(Str(PPersonalNumber) like "\\d*-?\\d*"),

@@ -460,7 +460,19 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Auth\VerifyToken.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Contract\CancelItem.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\GetContracts.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Scripts\StartupScripts\CreateLanguageIndex.config">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Scripts\StartupScripts\CreateNeuroFeatureCreatorIndex.config">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Scripts\StartupScripts\CreateStateMachineCurrentStateIndex.config">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Scripts\StartupScripts\EncodeContractId.config">
@@ -479,7 +491,7 @@
 
 		<TargetFramework>net6.0</TargetFramework>
 
-		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
+		<ApplicationManifest>POWRS.RS.PaymentLink.manifest</ApplicationManifest>
 	</PropertyGroup>
 	
 </Project>
