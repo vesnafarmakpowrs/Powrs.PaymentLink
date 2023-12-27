@@ -385,9 +385,6 @@
 	  <None Update="Root\Payout\API\InitiateCardPayment.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\Payout\API\InitiatePaySpotPayment.ws">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Root\Payout\Fonts\Coanda-Bold.ttf">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>

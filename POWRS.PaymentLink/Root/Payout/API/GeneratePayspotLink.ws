@@ -17,7 +17,7 @@ try
 	);
 	
 	currentState:= token.GetCurrentStateVariables();
-	if(currentState.State != "AwaitingForPayment") then 
+	if(currentState.State != "AwaitingForPayment") then
 	(
 	 BadRequest("Payment already executed for this contract.");
 	);
