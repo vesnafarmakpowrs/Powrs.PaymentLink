@@ -2,6 +2,11 @@
 
 try
 (
+	if(exists(POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink)) then 
+	(
+		Error("Not configured");
+	);
+
 	ContractId:= SessionToken.Claims.contractId;
 	TokenId:= SessionToken.Claims.tokenId;
 	
