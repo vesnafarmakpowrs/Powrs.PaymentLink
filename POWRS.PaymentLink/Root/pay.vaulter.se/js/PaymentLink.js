@@ -131,7 +131,8 @@ function GenerateServiceProvidersUI() {
                         StartCardPayment();
                         return;
                     }
-                    GetBankAccounts();
+                    GenerateSSNUI();
+                    // GetBankAccounts();
                 }
             };
             for (let i = 0; i < serviceProviders.length; i++) {
@@ -146,12 +147,61 @@ function GenerateServiceProvidersUI() {
 }
 
 
-
 function ClearQrCodeDiv() {
     var container = document.getElementById('QrCode');
     container.innerHTML = "";
 
     return container;
+}
+
+function ClearSSNUI() {
+    document.getElementById('payment-ssn-txt-td').innerHTML = "";
+    document.getElementById('payment-ssn-btn-td').innerHTML = "";
+    document.getElementById('payment-ssn-td').innerHTML = "";
+    document.getElementById('payment-ssn-txt-tr').style.display = "none";
+    document.getElementById('payment-ssn-tr').style.display = "none";
+    document.getElementById('payment-ssn-btn-tr').style.display = "none";
+}
+
+function GenerateSSNUI() {
+    document.getElementById('payment-ssn-txt-tr').style.display = null;
+    var container_txt = document.getElementById('payment-ssn-txt-td');
+    const ssn_txt = document.createElement('label');
+    ssn_txt.classList.add('ssn-txt');
+    ssn_txt.innerHTML = "Enter you personal number";
+    ssn_txt.setAttribute('id', 'prn_txt');
+    container_txt.appendChild(ssn_txt);
+
+    document.getElementById('payment-ssn-tr').style.display = null;
+    var container_input = document.getElementById('payment-ssn-td');
+    const ssn_input = document.createElement('input');
+    ssn_input.classList.add('ssn-input');
+    ssn_input.setAttribute('type', 'text');
+    ssn_input.setAttribute('name', 'prn');
+    ssn_input.setAttribute('id', 'ssn_input');
+    container_input.appendChild(ssn_input);
+
+    document.getElementById('payment-ssn-btn-tr').style.display = null;
+    var container_btn = document.getElementById('payment-ssn-btn-td');
+    const ssn_button = document.createElement('button');
+    ssn_button.classList.add('ssn-button');
+    ssn_button.setAttribute('type', 'button');
+    ssn_button.setAttribute('value', 'continue');
+    ssn_button.addEventListener("click", SubmitSSN);
+    container_btn.appendChild(ssn_button);
+}
+
+function SubmitSSN() {
+    var ssn = document.getElementById('ssn_input').value;
+    console.log(ssn);
+    if (isSwedishSocialSecurityNumber(ssn)) {
+        ClearSSNUI();
+        GetBankAccounts();
+    }
+}
+
+function isSwedishSocialSecurityNumber(ssn) {
+    return /^(\d{6}|\d{8})[-|(\s)]{0,1}\d{4}$/.test(ssn);
 }
 
 function GenerateAccountsListUi(accounts) {
@@ -651,33 +701,6 @@ function unSelectPaymentBtn(elementId) {
     directBankBtn.classList.remove("payment-btn-selected");
 }
 
-function GetLink() {
-    CollapseDetails();
-    AmountToPay = document.getElementById("AmountToPay").value;
-    Id = document.getElementById("Id").value;
-    console.log(AmountToPay);
-    SendXmlHttpRequest("../VaulterApi/PaymentLink/PaySpotPaylink.ws", {
-        "merchantOrderID": Id,
-        "merchantOrderAmount": AmountToPay,
-        "merchantCurrencyCode": 941,
-        "errorURL": "https://online-test.payspot.rs/login",
-        "email": "vesna.farmak@gmail.com",
-        "requestType": 11,
-        "successURL": "https://lab.neuron.vaulter.nu/Payout/success.md",
-        "cancelURL": "https://online-test.payspot.rs/login"
-    },
-        (response) => {
-            document.getElementById("payspot_iframe").src = response.Link;
-            document.getElementById("payspot_iframe").style.display = null;
-            document.getElementById("payspot-submit").style.display = "none";
-        },
-        (error) => {
-            if (error.status === 408) {
-                return;
-            }
-            TransactionFailed(null);
-        });
-}
 
 
 function CollapseDetails() {
