@@ -18,7 +18,7 @@
 }:=Posted) ??? BadRequest(Exception.Message);
 
 
-SessionUser:= Global.ValidateAgentApiToken(true);
+SessionUser:= Global.ValidateAgentApiToken(false);
 
 try
 (
