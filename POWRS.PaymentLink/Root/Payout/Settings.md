@@ -28,8 +28,6 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.PayDomain",Posted.PayDomain);
 	SetSetting("POWRS.PaymentLink.OPPUser",Posted.UserName);
 	SetSetting("POWRS.PaymentLink.OPPUserPass",Posted.Password);
-	SetSetting("POWRS.PaymentLink.KeyId",Posted.KeyId);
-	SetSetting("POWRS.PaymentLink.Secret",Posted.Secret);
 	SetSetting("POWRS.PaymentLink.OPPUserLegalId",Posted.LegalId);
 	SetSetting("POWRS.PaymentLink.TrustProviderLegalId",Posted.TrustProviderLegalId);
 	SetSetting("POWRS.PaymentLink.ContactEmail",Posted.ContactEmail);
@@ -60,16 +58,6 @@ if exists(Posted) then
 <p>
 <label for="LegalId">legal Id:</label>  
 <input type="text" id="LegalId" name="LegalId" value='{{GetSetting("POWRS.PaymentLink.OPPUserLegalId","")}}' required title="Legal Id used to authenticate the OPP user with the backend."/>
-</p>
-
-<p>
-<label for="KeyId">Key Id:</label>  
-<input type="text" id="KeyId" name="KeyId" value='{{GetSetting("POWRS.PaymentLink.KeyId","")}}' autofocus required title="Identity of key to use for signing the Identity application."/>
-</p>
-
-<p>
-<label for="Secret">Secret:</label>  
-<input type="password" id="Secret" name="Secret" value='{{GetSetting("POWRS.PaymentLink.Secret","")}}' required title="The secret corresponding to the key."/>
 </p>
 
 <p>
