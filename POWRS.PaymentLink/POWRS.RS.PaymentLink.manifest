@@ -6,6 +6,7 @@
 	<Content fileName="./Scripts/StartupScripts/CreateLanguageIndex.config" />
 	<Content fileName="./Scripts/StartupScripts/CreateNeuroFeatureCreatorIndex.config" />
 	<Content fileName="./Scripts/StartupScripts/CreateStateMachineCurrentStateIndex.config" />
+	<Content fileName="POWRS.PaymentLink.dll" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="PaymentLink">				
@@ -91,7 +92,6 @@
 				<Content fileName="GetBuyEdalerServiceProviders.ws"/>
 				<Content fileName="InitiateCardPayment.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
-				<Content fileName="InitiatePaySpotPayment.ws"/>
 				<Content fileName="RegisterUpdates.ws"/>
 			</Folder>
 			<Folder name="Fonts">

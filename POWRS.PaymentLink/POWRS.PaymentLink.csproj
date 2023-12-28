@@ -334,6 +334,9 @@
 	  <None Update="Root\pay.vaulter.rs\css\Stripe.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.vaulter.rs\Index.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.vaulter.rs\Mobile\Cancel.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -381,6 +384,9 @@
 	  </None>
 	  <None Update="Root\pay.vaulter.se\css\Stripe.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\API\GeneratePayspotLink.ws">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\API\InitiateCardPayment.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -485,9 +491,7 @@
 
 
 	<PropertyGroup>
-
 		<TargetFramework>net6.0</TargetFramework>
-
 		<ApplicationManifest>POWRS.RS.PaymentLink.manifest</ApplicationManifest>
 	</PropertyGroup>
 	
