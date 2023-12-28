@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://lab.neuron.vaulter.nu/Downloads/EscrowPaylink.xsd" targetNamespace="https://lab.neuron.vaulter.nu/Downloads/EscrowPaylink.xsd" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://lab.neuron.vaulter.nu/Downloads/EscrowPaylinkSE.xsd" targetNamespace="https://lab.neuron.vaulter.nu/Downloads/EscrowPaylinkSE.xsd" elementFormDefault="qualified">
 	<xs:complexType name="Empty" />
 	<xs:element name="Cancel" type="Empty" />
 	<xs:element name="InitiatePayment">
