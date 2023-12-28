@@ -7,9 +7,5 @@
     <ActiveDebugProfile>IIS Express</ActiveDebugProfile>
     <NameOfLastUsedPublishProfile>C:\Projects\POWRS.PaymentLink\POWRS.PaymentLink\Properties\PublishProfiles\FolderProfile1.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
-  <ItemGroup>
-    <None Update="Contracts\SE\EscrowPaylink.xsd">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
+  <ItemGroup />
 </Project>
