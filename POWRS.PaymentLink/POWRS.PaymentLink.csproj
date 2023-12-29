@@ -283,6 +283,9 @@
 	  <None Update="Root\pay.lab.vaulter.rs\css\Status.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Index.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Cancel.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -492,7 +495,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<ApplicationManifest>POWRS.RS.PaymentLink.manifest</ApplicationManifest>
+		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
 	</PropertyGroup>
 	
 </Project>

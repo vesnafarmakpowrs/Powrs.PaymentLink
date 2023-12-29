@@ -90,7 +90,7 @@
 				<Content fileName="GetBankAccounts.ws"/>
 				<Content fileName="GetBuyEdalerServiceProviders.ws"/>
 				<Content fileName="InitiateCardPayment.ws"/>
-				<Content fileName="InitiatePaySpotPayment.ws"/>
+				<Content fileName="GeneratePayspotLink.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
 				<Content fileName="RegisterUpdates.ws"/>
 			</Folder>			
