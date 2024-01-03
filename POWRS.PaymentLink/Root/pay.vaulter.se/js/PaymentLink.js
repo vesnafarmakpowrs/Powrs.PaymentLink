@@ -170,6 +170,7 @@ function GenerateSSNUI() {
     ssn_txt.classList.add('ssn-txt');
     ssn_txt.innerHTML = "Enter you personal number";
     ssn_txt.setAttribute('id', 'prn_txt');
+    container_txt.innerHTML = "";
     container_txt.appendChild(ssn_txt);
 
     document.getElementById('payment-ssn-tr').style.display = null;
@@ -179,24 +180,46 @@ function GenerateSSNUI() {
     ssn_input.setAttribute('type', 'text');
     ssn_input.setAttribute('name', 'prn');
     ssn_input.setAttribute('id', 'ssn_input');
+
+    const ssn_error_msg = document.createElement('input');
+    ssn_input.classList.add('ssn-input');
+    ssn_input.setAttribute('type', 'text');
+    ssn_input.setAttribute('name', 'prn');
+    ssn_input.setAttribute('id', 'ssn_input');
+
+    const ssn_msg_p = document.createElement("p");
+    const ssn_msg = document.createTextNode(Translations.PersonalNumberInvalid);
+    ssn_msg_p.appendChild(ssn_msg);
+    ssn_msg_p.setAttribute('id', 'ssn_invalid_msg');
+    ssn_msg_p.style.display = "none";
+
+    container_input.innerHTML = "";
     container_input.appendChild(ssn_input);
+    container_input.appendChild(ssn_msg_p);
 
     document.getElementById('payment-ssn-btn-tr').style.display = null;
     var container_btn = document.getElementById('payment-ssn-btn-td');
     const ssn_button = document.createElement('button');
     ssn_button.classList.add('ssn-button');
+    ssn_button.setAttribute('title', 'Continue');
     ssn_button.setAttribute('type', 'button');
-    ssn_button.setAttribute('value', 'continue');
+    ssn_button.textContent = 'Continue';
     ssn_button.addEventListener("click", SubmitSSN);
+    container_btn.innerHTML = "";
     container_btn.appendChild(ssn_button);
 }
 
 function SubmitSSN() {
     var ssn = document.getElementById('ssn_input').value;
-    console.log(ssn);
+    var ssn_invalid_msg = document.getElementById('ssn_invalid_msg');
+
     if (isSwedishSocialSecurityNumber(ssn)) {
         ClearSSNUI();
         GetBankAccounts();
+        document.getElementById('PersonalNumber').value = ssn;
+    }
+    else {
+        ssn_invalid_msg.style.display = "block";
     }
 }
 
@@ -277,11 +300,7 @@ const isValidSwedishPersonalNumber = (personalNumber) => {
 };
 
 function StartPayment(iban, bic) {
-    var personalNumber = window.prompt(Translations.EnterPersonalNumber);
-    if (!isValidSwedishPersonalNumber(personalNumber)) {
-        alert(Translations.PersonalNumberInvalid);
-        return;
-    }
+    var personalNumber = document.getElementById('PersonalNumber').value;
 
     ToggleServiceProviderSelect(true);
     ClearQrCodeDiv();
@@ -700,8 +719,6 @@ function unSelectPaymentBtn(elementId) {
     var directBankBtn = document.getElementById(elementId);
     directBankBtn.classList.remove("payment-btn-selected");
 }
-
-
 
 function CollapseDetails() {
     document.getElementById("tr_header").style.display = "none";

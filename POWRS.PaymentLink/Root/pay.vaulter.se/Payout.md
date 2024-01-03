@@ -150,6 +150,8 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((FileName))" id="fileName"/>
 <input type="hidden" value="((Country ))" id="country"/>
 
+<input type="hidden" value="" id="PersonalNumber"/>
+
 <div class="payment-details">
   <table style="width:100%">
     <tr id="tr_header" class="table-row">
