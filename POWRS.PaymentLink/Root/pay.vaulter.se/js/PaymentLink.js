@@ -168,7 +168,7 @@ function GenerateSSNUI() {
     var container_txt = document.getElementById('payment-ssn-txt-td');
     const ssn_txt = document.createElement('label');
     ssn_txt.classList.add('ssn-txt');
-    ssn_txt.innerHTML = "Enter you personal number";
+    ssn_txt.innerHTML = Translations.EnterPersonalNumber;
     ssn_txt.setAttribute('id', 'prn_txt');
     container_txt.innerHTML = "";
     container_txt.appendChild(ssn_txt);
@@ -191,6 +191,7 @@ function GenerateSSNUI() {
     const ssn_msg = document.createTextNode(Translations.PersonalNumberInvalid);
     ssn_msg_p.appendChild(ssn_msg);
     ssn_msg_p.setAttribute('id', 'ssn_invalid_msg');
+    ssn_msg_p.style.color = "red";
     ssn_msg_p.style.display = "none";
 
     container_input.innerHTML = "";
@@ -220,6 +221,7 @@ function SubmitSSN() {
     }
     else {
         ssn_invalid_msg.style.display = "block";
+        ssn_input.style.borderColor = "red";
     }
 }
 
