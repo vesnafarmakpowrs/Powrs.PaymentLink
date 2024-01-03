@@ -150,6 +150,8 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((FileName))" id="fileName"/>
 <input type="hidden" value="((Country ))" id="country"/>
 
+<input type="hidden" value="" id="PersonalNumber"/>
+
 <div class="payment-details">
   <table style="width:100%">
     <tr id="tr_header" class="table-row">
@@ -243,10 +245,8 @@ if (Country == 'SE') then
 <div class="spaceItem"></div>
 <div id="left-to-pay" style="display:none">
   <label class=""><strong>((LanguageNamespace.GetStringAsync(37) ))</strong></label>
-</div>[[;
-if (Country == 'SE') then 
-(
- ]] <div class="payment-method" >
+</div>
+<div class="payment-method" >
  <form id="payment-method" >
   <table class="payment-method-tbl">
    <tr id="payment-direct-bank-btn" class="payment-method-btn" >
@@ -266,8 +266,17 @@ if (Country == 'SE') then
      <td colspan="2" id="bank-list">
          <select title="serviceProvidersSelect" name="serviceProvidersSelect" id="serviceProvidersSelect" class="selectBank" >
           <option value="none" selected disabled hidden>((LanguageNamespace.GetStringAsync(9) ))</option>
-      </select>
+         </select>
      </td>
+   </tr>
+   <tr id="payment-ssn-txt-tr" class="payment-bank-btn">
+     <td colspan="2" id="payment-ssn-txt-td"/>
+   </tr>
+   <tr id="payment-ssn-tr" class="payment-bank-btn">
+     <td colspan="2" id="payment-ssn-td"/>
+   </tr>
+   <tr id="payment-ssn-btn-tr" class="payment-bank-btn">
+     <td colspan="2" id="payment-ssn-btn-td"/>
    </tr>
    <tr id="payment-other-methods" class="payment-other-methods">
      <td onclick="ExpandOtherPaymentMethods(true)">
@@ -312,21 +321,7 @@ if (Country == 'SE') then
     <button id="stripe-submit" class="stripe-button stripe-hide" type="submit" >Pay now</button>
    </div>
   </form> [[;
-)
-else if (Country == 'RS') then
-(
-  ]] <div class="payment-method" id="ctn-payment-method-rs" style="display:none"> 
-       <table style="width:100%">
-         <tr>
-           <td> <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="GetLink()">Pay now</button><td/>
-         </tr>
-          <tr>
-           <td> <iframe src="url" id="payspot_iframe" style= "display: none; width:100%; min-height: 500px" title="description"></iframe><td/>
-         </tr>
-       </table>
-      </div>
-   [[;
-)
+
 )
 else if ContractState == "PaymentCompleted" then 
 (

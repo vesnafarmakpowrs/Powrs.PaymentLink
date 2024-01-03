@@ -11,7 +11,7 @@
 SessionToken:=  Global.ValidatePayoutJWT();
 PTokenId:= SessionToken.Claims.tokenId;
 
-normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize("SE", PBuyerPersonalNum);
+normalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize("SE", PPersonalNumber);
 isValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid("SE" ,normalizedPersonalNumber);
 
 if(!isValid) then 
