@@ -25,7 +25,7 @@ if(System.String.IsNullOrEmpty(TokenId)) then
 );
 
 domain:= "https://" + Gateway.Domain;
-namespace:= domain + "/Downloads/EscrowPaylink.xsd";
+namespace:= domain + "/Downloads/EscrowPaylinkSE.xsd";
 
 AmountToRefund:= exists(PRefundAmount) ? PRefundAmount : TokenValue;
 xmlNote := "<ReturnFunds xmlns='" + namespace + "' amountToBeReturned='" + AmountToRefund + "' />";

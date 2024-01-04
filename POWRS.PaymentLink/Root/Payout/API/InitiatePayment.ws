@@ -60,7 +60,7 @@ R := POST(NeuronAddress + "/Agent/Account/Login",
                   },
 		          {"Accept" : "application/json"});
 
-escrowDomain:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylink.xsd";
+escrowDomain:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkSE.xsd";
 
 if (PStripePayment) then
 (
