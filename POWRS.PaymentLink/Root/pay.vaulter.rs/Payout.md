@@ -95,6 +95,7 @@ if ContractState == "AwaitingForPayment" then
         Variable.Name like "EscrowFee" ?   EscrowFee := Variable.Value.ToString("N2");
         Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString("N2");
       );
+     Country := 'RS';
      BuyerFirstName := Before(BuyerFullName," ");
      PayspotId := Before(ID,"@");
      tokenDurationInMinutes:= Int(GetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", 5));

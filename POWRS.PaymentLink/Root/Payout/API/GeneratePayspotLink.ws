@@ -46,6 +46,6 @@ try
 )
 catch
 (
- Log.Error(ex.Message, null);
- BadRequest(ex.Message);
+ Log.Error(Exception.Message, null);
+ BadRequest(Exception.Message);
 );
