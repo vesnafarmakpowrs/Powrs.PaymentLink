@@ -81,6 +81,10 @@ if ContractState == "AwaitingForPayment" then
     SellerId := UpperCase(SellerName.Substring(0,3)); 
 
     FileName:= SellerId + Token.ShortId;
+    
+    RemoteId :=  '';
+    foreach Parameter in (Contract.Parameters ?? []) do 
+       if Parameter.Name == 'RemoteId' then RemoteId := Parameter.Value;
 
     foreach Variable in (CurrentState.VariableValues ?? []) do 
       (
@@ -107,7 +111,7 @@ if ContractState == "AwaitingForPayment" then
                 "tokenId": Token.TokenId,
                 "sub": BuyerFullName, 
                 "id": NewGuid().ToString(),
-	            "ip": Request.RemoteEndPoint,
+	        "ip": Request.RemoteEndPoint,
                 "country": Country,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
@@ -119,7 +123,8 @@ if ContractState == "AwaitingForPayment" then
        <select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
   </tr>
    <tr>
-     <td>**((LanguageNamespace.GetStringAsync(36) ))</td>
+     <td>**((LanguageNamespace.GetStringAsync(36) ))**</td>
+      <td style="text-align:right">**ID: ((RemoteId ))**</td>
 </tr>
 </table>
 
@@ -186,7 +191,7 @@ if ContractState == "AwaitingForPayment" then
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
           <tr>
-            <td style="width:80%">**((LanguageNamespace.GetStringAsync(20) ))**</td>
+            <td style="width:80%">**((LanguageNamespace.GetStringAsync(20) ))((LanguageNamespace.GetStringAsync(54) )): **</td>
             <td class="itemPrice" rowspan="2">((AmountToPay))
             <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
@@ -211,9 +216,7 @@ if ContractState == "AwaitingForPayment" then
  </table>
 </div>
 <div class="spaceItem"></div>
-<div id="left-to-pay" style="display:none">
-  <label class=""><strong>((LanguageNamespace.GetStringAsync(37) ))</strong></label>
-</div>
+
 
 <div class="payment-method-rs"  id="ctn-payment-method-rs" style="display:none">
   <table style="width:100%; text-align:center">

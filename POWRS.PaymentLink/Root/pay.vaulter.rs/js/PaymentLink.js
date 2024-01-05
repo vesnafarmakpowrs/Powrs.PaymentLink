@@ -130,12 +130,10 @@ function UserAgree() {
 
     if (document.getElementById("termsAndCondition").checked) {
         document.getElementById("payspot-submit").removeAttribute("disabled");
-        document.getElementById("left-to-pay").style.display = "block";
         document.getElementById("ctn-payment-method-rs").style.display = "block";
     }
     else {
         document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
-        document.getElementById("left-to-pay").style.display = "none";
         document.getElementById("ctn-payment-method-rs").style.display = "none";
     }
 }
