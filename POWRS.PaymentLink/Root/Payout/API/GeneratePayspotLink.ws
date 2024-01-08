@@ -2,7 +2,7 @@
 
 try
 (
-	if(exists(POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink)) then 
+	if(!exists(POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink)) then 
 	(
 		Error("Not configured");
 	);
