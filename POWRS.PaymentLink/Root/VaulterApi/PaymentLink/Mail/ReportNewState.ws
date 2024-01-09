@@ -44,7 +44,7 @@ try
             )
             catch 
             (
-                  Log.Informational("Sending state update request finished  to: " + r.CallBackUrl + "failed",null);
+                  Log.Informational("Failed sending state update request to: " + r.CallBackUrl,null);
             );  
         );
 
@@ -79,7 +79,7 @@ try
            
            foreach Parameter in contract.Parameters do 
            (
-                Parameter.ObjectValue != null ? ContractParams.Add(Parameter.Name, Parameter.ObjectValue);
+                Parameter.ObjectValue != null && !exists(ContractParams[Parameter.Name]) ? ContractParams.Add(Parameter.Name, Parameter.ObjectValue);
            );
 
            dictAmountToPay:= 0;
@@ -120,33 +120,7 @@ try
            Base64Attachment := null;
            FileName := null;
    
-           if (r.Status == "PaymentCompleted" and CountryCode == "SE";) then
-           (
-             htmlTemplatePath:= htmlTemplateRoot + "purchase_agreement.html"; 
-             html:= System.IO.File.ReadAllText(htmlTemplatePath);
-             FormatedPurchaseAgreementHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
-   
-             htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
-   
-             FileName:= POWRS.PaymentLink.DealInfo.GetInvoiceNo(IdentityProperties, ShortId) + ".pdf";
-             url:= Waher.IoTGateway.Gateway.GetUrl("/PDF/DoneDeals/"+ FileName);
-
-             htmlToGeneratePath:= htmlTemplateRoot + r.ContractId + ".html";
-             System.IO.File.WriteAllText(htmlToGeneratePath, FormatedPurchaseAgreementHtml , System.Text.Encoding.UTF8);
-   
-             pdfPath:= htmlTemplateRoot + FileName;
-             ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
-             "\"" + htmlToGeneratePath +"\"" + " \"" +  pdfPath + "\"", htmlTemplateRoot);
-     
-             byteArray := System.IO.File.ReadAllBytes(pdfPath);
-             Base64Attachment := System.Convert.ToBase64String(byteArray);
-             Log.Informational("Sending pruchase agreement attached file " + FileName ,null);
-
-             System.IO.File.Delete(htmlToGeneratePath);
-             System.IO.File.Delete(pdfPath);
-
-           );
-
+          
            Log.Informational("Sending email for " + r.Status  ,null);
            ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
            Config := ConfigClass.Instance;
