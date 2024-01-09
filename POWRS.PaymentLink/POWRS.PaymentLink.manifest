@@ -89,23 +89,17 @@
 					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
-					<Content fileName="PrivacyPolicy.html"></Content>
-					<Content fileName="TermsAndConditions.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 				</Folder>
 				<Folder name="RS">
 					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
-					<Content fileName="PrivacyPolicy.html"></Content>
-					<Content fileName="TermsAndConditions.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 				</Folder>
 				<Folder name="SE">
 					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
-					<Content fileName="PrivacyPolicy.html"></Content>
-					<Content fileName="TermsAndConditions.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 				</Folder>

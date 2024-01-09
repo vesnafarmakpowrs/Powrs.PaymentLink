@@ -5,8 +5,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Root\pay.lab.vaulter.rs\**" />
 	  <Compile Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
+	  <EmbeddedResource Remove="Root\pay.lab.vaulter.rs\**" />
 	  <EmbeddedResource Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
+	  <None Remove="Root\pay.lab.vaulter.rs\**" />
 	  <None Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
 	</ItemGroup>
 
@@ -352,10 +355,6 @@
 	  <None Update="Scripts\StartupScripts\ValidatePayoutJWT.config">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Root\pay.lab.vaulter.rs\" />
 	</ItemGroup>
 
 
