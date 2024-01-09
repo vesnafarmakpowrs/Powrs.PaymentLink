@@ -5,11 +5,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Root\pay.lab.vaulter.rs\**" />
 	  <Compile Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
-	  <EmbeddedResource Remove="Root\pay.lab.vaulter.rs\**" />
 	  <EmbeddedResource Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
-	  <None Remove="Root\pay.lab.vaulter.rs\**" />
 	  <None Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
 	</ItemGroup>
 
@@ -81,6 +78,13 @@
 
 	
 	<ItemGroup>
+		<None Remove="Root\pay.lab.vaulter.rs\css\Payout.cssx" />
+		<None Remove="Root\pay.lab.vaulter.rs\js\Events.js" />
+		<None Remove="Root\pay.lab.vaulter.rs\js\PaymentLink.js" />
+		<None Remove="Root\pay.lab.vaulter.rs\Payout.md" />
+		<None Remove="Root\pay.lab.vaulter.rs\resources\spinner.gif" />
+		<None Remove="Root\pay.lab.vaulter.rs\resources\vaulterlogo.svg" />
+		<None Remove="Root\pay.lab.vaulter.rs\resources\vaulter_logo.svg" />
 		<None Remove="Root\pay.vaulter.rs\css\Payout.cssx" />
 		<None Remove="Root\pay.vaulter.rs\js\Events.js" />
 		<None Remove="Root\pay.vaulter.rs\js\PaymentLink.js" />
@@ -112,6 +116,27 @@
 		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
 	</ItemGroup>
 	<ItemGroup>		
+		<Content Include="Root\pay.lab.vaulter.rs\css\Payout.cssx">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\pay.lab.vaulter.rs\js\Events.js">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\pay.lab.vaulter.rs\js\PaymentLink.js">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\pay.lab.vaulter.rs\Payout.md">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\pay.lab.vaulter.rs\resources\spinner.gif">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\pay.lab.vaulter.rs\resources\vaulterlogo.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\pay.lab.vaulter.rs\resources\vaulter_logo.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
 		<Content Include="Root\pay.vaulter.rs\css\Payout.cssx">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -190,7 +215,64 @@
 	  <None Update="Language\POWRS.PaymentLink.sv.lng">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="POWRS.Lab.PaymentLink.manifest">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="POWRS.PaymentLink.manifest">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\css\Status.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\css\Stripe.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Index.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Cancel.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Error.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Success.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\PrivacyPolicy.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Cancel.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Error.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Success.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\resources\credit-card-payment.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\resources\direct_payment.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\resources\error_red.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\resources\expand.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\resources\spin.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\resources\success_green.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\resources\vaulter_txt.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\TermsAndCondition.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\css\Status.css">
@@ -360,11 +442,11 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<ApplicationManifest>POWRS.PaymentLink.manifest</ApplicationManifest>
+		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
 	</PropertyGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Install.exe&quot; -p &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\ReleaseLab\net6.0\POWRS.PaymentLink.package&quot; -k 5d98ddf8138a851f6822be199ee9324e -m &quot;C:\Projects\Powrs.PaymentLink.SE\POWRS.PaymentLink\bin\ReleaseLab\net6.0\POWRS.PaymentLink.manifest&quot;" />
+		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Install.exe&quot; -p &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\ReleaseLab\net6.0\POWRS.PaymentLink.package&quot; -k 5d98ddf8138a851f6822be199ee9324e -m &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\ReleaseLab\net6.0\POWRS.Lab.PaymentLink.manifest&quot;" />
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Sign.exe&quot; -c ed448 -priv &quot;qGe+NyQy0hjvuNPK61LfvHmkJZxD0SHdo7UozOsWpGPj3GmSxAa8X4Ch7gJv23tRfUm4+IJIJCo=&quot; -o &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\ReleaseLab\net6.0\POWRS.PaymentLink.signature&quot; -s &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\ReleaseLab\net6.0\POWRS.PaymentLink.package&quot;" />
 	</Target>
 	
