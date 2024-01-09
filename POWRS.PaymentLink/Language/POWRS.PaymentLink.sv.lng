@@ -54,7 +54,8 @@
 			<String id="51">Tack för din fakturering.</String>
 			<String id="52">Ange ditt personliga nummer! Denna information kommer inte att lagras och dess syfte är att initiera bank-ID-auktorisering.</String>
 			<String id="53">Personnummer är inte i giltigt format.</String>
-			<String id="54">med moms.</String>
+			<String id="54">moms 20%</String>
+			<String id="55">Total</String>
 		</Namespace>
 	</Language>
 </Translation>

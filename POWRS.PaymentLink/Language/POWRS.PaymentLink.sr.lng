@@ -54,6 +54,8 @@
 			<String id="51">Hvala vam na naplati.</String>
 			<String id="52">Unesite vas personalni broj. Informacija neće biti sačuvana, služi za autorizaciju preko Bank-Id aplikacije.</String>
 			<String id="53">Personalni broj nije u validnom formatu!</String>
+			<String id="54">PDV 20%</String>
+			<String id="55">Ukupno</String>
 		</Namespace>
 	</Language>
 </Translation>
