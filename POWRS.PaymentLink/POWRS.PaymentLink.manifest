@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Module xmlns="http://waher.se/Schema/ModuleManifest.xsd">
+	<Assembly fileName="POWRS.PaymentLink.dll" />
 	<Content fileName="./Scripts/StartupScripts/EncodeContractId.config" />
 	<Content fileName="./Scripts/StartupScripts/ValidateAgentApiToken.config" />
 	<Content fileName="./Scripts/StartupScripts/ValidatePayoutJWT.config" />
+	<Content fileName="./Scripts/StartupScripts/CreateLanguageIndex.config" />
+	<Content fileName="./Scripts/StartupScripts/CreateNeuroFeatureCreatorIndex.config" />
+	<Content fileName="./Scripts/StartupScripts/CreateStateMachineCurrentStateIndex.config" />
+	
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="PaymentLink">
@@ -12,7 +17,7 @@
 					<Content fileName="CreateAccount.ws"/>
 					<Content fileName="GetAccountInfo.ws"/>
 					<Content fileName="SendVerificationEmail.ws"/>
-					<Content fileName="VerifiyEmail.ws"/>
+					<Content fileName="VerifyEmail.ws"/>
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>
@@ -23,8 +28,8 @@
 				</Folder>
 				<Folder name="Contract">
 					<Content fileName="CancelItem.ws"/>
-					<Content fileName="CreateItem.ws"/>
 					<Content fileName="GetContracts.ws"/>
+					<Content fileName="CreateItem.ws"/>
 				</Folder>
 				<Folder name="Mail">
 					<Content fileName="ReportNewState.ws"/>
@@ -32,26 +37,47 @@
 				</Folder>
 			</Folder>
 		</Folder>
-		<Folder name="Payout">
+		<Folder name="pay.vaulter.rs">
+			<Content fileName="Index.html"/>
 			<Content fileName="Payout.md"/>
-			<Content fileName="Settings.md"/>
-			<Folder name="API">
-				<Content fileName="DealInfo.ws"/>
-				<Content fileName="GetAvailableLanguages.ws"/>
-				<Content fileName="GetBankAccounts.ws"/>
-				<Content fileName="GetBuyEdalerServiceProviders.ws"/>
-				<Content fileName="InitiateCardPayment.ws"/>
-				<Content fileName="InitiatePayment.ws"/>
-				<Content fileName="InitiatePayment.ws"/>
-				<Content fileName="RegisterUpdates.ws"/>
+			<Content fileName="TermsAndCondition.html"/>
+			<Content fileName="PrivacyPolicy.html"/>
+			<Folder name="Mobile">
+				<Content fileName="Success.md"/>
+				<Content fileName="Cancel.md"/>
+				<Content fileName="Error.md"/>
+			</Folder>
+			<Folder name="Redirect">
+				<Content fileName="Success.md"/>
+				<Content fileName="Cancel.md"/>
+				<Content fileName="Error.md"/>
+			</Folder>
+			<Folder name="css">
+				<Content fileName="Payout.cssx"/>
+				<Content fileName="Status.css"/>
 			</Folder>
 			<Folder name="js">
 				<Content fileName="Events.js"/>
 				<Content fileName="PaymentLink.js"/>
 			</Folder>
-			<Folder name="css">
-				<Content fileName="Payout.cssx"/>
-				<Content fileName="Stripe.css"/>
+			<Folder name="resources">
+				<Content fileName="expand.svg"/>
+				<Content fileName="spinner.gif"/>
+				<Content fileName="spin.svg" />
+				<Content fileName="vaulter_logo.svg"/>
+				<Content fileName="vaulter_txt.svg"/>
+				<Content fileName="vaulterlogo.svg"/>
+				<Content fileName="error_red.png"/>
+				<Content fileName="success_green.png"/>
+
+			</Folder>
+		</Folder>
+		<Folder name="Payout">
+			<Content fileName="Settings.md"/>
+			<Folder name="API">
+				<Content fileName="DealInfo.ws"/>
+				<Content fileName="GeneratePayspotLink.ws"/>
+				<Content fileName="GetAvailableLanguages.ws"/>
 			</Folder>
 			<Folder name="Fonts">
 				<Content fileName="Coanda-Bold.ttf"/>
@@ -60,28 +86,25 @@
 			</Folder>
 			<Folder name="HtmlTemplates">
 				<Folder name="EN">
+					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
-					<Content fileName="ReleaseFunds.html"></Content>
-					<Content fileName="PaymentReimbursed.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 				</Folder>
 				<Folder name="RS">
+					<Content fileName="ContactUs.html"></Content>
+					<Content fileName="PaymentCompleted.html"></Content>
+					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 				</Folder>
 				<Folder name="SE">
+					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
-					<Content fileName="ReleaseFunds.html"></Content>
-					<Content fileName="PaymentReimbursed.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 				</Folder>
 			</Folder>
-			<Folder name="resources">
-				<Content fileName="vaulter_logo.svg"/>
-				<Content fileName="vaulterlogo.svg"/>
-				<Content fileName="spinner.gif"/>
-			</Folder>
+
 		</Folder>
 	</Folder>
 	<Folder name="Language">

@@ -1,48 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-    <title>Vaulter</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation</title>
     <style>
-
-        .border {
-            max-width: 700px;
-        }
-
-        .border-radius {
-            color: #333333;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 21px;
-            letter-spacing: 0;
-        }
-
-        button {
-            width: 250px;
-            height: 38px;
-            border-radius: 20px;
-            border: 2px solid #000;
-            background: rgba(255, 255, 255, 0.00);
-            /*margin-bottom: 1px;*/
-            color: #000;
-            text-align: center;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 18px;
-            font-style: normal;
-            font-weight: 395;
-            line-height: normal;
-        }
-
         .footer {
             color: #596273;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 11px;
             font-style: italic;
-            font-weight: 400;
-            line-height: 92.578%;
-            width: fit-content;
+            font-weight: 700;
+            text-align:center;
         }
 
         .footer-text {
@@ -50,53 +19,118 @@
             text-align: center;
         }
 
-        @media screen and (max-width: 700px) {
-            button {
-                width: 100%;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .details {
+            margin-top: 20px;
+        }
+
+            .details h2 {
+                color:limegreen;
+                border-bottom: 2px solid;
+                padding-bottom: 5px;
             }
+
+        .info {
+            margin-top: 10px;
+        }
+
+            .info p {
+                margin: 5px 0;
+            }
+
+        .product {
+            margin-top: 20px;
+        }
+
+            .product table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .product th, .product td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            .product th {
+                background-color: #f2f2f2;
+            }
+
+        .total {
+            margin-top: 20px;
+            text-align: right;
         }
     </style>
 </head>
-<body style="max-width:700px;">
-    <main class="border">
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://xsjxcz.stripocdn.email/content/guids/CABINET_8b0d8363dad9cf7da11a7b5c5b952fafce23ca1bf4eace9f0d0d772593b69917/images/vaulter_logotype_black_28.png" />
+        </div>
+        <div class="details">
+            <h2>Payment completed successfuly</h2>
+            <p>Order ID: {{RemoteId}}</p>
+            <p>Payment date: {{PaymentDateTime}}</p>
 
-        <div class="border-radius">
-
-            <div className="vaulterTitle">
-                <img src="https://xsjxcz.stripocdn.email/content/guids/CABINET_8b0d8363dad9cf7da11a7b5c5b952fafce23ca1bf4eace9f0d0d772593b69917/images/vaulter_logotype_black_28.png" alt="Vaulter" width="175" height="38" />
-
+            <div class="info">
+                <p><strong>Seller:</strong> {{ORGNAME}}</p>
+                <p><strong>Organizaion number:</strong> {{ORGNR}}</p>
+                <p><strong>Address:</strong> {{ORGADDR}}</p>
             </div>
+        </div>
 
-            <div className="confirmationText">
+        <div class="product">           
+            <h2>Details</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>VAT</th>
+                        <th>Vaulter fee</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{Title}}</td>
+                        <td>{{PreVatPrice}} {{Currency}}</td>
+                        <td>{{VatAmount}} {{Currency}}</td>
+                        <td>{{EscrowFee}} {{Currency}}</td>
+                        <td>{{AmountToPay}} {{Currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-                <p>This is the Vaulter confirmation of your payment for {{SellerName}} {{Description}}. </p>
-                <p>
-                    Your money is safeguarded until the end of the cancelation period set by the seller according to their terms and conditions (except for the non-refundable protection fee).
-                </p>
-                <p>
-                    You can download and read the Vaulter purchase agreement, No. {{InvoiceNo}}, coresponding to this payment.
-                </p>
-            </div>
-
-
-            <div className="bottom text">
-
-                <p>
-                    In case you want to cancel your purchase, please contact {{SellerName}} before the end of the cancelation period.
-                </p>
-                <p>Thank you for using our services! </p>
-            </div>
-
-    </main>
-
-
-    <div class="footer">
-        <span class="footer-text"> Powrs AB, (org.no 559302-8045), Hammarbybacken 27, Stockholm, Sweden</span>
-        <span class="footer-text">©2021 - 2023 POWRS</span>
+        <div class="total">
+            <p><strong>Total amount (VAT included):</strong> {{AmountToPay}} {{Currency}}</p>
+        </div>
+        <div class="footer">
+            <span class="footer-text"> POWRS D.O.O. BEOGRAD, Serbia</span>
+            <span class="footer-text">©2021 - 2024 POWRS</span>
+        </div>
     </div>
-
-
-
-
 </body>
 </html>

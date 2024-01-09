@@ -31,19 +31,21 @@ try
         (
           try
             (
- 	        Log.Informational("Sending state update request to: " + r.CallBackUrl + " State: " + r.Status, null);
- 	        POST(r.CallBackUrl,
-                         {
-	                   "status": r.Status
-                          },
-		          {
-	                   "Accept" : "application/json"
-                          });
- 	        success:= true;
- 	        Log.Informational("Sending state update request finished to: " + r.CallBackUrl + " State: " + r.Status, null);
-            )catch
-               Log.Informational("Sending state update request finished  to: " + r.CallBackUrl + "failed",null);
-  
+ 	            Log.Informational("Sending state update request to: " + r.CallBackUrl + " State: " + r.Status, null);
+ 	            POST(r.CallBackUrl,
+                             {
+	                       "status": r.Status
+                              },
+		              {
+	                       "Accept" : "application/json"
+                              });
+ 	            success:= true;
+ 	            Log.Informational("Sending state update request finished to: " + r.CallBackUrl + " State: " + r.Status, null);
+            )
+            catch 
+            (
+                  Log.Informational("Sending state update request finished  to: " + r.CallBackUrl + "failed",null);
+            );  
         );
 
         CountryCode := "RS";
@@ -56,36 +58,60 @@ try
         ( 
            contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= r.ContractId;
 
-           if (contract == null) then
-	        Error("Contract is missing");
+           if (contract == null) then 
+           (
+	            Error("Contract is missing");
+           );
 
            ShortId := select top 1 ShortId from NeuroFeatureTokens where TokenId = r.TokenId;
            ContractParams:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object);
 
-         StateMachine:= select top 1 * from StateMachineCurrentStates where StateMachineId= r.TokenId;
-           foreach variable in StateMachine.VariableValues DO   
-             variable.Name == "PaymentDateTime" ? ContractParams.Add(variable.Name,variable.Value); 
-    
+           StateMachine:= select top 1 * from StateMachineCurrentStates where StateMachineId= r.TokenId;
+
+           foreach variable in StateMachine.VariableValues DO
+           (
+                ContractParams.Add(variable.Name,variable.Value);
+           );
    
            ContractParams.Add("Created",contract.Created.ToShortDateString());
            ContractParams.Add("ShortId",ShortId);
            ContractParams.Add("ContractId",r.ContractId.ToString());
+           
            foreach Parameter in contract.Parameters do 
-            Parameter.ObjectValue != null ? ContractParams.Add(Parameter.Name, Parameter.ObjectValue);
+           (
+                Parameter.ObjectValue != null ? ContractParams.Add(Parameter.Name, Parameter.ObjectValue);
+           );
+
+           dictAmountToPay:= 0;
+           if(!ContractParams.TryGetValue("AmountToPay", dictAmountToPay)) then 
+           (
+                Error("Amount not available in contract");
+           );
+
+           VatAmount:= dictAmountToPay * 0.2;
+           PreVatPrice:= dictAmountToPay - VatAmount;
+
+           ContractParams.Add("PreVatPrice", PreVatPrice);
+           ContractParams.Add("VatAmount", VatAmount);
 
            Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
            IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
            IdentityProperties.Add("AgentName", Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
            IdentityProperties.Add("ORGNAME", Identity.ORGNAME);
+           IdentityProperties.Add("ORGNR", Identity.ORGNR);
+           IdentityProperties.Add("ORGADDR", Identity.ORGADDR);
            IdentityProperties.Add("CountryCode", CountryCode);
            IdentityProperties.Add("Domain", Gateway.Domain);
+           
            PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
            htmlTemplateRoot := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + CountryCode + "\\";
 
            htmlTemplatePath:= htmlTemplateRoot + r.Status + ".html";
 
-           if (!File.Exists(htmlTemplatePath)) then
+           if (!File.Exists(htmlTemplatePath)) then 
+           (
             Error("Template path does not exist   " + htmlTemplatePath);
+           );
 
            html:= System.IO.File.ReadAllText(htmlTemplatePath);
   

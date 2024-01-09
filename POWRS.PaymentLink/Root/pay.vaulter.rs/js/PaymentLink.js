@@ -87,29 +87,11 @@ function GenerateLanguageDropdown() {
         });
 }
 
-function TransactionInProgress(Result) {
-    let res = {
-        IsCompleted: false,
-        IsSuccess: false,
-        Message: Translations.TransactionInProgress
-    };
-
-    DisplayTransactionResult(res);
-}
 function TransactionFailed(Result) {
     let res = {
         IsCompleted: true,
         IsSuccess: false,
         Message: Translations.TransactionFailed
-    };
-
-    DisplayTransactionResult(res);
-}
-function TransactionCompleted(Result) {
-    let res = {
-        IsCompleted: true,
-        IsSuccess: true,
-        Message: Translations.TransactionCompleted
     };
 
     DisplayTransactionResult(res);

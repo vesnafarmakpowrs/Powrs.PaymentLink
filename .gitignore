@@ -272,3 +272,5 @@ FakesAssemblies/
 /POWRS.PaymentLink/obj/Release/net6.0/
 /POWRS.PaymentLink/Root/VaulterApi/PaymentLink/Contract/SE/CancelItem.ws
 /POWRS.PaymentLink/Root/VaulterApi/PaymentLink/Contract/RS/CancelItem.ws
+/POWRS.PaymentLink/POWRS.RS.PaymentLink.manifest
+/POWRS.PaymentLink/POWRS.RS.PaymentLink.manifest

@@ -111,7 +111,7 @@ if ContractState == "AwaitingForPayment" then
                 "tokenId": Token.TokenId,
                 "sub": BuyerFullName, 
                 "id": NewGuid().ToString(),
-	        "ip": Request.RemoteEndPoint,
+	            "ip": Request.RemoteEndPoint,
                 "country": Country,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
