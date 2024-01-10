@@ -29,11 +29,10 @@ namespace POWRS.PaymentLink.RS
 
                 string InvoiceNo = GetInvoiceNo(IdentityProperties, ShortId.ToString());
                 stringBuilder = stringBuilder.Replace("{{InvoiceNo}}", InvoiceNo);
-               
+
                 ReplaceDictionaryValues(ContractParameters, stringBuilder, Html);
-                Log.Debug(Html);
                 ReplaceDictionaryValues(IdentityProperties, stringBuilder, Html);
-                Log.Debug(Html);
+
                 return stringBuilder.ToString();
             }
             catch (Exception ex)
@@ -47,8 +46,6 @@ namespace POWRS.PaymentLink.RS
         {
             foreach (var keyValuePair in KeyValuePairs)
             {
-                Log.Informational(keyValuePair.Key + ": " + keyValuePair.Value);
-
                 var patternToReplace = "{{" + keyValuePair.Key + "}}";
                 if (!originalHtml.Contains(patternToReplace) || keyValuePair.Value == null)
                 {
@@ -64,7 +61,7 @@ namespace POWRS.PaymentLink.RS
                 {
                     valueToReplacePattern = caseInsensitiveStringValue;
                 }
-                else if (keyValuePair.Value is decimal decimalValue)
+                else if (decimal.TryParse(keyValuePair.Value?.ToString(), out decimal decimalValue))
                 {
                     valueToReplacePattern = decimalValue.ToString("F");
                 }
