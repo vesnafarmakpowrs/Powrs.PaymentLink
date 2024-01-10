@@ -3,6 +3,7 @@ using Waher.Events;
 using System.Collections.Generic;
 using Waher.Persistence;
 using System.Text;
+using System.Linq;
 
 namespace POWRS.PaymentLink
 {
@@ -11,13 +12,18 @@ namespace POWRS.PaymentLink
         public static string GetHtmlDealInfo(IDictionary<CaseInsensitiveString, object> ContractParameters,
             IDictionary<CaseInsensitiveString, object> IdentityProperties, string Html)
         {
-            if (ContractParameters is null || IdentityProperties is null || string.IsNullOrEmpty(Html))
-            {
-                throw new Exception("Parameters missing");
-            }
-
             try
             {
+                if (ContractParameters is null || IdentityProperties is null || string.IsNullOrEmpty(Html))
+                {
+                    throw new Exception("Parameters missing");
+                }
+
+                if (!ContractParameters.Any() || !IdentityProperties.Any())
+                {
+                    throw new Exception("Parameters missing");
+                }
+
                 StringBuilder stringBuilder = new(Html);
                 ContractParameters.TryGetValue("ShortId", out object ShortId);
 
