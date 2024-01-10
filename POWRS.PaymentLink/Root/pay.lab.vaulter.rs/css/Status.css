@@ -1,0 +1,67 @@
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.messageContainer {
+    min-height: 5vh;
+    margin: 15px auto;
+}
+
+.imageContainer {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.textHeader {
+    width: 100%;
+    text-align: center;
+    font-size: 2em;
+    color: gray;
+}
+
+.textBody {
+    width: 100%;
+    text-align: center;
+    font-size: 1em;
+    color: gray;
+}
+
+
+@media (min-width:320px) { /* smartphones, iPhone, portrait 480x320 phones */
+    .messageContainer_width {
+        width: 100%;
+    }
+}
+
+@media (min-width:481px) { /* smartphones, iPhone, portrait 480x320 phones */
+    .messageContainer_width {
+        width: 100%;
+    }
+}
+
+@media (min-width:641px) { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+    .messageContainer_width {
+        width: 90%;
+    }
+}
+
+@media (min-width:961px) { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+    .messageContainer_width {
+        width: 80%;
+    }
+}
+
+@media (min-width:1025px) { /* tablet, landscape iPad, lo-res laptops ands desktops */
+    .messageContainer_width {
+        width: 70%;
+    }
+}
+
+@media (min-width:1281px) { /* hi-res laptops and desktops */
+    .messageContainer_width {
+        width: 60%;
+    }
+}

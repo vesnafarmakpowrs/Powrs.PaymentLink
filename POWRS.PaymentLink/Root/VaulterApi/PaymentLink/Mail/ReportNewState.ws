@@ -1,7 +1,6 @@
 remoteEndpoint:= Request.RemoteEndPoint.Split(':', null)[0];
 blocked:= select Blocked from RemoteEndpoints where Endpoint = remoteEndpoint;
 
-
 try
 (
         if(blocked != null && blocked == true) then 
@@ -63,12 +62,13 @@ try
 	            Error("Contract is missing");
            );
 
-           ShortId := select top 1 ShortId from NeuroFeatureTokens where TokenId = r.TokenId;
+           NeuroFeatureToken:= select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId = r.TokenId;
+           ShortId := NeuroFeatureToken.ShortId;
            ContractParams:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object);
+          
+           variables:= NeuroFeatureToken.GetCurrentStateVariables();
 
-           StateMachine:= select top 1 * from StateMachineCurrentStates where StateMachineId= r.TokenId;
-
-           foreach variable in StateMachine.VariableValues DO
+           foreach variable in variables.VariableValues DO
            (
                 ContractParams.Add(variable.Name,variable.Value);
            );
@@ -95,7 +95,7 @@ try
            ContractParams.Add("VatAmount", VatAmount);
 
            Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
-           IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
+           IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString, System.Object);
            IdentityProperties.Add("AgentName", Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
            IdentityProperties.Add("ORGNAME", Identity.ORGNAME);
            IdentityProperties.Add("ORGNR", Identity.ORGNR);
@@ -119,7 +119,6 @@ try
    
            Base64Attachment := null;
            FileName := null;
-   
           
            Log.Informational("Sending email for " + r.Status  ,null);
            ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
