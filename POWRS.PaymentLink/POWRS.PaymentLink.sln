@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POWRS.PaymentLink", "POWRS.PaymentLink.csproj", "{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POWRS.PaymentLink.RS", "POWRS.PaymentLink.RS.csproj", "{EC5F4B7E-2530-4EB9-B4C8-ADD00AE1DEE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
