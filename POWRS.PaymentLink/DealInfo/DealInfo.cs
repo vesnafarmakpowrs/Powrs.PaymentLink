@@ -32,70 +32,62 @@ namespace POWRS.PaymentLink
             catch (Exception ex)
             {
                 Log.Error(ex);
-                return ex.Message;
+                throw;
             }
         }
 
         private static void ReplaceDictionaryValues(IDictionary<CaseInsensitiveString, object> KeyValuePairs, StringBuilder stringBuilder, string originalHtml)
         {
-            foreach (var contractParameter in KeyValuePairs)
+            foreach (var keyValuePair in KeyValuePairs)
             {
-                Log.Informational(contractParameter.Key + ": " + contractParameter.Value);
+                Log.Informational(keyValuePair.Key + ": " + keyValuePair.Value);
 
-                var patternToReplace = "{{" + contractParameter.Key + "}}";
-                if (!originalHtml.Contains(patternToReplace) || contractParameter.Value == null)
+                var patternToReplace = "{{" + keyValuePair.Key + "}}";
+                if (!originalHtml.Contains(patternToReplace) || keyValuePair.Value == null)
                 {
                     continue;
                 }
 
-                var valueToReplaceKey = string.Empty;
-                if (contractParameter.Value is string stringValue)
+                var valueToReplacePattern = string.Empty;
+                if (keyValuePair.Value is string stringValue)
                 {
-                    valueToReplaceKey = stringValue;
+                    valueToReplacePattern = stringValue;
                 }
-                else if (contractParameter.Value is CaseInsensitiveString caseInsensitiveStringValue)
+                else if (keyValuePair.Value is CaseInsensitiveString caseInsensitiveStringValue)
                 {
-                    valueToReplaceKey = caseInsensitiveStringValue;
+                    valueToReplacePattern = caseInsensitiveStringValue;
                 }
-                else if (contractParameter.Value is decimal decimalValue)
+                else if (keyValuePair.Value is decimal decimalValue)
                 {
-                    valueToReplaceKey = decimalValue.ToString("F");
+                    valueToReplacePattern = decimalValue.ToString("F");
                 }
-                else if (contractParameter.Value is DateTime dateTimeValue)
+                else if (keyValuePair.Value is DateTime dateTimeValue)
                 {
-                    valueToReplaceKey = dateTimeValue.ToShortDateString();
+                    valueToReplacePattern = dateTimeValue.ToShortDateString();
                 }
 
-                if (!string.IsNullOrEmpty(valueToReplaceKey))
+                if (!string.IsNullOrEmpty(valueToReplacePattern))
                 {
-                    stringBuilder.Replace(patternToReplace, valueToReplaceKey);
+                    stringBuilder.Replace(patternToReplace, valueToReplacePattern);
                 }
             }
         }
 
         public static string GetInvoiceNo(IDictionary<CaseInsensitiveString, object> IdentityProperties, string ShortId)
         {
-            if (IdentityProperties is null || ShortId is null)
+            if (IdentityProperties is null || string.IsNullOrEmpty(ShortId))
             {
                 throw new Exception("Parameters missing");
             }
 
-            try
-            {
-                IdentityProperties.TryGetValue("AgentName", out object AgentName);
-                IdentityProperties.TryGetValue("ORGNAME", out object OrgName);
+            IdentityProperties.TryGetValue("AgentName", out object AgentName);
+            IdentityProperties.TryGetValue("ORGNAME", out object OrgName);
 
-                string SellerName = !String.IsNullOrEmpty(OrgName?.ToString()) ? OrgName?.ToString() : AgentName?.ToString();
-                string SellerId = SellerName.Substring(0, 3).ToUpperInvariant();
-                string InvoiceNo = SellerId + ShortId.ToString();
+            string SellerName = !string.IsNullOrEmpty(OrgName?.ToString()) ? OrgName?.ToString() : AgentName?.ToString();
+            string SellerId = SellerName.Substring(0, 3).ToUpperInvariant();
+            string InvoiceNo = SellerId + ShortId.ToString();
 
-                return InvoiceNo;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex);
-                return ex.Message;
-            }
+            return InvoiceNo;
         }
     }
 }
