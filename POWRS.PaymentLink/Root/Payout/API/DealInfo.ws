@@ -24,7 +24,7 @@
    
    htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\purchase_agreement.html"; 
    html:= System.IO.File.ReadAllText(htmlTemplatePath);
-   FormatedHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
+   FormatedHtml := POWRS.PaymentLink.RS.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
    
    htmlToGeneratePath:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\" + PContractId + ".html";
    

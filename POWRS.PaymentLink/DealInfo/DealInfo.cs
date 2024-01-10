@@ -5,7 +5,7 @@ using Waher.Persistence;
 using System.Text;
 using System.Linq;
 
-namespace POWRS.PaymentLink
+namespace POWRS.PaymentLink.RS
 {
     public class DealInfo
     {
@@ -29,10 +29,11 @@ namespace POWRS.PaymentLink
 
                 string InvoiceNo = GetInvoiceNo(IdentityProperties, ShortId.ToString());
                 stringBuilder = stringBuilder.Replace("{{InvoiceNo}}", InvoiceNo);
-
+               
                 ReplaceDictionaryValues(ContractParameters, stringBuilder, Html);
+                Log.Debug(Html);
                 ReplaceDictionaryValues(IdentityProperties, stringBuilder, Html);
-
+                Log.Debug(Html);
                 return stringBuilder.ToString();
             }
             catch (Exception ex)

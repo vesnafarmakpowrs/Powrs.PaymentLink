@@ -115,7 +115,7 @@ try
 
            html:= System.IO.File.ReadAllText(htmlTemplatePath);
   
-           FormatedHtml := POWRS.PaymentLink.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
+           FormatedHtml := POWRS.PaymentLink.RS.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
    
            Base64Attachment := null;
            FileName := null;
