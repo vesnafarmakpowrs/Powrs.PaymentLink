@@ -67,14 +67,14 @@ if ContractState == "AwaitingForPayment" then
          Return("");
     );
 
-    Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
+    Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
 
     AgentName := "";
     OrgName := "";
-    foreach I in Identities do
+    if Identity != null then 
     (
-       AgentName := I.FIRST + " " + I.MIDDLE + " " + I.LAST;
-       OrgName  := I.ORGNAME;
+       AgentName := Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST;
+       OrgName  := Identity.ORGNAME;
     );
 
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
@@ -149,6 +149,34 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((Country ))" id="country"/>
 
 <div class="payment-details">
+<table style="width:100%">
+ <tr id="tr_summary">
+      <td colspan="2" class="item border-radius">
+        <table style="vertical-align:middle; width:100%;">
+          <tr id="tr_seller_info" >
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): **OrgName**</td>
+            <td class="itemPrice"><td>
+            <td style="width:10%;"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/>  </td>
+          </tr>
+          <tr id="tr_seller_addr" style="display:none">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): **OrgName**</td>
+            <td class="itemPrice"><td>
+            <td style="width:10%;">  </td>
+          </tr>
+          <tr id="tr_seller_tel" style="display:none">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): **OrgName**</td>
+            <td class="itemPrice"><td>
+            <td style="width:10%;">  </td>
+          </tr>
+         <tr id="tr_seller_email" style="display:none">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): **OrgName**</td>
+            <td class="itemPrice"><td>
+            <td style="width:10%;">  </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
   <table style="width:100%">
     <tr id="tr_header" class="table-row">
       <td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>

@@ -192,3 +192,24 @@ function ExpandDetails() {
     document.getElementById("tr_header").addEventListener("click", CollapseDetails);
     document.getElementById("tr_header_title").addEventListener("click", CollapseDetails);
 }
+
+function ExpandSellerDetails() {
+    document.getElementById("tr_seller_addr").style.display = null;
+    document.getElementById("tr_seller_tel").style.display = null;
+    document.getElementById("tr_seller_email").style.display = null;
+    expand_img = document.getElementById("expand_img");
+    expand_img.src = "../resources/expand-up.svg";
+    expand_img.removeEventListener('click', ExpandSellerDetails); 
+    expand_img.addEventListener("click", CollapseSellerDetails);
+}
+
+function CollapseSellerDetails() {
+    document.getElementById("tr_seller_addr").style.display = "none";
+    document.getElementById("tr_seller_tel").style.display = "none";
+    document.getElementById("tr_seller_email").style.display = "none";
+    expand_img = document.getElementById("expand_img");
+    expand_img.src = "../resources/expand-down.svg";
+    expand_img.removeEventListener('click', CollapseSellerDetails); 
+    expand_img.addEventListener("click", ExpandSellerDetails);
+}
+
