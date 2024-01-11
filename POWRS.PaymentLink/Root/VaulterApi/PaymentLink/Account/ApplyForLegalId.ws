@@ -5,15 +5,18 @@
     "lastName" : Required(Str(PLastName) like "[\\p{L}\\s]{2,20}"),
     "personalNumber" : Required(Str(PPersonalNumber) like "\\d*-?\\d*"),
     "country" : Required(Str(PCountryCode) like "[A-Z]{2}"),
-    "orgName": Required(Str(POrgName)),
-    "orgNumber": Required(Str(POrgNumber)),
-    "orgCity": Required(Str(POrgCity)),
-    "orgCountry": Required(Str(POrgCountry)),
-    "orgAddr": Required(Str(POrgAddress)),
-    "orgAddr2": Required(Str(POrgAddress2)),
-    "orgBankNum": Required(Str(POrgBankNum)),
-    "orgDept": Required(Str(POrgDept)),
-    "orgRole": Required(Str(POrgRole))
+    "orgName": Required(Str(POrgName) like "\\p{L}{2,50}$"),
+    "orgNumber": Required(Str(POrgNumber) like "\\d{9}$"),
+    "orgCity": Required(Str(POrgCity) like "\\p{L}{2,50}$"),
+    "orgCountry": Required(Str(POrgCountry) like "\\p{L}{2,50}$"),
+    "orgAddr": Required(Str(POrgAddress) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$") ,
+    "orgAddr2": Required(Str(POrgAddress2) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$"),
+    "orgBankNum": Required(Str(POrgBankNum) like "^(?!.*--)[\\d-]{1,25}$"),
+    "orgDept": Required(Str(POrgDept) like "\\p{L}{2,50}$"),
+    "orgRole": Required(Str(POrgRole) like "\\p{L}{2,50}$"),
+    "orgActivity":  Required(Str(POrgActivity) like "\\p{L}{2,50}$"),
+    "orgActivityNumber":  Required(Str(POrgActivityNumber) like "\\d{4}$"),
+    "orgTaxNumber":  Required(Str(POrgTaxNumber) like "\\d{9}$")
 }:=Posted) ??? BadRequest(Exception.Message);
 
 
@@ -23,7 +26,9 @@ try
 (
     Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
     if(System.String.IsNullOrWhiteSpace(Password)) then 
+    (
         Error("No user with given username");
+    );
 
     NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
     isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
@@ -33,7 +38,7 @@ try
        BadRequest("Personal number: " + PPersonalNumber + " not valid for " +  PCountryCode);
      );
 
-     neuronDomain:= "https://" + Gateway.Domain;
+    neuronDomain:= "https://" + Gateway.Domain;
 
     PropertiesVector:= [
                           {name: "FIRST", value: PFirstName},
@@ -48,7 +53,10 @@ try
            	              {name: "ORGADDR2", value: POrgAddress2},
                           {name: "ORGBANKNUM", value: POrgBankNum},
                           {name: "ORGDEPT", value: POrgDept},
-                          {name: "ORGROLE", value: POrgRole}
+                          {name: "ORGROLE", value: POrgRole},
+                          {name: "ORGACTIVITY", value: POrgActivity},
+                          {name: "ORGACTIVITYNUM", value: POrgActivityNumber},
+                          {name: "ORGTAXNUM", value: POrgTaxNumber}
                     ];
     PLocalName:= "ed448";
     PNamespace:= "urn:ieee:iot:e2e:1.0";

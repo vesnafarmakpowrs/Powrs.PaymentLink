@@ -13,8 +13,10 @@
 				<Content fileName="Index.md"/>
 				<Folder name="Account">
 					<Content fileName="ApplyForLegalId.ws"/>
+					<Content fileName="ContactInfo.ws"/>
 					<Content fileName="CreateAccount.ws"/>
-					<Content fileName="GetAccountInfo.ws"/>
+					<Content fileName="GetContactInfo.ws"/>
+					<Content fileName="GetLegalIdentityInfo.ws"/>
 					<Content fileName="SendVerificationEmail.ws"/>
 					<Content fileName="VerifyEmail.ws"/>
 				</Folder>

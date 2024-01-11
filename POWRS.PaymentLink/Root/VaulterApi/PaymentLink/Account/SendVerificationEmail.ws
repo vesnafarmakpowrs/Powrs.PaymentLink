@@ -1,6 +1,6 @@
 Response.SetHeader("Access-Control-Allow-Origin","*");
 ({
-    "email":Optional(String(PEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
+    "email":Required(String(PEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
     "countryCode":Required(String(PCountryCode)  like "[A-Z]{2}")    
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 

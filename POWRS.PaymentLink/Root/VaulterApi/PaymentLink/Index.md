@@ -318,7 +318,7 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 
 ### Get Account Info
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/GetAccountInfo.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/GetLegalIdentityInfo.ws")}}`  
 Method: `POST`
 
 Call this resource to  fetch items created by the owner of the `JWT Token` from the header section of the request.
@@ -363,6 +363,9 @@ There is no need of properties to be send in a request
  "ORGCITY" : (String),
  "ORGREGION" : (String),
  "ORGCOUNTRY" : (String),
+ "ORGACTIVITY" : (String),
+ "ORGACTIVITYNUM" : (String),
+ "ORGTAXNUM" : (String)
 }
 ````
 
@@ -566,21 +569,23 @@ Call this resource to verify email with code.
     "lastName" : Required(Str(PLastName) like "[\\p{L}\\s]{2,20}"),
     "personalNumber" : Required(Str(PPersonalNumber) like "\\d*-?\\d*"),
     "country" : Required(Str(PCountryCode) like "[A-Z]{2}"),
-    "orgName": Required(Str(POrgName)),
-    "orgNumber": Required(Str(POrgNumber)),
-    "orgCity": Required(Str(POrgCity)),
-    "orgCountry": Required(Str(POrgCountry)),
-    "orgAddr": Required(Str(POrgAddress)),
-    "orgAddr2": Required(Str(POrgAddress2)),
-    "orgBankNum": Required(Str(POrgBankNum)),
-    "orgDept": Required(Str(POrgDept)),
-    "orgRole": Required(Str(POrgRole))
+    "orgName": Required(Str(POrgName) like "\\p{L}{2,50}$"),
+    "orgNumber": Required(Str(POrgNumber)) like "\\d{9}$",
+    "orgCity": Required(Str(POrgCity) like "\\p{L}{2,50}$"),
+    "orgCountry": Required(Str(POrgCountry) like "\\p{L}{2,50}$"),
+    "orgAddr": Required(Str(POrgAddress) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$") ,
+    "orgAddr2": Required(Str(POrgAddress2) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$"),
+    "orgBankNum": Required(Str(POrgBankNum) like "^(?!.*--)[\\d-]{1,25}$"),
+    "orgDept": Required(Str(POrgDept) like "\\p{L}{2,50}$"),
+    "orgRole": Required(Str(POrgRole) like "\\p{L}{2,50}$"),
+    "orgActivity":  Required(Str(POrgActivity) like "\\p{L}{2,50}$"),
+    "orgActivityNumber":  Required(Str(POrgActivityNumber) like "\\d{4}$"),
+    "orgTaxNumber":  Required(Str(POrgTaxNumber) like "\\d{9}$")
 }
 ````
 
 | Name              | Description |
 |:------------------|:------------|
-
 | `firstName`       | First Name for the user. |
 | `lastName`        | Last Name for the user.|
 | `personalNumber`  | Personal Number for the user |
@@ -594,6 +599,9 @@ Call this resource to verify email with code.
 | `orgBankNum`      | Organization bank number |
 | `orgDept`         | Organization department |
 | `orgRole`         | Organization role |
+| `orgActivity`         | Organization Activity |
+| `orgActivityNumber`         | Activity number |
+| `orgTaxNumber`         | Tax number |
 
 **Response**
 
@@ -605,3 +613,59 @@ Call this resource to verify email with code.
      "isApproved": (bool)
 } 
 ````
+
+### Update contact info
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/ContactInfo.ws")}}`  
+Method: `POST`
+
+Call this resource insert or update contact info
+
+**Request**
+
+````
+{
+    "orgPhoneNumber": Required(Str(POrgPhoneNumber) like "\\+381\\d{8,9}"),
+    "orgWebAddress": Required(Str(POrgWebAddress) like "(https?):\\/\\/([a-zA-Z0-9-]+\\.)*[a-zA- 
+Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?"),
+    "orgEmailAddress": Required(Str(POrgEmailAddress) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}")
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `orgPhoneNumber`       | Phone number to contact company. |
+| `orgWebAddress`        | Web presentation.|
+| `orgEmailAddress`  | Support email address to send inquiry to company |
+
+**Response**
+
+
+````
+{	 
+} 
+````
+
+### Get contact info
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/GetContactInfo.ws")}}`  
+Method: `POST`
+
+Retrieves contact information for organizaion.
+
+**Request**
+
+````
+{   
+}
+````
+
+**Response**
+
+| Name              | Description |
+|:------------------|:------------|
+| `Account `       | Phone number to contact company. |
+| `WebAddress`        | Web presentation.|
+| `Email `  | Support email address to send inquiry to company |
+| `PhoneNumber `  | Phone number to contact company |
+
