@@ -172,22 +172,22 @@ if ContractState == "AwaitingForPayment" then
             <td style="width:10%;"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/>  </td>
           </tr>
           <tr id="tr_seller_tax_num" style="display:none">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(56) )): **(( OrgTaxNum))**</td>
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(56) )): (( OrgTaxNum))</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
           <tr id="tr_seller_addr" style="display:none">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(57) )): **((OrgAddr ))**</td>
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(57) )): ((OrgAddr ))</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
           <tr id="tr_seller_pib" style="display:none">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(58) )): **((OrgNr ))*</td>
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(58) )): ((OrgNr ))</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
          <tr id="tr_seller_tel" style="display:none">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(59) )): **((OrgPhone ))**</td>
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(59) )): ((OrgPhone ))</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
@@ -262,7 +262,7 @@ if ContractState == "AwaitingForPayment" then
    <td colspan="3">
      <input type="checkbox" id="termsAndConditionAgency" name="termsAndCondition" onclick="UserAgree();"> 
      <label for="termsAndConditionAgency"> 
-       <a href="TermsAndCondition.html" target="_blank">**Powrs ((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
+       <a href="TermsAndCondition.html" target="_blank">**((OrgName )) ((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
     </td>
  </tr>
  </table>
