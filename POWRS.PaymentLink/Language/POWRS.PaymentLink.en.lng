@@ -56,7 +56,10 @@
 			<String id="53">Personal number not in valid format.</String>
 			<String id="54">VAT 20%</String>
 			<String id="55">Total</String>
-
+			<String id="56">Tax Num</String>
+			<String id="57">Adress</String>
+			<String id="58">Organization number</String>
+			<String id="59">Tel</String>
 		</Namespace>
 	</Language>
 </Translation>

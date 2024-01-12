@@ -301,6 +301,11 @@ width:150px;
 width:50px;
 }
 
+.logo_expand{
+width:30px;
+padding-right: 10px;
+}
+
 .vaulter_Logo{
 width:150px;
 }

@@ -56,6 +56,10 @@
 			<String id="53">Personalni broj nije u validnom formatu!</String>
 			<String id="54">sa PDV-om</String>
 			<String id="55">Ukupno</String>
+			<String id="56">Poreski Broj</String>
+			<String id="57">Adresa</String>
+			<String id="58">PIB</String>
+			<String id="59">Telefon</String>
 		</Namespace>
 	</Language>
 </Translation>
