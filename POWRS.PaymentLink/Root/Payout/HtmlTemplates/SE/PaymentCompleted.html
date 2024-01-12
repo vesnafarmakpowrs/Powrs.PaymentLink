@@ -11,7 +11,7 @@
             font-size: 11px;
             font-style: italic;
             font-weight: 700;
-            text-align:center;
+            text-align: center;
         }
 
         .footer-text {
@@ -44,7 +44,7 @@
         }
 
             .details h2 {
-                color:limegreen;
+                color: limegreen;
                 border-bottom: 2px solid;
                 padding-bottom: 5px;
             }
@@ -99,14 +99,13 @@
             </div>
         </div>
 
-        <div class="product">           
+        <div class="product">
             <h2>Details</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Namn</th>
-                        <th>Pris</th>
-                        <th>Mom</th>
+                        <th>Pris (Inklusive moms)</th>
                         <th>Vaulter avgift</th>
                         <th>Total</th>
                     </tr>
@@ -114,8 +113,7 @@
                 <tbody>
                     <tr>
                         <td>{{Title}}</td>
-                        <td>{{PreVatPrice}} {{Currency}}</td>
-                        <td>{{VatAmount}} {{Currency}}</td>
+                        <td>{{Price}} {{Currency}}</td>
                         <td>{{EscrowFee}} {{Currency}}</td>
                         <td>{{AmountToPay}} {{Currency}}</td>
                     </tr>

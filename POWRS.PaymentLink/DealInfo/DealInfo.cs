@@ -67,6 +67,9 @@ namespace POWRS.PaymentLink.RS
                 }
                 else if (keyValuePair.Value is DateTime dateTimeValue)
                 {
+                    var currentDateFormat = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern;
+                    var currentTimeFormat = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.LongTimePattern;
+
                     valueToReplacePattern = dateTimeValue.ToShortDateString();
                 }
 

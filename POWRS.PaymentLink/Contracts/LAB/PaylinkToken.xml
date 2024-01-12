@@ -157,6 +157,10 @@
 									"SendEmail" : BuyerEmail,
 									"CountryCode" : "RS"
 									};
+									if(exists(PayspotOrderId)) then
+									(
+									Json.PayspotOrderId:= PayspotOrderId;
+									);
 								</Script>
 								<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
 									<Header key="Accept" value="application/json"/>

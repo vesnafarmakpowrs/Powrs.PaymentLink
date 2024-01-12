@@ -157,6 +157,10 @@
 									"SendEmail" : BuyerEmail,
 									"CountryCode" : "RS"
 									};
+									if(exists(PayspotOrderId)) then
+									(
+									Json.PayspotOrderId:= PayspotOrderId;
+									);
 								</Script>
 								<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
 									<Header key="Accept" value="application/json"/>
@@ -198,7 +202,7 @@
 							<Parameter key="OrderId" value="{OrderId}"></Parameter>
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
 						</BuyEDaler>
-						
+
 						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
 						<PersistVariable name="SellerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
@@ -209,7 +213,7 @@
 						<CallAction actionRef="TransferFee" />
 
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
-						<Catch exceptionVariable="ex">					
+						<Catch exceptionVariable="ex">
 							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>
 						</Catch>

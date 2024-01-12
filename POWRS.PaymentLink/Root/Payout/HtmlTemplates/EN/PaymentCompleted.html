@@ -25,6 +25,10 @@
             padding: 0;
         }
 
+        .transaction-status p{
+            margin: 0px;
+        }
+
         .container {
             width: 100%;
             max-width: 600px;
@@ -56,6 +60,11 @@
             .info p {
                 margin: 5px 0;
             }
+            .info h2 
+            {
+                color: black;
+                border-bottom: 2px solid black;
+            }
 
         .product {
             margin-top: 20px;
@@ -85,17 +94,33 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://xsjxcz.stripocdn.email/content/guids/CABINET_8b0d8363dad9cf7da11a7b5c5b952fafce23ca1bf4eace9f0d0d772593b69917/images/vaulter_logotype_black_28.png" />
+            <img src="../../resources/vaulter_logo.svg" />
         </div>
         <div class="details">
-            <h2>Payment completed successfuly</h2>
-            <p>Order ID: {{RemoteId}}</p>
-            <p>Payment date: {{PaymentDateTime}}</p>
+            <div class="transaction-status">
+                <h2>Payment completed successfuly</h2>
+                <p><strong>Order ID:</strong> {{RemoteId}}</p>
+                <p><strong>Payment date:</strong> {{PaymentDateTime}}</p>
+            </div>
 
             <div class="info">
+                <h2>Seller Informations</h2>
                 <p><strong>Seller:</strong> {{ORGNAME}}</p>
                 <p><strong>Organizaion number:</strong> {{ORGNR}}</p>
                 <p><strong>Address:</strong> {{ORGADDR}}</p>
+            </div>
+
+            <div class="info">
+                <h2>Buyer Informations</h2>
+                <p><strong>Buyer:</strong> {{Buyer}}</p>
+                <p><strong>Email:</strong> {{BuyerEmail}}</p>
+            </div>
+
+            <div class="info">
+                <h2>Transaction details</h2>
+                <p><strong>Approval Code:</strong> {{AuthNumber}}</p>
+                <p><strong>Reference:</strong> {{BankTransactionId}}</p>
+                <p><strong>Status:</strong> {{Result}}</p>
             </div>
         </div>
 
@@ -105,8 +130,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Price</th>
-                        <th>VAT</th>
+                        <th>Price (VAT included)</th>
                         <th>Vaulter fee</th>
                         <th>Total</th>
                     </tr>
@@ -114,8 +138,7 @@
                 <tbody>
                     <tr>
                         <td>{{Title}}</td>
-                        <td>{{PreVatPrice}} {{Currency}}</td>
-                        <td>{{VatAmount}} {{Currency}}</td>
+                        <td>{{Price}} {{Currency}}</td>
                         <td>{{EscrowFee}} {{Currency}}</td>
                         <td>{{AmountToPay}} {{Currency}}</td>
                     </tr>

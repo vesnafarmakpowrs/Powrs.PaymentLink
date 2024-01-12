@@ -11,7 +11,7 @@
             font-size: 11px;
             font-style: italic;
             font-weight: 700;
-            text-align:center;
+            text-align: center;
         }
 
         .footer-text {
@@ -23,6 +23,10 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+        }
+
+        .transaction-status p {
+            margin: 0px;
         }
 
         .container {
@@ -44,7 +48,7 @@
         }
 
             .details h2 {
-                color:limegreen;
+                color: limegreen;
                 border-bottom: 2px solid;
                 padding-bottom: 5px;
             }
@@ -55,6 +59,11 @@
 
             .info p {
                 margin: 5px 0;
+            }
+
+            .info h2 {
+                color: black;
+                border-bottom: 2px solid black;
             }
 
         .product {
@@ -88,25 +97,40 @@
             <img src="https://xsjxcz.stripocdn.email/content/guids/CABINET_8b0d8363dad9cf7da11a7b5c5b952fafce23ca1bf4eace9f0d0d772593b69917/images/vaulter_logotype_black_28.png" />
         </div>
         <div class="details">
-            <h2>Plaćanje je uspešno završeno</h2>
-            <p>ID Porudzbine: {{RemoteId}}</p>
-            <p>Datume plaćanja: {{PaymentDateTime}}</p>
+            <div class="transaction-status">
+                <h2>Plaćanje uspešno završeno!</h2>
+                <p><strong>ID porudzbine:</strong> {{RemoteId}}</p>
+                <p><strong>Datum plaćanja:</strong> {{PaymentDateTime}}</p>
+            </div>
 
             <div class="info">
-                <p><strong>Prodavac:</strong> {{ORGNAME}}</p>
+                <h2>Informacije o prodavcu</h2>
+                <p><strong>Naziv:</strong> {{ORGNAME}}</p>
                 <p><strong>PIB:</strong> {{ORGNR}}</p>
                 <p><strong>Adresa:</strong> {{ORGADDR}}</p>
             </div>
+
+            <div class="info">
+                <h2>Informacije o kupcu</h2>
+                <p><strong>Ime i prezime:</strong> {{Buyer}}</p>
+                <p><strong>Email:</strong> {{BuyerEmail}}</p>
+            </div>
+
+            <div class="info">
+                <h2>Detalji o transakciji</h2>
+                <p><strong>Broj odobrenja:</strong> {{AuthNumber}}</p>
+                <p><strong>Referentni broj:</strong> {{BankTransactionId}}</p>
+                <p><strong>Status:</strong> {{Result}}</p>
+            </div>
         </div>
 
-        <div class="product">           
+        <div class="product">
             <h2>Detalji kupovine</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Naziv</th>
-                        <th>Cena</th>
-                        <th>PDV</th>
+                        <th>Cena sa PDV-om</th>
                         <th>Vaulter naknada</th>
                         <th>Ukupno</th>
                     </tr>
@@ -114,8 +138,7 @@
                 <tbody>
                     <tr>
                         <td>{{Title}}</td>
-                        <td>{{PreVatPrice}} {{Currency}}</td>
-                        <td>{{VatAmount}} {{Currency}}</td>
+                        <td>{{Price}} {{Currency}}</td>
                         <td>{{EscrowFee}} {{Currency}}</td>
                         <td>{{AmountToPay}} {{Currency}}</td>
                     </tr>

@@ -22,15 +22,26 @@ try
          BadRequest("Payload does not conform to specification.");
         );
 
+        contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= r.ContractId;
+
+        if (contract == null) then 
+        (
+           Error("Contract is missing");
+        );
+        NeuroFeatureToken:= select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId = r.TokenId;
+
+        if(NeuroFeatureToken == null) then 
+        (
+            Error("Token is missing");
+        );
+
         SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted"};
 
-        success:= false;
-
+        callbackSuccess:= false;
         if(!System.String.IsNullOrEmpty(r.CallBackUrl) && (r.Status in SendCallBackOnStatusList)) then
         (
           try
             (
- 	            Log.Informational("Sending state update request to: " + r.CallBackUrl + " State: " + r.Status, null);
  	            POST(r.CallBackUrl,
                              {
 	                       "status": r.Status
@@ -38,8 +49,8 @@ try
 		              {
 	                       "Accept" : "application/json"
                               });
- 	            success:= true;
- 	            Log.Informational("Sending state update request finished to: " + r.CallBackUrl + " State: " + r.Status, null);
+
+ 	            callbackSuccess:= true;
             )
             catch 
             (
@@ -55,47 +66,42 @@ try
 
         if (exists(r.SendEmail) and  !System.String.IsNullOrEmpty(r.SendEmail)) then
         ( 
-           contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= r.ContractId;
-
-           if (contract == null) then 
+	       Parameters:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object); 
+           if(exists(r.PayspotOrderId) and !System.String.IsNullOrWhiteSpace(r.PayspotOrderId)) then 
            (
-	            Error("Contract is missing");
-           );
+		
+                payspotPayment:= select top 1 * from POWRS.Networking.PaySpot.Data.PayspotPayment where OrderId = r.PayspotOrderId;
+                if(payspotPayment == null) then 
+                (
+                    Error("Unable to find payment with an OrderId: " + r.PayspotOrderId);
+                );
 
-           NeuroFeatureToken:= select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId = r.TokenId;
-           ShortId := NeuroFeatureToken.ShortId;
-           ContractParams:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object);
-          
+                properties:= properties(payspotPayment);
+                foreach prop in properties.Values do 
+                (
+                  Parameters[prop[0]]:= prop[1];
+                );
+           );          
+                 
            variables:= NeuroFeatureToken.GetCurrentStateVariables();
 
            foreach variable in variables.VariableValues DO
            (
-                ContractParams.Add(variable.Name,variable.Value);
+                Parameters[variable.Name]:= variable.Value;
            );
    
-           ContractParams.Add("Created",contract.Created.ToShortDateString());
-           ContractParams.Add("ShortId",ShortId);
-           ContractParams.Add("ContractId",r.ContractId.ToString());
+           Parameters["Created"]:= contract.Created.ToShortDateString();
+           Parameters["ShortId"]:= NeuroFeatureToken.ShortId;
+           Parameters["ContractId"]:= r.ContractId.ToString();
            
            foreach Parameter in contract.Parameters do 
            (
-                Parameter.ObjectValue != null && !exists(ContractParams[Parameter.Name]) ? ContractParams.Add(Parameter.Name, Parameter.ObjectValue);
+                Parameter.ObjectValue != null && !exists(Parameters[Parameter.Name]) ? Parameters[Parameter.Name]:=  Parameter.ObjectValue;
            );
-
-           dictAmountToPay:= 0;
-           if(!ContractParams.TryGetValue("AmountToPay", dictAmountToPay)) then 
-           (
-                Error("Amount not available in contract");
-           );
-
-           VatAmount:= dictAmountToPay * 0.2;
-           PreVatPrice:= dictAmountToPay - VatAmount;
-
-           ContractParams.Add("PreVatPrice", PreVatPrice);
-           ContractParams.Add("VatAmount", VatAmount);
 
            Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
            IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString, System.Object);
+           
            IdentityProperties.Add("AgentName", Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
            IdentityProperties.Add("ORGNAME", Identity.ORGNAME);
            IdentityProperties.Add("ORGNR", Identity.ORGNR);
@@ -115,7 +121,7 @@ try
 
            html:= System.IO.File.ReadAllText(htmlTemplatePath);
   
-           FormatedHtml := POWRS.PaymentLink.RS.DealInfo.GetHtmlDealInfo(ContractParams, IdentityProperties,html);
+           FormatedHtml := POWRS.PaymentLink.RS.DealInfo.GetHtmlDealInfo(Parameters, IdentityProperties,html);
    
            Base64Attachment := null;
            FileName := null;
@@ -123,13 +129,12 @@ try
            Log.Informational("Sending email for " + r.Status  ,null);
            ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
            Config := ConfigClass.Instance;
-           POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, ContractParams["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
-   
+           POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, Parameters["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
         );
 
         {    	
             "Status" : r.Status,
-            "Success": success
+            "success": callbackSuccess
         }
 
 )
