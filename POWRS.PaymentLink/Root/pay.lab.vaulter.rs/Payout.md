@@ -70,13 +70,26 @@ if ContractState == "AwaitingForPayment" then
     Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
 
     AgentName := "";
-    OrgName := "";
+    OrgName := "";   
+    OrgTaxNum := ""; 
+    OrgAddr := "";
+    OrgNr := "";
     if Identity != null then 
     (
        AgentName := Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST;
        OrgName  := Identity.ORGNAME;
+       OrgTaxNum :=  Identity.ORGTAXNUM;
+       OrgAddr :=  Identity.ORGADDR;
+       OrgNr := Identity.ORGNR;
     );
-
+ 
+    OrgPhone := ""; 
+    OrgAddr := "";
+    CompanyInfo := select top 1 * from OrganizationContactInfo where Account = Contract.Account;
+    if CompanyInfo != null then 
+    (
+       OrgPhone :=CompanyInfo.PhoneNumber;
+    );
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
     SellerId := UpperCase(SellerName.Substring(0,3)); 
 
@@ -154,22 +167,27 @@ if ContractState == "AwaitingForPayment" then
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
           <tr id="tr_seller_info" >
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): **OrgName**</td>
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): **((OrgName ))**</td>
             <td class="itemPrice"><td>
             <td style="width:10%;"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/>  </td>
           </tr>
+          <tr id="tr_seller_tax_num" style="display:none">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(56) )): **(( OrgTaxNum))**</td>
+            <td class="itemPrice"><td>
+            <td style="width:10%;">  </td>
+          </tr>
           <tr id="tr_seller_addr" style="display:none">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): **OrgName**</td>
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(57) )): **((OrgAddr ))**</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
-          <tr id="tr_seller_tel" style="display:none">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): **OrgName**</td>
+          <tr id="tr_seller_pib" style="display:none">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(58) )): **((OrgNr ))*</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
-         <tr id="tr_seller_email" style="display:none">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): **OrgName**</td>
+         <tr id="tr_seller_tel" style="display:none">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(59) )): **((OrgPhone ))**</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
@@ -232,7 +250,6 @@ if ContractState == "AwaitingForPayment" then
 <div class="spaceItem"></div>
 <div class="vaulter-details">
 <table style="width:100%">
-
  <tr >
   <td colspan="3">
      <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();"> 
@@ -240,6 +257,13 @@ if ContractState == "AwaitingForPayment" then
         <img class="logo_small" for="termsAndCondition" src="./resources/vaulter_txt.svg" alt="Vaulter"/> 
         <a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
  </td>
+ </tr>
+ <tr >
+   <td colspan="3">
+     <input type="checkbox" id="termsAndConditionAgency" name="termsAndCondition" onclick="UserAgree();"> 
+     <label for="termsAndConditionAgency"> 
+       <a href="TermsAndCondition.html" target="_blank">**Powrs ((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
+    </td>
  </tr>
  </table>
 </div>
