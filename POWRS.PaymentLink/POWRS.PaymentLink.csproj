@@ -110,9 +110,16 @@
 		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentNotPerformed.html" />
 		<None Remove="Root\VaulterApi\PaymentLink\CreateItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetAccountInfo.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Mail\SendPaylinkViaEmail.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Mail\SendPaylinkViaMail - Copy.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\ReportNewState.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetBic.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Reports\AgentList.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Reports\ListOfTransactions.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Reports\OnBoardedUsers.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Reports\ReportTransactions - Copy.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Reports\ReportTransactions.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
 	</ItemGroup>
 	<ItemGroup>		
@@ -162,6 +169,27 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
 		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateItem.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\VaulterApi\PaymentLink\SMS\SendPaylinkViaSMS.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\VaulterApi\PaymentLink\Reports\ReportTransactions.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\VaulterApi\PaymentLink\Reports\OnBoardedUsers.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\VaulterApi\PaymentLink\Reports\ListOfTransactions.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\VaulterApi\PaymentLink\Reports\AgentList.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\VaulterApi\PaymentLink\Reports\AdminPortalDashboard.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\VaulterApi\PaymentLink\Mail\SendPaylinkViaEmail.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Mail\SendContactUsEmail.ws">
