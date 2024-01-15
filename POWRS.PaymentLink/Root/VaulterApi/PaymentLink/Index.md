@@ -65,9 +65,9 @@ Accept: application/json
 Authorization: Bearer ...
 ````
 
-### Login
+### Login (Test purposes) do not use in production
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Auth/Login.ws")}}`
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Account/Login")}}`
 
 Method:  POST
 
@@ -83,6 +83,7 @@ Request
 :	{
 :		"userName":Required(Str(PUserName)),
 :		"nonce":Required(Str(PNonce)),
+        "seconds" Required(Int(PSeconds)),
 :		"signature":Required(Str(PSignature))
 :	}
 :	```
@@ -104,6 +105,7 @@ Description of properties:
 | `userName`        | Username of the user that should login into system. |
 | `nonce`           | A unique random string, at least 32 characters long, with sufficient entropy to not be reused again.|
 | `signature` 	    | Cryptographic signature of request. |
+| `seconds` 	    | Duration of token in seconds |
 
 
 Calculating Signature
