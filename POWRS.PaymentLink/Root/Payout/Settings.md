@@ -35,6 +35,7 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.ApiKey",Posted.ApiKey);
 	SetSetting("POWRS.PaymentLink.ApiKeySecret",Posted.ApiKeySecret);
 	SetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", Str(Posted.PayoutPageTokenDuration));
+	SetSetting("POWRS.PaymentLink.SMSTextLocalKey", Str(Posted.SMSTextLocalKey));
 	
 	SeeOther("Settings.md");
 );
@@ -88,6 +89,11 @@ if exists(Posted) then
 <p>
 <label for="PayoutPageTokenDuration">Token duration: </label>  
 <input type="number" min="5" max="15" id="PayoutPageTokenDuration" name="PayoutPageTokenDuration" value='{{GetSetting("POWRS.PaymentLink.PayoutPageTokenDuration","")}}' autofocus required title="Duration of jwt token for initiating payment on payout page. "/>
+</p>
+
+<p>
+<label for="SMSTextLocalKey">SMS TextLocal Key: </label>  
+<input type="text" id="SMSTextLocalKey" name="SMSTextLocalKey" value='{{GetSetting("POWRS.PaymentLink.SMSTextLocalKey","")}}' autofocus required title="Key for sending SMS"/>
 </p>
 
 <button type="submit" class="posButton">Apply</button>

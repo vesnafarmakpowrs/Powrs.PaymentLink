@@ -36,6 +36,17 @@
 				<Folder name="Mail">
 					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="SendContactUsEmail.ws"/>
+					<Content fileName="SendPaylinkViaEmail.ws"/>
+				</Folder>
+				<Folder name="SMS">
+					<Content fileName="SendPaylinkViaSMS.ws"/>
+				</Folder>
+				<Folder name="Reports">
+					<Content fileName="AdminPortalDashboard.ws"/>
+					<Content fileName="AgentList.ws"/>
+					<Content fileName="ListOfTransactions.ws"/>
+					<Content fileName="OnBoardedUsers.ws"/>
+					<Content fileName="ReportTransactions.ws"/>
 				</Folder>
 			</Folder>
 		</Folder>

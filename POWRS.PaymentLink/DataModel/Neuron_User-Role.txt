@@ -1,0 +1,28 @@
+@startuml
+
+map "**tbl_Users**" as User {
+  UserName =>
+  Password(nvarchar) =>
+
+}
+
+map "**tbl_SA_UserMapping**" as SAUserMapping {
+  Id(int) =>
+  UserName => 
+  RoleId =>
+  ParentId(int) =>
+  IsActive(bool) =>
+  Company =>
+}
+
+map "**tbl_SA_Role**" as Role {
+  RoleId =>
+  Name(nvarchar) =>
+
+}
+
+User::UserName --> SAUserMapping::UserName
+SAUserMapping::Id --> SAUserMapping::ParentId
+Role::RoleId --> SAUserMapping::RoleId
+
+@enduml
