@@ -1,6 +1,6 @@
 try
 (
-ValidatedUser:= Global.ValidateAgentApiToken(true);
+ValidatedUser:= Global.ValidateAgentApiToken(true, false);
 
 Identity := select top 1 Properties from LegalIdentities where Id = ValidatedUser.legalId;
 IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);

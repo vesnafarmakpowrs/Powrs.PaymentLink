@@ -1,6 +1,6 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
 
-SessionUser:= Global.ValidateAgentApiToken(true);
+SessionUser:= Global.ValidateAgentApiToken(true, false);
 
 contracts:= null;
 PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");

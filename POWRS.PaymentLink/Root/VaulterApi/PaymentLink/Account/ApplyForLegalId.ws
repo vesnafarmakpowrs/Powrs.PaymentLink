@@ -3,7 +3,7 @@
 ({
     "firstName" : Required(Str(PFirstName) like "[\\p{L}\\s]{2,20}"),
     "lastName" : Required(Str(PLastName) like "[\\p{L}\\s]{2,20}"),
-    "personalNumber" : Required(Str(PPersonalNumber) like "\\d*-?\\d*"),
+    "personalNumber" : Required(Str(PPersonalNumber) like "^\\d{13}$"),
     "country" : Required(Str(PCountryCode) like "[A-Z]{2}"),
     "orgName": Required(Str(POrgName) like "\\p{L}{2,50}$"),
     "orgNumber": Required(Str(POrgNumber) like "\\d{9}$"),
@@ -20,7 +20,7 @@
 }:=Posted) ??? BadRequest(Exception.Message);
 
 
-SessionUser:= Global.ValidateAgentApiToken(false);
+SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 try
 (

@@ -2,7 +2,7 @@
     "bankAccount":Required(String(PBankAccount)) like "SE\\d{22}"
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-Global.ValidateAgentApiToken(false);
+Global.ValidateAgentApiToken(false, false);
 
 bankAccountInformationList := [
          { 'ClearingNumberFrom' : 1100, 'ClearingNumberTo' : 1199, 'Method' : 1, 'IbanId' : "300", 'Bic' :"NDEASESS" },

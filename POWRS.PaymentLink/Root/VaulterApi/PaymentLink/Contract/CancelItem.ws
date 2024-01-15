@@ -3,7 +3,7 @@
     "refundAmount" : Optional(int(PRefundAmount))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-SessionUser:= Global.ValidateAgentApiToken(true);
+SessionUser:= Global.ValidateAgentApiToken(true, false);
 
 try
 (

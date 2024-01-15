@@ -1,5 +1,5 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
-ValidatedUser:= Global.ValidateAgentApiToken(true);
+ValidatedUser:= Global.ValidateAgentApiToken(true, false);
 
 ({
     "orgPhoneNumber": Required(Str(POrgPhoneNumber) like "\\+381\\d{8,9}"),

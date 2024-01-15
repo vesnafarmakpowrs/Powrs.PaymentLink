@@ -19,7 +19,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "supportedPaymentMethods": Optional(String(PSupportedPaymentMethods))
 }:=Posted) ??? BadRequest(Exception.Message);
 
-SessionUser:= Global.ValidateAgentApiToken(true);
+SessionUser:= Global.ValidateAgentApiToken(true, true);
 
 try
 (
