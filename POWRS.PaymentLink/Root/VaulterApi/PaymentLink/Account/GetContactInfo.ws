@@ -1,4 +1,5 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
+
 ValidatedUser:= Global.ValidateAgentApiToken(true, false);
 
 try

@@ -1,4 +1,5 @@
 Response.SetHeader("Access-Control-Allow-Origin","*");
+
 ({
     "email":Required(String(PEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
     "countryCode":Required(String(PCountryCode)  like "[A-Z]{2}")    
