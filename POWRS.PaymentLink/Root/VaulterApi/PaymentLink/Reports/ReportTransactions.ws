@@ -1,6 +1,6 @@
 ﻿
 
-SessionUser:= Global.ValidateAgentApiToken(true);
+SessionUser:= Global.ValidateAgentApiToken(true, false);
 
 ({
     "year":Required(String(PYear) like "[0-9]{4}"),

@@ -1,4 +1,4 @@
-﻿SessionUser:= Global.ValidateAgentApiToken(true);
+﻿SessionUser:= Global.ValidateAgentApiToken(true, false);
 
 if !exists(Posted) then BadRequest("No payload.");
 

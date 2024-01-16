@@ -6,7 +6,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "year":Required(String(PYear) like "[0-9]{4}") 
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
-SessionUser:= Global.ValidateAgentApiToken(true);
+SessionUser:= Global.ValidateAgentApiToken(true, false);
 
 try(
 	sqlData := select Max(Month(Created)) as 'Month'
