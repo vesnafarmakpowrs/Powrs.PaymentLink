@@ -99,6 +99,14 @@ try
                 Parameter.ObjectValue != null && !exists(Parameters[Parameter.Name]) ? Parameters[Parameter.Name]:=  Parameter.ObjectValue;
            );
 
+           sellerContactInfo:= select top 1 * from OrganizationContactInfo where Account = contract.Account;           
+           sellerContactInfoPropertyValues:= properties(sellerContactInfo).Values;
+
+           foreach property in sellerContactInfoPropertyValues do 
+           (
+                Parameters["SellerContact" + property[0]]:= property[1];
+           );
+
            Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
            IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString, System.Object);
            
