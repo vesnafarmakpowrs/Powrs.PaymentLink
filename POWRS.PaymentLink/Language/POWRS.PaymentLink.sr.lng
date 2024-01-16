@@ -36,7 +36,7 @@
 			<String id="32">Detalji za plaćanje</String>
 			<String id="34">Ime vlasnika kartice</String>
 			<String id="35">Puno ime na kartici</String>
-			<String id="36">Pametna plaćanja</String>
+			<String id="36">Zdravo {0}, Dobrodošli u pametna plaćanja</String>
 			<String id="37">Preostalo za plaćanje</String>
 			<String id="38">Pregled plaćanja</String>
 			<String id="39">Proizvod</String>

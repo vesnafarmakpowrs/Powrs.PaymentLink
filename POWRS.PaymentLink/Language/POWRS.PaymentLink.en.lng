@@ -36,7 +36,7 @@
 			<String id="32">Payment details</String>
 			<String id="34">Cardholder name</String>
 			<String id="35">Full name on card</String>
-			<String id="36">Smart payments checkout</String>
+			<String id="36">Hello {0}, Welcome to smart payments</String>
 			<String id="37">Left to pay</String>
 			<String id="38">Payment summary</String>
 			<String id="39">Item</String>
