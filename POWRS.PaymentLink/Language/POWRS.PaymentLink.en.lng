@@ -60,6 +60,9 @@
 			<String id="57">Adress</String>
 			<String id="58">Organization number</String>
 			<String id="59">Tel</String>
+			<String id="60">Activity</String>
+			<String id="61">Activity number</String>
+			<String id="62">Website</String>
 		</Namespace>
 	</Language>
 </Translation>

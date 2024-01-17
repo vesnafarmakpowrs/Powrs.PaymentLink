@@ -60,6 +60,9 @@
 			<String id="57">Adresa</String>
 			<String id="58">PIB</String>
 			<String id="59">Telefon</String>
+			<String id="60">Delatnost</String>
+			<String id="61">Šifra delatnosti</String>
+			<String id="62">Web-sajt</String>
 		</Namespace>
 	</Language>
 </Translation>

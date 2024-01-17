@@ -74,7 +74,11 @@ if ContractState == "AwaitingForPayment" then
     OrgTaxNum := ""; 
     OrgAddr := "";
     OrgNr := "";
-    OrgPhone := "";
+    OrgContactPhone := "";
+    OrgContactEmail := "";
+    OrgWebAddress := "";
+    OrgActivity:= "";
+    OrgActivityNumber:= "";
     if Identity != null then 
     (
        AgentName := Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST;
@@ -82,12 +86,17 @@ if ContractState == "AwaitingForPayment" then
        OrgTaxNum :=  Identity.ORGTAXNUM;
        OrgAddr :=  Identity.ORGADDR;
        OrgNr := Identity.ORGNR;
+       OrgActivity := Identity.ORGACTIVITY;
+       OrgActivityNumber:= Identity.ORGACTIVITYNUM;
     );
      
     CompanyInfo := select top 1 * from OrganizationContactInfo where Account = Contract.Account;
     if CompanyInfo != null then 
     (
-       OrgPhone :=CompanyInfo.PhoneNumber;
+       OrgContactPhone :=CompanyInfo.PhoneNumber;
+       OrgContactEmail := CompanyInfo.Email;
+       OrgWebAddress := CompanyInfo.WebAddress;
+       
     );
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
     SellerId := UpperCase(SellerName.Substring(0,3)); 
@@ -168,28 +177,48 @@ if ContractState == "AwaitingForPayment" then
  <tr id="tr_summary">
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
-          <tr id="tr_seller_info" >
+          <tr id="tr_seller_info">
             <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): **((OrgName ))**</td>
             <td class="itemPrice"><td>
             <td style="width:10%;"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/>  </td>
           </tr>
-          <tr id="tr_seller_tax_num" style="display:none">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(56) )): **(( OrgTaxNum))**</td>
-            <td class="itemPrice"><td>
-            <td style="width:10%;">  </td>
-          </tr>
-          <tr id="tr_seller_addr" style="display:none">
+          <tr id="tr_seller_addr" style="display:none;" >
             <td style="width:80%">((LanguageNamespace.GetStringAsync(57) )): **((OrgAddr ))**</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
-          <tr id="tr_seller_pib" style="display:none">
+          <tr id="tr_seller_pib" style="display:none;">
             <td style="width:80%">((LanguageNamespace.GetStringAsync(58) )): **((OrgNr ))**</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
-         <tr id="tr_seller_tel" style="display:none">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(59) )): **((OrgPhone ))**</td>
+          <tr id="tr_seller_tax_num" style="display:none;">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(56) )): **(( OrgTaxNum))**</td>
+            <td class="itemPrice"><td>
+            <td style="width:10%;">  </td>
+          </tr>
+          <tr id="tr_seller_activity" style="display:none;">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(60) )): **(( OrgActivity))**</td>
+            <td class="itemPrice"><td>
+            <td style="width:10%;">  </td>
+          </tr>
+          <tr id="tr_seller_activity_number" style="display:none;">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(61) )): **(( OrgActivityNumber))**</td>
+            <td class="itemPrice"><td>
+            <td style="width:10%;">  </td>
+          </tr>
+         <tr id="tr_seller_tel" style="display:none;">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(59) )): **((OrgContactPhone ))**</td>
+            <td class="itemPrice"><td>
+            <td style="width:10%;">  </td>
+          </tr>
+           <tr id="tr_seller_email" style="display:none;">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(3) )): **((OrgContactEmail ))**</td>
+            <td class="itemPrice"><td>
+            <td style="width:10%;">  </td>
+          </tr>
+           <tr id="tr_seller_website" style="display:none;">
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(62) )): **((OrgWebAddress )) ** </td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>

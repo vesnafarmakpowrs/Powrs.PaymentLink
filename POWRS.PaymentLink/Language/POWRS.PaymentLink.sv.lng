@@ -60,6 +60,9 @@
 			<String id="57">Adress</String>
 			<String id="58">Organization number</String>
 			<String id="59">Tel</String>
+			<String id="60">Aktivitet</String>
+			<String id="61">Aktivitetskod</String>
+			<String id="62">Hemsida</String>
 		</Namespace>
 	</Language>
 </Translation>

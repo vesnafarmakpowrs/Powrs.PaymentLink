@@ -196,8 +196,12 @@ function ExpandDetails() {
 function ExpandSellerDetails() {
     document.getElementById("tr_seller_addr").style.display = null;
     document.getElementById("tr_seller_tel").style.display = null;
-    document.getElementById("tr_seller_tax_num").style.display = null;
+    document.getElementById("tr_seller_tax_num").style.display = null;   
     document.getElementById("tr_seller_pib").style.display = null;
+    document.getElementById("tr_seller_activity").style.display = null;
+    document.getElementById("tr_seller_activity_number").style.display = null;
+    document.getElementById("tr_seller_email").style.display = null;
+    document.getElementById("tr_seller_website").style.display = null;
     expand_img = document.getElementById("expand_img");
     expand_img.src = "../resources/expand-up.svg";
     expand_img.removeEventListener('click', ExpandSellerDetails); 
@@ -209,6 +213,10 @@ function CollapseSellerDetails() {
     document.getElementById("tr_seller_tel").style.display = "none";
     document.getElementById("tr_seller_tax_num").style.display = "none";
     document.getElementById("tr_seller_pib").style.display = "none";
+    document.getElementById("tr_seller_activity").style.display = "none";
+    document.getElementById("tr_seller_activity_number").style.display = "none";
+    document.getElementById("tr_seller_email").style.display = "none";
+    document.getElementById("tr_seller_website").style.display = "none";
     expand_img = document.getElementById("expand_img");
     expand_img.src = "../resources/expand-down.svg";
     expand_img.removeEventListener('click', CollapseSellerDetails); 
