@@ -110,7 +110,9 @@ function DisplayTransactionResult(Result) {
 
 function UserAgree() {
 
-    if (document.getElementById("termsAndCondition").checked) {
+    if (document.getElementById("termsAndCondition").checked
+        && document.getElementById("termsAndConditionAgency").checked)
+    {
         document.getElementById("payspot-submit").removeAttribute("disabled");
         document.getElementById("ctn-payment-method-rs").style.display = "block";
     }
@@ -222,4 +224,3 @@ function CollapseSellerDetails() {
     expand_img.removeEventListener('click', CollapseSellerDetails); 
     expand_img.addEventListener("click", ExpandSellerDetails);
 }
-
