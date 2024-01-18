@@ -62,6 +62,9 @@
 				<Variable id="BuyerEmail">
 					<TagReference tag="BuyerEmail" />
 				</Variable>
+				<Variable id="BuyerAddress">
+					<TagReference tag="BuyerAddress" />
+				</Variable>
 				<Variable id="CallBackUrl">
 					<TagReference tag="CallBackUrl" />
 				</Variable>
@@ -314,6 +317,9 @@
 		<Tag name="BuyerEmail">
 			<ParameterReference parameter="BuyerEmail" />
 		</Tag>
+		<Tag name="BuyerAddress">
+			<ParameterReference parameter="BuyerAddress" />
+		</Tag>
 		<Tag name="CallBackUrl">
 			<ParameterReference parameter="CallBackUrl" />
 		</Tag>
@@ -540,6 +546,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Buyer Email.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerAddress">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Address of the buyer to be presented on the paylink and confirmation screen.</text>
 				</paragraph>
 			</description>
 		</stringParameter>

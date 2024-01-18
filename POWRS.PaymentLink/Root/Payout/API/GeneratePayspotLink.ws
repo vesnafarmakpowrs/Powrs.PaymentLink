@@ -19,7 +19,7 @@ try
 	currentState:= token.GetCurrentStateVariables();
 	if(currentState.State != "AwaitingForPayment") then
 	(
-	 BadRequest("Payment already executed for this contract.");
+	  BadRequest("Payment is not available for this contract");
 	);
 
 	contractParameters:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, System.Object);

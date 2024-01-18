@@ -13,6 +13,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerLastName":Required(String(PBuyerLastName) like "[\\p{L}\\s]{2,20}"),
     "buyerEmail":Required(String(PBuyerEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber)  like "^\\+[0-9]{6,15}$"),
+    "buyerAddress": Required(Str(PBuyerAddress) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$") ,
     "buyerCountryCode":Required(String(PBuyerCountryCode)  like "[A-Z]{2}"),
     "callbackUrl":Optional(String(PCallBackUrl)),
     "webPageUrl":Optional(String(PWebPageUrl)),
@@ -139,7 +140,8 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
         "BuyerEmail":PBuyerEmail,
         "CallBackUrl" : CallBackUrl,
         "WebPageUrl" : WebPageUrl,
-        "SupportedPaymentMethods": PSupportedPaymentMethods
+        "SupportedPaymentMethods": PSupportedPaymentMethods,
+        "BuyerAddress": PBuyerAddress
     });
 
 Nonce := Base64Encode(RandomBytes(32));
@@ -182,6 +184,7 @@ while StateMachineInitialized == false and Counter < 10 do
     StateMachineInitialized:= Token.HasStateMachine;    
  );
  Counter += 1;
+ Sleep(1000);
 );
 
 {
