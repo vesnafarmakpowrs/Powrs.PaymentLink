@@ -10,13 +10,15 @@ try
  doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
  template:= "https://" + PaylinkDomain + "/Payout.md?ID={0}";
 
-list:= Create(System.Collections.Generic.List, System.Object);
-tokens:= select * from IoTBroker.NeuroFeatures.Token t where t.Creator = SessionUser.legalId;
+ResultList:= Create(System.Collections.Generic.List, System.Object);
 
-foreach token in (select * from tokens order by Created desc) do 
+creatorJid:= SessionUser.username + "@" + Gateway.Domain;
+tokens:= select * from IoTBroker.NeuroFeatures.Token t where  t.CreatorJid = creatorJid;
+
+foreach token in (select * from tokens order by Created desc) do
 (
  variables:= token.GetCurrentStateVariables();
- list.Add({
+ ResultList.Add({
 	"TokenId": token.TokenId,
 	"CanCancel": exists(cancelAllowedStates[s.State]),
 	"IsActive": !exists(doneStates[s.State]),
@@ -33,4 +35,4 @@ catch
  InternalServerError(Exception.Message)
 );
 
-Return(list);
+Return(ResultList);
