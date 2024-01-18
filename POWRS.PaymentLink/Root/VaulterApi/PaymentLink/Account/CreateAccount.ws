@@ -36,6 +36,7 @@ try
 
     if(!System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = PUserName)) then 
     (
+        AccountAlreadyExists:= true;
         Error("Account with " + PUserName + " already exists");
     );
 
@@ -74,7 +75,7 @@ try
 (
     if(!exists(NewAccount.jwt)) then 
     (
-	    BadRequest("Token not available in response.");
+	    Error("Token not available in response.");
     );
 
     PLocalName:= "ed448";
@@ -107,7 +108,7 @@ try
 catch
 (
   Log.Error("Unable to create key: " + Exception.Message, null);
-  BadRequest(Exception.Message);
+  Error("Unable to create key: " + Exception.Message);
 )
 finally
 (
@@ -129,6 +130,19 @@ finally
 )
 catch
 (
+    if(!exists(AccountAlreadyExists)) then 
+    (
+        try 
+    (
+      delete from BrokerAccounts where UserName = PUserName;
+    )
+    catch
+    (
+ 	    Log.Error("Unable to cleanup for user " + PUserName, null);
+    );
+
+    );
+    
     Log.Error("Unable to create user: " + Exception.Message, null);
     BadRequest(Exception.Message);
 )
