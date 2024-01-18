@@ -628,9 +628,9 @@ Call this resource insert or update contact info
 ````
 {
     "orgPhoneNumber": Required(Str(POrgPhoneNumber) like "\\+381\\d{8,9}"),
-    "orgWebAddress": Required(Str(POrgWebAddress) like "(https?):\\/\\/([a-zA-Z0-9-]+\\.)*[a-zA- 
-Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?"),
-    "orgEmailAddress": Required(Str(POrgEmailAddress) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}")
+    "orgWebAddress": Required(Str(POrgWebAddress) like "(https?):\\/\\/([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?"),
+    "orgEmailAddress": Required(Str(POrgEmailAddress) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
+    "orgTermsAndConditionsUrl": Required(Str(POrgTermsAndConditions) like "^(https?):\\/\\/([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?$")
 }
 ````
 
@@ -639,6 +639,7 @@ Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?"),
 | `orgPhoneNumber`       | Phone number to contact company. |
 | `orgWebAddress`        | Web presentation.|
 | `orgEmailAddress`  | Support email address to send inquiry to company |
+| `orgTermsAndConditionsUrl`  | Terms and conditions for company |
 
 **Response**
 
@@ -670,4 +671,5 @@ Retrieves contact information for organizaion.
 | `WebAddress`        | Web presentation.|
 | `Email `  | Support email address to send inquiry to company |
 | `PhoneNumber `  | Phone number to contact company |
+| `TermsAndConditions `  | Terms and conditions url for company |
 

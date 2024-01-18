@@ -74,9 +74,6 @@ if ContractState == "AwaitingForPayment" then
     OrgTaxNum := ""; 
     OrgAddr := "";
     OrgNr := "";
-    OrgContactPhone := "";
-    OrgContactEmail := "";
-    OrgWebAddress := "";
     OrgActivity:= "";
     OrgActivityNumber:= "";
     if Identity != null then 
@@ -90,14 +87,16 @@ if ContractState == "AwaitingForPayment" then
        OrgActivityNumber:= Identity.ORGACTIVITYNUM;
     );
      
-    CompanyInfo := select top 1 * from OrganizationContactInfo where Account = Contract.Account;
-    if CompanyInfo != null then 
+    CompanyInfo := select top 1 * from POWRS.PaymentLink.OrganizationContactInfo where Account = Contract.Account;
+    if(CompanyInfo == null) then 
     (
-       OrgContactPhone :=CompanyInfo.PhoneNumber;
-       OrgContactEmail := CompanyInfo.Email;
-       OrgWebAddress := CompanyInfo.WebAddress;
-       
+        Return("Not available");
     );
+    if(!CompanyInfo.IsValid()) then 
+    (
+        Return("Not available");
+    );
+
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
     SellerId := UpperCase(SellerName.Substring(0,3)); 
 
@@ -208,17 +207,17 @@ if ContractState == "AwaitingForPayment" then
             <td style="width:10%;">  </td>
           </tr>
          <tr id="tr_seller_tel" style="display:none;">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(59) )): **((OrgContactPhone ))**</td>
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(59) )): **((CompanyInfo.PhoneNumber ))**</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
            <tr id="tr_seller_email" style="display:none;">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(3) )): **((OrgContactEmail ))**</td>
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(3) )): **((CompanyInfo.Email ))**</td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
            <tr id="tr_seller_website" style="display:none;">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(62) )): **((OrgWebAddress )) ** </td>
+            <td style="width:80%">((LanguageNamespace.GetStringAsync(62) )): **((CompanyInfo.WebAddress )) ** </td>
             <td class="itemPrice"><td>
             <td style="width:10%;">  </td>
           </tr>
@@ -293,7 +292,7 @@ if ContractState == "AwaitingForPayment" then
    <td colspan="3">
      <input type="checkbox" id="termsAndConditionAgency" name="termsAndCondition" onclick="UserAgree();"> 
      <label for="termsAndConditionAgency"> 
-       <a href="TermsAndCondition.html" target="_blank">**((OrgName )) ((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
+       <a href="((CompanyInfo.TermsAndConditions ))" target="_blank">**((OrgName )) ((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
     </td>
  </tr>
  </table>

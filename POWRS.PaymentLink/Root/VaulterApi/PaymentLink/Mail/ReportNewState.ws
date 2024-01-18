@@ -99,7 +99,7 @@ try
                 Parameter.ObjectValue != null && !exists(Parameters[Parameter.Name]) ? Parameters[Parameter.Name]:=  Parameter.ObjectValue;
            );
 
-           sellerContactInfo:= select top 1 * from OrganizationContactInfo where Account = contract.Account;           
+           sellerContactInfo:= select top 1 * from POWRS.PaymentLink.OrganizationContactInfo where Account = contract.Account;           
            sellerContactInfoPropertyValues:= properties(sellerContactInfo).Values;
 
            foreach property in sellerContactInfoPropertyValues do 
