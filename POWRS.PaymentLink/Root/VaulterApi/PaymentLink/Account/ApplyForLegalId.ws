@@ -1,22 +1,22 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
 
 ({
-    "firstName" : Required(Str(PFirstName) like "[\\p{L}\\s]{2,20}"),
-    "lastName" : Required(Str(PLastName) like "[\\p{L}\\s]{2,20}"),
+    "firstName" : Required(Str(PFirstName) like "[\\p{L}\\s]{2,30}"),
+    "lastName" : Required(Str(PLastName) like "[\\p{L}\\s]{2,30}"),
     "personalNumber" : Required(Str(PPersonalNumber) like "^\\d{13}$"),
     "country" : Required(Str(PCountryCode) like "[A-Z]{2}"),
-    "orgName": Required(Str(POrgName) like "\\p{L}{2,50}$"),
-    "orgNumber": Required(Str(POrgNumber) like "\\d{9}$"),
+    "orgName": Required(Str(POrgName) like "^[\\p{L}\\s]{1,100}$"),
+    "orgNumber": Required(Str(POrgNumber) like "\\d{8,9}$"),
     "orgCity": Required(Str(POrgCity) like "\\p{L}{2,50}$"),
     "orgCountry": Required(Str(POrgCountry) like "\\p{L}{2,50}$"),
-    "orgAddr": Required(Str(POrgAddress) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$") ,
-    "orgAddr2": Required(Str(POrgAddress2) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$"),
+    "orgAddr": Required(Str(POrgAddress) like "^[\\p{L}\\p{N}\\s]{1,100}$") ,
+    "orgAddr2": Required(Str(POrgAddress2) like "^[\\p{L}\\p{N}\\s]{0,100}$"),
     "orgBankNum": Required(Str(POrgBankNum) like "^(?!.*--)[\\d-]{1,25}$"),
     "orgDept": Required(Str(POrgDept) like "\\p{L}{2,50}$"),
     "orgRole": Required(Str(POrgRole) like "\\p{L}{2,50}$"),
-    "orgActivity":  Required(Str(POrgActivity) like "\\p{L}{2,50}$"),
-    "orgActivityNumber":  Required(Str(POrgActivityNumber) like "\\d{4}$"),
-    "orgTaxNumber":  Required(Str(POrgTaxNumber) like "\\d{9}$")
+    "orgActivity":  Required(Str(POrgActivity) like "^[\\p{L}\\s]{1,100}$"),
+    "orgActivityNumber":  Required(Str(POrgActivityNumber) like "\\d{4,5}$"),
+    "orgTaxNumber":  Required(Str(POrgTaxNumber) like "\\d{9,10}$")
 }:=Posted) ??? BadRequest(Exception.Message);
 
 

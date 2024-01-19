@@ -179,8 +179,6 @@ function ShowPayspotPage(Data) {
 function CollapseDetails() {
     document.getElementById("tr_header").style.display = "none";
     document.getElementById("tr_header_title").style.display = "none";
-    document.getElementById("tr_fees").style.display = "none";
-    document.getElementById("tr_space").style.display = "none";
     document.getElementById("tr_summary").addEventListener("click", ExpandDetails);
 }
 
@@ -188,8 +186,6 @@ function ExpandDetails() {
     document.getElementById("tr_header").style.display = null;
     document.getElementById("tr_header_title").style.display = null;
     document.getElementById("tr_summary").style.display = null;
-    document.getElementById("tr_fees").style.display = null;
-    document.getElementById("tr_space").style.display = null;
     document.getElementById("tr_header").addEventListener("click", CollapseDetails);
     document.getElementById("tr_header_title").addEventListener("click", CollapseDetails);
 }

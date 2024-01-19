@@ -14,7 +14,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerEmail":Required(String(PBuyerEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber)  like "^[+]?[0-9]{6,15}$"),
     "buyerAddress": Required(Str(PBuyerAddress) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$") ,
-    "buyerCountryCode":Required(UpperCase(String(PBuyerCountryCode))  like "[A-Z]{2}"),
+    "buyerCountryCode":Required(String(PBuyerCountryCode)  like "[A-Z]{2}"),
     "callbackUrl":Optional(String(PCallBackUrl)),
     "webPageUrl":Optional(String(PWebPageUrl)),
     "supportedPaymentMethods": Optional(String(PSupportedPaymentMethods))
@@ -82,11 +82,6 @@ EscrowFee:= 0;
 foreach Parameter in ContractParameters do 
 (
   Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.ObjectValue;
-);
-
-if(EscrowFee <= 0) then 
-(
- Error("Fee not properly configured");
 );
 
   Identity := select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = SessionUser.username And State = 'Approved';

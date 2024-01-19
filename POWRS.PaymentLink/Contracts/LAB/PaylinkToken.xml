@@ -255,15 +255,19 @@
 				</Action>
 
 				<Action id="TransferFee">
-					<Try>
-						<Payment amount="{EscrowFee}" contract="{TokenContract}" currency="{Currency}" from="{Seller}" reference="{Reference:='nfeat:'+ TokenId}" to="{EscrowFeeJid}" validDays="3" />
-						<PersistVariable name="FeesTransfered" value="true" />
-						<TextNote content="{'Escrow fee of' + ' ' + EscrowFee + ' ' + Currency + ' of eDaler transferred.'}" />
-						<Catch exceptionVariable="ex">
-							<LogEvent actor="{Seller}" eventId="Transfer fee" level="Medium" message="Error when transferring fee" module="TransferFee" object="" type="Error" />
-							<Error reason="{ex.Message}" />
-						</Catch>
-					</Try>
+					<If condition="EscrowFee > 0">
+						<Then>
+							<Try>
+								<Payment amount="{EscrowFee}" contract="{TokenContract}" currency="{Currency}" from="{Seller}" reference="{Reference:='nfeat:'+ TokenId}" to="{EscrowFeeJid}" validDays="3" />
+								<PersistVariable name="FeesTransfered" value="true" />
+								<TextNote content="{'Escrow fee of' + ' ' + EscrowFee + ' ' + Currency + ' of eDaler transferred.'}" />
+								<Catch exceptionVariable="ex">
+									<LogEvent actor="{Seller}" eventId="Transfer fee" level="Medium" message="Error when transferring fee" module="TransferFee" object="" type="Error" />
+									<Error reason="{ex.Message}" />
+								</Catch>
+							</Try>
+						</Then>						
+					</If>					
 				</Action>
 				<Action id="TrySellEdaler">
 					<Try>
@@ -444,7 +448,7 @@
 				</paragraph>
 			</description>
 		</numericalParameter>
-		<numericalParameter name="EscrowFee" value="950" guide="Vaulter Fees" min="1" minIncluded="true">
+		<numericalParameter name="EscrowFee" value="0" guide="Vaulter Fees" min="0" minIncluded="true">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Vaulter transaction fees.</text>

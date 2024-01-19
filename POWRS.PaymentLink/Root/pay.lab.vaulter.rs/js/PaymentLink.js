@@ -111,8 +111,7 @@ function DisplayTransactionResult(Result) {
 function UserAgree() {
 
     if (document.getElementById("termsAndCondition").checked
-        && document.getElementById("termsAndConditionAgency").checked)
-    {
+        && document.getElementById("termsAndConditionAgency").checked) {
         document.getElementById("payspot-submit").removeAttribute("disabled");
         document.getElementById("ctn-payment-method-rs").style.display = "block";
     }
@@ -180,8 +179,6 @@ function ShowPayspotPage(Data) {
 function CollapseDetails() {
     document.getElementById("tr_header").style.display = "none";
     document.getElementById("tr_header_title").style.display = "none";
-    document.getElementById("tr_fees").style.display = "none";
-    document.getElementById("tr_space").style.display = "none";
     document.getElementById("tr_summary").addEventListener("click", ExpandDetails);
 }
 
@@ -189,8 +186,6 @@ function ExpandDetails() {
     document.getElementById("tr_header").style.display = null;
     document.getElementById("tr_header_title").style.display = null;
     document.getElementById("tr_summary").style.display = null;
-    document.getElementById("tr_fees").style.display = null;
-    document.getElementById("tr_space").style.display = null;
     document.getElementById("tr_header").addEventListener("click", CollapseDetails);
     document.getElementById("tr_header_title").addEventListener("click", CollapseDetails);
 }
@@ -198,7 +193,7 @@ function ExpandDetails() {
 function ExpandSellerDetails() {
     document.getElementById("tr_seller_addr").style.display = null;
     document.getElementById("tr_seller_tel").style.display = null;
-    document.getElementById("tr_seller_tax_num").style.display = null;   
+    document.getElementById("tr_seller_tax_num").style.display = null;
     document.getElementById("tr_seller_pib").style.display = null;
     document.getElementById("tr_seller_activity").style.display = null;
     document.getElementById("tr_seller_activity_number").style.display = null;
@@ -206,7 +201,7 @@ function ExpandSellerDetails() {
     document.getElementById("tr_seller_website").style.display = null;
     expand_img = document.getElementById("expand_img");
     expand_img.src = "../resources/expand-up.svg";
-    expand_img.removeEventListener('click', ExpandSellerDetails); 
+    expand_img.removeEventListener('click', ExpandSellerDetails);
     expand_img.addEventListener("click", CollapseSellerDetails);
 }
 
@@ -221,6 +216,6 @@ function CollapseSellerDetails() {
     document.getElementById("tr_seller_website").style.display = "none";
     expand_img = document.getElementById("expand_img");
     expand_img.src = "../resources/expand-down.svg";
-    expand_img.removeEventListener('click', CollapseSellerDetails); 
+    expand_img.removeEventListener('click', CollapseSellerDetails);
     expand_img.addEventListener("click", ExpandSellerDetails);
 }
