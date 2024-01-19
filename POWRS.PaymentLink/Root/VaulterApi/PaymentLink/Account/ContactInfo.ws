@@ -3,7 +3,7 @@
 ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
 ({
-    "orgPhoneNumber": Required(Str(POrgPhoneNumber) like "\\+381\\d{8,9}"),
+    "orgPhoneNumber": Required(Str(POrgPhoneNumber) like "^[+]?[0-9]{6,15}$"),
     "orgWebAddress": Required(Str(POrgWebAddress) like "^(https?):\\/\\/([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?$"),
     "orgEmailAddress": Required(Str(POrgEmailAddress) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
     "orgTermsAndConditionsUrl": Required(Str(POrgTermsAndConditions) like "^(https?):\\/\\/([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?$")  
