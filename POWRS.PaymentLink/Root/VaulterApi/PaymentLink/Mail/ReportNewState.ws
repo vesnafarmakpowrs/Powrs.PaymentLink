@@ -118,13 +118,15 @@ try
            IdentityProperties.Add("Domain", Gateway.Domain);
            
            PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
-           htmlTemplateRoot := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + CountryCode + "\\";
-
-           htmlTemplatePath:= htmlTemplateRoot + r.Status + ".html";
+           htmlTemplatePath := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + CountryCode + "\\" + r.Status + ".html";
 
            if (!File.Exists(htmlTemplatePath)) then 
            (
-            Error("Template path does not exist   " + htmlTemplatePath);
+             htmlTemplatePath := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + "EN" + "\\" + r.Status + ".html";
+             if(!File.Exists(htmlTemplatePath)) then 
+             (
+                Error("Template path does not exist   " + htmlTemplatePath);
+             );             
            );
 
            html:= System.IO.File.ReadAllText(htmlTemplatePath);

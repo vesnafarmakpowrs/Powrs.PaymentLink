@@ -50,6 +50,9 @@
 				<Variable id="Currency">
 					<TagReference tag="Currency" />
 				</Variable>
+				<Variable id="Country">
+					<TagReference tag="Country" />
+				</Variable>
 				<Variable id="TokenContract">
 					<TokenProperty>CreationContract</TokenProperty>
 				</Variable>
@@ -158,7 +161,7 @@
 									"CallBackUrl": CallBackUrl,
 									"TokenId": TokenId,
 									"SendEmail" : BuyerEmail,
-									"CountryCode" : "RS"
+									"CountryCode" : Country
 									};
 									if(exists(PayspotOrderId)) then
 									(
@@ -328,6 +331,9 @@
 		</Tag>
 		<Tag name="BuyerPhoneNumber">
 			<ParameterReference parameter="BuyerPhoneNumber" />
+		</Tag>
+		<Tag name="Country">
+			<ParameterReference parameter="Country" />
 		</Tag>
 		<Tag name="Title">
 			<ParameterReference parameter="Title" />
