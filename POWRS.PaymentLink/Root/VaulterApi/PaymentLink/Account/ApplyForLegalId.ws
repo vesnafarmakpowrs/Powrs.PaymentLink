@@ -1,29 +1,99 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
+SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 ({
-    "firstName" : Required(Str(PFirstName) like "[\\p{L}\\s]{2,30}"),
-    "lastName" : Required(Str(PLastName) like "[\\p{L}\\s]{2,30}"),
-    "personalNumber" : Required(Str(PPersonalNumber) like "^\\d{13}$"),
-    "country" : Required(Str(PCountryCode) like "[A-Z]{2}"),
-    "orgName": Required(Str(POrgName) like "^[\\p{L}\\s]{1,100}$"),
-    "orgNumber": Required(Str(POrgNumber) like "\\d{8,9}$"),
-    "orgCity": Required(Str(POrgCity) like "\\p{L}{2,50}$"),
-    "orgCountry": Required(Str(POrgCountry) like "\\p{L}{2,50}$"),
-    "orgAddr": Required(Str(POrgAddress) like "^[\\p{L}\\p{N}\\s]{1,100}$") ,
-    "orgAddr2": Required(Str(POrgAddress2) like "^[\\p{L}\\p{N}\\s]{0,100}$"),
-    "orgBankNum": Required(Str(POrgBankNum) like "^(?!.*--)[\\d-]{1,25}$"),
-    "orgDept": Required(Str(POrgDept) like "\\p{L}{2,50}$"),
-    "orgRole": Required(Str(POrgRole) like "\\p{L}{2,50}$"),
-    "orgActivity":  Required(Str(POrgActivity) like "^[\\p{L}\\s]{1,100}$"),
-    "orgActivityNumber":  Required(Str(POrgActivityNumber) like "\\d{4,5}$"),
-    "orgTaxNumber":  Required(Str(POrgTaxNumber) like "\\d{9,10}$")
-}:=Posted) ??? BadRequest(Exception.Message);
-
-
-SessionUser:= Global.ValidateAgentApiToken(false, false);
+    "firstName" : Required(Str(PFirstName)),
+    "lastName" : Required(Str(PLastName) ),
+    "personalNumber" : Required(Str(PPersonalNumber) ),
+    "country" : Required(Str(PCountryCode)),
+    "orgName": Required(Str(POrgName)),
+    "orgNumber": Required(Str(POrgNumber)),
+    "orgCity": Required(Str(POrgCity)),
+    "orgCountry": Required(Str(POrgCountry)),
+    "orgAddr": Required(Str(POrgAddress)) ,
+    "orgAddr2": Required(Str(POrgAddress2)),
+    "orgBankNum": Required(Str(POrgBankNum)),
+    "orgDept": Required(Str(POrgDept)),
+    "orgRole": Required(Str(POrgRole)),
+    "orgActivity":  Required(Str(POrgActivity)),
+    "orgActivityNumber":  Required(Str(POrgActivityNumber)),
+    "orgTaxNumber":  Required(Str(POrgTaxNumber))
+}:=Posted) ??? BadRequest("Request does not conform to the specification");
 
 try
 (
+    if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
+(
+    Error("First name not valid.");
+);
+if(PLastName not like "[\\p{L}\\s]{2,30}") then 
+(
+    Error("Last name not valid.");
+);
+if(PPersonalNumber not like "^\\d{13}$") then 
+(
+    Error("Personal number not valid.");
+);
+if(PCountryCode like "[A-Z]{2}") then 
+(
+    Error("Country code not valid.");
+);
+if(POrgName not like "^[\\p{L}\\s]{1,100}$") then 
+(
+    Error("Organization name not valid.");
+);
+if(POrgNumber not like "\\d{8,9}$") then 
+(
+    Error("Org number not valid.");
+);
+if(POrgCity not like "\\p{L}{2,50}$") then 
+(
+    Error("OrgCity not valid.");
+);
+if(POrgCountry not like "\\p{L}{2,50}$") then 
+(
+    Error("OrgCountry not valid.");
+);
+if(POrgAddress not like "^[\\p{L}\\p{N}\\s]{1,100}$") then 
+(
+    Error("OrgAddress not valid.");
+);
+
+if(POrgAddress2 not like "^[\\p{L}\\p{N}\\s]{1,100}$") then 
+(
+    Error("OrgAddress2 name not valid.");
+);
+
+if(POrgBankNum not like "^(?!.*--)[\\d-]{1,25}$") then 
+(
+    Error("BankNumber name not valid.");
+);
+
+if(POrgDept not like "\\p{L}{2,50}$") then 
+(
+    Error("Department name not valid.");
+);
+
+if(POrgRole not like "\\p{L}{2,50}$") then 
+(
+    Error("OrgRole not valid.");
+);
+
+if(POrgActivity not like "^[\\p{L}\\s]{1,100}$") then 
+(
+    Error("OrgActivity not valid.");
+);
+
+if(POrgActivityNumber not like "\\d{4,5}$") then 
+(
+    Error("ActivityNumber not valid.");
+);
+
+if(POrgTaxNumber not like "\\d{9,10}$") then
+(
+    Error("TaxNumber not valid.");
+);
+
     Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
     if(System.String.IsNullOrWhiteSpace(Password)) then 
     (

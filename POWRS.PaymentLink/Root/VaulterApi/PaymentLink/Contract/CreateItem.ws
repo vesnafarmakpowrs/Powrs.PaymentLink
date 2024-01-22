@@ -3,18 +3,18 @@ Response.SetHeader("Access-Control-Allow-Origin","*");
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
-    "orderNum":Required(String(PRemoteId) like "^(?!.*--)[a-zA-Z0-9-]{1,50}$"),
-    "title":Required(String(PTitle) like "[a-zA-Z0-9.,;:!?()'\" -]{2,30}"),
+    "orderNum":Required(String(PRemoteId)),
+    "title":Required(String(PTitle)),
     "price":Required(Double(PPrice) >= 0.1),
-    "currency":Required(String(PCurrency) like "[A-Z]{3}"),
-    "description":Required(String(PDescription)  like "[a-zA-Z0-9.,;:!?()'\" -]{2,100}"),
-    "deliveryDate":Required(String(PDeliveryDate) like "^(0[1-9]|1[0-2])\\/(0[1-9]|[12][0-9]|3[01])\\/\\d{4}$"),
-    "buyerFirstName":Required(String(PBuyerFirstName) like "[\\p{L}\\s]{2,20}"),
-    "buyerLastName":Required(String(PBuyerLastName) like "[\\p{L}\\s]{2,20}"),
-    "buyerEmail":Required(String(PBuyerEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
-    "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber)  like "^[+]?[0-9]{6,15}$"),
-    "buyerAddress": Required(Str(PBuyerAddress) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$") ,
-    "buyerCountryCode":Required(String(PBuyerCountryCode)  like "[A-Z]{2}"),
+    "currency":Required(String(PCurrency)),
+    "description":Required(String(PDescription)),
+    "deliveryDate":Required(String(PDeliveryDate)),
+    "buyerFirstName":Required(String(PBuyerFirstName)),
+    "buyerLastName":Required(String(PBuyerLastName)),
+    "buyerEmail":Required(String(PBuyerEmail)),
+    "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber)),
+    "buyerAddress": Required(Str(PBuyerAddress)) ,
+    "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "callbackUrl":Optional(String(PCallBackUrl)),
     "webPageUrl":Optional(String(PWebPageUrl)),
     "supportedPaymentMethods": Optional(String(PSupportedPaymentMethods))
@@ -24,6 +24,51 @@ SessionUser:= Global.ValidateAgentApiToken(true, true);
 
 try
 (
+if(PRemoteId not like "^(?!.*--)[a-zA-Z0-9-]{1,50}$") then 
+(
+    Error("RemoteId not valid.");
+);
+if(PTitle not like "[a-zA-Z0-9.,;:!?()'\" -]{2,30}") then 
+(
+    Error("Title not valid.");
+);
+if(PCurrency not like "[A-Z]{3}") then 
+(
+    Error("Currency not valid.");
+);
+if(PDescription not like "[a-zA-Z0-9.,;:!?()'\" -]{2,100}") then 
+(
+    Error("Description not valid.");
+);
+if(PDeliveryDate not like "^(0[1-9]|1[0-2])\\/(0[1-9]|[12][0-9]|3[01])\\/\\d{4}$") then 
+(
+    Error("Delivery date format not valid.");
+);
+if(PBuyerFirstName not like "[\\p{L}\\s]{2,20}") then 
+(
+    Error("buyerFirstName not valid.");
+);
+
+if(PBuyerLastName not like "[\\p{L}\\s]{2,20}") then 
+(
+    Error("buyerLastName not valid.");
+);
+if(PBuyerEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
+(
+    Error("BuyerEmail not valid.");
+);
+if(PBuyerPhoneNumber != null and PBuyerPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
+(
+    Error("buyerPhoneNumber not valid.");
+);
+if(PBuyerAddress not like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$") then 
+(
+    Error("buyerAddress not valid.");
+);
+if(PBuyerCountryCode not like "[A-Z]{2}") then 
+(
+    Error("BuyerCountry not valid.");
+);
 
 PPassword:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
 if(System.String.IsNullOrWhiteSpace(PPassword)) then 
