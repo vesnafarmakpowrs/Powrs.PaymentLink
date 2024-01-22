@@ -144,7 +144,9 @@ function StartPayment() {
     CollapseDetails();
 
     SendXmlHttpRequest("../Payout/API/GeneratePayspotLink.ws",
-        {},
+        {
+            "isFromMobile": isMobileDevice
+        },
         (response) => {
             if (!response.OK) {
                 TransactionFailed(null);

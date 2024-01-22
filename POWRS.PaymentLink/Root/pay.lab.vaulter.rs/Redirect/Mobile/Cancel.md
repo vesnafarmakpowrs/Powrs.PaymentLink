@@ -4,8 +4,9 @@ Date: 2023-08-04
 Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
-CSS: ../css/Payout.cssx
-CSS: ../css/Status.css
+CSS: ../../css/Payout.cssx
+CSS: ../../css/Status.css
+JavaScript: ../../js/PaymentLink.js
 viewport : Width=device-width, initial-scale=1
 Parameter: ORDERID
 Parameter: lng
@@ -92,12 +93,12 @@ if (ContractState == "AwaitingForPayment") then
      BuyerFirstName := Before(BuyerFullName," ");
       ]]  <table style="width:100%">
          <tr class="welcomeLbl">   
-         <td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
+         <td><img class="vaulterLogo" src="../../resources/vaulter_txt.svg" alt="Vaulter"/> </td>
     <td coolspan="2">
        <select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
   </tr>
    <tr>
-     <td>**((LanguageNamespace.GetStringAsync(36) ))</td>
+     <td><td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td></td>
 </tr>
 </table>
 
@@ -171,7 +172,7 @@ if (ContractState == "AwaitingForPayment") then
  <div class="vaulter-details container">
         <div class="messageContainer messageContainer_width">
             <div class="imageContainer">
-                <img src="../resources/error_red.png" alt="successpng" width="50" />
+                <img src="../../resources/error_red.png" alt="successpng" width="50" />
             </div>
             <div class="welcomeLbl textHeader">
                 <span>((LanguageNamespace.GetStringAsync(48) ))</span>

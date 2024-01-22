@@ -1,5 +1,7 @@
 ﻿SessionToken:=  Global.ValidatePayoutJWT();
-
+({
+    "isFromMobile":Required(Bool(PIsFromMobile))
+}:=Posted) ??? BadRequest(Exception.Message);
 try
 (
 	if(!exists(POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink)) then 
@@ -29,6 +31,8 @@ try
 	(
 	 contractParameters[var.Name]:= var.Value;
 	);
+
+	contractParameters["RequestFromMobilePhone"]:= PIsFromMobile;
 
 	legalIdentityProperties:= select top 1 Properties from LegalIdentities where Id = Token.Owner;
 	identityProperties:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, Waher.Persistence.CaseInsensitiveString);
