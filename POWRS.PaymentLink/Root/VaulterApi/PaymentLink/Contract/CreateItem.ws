@@ -28,7 +28,7 @@ if(PRemoteId not like "^(?!.*--)[a-zA-Z0-9-]{1,50}$") then
 (
     Error("RemoteId not valid.");
 );
-if(PTitle not like "[a-zA-Z0-9.,;:!?()'\" -]{2,30}") then 
+if(PTitle not like "[\\p{L}\\s0-9.,;:!?()'\" -]{2,30}") then 
 (
     Error("Title not valid.");
 );
@@ -36,7 +36,7 @@ if(PCurrency not like "[A-Z]{3}") then
 (
     Error("Currency not valid.");
 );
-if(PDescription not like "[a-zA-Z0-9.,;:!?()'\" -]{2,100}") then 
+if(PDescription not like "[\\p{L}\\s0-9.,;:!?()'\" -]{5,100}") then 
 (
     Error("Description not valid.");
 );
