@@ -42,7 +42,7 @@ if(POrgName not like "^[\\p{L}\\s]{1,100}$") then
 (
     Error("Organization name not valid.");
 );
-if(POrgNumber not like "\\d{8,9}$") then 
+if(POrgNumber not like "\\d{8,10}$") then 
 (
     Error("Org number not valid.");
 );
@@ -89,7 +89,7 @@ if(POrgActivityNumber not like "\\d{4,5}$") then
     Error("ActivityNumber not valid.");
 );
 
-if(POrgTaxNumber not like "\\d{9,10}$") then
+if(POrgTaxNumber not like "\\d{8,10}$") then
 (
     Error("TaxNumber not valid.");
 );

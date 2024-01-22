@@ -110,10 +110,12 @@ try
            Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
            IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString, System.Object);
            
+           foreach prop in Identity.Properties do 
+           (
+                IdentityProperties[prop.Name]:= prop.Value;
+           );
+
            IdentityProperties.Add("AgentName", Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
-           IdentityProperties.Add("ORGNAME", Identity.ORGNAME);
-           IdentityProperties.Add("ORGNR", Identity.ORGNR);
-           IdentityProperties.Add("ORGADDR", Identity.ORGADDR);
            IdentityProperties.Add("CountryCode", CountryCode);
            IdentityProperties.Add("Domain", Gateway.Domain);
            
