@@ -9,7 +9,8 @@ if !exists(Posted) then BadRequest("No payload.");
 try
 (	
 	contractId := "";
-	buyerEmail := "";
+	buyerEmail := "";	
+	buyerName := "";
 	sellerName := "";
 
 	linkParts := Split(PLink, "?ID=");
@@ -41,6 +42,12 @@ try
 			buyerEmail := variable.Value ?? "";
 		);
 		
+		if(variable != null && variable.Name == "Buyer") then 
+		(
+			buyerName := variable.Value ?? "";
+		);
+		
+		
 		if(variable != null && variable.Name == "SellerName") then 
 		(
 			sellerName := variable.Value ?? "";
@@ -49,6 +56,7 @@ try
 	);
 	
 	buyerEmail := buyerEmail ?? "";
+	buyerName := buyerName ?? "";
 	sellerName := sellerName ?? "";
 	
 	if(buyerEmail == "") then
@@ -57,24 +65,25 @@ try
 	);
 	
 	MailBody := 
-		"Poštovani,"
+		"Poštovani {{buyerName}},"
 		+ "<br />"
-		+ "<br /><strong>{{PKupac}}</strong> je kreirao link za plaćanje. Kliknite na &nbsp"
+		+ "<br /><strong>{{PKupac}}</strong> je kreirao Vaulter link za plaćanje za Vas. Kliknite na &nbsp"
 		+ "<a href = '{{PLink}}'>LINK</a>"
-		+ "&nbsp kako bi ste nastavili sa procesom plaćanja."
+		+ "&nbsp kako bi ste nastavili sa plaćanjem."
 		+ "<br /><br />Srdačan pozdrav,"
 		+ "<br />Vaulter"
 
 		+ "<br /><br />___"
-		+ "<br />Dear,"
+		+ "<br />Dear {{buyerName}},"
 		+ "<br />"
-		+ "<br /><strong>{{PKupac}}</strong> created paylink. Click on &nbsp"
+		+ "<br /><strong>{{PKupac}}</strong> has created a Vaulter payment link for you. Click on the following &nbsp"
 		+ "<a href = '{{PLink}}'>LINK</a>"
-		+ "&nbsp to continue with payment proccess."
+		+ "&nbsp to proceed with the payment."
 		+ "<br /><br />Best regards,"
 		+ "<br />Vaulter"
 		;
 	
+	MailBody := Replace(MailBody, "{{buyerName}}", buyerName);
 	MailBody := Replace(MailBody, "{{PKupac}}", sellerName);
 	MailBody := Replace(MailBody, "{{PLink}}", PLink);
 	
