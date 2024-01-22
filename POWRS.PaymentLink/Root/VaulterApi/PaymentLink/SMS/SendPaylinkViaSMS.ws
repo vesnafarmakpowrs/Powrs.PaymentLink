@@ -64,7 +64,7 @@ try
 	Form := Create(System.Collections.Generic.Dictionary,System.String,System.String);
 	Form["apikey"] := ApiKey;
 	Form["numbers"] := buyerPhoneNumber;
-	Form["sender"] := "Vaulter ID";
+	Form["sender"] := "Vaulter Paylink";
 	Form["message"] := SMSBody;
 	Post("https://api.txtlocal.com/send/", Form);
 		
