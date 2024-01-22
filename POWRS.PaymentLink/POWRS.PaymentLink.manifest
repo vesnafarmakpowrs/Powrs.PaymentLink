@@ -54,16 +54,16 @@
 			<Content fileName="Index.html"/>
 			<Content fileName="Payout.md"/>
 			<Content fileName="TermsAndCondition.html"/>
-			<Content fileName="PrivacyPolicy.html"/>
-			<Folder name="Mobile">
-				<Content fileName="Success.md"/>
-				<Content fileName="Cancel.md"/>
-				<Content fileName="Error.md"/>
-			</Folder>
+			<Content fileName="PrivacyPolicy.html"/>			
 			<Folder name="Redirect">
 				<Content fileName="Success.md"/>
 				<Content fileName="Cancel.md"/>
 				<Content fileName="Error.md"/>
+				<Folder name="Mobile">
+					<Content fileName="Success.md"/>
+					<Content fileName="Cancel.md"/>
+					<Content fileName="Error.md"/>
+				</Folder>
 			</Folder>
 			<Folder name="css">
 				<Content fileName="Payout.cssx"/>

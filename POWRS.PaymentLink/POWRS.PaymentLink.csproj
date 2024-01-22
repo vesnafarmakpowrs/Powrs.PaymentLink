@@ -264,13 +264,13 @@
 	  <None Update="Root\pay.lab.vaulter.rs\Index.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Cancel.md">
+	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Mobile\Cancel.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Error.md">
+	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Mobile\Error.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Mobile\Success.md">
+	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Mobile\Success.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.lab.vaulter.rs\PrivacyPolicy.html">
@@ -318,13 +318,13 @@
 	  <None Update="Root\pay.vaulter.rs\Index.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.vaulter.rs\Mobile\Cancel.md">
+	  <None Update="Root\pay.vaulter.rs\Redirect\Mobile\Cancel.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.vaulter.rs\Mobile\Error.md">
+	  <None Update="Root\pay.vaulter.rs\Redirect\Mobile\Error.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.vaulter.rs\Mobile\Success.md">
+	  <None Update="Root\pay.vaulter.rs\Redirect\Mobile\Success.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\PrivacyPolicy.html">
