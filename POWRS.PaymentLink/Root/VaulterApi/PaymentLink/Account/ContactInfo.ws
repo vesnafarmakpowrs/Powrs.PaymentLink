@@ -1,12 +1,11 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
-
 ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
 ({
-    "orgPhoneNumber": Required(Str(POrgPhoneNumber) like "^[+]?[0-9]{6,15}$"),
-    "orgWebAddress": Required(Str(POrgWebAddress) like "^(https?):\\/\\/([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?$"),
-    "orgEmailAddress": Required(Str(POrgEmailAddress) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
-    "orgTermsAndConditionsUrl": Required(Str(POrgTermsAndConditions) like "^(https?):\\/\\/([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?$")  
+    "orgPhoneNumber": Required(Str(POrgPhoneNumber)),
+    "orgWebAddress": Required(Str(POrgWebAddress)),
+    "orgEmailAddress": Required(Str(POrgEmailAddress)),
+    "orgTermsAndConditionsUrl": Required(Str(POrgTermsAndConditions))  
 }:=Posted) ??? BadRequest(Exception.Message);
 
 ValidateUrl(url):= 
@@ -24,6 +23,22 @@ ValidateUrl(url):=
 );
 try
 (
+   if(POrgPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
+(
+	Error("Phone not in correct format");
+);
+   if(POrgWebAddress not like "^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$") then 
+(
+	Error("WebAddress not in correct format");
+);
+   if(POrgEmailAddress not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
+(
+	Error("Email not in correct format");
+);
+   if(POrgTermsAndConditions not like"^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$") then 
+(
+	Error("Terms and conditions url not in correct format");
+);
     ValidateUrl(POrgWebAddress);
     ValidateUrl(POrgTermsAndConditions);
 
