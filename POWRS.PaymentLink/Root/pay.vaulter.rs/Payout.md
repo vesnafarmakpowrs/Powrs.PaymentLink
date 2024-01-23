@@ -5,6 +5,7 @@ Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
 CSS: css/Payout.cssx
+Icon: favicon.ico
 viewport : Width=device-width, initial-scale=1
 Parameter: ID
 Parameter: lng
@@ -228,7 +229,7 @@ if ContractState == "AwaitingForPayment" then
   <table style="width:100%">
     <tr id="tr_header" class="table-row">
       <td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
-      <td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) ))<strong></td>
+      <td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) )) ((LanguageNamespace.GetStringAsync(54) ))<strong></td>
     </tr>
     <tr id="tr_header_title">
       <td colspan="2" class="item border-radius">
@@ -241,18 +242,6 @@ if ContractState == "AwaitingForPayment" then
           </tr>
           <tr>
             <td style="width:70%"> ((Description))</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr id="tr_summary">
-      <td colspan="2" class="item border-radius">
-        <table style="vertical-align:middle; width:100%;">
-          <tr>
-            <td style="width:80%">**((LanguageNamespace.GetStringAsync(20) ))((LanguageNamespace.GetStringAsync(54) )): **</td>
-            <td class="itemPrice" rowspan="2">((AmountToPay))
-            <td>
-            <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
           </tr>
         </table>
       </td>
