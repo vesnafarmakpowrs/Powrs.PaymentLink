@@ -54,9 +54,9 @@ if !exists(Token) then
 
 if Token.HasStateMachine then
 (
-	CurrentState:=Token.GetCurrentStateVariables();
-	if exists(CurrentState) then
-		ContractState:= CurrentState.State;
+    CurrentState:=Token.GetCurrentStateVariables();
+    if exists(CurrentState) then
+        ContractState:= CurrentState.State;
 );
 if ContractState == "AwaitingForPayment" then 
 (
@@ -64,7 +64,7 @@ if ContractState == "AwaitingForPayment" then
    
     if !exists(Contract) then
     (
-	 ]]<b>Payment link is not valid</b>[[;
+     ]]<b>Payment link is not valid</b>[[;
          Return("");
     );
 
@@ -135,7 +135,7 @@ if ContractState == "AwaitingForPayment" then
                 "tokenId": Token.TokenId,
                 "sub": BuyerFullName, 
                 "id": NewGuid().ToString(),
-	            "ip": Request.RemoteEndPoint,
+                "ip": Request.RemoteEndPoint,
                 "country": Country,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
@@ -173,80 +173,59 @@ if ContractState == "AwaitingForPayment" then
 <input type="hidden" value="((Country ))" id="country"/>
 
 <div class="payment-details">
-<table style="width:100%">
- <tr id="tr_summary">
-      <td colspan="2" class="item border-radius">
-        <table style="vertical-align:middle; width:100%;">
-          <tr id="tr_seller_info">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(11) )): ((OrgName ))</td>
-            <td class="itemPrice"><td>
-            <td style="width:10%;"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/>  </td>
-          </tr>
-          <tr id="tr_seller_addr" style="display:none;" >
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(57) )): ((OrgAddr ))</td>
-            <td class="itemPrice"><td>
-            <td style="width:10%;">  </td>
-          </tr>
-          <tr id="tr_seller_pib" style="display:none;">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(58) )): ((OrgNr ))</td>
-            <td class="itemPrice"><td>
-            <td style="width:10%;">  </td>
-          </tr>
-          <tr id="tr_seller_tax_num" style="display:none;">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(56) )): (( OrgTaxNum))</td>
-            <td class="itemPrice"><td>
-            <td style="width:10%;">  </td>
-          </tr>
-          <tr id="tr_seller_activity" style="display:none;">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(60) )): (( OrgActivity))</td>
-            <td class="itemPrice"><td>
-            <td style="width:10%;">  </td>
-          </tr>
-          <tr id="tr_seller_activity_number" style="display:none;">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(61) )): (( OrgActivityNumber))</td>
-            <td class="itemPrice"><td>
-            <td style="width:10%;">  </td>
-          </tr>
-         <tr id="tr_seller_tel" style="display:none;">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(59) )): ((CompanyInfo.PhoneNumber ))</td>
-            <td class="itemPrice"><td>
-            <td style="width:10%;">  </td>
-          </tr>
-           <tr id="tr_seller_email" style="display:none;">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(3) )): ((CompanyInfo.Email ))</td>
-            <td class="itemPrice"><td>
-            <td style="width:10%;">  </td>
-          </tr>
-           <tr id="tr_seller_website" style="display:none;">
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(62) )): ((CompanyInfo.WebAddress )) </td>
-            <td class="itemPrice"><td>
-            <td style="width:10%;">  </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-  <table style="width:100%">
-    <tr id="tr_header" class="table-row">
-      <td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
-      <td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) )) ((LanguageNamespace.GetStringAsync(54) ))<strong></td>
-    </tr>
-    <tr id="tr_header_title">
-      <td colspan="2" class="item border-radius">
-        <table style="vertical-align:middle; width:100%;">
-          <tr>
-            <td style="width:80%;"> ((Title))</td>
-            <td class="itemPrice" rowspan="2">((ContractValue))
-            <td>
-            <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-          </tr>
-          <tr>
-            <td style="width:70%"> ((Description))</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+   <table style="width:100%">
+      <tr id="tr_summary">
+         <td class="item border-radius">
+            <table style="vertical-align:middle; width:100%;">
+               <tr id="tr_seller_info">
+                  <td style="width:50%">((LanguageNamespace.GetStringAsync(11) )): ((OrgName ))</td>
+                  <td style="width:40%"></td>
+                  <td style="width:10%;text-align:right"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/></td>
+               </tr>
+                <tr id="tr_seller_dtl" style="display:none"  class="agent-info">
+                 <td>
+                    <div class="agent-contact-info">
+			<p>((OrgAddr ))test</p>
+		        <p>((CompanyInfo.PhoneNumber ))</p>
+                        <p>((CompanyInfo.Email ))</p>
+                        <p>((MarkdownEncode(CompanyInfo.WebAddress) )))</p>
+                    </div>
+                  </td>
+ 		  <td colspan="2" > 
+                    <div style="float: right;" align="right" class="agent-detail">
+			<p>((LanguageNamespace.GetStringAsync(58) )): ((OrgNr ))</p>
+		        <p>((LanguageNamespace.GetStringAsync(60) )): (( OrgActivity))</p>
+                        <p>((LanguageNamespace.GetStringAsync(61) )): (( OrgActivityNumber))</p>
+                        <p>((LanguageNamespace.GetStringAsync(56) )): (( OrgTaxNum))</p>
+                    </div>
+                  </td>
+               </tr>
+            </table>
+         </td>
+      </tr>
+   </table>
+
+   <table style="width:100%">
+      <tr id="tr_header" class="table-row">
+         <td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
+         <td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) )) ((LanguageNamespace.GetStringAsync(54) ))<strong></td>
+      </tr>
+      <tr id="tr_header_title">
+         <td colspan="2" class="item border-radius">
+            <table style="vertical-align:middle; width:100%;">
+               <tr>
+                  <td style="width:80%;"> ((Title))</td>
+                  <td class="itemPrice" rowspan="2">((ContractValue))
+                  <td>
+                  <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
+               </tr>
+               <tr>
+                  <td style="width:70%"> ((Description))</td>
+               </tr>
+            </table>
+         </td>
+      </tr>
+   </table>
 </div>
 <div class="spaceItem"></div>
 <div class="vaulter-details">

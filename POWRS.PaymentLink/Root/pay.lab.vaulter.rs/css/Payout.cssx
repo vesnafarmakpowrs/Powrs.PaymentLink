@@ -112,6 +112,23 @@ form {
   align:center;
 }
 
+.agent-info
+{
+  font-family: 'RTDromo';
+  font-size: 0.8rem !important;
+  padding-left: 10px !important;
+}
+
+.agent-contact-info
+{
+  padding-left: 10px !important;
+}
+
+.agent-detail
+{
+  padding-right: 10px !important;
+}
+
 .payment-notice-lbl
 {
   font-family: 'RTDromo';
@@ -175,14 +192,14 @@ form {
 
 @font-face {
 font-family: 'Goanda Bold';
-src: url('../Payout/Fonts/Coanda-Bold.ttf') format('truetype');
+src: url('Fonts/Coanda-Bold.ttf') format('truetype');
 font-weight: bold;
 font-style: normal;
 }
 
 @font-face {
 font-family: 'RTDromo';
-src: url('../Payout/Fonts/RTDromo-Book.woff2') format('woff2'),
+src: url('Fonts/RTDromo-Book.woff2') format('woff2'),
 url('fonts/RTDromo-Book.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -190,7 +207,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Book Oblique';
-src: url('../Payout/Fonts/RTDromo-BookOblique.woff2') format('woff2'),
+src: url('Fonts/RTDromo-BookOblique.woff2') format('woff2'),
 url('fonts/RTDromo-BookOblique.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -198,7 +215,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Light';
-src: url('../Payout/Fonts/RTDromo-Light.woff2') format('woff2'),
+src: url('Fonts/RTDromo-Light.woff2') format('woff2'),
 url('fonts/RTDromo-Light.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -207,7 +224,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Light Oblique';
-src: url('../Payout/Fonts/RTDromo-LightOblique.woff2') format('woff2'),
+src: url('Fonts/RTDromo-LightOblique.woff2') format('woff2'),
 url('fonts/RTDromo-LightOblique.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -216,7 +233,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Medium';
-src: url('../Payout/Fonts/RTDromo-Medium.woff2') format('woff2'),
+src: url('Fonts/RTDromo-Medium.woff2') format('woff2'),
 url('fonts/RTDromo-Medium.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -224,7 +241,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Medium Oblique';
-src: url('../Payout/Fonts/RTDromo-MediumOblique.woff2') format('woff2'),
+src: url('Fonts/RTDromo-MediumOblique.woff2') format('woff2'),
 url('fonts/RTDromo-MediumOblique.woff') format('woff');
 font-weight: normal;
 font-style: normal;
