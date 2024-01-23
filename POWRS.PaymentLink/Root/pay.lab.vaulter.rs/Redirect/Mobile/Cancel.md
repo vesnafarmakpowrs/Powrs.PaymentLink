@@ -133,25 +133,7 @@ if (ContractState == "AwaitingForPayment") then
           </tr>
         </table>
       </td>
-    </tr>
-    <tr id="tr_space" class="spaceUnder">
-      <td colspan="2"></td>
-    </tr>
-    <tr id="tr_fees" class="spaceUnder">
-      <td colspan="2" class="item border-radius">
-        <table style="vertical-align:middle; width:100%;">
-          <tr>
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(21) ))</td>
-            <td class="itemPrice" rowspan="2">((EscrowFee))
-            <td>
-            <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr class="spaceUnder">
-      <td colspan="2"></td>
-    </tr>
+    </tr>   
     <tr id="tr_summary">
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
