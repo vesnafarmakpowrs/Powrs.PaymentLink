@@ -105,7 +105,7 @@ if(POrgTaxNumber not like "\\d{8,10}$") then
 
     if(!isPersonalNumberValid) then 
      (
-       BadRequest("Personal number: " + PPersonalNumber + " not valid for " +  PCountryCode);
+       Error("Personal number: " + PPersonalNumber + " not valid for " +  PCountryCode);
      );
 
     neuronDomain:= "https://" + Gateway.Domain;
