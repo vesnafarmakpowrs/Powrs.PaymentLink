@@ -318,7 +318,7 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 }
 ````
 
-### Get Account Info
+### Get Legal Identity Info
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/GetLegalIdentityInfo.ws")}}`  
 Method: `POST`
@@ -340,6 +340,8 @@ There is no need of properties to be send in a request
 
 ````
 {
+ Properties: 
+ [
  "FIRST": (String),
  "MIDDLE": (String),
  "LAST":  (String),
@@ -368,6 +370,8 @@ There is no need of properties to be send in a request
  "ORGACTIVITY" : (String),
  "ORGACTIVITYNUM" : (String),
  "ORGTAXNUM" : (String)
+ ],
+ "HasApplied": (bool)
 }
 ````
 
