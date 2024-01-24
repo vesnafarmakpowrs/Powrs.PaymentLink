@@ -2,17 +2,30 @@ Response.SetHeader("Access-Control-Allow-Origin","*");
 
 try
 (
-ValidatedUser:= Global.ValidateAgentApiToken(true, false);
+ValidatedUser:= Global.ValidateAgentApiToken(false, false);
+if(System.String.IsNullOrEmpty(ValidatedUser.legalId)) then 
+(
+	Identity := select top 1 Properties from LegalIdentities where Account = ValidatedUser.username and State = "Created" order by Created desc;
+)
+else
+(
+	Identity := select top 1 Properties from LegalIdentities where Id = ValidatedUser.legalId;
+);
 
-Identity := select top 1 Properties from LegalIdentities where Id = ValidatedUser.legalId;
 IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
 
-foreach Parameter in Identity do 
+if(Identity != null) then 
 (
-	Parameter.Value != null ? IdentityProperties.Add(Parameter.Name, Parameter.Value);
-);  
+	foreach Parameter in Identity do 
+	(
+		Parameter.Value != null ? IdentityProperties.Add(Parameter.Name, Parameter.Value);
+	);
+);
+ {
+  "Properties": IdentityProperties,
+  "HasApplied": IdentityProperties.Count > 0
+ }
 
-IdentityProperties;
 )
 catch
 (

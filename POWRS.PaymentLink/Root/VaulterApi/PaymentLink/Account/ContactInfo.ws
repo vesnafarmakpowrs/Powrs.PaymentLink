@@ -27,7 +27,7 @@ try
 (
 	Error("Phone not in correct format");
 );
-   if(POrgWebAddress not like ^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$") then 
+   if(POrgWebAddress not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$") then 
 (
 	Error("WebAddress not in correct format");
 );
@@ -35,7 +35,7 @@ try
 (
 	Error("Email not in correct format");
 );
-   if(POrgTermsAndConditions not like ^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$") then 
+   if(POrgTermsAndConditions not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$") then 
 (
 	Error("Terms and conditions url not in correct format");
 );
