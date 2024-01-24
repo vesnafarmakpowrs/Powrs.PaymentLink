@@ -22,7 +22,7 @@ SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 try
 (
-    if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
+      if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
 (
     Error("First name not valid.");
 );
@@ -34,7 +34,7 @@ if(PPersonalNumber not like "^\\d{13}$") then
 (
     Error("Personal number not valid.");
 );
-if(PCountryCode like "[A-Z]{2}") then 
+if(PCountryCode not like "[A-Z]{2}") then 
 (
     Error("Country code not valid.");
 );
