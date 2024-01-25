@@ -22,76 +22,83 @@ SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 try
 (
-      if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
+errors:= Create(System.Collections.Generic.List, System.String);
+
+if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
 (
-    Error("First name not valid.");
+    errors.Add("firstName");    
 );
 if(PLastName not like "[\\p{L}\\s]{2,30}") then 
 (
-    Error("Last name not valid.");
+    errors.Add("lastName");
 );
 if(PPersonalNumber not like "^\\d{13}$") then 
 (
-    Error("Personal number not valid.");
+    errors.Add("personalNumber");
 );
 if(PCountryCode not like "[A-Z]{2}") then 
 (
-    Error("Country code not valid.");
+     errors.Add("country");
 );
 if(POrgName not like "^[\\p{L}\\s]{1,100}$") then 
 (
-    Error("Organization name not valid.");
+   errors.Add("orgName");
 );
 if(POrgNumber not like "\\d{8,10}$") then 
 (
-    Error("Org number not valid.");
+    errors.Add("orgNumber");
 );
 if(POrgCity not like "\\p{L}{2,50}$") then 
 (
-    Error("OrgCity not valid.");
+     errors.Add("orgCity");
 );
 if(POrgCountry not like "\\p{L}{2,50}$") then 
 (
-    Error("OrgCountry not valid.");
+    errors.Add("orgCountry");
 );
 if(POrgAddress not like "^[\\p{L}\\p{N}\\s]{1,100}$") then 
 (
-    Error("OrgAddress not valid.");
+     errors.Add("orgAddr");
 );
 
 if(POrgAddress2 not like "^[\\p{L}\\p{N}\\s]{1,100}$") then 
 (
-    Error("OrgAddress2 name not valid.");
+     errors.Add("orgAddr2");
 );
 
 if(POrgBankNum not like "^(?!.*--)[\\d-]{1,25}$") then 
 (
-    Error("BankNumber name not valid.");
+     errors.Add("orgBankNum");
 );
 
 if(POrgDept not like "\\p{L}{2,50}$") then 
 (
-    Error("Department name not valid.");
+    errors.Add("orgDept");
 );
 
 if(POrgRole not like "\\p{L}{2,50}$") then 
 (
-    Error("OrgRole not valid.");
+    errors.Add("orgRole");
 );
 
 if(POrgActivity not like "^[\\p{L}\\s]{1,100}$") then 
 (
-    Error("OrgActivity not valid.");
+    errors.Add("orgActivity");
 );
 
 if(POrgActivityNumber not like "\\d{4,5}$") then 
 (
-    Error("ActivityNumber not valid.");
+    errors.Add("orgActivityNumber");
 );
 
 if(POrgTaxNumber not like "\\d{8,10}$") then
 (
-    Error("TaxNumber not valid.");
+   errors.Add("orgTaxNumber");
+);
+
+if(errors.Any()) then 
+(
+    Error(errors);
 );
 
     Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
@@ -167,7 +174,15 @@ if(POrgTaxNumber not like "\\d{8,10}$") then
 catch
 (
     Log.Error("Unable to apply for legal id: " + Exception.Message, null);
-    BadRequest(Exception.Message);
+    if(errors.Count > 0) then 
+    (
+         BadRequest(errors);
+    )
+    else 
+    (
+         BadRequest(Exception.Message);
+    );
+   
 )
 finally
 (

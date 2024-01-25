@@ -10,37 +10,45 @@ ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
 ValidateUrl(url):= 
 (
-    urlResponse:= HEAD(url);
-    if(urlResponse == null) then 
+    isSuccess:= false;
+    try 
     (
-        Error("Invalid urlResponse for url: " + url);
+        urlResponse:= HEAD(url);
+        isSuccess:= urlResponse.StatusCode != 404;
+    )
+    catch 
+    (
+       isSuccess:= false;
     );
 
-    if(urlResponse.StatusCode == 400) then
-    (
-        Error("Website url not found: " + webSiteResponse.Message + " " + url);
-    );
+    Return(isSuccess);
 );
+
+errors:= Create(System.Collections.Generic.List, System.String);
+
 try
 (
    if(POrgPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
 (
-	Error("Phone not in correct format");
+	errors.Add("orgPhoneNumber");
 );
-   if(POrgWebAddress not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$") then 
+   if(POrgWebAddress not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$" or ValidateUrl(POrgWebAddress) == false) then 
 (
-	Error("WebAddress not in correct format");
+	errors.Add("orgWebAddress");
 );
    if(POrgEmailAddress not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
 (
-	Error("Email not in correct format");
+	errors.Add("orgEmailAddress");
 );
-   if(POrgTermsAndConditions not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$") then 
+   if(POrgTermsAndConditions not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$" or ValidateUrl(POrgTermsAndConditions) == false) then 
 (
-	Error("Terms and conditions url not in correct format");
+	errors.Add("orgTermsAndConditionsUrl");
 );
-    ValidateUrl(POrgWebAddress);
-    ValidateUrl(POrgTermsAndConditions);
+
+if(errors.Count > 0) then 
+(
+    BadRequest(errors);
+);
 
 organizationInfo:= select top 1 * from POWRS.PaymentLink.OrganizationContactInfo where Account = ValidatedUser.username;
 
@@ -70,5 +78,13 @@ else
 catch
 (
     Log.Error(Exception, null);
-    BadRequest(Exception.Message);
+
+    if(errors.Count > 0) then 
+    (
+          BadRequest(errors);
+    )
+    else 
+    (
+          BadRequest(Exception.Message);
+    );
 );
