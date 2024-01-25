@@ -96,7 +96,7 @@ if(POrgTaxNumber not like "\\d{8,10}$") then
    errors.Add("orgTaxNumber");
 );
 
-if(errors.Any()) then 
+if(errors.Count > 0) then 
 (
     Error(errors);
 );
