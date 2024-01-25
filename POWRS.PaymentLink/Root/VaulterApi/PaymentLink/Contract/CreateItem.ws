@@ -61,7 +61,7 @@ if(PBuyerPhoneNumber != null and PBuyerPhoneNumber not like "^[+]?[0-9]{6,15}$")
 (
     Error("buyerPhoneNumber not valid.");
 );
-if(PBuyerAddress not like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$") then 
+if(PBuyerAddress not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
 (
     Error("buyerAddress not valid.");
 );

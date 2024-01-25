@@ -56,12 +56,12 @@ if(POrgCountry not like "\\p{L}{2,50}$") then
 (
     errors.Add("orgCountry");
 );
-if(POrgAddress not like "^[\\p{L}\\p{N}\\s]{1,100}$") then 
+if(POrgAddress not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
 (
      errors.Add("orgAddr");
 );
 
-if(POrgAddress2 not like "^[\\p{L}\\p{N}\\s]{1,100}$") then 
+if(POrgAddress2 not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
 (
      errors.Add("orgAddr2");
 );
