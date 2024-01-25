@@ -123,7 +123,6 @@
 					<TagReference tag="RemoteId" />
 				</Variable>
 				<State id="AwaitingForPayment">
-					<OnEnter actionRef="AuthorizeServer" />
 					<OnEvent actionRef="ProceedToBuyEdaler" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -135,7 +134,6 @@
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentNotPerformed'" />
 				</State>
 				<State id="PaymentCompleted">
-					<OnEnter actionRef="UnauthorizeServer" />
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
 					<OnEvent newState="ServiceDelivered">
 						<OnDuration>PT300S</OnDuration>
@@ -208,7 +206,7 @@
 							<Parameter key="OrderId" value="{OrderId}"></Parameter>
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
 						</BuyEDaler>
-						
+
 						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
 						<PersistVariable name="SellerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
@@ -219,7 +217,7 @@
 						<CallAction actionRef="TransferFee" />
 
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
-						<Catch exceptionVariable="ex">					
+						<Catch exceptionVariable="ex">
 							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>
 						</Catch>
@@ -247,12 +245,6 @@
 						</Else>
 					</If>
 				</Action>
-				<Action id="AuthorizeServer">
-					<AuthorizeSource source="{'OPPUser@' + NeuronDomain}" />
-				</Action>
-				<Action id="UnauthorizeServer">
-					<UnauthorizeSource source="{'OPPUser@' + NeuronDomain}" />
-				</Action>
 
 				<Action id="TransferFee">
 					<If condition="EscrowFee > 0">
@@ -266,8 +258,8 @@
 									<Error reason="{ex.Message}" />
 								</Catch>
 							</Try>
-						</Then>						
-					</If>					
+						</Then>
+					</If>
 				</Action>
 				<Action id="TrySellEdaler">
 					<Try>

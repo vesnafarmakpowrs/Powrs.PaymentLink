@@ -23,13 +23,8 @@ By providing such an integration, direct bank payments can be performed on the n
 
 {{
 if exists(Posted) then
-(
-    
+(    
 	SetSetting("POWRS.PaymentLink.PayDomain",Posted.PayDomain);
-	SetSetting("POWRS.PaymentLink.OPPUser",Posted.UserName);
-	SetSetting("POWRS.PaymentLink.OPPUserPass",Posted.Password);
-	SetSetting("POWRS.PaymentLink.OPPUserLegalId",Posted.LegalId);
-	SetSetting("POWRS.PaymentLink.TrustProviderLegalId",Posted.TrustProviderLegalId);
 	SetSetting("POWRS.PaymentLink.ContactEmail",Posted.ContactEmail);
 	SetSetting("POWRS.PaymentLink.TemplateId",Posted.TemplateId);
 	SetSetting("POWRS.PaymentLink.ApiKey",Posted.ApiKey);
@@ -44,26 +39,6 @@ if exists(Posted) then
 <p>
  <label for="PayDomain">Pay Domain:</label>  
 <input type="text" id="PayDomain" name="PayDomain" value='{{GetSetting("POWRS.PaymentLink.PayDomain","")}}' autofocus required title="Domain where users can reach payment link."/>
-</p>
-
-<p>
-<label for="ClientID">User Name:</label>  
-<input type="text" id="UserName" name="UserName" value='{{GetSetting("POWRS.PaymentLink.OPPUser","")}}' autofocus required title="User Name ID identifying the OPP User in the Payment Link  backend."/>
-</p>
-
-<p>
-<label for="Password">Password:</label>  
-<input type="password" id="Password" name="Password" value='{{GetSetting("POWRS.PaymentLink.OPPUserPass","")}}' required title="Password used to authenticate the OPP user with the backend."/>
-</p>
-
-<p>
-<label for="LegalId">legal Id:</label>  
-<input type="text" id="LegalId" name="LegalId" value='{{GetSetting("POWRS.PaymentLink.OPPUserLegalId","")}}' required title="Legal Id used to authenticate the OPP user with the backend."/>
-</p>
-
-<p>
-<label for="TrustProviderLegalId">TrustProvider LegalId:</label>  
-<input type="text" id="TrustProviderLegalId" name="TrustProviderLegalId" value='{{GetSetting("POWRS.PaymentLink.TrustProviderLegalId","")}}' autofocus required title="Identity of Trust provider to use for signing the contracts"/>
 </p>
 
 <p>
