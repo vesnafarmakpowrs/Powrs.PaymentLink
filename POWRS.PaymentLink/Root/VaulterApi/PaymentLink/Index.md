@@ -571,43 +571,43 @@ Call this resource to verify email with code.
 
 ````
 {
-    "firstName" : Required(Str(PFirstName) like "[\\p{L}\\s]{2,20}"),
-    "lastName" : Required(Str(PLastName) like "[\\p{L}\\s]{2,20}"),
-    "personalNumber" : Required(Str(PPersonalNumber) like "\\d*-?\\d*"),
-    "country" : Required(Str(PCountryCode) like "[A-Z]{2}"),
-    "orgName": Required(Str(POrgName) like "\\p{L}{2,50}$"),
-    "orgNumber": Required(Str(POrgNumber)) like "\\d{9}$",
-    "orgCity": Required(Str(POrgCity) like "\\p{L}{2,50}$"),
-    "orgCountry": Required(Str(POrgCountry) like "\\p{L}{2,50}$"),
-    "orgAddr": Required(Str(POrgAddress) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$") ,
-    "orgAddr2": Required(Str(POrgAddress2) like "^(?!\\s{2,})(?!.*[^a-zA-Z0-9\\s]).{1,50}$"),
-    "orgBankNum": Required(Str(POrgBankNum) like "^(?!.*--)[\\d-]{1,25}$"),
-    "orgDept": Required(Str(POrgDept) like "\\p{L}{2,50}$"),
-    "orgRole": Required(Str(POrgRole) like "\\p{L}{2,50}$"),
-    "orgActivity":  Required(Str(POrgActivity) like "\\p{L}{2,50}$"),
-    "orgActivityNumber":  Required(Str(POrgActivityNumber) like "\\d{4}$"),
-    "orgTaxNumber":  Required(Str(POrgTaxNumber) like "\\d{9}$")
+    "FIRST" : Required(Str(PFirstName) like "[\\p{L}\\s]{2,30}"),
+    "LAST" : Required(Str(PLastName) like "[\\p{L}\\s]{2,30}"),
+    "PNR" : Required(Str(PPersonalNumber) like  "^\\d{13}$"),
+    "COUNTRY" : Required(Str(PCountryCode) like "[A-Z]{2}"),
+    "ORGNAME": Required(Str(POrgName) like "^[\\p{L}\\s]{2,100}$"),
+    "ORGNR": Required(Str(POrgNumber)) like "\\d{8,10}$",
+    "ORGCITY": Required(Str(POrgCity) like "\\p{L}{2,50}$"),
+    "ORGCOUNTRY": Required(Str(POrgCountry) like "\\p{L}{2,50}$"),
+    "ORGADDR": Required(Str(POrgAddress) like "^[\\p{L}\\p{N}\\s]{3,100}$") ,
+    "ORGADDR2": Required(Str(POrgAddress2) like "^[\\p{L}\\p{N}\\s]{3,100}$"),
+    "ORGBANKNUM": Required(Str(POrgBankNum) like "^(?!.*--)[\\d-]{1,25}$"),
+    "ORGDEPT": Required(Str(POrgDept) like "\\p{L}{2,50}$"),
+    "ORGROLE": Required(Str(POrgRole) like "\\p{L}{2,50}$"),
+    "ORGACTIVITY":  Required(Str(POrgActivity) like "\\p{L}{2,50}$"),
+    "ORGACTIVITYNUM":  Required(Str(POrgActivityNumber) like "\\d{4,5}$"),
+    "ORGTAXNUM":  Required(Str(POrgTaxNumber) like "\\d{8,10}$")
 }
 ````
 
 | Name              | Description |
 |:------------------|:------------|
-| `firstName`       | First Name for the user. |
-| `lastName`        | Last Name for the user.|
-| `personalNumber`  | Personal Number for the user |
-| `country`         | Country for the user.|
-| `orgName`         | Organization name  |
-| `orgNumber`       | Organization number |
-| `orgCity`         | Organization city |
-| `orgCountry`      | Organization country |
-| `orgAddr`         | Organization address |
-| `orgAddr2`        | Organization address 2 |
-| `orgBankNum`      | Organization bank number |
-| `orgDept`         | Organization department |
-| `orgRole`         | Organization role |
-| `orgActivity`         | Organization Activity |
-| `orgActivityNumber`         | Activity number |
-| `orgTaxNumber`         | Tax number |
+| `FIRST`       | First Name for the user. |
+| `LAST`        | Last Name for the user.|
+| `PNR`  | Personal Number for the user |
+| `COUNTRY`         | Country for the user.|
+| `ORGNAME`         | Organization name  |
+| `ORGNR`       | Organization number |
+| `ORGCITY`         | Organization city |
+| `ORGCOUNTRY`      | Organization country |
+| `ORGADDR`         | Organization address |
+| `ORGADDR2`        | Organization address 2 |
+| `ORGBANKNUM`      | Organization bank number |
+| `ORGDEPT`         | Organization department |
+| `ORGROLE`         | Organization role |
+| `ORGACTIVITY`         | Organization Activity |
+| `ORGACTIVITYNUM`         | Activity number |
+| `ORGTAXNUM`         | Tax number |
 
 **Response**
 
@@ -631,19 +631,19 @@ Call this resource insert or update contact info
 
 ````
 {
-    "orgPhoneNumber": Required(Str(POrgPhoneNumber) like "\\+381\\d{8,9}"),
-    "orgWebAddress": Required(Str(POrgWebAddress) like "(https?):\\/\\/([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?"),
-    "orgEmailAddress": Required(Str(POrgEmailAddress) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
-    "orgTermsAndConditionsUrl": Required(Str(POrgTermsAndConditions) like "^(https?):\\/\\/([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(:[0-9]+)?(\\/[^\\s]*)?$")
+    "PhoneNumber": Required(Str(POrgPhoneNumber) like "^[+]?[0-9]{6,15}$"),
+    "WebAddress": Required(Str(POrgWebAddress) like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$"),
+    "Email": Required(Str(POrgEmailAddress) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
+    "TermsAndConditions": Required(Str(POrgTermsAndConditions) like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$")
 }
 ````
 
 | Name              | Description |
 |:------------------|:------------|
-| `orgPhoneNumber`       | Phone number to contact company. |
-| `orgWebAddress`        | Web presentation.|
-| `orgEmailAddress`  | Support email address to send inquiry to company |
-| `orgTermsAndConditionsUrl`  | Terms and conditions for company |
+| `PhoneNumber`       | Phone number to contact company. |
+| `WebAddress`        | Web presentation.|
+| `Email`  | Support email address to send inquiry to company |
+| `TermsAndConditions`  | Terms and conditions for company |
 
 **Response**
 

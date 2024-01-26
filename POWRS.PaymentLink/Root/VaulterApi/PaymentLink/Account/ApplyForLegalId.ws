@@ -2,98 +2,104 @@
 SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 ({
-    "firstName" : Required(Str(PFirstName)),
-    "lastName" : Required(Str(PLastName) ),
-    "personalNumber" : Required(Str(PPersonalNumber) ),
-    "country" : Required(Str(PCountryCode)),
-    "orgName": Required(Str(POrgName)),
-    "orgNumber": Required(Str(POrgNumber)),
-    "orgCity": Required(Str(POrgCity)),
-    "orgCountry": Required(Str(POrgCountry)),
-    "orgAddr": Required(Str(POrgAddress)) ,
-    "orgAddr2": Required(Str(POrgAddress2)),
-    "orgBankNum": Required(Str(POrgBankNum)),
-    "orgDept": Required(Str(POrgDept)),
-    "orgRole": Required(Str(POrgRole)),
-    "orgActivity":  Required(Str(POrgActivity)),
-    "orgActivityNumber":  Required(Str(POrgActivityNumber)),
-    "orgTaxNumber":  Required(Str(POrgTaxNumber))
+    "FIRST" : Required(Str(PFirstName)),
+    "LAST" : Required(Str(PLastName) ),
+    "PNR" : Required(Str(PPersonalNumber) ),
+    "COUNTRY" : Required(Str(PCountryCode)),
+    "ORGNAME": Required(Str(POrgName)),
+    "ORGNR": Required(Str(POrgNumber)),
+    "ORGCITY": Required(Str(POrgCity)),
+    "ORGCOUNTRY": Required(Str(POrgCountry)),
+    "ORGADDR": Required(Str(POrgAddress)) ,
+    "ORGADDR2": Required(Str(POrgAddress2)),
+    "ORGBANKNUM": Required(Str(POrgBankNum)),
+    "ORGDEPT": Required(Str(POrgDept)),
+    "ORGROLE": Required(Str(POrgRole)),
+    "ORGACTIVITY":  Required(Str(POrgActivity)),
+    "ORGACTIVITYNUM":  Required(Str(POrgActivityNumber)),
+    "ORGTAXNUM":  Required(Str(POrgTaxNumber))
 }:=Posted) ??? BadRequest("Request does not conform to the specification");
 
 try
 (
+  Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
+  if(System.String.IsNullOrWhiteSpace(Password)) then 
+  (
+    Error("No user with given username");
+  );
+
 errors:= Create(System.Collections.Generic.List, System.String);
 
 if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
 (
-    errors.Add("firstName");    
+    errors.Add("FIRST");    
 );
 if(PLastName not like "[\\p{L}\\s]{2,30}") then 
 (
-    errors.Add("lastName");
+    errors.Add("LAST");
 );
 if(PPersonalNumber not like "^\\d{13}$") then 
 (
-    errors.Add("personalNumber");
+    errors.Add("PNR");
 );
 if(PCountryCode not like "[A-Z]{2}") then 
 (
-     errors.Add("country");
+     errors.Add("COUNTRY");
 );
-if(POrgName not like "^[\\p{L}\\s]{1,100}$") then 
+if(POrgName not like "^[\\p{L}\\s]{2,100}$") then 
 (
-   errors.Add("orgName");
+   errors.Add("ORGNAME");
 );
 if(POrgNumber not like "\\d{8,10}$") then 
 (
-    errors.Add("orgNumber");
+    errors.Add("ORGNR");
 );
 if(POrgCity not like "\\p{L}{2,50}$") then 
 (
-     errors.Add("orgCity");
+     errors.Add("ORGCITY");
 );
 if(POrgCountry not like "\\p{L}{2,50}$") then 
 (
-    errors.Add("orgCountry");
+    errors.Add("ORGCOUNTRY");
 );
 if(POrgAddress not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
 (
-     errors.Add("orgAddr");
+     errors.Add("ORGADDR");
 );
 
 if(POrgAddress2 not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
 (
-     errors.Add("orgAddr2");
+     errors.Add("ORGADDR2");
 );
 
 if(POrgBankNum not like "^(?!.*--)[\\d-]{1,25}$") then 
 (
-     errors.Add("orgBankNum");
+     errors.Add("ORGBANKNUM");
 );
 
 if(POrgDept not like "\\p{L}{2,50}$") then 
 (
-    errors.Add("orgDept");
+    errors.Add("ORGDEPT");
 );
 
 if(POrgRole not like "\\p{L}{2,50}$") then 
 (
-    errors.Add("orgRole");
+    errors.Add("ORGROLE");
 );
 
 if(POrgActivity not like "^[\\p{L}\\s]{1,100}$") then 
 (
-    errors.Add("orgActivity");
+    errors.Add("ORGACTIVITY");
 );
 
 if(POrgActivityNumber not like "\\d{4,5}$") then 
 (
-    errors.Add("orgActivityNumber");
+    errors.Add("ORGACTIVITYNUM");
 );
 
 if(POrgTaxNumber not like "\\d{8,10}$") then
 (
-   errors.Add("orgTaxNumber");
+   errors.Add("ORGTAXNUM");
 );
 
 if(errors.Count > 0) then 
@@ -101,17 +107,12 @@ if(errors.Count > 0) then
     Error(errors);
 );
 
-    Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
-    if(System.String.IsNullOrWhiteSpace(Password)) then 
-    (
-        Error("No user with given username");
-    );
-
     NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
     isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
 
     if(!isPersonalNumberValid) then 
      (
+       errors.Add("PNR");
        Error("Personal number: " + PPersonalNumber + " not valid for " +  PCountryCode);
      );
 

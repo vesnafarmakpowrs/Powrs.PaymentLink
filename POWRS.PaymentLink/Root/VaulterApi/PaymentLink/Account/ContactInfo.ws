@@ -2,10 +2,10 @@
 ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
 ({
-    "orgPhoneNumber": Required(Str(POrgPhoneNumber)),
-    "orgWebAddress": Required(Str(POrgWebAddress)),
-    "orgEmailAddress": Required(Str(POrgEmailAddress)),
-    "orgTermsAndConditionsUrl": Required(Str(POrgTermsAndConditions))  
+    "PhoneNumber": Required(Str(POrgPhoneNumber)),
+    "WebAddress": Required(Str(POrgWebAddress)),
+    "Email": Required(Str(POrgEmailAddress)),
+    "TermsAndConditions": Required(Str(POrgTermsAndConditions))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 ValidateUrl(url):= 
@@ -30,19 +30,19 @@ try
 (
    if(POrgPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
 (
-	errors.Add("orgPhoneNumber");
+	errors.Add("PhoneNumber");
 );
    if(POrgWebAddress not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$" or ValidateUrl(POrgWebAddress) == false) then 
 (
-	errors.Add("orgWebAddress");
+	errors.Add("WebAddress");
 );
    if(POrgEmailAddress not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
 (
-	errors.Add("orgEmailAddress");
+	errors.Add("Email");
 );
    if(POrgTermsAndConditions not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$" or ValidateUrl(POrgTermsAndConditions) == false) then 
 (
-	errors.Add("orgTermsAndConditionsUrl");
+	errors.Add("TermsAndConditions");
 );
 
 if(errors.Count > 0) then 
