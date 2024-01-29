@@ -38,7 +38,11 @@ if(PLastName not like "[\\p{L}\\s]{2,30}") then
 (
     errors.Add("LAST");
 );
-if(PPersonalNumber not like "^\\d{13}$") then 
+
+ NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
+ isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
+
+if(PPersonalNumber not like "^\\d{13}$" || isPersonalNumberValid != true) then 
 (
     errors.Add("PNR");
 );
@@ -102,20 +106,10 @@ if(POrgTaxNumber not like "\\d{8,10}$") then
    errors.Add("ORGTAXNUM");
 );
 
-if(errors.Count > 0) then 
+if(errors.Count > 0) then
 (
     Error(errors);
 );
-
-    NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
-    isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
-
-    if(!isPersonalNumberValid) then 
-     (
-       errors.Add("PNR");
-       Error("Personal number: " + PPersonalNumber + " not valid for " +  PCountryCode);
-     );
-
     neuronDomain:= "https://" + Gateway.Domain;
 
     PropertiesVector:= [
