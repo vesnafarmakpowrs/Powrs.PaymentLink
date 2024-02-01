@@ -56,8 +56,7 @@ try
 		BadRequest("Buyer mobile number not found...");
 	);
 		
-	ApiKey := GetSetting("POWRS.PaymentLink.SMSTextLocalKey","");
-	ApiKey := GetSetting("TextLocal.Key","NTA0NzM5NTI3NjRlNzI2ZDRmNGU0ZDY5NmUzNjM3NDk=");
+	ApiKey := GetSetting("POWRS.PaymentLink.SMSTextLocalKey","");	
 
 	SMSBody := sellerName + " salje link za placanje: " + PLink;
 	
