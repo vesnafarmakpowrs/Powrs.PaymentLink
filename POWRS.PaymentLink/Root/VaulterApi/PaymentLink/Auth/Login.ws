@@ -3,6 +3,7 @@ Response.SetHeader("Access-Control-Allow-Origin","*");
 ({
    "userName": Required(Str(PUserName)),
    "nonce": Required(Str(PNonce)),
+   "seconds" : Optional(Str(PSeconds)),
    "signature": Required(Str(PSignature))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
