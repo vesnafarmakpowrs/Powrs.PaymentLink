@@ -2,22 +2,22 @@
 SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 ({
-    "FIRST" : Required(Str(PFirstName)),
-    "LAST" : Required(Str(PLastName) ),
-    "PNR" : Required(Str(PPersonalNumber) ),
-    "COUNTRY" : Required(Str(PCountryCode)),
+    "FIRST": Required(Str(PFirstName)),
+    "LAST": Required(Str(PLastName)),
+    "PNR": Required(Str(PPersonalNumber) ),
+    "COUNTRY": Required(Str(PCountryCode)),
     "ORGNAME": Required(Str(POrgName)),
     "ORGNR": Required(Str(POrgNumber)),
     "ORGCITY": Required(Str(POrgCity)),
     "ORGCOUNTRY": Required(Str(POrgCountry)),
-    "ORGADDR": Required(Str(POrgAddress)) ,
-    "ORGADDR2": Required(Str(POrgAddress2)),
+    "ORGADDR": Required(Str(POrgAddress)),
+    "ORGADDR2": Optional(Str(POrgAddress2)),
     "ORGBANKNUM": Required(Str(POrgBankNum)),
     "ORGDEPT": Required(Str(POrgDept)),
     "ORGROLE": Required(Str(POrgRole)),
-    "ORGACTIVITY":  Required(Str(POrgActivity)),
-    "ORGACTIVITYNUM":  Required(Str(POrgActivityNumber)),
-    "ORGTAXNUM":  Required(Str(POrgTaxNumber))
+    "ORGACTIVITY": Required(Str(POrgActivity)),
+    "ORGACTIVITYNUM": Required(Str(POrgActivityNumber)),
+    "ORGTAXNUM": Required(Str(POrgTaxNumber))
 }:=Posted) ??? BadRequest("Request does not conform to the specification");
 
 try
@@ -71,7 +71,9 @@ if(POrgAddress not like "^[\\p{L}\\p{N}\\s]{3,100}$") then
      errors.Add("ORGADDR");
 );
 
-if(POrgAddress2 not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
+POrgAddress2 := POrgAddress2 ?? "";
+
+if(POrgAddress2 != "" && POrgAddress2 not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
 (
      errors.Add("ORGADDR2");
 );
@@ -113,23 +115,23 @@ if(errors.Count > 0) then
     neuronDomain:= "https://" + Gateway.Domain;
 
     PropertiesVector:= [
-                          {name: "FIRST", value: PFirstName},
-                          {name: "LAST", value: PLastName},
-                          {name: "PNR", value: NormalizedPersonalNumber},
-                          {name: "COUNTRY", value: PCountryCode},
-		                  {name: "ORGNAME", value: POrgName},
-		                  {name: "ORGNR", value: POrgNumber},
-                          {name: "ORGCITY", value: POrgCity},
- 		                  {name: "ORGCOUNTRY", value: POrgCountry},
-		                  {name: "ORGADDR", value: POrgAddress},
-           	              {name: "ORGADDR2", value: POrgAddress2},
-                          {name: "ORGBANKNUM", value: POrgBankNum},
-                          {name: "ORGDEPT", value: POrgDept},
-                          {name: "ORGROLE", value: POrgRole},
-                          {name: "ORGACTIVITY", value: POrgActivity},
-                          {name: "ORGACTIVITYNUM", value: POrgActivityNumber},
-                          {name: "ORGTAXNUM", value: POrgTaxNumber}
-                    ];
+		{name: "FIRST", value: PFirstName},
+		{name: "LAST", value: PLastName},
+		{name: "PNR", value: NormalizedPersonalNumber},
+		{name: "COUNTRY", value: PCountryCode},
+		{name: "ORGNAME", value: POrgName},
+		{name: "ORGNR", value: POrgNumber},
+		{name: "ORGCITY", value: POrgCity},
+		{name: "ORGCOUNTRY", value: POrgCountry},
+		{name: "ORGADDR", value: POrgAddress},
+	    {name: "ORGADDR2", value: (POrgAddress2 != "" ? POrgAddress2 : " ")},
+		{name: "ORGBANKNUM", value: POrgBankNum},
+		{name: "ORGDEPT", value: POrgDept},
+		{name: "ORGROLE", value: POrgRole},
+		{name: "ORGACTIVITY", value: POrgActivity},
+		{name: "ORGACTIVITYNUM", value: POrgActivityNumber},
+		{name: "ORGTAXNUM", value: POrgTaxNumber}
+	];
     PLocalName:= "ed448";
     PNamespace:= "urn:ieee:iot:e2e:1.0";
 
@@ -147,7 +149,7 @@ if(errors.Count > 0) then
 
     foreach p in PropertiesVector do
     (
-       S2 := S2 + ":" + p.name + ":" + p.value;
+		S2 := S2 + ":" + p.name + ":" + p.value;
     );
 
     RequestSignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(Password)));
