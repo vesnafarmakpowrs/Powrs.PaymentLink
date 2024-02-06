@@ -8,11 +8,12 @@ if !exists(Posted) then BadRequest("No payload.");
 
 try(
 	
+	TotalFeeEarned:= 0;
 	ReponseDict := Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
 	LimitDate := System.DateTime.Now.Date.AddDays(-PDaysToCalculate);
 
-	mSql_PayspotPayments := 
-		Select distinct  TokenId
+	mSql_CompletedPayspotPayments := 
+		Select distinct TokenId
 		from PayspotPayments
 		where Result = "00"
 		   and DateCompleted >= LimitDate;
@@ -40,7 +41,14 @@ try(
 		TokenId := row[0];
 		MachineId := row[1];
 		
-		if (Contains(mSql_PayspotPayments, TokenId)) then (
+		if (Contains(mSql_CompletedPayspotPayments, TokenId)) then (
+			VariableValues:= select top 1 VariableValues from StateMachineCurrentStates where StateMachineId = TokenId;
+			escrowFeeVariable:= select top 1 Value from VariableValues where Name = "EscrowFee";
+			if(escrowFeeVariable != null) then 
+			(
+				TotalFeeEarned += escrowFeeVariable;
+			);
+
 			trn_SuccessCnt ++;
 			trn_SuccessValue += row[2];
 			trn_Currency := row[3];
@@ -54,6 +62,7 @@ try(
 	ReponseDict.Add("trn_TotalValue:" + trn_Currency, String(trn_SuccessValue));
 	ReponseDict.Add("trn_TotalSuccess" , String(trn_SuccessCnt));
 	ReponseDict.Add("trn_TotalFailed", String(trn_FailedCnt));
+	ReponseDict.Add("trn_TotalFee", String(TotalFeeEarned));
 
 )
 catch(
