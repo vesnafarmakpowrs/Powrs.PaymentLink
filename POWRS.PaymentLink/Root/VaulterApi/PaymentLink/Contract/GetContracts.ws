@@ -20,8 +20,8 @@ foreach token in (select * from tokens order by Created desc) do
  variables:= token.GetCurrentStateVariables();
  ResultList.Add({
 	"TokenId": token.TokenId,
-	"CanCancel": exists(cancelAllowedStates[s.State]),
-	"IsActive": !exists(doneStates[s.State]),
+	"CanCancel": variables.State == "PaymentCompleted",
+	"IsActive": !exists(doneStates[variables.State]),
 	"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
 	"Created": token.Created.ToString("s"),
 	"State": variables.State,
