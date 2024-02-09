@@ -43,6 +43,12 @@ try
     
     PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
     htmlTemplateRoot := Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\" + PCountryCode + "\\";
+
+    if(!System.IO.Directory.Exists(htmlTemplateRoot)) then 
+    (
+        htmlTemplateRoot:= Waher.IoTGateway.Gateway.RootFolder + "\\Payout\\HtmlTemplates\\EN\\";
+    );
+
     htmlTemplatePath:= htmlTemplateRoot +  + "VerifyEmail.html";
     html:= System.IO.File.ReadAllText(htmlTemplatePath);
     
