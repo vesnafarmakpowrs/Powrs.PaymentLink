@@ -7,6 +7,7 @@
 	<Content fileName="./Scripts/StartupScripts/CreateLanguageIndex.config" />
 	<Content fileName="./Scripts/StartupScripts/CreateNeuroFeatureCreatorIndex.config" />
 	<Content fileName="./Scripts/StartupScripts/CreateStateMachineCurrentStateIndex.config" />
+	
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="PaymentLink">
@@ -49,12 +50,12 @@
 				</Folder>
 			</Folder>
 		</Folder>
-		<Folder name="pay.lab.vaulter.rs">
-			<Content fileName="Payout.md"/>
+		<Folder name="pay.vaulter.rs">
 			<Content fileName="Index.html"/>
+			<Content fileName="Payout.md"/>
 			<Content fileName="TermsAndCondition.html"/>
 			<Content fileName="PrivacyPolicy.html"/>
-			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>
+			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>			
 			<Folder name="Redirect">
 				<Content fileName="Success.md"/>
 				<Content fileName="Cancel.md"/>
@@ -72,21 +73,19 @@
 			<Folder name="js">
 				<Content fileName="Events.js"/>
 				<Content fileName="PaymentLink.js"/>
-			</Folder>			
+			</Folder>
 			<Folder name="resources">
-				<Content fileName="credit-card-payment.svg"/>
-				<Content fileName="direct_payment.svg"/>
 				<Content fileName="expand.svg"/>
+				<Content fileName="spinner.gif"/>
 				<Content fileName="spin.svg" />
-				<Content fileName="spinner.gif"/>				
 				<Content fileName="vaulter_logo.svg"/>
 				<Content fileName="vaulter_txt.svg"/>
 				<Content fileName="vaulterlogo.svg"/>
 				<Content fileName="error_red.png"/>
 				<Content fileName="success_green.png"/>
-				
+
 			</Folder>
-	    </Folder>
+		</Folder>
 		<Folder name="Payout">
 			<Content fileName="Settings.md"/>
 			<Folder name="API">

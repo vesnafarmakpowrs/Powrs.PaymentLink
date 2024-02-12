@@ -267,6 +267,9 @@
 	  <None Update="Root\pay.lab.vaulter.rs\Index.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.lab.vaulter.rs\Obrazac-za-odustanak-od-ugovora.pdf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Mobile\Cancel.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
