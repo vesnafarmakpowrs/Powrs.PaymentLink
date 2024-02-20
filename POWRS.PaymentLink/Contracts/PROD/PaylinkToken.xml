@@ -192,7 +192,7 @@
 				<Action id="ProceedToBuyEdaler">
 					<Script>
 						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
-						BuyerEdalerServiceProviderId:= "POWRS.Payment.PaySpot.PayspotService.Test";
+						BuyerEdalerServiceProviderId:= "POWRS.Payment.PaySpot.PayspotService.Live";
 						BuyerEdalerServiceProviderType:= "POWRS.Payment.PaySpot.PayspotServiceProvider";
 					</Script>
 					<Try>
