@@ -114,7 +114,6 @@ form {
 
 .agent-info
 {
-  font-family: 'RTDromo';
   font-size: 0.8rem !important;
   padding-left: 10px !important;
 }
