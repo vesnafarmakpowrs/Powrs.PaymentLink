@@ -121,6 +121,9 @@ try
            
            PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
            htmlTemplatePath := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + CountryCode + "\\" + r.Status + ".html";
+           
+           if (Status == "PaymentCompleted" && Parameters["PayspotGroupId"] != null)
+            htmlTemplatePath := Replace(htmlTemplatePath,"PaymentCompleted","PaymentCompletedIPS"); 
 
            if (!File.Exists(htmlTemplatePath)) then 
            (

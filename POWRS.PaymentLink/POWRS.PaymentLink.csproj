@@ -384,6 +384,9 @@
 	  <None Update="Root\Payout\HtmlTemplates\EN\ContactUs.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\PaymentCompletedIPS.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\EN\PaymentCompleted.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -402,6 +405,9 @@
 	  <None Update="Root\Payout\HtmlTemplates\RS\ContactUs.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\RS\PaymentCompletedIPS.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\PaymentCompleted.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -415,24 +421,6 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\VerifyEmail.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\Payout\HtmlTemplates\SE\ContactUs.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\Payout\HtmlTemplates\SE\PaymentCompleted.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\Payout\HtmlTemplates\SE\PrivacyPolicy.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\Payout\HtmlTemplates\SE\purchase_agreement.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\Payout\HtmlTemplates\SE\TermsAndCondition.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\Payout\HtmlTemplates\SE\VerifyEmail.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Account\ApplyForLegalId.ws">
