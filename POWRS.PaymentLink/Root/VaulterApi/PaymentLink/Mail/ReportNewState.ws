@@ -63,15 +63,17 @@ try
         (
            CountryCode := r.CountryCode;
         );
-
+        Parameters:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object); 
         if (exists(r.SendEmail) and  !System.String.IsNullOrEmpty(r.SendEmail)) then
         ( 
-	       Parameters:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object); 
+           payspotPayment:= null;
            if(exists(r.PayspotOrderId) and !System.String.IsNullOrWhiteSpace(r.PayspotOrderId)) then 
-           (
-		
-                payspotPayment:= select top 1 * from POWRS.Networking.PaySpot.Data.PayspotPayment where OrderId = r.PayspotOrderId;
-                if(payspotPayment == null) then 
+              payspotPayment:= select top 1 * from POWRS.Networking.PaySpot.Data.PayspotPayment where PayspotOrderId = r.PayspotOrderId;
+             
+            if(exists(r.OrderId) and !System.String.IsNullOrWhiteSpace(r.OrderId)) then 
+                payspotPayment:= select top 1 * from POWRS.Networking.PaySpot.Data.PayspotPayment where OrderId = r.OrderId;
+               
+              if(payspotPayment == null) then 
                 (
                     Error("Unable to find payment with an OrderId: " + r.PayspotOrderId);
                 );
@@ -80,8 +82,7 @@ try
                 foreach prop in properties.Values do 
                 (
                   Parameters[prop[0]]:= prop[1];
-                );
-           );          
+                );      
                  
            variables:= NeuroFeatureToken.GetCurrentStateVariables();
 
@@ -118,11 +119,10 @@ try
            IdentityProperties.Add("AgentName", Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
            IdentityProperties.Add("CountryCode", CountryCode);
            IdentityProperties.Add("Domain", Gateway.Domain);
-           
            PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
            htmlTemplatePath := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + CountryCode + "\\" + r.Status + ".html";
            
-           if (Status == "PaymentCompleted" && Parameters["PayspotGroupId"] != null)
+           if (exists(r.PaymentType) and r.PaymentType == "IPSPayment") then
             htmlTemplatePath := Replace(htmlTemplatePath,"PaymentCompleted","PaymentCompletedIPS"); 
 
            if (!File.Exists(htmlTemplatePath)) then 
