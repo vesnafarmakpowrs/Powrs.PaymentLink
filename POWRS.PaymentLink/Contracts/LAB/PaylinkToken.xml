@@ -165,6 +165,14 @@
 									(
 									Json.PayspotOrderId:= PayspotOrderId;
 									);
+									if(exists(OrderId)) then
+									(
+									Json.OrderId:= OrderId;
+									);
+									if (exists(PaymentType)) then
+									(
+									Json.PaymentType:= PaymentType;
+									);
 								</Script>
 								<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
 									<Header key="Accept" value="application/json"/>
@@ -190,6 +198,8 @@
 				<Action id="ProceedToBuyEdaler">
 					<Script>
 						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
+						PayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@payspotOrderId');
+						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentType');
 						BuyerEdalerServiceProviderId:= "POWRS.Payment.PaySpot.PayspotService.Test";
 						BuyerEdalerServiceProviderType:= "POWRS.Payment.PaySpot.PayspotServiceProvider";
 					</Script>
@@ -204,16 +214,18 @@
 							<Parameter key="TotalAmountToPay" value="{AmountToPay}"></Parameter>
 							<Parameter key="Currency" value="{Currency}"></Parameter>
 							<Parameter key="OrderId" value="{OrderId}"></Parameter>
+							<Parameter key="PayspotOrderId" value="{PayspotOrderId}" />
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
 						</BuyEDaler>
-
 						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
 						<PersistVariable name="SellerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
 						<PersistVariable name="SellerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
-						<PersistVariable name="PayspotOrderId" value="{OrderId}" />
+						<PersistVariable name="OrderId" value="{OrderId}" />
+						<PersistVariable name="PayspotOrderId" value="{PayspotOrderId}" />
+						<PersistVariable name="PaymentType" value="{PaymentType}" />
 						<CallAction actionRef="TransferFee" />
 
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
@@ -284,7 +296,8 @@
 							<Parameter key="ContractId" value="{TokenContract}" />
 							<Parameter key="TokenId" value="{TokenId}" />
 							<Parameter key="Message" value="Vaulter" />
-							<Parameter key="OrderId" value="{PayspotOrderId}" />
+							<Parameter key="OrderId" value="{OrderId}" />
+							<Parameter key="PayspotOrderId" value="{PayspotOrderId}" />
 						</SellEDaler>
 						<TextNote content="{'Amount of edaler: ' + AmountToSell + ' ' + Currency + ' sold. From: ' + SellEdalerFrom + ' to BankAccount: ' + BankAccountToSell}" />
 						<Catch exceptionVariable="ex">
