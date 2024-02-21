@@ -21,7 +21,7 @@
 			<String id="17">Plaćanje nije izvršeno </String>
 			<String id="18">Pružanje usluga </String>
 			<String id="19">Uslovi korišćenja </String>
-			<String id="20">Ukupno za naplatu </String>
+			<String id="20">Ukupno za uplati </String>
 			<String id="21">Vaulter naknada </String>
 			<String id="22">Dobrodošli na Vaulter naplatu </String>
 			<String id="23">Link za plaćanje je istekao. Kontaktiraj prodavca za dobijanje novog </String>
@@ -51,7 +51,7 @@
 			<String id="48">Transakcija je otkazana.</String>
 			<String id="49">Vaša transakcija ne može da se završi.</String>
 			<String id="50">Transakcija je uspešno završena.</String>
-			<String id="51">Hvala vam na naplati.</String>
+			<String id="51">Hvala Vam na uplati.</String>
 			<String id="52">Unesite vas personalni broj. Informacija neće biti sačuvana, služi za autorizaciju preko Bank-Id aplikacije.</String>
 			<String id="53">Personalni broj nije u validnom formatu!</String>
 			<String id="54">sa PDV-om</String>
