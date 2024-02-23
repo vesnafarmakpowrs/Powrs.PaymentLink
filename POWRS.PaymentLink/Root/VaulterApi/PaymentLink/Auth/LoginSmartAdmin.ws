@@ -15,7 +15,7 @@ try
 		BadRequest("Username, Nonce and Signature could not be empty");
     );
 
-	if(PUserName != "PowrsAgent" && PUserName != "VaulterInvesto") then (
+	if(PUserName != "PowrsAgent" && PUserName != "VaulterInvestor") then (
 		BadRequest("Invalid user name or password.");
 	);
 
@@ -34,16 +34,16 @@ try
 					{"Accept" : "application/json"}
 				);
 
-	Destroy(PUserName);
-	Destroy(PNonce);
-	Destroy(PSignature);
-	
 	role := "";
 	if (PUserName == "PowrsAgent") then (
 		role := "SuperAdmin";
 	)else(
 		role := "User";
 	);
+
+	Destroy(PUserName);
+	Destroy(PNonce);
+	Destroy(PSignature);
      
 	{	
 		"jwt" : Resp.jwt,
