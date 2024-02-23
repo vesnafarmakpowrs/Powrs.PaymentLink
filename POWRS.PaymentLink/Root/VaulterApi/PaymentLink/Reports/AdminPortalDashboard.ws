@@ -58,11 +58,16 @@ try(
 			);
 		);
 	);
+
+	cardMarkUp_Fee := trn_SuccessValue * 0.0025;
+	IPS_Fee := trn_SuccessValue * 0.002;
 	
 	ReponseDict.Add("trn_TotalValue:" + trn_Currency, String(trn_SuccessValue));
 	ReponseDict.Add("trn_TotalSuccess" , String(trn_SuccessCnt));
 	ReponseDict.Add("trn_TotalFailed", String(trn_FailedCnt));
 	ReponseDict.Add("trn_TotalFee", String(TotalFeeEarned));
+	ReponseDict.Add("cardMarkUp_Fee", String(cardMarkUp_Fee));
+	ReponseDict.Add("IPS_Fee", String(IPS_Fee));
 
 )
 catch(
