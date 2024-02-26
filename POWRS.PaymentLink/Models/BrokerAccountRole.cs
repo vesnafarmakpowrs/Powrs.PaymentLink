@@ -12,7 +12,7 @@ namespace POWRS.PaymentLink.Models
         private string objectId;
         private string userName;
         private string parentAccount;
-        private string role;
+        private AccountRole role;
         private string orgName;
 
         public string ObjectId
@@ -33,7 +33,7 @@ namespace POWRS.PaymentLink.Models
             set => parentAccount = value;
         }
 
-        public string Role
+        public AccountRole Role
         {
             get => role;
             set => role = value;

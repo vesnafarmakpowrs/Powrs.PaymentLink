@@ -4,7 +4,8 @@
     "userName":Required(Str(PUserName)),
     "password":Required(Str(PPassword)),
     "repeatedPassword":Required(Str(PRepeatedPassword)),
-    "email" : Required(Str(PEmail))
+    "email" : Required(Str(PEmail)),
+    "role": Required(Int(PUserRole))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 try
@@ -12,7 +13,7 @@ try
     if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
     (
       Error("Email in not valid format.")
-    );    
+    );
      
     Code:= 0;
     if (!exists(Code:= Global.VerifyingNumbers[PEmail]) or Code >= 0) then 
@@ -22,7 +23,7 @@ try
 
     if(PUserName not like "^[\\p{L}\\p{N}]{8,20}$") then 
     (
-     Error("Username could only contain letters and numbers.")
+     Error("Username could only contain letters and numbers.");
     );
     if(PPassword != PRepeatedPassword) then
     (
@@ -67,7 +68,6 @@ try
 
     enabled:= Update BrokerAccounts set Enabled = true where UserName = PUserName;
     Global.VerifyingNumbers.Remove(PEmail);
-
    
  neuronDomain:= "https://" + Gateway.Domain;
 
@@ -104,6 +104,16 @@ try
    
    SetSetting(PUserName  + ".KeyId", PKeyId);
    SetSetting(PUserName  + ".KeySecret", KeyPassword);
+
+    accountRole:= Create(POWRS.PaymentLink.Models.BrokerAccountRole);
+
+    accountRole.UserName:= SessionUser.username;
+    accountRole.ParentAccount:= System.String.Empty;
+    accountRole.Role:= POWRS.PaymentLink.Models.AccountRole.Admin;
+    accountRole.OrgName:= POrgName;
+
+    Waher.Persistence.Database.Insert(accountRole);
+
 )
 catch
 (

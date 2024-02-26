@@ -166,7 +166,23 @@ if(errors.Count > 0) then
 		    "Authorization": "Bearer " + SessionUser.jwt,
 		    "Referer": neuronDomain + "/VaulterApi/PaymentLink/Account/CreateAccount.ws"
 		   });
+ 
+  existingAccountRole:= select top 1 * from POWRS.PaymentLink.Models.BrokerAccountRole where UserName = SessionUser.username;
+  if(existingAccountRole == null) then 
+  (
+    accountRole:= Create(POWRS.PaymentLink.Models.BrokerAccountRole);
+    accountRole.UserName:= SessionUser.username;
+    accountRole.ParentAccount:= System.String.Empty;
+    accountRole.Role:= POWRS.PaymentLink.Models.AccountRole.Admin;
+    accountRole.OrgName:= POrgName;
 
+    Waher.Persistence.Database.Insert(accountRole);
+  )
+  else 
+  (
+    existingAccountRole.OrgName:= POrgName;
+    Waher.Persistence.Database.Update(existingAccountRole);
+  );
 )
 catch
 (

@@ -8,7 +8,7 @@
 SessionUser:= Global.ValidateAgentApiToken(false, false);  
 try
 (
-Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
+  Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
   if(System.String.IsNullOrWhiteSpace(Password)) then 
   (
     Error("No user with given username");
