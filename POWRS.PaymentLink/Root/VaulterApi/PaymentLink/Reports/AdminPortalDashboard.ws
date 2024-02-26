@@ -60,7 +60,7 @@ try(
 	);
 
 	cardMarkUp_Fee := trn_SuccessValue * 0.0025;
-	IPS_Fee := trn_SuccessValue * 0.002;
+	IPS_Fee := 0;
 	
 	ReponseDict.Add("trn_TotalValue:" + trn_Currency, String(trn_SuccessValue));
 	ReponseDict.Add("trn_TotalSuccess" , String(trn_SuccessCnt));
