@@ -10,7 +10,7 @@ try(
 	
 	TotalFeeEarned:= 0;
 	ReponseDict := Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
-	LimitDate := System.DateTime.Now.Date.AddDays(-PDaysToCalculate);
+	LimitDate := System.DateTime.Now.Date.AddDays(PDaysToCalculate == 1 ? 0 : -PDaysToCalculate);
 
 	mSql_CompletedPayspotPayments := 
 		Select distinct TokenId
