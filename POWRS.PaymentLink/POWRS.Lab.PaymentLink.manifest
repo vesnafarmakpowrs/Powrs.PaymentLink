@@ -22,6 +22,7 @@
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>
+					<Content fileName="LoginSmartAdmin.ws"/>
 					<Content fileName="VerifyToken.ws"/>
 				</Folder>
 				<Folder name="Bank">
