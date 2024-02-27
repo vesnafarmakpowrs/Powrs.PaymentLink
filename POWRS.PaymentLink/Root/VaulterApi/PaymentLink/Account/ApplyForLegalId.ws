@@ -58,11 +58,11 @@ if(POrgNumber not like "\\d{8,10}$") then
 (
     errors.Add("ORGNR");
 );
-if(POrgCity not like "\\p{L}{2,50}$") then 
+if(POrgCity not like "[\\p{L}\\s]{2,50}$") then 
 (
      errors.Add("ORGCITY");
 );
-if(POrgCountry not like "\\p{L}{2,50}$") then 
+if(POrgCountry not like "[\\p{L}\\s]{2,50}$") then 
 (
     errors.Add("ORGCOUNTRY");
 );

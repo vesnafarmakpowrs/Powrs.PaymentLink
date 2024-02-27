@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Module xmlns="http://waher.se/Schema/ModuleManifest.xsd">
 	<Assembly fileName="POWRS.PaymentLink.dll" />
-	<Content altFolder="./Scripts/StartupScripts" fileName="./ApplyForAgentLegalId.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./EncodeContractId.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateAgentApiToken.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidatePayoutJWT.config" />
@@ -23,7 +22,6 @@
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>
-					<Content fileName="LoginSmartAdmin.ws"/>
 					<Content fileName="VerifyToken.ws"/>
 				</Folder>
 				<Folder name="Bank">
@@ -51,12 +49,12 @@
 				</Folder>
 			</Folder>
 		</Folder>
-		<Folder name="pay.lab.vaulter.rs">
-			<Content fileName="Payout.md"/>
+		<Folder name="pay.vaulter.rs">
 			<Content fileName="Index.html"/>
+			<Content fileName="Payout.md"/>
 			<Content fileName="TermsAndCondition.html"/>
 			<Content fileName="PrivacyPolicy.html"/>
-			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>
+			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>			
 			<Folder name="Redirect">
 				<Content fileName="Success.md"/>
 				<Content fileName="Cancel.md"/>
@@ -74,21 +72,19 @@
 			<Folder name="js">
 				<Content fileName="Events.js"/>
 				<Content fileName="PaymentLink.js"/>
-			</Folder>			
+			</Folder>
 			<Folder name="resources">
-				<Content fileName="credit-card-payment.svg"/>
-				<Content fileName="direct_payment.svg"/>
 				<Content fileName="expand.svg"/>
+				<Content fileName="spinner.gif"/>
 				<Content fileName="spin.svg" />
-				<Content fileName="spinner.gif"/>				
 				<Content fileName="vaulter_logo.svg"/>
 				<Content fileName="vaulter_txt.svg"/>
 				<Content fileName="vaulterlogo.svg"/>
 				<Content fileName="error_red.png"/>
 				<Content fileName="success_green.png"/>
-				
+
 			</Folder>
-	    </Folder>
+		</Folder>
 		<Folder name="Payout">
 			<Content fileName="Settings.md"/>
 			<Folder name="API">
