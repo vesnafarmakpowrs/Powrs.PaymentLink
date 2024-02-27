@@ -3,10 +3,19 @@ using System.Collections.Generic;
 
 namespace POWRS.PaymentLink.Models
 {
+    /// <summary>
+    /// Role definition:
+    /// SuperAdmin  -> Powrs (Will have full access)
+    /// Admin       -> Yuta (Can see and get details from all children. CAN'T create new user (legal id)
+    /// Client      -> Org admins. Can see and get details from all children. CAN Create user with same or lower role
+    /// User        -> user from Org. Can see only his transactions. CAN'T create new user (legal id)
+    /// </summary>
     public enum AccountRole
     {
-        User,
-        Admin
+        SuperAdmin,
+        Admin,
+        Client,
+        User
     }
 
     public static class EnumHelper

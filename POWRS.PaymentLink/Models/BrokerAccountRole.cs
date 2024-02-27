@@ -11,38 +11,16 @@ namespace POWRS.PaymentLink.Models
     {
         private string objectId;
         private string userName;
-        private string parentAccount;
         private AccountRole role;
+        private string creatorUserName;
         private string orgName;
+        private string parentOrgName;
 
-        public string ObjectId
-        {
-            get => objectId; 
-            set => objectId = value;
-        }
-
-        public string UserName
-        {
-            get => userName; 
-            set => userName = value;
-        }
-
-        public string ParentAccount
-        {
-            get => parentAccount; 
-            set => parentAccount = value;
-        }
-
-        public AccountRole Role
-        {
-            get => role;
-            set => role = value;
-        }
-
-        public string OrgName
-        {
-            get => orgName; 
-            set => orgName = value;
-        }
+        public string ObjectId { get => objectId; set => objectId = value; }
+        public string UserName { get => userName; set => userName = value; }
+        public AccountRole Role { get => role; set => role = value; }
+        public string CreatorUserName { get => creatorUserName; set => creatorUserName = value; }
+        public string OrgName { get => orgName; set => orgName = value; }
+        public string ParentOrgName { get => parentOrgName; set => parentOrgName = value; }
     }
 }

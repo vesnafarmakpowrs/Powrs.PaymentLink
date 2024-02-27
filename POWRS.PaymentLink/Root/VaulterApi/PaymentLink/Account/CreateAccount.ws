@@ -5,25 +5,25 @@
     "password":Required(Str(PPassword)),
     "repeatedPassword":Required(Str(PRepeatedPassword)),
     "email" : Required(Str(PEmail)),
-    "role": Required(Int(PUserRole))
+    "role": Optional(Int(PUserRole))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 try
 (
     if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
     (
-      Error("Email in not valid format.")
+		Error("Email in not valid format.")
     );
      
     Code:= 0;
     if (!exists(Code:= Global.VerifyingNumbers[PEmail]) or Code >= 0) then 
     (
-        Error("Email must be verified in order to create account");
+		Error("Email must be verified in order to create account");
     );
 
     if(PUserName not like "^[\\p{L}\\p{N}]{8,20}$") then 
     (
-     Error("Username could only contain letters and numbers.");
+		Error("Username could only contain letters and numbers.");
     );
     if(PPassword != PRepeatedPassword) then
     (
@@ -55,102 +55,124 @@ try
     
     neuronDomain:= "https://" + Gateway.Domain;
     NewAccount:= POST(neuronDomain + "/Agent/Account/Create",
-                 {
-                    "apiKey": apiKey,
-                    "eMail": PEmail,
-	                "nonce": Nonce,
-	                "password": PPassword,
-                    "seconds": 1800,
-                    "signature": Signature,
-                    "userName": PUserName
-                  },
-		   {"Accept" : "application/json" });
+				{
+					"apiKey": apiKey,
+					"eMail": PEmail,
+					"nonce": Nonce,
+					"password": PPassword,
+					"seconds": 1800,
+					"signature": Signature,
+					"userName": PUserName
+				},
+				{"Accept" : "application/json" });
 
     enabled:= Update BrokerAccounts set Enabled = true where UserName = PUserName;
     Global.VerifyingNumbers.Remove(PEmail);
-   
- neuronDomain:= "https://" + Gateway.Domain;
 
-try
-(
-    if(!exists(NewAccount.jwt)) then 
-    (
-	    Error("Token not available in response.");
-    );
+	try
+	(
+		if(!exists(NewAccount.jwt)) then 
+		(
+			Error("Token not available in response.");
+		);
 
-    PLocalName:= "ed448";
-    PNamespace:= "urn:ieee:iot:e2e:1.0";
-    PKeyId:= NewGuid().ToString();
-    KeyPassword:= Base64Encode(RandomBytes(20)).ToString();
-    Nonce:= Base64Encode(RandomBytes(32)).ToString();
+		PLocalName:= "ed448";
+		PNamespace:= "urn:ieee:iot:e2e:1.0";
+		PKeyId:= NewGuid().ToString();
+		KeyPassword:= Base64Encode(RandomBytes(20)).ToString();
+		Nonce:= Base64Encode(RandomBytes(32)).ToString();
 
-    S1:= PUserName + ":" + Gateway.Domain + ":" + PLocalName + ":" + PNamespace + ":" + PKeyId;
-    KeySignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(KeyPassword)));
+		S1:= PUserName + ":" + Gateway.Domain + ":" + PLocalName + ":" + PNamespace + ":" + PKeyId;
+		KeySignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(KeyPassword)));
 
-    S2:= S1 + ":" + KeySignature + ":" + Nonce;
-    RequestSignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
+		S2:= S1 + ":" + KeySignature + ":" + Nonce;
+		RequestSignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
 
-    NewKey:= POST(neuronDomain + "/Agent/Crypto/CreateKey",
-                 {
-                   "localName": PLocalName,
-				    "namespace": PNamespace,
-				    "id": PKeyId,
-				    "nonce": Nonce,
-				    "keySignature": KeySignature,
-				    "requestSignature": RequestSignature
-                  },
-		   {"Accept" : "application/json",
-            "Authorization": "Bearer " + NewAccount.jwt});
-   
-   SetSetting(PUserName  + ".KeyId", PKeyId);
-   SetSetting(PUserName  + ".KeySecret", KeyPassword);
+		NewKey:= POST(neuronDomain + "/Agent/Crypto/CreateKey",
+				{
+					"localName": PLocalName,
+					"namespace": PNamespace,
+					"id": PKeyId,
+					"nonce": Nonce,
+					"keySignature": KeySignature,
+					"requestSignature": RequestSignature
+				},
+				{
+					"Accept" : "application/json",
+					"Authorization": "Bearer " + NewAccount.jwt
+				});
+	   
+		SetSetting(PUserName  + ".KeyId", PKeyId);
+		SetSetting(PUserName  + ".KeySecret", KeyPassword);
 
-    accountRole:= Create(POWRS.PaymentLink.Models.BrokerAccountRole);
+		creatorUserName := "";
+		orgName := "";
+		parentOrgName := "";
+		
+		try
+		(	
+			SessionUser:= Global.ValidateAgentApiToken(true, false);
+			creatorUserName :=  SessionUser.username;
+			creatorBrokerAccRole := 
+				Select top 1 *
+				from POWRS.PaymentLink.Models.BrokerAccountRole
+				where UserName = creatorUserName;
+			
+			if(creatorBrokerAccRole != null) then (
+				orgName := creatorBrokerAccRole.OrgName;
+				parentOrgName := creatorBrokerAccRole.ParentOrgName;
+			);
+		)
+		catch
+		(
+			creatorUserName := PUserName;
+			orgName := ""; 
+			parentOrgName := "Powrs";
+		);
 
-    accountRole.UserName:= SessionUser.username;
-    accountRole.ParentAccount:= System.String.Empty;
-    accountRole.Role:= POWRS.PaymentLink.Models.AccountRole.Admin;
-    accountRole.OrgName:= POrgName;
+		accountRole:= Create(POWRS.PaymentLink.Models.BrokerAccountRole);
+		accountRole.UserName:= PUserName;
+		accountRole.Role:= POWRS.PaymentLink.Models.AccountRole.Client;
+		accountRole.CreatorUserName:= creatorUserName;
+		accountRole.OrgName:= orgName;
+		accountRole.ParentOrgName:= parentOrgName;
 
-    Waher.Persistence.Database.Insert(accountRole);
+		Waher.Persistence.Database.Insert(accountRole);
+	)
+	catch
+	(
+		Log.Error("Unable to create key: " + Exception.Message, null);
+		Error("Unable to create key: " + Exception.Message);
+	)
+	finally
+	(
+		Destroy(Nonce);
+		Destroy(S1);
+		Destroy(KeySignature);
+		Destroy(S2);
+		Destroy(RequestSignature);
+		Destroy(PKeyId);
+		Destroy(KeySignature);
+	);
 
-)
-catch
-(
-  Log.Error("Unable to create key: " + Exception.Message, null);
-  Error("Unable to create key: " + Exception.Message);
-)
-finally
-(
-    Destroy(Nonce);
-    Destroy(S1);
-    Destroy(KeySignature);
-    Destroy(S2);
-    Destroy(RequestSignature);
-    Destroy(PKeyId);
-    Destroy(KeySignature);
-);
-
- {
-        "userName": PUserName,
-        "jwt": NewAccount.jwt,
-        "isApproved": false
- }
-
+	{
+		"userName": PUserName,
+		"jwt": NewAccount.jwt,
+		"isApproved": false
+	}
 )
 catch
 (
     if(!exists(AccountAlreadyExists)) then 
     (
-        try 
-    (
-      delete from BrokerAccounts where UserName = PUserName;
-    )
-    catch
-    (
- 	    Log.Error("Unable to cleanup for user " + PUserName, null);
-    );
-
+		try 
+		(
+			delete from BrokerAccounts where UserName = PUserName;
+		)
+		catch
+		(
+			Log.Error("Unable to cleanup for user " + PUserName, null);
+		);
     );
     
     Log.Error("Unable to create user: " + Exception.Message, null);
