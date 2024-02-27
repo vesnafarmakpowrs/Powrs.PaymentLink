@@ -25,6 +25,11 @@ namespace POWRS.PaymentLink.Models
             return Enum.IsDefined(enumType, enumValue);
         }
 
+        public static AccountRole GetEnumByIndex(int index)
+        {
+            return (AccountRole)index;
+        }
+
         public static Dictionary<string, int> ListAllValues(Type enumType)
         {
             Dictionary<string, int> enumDictionary = new();

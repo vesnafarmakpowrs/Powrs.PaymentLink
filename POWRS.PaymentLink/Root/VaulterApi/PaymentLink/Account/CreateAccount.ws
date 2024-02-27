@@ -10,8 +10,6 @@
 
 try
 (
-	PUserRole := PUserRole ?? "";
-
     if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
     (
 		Error("Email in not valid format.")
@@ -42,6 +40,11 @@ try
         AccountAlreadyExists:= true;
         Error("Account with " + PUserName + " already exists");
     );
+	
+	PUserRole := PUserRole ?? -1;
+	if(PUserRole >= 0 && !POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PUserRole)) then (
+        Error("Role doesn't exists.");
+	);
 
     apiKey:= GetSetting("POWRS.PaymentLink.ApiKey", "");
     apiKeySecret:= GetSetting("POWRS.PaymentLink.ApiKeySecret", "");
@@ -136,6 +139,12 @@ try
 		orgName := "";
 		parentOrgName := "";
 		
+		enumUserRole := POWRS.PaymentLink.Models.AccountRole.User;
+		
+		if(PUserRole >= 0) then (
+			enumUserRole := POWRS.PaymentLink.Models.EnumHelper.GetEnumByIndex(PUserRole);
+		);
+		
 		try
 		(	
 			SessionUser:= Global.ValidateAgentApiToken(true, false);
@@ -148,6 +157,10 @@ try
 			if(creatorBrokerAccRole != null) then (
 				orgName := creatorBrokerAccRole.OrgName;
 				parentOrgName := creatorBrokerAccRole.ParentOrgName;
+				
+				if(enumUserRole < creatorBrokerAccRole.Role) then (
+					Error("Unable to create user with higher privileges");
+				);
 			);
 		)
 		catch
@@ -155,11 +168,11 @@ try
 			creatorUserName := PUserName;
 			orgName := ""; 
 			parentOrgName := "Powrs";
-		);
+		);			
 
 		accountRole:= Create(POWRS.PaymentLink.Models.BrokerAccountRole);
 		accountRole.UserName:= PUserName;
-		accountRole.Role:= POWRS.PaymentLink.Models.AccountRole.Client;
+		accountRole.Role:= enumUserRole;
 		accountRole.CreatorUserName:= creatorUserName;
 		accountRole.OrgName:= orgName;
 		accountRole.ParentOrgName:= parentOrgName;
