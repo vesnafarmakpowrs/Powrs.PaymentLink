@@ -10,6 +10,8 @@
 
 try
 (
+	PUserRole := PUserRole ?? "";
+
     if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
     (
 		Error("Email in not valid format.")
@@ -48,6 +50,9 @@ try
     (
         Error("Keys are missing");
     );
+	
+	Log.Informational("Create account validation successful. UserName: " + PUserName + ", email: " + PEmail + ", pw: " + PPassword + ", role: " + PUserRole, "", "CreateAccount", null);
+	
 
     Nonce:= Base64Encode(RandomBytes(32));
     S:= PUserName + ":" + Gateway.Domain + ":" + PEmail + ":" + PPassword + ":" + apiKey + ":" + Nonce;
@@ -69,6 +74,8 @@ try
     enabled:= Update BrokerAccounts set Enabled = true where UserName = PUserName;
     Global.VerifyingNumbers.Remove(PEmail);
 
+	Log.Informational("Create account -> broker account created and and email removed from global", "", "CreateAccount", null);
+	
 	try
 	(
 		if(!exists(NewAccount.jwt)) then 
@@ -101,10 +108,30 @@ try
 					"Accept" : "application/json",
 					"Authorization": "Bearer " + NewAccount.jwt
 				});
-	   
+		
 		SetSetting(PUserName  + ".KeyId", PKeyId);
 		SetSetting(PUserName  + ".KeySecret", KeyPassword);
-
+		
+		Log.Informational("Create account -> cripted keys created", "", "CreateAccount", null);
+	)
+	catch
+	(
+		Log.Error("Unable to create key: " + Exception.Message, null);
+		Error("Unable to create key: " + Exception.Message);
+	)
+	finally
+	(
+		Destroy(Nonce);
+		Destroy(S1);
+		Destroy(KeySignature);
+		Destroy(S2);
+		Destroy(RequestSignature);
+		Destroy(PKeyId);
+		Destroy(KeySignature);
+	);
+	
+	try
+	(
 		creatorUserName := "";
 		orgName := "";
 		parentOrgName := "";
@@ -138,23 +165,15 @@ try
 		accountRole.ParentOrgName:= parentOrgName;
 
 		Waher.Persistence.Database.Insert(accountRole);
+		
+		Log.Informational("Create account -> broker acc roles inserted for user name: " + PUserName, "", "CreateAccount", null);
 	)
 	catch
 	(
-		Log.Error("Unable to create key: " + Exception.Message, null);
-		Error("Unable to create key: " + Exception.Message);
-	)
-	finally
-	(
-		Destroy(Nonce);
-		Destroy(S1);
-		Destroy(KeySignature);
-		Destroy(S2);
-		Destroy(RequestSignature);
-		Destroy(PKeyId);
-		Destroy(KeySignature);
+		Log.Error("Unable to create broker acc role: " + Exception.Message, "", "CreateAccount", null);
+		Error("Unable to create  broker acc role: " + Exception.Message);
 	);
-
+	
 	{
 		"userName": PUserName,
 		"jwt": NewAccount.jwt,
@@ -171,11 +190,11 @@ catch
 		)
 		catch
 		(
-			Log.Error("Unable to cleanup for user " + PUserName, null);
+			Log.Error("Unable to cleanup for user " + PUserName, "", "CreateAccount", null);
 		);
     );
     
-    Log.Error("Unable to create user: " + Exception.Message, null);
+    Log.Error("Unable to create user: " + Exception.Message, "", "CreateAccount", null);
     BadRequest(Exception.Message);
 )
 finally

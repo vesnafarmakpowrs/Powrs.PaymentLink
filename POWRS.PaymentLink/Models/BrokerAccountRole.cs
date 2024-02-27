@@ -16,6 +16,7 @@ namespace POWRS.PaymentLink.Models
         private string orgName;
         private string parentOrgName;
 
+        [ObjectId]
         public string ObjectId { get => objectId; set => objectId = value; }
         public string UserName { get => userName; set => userName = value; }
         public AccountRole Role { get => role; set => role = value; }
