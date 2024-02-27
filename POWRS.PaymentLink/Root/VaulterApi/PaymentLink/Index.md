@@ -677,3 +677,29 @@ Retrieves contact information for organizaion.
 | `PhoneNumber `  | Phone number to contact company |
 | `TermsAndConditions `  | Terms and conditions url for company |
 
+### Successful Transactions
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Reports/SuccessfulTransactions.ws")}}`  
+Method: `POST`
+
+Retrieves Successful Transactions information.
+
+**Request**
+
+````
+    "DateFrom":Required(String(PDateFrom)),
+	"DateTo":Required(String(PDateTo)),
+	"PaymentType":Optional(String(PPaymentType)),
+	"CardBrand":Optional(String(PCardBrand))
+````
+
+**Response**
+
+| Name              | Description |
+|:------------------|:------------|
+| `TokenId `        | Token Id . |
+| `RemoteId`        | Remote Id|
+| `Amount`          | Amount |
+| `Currency`        | Card brand |
+| `PaymentType`     | Payment Type (Card or IPS) |
+| `CardBrand`       | Card brand |
