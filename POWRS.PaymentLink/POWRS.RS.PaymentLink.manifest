@@ -46,6 +46,7 @@
 					<Content fileName="ListOfTransactions.ws"/>
 					<Content fileName="OnBoardedUsers.ws"/>
 					<Content fileName="ReportTransactions.ws"/>
+					<Content fileName="SuccessfulTransactions.ws"/>					
 				</Folder>
 			</Folder>
 		</Folder>
