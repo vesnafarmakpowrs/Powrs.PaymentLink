@@ -459,6 +459,9 @@
 	  <None Update="Root\VaulterApi\PaymentLink\QR\Generate.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Scripts\StartupScripts\ApplyForAgentLegalId.config">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Scripts\StartupScripts\CreateLanguageIndex.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
