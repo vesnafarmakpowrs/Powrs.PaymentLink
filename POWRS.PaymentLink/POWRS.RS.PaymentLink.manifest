@@ -119,7 +119,6 @@
 	</Folder>
 	<Folder name="Language">
 		<Content fileName="POWRS.PaymentLink.en.lng"/>
-		<Content fileName="POWRS.PaymentLink.sv.lng"/>
 		<Content fileName="POWRS.PaymentLink.sr.lng"/>
 	</Folder>
 </Module>
