@@ -10,16 +10,17 @@ namespace POWRS.PaymentLink
     public class MailSender
     {
         public static async Task SendHtmlMail(string host,
-     int port,
-     string username,
-     string password,
-     string recepient,
-     string subject,
-     string htmlContent,
-     string Base64Attachment,
-     string AttachementFileName)
+            int port,
+            string sender,
+            string username,
+            string password,
+            string recepient,
+            string subject,
+            string htmlContent,
+            string Base64Attachment,
+            string AttachementFileName)
         {
-            if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(username) ||
+            if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(sender) || string.IsNullOrEmpty(username) ||
                 string.IsNullOrEmpty(password) || string.IsNullOrEmpty(recepient) ||
                 string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(htmlContent))
             {
@@ -35,12 +36,16 @@ namespace POWRS.PaymentLink
                     EnableSsl = true,
                 };
 
-                var mailMessage = new MailMessage(username, recepient)
+                var mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(sender, username);
+                mailMessage.Subject = subject;
+                mailMessage.Body = htmlContent;
+                mailMessage.IsBodyHtml = true;
+
+                foreach (var address in recepient.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    Subject = subject,
-                    Body = htmlContent,
-                    IsBodyHtml = true
-                };
+                    mailMessage.To.Add(address);
+                }
 
                 if (!string.IsNullOrEmpty(Base64Attachment))
                 {

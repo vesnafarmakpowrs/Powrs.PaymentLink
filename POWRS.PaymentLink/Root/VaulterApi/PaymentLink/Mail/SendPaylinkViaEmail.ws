@@ -65,16 +65,7 @@ try
 	);
 	
 	MailBody := 
-		"Poštovani {{buyerName}},"
-		+ "<br />"
-		+ "<br /><strong>{{PKupac}}</strong> je kreirao Vaulter link za plaćanje za Vas. Kliknite na &nbsp"
-		+ "<a href = '{{PLink}}'>LINK</a>"
-		+ "&nbsp kako bi ste nastavili sa plaćanjem."
-		+ "<br /><br />Srdačan pozdrav,"
-		+ "<br />Vaulter"
-
-		+ "<br /><br />___"
-		+ "<br />Dear {{buyerName}},"
+		"Dear {{buyerName}},"
 		+ "<br />"
 		+ "<br /><strong>{{PKupac}}</strong> has created a Vaulter payment link for you. Click on the following &nbsp"
 		+ "<a href = '{{PLink}}'>LINK</a>"
@@ -89,7 +80,7 @@ try
 	
 	ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
 	Config := ConfigClass.Instance;
-	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, buyerEmail, "Vaulter", MailBody, "", "");
+	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, buyerEmail, "Vaulter", MailBody, null, null);
 		
 	"Success";
 )
