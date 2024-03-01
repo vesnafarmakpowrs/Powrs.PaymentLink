@@ -80,7 +80,7 @@ try
 	
 	ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
 	Config := ConfigClass.Instance;
-	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, buyerEmail, "Vaulter", MailBody, "", "");
+	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, buyerEmail, "Vaulter", MailBody, null, null);
 		
 	"Success";
 )
