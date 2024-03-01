@@ -58,7 +58,7 @@ try
     Log.Informational("Sending email for verification email:" + PEmail,null);
     ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
     Config := ConfigClass.Instance;
-    POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.UserName, Config.Password, PEmail, "Vaulter", html, null, null);
+    POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, PEmail, "Vaulter", html, null, null);
     
     {
       "Status":true
