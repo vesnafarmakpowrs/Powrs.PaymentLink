@@ -529,7 +529,7 @@ Call this resource to verify email with code.
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/CreateAccount.ws")}}`  
 Method: `POST`
 
-Call this resource to verify email with code.
+Call this resource to create account with previously verified email. Role should be empty when it is REGISTRATION, but should be filled when it is ADD USER by other logged user.
 
 **Request**
 
@@ -538,7 +538,8 @@ Call this resource to verify email with code.
     "userName":Required(Str(PUserName)),
     "password":Required(Str(PPassword)),
     "repeatedPassword":Required(Str(PRepeatedPassword)),
-    "email" : Required(Str(PEmail))
+    "email" : Required(Str(PEmail)), 
+    "role": Optional(Int(PUserRole))
 }
 ````
 
@@ -548,6 +549,7 @@ Call this resource to verify email with code.
 | `password`        | Password for the user |
 | `repeatedPassword`        | Repeated Password for the user |
 | `email`        | Previously verified email with which user will be created |
+| `role`        | INT Role for new user|
 
 **Response**
 
