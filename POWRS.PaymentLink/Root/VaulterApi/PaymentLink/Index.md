@@ -397,7 +397,9 @@ Read **Authorization section**.
 200 OK
 	{
 		 "authorized": true,
-         "isApproved": Bool
+         "isApproved": Bool,
+         "role": "User",
+         "contactInformationsPopulated": Bool
 	}
 403 Forbidden
 	{
@@ -539,6 +541,7 @@ Call this resource to create account with previously verified email. Role should
     "password":Required(Str(PPassword)),
     "repeatedPassword":Required(Str(PRepeatedPassword)),
     "email" : Required(Str(PEmail)), 
+	"newSubUser": Optional(Boolean(PNewSubUser)),
     "role": Optional(Int(PUserRole))
 }
 ````
@@ -549,6 +552,7 @@ Call this resource to create account with previously verified email. Role should
 | `password`        | Password for the user |
 | `repeatedPassword`        | Repeated Password for the user |
 | `email`        | Previously verified email with which user will be created |
+| `newSubUser`  | Boolean. True if logged user create new sub user|
 | `role`        | INT Role for new user|
 
 **Response**
@@ -559,6 +563,63 @@ Call this resource to create account with previously verified email. Role should
 	 "userName": (String),
      "jwt": (String),
      "isApproved": (bool)
+} 
+````
+
+### Get Users
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/GetUsers.ws")}}`  
+Method: `POST`
+
+Call this resource to create account with previously verified email. Role should be empty when it is REGISTRATION, but should be filled when it is ADD USER by other logged user.
+
+**Request**
+
+````
+{
+	 // Empty request body
+}
+````
+
+**Response**
+
+
+````
+{
+    "UserName": (String),
+	"Firs": (String),
+	"Last": (String),
+	"Email": (String),
+	"Created": (String-DateTime);
+	"From": (String-DateTime),
+	"To": (String-DateTime),
+	"Role": (String),
+	"IsActive": (Boolean)
+} 
+````
+
+### Role for sub user
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/RoleForSubUser.ws")}}`  
+Method: `POST`
+
+Call this end point to a get list of available roles for new user, depending on logged user (jwt).
+
+**Request**
+
+````
+{
+	 // Empty request body
+}
+````
+
+
+**Response**
+
+
+````
+{
+	 Dictionary key value pair
 } 
 ````
 

@@ -5,6 +5,7 @@
     "password":Required(Str(PPassword)),
     "repeatedPassword":Required(Str(PRepeatedPassword)),
     "email" : Required(Str(PEmail)),
+	"newSubUser": Optional(Boolean(PNewSubUser)),
     "role": Optional(Int(PUserRole))
 }:=Posted) ??? BadRequest(Exception.Message);
 
@@ -139,32 +140,46 @@ try
 		orgName := "";
 		parentOrgName := "";
 		
-		enumUserRole := POWRS.PaymentLink.Models.AccountRole.User;
+		enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.User;
 		
 		if(PUserRole >= 0) then (
-			enumUserRole := POWRS.PaymentLink.Models.EnumHelper.GetEnumByIndex(PUserRole);
+			enumNewUserRole := POWRS.PaymentLink.Models.EnumHelper.GetEnumByIndex(PUserRole);
 		);
 		
 		try
 		(	
-			SessionUser:= Global.ValidateAgentApiToken(true, false);
-			creatorUserName :=  SessionUser.username;
-			creatorBrokerAccRole := 
-				Select top 1 *
-				from POWRS.PaymentLink.Models.BrokerAccountRole
-				where UserName = creatorUserName;
-			
-			if(creatorBrokerAccRole != null) then (
-				orgName := creatorBrokerAccRole.OrgName;
-				parentOrgName := creatorBrokerAccRole.ParentOrgName;
+			if(PNewSubUser) then (
+				SessionUser:= Global.ValidateAgentApiToken(true, false);
 				
-				if(enumUserRole < creatorBrokerAccRole.Role) then (
-					Error("Unable to create user with higher privileges");
-				);
-			);
+				creatorUserName :=  SessionUser.username;
+				creatorBrokerAccRole := 
+					Select top 1 *
+					from POWRS.PaymentLink.Models.BrokerAccountRole
+					where UserName = creatorUserName;
+				
+				if(creatorBrokerAccRole != null) then (
+					
+					if (creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.SuperAdmin &&
+						creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.Client
+					) then (
+						Error("Unable to create user. Logged user don't have appropriate role.");
+					);
+					
+					if(enumNewUserRole < creatorBrokerAccRole.Role) then (
+						Error("Unable to create user with higher privileges");
+					);
+					
+					orgName := creatorBrokerAccRole.OrgName;
+					parentOrgName := creatorBrokerAccRole.ParentOrgName;
+				);			
+			);			
 		)
 		catch
 		(
+			if(PNewSubUser) then(
+				Error("Unable to create new user... " + Exception.Message);
+			);
+			
 			creatorUserName := PUserName;
 			orgName := ""; 
 			parentOrgName := "Powrs";
@@ -172,7 +187,7 @@ try
 
 		accountRole:= Create(POWRS.PaymentLink.Models.BrokerAccountRole);
 		accountRole.UserName:= PUserName;
-		accountRole.Role:= enumUserRole;
+		accountRole.Role:= enumNewUserRole;
 		accountRole.CreatorUserName:= creatorUserName;
 		accountRole.OrgName:= orgName;
 		accountRole.ParentOrgName:= parentOrgName;
@@ -186,7 +201,7 @@ try
 		Log.Error("Unable to create broker acc role: " + Exception.Message, "", "CreateAccount", null);
 		Error("Unable to create  broker acc role: " + Exception.Message);
 	);
-	
+		
 	{
 		"userName": PUserName,
 		"jwt": NewAccount.jwt,

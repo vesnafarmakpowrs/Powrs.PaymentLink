@@ -8,87 +8,107 @@
 SessionUser:= Global.ValidateAgentApiToken(false, false);  
 try
 (
-  Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
-  if(System.String.IsNullOrWhiteSpace(Password)) then 
-  (
-    Error("No user with given username");
-  );
+	Password := 
+		select top 1 Password 
+		from BrokerAccounts 
+		where UserName = SessionUser.username;
+			
+	if(System.String.IsNullOrWhiteSpace(Password)) then 
+	(
+		Error("No user with given username");
+	);
 
-errors:= Create(System.Collections.Generic.List, System.String);
+	errors:= Create(System.Collections.Generic.List, System.String);
 
-if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
-(
-    errors.Add("FIRST");    
-);
-if(PLastName not like "[\\p{L}\\s]{2,30}") then 
-(
-    errors.Add("LAST");
-);
+	if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
+	(
+		errors.Add("FIRST");    
+	);
+	if(PLastName not like "[\\p{L}\\s]{2,30}") then 
+	(
+		errors.Add("LAST");
+	);
 
- NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
- isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
+	NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
+	isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
 
-if(PPersonalNumber not like "^\\d{13}$" || isPersonalNumberValid != true) then 
-(
-    errors.Add("PNR");
-);
-if(PCountryCode not like "[A-Z]{2}") then 
-(
-     errors.Add("COUNTRY");
-);
+	if(PPersonalNumber not like "^\\d{13}$" || isPersonalNumberValid != true) then 
+	(
+		errors.Add("PNR");
+	);
+	if(PCountryCode not like "[A-Z]{2}") then 
+	(
+		errors.Add("COUNTRY");
+	);
 
-if(errors.Count > 0) then
-(
-    Error(errors);
-);
+	if(errors.Count > 0) then
+	(
+		Error(errors);
+	);
 
-existingLegalIdentity:= select top 1 Id from LegalIdentities where Account = SessionUser.username;
-if(!System.String.IsNullOrEmpty(existingLegalIdentity)) then 
-(
-    Error("Legal identity for account already exists: " + SessionUser.username);
-);
+	existingLegalIdentity := 
+		select top 1 Id 
+		from LegalIdentities 
+		where Account = SessionUser.username
+			and State = "Approved";
+		
+	if(!System.String.IsNullOrEmpty(existingLegalIdentity)) then 
+	(
+		Error("Approved legal identity for account already exists: " + SessionUser.username);
+	);
 
-parentAccount:= select top 1 ParentAccount from BrokerAccountRoles where UserName = SessionUser.username;
+	objBrokerAccountRole := 
+		select top 1 * 
+		from POWRS.PaymentLink.Models.BrokerAccountRole 
+		where UserName = SessionUser.username;
 
-if(System.String.IsNullOrEmpty(parentAccount)) then 
-(
-  Error("No parent account found for user: " + SessionUser.username);
-);
+	if(objBrokerAccountRole == null) then (
+		Error("No broker account role found for user: " + SessionUser.username);
+	);
 
-parentLegalIdentity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity 
-                        where Account = parentAccount and State = "Approved" order by Created desc;
+	if(System.String.IsNullOrEmpty(objBrokerAccountRole.CreatorUserName)) then 
+	(
+		Error("No parent account found for user: " + SessionUser.username);
+	);
 
-if(parentLegalIdentity == null) then 
-(
- Error("Parent does not have approved legalIdentity");
-);
+	parentLegalIdentity:= 
+		select top 1 * 
+		from IoTBroker.Legal.Identity.LegalIdentity 
+		where Account = objBrokerAccountRole.CreatorUserName 
+			and State = "Approved" 
+		order by Created desc;
 
-dictionary:= {};
+	if(parentLegalIdentity == null) then 
+	(
+		Error("Parent does not have approved legalIdentity");
+	);
 
-dictionary["FIRST"]:= PFirstName;
-dictionary["LAST"]:= PLastName;
-dictionary["PNR"]:= PPersonalNumber;
-dictionary["COUNTRY"]:= PCountryCode;
+	dictionary:= {};
 
-foreach property in parentLegalIdentity.Properties do
-(
-   if(property.Name != "FIRST" and 
-     property.Name != "LAST" and 
-     property.Name != "PNR" and 
-     property.Name != "COUNTRY") then 
-     (
-        dictionary[property.Name]:= property.Value;
-     );
-);
+	dictionary["FIRST"]:= PFirstName;
+	dictionary["LAST"]:= PLastName;
+	dictionary["PNR"]:= PPersonalNumber;
+	dictionary["COUNTRY"]:= PCountryCode;
 
-    PropertiesVector:= [FOREACH prop IN dictionary: {name: prop.Key, value: prop.Value}];
+	foreach property in parentLegalIdentity.Properties do
+	(
+		if(property.Name != "FIRST" and 
+			property.Name != "LAST" and 
+			property.Name != "PNR" and 
+			property.Name != "COUNTRY") then 
+		(
+			dictionary[property.Name]:= property.Value;
+		);
+	);
 
-    Global.ApplyForAgentLegalId(SessionUser, Password, PropertiesVector);
+	PropertiesVector := [FOREACH prop IN dictionary: {name: prop.Key, value: prop.Value}];
+
+	Global.ApplyForAgentLegalId(SessionUser, Password, PropertiesVector);
 )
 catch
 (
-    Log.Error(Exception.Message, null);
-    BadRequest(Exception.Message);
+	Log.Error(Exception.Message, null);
+	BadRequest(Exception.Message);
 );
 
 Return("ok");

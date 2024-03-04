@@ -30,6 +30,34 @@ namespace POWRS.PaymentLink.Models
             return (AccountRole)index;
         }
 
+        public static int GetIndexByName(Type enumType, string value)
+        {
+            int index = 0;
+            foreach (var item in Enum.GetValues(enumType))
+            {
+                if (value == item.ToString())
+                {
+                    index = (int)item;
+                    break;
+                }
+            }
+
+            return index;
+        }
+
+        public static Dictionary<string, int> ListAllSubValues(Type enumType, int minValue)
+        {
+            Dictionary<string, int> enumDictionary = new();
+
+            foreach (var item in Enum.GetValues(enumType))
+            {
+                if (minValue >= (int)item)
+                    enumDictionary.Add(item.ToString(), (int)item);
+            }
+
+            return enumDictionary;
+        }
+
         public static Dictionary<string, int> ListAllValues(Type enumType)
         {
             Dictionary<string, int> enumDictionary = new();
@@ -41,5 +69,7 @@ namespace POWRS.PaymentLink.Models
 
             return enumDictionary;
         }
+
+     
     }
 }
