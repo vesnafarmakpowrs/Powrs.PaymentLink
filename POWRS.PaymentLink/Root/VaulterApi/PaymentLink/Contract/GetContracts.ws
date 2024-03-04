@@ -18,27 +18,15 @@ try
 	foreach token in (select * from tokens order by Created desc) do
 	(
 		tokenVariables := token.GetCurrentStateVariables();
-		if(tokenVariables.VariableValues.Length > 0) then (
-			ResultList.Add({
-				"TokenId": token.TokenId,
-				"CanCancel": tokenVariables.State == "PaymentCompleted",
-				"IsActive": !exists(doneStates[tokenVariables.State]),
-				"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
-				"Created": token.Created.ToString("s"),
-				"State": tokenVariables.State,
-				"Variables": tokenVariables.VariableValues
-			});
-		)else (
-			ResultList.Add({
-				"TokenId": token.TokenId,
-				"CanCancel": false, 
-				"IsActive": false,
-				"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
-				"Created": token.Created.ToString("s"),
-				"State": "",
-				"Variables": token.Tags
-			});
-		);
+		ResultList.Add({
+			"TokenId": token.TokenId,
+			"CanCancel": tokenVariables.State == "PaymentCompleted",
+			"IsActive": !exists(doneStates[tokenVariables.State]),
+			"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
+			"Created": token.Created.ToString("s"),
+			"State": tokenVariables.State,
+			"Variables": token.Tags
+		});
 	);
 )
 catch
