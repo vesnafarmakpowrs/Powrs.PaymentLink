@@ -14,6 +14,7 @@
 				<Content fileName="Index.md"/>
 				<Folder name="Account">
 					<Content fileName="ApplyForLegalId.ws"/>
+					<Content fileName="ApplyForSubLegalId.ws"/>
 					<Content fileName="ContactInfo.ws"/>
 					<Content fileName="CreateAccount.ws"/>
 					<Content fileName="GetContactInfo.ws"/>
@@ -25,6 +26,7 @@
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>
+					<Content fileName="LoginSmartAdmin.ws"/>
 					<Content fileName="VerifyToken.ws"/>
 				</Folder>
 				<Folder name="Bank">

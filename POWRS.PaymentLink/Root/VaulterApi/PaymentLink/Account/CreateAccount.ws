@@ -42,7 +42,9 @@ try
         Error("Account with " + PUserName + " already exists");
     );
 	
+	PNewSubUser := PNewSubUser ?? false;
 	PUserRole := PUserRole ?? -1;
+	
 	if(PUserRole >= 0 && !POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PUserRole)) then (
         Error("Role doesn't exists.");
 	);
@@ -142,7 +144,7 @@ try
 		
 		enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.User;
 		
-		if(PUserRole >= 0) then (
+		if(PUserRole >= 0 && PNewSubUser) then (
 			enumNewUserRole := POWRS.PaymentLink.Models.EnumHelper.GetEnumByIndex(PUserRole);
 		);
 		
@@ -172,6 +174,10 @@ try
 					orgName := creatorBrokerAccRole.OrgName;
 					parentOrgName := creatorBrokerAccRole.ParentOrgName;
 				);			
+			) else (
+				creatorUserName := PUserName;
+				orgName := ""; 
+				parentOrgName := "Powrs";
 			);			
 		)
 		catch

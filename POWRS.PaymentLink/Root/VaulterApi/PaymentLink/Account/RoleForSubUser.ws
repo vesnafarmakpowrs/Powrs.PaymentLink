@@ -19,7 +19,7 @@ try
 	);
 	
 	sessionUserRoleInt := POWRS.PaymentLink.Models.EnumHelper.GetIndexByName(POWRS.PaymentLink.Models.AccountRole, sessionUserBrokerAcc.Role.ToString());
-	myRoleDictionary := POWRS.PaymentLink.Models.ListAllSubValues(POWRS.PaymentLink.Models.AccountRole, sessionUserRoleInt);
+	myRoleDictionary := POWRS.PaymentLink.Models.EnumHelper.ListAllSubValues(POWRS.PaymentLink.Models.AccountRole, sessionUserRoleInt);
 )
 catch
 (

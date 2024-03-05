@@ -51,7 +51,7 @@ namespace POWRS.PaymentLink.Models
 
             foreach (var item in Enum.GetValues(enumType))
             {
-                if (minValue >= (int)item)
+                if ((int)item >= minValue)
                     enumDictionary.Add(item.ToString(), (int)item);
             }
 
