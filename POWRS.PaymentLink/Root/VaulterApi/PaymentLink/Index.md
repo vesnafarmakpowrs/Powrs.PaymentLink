@@ -531,7 +531,7 @@ Call this resource to verify email with code.
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/CreateAccount.ws")}}`  
 Method: `POST`
 
-Call this resource to create account with previously verified email. "newSubUser" and "role" should be empty when it is REGISTRATION, but should be filled when it is ADD USER by other logged user.
+Call this resource to create account with previously verified email. "newSubUser" and "role" should be empty when it is REGISTRATION, but should be filled when it is ADD USER by other logged user. When is creation of new sub user then Bearer token must be passed.
 
 **Request**
 
@@ -571,7 +571,7 @@ Call this resource to create account with previously verified email. "newSubUser
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/GetUsers.ws")}}`  
 Method: `POST`
 
-Call this resource to create account with previously verified email. Role should be empty when it is REGISTRATION, but should be filled when it is ADD USER by other logged user.
+Return the list of users
 
 **Request**
 

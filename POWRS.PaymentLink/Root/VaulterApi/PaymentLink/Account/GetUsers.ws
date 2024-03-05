@@ -1,12 +1,10 @@
-
-
 SessionUser:= Global.ValidateAgentApiToken(true, false);
 
 try(
 	objBrokerAccRole := 
 		Select top 1 *
 		from POWRS.PaymentLink.Models.BrokerAccountRole
-		where UserName = creatorUserName;
+		where UserName = SessionUser.username;
 	
 	if (objBrokerAccRole == null) then (
 		Error("Unable to get list of user. Logged user don't have BrokerAccountRole");
@@ -18,17 +16,17 @@ try(
 		Error("Unable to get list of user. Logged user don't have appropriate role.");
 	);
 	
-	if(objBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.SuperAdmin) then (
+	if(objBrokerAccRole.Role == POWRS.PaymentLink.Models.AccountRole.SuperAdmin) then (
 		listBrokerAcc :=
-			Select top 1 *
+			Select *
 			from POWRS.PaymentLink.Models.BrokerAccountRole
 			order by UserName;
 	) else (
 		listBrokerAcc :=
-			Select top 1 *
+			Select *
 			from POWRS.PaymentLink.Models.BrokerAccountRole
 			where OrgName = objBrokerAccRole.OrgName
-				or ParentOrgName = bjBrokerAccRole.OrgName
+				or ParentOrgName = objBrokerAccRole.OrgName
 			order by UserName;
 	);
 	
@@ -39,14 +37,14 @@ try(
 		Identity := 
 			select top 1 * 
 			from IoTBroker.Legal.Identity.LegalIdentity 
-			where Account = Contract.Account 
+			where Account = account.UserName
 				And State = "Approved";
 		
 		if (Identity == null) then (
 			Identity := 
 				select top 1 * 
 				from IoTBroker.Legal.Identity.LegalIdentity 
-				where Account = Contract.Account 
+				where Account = account.UserName 
 				order by Created desc;
 		);
 		
@@ -71,7 +69,7 @@ try(
 			"Firs": accFirst,
 			"Last": accLast,
 			"Email": accEmail,
-			"Created": Identity.Created.ToString("s");
+			"Created": Identity.Created.ToString("s"),
 			"From": Identity.From.ToString("s"),
 			"To": Identity.To.ToString("s"),
 			"Role": account.Role.ToString(),
