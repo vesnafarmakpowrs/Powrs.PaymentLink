@@ -628,7 +628,7 @@ Call this end point to a get list of available roles for new user, depending on 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/ApplyForLegalId.ws")}}`  
 Method: `POST`
 
-Call this resource to verify email with code.
+Call this resource to apply for legal identity.
 
 **Request**
 
@@ -671,6 +671,43 @@ Call this resource to verify email with code.
 | `ORGACTIVITY`         | Organization Activity |
 | `ORGACTIVITYNUM`         | Activity number |
 | `ORGTAXNUM`         | Tax number |
+
+**Response**
+
+
+````
+{
+	 "userName": (String),
+     "jwt": (String),
+     "isApproved": (bool)
+} 
+````
+
+
+### Apply for legal Id
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/ApplyForSubLegalId.ws")}}`  
+Method: `POST`
+
+Call this resource to apply for legal identity for sub user. Other properties will be taken from creator user.
+
+**Request**
+
+````
+{
+    "FIRST" : Required(Str(PFirstName)),
+    "LAST" : Required(Str(PLastName)),
+    "PNR" : Required(Str(PPersonalNumber)),
+    "COUNTRY" : Required(Str(PCountryCode))
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `FIRST`       | First Name for the user. |
+| `LAST`        | Last Name for the user.|
+| `PNR`  | Personal Number for the user |
+| `COUNTRY`         | Country for the user.|
 
 **Response**
 
