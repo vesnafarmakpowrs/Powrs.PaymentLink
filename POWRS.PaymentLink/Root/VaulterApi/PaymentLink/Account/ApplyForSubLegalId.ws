@@ -95,7 +95,10 @@ try
 		if(property.Name != "FIRST" and 
 			property.Name != "LAST" and 
 			property.Name != "PNR" and 
-			property.Name != "COUNTRY") then 
+			property.Name != "COUNTRY" and 
+			property.Name != "JID" and 
+			property.Name != "EMAIL" and
+			property.Name != "AGENT") then
 		(
 			dictionary[property.Name]:= property.Value;
 		);
