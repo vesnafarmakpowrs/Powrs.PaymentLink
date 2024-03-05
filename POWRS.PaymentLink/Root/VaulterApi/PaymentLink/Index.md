@@ -531,7 +531,7 @@ Call this resource to verify email with code.
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/CreateAccount.ws")}}`  
 Method: `POST`
 
-Call this resource to create account with previously verified email. Role should be empty when it is REGISTRATION, but should be filled when it is ADD USER by other logged user.
+Call this resource to create account with previously verified email. "newSubUser" and "role" should be empty when it is REGISTRATION, but should be filled when it is ADD USER by other logged user.
 
 **Request**
 
