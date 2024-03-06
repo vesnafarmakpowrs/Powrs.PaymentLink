@@ -10,8 +10,7 @@ try(
 		Error("Unable to get list of user. Logged user don't have BrokerAccountRole");
 	);
 	
-	if (objBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.SuperAdmin &&
-		objBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.Client
+	if (objBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.Client
 	) then (
 		Error("Unable to get list of user. Logged user don't have appropriate role.");
 	);
@@ -32,16 +31,17 @@ try(
 	
 	ResultList := Create(System.Collections.Generic.List, System.Object);
 	
-	foreach account in (select * from listBrokerAcc) do
+	foreach account in listBrokerAcc do
 	(
-		Identity := 
+		accIdentity := 
 			select top 1 * 
 			from IoTBroker.Legal.Identity.LegalIdentity 
 			where Account = account.UserName
-				And State = "Approved";
+				And State = "Approved"
+			order by Created desc;
 		
-		if (Identity == null) then (
-			Identity := 
+		if (accIdentity == null) then (
+			accIdentity := 
 				select top 1 * 
 				from IoTBroker.Legal.Identity.LegalIdentity 
 				where Account = account.UserName 
@@ -51,29 +51,35 @@ try(
 		accFirst := "";
 		accLast := ""; 
 		accEmail := "";
+		accState := 0;
 		
-		foreach item in Identity.Properties do (
-			if(item.Name == "FIRST") then (
-				accFirst := item.Value;
+		if(accIdentity != null) then (
+			foreach item in accIdentity.Properties do (
+				if(item.Name == "FIRST") then (
+					accFirst := item.Value;
+				) else if(item.Name == "LAST") then (
+					accLast := item.Value;
+				) else if(item.Name == "EMAIL") then (
+					accEmail := item.Value;
+				);
 			);
-			if(item.Name == "LAST") then (
-				accLast := item.Value;
-			);
-			if(item.Name == "EMAIL") then (
-				accEmail := item.Value;
+			
+			if(accIdentity.State == Waher.Service.IoTBroker.Legal.Identity.IdentityState.Approved) then (
+				accState := 1;
+			) else if (accIdentity.State == Waher.Service.IoTBroker.Legal.Identity.IdentityState.Rejected) then (
+				accState := -1;
+			) else (
+				accState := 0;
 			);
 		);
-	
+		
 		ResultList.Add({
 			"UserName": account.UserName,
 			"Firs": accFirst,
 			"Last": accLast,
 			"Email": accEmail,
-			"Created": Identity.Created.ToString("s"),
-			"From": Identity.From.ToString("s"),
-			"To": Identity.To.ToString("s"),
 			"Role": account.Role.ToString(),
-			"IsActive": Identity.State == "Approved"
+			"State": accState
 		});
 	);
 )

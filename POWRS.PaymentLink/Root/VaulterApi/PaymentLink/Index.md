@@ -583,20 +583,25 @@ Return the list of users
 
 **Response**
 
-
 ````
 {
     "UserName": (String),
 	"Firs": (String),
 	"Last": (String),
 	"Email": (String),
-	"Created": (String-DateTime);
-	"From": (String-DateTime),
-	"To": (String-DateTime),
 	"Role": (String),
-	"IsActive": (Boolean)
+	"State": (Int)
 } 
 ````
+
+| Name              | Description |
+|:------------------|:------------|
+| `userName`       | Username of the user |
+| `First`        | Users first name |
+| `Last`        | Users last name |
+| `Email`        | Users email |
+| `Role`  | Users role. Can be 'Client' or 'User'|
+| `State`        | Users state. '1' - Active, '0' - Not active, '-1' - Disabled |
 
 ### Role for sub user
 
