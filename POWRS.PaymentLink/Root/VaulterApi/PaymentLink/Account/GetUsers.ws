@@ -10,24 +10,15 @@ try(
 		Error("Unable to get list of user. Logged user don't have BrokerAccountRole");
 	);
 	
-	if (objBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.Client
-	) then (
+	if (objBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.Client) then (
 		Error("Unable to get list of user. Logged user don't have appropriate role.");
 	);
 	
-	if(objBrokerAccRole.Role == POWRS.PaymentLink.Models.AccountRole.SuperAdmin) then (
-		listBrokerAcc :=
-			Select *
-			from POWRS.PaymentLink.Models.BrokerAccountRole
-			order by UserName;
-	) else (
-		listBrokerAcc :=
-			Select *
-			from POWRS.PaymentLink.Models.BrokerAccountRole
-			where OrgName = objBrokerAccRole.OrgName
-				or ParentOrgName = objBrokerAccRole.OrgName
-			order by UserName;
-	);
+	listBrokerAcc :=
+		Select *
+		from POWRS.PaymentLink.Models.BrokerAccountRole
+		where OrgName = objBrokerAccRole.OrgName
+		order by UserName;
 	
 	ResultList := Create(System.Collections.Generic.List, System.Object);
 	
