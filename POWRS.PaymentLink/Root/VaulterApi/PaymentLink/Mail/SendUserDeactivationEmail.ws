@@ -33,6 +33,19 @@ try(
 	if(subUsrIdentity == null) then (
 		Error("Unable to process request. Sub user don't have approved legal identity.");
 	);	
+	
+	subUsrBrokerAccRole := 
+		Select top 1 *
+		from POWRS.PaymentLink.Models.BrokerAccountRole
+		where UserName = PSubUserName;
+		
+	if (subUsrBrokerAccRole.Role == null) then (
+		Error("Unable to process request. Sub user don't found.");
+	);
+	
+	if (sesnUsrBrokerAccRole.OrgName != subUsrBrokerAccRole.OrgName) then (
+		Error("Unable to process request. You can't request deactivation of this user.");
+	);
 			
 	MailBody := 
 		"Request to disable Legal identity: "

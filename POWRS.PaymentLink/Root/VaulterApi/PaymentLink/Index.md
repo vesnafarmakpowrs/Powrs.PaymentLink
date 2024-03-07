@@ -490,11 +490,33 @@ Call this resource to send email with verification code.
 **Response**
 
 
+### Send User Deactivation Email
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/SendUserDeactivationEmail.ws")}}`  
+Method: `POST`
+
+Call this resource to send email to admins that some user request sub user deactivation.
+
+**Request**
+
 ````
 {
-	 "Success": (Bool) 
+  "subUserName":String()
 }
 ````
+
+| Name              | Description |
+|:------------------|:------------|
+| `subUserName`       | User name from user that you want to deactivare |
+
+**Response**
+
+````
+{
+	 "Ok" 
+}
+````
+
 
 ### Verify Email with code
 
