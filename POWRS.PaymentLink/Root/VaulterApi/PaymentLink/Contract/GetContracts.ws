@@ -6,28 +6,28 @@ contracts:= null;
 PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
 try 
 (
- cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
- doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
- template:= "https://" + PaylinkDomain + "/Payout.md?ID={0}";
+	cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
+	doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
+	template:= "https://" + PaylinkDomain + "/Payout.md?ID={0}";
 
-ResultList:= Create(System.Collections.Generic.List, System.Object);
+	ResultList:= Create(System.Collections.Generic.List, System.Object);
 
-creatorJid:= SessionUser.username + "@" + Gateway.Domain;
-tokens:= select * from IoTBroker.NeuroFeatures.Token t where  t.CreatorJid = creatorJid;
+	creatorJid:= SessionUser.username + "@" + Gateway.Domain;
+	tokens:= select * from IoTBroker.NeuroFeatures.Token t where  t.CreatorJid = creatorJid;
 
-foreach token in (select * from tokens order by Created desc) do
-(
- variables:= token.GetCurrentStateVariables();
- ResultList.Add({
-	"TokenId": token.TokenId,
-	"CanCancel": variables.State == "PaymentCompleted",
-	"IsActive": !exists(doneStates[variables.State]),
-	"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
-	"Created": token.Created.ToString("s"),
-	"State": variables.State,
-	"Variables": variables.VariableValues
- });
-);
+	foreach token in (select * from tokens order by Created desc) do
+	(
+		tokenVariables := token.GetCurrentStateVariables();
+		ResultList.Add({
+			"TokenId": token.TokenId,
+			"CanCancel": tokenVariables.State == "PaymentCompleted",
+			"IsActive": !exists(doneStates[tokenVariables.State]),
+			"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
+			"Created": token.Created.ToString("s"),
+			"State": tokenVariables.State,
+			"Variables": tokenVariables.VariableValues
+		});
+	);
 )
 catch
 (
