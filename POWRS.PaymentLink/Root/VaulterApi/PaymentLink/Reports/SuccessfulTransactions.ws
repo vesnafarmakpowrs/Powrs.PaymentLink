@@ -51,11 +51,24 @@ try(
 			  );
 
    
-    resultList := payspotPayment;
+    resultList := null;
     if exists(PCardBrand) then 
-	resultList := paymentsByCardList
+	  resultList := paymentsByCardList
     else if exists(PPaymentType) then
-	resultList := paymentsByTypeList;
+	  resultList := paymentsByTypeList
+    else
+	(
+	   resultList := Create(System.Collections.Generic.List, System.Object);
+	    foreach payment in payspotPayment do 
+			  (
+				  resultList.Add({
+				     "TokenId":payment[0],
+				     "Amount": payment[1],
+				     "PaymentType": payment[2],
+				     "CardBrand" : payment[3]
+				  });	              
+			  );
+	);
 
     responseList:= Create(System.Collections.Generic.List, System.Object);
 
