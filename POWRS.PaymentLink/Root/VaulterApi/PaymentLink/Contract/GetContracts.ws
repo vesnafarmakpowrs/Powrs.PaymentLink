@@ -25,7 +25,7 @@ try
 			"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
 			"Created": token.Created.ToString("s"),
 			"State": tokenVariables.State,
-			"Variables": token.Tags
+			"Variables": token.VariableValues
 		});
 	);
 )
