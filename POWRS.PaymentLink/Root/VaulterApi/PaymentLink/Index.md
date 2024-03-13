@@ -608,7 +608,7 @@ Return the list of users
 ````
 {
     "UserName": (String),
-	"Firs": (String),
+	"First": (String),
 	"Last": (String),
 	"Email": (String),
 	"Role": (String),

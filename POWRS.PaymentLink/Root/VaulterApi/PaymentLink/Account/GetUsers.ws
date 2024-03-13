@@ -66,7 +66,7 @@ try(
 		
 		ResultList.Add({
 			"UserName": account.UserName,
-			"Firs": accFirst,
+			"First": accFirst,
 			"Last": accLast,
 			"Email": accEmail,
 			"Role": account.Role.ToString(),
