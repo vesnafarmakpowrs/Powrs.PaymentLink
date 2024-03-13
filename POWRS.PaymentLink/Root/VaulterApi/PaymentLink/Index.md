@@ -677,9 +677,27 @@ Retrieves contact information for organizaion.
 | `PhoneNumber `  | Phone number to contact company |
 | `TermsAndConditions `  | Terms and conditions url for company |
 
+### Generate Transactions Report
+````
+    "from":Required(String(PDateFrom)),
+	"to":Required(String(PDateTo)),
+	"ips":Required(String(PPaymentType)),
+	"cardBrands":Optional(String(PCardBrand))
+````
+
+Creates pdf report for successful transaction for given criteria.
+
+**Response**
+
+| Name              | Description |
+|:------------------|:------------|
+| `PDF `        |  Base64 encoded file in pdf |
+| `Name`        | File name |
+
+
 ### Successful Transactions
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Reports/SuccessfulTransactions.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Reports/SuccessfulTransactions.ws")}}`
 Method: `POST`
 
 Retrieves Successful Transactions information.
