@@ -45,33 +45,35 @@ try
 
   if(includeCards) then 
   (
-      filteredData:= select pp.PaymentType, pp.CardBrand, s.VariableValues 
+      filteredData:= select pp.PaymentType, pp.CardBrand, pp.DateCompleted, s.VariableValues 
             from POWRS.Networking.PaySpot.Data.PayspotPayment pp 
             join NeuroFeatureTokens t on t.TokenId = pp.TokenId
-            join StateMachineCurrentStates s on s.StateMachineId = pp.TokenId
+            join StateMachineCurrentStates s on s.StateMachineId == pp.TokenId
             where pp.DateCompleted >= ParsedFromDate and
-            t.CreatorJid = creatorJid and
             pp.DateCompleted <= ParsedToDate and
+	        pp.Result like "00" and
+            t.CreatorJid == creatorJid and
             (pp.PaymentType in (array) or 
-            pp.CardBrand in (cardBrandsList)) 
+            pp.CardBrand in (cardBrandsList))
             order by pp.DateCompleted desc;
   )
   else 
   (
-     filteredData:= select pp.PaymentType, pp.CardBrand, s.VariableValues 
-            from POWRS.Networking.PaySpot.Data.PayspotPayment pp 
-            join NeuroFeatureTokens t on t.TokenId = pp.TokenId
-            join StateMachineCurrentStates s on s.StateMachineId = pp.TokenId
+     filteredData:= select pp.PaymentType, pp.CardBrand, pp.DateCompleted, s.VariableValues 
+            from POWRS.Networking.PaySpot.Data.PayspotPayment pp
+            join NeuroFeatureTokens t on t.TokenId == pp.TokenId
+            join StateMachineCurrentStates s on s.StateMachineId == pp.TokenId
             where pp.DateCompleted >= ParsedFromDate and
+	        pp.DateCompleted <= ParsedToDate and
+            pp.Result like "00" and
             t.CreatorJid = creatorJid and
-            pp.DateCompleted <= ParsedToDate and
             pp.PaymentType in (array) 
             order by pp.DateCompleted desc;
   );
 
     destroy(cardBrandsList);
 
-    FormatedHtml:= "<!DOCTYPE html><html><head><style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}tr:nth-child(even) {background-color: #dddddd;}</style></head><body><table><tr><th>Referenca</th><th>Cena</th><th>Način plaćanja</th><th>Tip kartice</th></tr>{{tableBody}}</table></body></html>";
+    FormatedHtml:= "<!DOCTYPE html><html><head><style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}tr:nth-child(even) {background-color: #dddddd;}</style></head><body><table><tr><th>Referenca</th><th>Cena</th><th>Način plaćanja</th><th>Tip kartice</th><th>Datum/vreme uplate</th></tr>{{tableBody}}</table></body></html>";
     stringBuilder:= Create(System.Text.StringBuilder);
 
     paymentTypesDict:= {};
@@ -80,7 +82,7 @@ try
 
     foreach payment in filteredData do
     (
-        variables:=  payment[2];
+        variables:=  payment[3];
         if(variables != null and variables.Length > 0) then 
         (
             referenceNumber:= select top 1 Value from variables where Name = "RemoteId";
@@ -103,6 +105,10 @@ try
 
             stringBuilder.Append("<td>");
             stringBuilder.Append(payment[1]);
+            stringBuilder.Append("</td>");
+
+            stringBuilder.Append("<td>");
+            stringBuilder.Append(payment[2].ToString("dd-MM-yyyy HH:mm"));
             stringBuilder.Append("</td>");
 
             stringBuilder.Append("</tr>");
