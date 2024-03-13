@@ -29,53 +29,46 @@ try
         Error("No payment methods selected");
     );
 
-    payspotPayments:= Create(System.Collections.Generic.List, POWRS.Networking.PaySpot.Data.PayspotPayment);
-    paymentTokens:= Create(System.Collections.Generic.List, System.Object);
+  creatorJid:= SessionUser.username + "@" + Gateway.Domain;
+  if(includeCards and PIncludeIps) then 
+  (
+    array:= [POWRS.Networking.PaySpot.Consants.PaymentType.PaymentCard.ToString(), POWRS.Networking.PaySpot.Consants.PaymentType.IPSPayment.ToString()];
+  )
+  else if(includeCards) then 
+  (
+    array:= [POWRS.Networking.PaySpot.Consants.PaymentType.PaymentCard.ToString()];
+  )
+  else 
+  (
+    array:= [POWRS.Networking.PaySpot.Consants.PaymentType.IPSPayment.ToString()];
+  );
 
-    if(PIncludeIps) then 
-    (
-        list:= select * from POWRS.Networking.PaySpot.Data.PayspotPayment where DateCompleted >= ParsedFromDate and DateCompleted <= ParsedToDate and PaymentType = POWRS.Networking.PaySpot.Consants.PaymentType.IPSPayment.ToString();
-        foreach item in list do 
-        (
-            payspotPayments.Add(item);
-        );
+  if(includeCards) then 
+  (
+      filteredData:= select pp.PaymentType, pp.CardBrand, s.VariableValues 
+            from POWRS.Networking.PaySpot.Data.PayspotPayment pp 
+            join NeuroFeatureTokens t on t.TokenId = pp.TokenId
+            join StateMachineCurrentStates s on s.StateMachineId = pp.TokenId
+            where pp.DateCompleted >= ParsedFromDate and
+            t.CreatorJid = creatorJid and
+            pp.DateCompleted <= ParsedToDate and
+            (pp.PaymentType in (array) or 
+            pp.CardBrand in (cardBrandsList)) 
+            order by pp.DateCompleted desc;
+  )
+  else 
+  (
+     filteredData:= select pp.PaymentType, pp.CardBrand, s.VariableValues 
+            from POWRS.Networking.PaySpot.Data.PayspotPayment pp 
+            join NeuroFeatureTokens t on t.TokenId = pp.TokenId
+            join StateMachineCurrentStates s on s.StateMachineId = pp.TokenId
+            where pp.DateCompleted >= ParsedFromDate and
+            t.CreatorJid = creatorJid and
+            pp.DateCompleted <= ParsedToDate and
+            pp.PaymentType in (array) 
+            order by pp.DateCompleted desc;
+  );
 
-        destroy(list);
-        destroy(item);
-    );
-
-    if(includeCards) then 
-    (
-        list:= select * from POWRS.Networking.PaySpot.Data.PayspotPayment where DateCompleted >= ParsedFromDate and DateCompleted <= ParsedToDate and PaymentType = POWRS.Networking.PaySpot.Consants.PaymentType.PaymentCard.ToString();
-        foreach item in list do 
-        (
-            if(item.CardBrand in cardBrandsList) then 
-            (
-               payspotPayments.Add(item);
-            );
-        );
-
-        destroy(list);
-        destroy(item);
-    );
-
-    creatorJid:= SessionUser.username + "@" + Gateway.Domain;
-    foreach payment in payspotPayments do
-    (           
-            token:= select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId = payment.TokenId and CreatorJid = creatorJid;
-            if(token != null) then 
-            (
-                paymentTokens.Add({
-                   "currentState":  token.GetCurrentStateVariables(),
-                   "creator": token.CreatorJid,
-                   "cardBrand": payment.CardBrand,
-                   "paymentType": payment.PaymentType
-                });
-            );
-    );
-
-    destroy(payspotPayments);
-    destroy(currentState);
     destroy(cardBrandsList);
 
     FormatedHtml:= "<!DOCTYPE html><html><head><style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}tr:nth-child(even) {background-color: #dddddd;}</style></head><body><table><tr><th>Referenca</th><th>Cena</th><th>Način plaćanja</th><th>Tip kartice</th></tr>{{tableBody}}</table></body></html>";
@@ -85,9 +78,9 @@ try
     paymentTypesDict[POWRS.Networking.PaySpot.Consants.PaymentType.IPSPayment.ToString()]:= "IPS";
     paymentTypesDict[POWRS.Networking.PaySpot.Consants.PaymentType.PaymentCard.ToString()]:= "Kartica";
 
-    foreach token in paymentTokens do
+    foreach payment in filteredData do
     (
-        variables:=  token.currentState.VariableValues;
+        variables:=  payment[2];
         if(variables != null and variables.Length > 0) then 
         (
             referenceNumber:= select top 1 Value from variables where Name = "RemoteId";
@@ -105,11 +98,11 @@ try
             stringBuilder.Append("</td>");
 
             stringBuilder.Append("<td>");
-            stringBuilder.Append(paymentTypesDict[token.paymentType]);
+            stringBuilder.Append(paymentTypesDict[payment[0]]);
             stringBuilder.Append("</td>");
 
             stringBuilder.Append("<td>");
-            stringBuilder.Append(token.cardBrand);
+            stringBuilder.Append(payment[1]);
             stringBuilder.Append("</td>");
 
             stringBuilder.Append("</tr>");
@@ -117,9 +110,6 @@ try
     );
 
     FormatedHtml:= FormatedHtml.Replace("{{tableBody}}", stringBuilder.ToString());
-
-    destroy(token);
-    destroy(paymentTokens);
     destroy(stringBuilder);
 
     fileName:= "r_" + NowUtc.ToString("MMddyyyyHHmmss");
