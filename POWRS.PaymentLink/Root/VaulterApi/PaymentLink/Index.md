@@ -490,33 +490,6 @@ Call this resource to send email with verification code.
 **Response**
 
 
-### Send User Deactivation Email
-
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/SendUserDeactivationEmail.ws")}}`  
-Method: `POST`
-
-Call this resource to send email to admins that some user request sub user deactivation.
-
-**Request**
-
-````
-{
-  "subUserName":String()
-}
-````
-
-| Name              | Description |
-|:------------------|:------------|
-| `subUserName`       | User name from user that you want to deactivare |
-
-**Response**
-
-````
-{
-	 "Ok" 
-}
-````
-
 
 ### Verify Email with code
 
@@ -588,6 +561,33 @@ Call this resource to create account with previously verified email. "newSubUser
 } 
 ````
 
+### Deactivate User
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/DeactivateUser.ws")}}`  
+Method: `POST`
+
+Call this resource to send email to admins that some user request sub user deactivation.
+
+**Request**
+
+````
+{
+  "subUserName":String()
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `subUserName`       | User name from user that you want to deactivare |
+
+**Response**
+
+````
+{
+	 "Ok" 
+}
+````
+
 ### Get Users
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/GetUsers.ws")}}`  
@@ -618,7 +618,7 @@ Return the list of users
 
 | Name              | Description |
 |:------------------|:------------|
-| `userName`       | Username of the user |
+| `UserName`       | Username of the user |
 | `First`        | Users first name |
 | `Last`        | Users last name |
 | `Email`        | Users email |

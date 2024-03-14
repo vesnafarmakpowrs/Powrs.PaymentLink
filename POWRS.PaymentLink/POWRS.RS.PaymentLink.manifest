@@ -17,6 +17,7 @@
 					<Content fileName="ApplyForSubLegalId.ws"/>
 					<Content fileName="ContactInfo.ws"/>
 					<Content fileName="CreateAccount.ws"/>
+					<Content fileName="DeactivateUser.ws"/>
 					<Content fileName="GetContactInfo.ws"/>
 					<Content fileName="GetLegalIdentityInfo.ws"/>
 					<Content fileName="GetUsers.ws"/>
@@ -41,7 +42,6 @@
 					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="SendContactUsEmail.ws"/>
 					<Content fileName="SendPaylinkViaEmail.ws"/>
-					<Content fileName="SendUserDeactivationEmail.ws"/>
 				</Folder>
 				<Folder name="SMS">
 					<Content fileName="SendPaylinkViaSMS.ws"/>

@@ -5,6 +5,16 @@ SessionUser:= Global.ValidateAgentApiToken(true, false);
 }:=Posted) ??? BadRequest(Exception.Message);
 
 try(
+	if(PSubUserName not like "^[\\p{L}\\p{N}]{8,20}$") then 
+    (
+		Error("subUsername could only contain letters and numbers.");
+    );
+	
+	if(System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = PSubUserName and Enabled = true)) then 
+    (
+        Error("Account don't exists or already deactivated");
+    );
+
 	sesnUsrBrokerAccRole := 
 		Select top 1 *
 		from POWRS.PaymentLink.Models.BrokerAccountRole
@@ -47,6 +57,9 @@ try(
 		Error("Unable to process request. You can't request deactivation of this user.");
 	);
 			
+    Update BrokerAccounts set Enabled = false where UserName = PSubUserName;
+	
+			
 	MailBody := 
 		"Request to disable Legal identity: "
 		+ "<br />"
@@ -78,6 +91,11 @@ try(
 	MailBody := Replace(MailBody, "{{emailSubUser}}", emailSubUser);
 	
 	mailReceivers := GetSetting("POWRS.PaymentLink.LIStatusContactEmail","");
+	if(System.String.IsNullOrWhiteSpace(mailReceivers)) then 
+	(
+		Error("User deactivated. Setting mailReceivers empty...");
+	);
+	
 	ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
 	Config := ConfigClass.Instance;
 	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailReceivers, "PLGenerator - Disable identity", MailBody, null, null);	
