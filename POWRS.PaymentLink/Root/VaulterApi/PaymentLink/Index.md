@@ -566,7 +566,7 @@ Call this resource to create account with previously verified email. "newSubUser
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/DeactivateUser.ws")}}`  
 Method: `POST`
 
-Call this resource to send email to admins that some user request sub user deactivation.
+Call this resource to deactivate user.
 
 **Request**
 

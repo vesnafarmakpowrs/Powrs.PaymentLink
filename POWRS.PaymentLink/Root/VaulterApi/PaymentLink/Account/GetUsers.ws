@@ -55,12 +55,18 @@ try(
 				);
 			);
 			
-			if(accIdentity.State == Waher.Service.IoTBroker.Legal.Identity.IdentityState.Approved) then (
-				accState := 1;
-			) else if (accIdentity.State == Waher.Service.IoTBroker.Legal.Identity.IdentityState.Rejected) then (
+			if(System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = account.UserName and Enabled = true)) then 
+			(
 				accState := -1;
-			) else (
-				accState := 0;
+			)else 
+			(
+				if(accIdentity.State == Waher.Service.IoTBroker.Legal.Identity.IdentityState.Approved) then (
+					accState := 1;
+				) else if (accIdentity.State == Waher.Service.IoTBroker.Legal.Identity.IdentityState.Rejected) then (
+					accState := -1;
+				) else (
+					accState := 0;
+				);
 			);
 		);
 		
