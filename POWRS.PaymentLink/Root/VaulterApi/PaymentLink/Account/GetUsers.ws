@@ -55,7 +55,7 @@ try(
 				);
 			);
 			
-			if(System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = account.UserName and Enabled = true)) then 
+			if(!System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = account.UserName and Enabled = false)) then 
 			(
 				accState := -1;
 			)else 
