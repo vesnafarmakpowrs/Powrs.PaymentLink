@@ -10,7 +10,7 @@ try(
 		Error("Unable to get list of user. Logged user don't have BrokerAccountRole");
 	);
 	
-	if (objBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.Client) then (
+	if (objBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin) then (
 		Error("Unable to get list of user. Logged user don't have appropriate role.");
 	);
 	

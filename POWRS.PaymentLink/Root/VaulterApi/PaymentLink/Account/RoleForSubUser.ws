@@ -13,7 +13,7 @@ try
 	);
 	
 	if(sessionUserBrokerAcc.Role != POWRS.PaymentLink.Models.AccountRole.SuperAdmin &&
-		sessionUserBrokerAcc.Role != POWRS.PaymentLink.Models.AccountRole.Client
+		sessionUserBrokerAcc.Role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin
 	) then (
 		Error("Logged user don't have authorization to create sub user");
 	);

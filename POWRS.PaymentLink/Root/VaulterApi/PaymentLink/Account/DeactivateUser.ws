@@ -20,7 +20,7 @@ try(
 		from POWRS.PaymentLink.Models.BrokerAccountRole
 		where UserName = SessionUser.username;
 		
-	if (sesnUsrBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.Client) then (
+	if (sesnUsrBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin) then (
 		Error("Unable to process request. Logged user don't have appropriate role.");
 	);
 

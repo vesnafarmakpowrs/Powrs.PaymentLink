@@ -5,16 +5,17 @@ namespace POWRS.PaymentLink.Models
 {
     /// <summary>
     /// Role definition:
-    /// SuperAdmin  -> Powrs (Will have full access)
-    /// Admin       -> Yuta (Can see and get details from all children. CAN'T create new user (legal id)
-    /// Client      -> Org admins. Can see and get details from all children. CAN Create user with same or lower role
-    /// User        -> user from Org. Can see only his transactions. CAN'T create new user (legal id)
+    /// SuperAdmin      -> Powrs (Will have full access)
+    /// GroupAdmin      -> Yuta (Can see and get details from all children. CAN'T create new user (legal id)
+    /// ClientAdmin     -> Org admins. Can see and get details from all children. CAN Create user with same or lower role
+    /// User            -> user from Org. Can see only his transactions. CAN'T create new user (legal id)
+    /// Client          -> Stara rola... dok se ne uradi update u bazi
     /// </summary>
     public enum AccountRole
     {
         SuperAdmin,
-        Admin,
-        Client,
+        GroupAdmin,
+        ClientAdmin,
         User
     }
 

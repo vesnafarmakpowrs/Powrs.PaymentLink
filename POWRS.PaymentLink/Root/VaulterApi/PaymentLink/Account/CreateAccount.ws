@@ -162,7 +162,7 @@ try
 				if(creatorBrokerAccRole != null) then (
 					
 					if (creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.SuperAdmin &&
-						creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.Client
+						creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin
 					) then (
 						Error("Unable to create user. Logged user don't have appropriate role.");
 					);
