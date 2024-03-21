@@ -130,6 +130,70 @@ Javascript Library
 
 Use the following method in the [Javascript Library](GenerateSigniture.js) to calculate Signature.
 
+### CreatePasswordResetRequest 
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/CreatePasswordResetRequest.ws")}}`
+
+Method: `POST`
+
+Call this resource to request password reset. This will send verification code to email registered with account.
+
+**Request**
+
+````
+{
+   "userName":Required(String(PUserName) like "^[\\p{L}\\p{N}]{8,20}$")
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `userName`        | Account for password reset. |
+
+**Response**
+
+````
+{
+   
+}
+````
+
+### ResetPassword 
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/ResetPassword.ws")}}`
+Method: `POST`
+
+Call this resource to reset password after `CreatePasswordResetRequest` is called.
+
+**Request**
+
+````
+{
+    "code":Required(String(PCode)),
+    "password":Required(String(PPassword)),
+	"userName": Required(String(PUserName))
+}
+
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `code`        | Verification code sent to account email. |
+| `password`        | New password for the account (If user has live session password will not be updated right away.) |
+| `userName`        | Username for which password reset is initiated. |
+
+**Response**
+
+````
+{
+   
+}
+
+````
 
 ### Get Service providers 
 

@@ -24,6 +24,8 @@
 					<Content fileName="RoleForSubUser.ws"/>
 					<Content fileName="SendVerificationEmail.ws"/>
 					<Content fileName="VerifyEmail.ws"/>
+					<Content fileName="CreatePasswordResetRequest.ws"/>
+					<Content fileName="ResetPassword.ws"/>
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>

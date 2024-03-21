@@ -112,6 +112,8 @@
 		<None Remove="Root\Payout\vaulter_logo.svg" />
 		<None Remove="Root\Payout\vaulterlogo.svg" />
 		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentNotPerformed.html" />
+		<None Remove="Root\VaulterApi\PaymentLink\Account\CreatePasswordResetRequest.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Account\ResetPassword.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CreateItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetAccountInfo.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Mail\SendPaylinkViaEmail.ws" />
@@ -170,6 +172,12 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\API\GetAvailableLanguages.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\Account\CreatePasswordResetRequest.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\Account\ResetPassword.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
 		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateItem.ws">
