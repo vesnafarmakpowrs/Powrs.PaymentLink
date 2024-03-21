@@ -175,6 +175,7 @@ try
 					parentOrgName := creatorBrokerAccRole.ParentOrgName;
 				);			
 			) else (
+				enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.ClientAdmin;
 				creatorUserName := PUserName;
 				orgName := ""; 
 				parentOrgName := "Powrs";
@@ -186,6 +187,7 @@ try
 				Error("Unable to create new user... " + Exception.Message);
 			);
 			
+			enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.ClientAdmin;
 			creatorUserName := PUserName;
 			orgName := ""; 
 			parentOrgName := "Powrs";
