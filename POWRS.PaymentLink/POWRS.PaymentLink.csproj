@@ -127,6 +127,7 @@
 		<None Remove="Root\VaulterApi\PaymentLink\Reports\ReportTransactions - Copy.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Reports\ReportTransactions.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
+		<None Remove="Scripts\StartupScripts\GetAgentSuccessfullTransactions.config" />
 	</ItemGroup>
 	<ItemGroup>		
 		<Content Include="Root\pay.lab.vaulter.rs\css\Payout.cssx">
@@ -232,6 +233,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Index.md">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Scripts\StartupScripts\GetAgentSuccessfullTransactions.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>

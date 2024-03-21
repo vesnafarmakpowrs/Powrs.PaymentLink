@@ -8,6 +8,7 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateLanguageIndex.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateNeuroFeatureCreatorIndex.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateStateMachineCurrentStateIndex.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./GetAgentSuccessfullTransactions.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="PaymentLink">
