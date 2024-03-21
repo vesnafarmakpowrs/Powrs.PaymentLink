@@ -8,7 +8,7 @@ namespace POWRS.PaymentLink
     public class OrganizationContactInfo
     {
         private string objectId;
-        private string account;
+        private string organizationName;
         private string webAddress;
         private string email;
         private string phoneNumber;
@@ -20,10 +20,10 @@ namespace POWRS.PaymentLink
             get => objectId;
             set => objectId = value;
         }
-        public string Account
+        public string OrganizationName
         {
-            get => account;
-            set => account = value;
+            get => organizationName;
+            set => organizationName = value;
         }
         public string WebAddress
         {
@@ -48,7 +48,7 @@ namespace POWRS.PaymentLink
 
         public bool IsValid()
         {
-            return !string.IsNullOrWhiteSpace(Account) &&
+            return !string.IsNullOrWhiteSpace(OrganizationName) &&
                 !string.IsNullOrWhiteSpace(WebAddress) &&
                 !string.IsNullOrWhiteSpace(Email) &&
                 !string.IsNullOrWhiteSpace(PhoneNumber) &&

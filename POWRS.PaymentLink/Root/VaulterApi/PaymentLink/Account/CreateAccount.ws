@@ -4,25 +4,27 @@
     "userName":Required(Str(PUserName)),
     "password":Required(Str(PPassword)),
     "repeatedPassword":Required(Str(PRepeatedPassword)),
-    "email" : Required(Str(PEmail))
+    "email" : Required(Str(PEmail)),
+	"newSubUser": Optional(Boolean(PNewSubUser)),
+    "role": Optional(Int(PUserRole))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 try
 (
     if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
     (
-      Error("Email in not valid format.")
-    );    
+		Error("Email in not valid format.")
+    );
      
     Code:= 0;
     if (!exists(Code:= Global.VerifyingNumbers[PEmail]) or Code >= 0) then 
     (
-        Error("Email must be verified in order to create account");
+		Error("Email must be verified in order to create account");
     );
 
     if(PUserName not like "^[\\p{L}\\p{N}]{8,20}$") then 
     (
-     Error("Username could only contain letters and numbers.")
+		Error("Username could only contain letters and numbers.");
     );
     if(PPassword != PRepeatedPassword) then
     (
@@ -39,6 +41,13 @@ try
         AccountAlreadyExists:= true;
         Error("Account with " + PUserName + " already exists");
     );
+	
+	PNewSubUser := PNewSubUser ?? false;
+	PUserRole := PUserRole ?? -1;
+	
+	if(PUserRole >= 0 && !POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PUserRole)) then (
+        Error("Role doesn't exists.");
+	);
 
     apiKey:= GetSetting("POWRS.PaymentLink.ApiKey", "");
     apiKeySecret:= GetSetting("POWRS.PaymentLink.ApiKeySecret", "");
@@ -47,6 +56,9 @@ try
     (
         Error("Keys are missing");
     );
+	
+	Log.Informational("Create account validation successful. UserName: " + PUserName + ", email: " + PEmail + ", pw: " + PPassword + ", role: " + PUserRole, "", "CreateAccount", null);
+	
 
     Nonce:= Base64Encode(RandomBytes(32));
     S:= PUserName + ":" + Gateway.Domain + ":" + PEmail + ":" + PPassword + ":" + apiKey + ":" + Nonce;
@@ -54,96 +66,171 @@ try
     
     neuronDomain:= "https://" + Gateway.Domain;
     NewAccount:= POST(neuronDomain + "/Agent/Account/Create",
-                 {
-                    "apiKey": apiKey,
-                    "eMail": PEmail,
-	                "nonce": Nonce,
-	                "password": PPassword,
-                    "seconds": 1800,
-                    "signature": Signature,
-                    "userName": PUserName
-                  },
-		   {"Accept" : "application/json" });
+				{
+					"apiKey": apiKey,
+					"eMail": PEmail,
+					"nonce": Nonce,
+					"password": PPassword,
+					"seconds": 1800,
+					"signature": Signature,
+					"userName": PUserName
+				},
+				{"Accept" : "application/json" });
 
     enabled:= Update BrokerAccounts set Enabled = true where UserName = PUserName;
     Global.VerifyingNumbers.Remove(PEmail);
 
-   
- neuronDomain:= "https://" + Gateway.Domain;
+	Log.Informational("Create account -> broker account created and and email removed from global", "", "CreateAccount", null);
+	
+	try
+	(
+		if(!exists(NewAccount.jwt)) then 
+		(
+			Error("Token not available in response.");
+		);
 
-try
-(
-    if(!exists(NewAccount.jwt)) then 
-    (
-	    Error("Token not available in response.");
-    );
+		PLocalName:= "ed448";
+		PNamespace:= "urn:ieee:iot:e2e:1.0";
+		PKeyId:= NewGuid().ToString();
+		KeyPassword:= Base64Encode(RandomBytes(20)).ToString();
+		Nonce:= Base64Encode(RandomBytes(32)).ToString();
 
-    PLocalName:= "ed448";
-    PNamespace:= "urn:ieee:iot:e2e:1.0";
-    PKeyId:= NewGuid().ToString();
-    KeyPassword:= Base64Encode(RandomBytes(20)).ToString();
-    Nonce:= Base64Encode(RandomBytes(32)).ToString();
+		S1:= PUserName + ":" + Gateway.Domain + ":" + PLocalName + ":" + PNamespace + ":" + PKeyId;
+		KeySignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(KeyPassword)));
 
-    S1:= PUserName + ":" + Gateway.Domain + ":" + PLocalName + ":" + PNamespace + ":" + PKeyId;
-    KeySignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(KeyPassword)));
+		S2:= S1 + ":" + KeySignature + ":" + Nonce;
+		RequestSignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
 
-    S2:= S1 + ":" + KeySignature + ":" + Nonce;
-    RequestSignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
+		NewKey:= POST(neuronDomain + "/Agent/Crypto/CreateKey",
+				{
+					"localName": PLocalName,
+					"namespace": PNamespace,
+					"id": PKeyId,
+					"nonce": Nonce,
+					"keySignature": KeySignature,
+					"requestSignature": RequestSignature
+				},
+				{
+					"Accept" : "application/json",
+					"Authorization": "Bearer " + NewAccount.jwt
+				});
+		
+		SetSetting(PUserName  + ".KeyId", PKeyId);
+		SetSetting(PUserName  + ".KeySecret", KeyPassword);
+		
+		Log.Informational("Create account -> cripted keys created", "", "CreateAccount", null);
+	)
+	catch
+	(
+		Log.Error("Unable to create key: " + Exception.Message, null);
+		Error("Unable to create key: " + Exception.Message);
+	)
+	finally
+	(
+		Destroy(Nonce);
+		Destroy(S1);
+		Destroy(KeySignature);
+		Destroy(S2);
+		Destroy(RequestSignature);
+		Destroy(PKeyId);
+		Destroy(KeySignature);
+	);
+	
+	try
+	(
+		creatorUserName := "";
+		orgName := "";
+		parentOrgName := "";
+		
+		enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.User;
+		
+		if(PUserRole >= 0 && PNewSubUser) then (
+			enumNewUserRole := POWRS.PaymentLink.Models.EnumHelper.GetEnumByIndex(PUserRole);
+		);
+		
+		try
+		(	
+			if(PNewSubUser) then (
+				SessionUser:= Global.ValidateAgentApiToken(true, false);
+				
+				creatorUserName :=  SessionUser.username;
+				creatorBrokerAccRole := 
+					Select top 1 *
+					from POWRS.PaymentLink.Models.BrokerAccountRole
+					where UserName = creatorUserName;
+				
+				if(creatorBrokerAccRole != null) then (
+					
+					if (creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.SuperAdmin &&
+						creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin
+					) then (
+						Error("Unable to create user. Logged user don't have appropriate role.");
+					);
+					
+					if(enumNewUserRole < creatorBrokerAccRole.Role) then (
+						Error("Unable to create user with higher privileges");
+					);
+					
+					orgName := creatorBrokerAccRole.OrgName;
+					parentOrgName := creatorBrokerAccRole.ParentOrgName;
+				);			
+			) else (
+				enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.ClientAdmin;
+				creatorUserName := PUserName;
+				orgName := ""; 
+				parentOrgName := "Powrs";
+			);			
+		)
+		catch
+		(
+			if(PNewSubUser) then(
+				Error("Unable to create new user... " + Exception.Message);
+			);
+			
+			enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.ClientAdmin;
+			creatorUserName := PUserName;
+			orgName := ""; 
+			parentOrgName := "Powrs";
+		);			
 
-    NewKey:= POST(neuronDomain + "/Agent/Crypto/CreateKey",
-                 {
-                   "localName": PLocalName,
-				    "namespace": PNamespace,
-				    "id": PKeyId,
-				    "nonce": Nonce,
-				    "keySignature": KeySignature,
-				    "requestSignature": RequestSignature
-                  },
-		   {"Accept" : "application/json",
-            "Authorization": "Bearer " + NewAccount.jwt});
-   
-   SetSetting(PUserName  + ".KeyId", PKeyId);
-   SetSetting(PUserName  + ".KeySecret", KeyPassword);
-)
-catch
-(
-  Log.Error("Unable to create key: " + Exception.Message, null);
-  Error("Unable to create key: " + Exception.Message);
-)
-finally
-(
-    Destroy(Nonce);
-    Destroy(S1);
-    Destroy(KeySignature);
-    Destroy(S2);
-    Destroy(RequestSignature);
-    Destroy(PKeyId);
-    Destroy(KeySignature);
-);
+		accountRole:= Create(POWRS.PaymentLink.Models.BrokerAccountRole);
+		accountRole.UserName:= PUserName;
+		accountRole.Role:= enumNewUserRole;
+		accountRole.CreatorUserName:= creatorUserName;
+		accountRole.OrgName:= orgName;
+		accountRole.ParentOrgName:= parentOrgName;
 
- {
-        "userName": PUserName,
-        "jwt": NewAccount.jwt,
-        "isApproved": false
- }
-
+		Waher.Persistence.Database.Insert(accountRole);
+		
+		Log.Informational("Create account -> broker acc roles inserted for user name: " + PUserName, "", "CreateAccount", null);
+	)
+	catch
+	(
+		Log.Error("Unable to create broker acc role: " + Exception.Message, "", "CreateAccount", null);
+		Error("Unable to create  broker acc role: " + Exception.Message);
+	);
+		
+	{
+		"userName": PUserName,
+		"jwt": NewAccount.jwt,
+		"isApproved": false
+	}
 )
 catch
 (
     if(!exists(AccountAlreadyExists)) then 
     (
-        try 
-    (
-      delete from BrokerAccounts where UserName = PUserName;
-    )
-    catch
-    (
- 	    Log.Error("Unable to cleanup for user " + PUserName, null);
-    );
-
+		try 
+		(
+			delete from BrokerAccounts where UserName = PUserName;
+		)
+		catch
+		(
+			Log.Error("Unable to cleanup for user " + PUserName, "", "CreateAccount", null);
+		);
     );
     
-    Log.Error("Unable to create user: " + Exception.Message, null);
+    Log.Error("Unable to create user: " + Exception.Message, "", "CreateAccount", null);
     BadRequest(Exception.Message);
 )
 finally

@@ -167,6 +167,16 @@ if(errors.Count > 0) then
 		    "Referer": neuronDomain + "/VaulterApi/PaymentLink/Account/CreateAccount.ws"
 		   });
 
+	accountRole := Select top 1 * 
+	from POWRS.PaymentLink.Models.BrokerAccountRole
+	where UserName = SessionUser.username;
+	
+	if(accountRole != null) then (
+		accountRole.OrgName:= POrgName;
+		accountRole.ParentOrgName:= "Powrs";
+		
+		Waher.Persistence.Database.Update(accountRole);
+	);
 )
 catch
 (

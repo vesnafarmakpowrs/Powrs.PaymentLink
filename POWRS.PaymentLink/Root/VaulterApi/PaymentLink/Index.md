@@ -397,7 +397,9 @@ Read **Authorization section**.
 200 OK
 	{
 		 "authorized": true,
-         "isApproved": Bool
+         "isApproved": Bool,
+         "role": "User",
+         "contactInformationsPopulated": Bool
 	}
 403 Forbidden
 	{
@@ -488,11 +490,6 @@ Call this resource to send email with verification code.
 **Response**
 
 
-````
-{
-	 "Success": (Bool) 
-}
-````
 
 ### Verify Email with code
 
@@ -529,7 +526,7 @@ Call this resource to verify email with code.
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/CreateAccount.ws")}}`  
 Method: `POST`
 
-Call this resource to verify email with code.
+Call this resource to create account with previously verified email. "newSubUser" and "role" should be empty when it is REGISTRATION, but should be filled when it is ADD USER by other logged user. When is creation of new sub user then Bearer token must be passed.
 
 **Request**
 
@@ -538,7 +535,9 @@ Call this resource to verify email with code.
     "userName":Required(Str(PUserName)),
     "password":Required(Str(PPassword)),
     "repeatedPassword":Required(Str(PRepeatedPassword)),
-    "email" : Required(Str(PEmail))
+    "email" : Required(Str(PEmail)), 
+	"newSubUser": Optional(Boolean(PNewSubUser)),
+    "role": Optional(Int(PUserRole))
 }
 ````
 
@@ -548,6 +547,8 @@ Call this resource to verify email with code.
 | `password`        | Password for the user |
 | `repeatedPassword`        | Repeated Password for the user |
 | `email`        | Previously verified email with which user will be created |
+| `newSubUser`  | Boolean. True if logged user create new sub user|
+| `role`        | INT Role for new user|
 
 **Response**
 
@@ -560,12 +561,101 @@ Call this resource to verify email with code.
 } 
 ````
 
+### Deactivate User
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/DeactivateUser.ws")}}`  
+Method: `POST`
+
+Call this resource to deactivate user.
+
+**Request**
+
+````
+{
+  "subUserName":String()
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `subUserName`       | User name from user that you want to deactivare |
+
+**Response**
+
+````
+{
+	 "Ok" 
+}
+````
+
+### Get Users
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/GetUsers.ws")}}`  
+Method: `POST`
+
+Return the list of users
+
+**Request**
+
+````
+{
+	 // Empty request body
+}
+````
+
+**Response**
+
+````
+{
+    "UserName": (String),
+	"First": (String),
+	"Last": (String),
+	"Email": (String),
+	"Role": (String),
+	"State": (Int)
+} 
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `UserName`       | Username of the user |
+| `First`        | Users first name |
+| `Last`        | Users last name |
+| `Email`        | Users email |
+| `Role`  | Users role. Can be 'Client' or 'User'|
+| `State`        | Users state. '1' - Active, '0' - Not active, '-1' - Disabled |
+
+### Role for sub user
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/RoleForSubUser.ws")}}`  
+Method: `POST`
+
+Call this end point to a get list of available roles for new user, depending on logged user (jwt).
+
+**Request**
+
+````
+{
+	 // Empty request body
+}
+````
+
+
+**Response**
+
+
+````
+{
+	 Dictionary key value pair
+} 
+````
+
 ### Apply for legal Id
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/ApplyForLegalId.ws")}}`  
 Method: `POST`
 
-Call this resource to verify email with code.
+Call this resource to apply for legal identity.
 
 **Request**
 
@@ -608,6 +698,43 @@ Call this resource to verify email with code.
 | `ORGACTIVITY`         | Organization Activity |
 | `ORGACTIVITYNUM`         | Activity number |
 | `ORGTAXNUM`         | Tax number |
+
+**Response**
+
+
+````
+{
+	 "userName": (String),
+     "jwt": (String),
+     "isApproved": (bool)
+} 
+````
+
+
+### Apply for legal Id
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/ApplyForSubLegalId.ws")}}`  
+Method: `POST`
+
+Call this resource to apply for legal identity for sub user. Other properties will be taken from creator user.
+
+**Request**
+
+````
+{
+    "FIRST" : Required(Str(PFirstName)),
+    "LAST" : Required(Str(PLastName)),
+    "PNR" : Required(Str(PPersonalNumber)),
+    "COUNTRY" : Required(Str(PCountryCode))
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `FIRST`       | First Name for the user. |
+| `LAST`        | Last Name for the user.|
+| `PNR`  | Personal Number for the user |
+| `COUNTRY`         | Country for the user.|
 
 **Response**
 

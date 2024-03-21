@@ -4,7 +4,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Waher.Events;
 using System.IO;
-using System.Linq;
 
 namespace POWRS.PaymentLink
 {
