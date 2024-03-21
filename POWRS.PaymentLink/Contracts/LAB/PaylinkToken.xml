@@ -145,7 +145,7 @@
 					</OnEvent>
 				</State>
 				<State id="Done">
-					<OnEnter actionRef="End" />
+					
 				</State>
 				<Action id="ReportNewState">
 					<If condition="!exists(Notifications[NewStatus])">

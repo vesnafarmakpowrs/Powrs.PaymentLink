@@ -58,8 +58,7 @@ if Token.HasStateMachine then
     if exists(CurrentState) then
         ContractState:= CurrentState.State;
 );
-if ContractState == "AwaitingForPayment" then 
-(
+
     Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
    
     if !exists(Contract) then
@@ -140,7 +139,7 @@ if ContractState == "AwaitingForPayment" then
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
 
-      ]]  <table style="width:100%">
+     ]]  <table style="width:100%">
          <tr class="welcomeLbl">   
          <td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
     <td coolspan="2">
@@ -228,6 +227,10 @@ if ContractState == "AwaitingForPayment" then
    </table>
 </div>
 <div class="spaceItem"></div>
+[[;
+if ContractState == "AwaitingForPayment" then 
+(
+]] 
 <div class="vaulter-details">
 <table style="width:100%">
  <tr>
@@ -271,7 +274,7 @@ if ContractState == "AwaitingForPayment" then
 </div>
    [[;
 )
-else if ContractState == "PaymentCompleted" then 
+else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" )then 
 (
 ]]**((LanguageNamespace.GetStringAsync(16) ))**[[;
 )
