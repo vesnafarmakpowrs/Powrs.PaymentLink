@@ -9,6 +9,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "currency":Required(String(PCurrency)),
     "description":Required(String(PDescription)),
     "deliveryDate":Required(String(PDeliveryDate)),
+    "deliveryTime": Optional(String(PDeliveryTime)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
@@ -76,10 +77,23 @@ if(System.String.IsNullOrWhiteSpace(PPassword)) then
     Error("No user with given username");
 );
 
-ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "MM/dd/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
-if(ParsedDeliveryDate < Today) then 
+if(exists(PDeliveryTime)) then 
 (
-    Error("Delivery date must be in the future");
+    if(System.String.IsNullOrWhiteSpace(PDeliveryTime) || PDeliveryTime not like "^(?:[01]\\d|2[0-3]):[0-5]\\d$") then 
+    (
+        Error("DeliveryTime not in correct format. Expected HH:mm.");
+    );
+)
+else
+(
+    PDeliveryTime:= "23:59";
+);
+
+PDeliveryDate+= (" " + PDeliveryTime);
+ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
+if(ParsedDeliveryDate < NowUtc) then 
+(
+    Error("Delivery date and time must be in the future");
 );
 
 KeyId := GetSetting(SessionUser.username + ".KeyId","");
@@ -167,7 +181,7 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
         "Description": PDescription,
         "Value": PPrice,
         "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00).ToUniversalTime(),
-        "DeliveryDate" : DateTime(ParsedDeliveryDate.Year, ParsedDeliveryDate.Month, ParsedDeliveryDate.Day, 23, 59, 59, 00).ToUniversalTime(),
+        "DeliveryDate" : ParsedDeliveryDate,
         "Currency": PCurrency,
         "Country": PBuyerCountryCode,
         "Expires": TodayUtc.AddDays(364),
