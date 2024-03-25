@@ -4,7 +4,7 @@ ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
 try
 (
-     contactInfo:= select top 1 * from POWRS.PaymentLink.OrganizationContactInfo where Account = ValidatedUser.username;
+     contactInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = ValidatedUser.orgName;
      if(contactInfo != null) then 
      (
 	    {
@@ -18,6 +18,6 @@ try
 )	
 catch
 (
-	Log.Error(Exception, null);
+    Log.Error(Exception, "", "GetContactInfo", "", null);
 	BadRequest(Exception.Message);
 );

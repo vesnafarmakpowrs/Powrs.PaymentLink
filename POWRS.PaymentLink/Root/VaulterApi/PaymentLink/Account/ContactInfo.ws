@@ -50,7 +50,7 @@ if(errors.Count > 0) then
     BadRequest(errors);
 );
 
-organizationInfo:= select top 1 * from POWRS.PaymentLink.OrganizationContactInfo where Account = ValidatedUser.username;
+organizationInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = ValidatedUser.orgName;
 
 if(organizationInfo != null) then 
 (
@@ -63,8 +63,8 @@ if(organizationInfo != null) then
 )
 else
 (
-    info:= Create(POWRS.PaymentLink.OrganizationContactInfo);
-    info.Account:= ValidatedUser.username;
+    info:= Create(POWRS.PaymentLink.Models.OrganizationContactInformation);
+    info.OrganizationName:= ValidatedUser.orgName;
     info.WebAddress:= POrgWebAddress;
     info.Email:= POrgEmailAddress;
     info.PhoneNumber:= POrgPhoneNumber;
@@ -77,7 +77,7 @@ else
 )
 catch
 (
-    Log.Error(Exception, null);
+    Log.Error(Exception, "", "ContactInfo", "", null);
 
     if(errors.Count > 0) then 
     (

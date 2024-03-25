@@ -87,7 +87,7 @@ if Token.HasStateMachine then
        OrgActivityNumber:= Identity.ORGACTIVITYNUM;
     );
      
-    CompanyInfo := select top 1 * from POWRS.PaymentLink.OrganizationContactInfo where Account = Contract.Account;
+    CompanyInfo := select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = OrgName;
     if(CompanyInfo == null) then 
     (
         Return("Not available");
