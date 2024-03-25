@@ -15,7 +15,8 @@ try
 
 	IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
 	hasApplied := false;
-
+	isSubAccount := false;
+	
 	if(Identity != null) then 
 	(
 		foreach Parameter in Identity do 
@@ -46,13 +47,15 @@ try
 						IdentityProperties.Add(Parameter.Name, Parameter.Value);
 					);
 				);
+				isSubAccount := true;
 			);
 		);
 	);
 	
 	{
 		"Properties": IdentityProperties,
-		"HasApplied": hasApplied
+		"HasApplied": hasApplied,
+		"IsSubAccount": isSubAccount
 	}
 )
 catch
