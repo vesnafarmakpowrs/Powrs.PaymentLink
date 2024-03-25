@@ -187,7 +187,7 @@ if Token.HasStateMachine then
 			<p>((OrgAddr ))test</p>
 		        <p>((CompanyInfo.PhoneNumber ))</p>
                         <p>((CompanyInfo.Email ))</p>
-                        <p>((MarkdownEncode(CompanyInfo.WebAddress) )))</p>
+                        <p>((MarkdownEncode(CompanyInfo.WebAddress) ))</p>
                     </div>
                   </td>
  		  <td colspan="2" > 

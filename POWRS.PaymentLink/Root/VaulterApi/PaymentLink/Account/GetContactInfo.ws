@@ -8,7 +8,7 @@ try
      if(contactInfo != null) then 
      (
 	    {
- 		    "Account": contactInfo.Account,
+ 		    "Account": ValidatedUser.username,
  		    "WebAddress": contactInfo.WebAddress,
  		    "Email": contactInfo.Email,
  		    "PhoneNumber": contactInfo.PhoneNumber,
