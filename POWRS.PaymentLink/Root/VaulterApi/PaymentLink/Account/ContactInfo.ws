@@ -40,7 +40,11 @@ IsValidBase64(base64String):=
         );
 
         byteArray:= System.Convert.FromBase64String(base64String);
-        isSuccess:= byteArray != null;
+        maxSize:= 1.5 * 1024 * 1024;
+        if(byteArray.Length > maxSize) then 
+        (
+            Error("");
+        );
     )
     catch
     (
