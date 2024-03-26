@@ -245,7 +245,7 @@ if ContractState == "AwaitingForPayment" then
    <td colspan="3">
      <input type="checkbox" id="termsAndConditionAgency" name="termsAndCondition" onclick="UserAgree();"> 
      <label for="termsAndConditionAgency"> 
-       <a href="((CompanyInfo.TermsAndConditions ))" target="_blank">**((OrgName )) ((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
+       <a onclick="OpenTermsAndConditions(event, this);" urlhref="((CompanyInfo.TermsAndConditions ))">**((OrgName )) ((LanguageNamespace.GetStringAsync(19) ))**</a></label>
     </td>
  </tr>
  </table>
