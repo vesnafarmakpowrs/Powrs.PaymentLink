@@ -259,6 +259,7 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
     "description":Required(String(PDescription)),
     "deliveryDate":Required(DateTime(PDeliveryDate)),
+    "deliveryTime":Optional(String(PDeliveryTime)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
