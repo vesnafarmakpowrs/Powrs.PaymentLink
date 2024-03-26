@@ -9,32 +9,26 @@ if !exists(Posted) then BadRequest("No payload.");
 try(
 	
 	TotalFeeEarned:= 0;
-	ReponseDict := Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
+	
 	LimitDate := System.DateTime.Now.Date.AddDays(PDaysToCalculate == 1 ? 0 : -PDaysToCalculate);
 
 	CardPayment :=  "PaymentCard";
-    IPSPayment :=  "IPSPayment";
+        IPSPayment :=  "IPSPayment";
 	CompletedPayspotPayments := 
 		Select distinct TokenId, PaymentType
 		from PayspotPayments
 		where Result = "00"
 		   and DateCompleted >= LimitDate;
 		
-	payspotPaymentDictionary := Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
+	PayspotPaymentDictionary := Create(System.Collections.Generic.Dictionary,System.String,System.String);
 	foreach p in CompletedPayspotPayments do 
-	    payspotPaymentDictionary.Add(p[0],p[1]);
+	    PayspotPaymentDictionary.Add(p[0],p[1]);
 	
 
 	NeuroFeatureTokenList  := 
 		select  *  from IoTBroker.NeuroFeatures.Token
 		where Created >= LimitDate;
-		
-	StateMachineCurrentStates := 
-		select StateMachineId
-		from StateMachineCurrentStates
-		where StateMachineId in  NeuroFeatureTokenList. MachineId 
-			and State = "PaymentNotPerformed";
-	
+			
 	TokenId := "";
 	MachineId := "";
 	
@@ -43,36 +37,32 @@ try(
 	trn_Currency := "";
 	trn_FailedCnt := 0;
 	ipsSuccessValue := 0;
-    cardSuccessValue := 0;
+        cardSuccessValue := 0;
 
 	foreach token in NeuroFeatureTokenList do (
 		
-		if (Contains(CompletedPayspotPayments.TokenId, token.TokenId)) then (
-		   
+		   if (PayspotPaymentDictionary.ContainsKey(token.TokenId)) then (
 		    escrowFeeVariable := Select top 1 Value from token.GetCurrentStateVariables().VariableValues where Name="EscrowFee";
 		
-			if(escrowFeeVariable != null) then (
+			if(escrowFeeVariable != null) then 
 				TotalFeeEarned += escrowFeeVariable;
-			);
-
+			
 			trn_SuccessCnt ++;
 			trn_SuccessValue += token.Value;
 			trn_Currency := token.Currency ;
 			
-			PaymentType := payspotPaymentDictionary[token.TokenId];
+			PaymentType := PayspotPaymentDictionary[token.TokenId];
                         PaymentType == CardPayment  ? cardSuccessValue += token.Value;
                         PaymentType == IPSPayment  ? ipsSuccessValue +=  token.Value;
-			
-		  )else (
-			if(Contains(StateMachineCurrentStates, token.MachineId)) then(
-				trn_FailedCnt++;
-			);
-		 );
+		)  else (
+                       trn_FailedCnt ++;
+                );
 	);
 
 	cardMarkUp_Fee := cardSuccessValue * 0.0025;
 	IPS_Fee := ipsSuccessValue * 0.0025;
 	
+        ReponseDict := Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
 	ReponseDict.Add("trn_TotalValue:" + trn_Currency, String(trn_SuccessValue));
 	ReponseDict.Add("trn_TotalSuccess" , String(trn_SuccessCnt));
 	ReponseDict.Add("trn_TotalFailed", String(trn_FailedCnt));
