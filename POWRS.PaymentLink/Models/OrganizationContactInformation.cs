@@ -1,11 +1,11 @@
 ﻿using Waher.Persistence.Attributes;
 
-namespace POWRS.PaymentLink
+namespace POWRS.PaymentLink.Models
 {
-    [CollectionName(nameof(OrganizationContactInfo))]
+    [CollectionName(nameof(OrganizationContactInformation) + "s")]
     [TypeName(TypeNameSerialization.None)]
-    [Index("Account")]
-    public class OrganizationContactInfo
+    [Index("OrganizationName")]
+    public class OrganizationContactInformation
     {
         private string objectId;
         private string organizationName;
