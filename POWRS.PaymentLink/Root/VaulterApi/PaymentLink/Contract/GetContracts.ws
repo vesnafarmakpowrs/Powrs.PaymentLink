@@ -1,9 +1,26 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
 
+({
+    "DateFrom": Optional(Str(PDateFrom)),
+    "DateTo": Optional(Str(PdateTo))
+}:=Posted) ??? BadRequest(Exception);
+
 SessionUser:= Global.ValidateAgentApiToken(true, false);
 
 try 
 (
+	PDateFrom := PDateFrom ?? "";
+	PDateTo := PDateTo ?? "";
+	
+	if(!IsEmpty(PDateFrom) and !IsEmpty(PDateTo)) then (
+		DTDateFrom := System.DateTime.ParseExact(PDateFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture);
+		DTDateTo := System.DateTime.ParseExact(PDateTo, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture);
+		DTDateTo := DTDateTo.AddDays(1);
+	) else (
+		DTDateFrom := System.DateTime.ParseExact("2023-01-01", "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture);
+		DTDateTo := TodayUtc.AddDays(1);
+	);
+	
 	PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
 	cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
 	doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
@@ -31,6 +48,8 @@ try
 			select * 
 			from IoTBroker.NeuroFeatures.Token t 
 			where t.CreatorJid = creatorJID
+				and Created >= DTDateFrom
+				and Created < DTDateTo
 			order by Created desc;
 		
 		foreach token in tokens do (
