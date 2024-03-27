@@ -60,24 +60,24 @@
 			</Folder>
 		</Folder>
 		<Folder name="pay.lab.vaulter.rs">
-			<Content fileName="Payout.md"/>
-			<Content fileName="Index.html"/>
-			<Content fileName="TermsAndCondition.html"/>
-			<Content fileName="PrivacyPolicy.html"/>
-			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>
+			<Content fileName="Payout.md" altFolder="..\pay.vaulter.rs"/>
+			<Content fileName="Index.html" altFolder="..\pay.vaulter.rs"/>
+			<Content fileName="TermsAndCondition.html" altFolder="..\pay.vaulter.rs"/>
+			<Content fileName="PrivacyPolicy.html" altFolder="..\pay.vaulter.rs"/>
+			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf" altFolder="..\pay.vaulter.rs"/>
 			<Folder name="Redirect">
-				<Content fileName="Success.md"/>
-				<Content fileName="Cancel.md"/>
-				<Content fileName="Error.md"/>
+				<Content fileName="Success.md" altFolder="..\..\pay.vaulter.rs\Redirect"/>
+				<Content fileName="Cancel.md" altFolder="..\..\pay.vaulter.rs\Redirect"/>
+				<Content fileName="Error.md" altFolder="..\..\pay.vaulter.rs\Redirect"/>
 				<Folder name="Mobile">
-					<Content fileName="Success.md"/>
-					<Content fileName="Cancel.md"/>
-					<Content fileName="Error.md"/>
+					<Content fileName="Success.md" altFolder="..\..\..\pay.vaulter.rs\Mobile"/>
+					<Content fileName="Cancel.md" altFolder="..\..\..\pay.vaulter.rs\Mobile"/>
+					<Content fileName="Error.md" altFolder="..\..\..\pay.vaulter.rs\Mobile"/>
 				</Folder>
 			</Folder>
-			<Folder name="css">
-				<Content fileName="Payout.cssx"/>
-				<Content fileName="Status.css"/>
+			<Folder name="css" >
+				<Content fileName="Payout.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Content fileName="Status.css" altFolder="..\..\pay.vaulter.rs\css"/>
 			</Folder>
 			<Folder name="js">
 				<Content fileName="Events.js"/>
