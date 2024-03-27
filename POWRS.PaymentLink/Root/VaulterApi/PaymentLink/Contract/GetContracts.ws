@@ -11,13 +11,14 @@ try
 (
 	PDateFrom := PDateFrom ?? "";
 	PDateTo := PDateTo ?? "";
+	dateFormat:= "MM/dd/yyyy";
 	
 	if(!IsEmpty(PDateFrom) and !IsEmpty(PDateTo)) then (
-		DTDateFrom := System.DateTime.ParseExact(PDateFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture);
-		DTDateTo := System.DateTime.ParseExact(PDateTo, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture);
+		DTDateFrom := System.DateTime.ParseExact(PDateFrom, "dateFormat", System.Globalization.CultureInfo.CurrentUICulture);
+		DTDateTo := System.DateTime.ParseExact(PDateTo, "dateFormat", System.Globalization.CultureInfo.CurrentUICulture);
 		DTDateTo := DTDateTo.AddDays(1);
 	) else (
-		DTDateFrom := System.DateTime.ParseExact("2023-01-01", "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture);
+		DTDateFrom := System.DateTime.ParseExact("01/01/2023", "dateFormat", System.Globalization.CultureInfo.CurrentUICulture);
 		DTDateTo := TodayUtc.AddDays(1);
 	);
 	
