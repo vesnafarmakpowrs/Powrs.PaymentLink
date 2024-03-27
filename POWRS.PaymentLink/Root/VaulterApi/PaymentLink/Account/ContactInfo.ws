@@ -10,9 +10,14 @@ ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
 ValidateUrl(url):= 
 (
-    isSuccess:= false;
+    isSuccess:= true;
     try 
     (
+        if(url not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$") then 
+        (
+           Error("");
+        );
+
         urlResponse:= HEAD(url);
         isSuccess:= urlResponse.StatusCode != 404;
     )
@@ -21,7 +26,32 @@ ValidateUrl(url):=
        isSuccess:= false;
     );
 
-    Return(isSuccess);
+    isSuccess;
+);
+
+IsValidBase64(base64String):= 
+(
+    isSuccess:= true;
+    try
+    (
+        if(System.String.IsNullOrWhiteSpace(base64String)) then 
+        (
+            Error("");
+        );
+
+        byteArray:= System.Convert.FromBase64String(base64String);
+        maxSize:= 1.5 * 1024 * 1024;
+        if(byteArray.Length > maxSize) then 
+        (
+            Error("");
+        );
+    )
+    catch
+    (
+        isSuccess:= false;
+    );
+
+    isSuccess;
 );
 
 errors:= Create(System.Collections.Generic.List, System.String);
@@ -40,9 +70,11 @@ try
 (
 	errors.Add("Email");
 );
-   if(POrgTermsAndConditions not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$" or ValidateUrl(POrgTermsAndConditions) == false) then 
+
+if(System.String.IsNullOrEmpty(POrgTermsAndConditions) or 
+    (!ValidateUrl(POrgTermsAndConditions) and !IsValidBase64(POrgTermsAndConditions))) then 
 (
-	errors.Add("TermsAndConditions");
+    errors.Add("TermsAndConditions");
 );
 
 if(errors.Count > 0) then 
