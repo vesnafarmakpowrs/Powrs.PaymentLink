@@ -9,8 +9,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Root\pay.lab.vaulter.rs\**" />
 	  <Compile Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
+	  <EmbeddedResource Remove="Root\pay.lab.vaulter.rs\**" />
 	  <EmbeddedResource Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
+	  <None Remove="Root\pay.lab.vaulter.rs\**" />
 	  <None Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
 	</ItemGroup>
 
@@ -82,13 +85,6 @@
 
 	
 	<ItemGroup>
-		<None Remove="Root\pay.lab.vaulter.rs\css\Payout.cssx" />
-		<None Remove="Root\pay.lab.vaulter.rs\js\Events.js" />
-		<None Remove="Root\pay.lab.vaulter.rs\js\PaymentLink.js" />
-		<None Remove="Root\pay.lab.vaulter.rs\Payout.md" />
-		<None Remove="Root\pay.lab.vaulter.rs\resources\spinner.gif" />
-		<None Remove="Root\pay.lab.vaulter.rs\resources\vaulterlogo.svg" />
-		<None Remove="Root\pay.lab.vaulter.rs\resources\vaulter_logo.svg" />
 		<None Remove="Root\pay.vaulter.rs\css\Payout.cssx" />
 		<None Remove="Root\pay.vaulter.rs\js\Events.js" />
 		<None Remove="Root\pay.vaulter.rs\js\PaymentLink.js" />
@@ -131,27 +127,6 @@
 		<None Remove="Scripts\StartupScripts\GetUserHierarchy.config" />
 	</ItemGroup>
 	<ItemGroup>		
-		<Content Include="Root\pay.lab.vaulter.rs\css\Payout.cssx">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>		
-		<Content Include="Root\pay.lab.vaulter.rs\js\Events.js">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>		
-		<Content Include="Root\pay.lab.vaulter.rs\js\PaymentLink.js">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>		
-		<Content Include="Root\pay.lab.vaulter.rs\Payout.md">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>		
-		<Content Include="Root\pay.lab.vaulter.rs\resources\spinner.gif">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>		
-		<Content Include="Root\pay.lab.vaulter.rs\resources\vaulterlogo.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>		
-		<Content Include="Root\pay.lab.vaulter.rs\resources\vaulter_logo.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>		
 		<Content Include="Root\pay.vaulter.rs\css\Payout.cssx">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -276,63 +251,6 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="POWRS.RS.PaymentLink.manifest">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\css\Status.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\css\Stripe.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Index.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Obrazac-za-odustanak-od-ugovora.pdf">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Mobile\Cancel.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Mobile\Error.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Mobile\Success.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\PrivacyPolicy.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Cancel.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Error.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\Redirect\Success.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\resources\credit-card-payment.svg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\resources\direct_payment.svg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\resources\error_red.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\resources\expand.svg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\resources\spin.svg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\resources\success_green.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\resources\vaulter_txt.svg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.lab.vaulter.rs\TermsAndCondition.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\css\Status.css">
