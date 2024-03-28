@@ -147,7 +147,11 @@
 					</OnEvent>
 				</State>
 				<State id="Done">
+					<OnEnter actionRef="MarkAsDone"/>
 				</State>
+				<Action id="MarkAsDone">
+					<PersistVariable name="MarkedAsDone" value="true"/>
+				</Action>
 				<Action id="ReportNewState">
 					<If condition="!exists(Notifications[NewStatus])">
 						<Then>
