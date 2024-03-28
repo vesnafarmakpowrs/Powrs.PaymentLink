@@ -1,6 +1,6 @@
 remoteEndpoint:= Request.RemoteEndPoint.Split(':', null)[0];
 blocked:= select Blocked from RemoteEndpoints where Endpoint = remoteEndpoint;
-
+logContractID := "";
 try
 (
         if(blocked != null && blocked == true) then 
@@ -23,6 +23,7 @@ try
         );
 
         contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= r.ContractId;
+        logContractID := r.ContractId;
 
         if (contract == null) then 
         (
@@ -99,9 +100,17 @@ try
            (
                 Parameter.ObjectValue != null && !exists(Parameters[Parameter.Name]) ? Parameters[Parameter.Name]:=  Parameter.ObjectValue;
            );
-
-           sellerContactInfo:= select top 1 * from POWRS.PaymentLink.OrganizationContactInfo where Account = contract.Account;           
-           sellerContactInfoPropertyValues:= properties(sellerContactInfo).Values;
+			
+			brokerAccRole := Select top 1 * from POWRS.PaymentLink.Models.BrokerAccountRole where UserName = contract.Account;
+			if(brokerAccRole == null) then (
+				Error("Broker Account Role not populated");
+			);
+			
+			sellerContactInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = brokerAccRole.OrgName;    
+			if(sellerContactInfo == null or !sellerContactInfo.IsValid()) then (
+				Error("Contact informations are not existent or not properly populated");
+			);
+			sellerContactInfoPropertyValues:= properties(sellerContactInfo).Values;
 
            foreach property in sellerContactInfoPropertyValues do 
            (
@@ -151,10 +160,9 @@ try
             "Status" : r.Status,
             "success": callbackSuccess
         }
-
 )
 catch
 (
-    Log.Error(Exception, null);
+	Log.Error(Exception.Message, logContractID, "ReportNewState", null);
     BadRequest(Exception.Message);
 );
