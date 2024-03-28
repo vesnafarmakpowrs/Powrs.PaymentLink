@@ -31,8 +31,10 @@ try(
 			Error("Date to must be entered");
 		);
 		
-		DTDateFrom := System.DateTime.ParseExact(PDateFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture);
-		DTDateTo := System.DateTime.ParseExact(PDateTo, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture);
+		dateFormat := "MM/dd/yyyy";
+
+		DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+		DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 		DTDateTo := DTDateTo.AddDays(1);
 		
 		if(PStatus == Status_Success) then (
