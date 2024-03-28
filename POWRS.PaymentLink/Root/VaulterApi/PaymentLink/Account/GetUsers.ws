@@ -63,10 +63,10 @@ try(
 			(
 				if(accIdentity.State == Waher.Service.IoTBroker.Legal.Identity.IdentityState.Approved) then (
 					accState := 1;
-				) else if (accIdentity.State == Waher.Service.IoTBroker.Legal.Identity.IdentityState.Rejected) then (
-					accState := -1;
-				) else (
+				) else if (accIdentity.State == Waher.Service.IoTBroker.Legal.Identity.IdentityState.Created) then (
 					accState := 0;
+				) else (
+					accState := -1;
 				);
 			);
 		);
