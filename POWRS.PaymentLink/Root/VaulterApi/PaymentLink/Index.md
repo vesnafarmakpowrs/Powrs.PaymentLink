@@ -356,6 +356,8 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 
 ````
 {
+    "DateFrom": Optional(Str(PDateFrom)) format [MM/dd/yyyy],
+    "DateTo": Optional(Str(PdateTo)) format [MM/dd/yyyy]
 }
 ````
 
@@ -363,6 +365,7 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 
 ````
 {
+ "Creator": (String),
  "TokenId": (String),
  "State":  (String),
  "Created": (Decimal)(Date in miliseconds),
