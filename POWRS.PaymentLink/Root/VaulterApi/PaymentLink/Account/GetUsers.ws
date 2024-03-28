@@ -17,8 +17,9 @@ try(
 	listBrokerAcc :=
 		Select *
 		from POWRS.PaymentLink.Models.BrokerAccountRole
-		where OrgName = objBrokerAccRole.OrgName
-		order by UserName;
+		where OrgName = objBrokerAccRole.OrgName;
+
+	listBrokerAcc := select * from listBrokerAcc order by UserName;
 	
 	ResultList := Create(System.Collections.Generic.List, System.Object);
 	
