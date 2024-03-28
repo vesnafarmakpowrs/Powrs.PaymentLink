@@ -10,9 +10,14 @@ try(
 		Error("subUsername could only contain letters and numbers.");
     );
 	
-	if(System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = PSubUserName and Enabled = true)) then 
+	if(System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = PSubUserName)) then 
     (
-        Error("Account don't exists or already deactivated");
+        Error("Account don't exists");
+    );
+
+	if(!System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = PSubUserName and Enabled = false)) then 
+    (
+        Error("Account already deactivated");
     );
 
 	sesnUsrBrokerAccRole := 
