@@ -166,25 +166,29 @@
 									};
 									if(exists(PayspotOrderId)) then
 									(
-									Json.PayspotOrderId:= PayspotOrderId;
+										Json.PayspotOrderId:= PayspotOrderId;
 									);
 									if(exists(OrderId)) then
 									(
-									Json.OrderId:= OrderId;
+										Json.OrderId:= OrderId;
 									);
 									if (exists(PaymentType)) then
 									(
-									Json.PaymentType:= PaymentType;
+										Json.PaymentType:= PaymentType;
 									);
 								</Script>
 								<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
 									<Header key="Accept" value="application/json"/>
 								</HttpPost>
 								<Script>
-									if(!exists(Response.State) || !exists(Response.Success)) then
+									if(exists(Response.State) and exists(Response.Success)) then
 									(
-									success:= Boolean(Response.Success);
-									Notifications[NewStatus]:= success;
+										success:= Boolean(Response.Success);
+										Notifications[NewStatus]:= success;
+									)
+									else
+									(
+										Notifications[NewStatus]:= false;
 									);
 								</Script>
 								<Catch exceptionVariable="ex">

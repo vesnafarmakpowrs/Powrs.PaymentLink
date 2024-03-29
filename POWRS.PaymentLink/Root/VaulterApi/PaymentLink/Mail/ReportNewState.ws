@@ -68,22 +68,24 @@ try
         if (exists(r.SendEmail) and  !System.String.IsNullOrEmpty(r.SendEmail)) then
         ( 
            payspotPayment:= null;
-           if(exists(r.PayspotOrderId) and !System.String.IsNullOrWhiteSpace(r.PayspotOrderId)) then 
-              payspotPayment:= select top 1 * from POWRS.Networking.PaySpot.Data.PayspotPayment where PayspotOrderId = r.PayspotOrderId;
-             
-            if(exists(r.OrderId) and !System.String.IsNullOrWhiteSpace(r.OrderId)) then 
+           if(exists(r.PayspotOrderId) and !System.String.IsNullOrWhiteSpace(r.PayspotOrderId)) then
+           (
+                payspotPayment:= select top 1 * from POWRS.Networking.PaySpot.Data.PayspotPayment where PayspotOrderId = r.PayspotOrderId;
+           )
+           else if(exists(r.OrderId) and !System.String.IsNullOrWhiteSpace(r.OrderId)) then
+           (
                 payspotPayment:= select top 1 * from POWRS.Networking.PaySpot.Data.PayspotPayment where OrderId = r.OrderId;
-               
-              if(payspotPayment == null) then 
-                (
-                    Error("Unable to find payment with an OrderId: " + r.PayspotOrderId);
-                );
+           )  
+           else
+           (
+                Error("Unable to find payment with an OrderId: " + r.PayspotOrderId);
+           );
 
-                properties:= properties(payspotPayment);
-                foreach prop in properties.Values do 
-                (
-                  Parameters[prop[0]]:= prop[1];
-                );      
+           properties:= properties(payspotPayment);
+           foreach prop in properties.Values do 
+           (
+             Parameters[prop[0]]:= prop[1];
+           );      
                  
            variables:= NeuroFeatureToken.GetCurrentStateVariables();
 
@@ -131,8 +133,10 @@ try
            PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
            htmlTemplatePath := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + CountryCode + "\\" + r.Status + ".html";
            
-           if (exists(r.PaymentType) and r.PaymentType == "IPSPayment") then
-            htmlTemplatePath := Replace(htmlTemplatePath,"PaymentCompleted","PaymentCompletedIPS"); 
+           if (exists(r.PaymentType) and r.PaymentType == "IPSPayment") then 
+           (
+                htmlTemplatePath := Replace(htmlTemplatePath,"PaymentCompleted","PaymentCompletedIPS"); 
+           );
 
            if (!File.Exists(htmlTemplatePath)) then 
            (
