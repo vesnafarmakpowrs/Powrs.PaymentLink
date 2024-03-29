@@ -50,7 +50,7 @@ if(PCountryCode not like "[A-Z]{2}") then
 (
      errors.Add("COUNTRY");
 );
-if(POrgName not like "^[\\p{L}\\s]{2,100}$") then 
+if(POrgName not like "^[\\p{L}\\s\&?]{2,100}$") then 
 (
    errors.Add("ORGNAME");
 );

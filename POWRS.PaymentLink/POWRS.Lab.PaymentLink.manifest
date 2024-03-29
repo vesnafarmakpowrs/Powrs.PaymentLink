@@ -52,6 +52,7 @@
 				<Folder name="Reports">
 					<Content fileName="AdminPortalDashboard.ws"/>
 					<Content fileName="AgentList.ws"/>
+					<Content fileName="GenerateTransactionsReport.ws"/>
 					<Content fileName="ListOfTransactions.ws"/>
 					<Content fileName="OnBoardedUsers.ws"/>
 					<Content fileName="ReportTransactions.ws"/>

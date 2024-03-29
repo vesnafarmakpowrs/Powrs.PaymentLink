@@ -109,6 +109,7 @@
 		<None Remove="Root\Payout\vaulterlogo.svg" />
 		<None Remove="Root\Payout\HtmlTemplates\EN\PaymentNotPerformed.html" />
 		<None Remove="Root\VaulterApi\PaymentLink\Account\CreatePasswordResetRequest.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Account\GetUsers.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Account\ResetPassword.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CreateItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetAccountInfo.ws" />
@@ -152,6 +153,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Account\CreatePasswordResetRequest.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\Account\GetUsers.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Account\ResetPassword.ws">
@@ -382,9 +386,6 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Account\ContactInfo.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Account\GetUsers.ws">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Account\RoleForSubUser.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -410,6 +411,9 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\QR\Generate.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Reports\GenerateTransactionsReport.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Reports\SuccessfulTransactions.ws">
