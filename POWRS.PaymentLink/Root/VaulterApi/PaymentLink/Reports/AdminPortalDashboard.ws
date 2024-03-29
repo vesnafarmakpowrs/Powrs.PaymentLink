@@ -59,8 +59,8 @@ try(
                 );
 	);
 
-	cardMarkUp_Fee := cardSuccessValue * 0.0025;
-	IPS_Fee := ipsSuccessValue * 0.0025;
+	cardMarkUp_Fee := cardSuccessValue * 0.002;
+	IPS_Fee := ipsSuccessValue * 0.002;
 	
         ReponseDict := Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
 	ReponseDict.Add("trn_TotalValue:" + trn_Currency, String(trn_SuccessValue));
