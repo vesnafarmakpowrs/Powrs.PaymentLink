@@ -157,18 +157,6 @@ foreach Parameter in ContractParameters do
 
     PSellerServiceProviderId := "";
     PSellerServiceProviderType := "";
-    
-    if (SellerCountry == 'SE') then
-    (
-           GetBicResponse := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/VaulterApi/PaymentLink/Bank/GetBic.ws",
-                   {
-                    "bankAccount":  SellerBankAccount
-                   },
-		   {"Accept" : "application/json", "Authorization": "Bearer " + SessionUser.jwt});
-
-          PSellerServiceProviderId := GetBicResponse.serviceProviderId;
-          PSellerServiceProviderType := GetBicResponse.serviceProviderType;
-     );
 
 BuyerPhoneNumber:= PBuyerPhoneNumber ?? "";
 CallBackUrl:=  PCallBackUrl ?? "";
