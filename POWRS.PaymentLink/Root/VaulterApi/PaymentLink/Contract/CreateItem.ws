@@ -79,7 +79,7 @@ if(System.String.IsNullOrWhiteSpace(PPassword)) then
 
 if(exists(PDeliveryTime)) then 
 (
-    if(System.String.IsNullOrWhiteSpace(PDeliveryTime) || PDeliveryTime not like "^(?:[01]\\d|2[0-3]):[0-5]\\d$") then 
+    if(System.String.IsNullOrWhiteSpace(PDeliveryTime) or PDeliveryTime not like "^(?:[01]\\d|2[0-3]):[0-5]\\d$") then 
     (
         Error("DeliveryTime not in correct format. Expected HH:mm.");
     );
@@ -99,7 +99,7 @@ if(ParsedDeliveryDate < NowUtc) then
 KeyId := GetSetting(SessionUser.username + ".KeyId","");
 KeyPassword:= GetSetting(SessionUser.username + ".KeySecret","");
 
-if(System.String.IsNullOrEmpty(KeyId) || System.String.IsNullOrEmpty(KeyPassword)) then 
+if(System.String.IsNullOrEmpty(KeyId) or System.String.IsNullOrEmpty(KeyPassword)) then 
 (
     Error("No signing keys or password available for user: " + SessionUser.username);
 );

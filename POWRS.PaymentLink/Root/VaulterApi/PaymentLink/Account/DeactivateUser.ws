@@ -76,7 +76,7 @@ try(
 	
 	emailClient := sesnUsrIdentity.Account + ", ";
 	foreach item in sesnUsrIdentity.Properties do (
-		if(item.Name == "FIRST" || item.Name == "LAST") then (
+		if(item.Name == "FIRST" or item.Name == "LAST") then (
 			emailClient += " " + item.Value;
 		)else if (item.Name == "EMAIL") then (
 			emailClient += ", <strong>email:</strong>  " + item.Value;
@@ -85,7 +85,7 @@ try(
 	
 	emailSubUser := subUsrIdentity.Account + ", ";
 	foreach item in subUsrIdentity.Properties do (
-		if(item.Name == "FIRST" || item.Name == "LAST") then (
+		if(item.Name == "FIRST" or item.Name == "LAST") then (
 			emailSubUser += " " + item.Value;
 		)else if (item.Name == "EMAIL") then (
 			emailSubUser += ", <strong>email:</strong>  " + item.Value;

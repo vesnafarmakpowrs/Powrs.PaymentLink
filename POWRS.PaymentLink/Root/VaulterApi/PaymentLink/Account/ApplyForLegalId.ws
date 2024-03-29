@@ -42,7 +42,7 @@ if(PLastName not like "[\\p{L}\\s]{2,30}") then
  NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
  isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
 
-if(PPersonalNumber not like "^\\d{13}$" || isPersonalNumberValid != true) then 
+if(PPersonalNumber not like "^\\d{13}$" or isPersonalNumberValid != true) then 
 (
     errors.Add("PNR");
 );
@@ -138,7 +138,7 @@ if(errors.Count > 0) then
     KeyId := GetSetting(SessionUser.username + ".KeyId","");
     KeyPassword:= GetSetting(SessionUser.username + ".KeySecret","");
 
-    if(System.String.IsNullOrEmpty(KeyId) || System.String.IsNullOrEmpty(KeyPassword)) then 
+    if(System.String.IsNullOrEmpty(KeyId) or System.String.IsNullOrEmpty(KeyPassword)) then 
         Error("No signing keys or password available for user: " + SessionUser.username);
    
     Nonce:= Base64Encode(RandomBytes(32));

@@ -32,7 +32,7 @@ try
 	NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
 	isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
 
-	if(PPersonalNumber not like "^\\d{13}$" || isPersonalNumberValid != true) then 
+	if(PPersonalNumber not like "^\\d{13}$" or isPersonalNumberValid != true) then 
 	(
 		errors.Add("PNR");
 	);

@@ -12,12 +12,12 @@ try
         if !exists(Posted) then BadRequest("No payload.");
         r:= Request.DecodeData();
 
-        if(!exists(r.Status) || !exists(r.ContractId) || !exists(r.CallBackUrl) || !exists(r.TokenId)) then
+        if(!exists(r.Status) or !exists(r.ContractId) or !exists(r.CallBackUrl) or !exists(r.TokenId)) then
         (
           BadRequest("Payload does not conform to specification.");
         );
 
-        if(System.String.IsNullOrEmpty(r.Status) || System.String.IsNullOrEmpty(r.ContractId)) then 
+        if(System.String.IsNullOrEmpty(r.Status) or System.String.IsNullOrEmpty(r.ContractId)) then 
         (
          BadRequest("Payload does not conform to specification.");
         );
