@@ -145,7 +145,8 @@ function StartPayment() {
 
     SendXmlHttpRequest("../Payout/API/GeneratePayspotLink.ws",
         {
-            "isFromMobile": isMobileDevice
+            "isFromMobile": isMobileDevice,
+            "tabId": TabID
         },
         (response) => {
             if (!response.OK) {
@@ -160,6 +161,10 @@ function StartPayment() {
             alert(error);
             TransactionFailed(null);
         })
+}
+
+function PaymentCompleted(Result) {
+    location.reload();
 }
 
 function ShowPayspotPage(Data) {

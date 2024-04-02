@@ -1,6 +1,8 @@
 ﻿SessionToken:=  Global.ValidatePayoutJWT();
+
 ({
-    "isFromMobile":Required(Bool(PIsFromMobile))
+    "isFromMobile":Required(Bool(PIsFromMobile)),
+	"tabId": Required(Str(PTabId))
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
@@ -43,6 +45,13 @@ try
 	);
 
 	link:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(contractParameters, identityProperties);
+
+	if(!exists(Global.PayspotRequests)) then
+	(
+		Global.PayspotRequests:= Create(Waher.Runtime.Cache.Cache,System.String,System.String,System.Int32.MaxValue,System.TimeSpan.FromHours(0.5),System.TimeSpan.FromHours(0.5));	
+	);
+
+	Global.PayspotRequests[ContractId]:= PTabId;
 
 	{
 		link

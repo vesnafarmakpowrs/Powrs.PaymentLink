@@ -36,6 +36,19 @@ try
             Error("Token is missing");
         );
 
+        try
+        (
+            if(exists(tabId:= Global.PayspotRequests[r.ContractId]) and !System.String.IsNullOrWhiteSpace(tabId)) then 
+            (
+                ClientEvents.PushEvent([tabId], r.Status, JSON.Encode({"success": true}, false), true);
+                Global.PayspotRequests.Remove(r.ContractId);
+            );
+        )
+        catch
+        (
+            notificationSent:= false;
+        );
+
         SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted"};
 
         callbackSuccess:= false;
