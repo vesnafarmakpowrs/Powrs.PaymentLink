@@ -11,7 +11,7 @@ try
 (
 	PDateFrom := PDateFrom ?? "";
 	PDateTo := PDateTo ?? "";
-	dateFormat:= "MM/dd/yyyy";
+	dateFormat:= "dd/MM/yyyy";
 	
 	if(!IsEmpty(PDateFrom) and !IsEmpty(PDateTo)) then (
 		DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);

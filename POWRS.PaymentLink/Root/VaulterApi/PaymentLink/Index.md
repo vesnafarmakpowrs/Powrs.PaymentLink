@@ -280,7 +280,7 @@ Description of properties:
 | `price`           | Price of the item. |
 | `currency`        | Currency used by the price. Must be a 3-upper-case-letter currency symbol. |
 | `description`     | Displayable description of item. |
-| `deliveryDate`    | Delivery Date of item. MM//dd/YYY |
+| `deliveryDate`    | Delivery Date of item. dd/MM/YYYY |
 | `buyerFirstName`  | Buyer First name. |
 | `buyerLastName`   | Buyer Last name. |
 | `buyerEmail`      | Buyer email. |
@@ -356,8 +356,8 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 
 ````
 {
-    "DateFrom": Optional(Str(PDateFrom)) format [MM/dd/yyyy],
-    "DateTo": Optional(Str(PdateTo)) format [MM/dd/yyyy]
+    "DateFrom": Optional(Str(PDateFrom)) format [dd/MM/yyyy],
+    "DateTo": Optional(Str(PdateTo)) format [dd/MM/yyyy]
 }
 ````
 

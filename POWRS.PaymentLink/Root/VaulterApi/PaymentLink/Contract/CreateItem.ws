@@ -25,11 +25,11 @@ SessionUser:= Global.ValidateAgentApiToken(true, true);
 
 try
 (
-if(PRemoteId not like "^(?!.*--)[a-zA-Z0-9-]{1,50}$") then 
+if(PRemoteId not like "^[\\p{L}\\s0-9-\/#-._]{1,50}$") then 
 (
     Error("RemoteId not valid.");
 );
-if(PTitle not like "[\\p{L}\\s0-9.,;:!?()'\" -]{2,30}") then 
+if(PTitle not like "[\\p{L}\\s0-9.,;:!?()'\"\\/#_~+*@$%^& -]{2,30}") then
 (
     Error("Title not valid.");
 );
@@ -41,7 +41,7 @@ if(PDescription not like "[\\p{L}\\s0-9.,;:!?()'\"\\/#_~+*@$%^& -]{5,100}") then
 (
     Error("Description not valid.");
 );
-if(PDeliveryDate not like "^(0[1-9]|1[0-2])\\/(0[1-9]|[12][0-9]|3[01])\\/\\d{4}$") then 
+if(PDeliveryDate not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
 (
     Error("Delivery date format not valid.");
 );
@@ -50,7 +50,7 @@ if(PBuyerFirstName not like "[\\p{L}\\s]{2,20}") then
     Error("buyerFirstName not valid.");
 );
 
-if(PBuyerLastName not like "[\\p{L}\\s]{2,20}") then 
+if(PBuyerLastName not like "[\\p{L}\\s]{2,20}") then
 (
     Error("buyerLastName not valid.");
 );
@@ -62,7 +62,7 @@ if(PBuyerPhoneNumber != null and PBuyerPhoneNumber not like "^[+]?[0-9]{6,15}$")
 (
     Error("buyerPhoneNumber not valid.");
 );
-if(PBuyerAddress not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
+if(PBuyerAddress not like "^[\\p{L}\\p{N}\\s,./#-]{3,100}$") then 
 (
     Error("buyerAddress not valid.");
 );
@@ -90,7 +90,7 @@ else
 );
 
 PDeliveryDate+= (" " + PDeliveryTime);
-ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
+ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "dd/MM/yyyy HH:mm", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
 if(ParsedDeliveryDate < NowUtc) then 
 (
     Error("Delivery date and time must be in the future");
