@@ -585,7 +585,7 @@
 				</paragraph>
 			</description>
 		</dateTimeParameter>
-		<dateTimeParameter name="DeliveryDate" exp="DeliveryDate &gt;= Now &amp;&amp; DeliveryDate &gt;= PaymentDeadline">
+		<dateTimeParameter name="DeliveryDate" exp="DeliveryDate &gt;= Now">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Date and time when goods should be delivered.</text>
