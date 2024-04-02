@@ -1,6 +1,11 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
 SessionUser:= Global.ValidateAgentApiToken(true, true);
 
+logObjectID := SessionUser.username;
+logEventID := "SuccessfulTransactions.ws";
+logActor := Request.RemoteEndPoint.Split(':', null)[0];
+
+
 ({
     "from":Required(String(PDateFrom) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
     "to":Required(String(PDateTo) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
@@ -9,10 +14,15 @@ SessionUser:= Global.ValidateAgentApiToken(true, true);
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
-  GetAgentSuccessfullTransactions(SessionUser.username, PDateFrom, PDateTo, PIncludeIps, PCardBrands);
+	PCardBrands := PCardBrands ?? "";
+    if(!PIncludeIps and PCardBrands == "") then (
+        Error("No payment methods selected");
+    );
+    
+    GetAgentSuccessfullTransactions(SessionUser.username, PDateFrom, PDateTo, PIncludeIps, PCardBrands);
 )
 catch
 (
-	Log.Error(Exception.Message, null);
+	Log.Error(Exception.Message, logObjectID, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );
