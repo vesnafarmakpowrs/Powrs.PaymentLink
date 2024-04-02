@@ -276,7 +276,7 @@ if ContractState == "AwaitingForPayment" then
 )
 else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" )then 
 (
-]]**((LanguageNamespace.GetStringAsync(16) ))**[[;
+]]<div class="payment_completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>[[;
 )
 else if ContractState == "PaymentCanceled" then 
 (
