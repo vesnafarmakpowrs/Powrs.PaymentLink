@@ -44,14 +44,14 @@ if !exists(Token) then
   ]]<b>Payment link is not valid</b>[[;
   Return("");
 );
-
+ContractState:= "";
 if Token.HasStateMachine then
 (
 	CurrentState:=Token.GetCurrentStateVariables();
 	if exists(CurrentState) then
 		ContractState:= CurrentState.State;
 );
-if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" || System.String.IsNullOrEmpty(ContractState)) then 
+if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" || ContractState == "Done" || System.String.IsNullOrEmpty(ContractState)) then 
 (
     Contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= Token.OwnershipContract;
    
@@ -195,7 +195,7 @@ else if ContractState == "PaymentCanceled" then
 
 <div class="footer-parent">
   <div class="footer">
-   Powrs AB, (org.no 559302-8045), Hammarbybacken 27, Stockholm <br/>Sweden ©2021 - 2023 POWRS 
+   Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - 2024 POWRS 
   </div>
 </div>
 </div>
