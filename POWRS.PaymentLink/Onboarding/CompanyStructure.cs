@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Waher.Networking.HTTP.ScriptExtensions.Functions.Security;
 using Waher.Persistence.Attributes;
+using POWRS.PaymentLink.Onboarding.Enums;
 
 namespace POWRS.PaymentLink.Onboarding
 {
@@ -19,7 +15,15 @@ namespace POWRS.PaymentLink.Onboarding
         private DateTime authorizedRepresentativeBirthDate;
         private string otherAuthorizedRepresentatives;
         private string personalDocumentNum;
+        private DocumentType documentType;
         private DateTime dateOfIssuePersonalDocument;
+
+        private string companyBusinessCountry;
+        private OwnerStrcture ownerStrcture;
+        private FunctionaStatusBeneficialOwner functionaStatusBeneficialOwner;
+        private OffShoreFondationTrast offShoreFondationTrast;
+
+       
         private string foreignExchangeIdentificationNum;
         private int foreignServiceUsersPercentage;
         private string realOwnersData;
@@ -60,6 +64,35 @@ namespace POWRS.PaymentLink.Onboarding
             set => personalDocumentNum = value;
         }
 
+        public DocumentType DocumentType
+        {
+            get => documentType;
+            set => documentType = value;
+        }
+
+        public string CompanyBusinessCountry
+        {
+            get => companyBusinessCountry;
+            set => companyBusinessCountry = value;
+        }
+
+        public OwnerStrcture OwnerStrcture
+        {
+            get => ownerStrcture;
+            set => ownerStrcture = value;
+        }
+
+        public FunctionaStatusBeneficialOwner FunctionaStatusBeneficialOwner
+        {
+            get => functionaStatusBeneficialOwner;
+            set => functionaStatusBeneficialOwner = value;
+        }
+
+        public OffShoreFondationTrast OffShoreFondationTrast
+        {
+            get => offShoreFondationTrast;
+            set => offShoreFondationTrast = value;
+        }
         public DateTime DateOfIssuePersonalDocument
         {
             get => dateOfIssuePersonalDocument;

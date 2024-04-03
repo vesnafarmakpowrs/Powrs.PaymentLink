@@ -1,4 +1,6 @@
-﻿namespace POWRS.PaymentLink.Onboarding.Enums
+﻿using Waher.Content.Html.Elements;
+
+namespace POWRS.PaymentLink.Onboarding.Enums
 {
     public enum StampUsage
     {
@@ -16,5 +18,30 @@
     {
         Other,
         UsingVaulterPaylinkService
+    }
+
+    public enum FunctionaStatusBeneficialOwner
+    {
+        Yes,
+        No
+    }
+
+    public enum OwnerStrcture
+    {
+        Person,
+        Company,
+        PersonAndCompany
+    }
+
+    public enum  OffShoreFondationTrast
+    {
+        Yes,
+        No
+    }
+
+    public enum DocumentType 
+    {
+        IDCard,
+        Passport
     }
 }
