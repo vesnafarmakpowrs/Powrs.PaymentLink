@@ -4,11 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Waher.Networking.HTTP.ScriptExtensions.Functions.Security;
+using Waher.Persistence.Attributes;
 
 namespace POWRS.PaymentLink.Onboarding
 {
+    [CollectionName(nameof(CompanyStructure) + "s")]
+    [TypeName(TypeNameSerialization.None)]
+    [Index("UserName")]
     public class CompanyStructure
     {
+        private string objectId;
+        public string userName;
         private string fullNameAuthorizedRepresentative;
         private DateTime authorizedRepresentativeBirthDate;
         private string otherAuthorizedRepresentatives;
@@ -18,6 +24,18 @@ namespace POWRS.PaymentLink.Onboarding
         private int foreignServiceUsersPercentage;
         private string realOwnersData;
 
+        [ObjectId]
+        public string ObjectId
+        {
+            get => objectId;
+            set => objectId = value;
+        }
+
+        public string UserName
+        {
+            get => userName;
+            set => userName = value;
+        }
         public string FullNameAuthorizedRepresentative 
         { 
              get => fullNameAuthorizedRepresentative; 

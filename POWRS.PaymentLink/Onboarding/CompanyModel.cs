@@ -1,14 +1,21 @@
-﻿using System;
+﻿using POWRS.PaymentLink.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Waher.Content.Html.Elements;
+using Waher.Persistence.Attributes;
 
 namespace POWRS.PaymentLink.Onboarding
 {
+    [CollectionName(nameof(CompanyModel) + "s")]
+    [TypeName(TypeNameSerialization.None)]
+    [Index("UserName")]
     public class CompanyModel
     {
+        private string objectId;
+        public string userName;
         private string businessModel;
         private int complaintsPerMonth;
         private int complaintsPerYear;
@@ -24,6 +31,19 @@ namespace POWRS.PaymentLink.Onboarding
         private DateTime documentIssueDate;
         private string documentIssueBy;
         private string documentIssuePlace;
+
+        [ObjectId]
+        public string ObjectId
+        {
+            get => objectId;
+            set => objectId = value;
+        }
+
+        public string UserName 
+        { 
+            get => userName; 
+            set => userName = value; 
+        }
 
         public string BusinessModel
         {
