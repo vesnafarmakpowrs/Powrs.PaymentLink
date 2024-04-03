@@ -1,4 +1,4 @@
-﻿namespace POWRS.PaymentLink.Onboarding
+﻿namespace POWRS.PaymentLink.Onboarding.Enums
 {
     public enum StampUsage
     {

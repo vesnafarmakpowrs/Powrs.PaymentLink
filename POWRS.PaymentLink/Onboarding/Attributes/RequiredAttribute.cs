@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace POWRS.PaymentLink.Onboarding
+namespace POWRS.PaymentLink.Onboarding.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
     public sealed class RequiredAttribute : Attribute
