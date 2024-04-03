@@ -7,7 +7,7 @@ namespace POWRS.PaymentLink.Onboarding
     [CollectionName(nameof(BaseCompanyInformation) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("UserName")]
-    public class BaseCompanyInformation : BaseOnboarding<BaseCompanyInformation>
+    public class BaseCompanyInformation : BaseOnboardingModel<BaseCompanyInformation>
     {
         private string objectId;
         private string userName;

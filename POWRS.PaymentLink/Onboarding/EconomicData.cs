@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Waher.Persistence.Attributes;
 
 namespace POWRS.PaymentLink.Onboarding
@@ -10,7 +6,7 @@ namespace POWRS.PaymentLink.Onboarding
     [CollectionName(nameof(EconomicData) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("UserName")]
-    public class EconomicData
+    public class EconomicData : BaseOnboardingModel<CompanyStructure>
     {
         [ObjectId]
         private string objectId;

@@ -1,10 +1,4 @@
-﻿using POWRS.PaymentLink.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Waher.Content.Html.Elements;
+﻿using System;
 using Waher.Persistence.Attributes;
 
 namespace POWRS.PaymentLink.Onboarding
@@ -12,7 +6,7 @@ namespace POWRS.PaymentLink.Onboarding
     [CollectionName(nameof(CompanyModel) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("UserName")]
-    public class CompanyModel
+    public class CompanyModel : BaseOnboardingModel<CompanyModel>
     {
         private string objectId;
         public string userName;
@@ -22,12 +16,12 @@ namespace POWRS.PaymentLink.Onboarding
         private int daysPaymentToDelivery;
 
         private string fullNameOwnerLargestShare;
-        private int personalNum;
+        private string personalNum;
         private DateTime birthDate;
         private string birthPlace;
         private string addressAndPlaceOfResidence;
 
-        private int documentNumber;
+        private string documentNumber;
         private DateTime documentIssueDate;
         private string documentIssueBy;
         private string documentIssuePlace;
@@ -75,7 +69,7 @@ namespace POWRS.PaymentLink.Onboarding
             set => fullNameOwnerLargestShare = value;
         }
 
-        public int PersonalNum
+        public string PersonalNum
         {
             get => personalNum;
             set => personalNum = value;
@@ -99,7 +93,7 @@ namespace POWRS.PaymentLink.Onboarding
             set => addressAndPlaceOfResidence = value;
         }
 
-        public int DocumentNumber
+        public string DocumentNumber
         {
             get => documentNumber;
             set => documentNumber = value;

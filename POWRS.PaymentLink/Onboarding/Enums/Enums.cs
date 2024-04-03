@@ -4,12 +4,14 @@ namespace POWRS.PaymentLink.Onboarding.Enums
 {
     public enum StampUsage
     {
+        None,
         UseStamp,
         DoNotUseStamp
     }
 
     public enum TaxLiability
     {
+        None,
         Yes,
         No
     }

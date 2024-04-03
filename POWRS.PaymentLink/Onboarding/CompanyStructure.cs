@@ -7,7 +7,7 @@ namespace POWRS.PaymentLink.Onboarding
     [CollectionName(nameof(CompanyStructure) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("UserName")]
-    public class CompanyStructure
+    public class CompanyStructure : BaseOnboardingModel<CompanyStructure>
     {
         private string objectId;
         public string userName;
@@ -115,7 +115,6 @@ namespace POWRS.PaymentLink.Onboarding
         {
             get => realOwnersData;
             set => realOwnersData = value;
-        }
-        
+        }        
     }
 }
