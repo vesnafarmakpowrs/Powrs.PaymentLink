@@ -78,13 +78,13 @@ if Token.HasStateMachine then
     OrgActivityNumber:= "";
     if Identity != null then 
     (
-       AgentName := Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST;
-       OrgName  := Identity.ORGNAME;
-       OrgTaxNum :=  Identity.ORGTAXNUM;
-       OrgAddr :=  Identity.ORGADDR;
-       OrgNr := Identity.ORGNR;
-       OrgActivity := Identity.ORGACTIVITY;
-       OrgActivityNumber:= Identity.ORGACTIVITYNUM;
+       AgentName := MarkdownEncode(Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
+       OrgName  := MarkdownEncode(Identity.ORGNAME);
+       OrgTaxNum :=  MarkdownEncode(Identity.ORGTAXNUM);
+       OrgAddr :=  MarkdownEncode(Identity.ORGADDR);
+       OrgNr := MarkdownEncode(Identity.ORGNR);
+       OrgActivity := MarkdownEncode(Identity.ORGACTIVITY);
+       OrgActivityNumber:= MarkdownEncode(Identity.ORGACTIVITYNUM);
     );
      
     CompanyInfo := select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = OrgName;
@@ -105,21 +105,21 @@ if Token.HasStateMachine then
     RemoteId :=  '';
     foreach Parameter in (Contract.Parameters ?? []) do 
     (
-          if Parameter.Name == 'RemoteId' then RemoteId := Parameter.Value;
+          if Parameter.Name == 'RemoteId' then RemoteId := MarkdownEncode(Parameter.Value);
     );
 
     foreach Variable in (CurrentState.VariableValues ?? []) do 
       (
-        Variable.Name like "Title" ?   Title := Variable.Value;
-        Variable.Name like "Description" ?   Description := Variable.Value;
-        Variable.Name like "Price" ?   ContractValue := Variable.Value.ToString("N2");
-        Variable.Name like "Currency" ?   Currency := Variable.Value;
-        Variable.Name like "Country" ?   Country := Variable.Value.ToString();
+        Variable.Name like "Title" ?   Title := MarkdownEncode(Variable.Value);
+        Variable.Name like "Description" ?   Description := MarkdownEncode(Variable.Value);
+        Variable.Name like "Price" ?   ContractValue := MarkdownEncode(Variable.Value.ToString("N2"));
+        Variable.Name like "Currency" ?   MarkdownEncode(Currency := Variable.Value);
+        Variable.Name like "Country" ?   Country := MarkdownEncode(Variable.Value.ToString());
         Variable.Name like "Commission" ?   Commission := Variable.Value;
-        Variable.Name like "Buyer" ?   BuyerFullName := Variable.Value;
-        Variable.Name like "BuyerEmail" ?  BuyerEmail := Variable.Value;
-        Variable.Name like "EscrowFee" ?   EscrowFee := Variable.Value.ToString("N2");
-        Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString("N2");
+        Variable.Name like "Buyer" ?   BuyerFullName := MarkdownEncode(Variable.Value);
+        Variable.Name like "BuyerEmail" ?  BuyerEmail := MarkdownEncode(Variable.Value);
+        Variable.Name like "EscrowFee" ?   EscrowFee := MarkdownEncode(Variable.Value.ToString("N2"));
+        Variable.Name like "AmountToPay" ?   AmountToPay := MarkdownEncode(Variable.Value.ToString("N2"));
       );
 
      Country := 'RS';
@@ -185,8 +185,8 @@ if Token.HasStateMachine then
                  <td>
                     <div class="agent-contact-info">
 			<p>((OrgAddr ))test</p>
-		        <p>((CompanyInfo.PhoneNumber ))</p>
-                        <p>((CompanyInfo.Email ))</p>
+		        <p>((MarkdownEncode(CompanyInfo.PhoneNumber) ))</p>
+                        <p>((MarkdownEncode(CompanyInfo.Email) ))</p>
                         <p>((MarkdownEncode(CompanyInfo.WebAddress) ))</p>
                     </div>
                   </td>
