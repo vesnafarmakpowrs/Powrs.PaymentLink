@@ -42,6 +42,9 @@ try
 	Waher.Persistence.Database.Update(companyInformation);
  );
 
+ {
+ }
+
 )
 catch
 (

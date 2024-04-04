@@ -35,6 +35,10 @@ try
  (
 	Waher.Persistence.Database.Update(data);
  );
+
+ {
+ }
+
 )
 catch
 (
