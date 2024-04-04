@@ -6,11 +6,10 @@ namespace POWRS.PaymentLink.Onboarding
     [CollectionName(nameof(EconomicData) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("UserName")]
-    public class EconomicData : BaseOnboardingModel<CompanyStructure>
+    public class EconomicData : BaseOnboardingModel<EconomicData>
     {
-        [ObjectId]
-        private string objectId;
-        private string userName;
+        public EconomicData() { }
+        public EconomicData(string userName) : base(userName) { }
 
         private int retailersNumber;
         private decimal expectedMonthlyTurnover;
@@ -21,18 +20,6 @@ namespace POWRS.PaymentLink.Onboarding
         private decimal averageDailyTurnover;
         private decimal cheapestProductAmount;
         private decimal mostExpensiveProductAmount;
-
-        public string ObjectId
-        {
-            get { return objectId; }
-            set { objectId = value; }
-        }
-
-        public string UserName
-        {
-            get { return userName; }
-            set { userName = value; }
-        }
 
         public int RetailersNumber
         {

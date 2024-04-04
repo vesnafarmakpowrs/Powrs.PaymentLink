@@ -9,8 +9,9 @@ namespace POWRS.PaymentLink.Onboarding
     [Index("UserName")]
     public class BaseCompanyInformation : BaseOnboardingModel<BaseCompanyInformation>
     {
-        private string objectId;
-        private string userName;
+        public BaseCompanyInformation() { }
+        public BaseCompanyInformation(string userName) : base(userName) { }
+
         private string applicantName;
         private string companyAddress;
         private string companyCity;
@@ -27,10 +28,7 @@ namespace POWRS.PaymentLink.Onboarding
         private string companyWebsite;
         private string companyWebshop;
 
-        [ObjectId]
-        public string ObjectId { get => objectId; set => objectId = value; }
         public string ApplicantName { get => applicantName; set => applicantName = value; }
-        public string UserName { get => userName; set => userName = value; }
         public string CompanyAddress { get => companyAddress; set => companyAddress = value; }
         public string CompanyCity { get => companyCity; set => companyCity = value; }
         public string OrganizationNumber { get => organizationNumber; set => organizationNumber = value; }

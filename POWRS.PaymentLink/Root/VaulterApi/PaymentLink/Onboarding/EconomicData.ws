@@ -14,17 +14,26 @@
 
 try
 (
- companyEconomicData:= select top 1 * from POWRS.PaymentLink.Onboarding.EconomicData where UserName = SessionUser.username;
- if(companyEconomicData == null) then 
+ dict:= Create(System.Collections.Generic.Dictionary, System.String, System.Object);
+ foreach(item in Posted) do ( dict.Add(item.Key, item.Value););
+ newRecord:= false;
+
+ data:= select top 1 * from POWRS.PaymentLink.Onboarding.EconomicData where UserName = SessionUser.username;
+ if(data == null) then 
  (
-	instance := POWRS.PaymentLink.Onboarding.EconomicData.CreateInstance(Posted);
-	instance.UserName:= SessionUser.username;
-	Waher.Persistence.Database.Insert(instance);
+    newRecord:= true;
+	data := Create(POWRS.PaymentLink.Onboarding.EconomicData, SessionUser.username);
+ );
+
+ data.Fill(data, dict);
+
+ if(newRecord) then 
+ (
+	Waher.Persistence.Database.Insert(data);
  )
  else
  (
-	instance := POWRS.PaymentLink.Onboarding.EconomicData.CreateInstance(companyInformation, Posted);
-	Waher.Persistence.Database.Update(instance);
+	Waher.Persistence.Database.Update(data);
  );
 )
 catch

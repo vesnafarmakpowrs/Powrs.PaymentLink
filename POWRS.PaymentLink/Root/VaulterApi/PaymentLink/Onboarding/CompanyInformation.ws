@@ -20,18 +20,28 @@
 
 try 
 (
+ dict:= Create(System.Collections.Generic.Dictionary, System.String, System.Object);
+ foreach(item in Posted) do ( dict.Add(item.Key, item.Value););
+ newRecord:= false;
+
  companyInformation:= select top 1 * from POWRS.PaymentLink.Onboarding.BaseCompanyInformation where UserName = SessionUser.username;
  if(companyInformation == null) then 
  (
-	instance := POWRS.PaymentLink.Onboarding.BaseCompanyInformation.CreateInstance(Posted);
-	instance.UserName:= SessionUser.username;
-	Waher.Persistence.Database.Insert(instance);
- )
- else 
- (
-	instance := POWRS.PaymentLink.Onboarding.BaseCompanyInformation.CreateInstance(companyInformation, Posted);
-	Waher.Persistence.Database.Update(instance);
+    newRecord:= true;
+	companyInformation := Create(POWRS.PaymentLink.Onboarding.BaseCompanyInformation, SessionUser.username);
  );
+
+ companyInformation.Fill(companyInformation, dict);
+
+ if(newRecord) then 
+ (
+	Waher.Persistence.Database.Insert(companyInformation);
+ )
+ else
+ (
+	Waher.Persistence.Database.Update(companyInformation);
+ );
+
 )
 catch
 (

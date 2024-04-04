@@ -9,8 +9,9 @@ namespace POWRS.PaymentLink.Onboarding
     [Index("UserName")]
     public class CompanyStructure : BaseOnboardingModel<CompanyStructure>
     {
-        private string objectId;
-        public string userName;
+        public CompanyStructure() { }
+        public CompanyStructure(string userName) : base(userName) { }
+
         private string fullNameAuthorizedRepresentative;
         private DateTime authorizedRepresentativeBirthDate;
         private string otherAuthorizedRepresentatives;
@@ -28,18 +29,6 @@ namespace POWRS.PaymentLink.Onboarding
         private int foreignServiceUsersPercentage;
         private string realOwnersData;
 
-        [ObjectId]
-        public string ObjectId
-        {
-            get => objectId;
-            set => objectId = value;
-        }
-
-        public string UserName
-        {
-            get => userName;
-            set => userName = value;
-        }
         public string FullNameAuthorizedRepresentative 
         { 
              get => fullNameAuthorizedRepresentative; 

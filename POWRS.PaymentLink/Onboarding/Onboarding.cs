@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
@@ -15,7 +14,7 @@ namespace POWRS.PaymentLink.Onboarding
 
         public static async Task<Onboarding> GetOnboardingData(string userName)
         {
-            if (!string.IsNullOrEmpty(userName))
+            if (string.IsNullOrEmpty(userName))
             {
                 throw new Exception("parameter username is mandatory");
             }

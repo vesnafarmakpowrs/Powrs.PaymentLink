@@ -57,7 +57,13 @@
 					<Content fileName="ListOfTransactions.ws"/>
 					<Content fileName="OnBoardedUsers.ws"/>
 					<Content fileName="ReportTransactions.ws"/>
-					<Content fileName="SuccessfulTransactions.ws"/>			
+					<Content fileName="SuccessfulTransactions.ws"/>
+				</Folder>
+				<Folder name="Onboarding">
+					<Content fileName="CompanyInformation.ws"/>
+					<Content fileName="CompanyModel.ws"/>
+					<Content fileName="EconomicData.ws"/>
+					<Content fileName="GetOnboardingData.ws"/>
 				</Folder>
 			</Folder>
 		</Folder>

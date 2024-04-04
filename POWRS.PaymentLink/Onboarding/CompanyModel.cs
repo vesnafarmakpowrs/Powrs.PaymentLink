@@ -8,8 +8,9 @@ namespace POWRS.PaymentLink.Onboarding
     [Index("UserName")]
     public class CompanyModel : BaseOnboardingModel<CompanyModel>
     {
-        private string objectId;
-        public string userName;
+        public CompanyModel() { }
+        public CompanyModel(string userName) : base(userName) { }
+
         private string businessModel;
         private int complaintsPerMonth;
         private int complaintsPerYear;
@@ -25,19 +26,6 @@ namespace POWRS.PaymentLink.Onboarding
         private DateTime documentIssueDate;
         private string documentIssueBy;
         private string documentIssuePlace;
-
-        [ObjectId]
-        public string ObjectId
-        {
-            get => objectId;
-            set => objectId = value;
-        }
-
-        public string UserName 
-        { 
-            get => userName; 
-            set => userName = value; 
-        }
 
         public string BusinessModel
         {
