@@ -60,8 +60,8 @@ namespace POWRS.PaymentLink.Onboarding
                                 property.SetValue(instance, Enum.Parse(property.PropertyType, value.ToString()));
                             }
                             else if (property.PropertyType == typeof(DateTime))
-                            {
-                                var parsedDateTime = DateTime.Parse(value?.ToString());
+                            {                              
+                                var parsedDateTime = DateTime.ParseExact(value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
                                 property.SetValue(instance, parsedDateTime);
                             }
                             else if (property.PropertyType == typeof(decimal))
@@ -82,14 +82,18 @@ namespace POWRS.PaymentLink.Onboarding
 
                                 property.SetValue(instance, parsedInt);
                             }
-                            else if (property.PropertyType.IsAssignableFrom(value.GetType()))
+                            else if (property.PropertyType == typeof(string))
                             {
                                 property.SetValue(instance, value);
+                            }
+                            else
+                            {
+                                throw new Exception("Not implemented type");
                             }
                         }
                         catch (Exception ex)
                         {
-                            var message = "Unable to set property: " + property.Name + ". Given value: " + value ?? string.Empty + "Error: " + ex.Message;
+                            var message = "Unable to set property: " + property.Name + ". Given value: " + (value ?? string.Empty) + "Error: " + ex.Message;
                             throw new Exception(message);
                         }
                     }

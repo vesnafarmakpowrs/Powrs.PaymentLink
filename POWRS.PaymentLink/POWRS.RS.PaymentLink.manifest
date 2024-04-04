@@ -62,6 +62,7 @@
 				<Folder name="Onboarding">
 					<Content fileName="CompanyInformation.ws"/>
 					<Content fileName="CompanyModel.ws"/>
+					<Content fileName="CompanyStructure.ws"/>
 					<Content fileName="EconomicData.ws"/>
 					<Content fileName="GetOnboardingData.ws"/>
 				</Folder>
