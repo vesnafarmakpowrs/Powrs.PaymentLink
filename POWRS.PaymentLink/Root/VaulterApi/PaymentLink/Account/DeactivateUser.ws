@@ -1,8 +1,11 @@
-SessionUser:= Global.ValidateAgentApiToken(true, false);
-
 ({
     "subUserName":Required(Str(PSubUserName))
 }:=Posted) ??? BadRequest(Exception.Message);
+
+SessionUser:= Global.ValidateAgentApiToken(true, false);
+logObjectID := SessionUser.username;
+logEventID := "ApplyForSubLegalId.ws";
+logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
 try(
 	if(PSubUserName not like "^[\\p{L}\\p{N}]{8,20}$") then 
@@ -64,15 +67,16 @@ try(
 			
     Update BrokerAccounts set Enabled = false where UserName = PSubUserName;
 	
-			
-	MailBody := 
-		"Request to disable Legal identity: "
-		+ "<br />"
-		+ "<br /><strong>Client:</strong> {{emailClient}}"
-		+ "<br /><strong>User to be disabled:</strong> {{emailSubUser}}"
-		+ "<br />"
-		+ "<br />Vaulter"
-	;
+	MailBody := Create(System.Text.StringBuilder);
+	MailBody.Append("Hello,");
+	MailBody.Append("<br />");
+	MailBody.Append("<br />Request to disable Legal identity:");
+	MailBody.Append("<br /><strong>Client:</strong> {{emailClient}}");
+	MailBody.Append("<br /><strong>User to be disabled:</strong> {{emailSubUser}}");
+	MailBody.Append("<br />Please review this request.");
+	MailBody.Append("<br />");
+	MailBody.Append("<br />Best regards,");
+	MailBody.Append("<br />Vaulter");
 	
 	emailClient := sesnUsrIdentity.Account + ", ";
 	foreach item in sesnUsrIdentity.Properties do (
@@ -104,10 +108,12 @@ try(
 	ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
 	Config := ConfigClass.Instance;
 	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailReceivers, "PLGenerator - Disable identity", MailBody, null, null);	
-			
+
+	Log.Informational("Succeffully deactivated user: " + emailSubUser, logObjectID, logActor, logEventID, null);
+				
 	x:= "ok";
 )
 catch(
-	Log.Error("Unable to process request. Error: " + Exception.Message, "", "SendUserDeactivationMail", null);
-    BadRequest(Exception.Message);	
+	Log.Error(Exception.Message, logObjectID, logActor, logEventID, null);
+    BadRequest("Unable to process request. Error: " + Exception.Message);	
 );

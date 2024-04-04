@@ -3,9 +3,14 @@
     "LAST": Required(Str(PLastName)),
     "PNR": Required(Str(PPersonalNumber) ),
     "COUNTRY": Required(Str(PCountryCode))
-}:=Posted) ??? BadRequest("Request does not conform to the specification");
+}:=Posted) ??? BadRequest(Exception.Message);
 
-SessionUser:= Global.ValidateAgentApiToken(false, false);  
+SessionUser:= Global.ValidateAgentApiToken(false, false);
+
+logObjectID := SessionUser.username;
+logEventID := "ApplyForSubLegalId.ws";
+logActor := Request.RemoteEndPoint.Split(":", null)[0];
+
 try
 (
 	Password := 
@@ -105,12 +110,34 @@ try
 	);
 
 	PropertiesVector := [FOREACH prop IN dictionary: {name: prop.Key, value: prop.Value}];
-
 	Global.ApplyForAgentLegalId(SessionUser, Password, PropertiesVector);
+	Log.Informational("Succeffully apply for sub legal id.", logObjectID, logActor, logEventID, null);
+	
+	try (
+		MailBody := Create(System.Text.StringBuilder);
+		MailBody.Append("Hello,");
+		MailBody.Append("<br />");
+		MailBody.Append("<br />A subuser <strong>{{subUser}}</strong> has applyed for Legal Identity.");
+		MailBody.Append("<br />Please review this request.");
+		MailBody.Append("<br />");
+		MailBody.Append("<br />Best regards,");
+		MailBody.Append("<br />Vaulter");
+		
+		MailBody := Replace(MailBody, "{{subUser}}", SessionUser.username);
+		
+		ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
+		Config := ConfigClass.Instance;
+		aMLMailRecipients := GetSetting("POWRS.PaymentLink.AMLContactEmail","");
+		
+		POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, aMLMailRecipients, "Vaulter", MailBody, null, null);
+	)
+	catch(
+		Log.Error("Error while sending email: " + Exception.Message, logObjectID, logActor, logEventID, null);
+	);
 )
 catch
 (
-	Log.Error(Exception.Message, null);
+	Log.Error(Exception.Message, logObjectID, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );
 
