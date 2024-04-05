@@ -4,7 +4,7 @@
 
 SessionUser:= Global.ValidateAgentApiToken(true, false);
 logObjectID := SessionUser.username;
-logEventID := "ApplyForSubLegalId.ws";
+logEventID := "DeactivateUser.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
 try(
@@ -70,34 +70,56 @@ try(
 	MailBody := Create(System.Text.StringBuilder);
 	MailBody.Append("Hello,");
 	MailBody.Append("<br />");
-	MailBody.Append("<br />Request to disable Legal identity:");
-	MailBody.Append("<br /><strong>Client:</strong> {{emailClient}}");
-	MailBody.Append("<br /><strong>User to be disabled:</strong> {{emailSubUser}}");
+	MailBody.Append("<br />Request to deactivate Legal identity:");
+	MailBody.Append("<br />");
+	MailBody.Append("<br /><strong>User to be deactivated:</strong>");
+	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Username:</strong> {{subUserName}}");
+	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Name:</strong> {{subFirstLast}}");
+	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Email:</strong> {{subUserEmail}}");
+	MailBody.Append("<br />");
+	MailBody.Append("<br /><strong>Requested by client admin:</strong>");
+	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Username:</strong> {{clientUserName}}");
+	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Name:</strong> {{clientFirstLast}}");
+	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Email:</strong> {{clientUserEmail}}");
+	MailBody.Append("<br />");
 	MailBody.Append("<br />Please review this request.");
 	MailBody.Append("<br />");
 	MailBody.Append("<br />Best regards,");
 	MailBody.Append("<br />Vaulter");
+		
+	clientUserName := sesnUsrIdentity.Account;
+	clientFirstLast := "";
+	clientUserEmail := "";	
+	subUserName := subUsrIdentity.Account;
+	subFirstLast := "";
+	subUserEmail := "";
 	
-	emailClient := sesnUsrIdentity.Account + ", ";
 	foreach item in sesnUsrIdentity.Properties do (
-		if(item.Name == "FIRST" or item.Name == "LAST") then (
-			emailClient += " " + item.Value;
-		)else if (item.Name == "EMAIL") then (
-			emailClient += ", <strong>email:</strong>  " + item.Value;
+		if(item.Name == "FIRST") then (
+			clientFirstLast := item.Value;
+		) else if (item.Name == "LAST") then (
+			clientFirstLast += " " +item.Value;
+		) else if (item.Name == "EMAIL") then (
+			clientUserEmail := item.Value;
 		);
 	);
 	
-	emailSubUser := subUsrIdentity.Account + ", ";
 	foreach item in subUsrIdentity.Properties do (
-		if(item.Name == "FIRST" or item.Name == "LAST") then (
-			emailSubUser += " " + item.Value;
-		)else if (item.Name == "EMAIL") then (
-			emailSubUser += ", <strong>email:</strong>  " + item.Value;
+		if(item.Name == "FIRST") then (
+			subFirstLast := item.Value;
+		) else if (item.Name == "LAST") then (
+			subFirstLast += " " +item.Value;
+		) else if (item.Name == "EMAIL") then (
+			subUserEmail := item.Value;
 		);
 	);
 	
-	MailBody := Replace(MailBody, "{{emailClient}}", emailClient);
-	MailBody := Replace(MailBody, "{{emailSubUser}}", emailSubUser);
+	MailBody := Replace(MailBody, "{{clientUserName}}", clientUserName);
+	MailBody := Replace(MailBody, "{{clientFirstLast}}", clientFirstLast);
+	MailBody := Replace(MailBody, "{{clientUserEmail}}", clientUserEmail);
+	MailBody := Replace(MailBody, "{{subUserName}}", subUserName);
+	MailBody := Replace(MailBody, "{{subFirstLast}}", subFirstLast);
+	MailBody := Replace(MailBody, "{{subUserEmail}}", subUserEmail);
 	
 	mailReceivers := GetSetting("POWRS.PaymentLink.LIStatusContactEmail","");
 	if(System.String.IsNullOrWhiteSpace(mailReceivers)) then 
@@ -109,7 +131,7 @@ try(
 	Config := ConfigClass.Instance;
 	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailReceivers, "PLGenerator - Disable identity", MailBody, null, null);	
 
-	Log.Informational("Succeffully deactivated user: " + emailSubUser, logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully deactivated user: " + subUserName, logObjectID, logActor, logEventID, null);
 				
 	x:= "ok";
 )
