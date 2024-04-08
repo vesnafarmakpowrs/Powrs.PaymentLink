@@ -77,7 +77,7 @@ try
             stringBuilder.Append("</td>");
 
             stringBuilder.Append("<td>");
-            stringBuilder.Append(payment.DateCompleted.ToString("dd-MM-yyyy HH:mm"));
+            stringBuilder.Append(payment.DateCompleted.ToLocalTime().ToString("dd-MM-yyyy HH:mm"));
             stringBuilder.Append("</td>");
 
             stringBuilder.Append("</tr>");
