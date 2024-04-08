@@ -171,7 +171,11 @@ try
            ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
            Config := ConfigClass.Instance;
            POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, Parameters["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
-        );
+        
+           NotificationReceivers := GetSetting("POWRS.PaymentLink.NotificationList","");  
+	       if(!System.String.IsNullOrWhiteSpace(NotificationReceivers)) then 
+		     POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, NotificationReceivers, "Vaulter Payment completed", FormatedHtml, Base64Attachment, FileName);	
+	    );
 
         {    	
             "Status" : r.Status,

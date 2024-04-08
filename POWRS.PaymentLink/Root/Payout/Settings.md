@@ -32,6 +32,8 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", Str(Posted.PayoutPageTokenDuration));
 	SetSetting("POWRS.PaymentLink.SMSTextLocalKey", Str(Posted.SMSTextLocalKey));
 	SetSetting("POWRS.PaymentLink.LIStatusContactEmail", Str(Posted.LIStatusContactEmail));
+	SetSetting("POWRS.PaymentLink.NotificationList", Str(Posted.NotificationList));
+
 	
 	SeeOther("Settings.md");
 );
@@ -76,6 +78,10 @@ if exists(Posted) then
 <input type="text" id="LIStatusContactEmail" name="LIStatusContactEmail" value='{{GetSetting("POWRS.PaymentLink.LIStatusContactEmail","")}}' autofocus required title="List of email who will receive email when legal id disable is requested"/>
 </p>
 
+<p>
+<label for="NotificationList">Notification recipients for payment completed:</label>  
+<input type="text" id="NotificationList" name="NotificationList" value='{{GetSetting("POWRS.PaymentLink.NotificationList","")}}' title="Can be e-mail addresses. Separate using semicolon if more than one."/>
+</p>
 
 <button type="submit" class="posButton">Apply</button>
 </fieldset>
