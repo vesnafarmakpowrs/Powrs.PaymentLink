@@ -87,12 +87,12 @@ if(POrgBankNum not like "^(?!.*--)[\\d-]{1,25}$") then
      errors.Add("ORGBANKNUM");
 );
 
-if(POrgDept not like "\\p{L}{2,50}$") then 
+if(POrgDept not like "^[\\p{L}][\\p{L}\\s,?]*[\\p{L}?]{1,100}$") then 
 (
     errors.Add("ORGDEPT");
 );
 
-if(POrgRole not like "\\p{L}{2,50}$") then 
+if(POrgRole not like "^[\\p{L}][\\p{L}\\s,?]*[\\p{L}?]{2,50}$") then 
 (
     errors.Add("ORGROLE");
 );
