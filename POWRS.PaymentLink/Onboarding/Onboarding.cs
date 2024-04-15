@@ -7,7 +7,7 @@ namespace POWRS.PaymentLink.Onboarding
 {
     public class Onboarding
     {
-        public GeneralCompanyInformation BaseCompanyInformation { get; private set; } = new();
+        public GeneralCompanyInformation GeneralCompanyInformation { get; private set; } = new();
         public CompanyModel CompanyModel { get; private set; } = new();
         public CompanyStructure CompanyStructure { get; private set; } = new();
         public EconomicData EconomicData { get; private set; } = new();
@@ -37,7 +37,7 @@ namespace POWRS.PaymentLink.Onboarding
 
             var onboardingResult = new Onboarding
             {
-                BaseCompanyInformation = companyInformationsTask.Result ?? new GeneralCompanyInformation(),
+                GeneralCompanyInformation = companyInformationsTask.Result ?? new GeneralCompanyInformation(),
                 CompanyModel = companyModelTask.Result ?? new CompanyModel(),
                 CompanyStructure = companyStructureTask.Result ?? new CompanyStructure(),
                 EconomicData = economicDataTask.Result ?? new EconomicData(),
