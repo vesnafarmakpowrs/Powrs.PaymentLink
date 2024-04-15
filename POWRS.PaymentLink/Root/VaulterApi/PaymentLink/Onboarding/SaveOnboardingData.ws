@@ -1,11 +1,8 @@
 ﻿SessionUser:= Global.ValidateAgentApiToken(false, false);
 
-if(Posted == null) BadRequest("Data could not be null");
-
-if(Posted.GeneralCompanyInfo == null) BadRequest("GeneralCompanyInfo could not be null");
-if(Posted.CompanyModel == null) BadRequest("CompanyModel could not be null");
-if(Posted.CompanyStructure == null) BadRequest("CompanyStructure could not be null");
-if(Posted.EconomicData == null) BadRequest("EconomicData could not be null");
+if(Posted == null) then BadRequest("Data could not be null");
+if(!exists(Posted.GeneralCompanyInformation) or Posted.GeneralCompanyInformation == null) then BadRequest("GeneralCompanyInfo could not be null");
+if(!exists(Posted.EconomicData) or Posted.EconomicData == null) then BadRequest("EconomicData could not be null");
 
 SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):= 
 (
@@ -33,41 +30,64 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	  generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = UserName;
 	  recordExists:= generalInfo != null;
 
-	  generalInfo = generalInfo ?? Create(POWRS.PaymentLink.Onboarding.GeneralCompanyInformation);
+	  if(generalInfo == null) then 
+	  (
+		generalInfo:= Create(POWRS.PaymentLink.Onboarding.GeneralCompanyInformation);
+	  );
 
-	  generalInfo.UserName = UserName;
-	  generalInfo.FullName = GeneralCompanyInfo.FullName;
-	  generalInfo.ShortName = GeneralCompanyInfo.ShortName;
-	  generalInfo.CompanyAddress = GeneralCompanyInfo.CompanyAddress;
-	  generalInfo.CompanyCity = GeneralCompanyInfo.CompanyCity;
-	  generalInfo.OrganizationNumber = GeneralCompanyInfo.OrganizationNumber;
-	  generalInfo.TaxNumber = GeneralCompanyInfo.TaxNumber;
-	  generalInfo.ActivityNumber = GeneralCompanyInfo.ActivityNumber;
-	  generalInfo.OtherCompanyActivities = GeneralCompanyInfo.OtherCompanyActivities;
-	  generalInfo.BankName = GeneralCompanyInfo.BankName;
-	  generalInfo.BankAccountNumber = GeneralCompanyInfo.BankAccountNumber;
-	  generalInfo.StampUsage = System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.StampUsage, GeneralCompanyInfo.StampUsage) ??? POWRS.PaymentLink.Onboarding.Enums.StampUsage.None;
-	  generalInfo.TaxLiability = System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.TaxLiability, GeneralCompanyInfo.TaxLiability) ??? POWRS.PaymentLink.Onboarding.Enums.TaxLiability.None;
-	  generalInfo.OnboardingPurpose = POWRS.PaymentLink.Onboarding.Enums.OnboardingPurpose.Other;        
-	  generalInfo.PlatformUsage = POWRS.PaymentLink.Onboarding.Enums.PlatformUsage.UsingVaulterPaylinkService;
-	  generalInfo.CompanyWebsite = GeneralCompanyInfo.CompanyWebsite;
-	  generalInfo.CompanyWebshop = GeneralCompanyInfo.CompanyWebshop;
+	  generalInfo.UserName := UserName;
+	  generalInfo.FullName := GeneralCompanyInfo.FullName;
+	  generalInfo.ShortName := GeneralCompanyInfo.ShortName;
+	  generalInfo.CompanyAddress := GeneralCompanyInfo.CompanyAddress;
+	  generalInfo.CompanyCity := GeneralCompanyInfo.CompanyCity;
+	  generalInfo.OrganizationNumber := GeneralCompanyInfo.OrganizationNumber;
+	  generalInfo.TaxNumber := GeneralCompanyInfo.TaxNumber;
+	  generalInfo.ActivityNumber := GeneralCompanyInfo.ActivityNumber;
+	  generalInfo.OtherCompanyActivities := GeneralCompanyInfo.OtherCompanyActivities;
+	  generalInfo.BankName := GeneralCompanyInfo.BankName;
+	  generalInfo.BankAccountNumber := GeneralCompanyInfo.BankAccountNumber;
+	  generalInfo.StampUsage := System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.StampUsage, GeneralCompanyInfo.StampUsage) ??? POWRS.PaymentLink.Onboarding.Enums.StampUsage.None;
+	  generalInfo.TaxLiability := System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.TaxLiability, GeneralCompanyInfo.TaxLiability) ??? POWRS.PaymentLink.Onboarding.Enums.TaxLiability.None;
+	  generalInfo.OnboardingPurpose := POWRS.PaymentLink.Onboarding.Enums.OnboardingPurpose.Other;        
+	  generalInfo.PlatformUsage := POWRS.PaymentLink.Onboarding.Enums.PlatformUsage.UsingVaulterPaylinkService;
+	  generalInfo.CompanyWebsite := GeneralCompanyInfo.CompanyWebsite;
+	  generalInfo.CompanyWebshop := GeneralCompanyInfo.CompanyWebshop;
 
 	  legalRepresentatives:= Create(System.Collections.Generic.List,POWRS.PaymentLink.Onboarding.LegalRepresentative);
+	
+	 if(GeneralCompanyInfo.LegalRepresentatives != null and GeneralCompanyInfo.LegalRepresentatives.Length > 0) then
+	 (
+		foreach item in GeneralCompanyInfo.LegalRepresentatives do
+		(
+			  if(!exists(item.FullName) or
+				!exists(item.DateOfBirth) or
+				!exists(item.DocumentType) or
+				!exists(item.PlaceOfIssue) or
+				!exists(item.DateOfIssue) or
+				!exists(item.DocumentNumber)) then
+				(
+					BadRequest("Missing fields for legal representative");
+				);
+			
+			representative:= Create(POWRS.PaymentLink.Onboarding.LegalRepresentative);
 
-	  foreach item in generalInfo.LegalRepresentatives do
-	  (
-	    representative:= Create(POWRS.PaymentLink.Onboarding.LegalRepresentative);
+			if(!System.String.IsNullOrEmpty(item.DateOfIssue) and item.DateOfIssue like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
+			(
+				representative.DateOfIssue:= System.DateTime.ParseExact(item.DateOfIssue, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture)
+			);	 
+			if(!System.String.IsNullOrEmpty(item.DateOfBirth) and item.DateOfBirth like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
+			(
+				representative.DateOfBirth:= System.DateTime.ParseExact(item.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture)
+			);
 
-		representative.FullName:= item.FullName;
-		representative.DateOfBirth:= item.DateOfBirth;
-		representative.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.None;
-		representative.DocumentNumber:= item.DocumentNumber;
-		representative.DateOfIssue:= item.DateOfIssue;
-		representative.PlaceOfIssue:= item.PlaceOfIssue;
+			representative.FullName:= item.FullName;
+			representative.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.None;
+			representative.DocumentNumber:= item.DocumentNumber;
+			representative.PlaceOfIssue:= item.PlaceOfIssue;
 
-		legalRepresentatives.Add(representative);
+			legalRepresentatives.Add(representative);
 	  );
+	 );	  
 
 	  generalInfo.LegalRepresentatives:= legalRepresentatives.ToArray();
 
@@ -125,5 +145,5 @@ SaveEconomicData(EconomicData, UserName):=
 
 
 
-SaveGeneralCompanyInfo(Posted.GeneralCompanyInfo, SessionUser.username);
+SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
 SaveEconomicData(Posted.EconomicData, SessionUser.username);
