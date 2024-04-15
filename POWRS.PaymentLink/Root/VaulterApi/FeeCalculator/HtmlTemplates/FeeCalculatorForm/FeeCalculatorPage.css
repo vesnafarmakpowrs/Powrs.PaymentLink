@@ -1,0 +1,105 @@
+.groupHeader {
+    position: relative;
+    line-height: 1.4em;
+    min-height: 35px;
+}
+.divHeaderSwicth {
+    position: absolute;
+    top: 0.4em;
+    left: 0;
+    /* line-height: 1.4em; */
+    z-index: 1041;
+}
+.divHeaderSwicth_Inactive {
+    position: relative;
+}
+.divHeaderLabel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 1.2em;
+    font-size: 1.2em;
+    z-index: 1001;
+}
+.divHeaderLabel_Inactive {
+    position: relative;
+    font-size: 1em;
+    text-align: left;
+    padding-top: 5px;
+}
+
+.inputGroup {
+    position: relative;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 15px 25px !important;
+    box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.5);
+}
+
+.labelRightSide {
+    position: absolute;
+    line-height: 30px;
+    right: 15px;
+}
+
+.savedFont {
+    font-size: 1.4em;
+    font-weight: 700;
+}
+
+.noteRow {
+    height: 90px !important;
+}
+
+.calcBtnRestart {
+    width: 100%;
+    border: 1px black solid;
+    /* font-size: 12px; */
+    margin-top: 10px !important;
+    padding: 10px;
+    background-color: #960808;
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1em;
+}
+
+.calcTblContainer {
+    border: 1px solid black;
+}
+
+.calcTblHeader {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.calcTblData {
+    font-size: 15px;
+}
+
+.calcTblDevide {
+    border: 1px solid gray;
+}
+
+.calcErrorValidation {
+    border-bottom: 2px solid rgb(223, 129, 129) !important;
+}
+
+.chartsContainer {
+    display: flex;
+    height: 100%;
+}
+
+.chartsContainerChild {
+    display: inline-block;
+    align-self: flex-end;
+}
+
+.chartsContainerChildSummary {
+    padding-bottom: 50px;
+    display: inline-block;
+    align-self: flex-end;
+}

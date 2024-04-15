@@ -442,6 +442,10 @@
 	  </None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\" />
+	</ItemGroup>
+
 	<!-- build Serbian Production  package 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>

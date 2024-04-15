@@ -12,6 +12,22 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUserHierarchy.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
+			<Folder name="FeeCalculator">
+				<Folder name="HtmlTemplates">
+					<Folder name="FeeCalculatorForm">
+						<Content fileName="App.css"/>
+						<Content fileName="bootstrap.css"/>
+						<Content fileName="bootstrap.js"/>
+						<Content fileName="FeeCalc.html"/>
+						<Content fileName="FeeCalculatorPage.css"/>
+						<Content fileName="index.css"/>
+						<Content fileName="InputAnimation.css"/>
+						<Content fileName="Slider.css"/>
+						<Content fileName="Style.css"/>
+						<Content fileName="SwitchToggle.css"/>
+					</Folder>
+				</Folder>
+			</Folder>
 			<Folder name="PaymentLink">
 				<Content fileName="Index.md"/>
 				<Folder name="Account">
