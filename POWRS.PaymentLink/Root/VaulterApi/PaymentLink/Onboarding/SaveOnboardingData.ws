@@ -102,7 +102,7 @@ SaveEconomicData(EconomicData, UserName):=
 	    recordExists:= economicData != null;
 
 		economicData.UserName:= UserName;
-		economicData.RetailersNumber:= Int(EconomicData.RetailersNumber) ???  System.Decimal.Parse(0);
+		economicData.RetailersNumber:= Int(EconomicData.RetailersNumber) ???  System.Decimal.Parse(0); 
 		economicData.ExpectedMonthlyTurnover:= System.Decimal.Parse(EconomicData.ExpectedMonthlyTurnover) ??? System.Decimal.Parse(0);
 		economicData.ExpectedYearlyTurnover:= System.Decimal.Parse(EconomicData.ExpectedYearlyTurnover) ??? System.Decimal.Parse(0);
 		economicData.ThreeMonthAccountTurnover:= System.Decimal.Parse(EconomicData.ThreeMonthAccountTurnover) ??? System.Decimal.Parse(0);
