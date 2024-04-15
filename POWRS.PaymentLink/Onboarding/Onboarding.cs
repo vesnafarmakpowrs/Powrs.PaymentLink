@@ -7,7 +7,7 @@ namespace POWRS.PaymentLink.Onboarding
 {
     public class Onboarding
     {
-        public BaseCompanyInformation BaseCompanyInformation { get; private set; } = new();
+        public GeneralCompanyInformation BaseCompanyInformation { get; private set; } = new();
         public CompanyModel CompanyModel { get; private set; } = new();
         public CompanyStructure CompanyStructure { get; private set; } = new();
         public EconomicData EconomicData { get; private set; } = new();
@@ -20,7 +20,7 @@ namespace POWRS.PaymentLink.Onboarding
             }
 
             var userNameFilter = new FilterFieldEqualTo("UserName", userName);
-            var companyInformationsTask = Database.FindFirstDeleteRest<BaseCompanyInformation>(userNameFilter);
+            var companyInformationsTask = Database.FindFirstDeleteRest<GeneralCompanyInformation>(userNameFilter);
             var companyModelTask = Database.FindFirstDeleteRest<CompanyModel>(userNameFilter);
             var companyStructureTask = Database.FindFirstDeleteRest<CompanyStructure>(userNameFilter);
             var economicDataTask = Database.FindFirstDeleteRest<EconomicData>(userNameFilter);
@@ -37,7 +37,7 @@ namespace POWRS.PaymentLink.Onboarding
 
             var onboardingResult = new Onboarding
             {
-                BaseCompanyInformation = companyInformationsTask.Result ?? new BaseCompanyInformation(),
+                BaseCompanyInformation = companyInformationsTask.Result ?? new GeneralCompanyInformation(),
                 CompanyModel = companyModelTask.Result ?? new CompanyModel(),
                 CompanyStructure = companyStructureTask.Result ?? new CompanyStructure(),
                 EconomicData = economicDataTask.Result ?? new EconomicData(),

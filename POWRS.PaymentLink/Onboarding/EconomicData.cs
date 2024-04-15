@@ -15,7 +15,7 @@ namespace POWRS.PaymentLink.Onboarding
         private decimal expectedMonthlyTurnover;
         private decimal expectedYearlyTurnover;
         private decimal threeMonthAccountTurnover;
-        private decimal cardPaymentPercentage;
+        private int cardPaymentPercentage;
         private decimal averageTransactionAmount;
         private decimal averageDailyTurnover;
         private decimal cheapestProductAmount;
@@ -45,7 +45,7 @@ namespace POWRS.PaymentLink.Onboarding
             set { threeMonthAccountTurnover = value; }
         }
 
-        public decimal CardPaymentPercentage
+        public int CardPaymentPercentage
         {
             get { return cardPaymentPercentage; }
             set { cardPaymentPercentage = value; }

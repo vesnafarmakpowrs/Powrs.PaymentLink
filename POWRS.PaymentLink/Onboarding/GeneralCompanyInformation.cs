@@ -4,15 +4,16 @@ using Waher.Persistence.Attributes;
 
 namespace POWRS.PaymentLink.Onboarding
 {
-    [CollectionName(nameof(BaseCompanyInformation) + "s")]
+    [CollectionName(nameof(GeneralCompanyInformation) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("UserName")]
-    public class BaseCompanyInformation : BaseOnboardingModel<BaseCompanyInformation>
+    public class GeneralCompanyInformation : BaseOnboardingModel<GeneralCompanyInformation>
     {
-        public BaseCompanyInformation() { }
-        public BaseCompanyInformation(string userName) : base(userName) { }
+        public GeneralCompanyInformation() { }
+        public GeneralCompanyInformation(string userName) : base(userName) { }
 
-        private string applicantName;
+        private string fullName;
+        private string shortName;
         private string companyAddress;
         private string companyCity;
         private string organizationNumber;
@@ -24,11 +25,13 @@ namespace POWRS.PaymentLink.Onboarding
         private StampUsage stampUsage;
         private TaxLiability taxLiability;
         private OnboardingPurpose onboardingPurpose;
-        private string companyBussinesArea;
+        private PlatformUsage platformUsage;
         private string companyWebsite;
         private string companyWebshop;
+        private LegalRepresentative[] legalRepresentatives;
 
-        public string ApplicantName { get => applicantName; set => applicantName = value; }
+        public string FullName { get => fullName; set => fullName = value; }
+        public string ShortName { get => shortName; set => shortName = value; }
         public string CompanyAddress { get => companyAddress; set => companyAddress = value; }
         public string CompanyCity { get => companyCity; set => companyCity = value; }
         public string OrganizationNumber { get => organizationNumber; set => organizationNumber = value; }
@@ -40,8 +43,9 @@ namespace POWRS.PaymentLink.Onboarding
         public StampUsage StampUsage { get => stampUsage; set => stampUsage = value; }
         public TaxLiability TaxLiability { get => taxLiability; set => taxLiability = value; }
         public OnboardingPurpose OnboardingPurpose { get => onboardingPurpose; set => onboardingPurpose = value; }
-        public string CompanyBussinesArea { get => companyBussinesArea; set => companyBussinesArea = value; }
+        public PlatformUsage PlatformUsage { get => platformUsage; set => platformUsage = value; }
         public string CompanyWebsite { get => companyWebsite; set => companyWebsite = value; }
         public string CompanyWebshop { get => companyWebshop; set => companyWebshop = value; }
+        public LegalRepresentative[] LegalRepresentatives { get => legalRepresentatives; set => legalRepresentatives = value; }
     }
 }

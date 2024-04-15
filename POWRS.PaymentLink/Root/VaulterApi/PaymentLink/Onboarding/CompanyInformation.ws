@@ -24,7 +24,7 @@ try
  foreach(item in Posted) do ( dict.Add(item.Key, item.Value););
  newRecord:= false;
 
- companyInformation:= select top 1 * from POWRS.PaymentLink.Onboarding.BaseCompanyInformation where UserName = SessionUser.username;
+ companyInformation:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
  if(companyInformation == null) then 
  (
     newRecord:= true;

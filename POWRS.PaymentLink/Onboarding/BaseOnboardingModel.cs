@@ -86,10 +86,6 @@ namespace POWRS.PaymentLink.Onboarding
                             {
                                 property.SetValue(instance, value);
                             }
-                            else
-                            {
-                                throw new Exception("Not implemented type");
-                            }
                         }
                         catch (Exception ex)
                         {

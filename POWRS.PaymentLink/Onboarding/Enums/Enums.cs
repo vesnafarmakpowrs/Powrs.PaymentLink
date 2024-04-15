@@ -1,10 +1,8 @@
-﻿using Waher.Content.Html.Elements;
-
-namespace POWRS.PaymentLink.Onboarding.Enums
+﻿namespace POWRS.PaymentLink.Onboarding.Enums
 {
     public enum StampUsage
     {
-        None,
+        None = 0,
         UseStamp,
         DoNotUseStamp
     }
@@ -18,7 +16,11 @@ namespace POWRS.PaymentLink.Onboarding.Enums
 
     public enum OnboardingPurpose
     {
-        Other,
+        Other
+    }
+
+    public enum PlatformUsage
+    {
         UsingVaulterPaylinkService
     }
 
@@ -43,6 +45,7 @@ namespace POWRS.PaymentLink.Onboarding.Enums
 
     public enum DocumentType 
     {
+        None,
         IDCard,
         Passport
     }
