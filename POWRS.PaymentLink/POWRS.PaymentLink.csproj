@@ -303,6 +303,12 @@
 	  <None Update="Root\pay.vaulter.rs\resources\error_red.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\expand-down.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\expand-up.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.vaulter.rs\resources\expand.svg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

@@ -94,6 +94,8 @@
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="expand.svg"/>
+				<Content fileName="expand-down.svg"/>
+				<Content fileName="expand-up.svg"/>
 				<Content fileName="spinner.gif"/>
 				<Content fileName="spin.svg" />
 				<Content fileName="vaulter_logo.svg"/>
@@ -102,6 +104,11 @@
 				<Content fileName="error_red.png"/>
 				<Content fileName="success_green.png"/>
 
+			</Folder>
+			<Folder name="fonts">
+				<Content fileName="Coanda-Bold.ttf"/>
+				<Content fileName="RTDromo-Medium.woff2"/>
+				<Content fileName="RTDromo-Medium.woff"/>
 			</Folder>
 		</Folder>
 		<Folder name="Payout">
