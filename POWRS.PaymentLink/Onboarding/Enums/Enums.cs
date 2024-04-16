@@ -1,18 +1,5 @@
 ﻿namespace POWRS.PaymentLink.Onboarding.Enums
 {
-    public enum StampUsage
-    {
-        None = 0,
-        UseStamp,
-        DoNotUseStamp
-    }
-
-    public enum TaxLiability
-    {
-        None,
-        Yes,
-        No
-    }
 
     public enum OnboardingPurpose
     {

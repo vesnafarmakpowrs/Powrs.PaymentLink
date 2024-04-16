@@ -18,8 +18,6 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	  !exists(GeneralCompanyInfo.BankAccountNumber) or
 	  !exists(GeneralCompanyInfo.StampUsage) or
 	  !exists(GeneralCompanyInfo.TaxLiability) or
-	  !exists(GeneralCompanyInfo.OnboardingPurpose) or
-	  !exists(GeneralCompanyInfo.PlatformUsage) or
 	  !exists(GeneralCompanyInfo.CompanyWebsite) or
 	  !exists(GeneralCompanyInfo.CompanyWebshop) or
 	  !exists(GeneralCompanyInfo.LegalRepresentatives)) then
@@ -46,8 +44,8 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	  generalInfo.OtherCompanyActivities := GeneralCompanyInfo.OtherCompanyActivities;
 	  generalInfo.BankName := GeneralCompanyInfo.BankName;
 	  generalInfo.BankAccountNumber := GeneralCompanyInfo.BankAccountNumber;
-	  generalInfo.StampUsage := System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.StampUsage, GeneralCompanyInfo.StampUsage) ??? POWRS.PaymentLink.Onboarding.Enums.StampUsage.None;
-	  generalInfo.TaxLiability := System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.TaxLiability, GeneralCompanyInfo.TaxLiability) ??? POWRS.PaymentLink.Onboarding.Enums.TaxLiability.None;
+	  generalInfo.StampUsage := GeneralCompanyInfo.StampUsage;
+	  generalInfo.TaxLiability := GeneralCompanyInfo.TaxLiability;
 	  generalInfo.OnboardingPurpose := POWRS.PaymentLink.Onboarding.Enums.OnboardingPurpose.Other;        
 	  generalInfo.PlatformUsage := POWRS.PaymentLink.Onboarding.Enums.PlatformUsage.UsingVaulterPaylinkService;
 	  generalInfo.CompanyWebsite := GeneralCompanyInfo.CompanyWebsite;
@@ -113,6 +111,11 @@ SaveEconomicData(EconomicData, UserName):=
 		!exists(EconomicData.AverageTransactionAmount) or
 		!exists(EconomicData.AverageDailyTurnover) or
 		!exists(EconomicData.CheapestProductAmount) or
+		!exists(EconomicData.BussinesModel) or
+		!exists(EconomicData.SellingGoodsWithDelayedDelivery) or
+		!exists(EconomicData.PeriodFromPaymentToDeliveryInDays) or
+		!exists(EconomicData.ComplaintsPerMonth) or
+		!exists(EconomicData.ComplaintsPerYear) or
 		!exists(EconomicData.MostExpensiveProductAmount)) then 
 		(
 			BadRequest("Missing data");
@@ -122,14 +125,19 @@ SaveEconomicData(EconomicData, UserName):=
 	    recordExists:= economicData != null;
 
 		economicData.UserName:= UserName;
-		economicData.RetailersNumber:= Int(EconomicData.RetailersNumber) ???  System.Decimal.Parse(0); 
-		economicData.ExpectedMonthlyTurnover:= System.Decimal.Parse(EconomicData.ExpectedMonthlyTurnover) ??? System.Decimal.Parse(0);
-		economicData.ExpectedYearlyTurnover:= System.Decimal.Parse(EconomicData.ExpectedYearlyTurnover) ??? System.Decimal.Parse(0);
-		economicData.ThreeMonthAccountTurnover:= System.Decimal.Parse(EconomicData.ThreeMonthAccountTurnover) ??? System.Decimal.Parse(0);
-		economicData.CardPaymentPercentage:= Int(EconomicData.CardPaymentPercentage) ??? 0;
-		economicData.AverageDailyTurnover:= System.Decimal.Parse(EconomicData.AverageDailyTurnover) ??? System.Decimal.Parse(0);
-		economicData.CheapestProductAmount:= System.Decimal.Parse(EconomicData.CheapestProductAmount) ??? System.Decimal.Parse(0);
-		economicData.MostExpensiveProductAmount:= System.Decimal.Parse(EconomicData.MostExpensiveProductAmount) ??? System.Decimal.Parse(0);
+		economicData.RetailersNumber:= EconomicData.RetailersNumber;
+		economicData.ExpectedMonthlyTurnover:= EconomicData.ExpectedMonthlyTurnover;
+		economicData.ExpectedYearlyTurnover:= EconomicData.ExpectedYearlyTurnover;
+		economicData.ThreeMonthAccountTurnover:= EconomicData.ThreeMonthAccountTurnover;
+		economicData.CardPaymentPercentage:= Int(EconomicData.CardPaymentPercentage;
+		economicData.AverageDailyTurnover:= EconomicData.AverageDailyTurnover;
+		economicData.CheapestProductAmount:= EconomicData.CheapestProductAmount;
+		economicData.MostExpensiveProductAmount:= EconomicData.MostExpensiveProductAmount;
+		economicData.BussinesModel:= EconomicData.BussinesModel;
+		economicData.SellingGoodsWithDelayedDelivery:= EconomicData.SellingGoodsWithDelayedDelivery;
+		economicData.PeriodFromPaymentToDeliveryInDays:= EconomicData.PeriodFromPaymentToDeliveryInDays;
+		economicData.ComplaintsPerMonth:= EconomicData.ComplaintsPerMonth;
+		economicData.ComplaintsPerYear:= EconomicData.ComplaintsPerYear;
 
 		if(recordExists) then 
 		(

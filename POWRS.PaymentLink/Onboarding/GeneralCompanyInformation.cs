@@ -22,8 +22,8 @@ namespace POWRS.PaymentLink.Onboarding
         private string otherCompanyActivities;
         private string bankName;
         private string bankAccountNumber;
-        private StampUsage stampUsage;
-        private TaxLiability taxLiability;
+        private bool stampUsage;
+        private bool taxLiability;
         private OnboardingPurpose onboardingPurpose;
         private PlatformUsage platformUsage;
         private string companyWebsite;
@@ -40,8 +40,8 @@ namespace POWRS.PaymentLink.Onboarding
         public string OtherCompanyActivities { get => otherCompanyActivities; set => otherCompanyActivities = value; }
         public string BankName { get => bankName; set => bankName = value; }
         public string BankAccountNumber { get => bankAccountNumber; set => bankAccountNumber = value; }
-        public StampUsage StampUsage { get => stampUsage; set => stampUsage = value; }
-        public TaxLiability TaxLiability { get => taxLiability; set => taxLiability = value; }
+        public bool StampUsage { get => stampUsage; set => stampUsage = value; }
+        public bool TaxLiability { get => taxLiability; set => taxLiability = value; }
         public OnboardingPurpose OnboardingPurpose { get => onboardingPurpose; set => onboardingPurpose = value; }
         public PlatformUsage PlatformUsage { get => platformUsage; set => platformUsage = value; }
         public string CompanyWebsite { get => companyWebsite; set => companyWebsite = value; }
