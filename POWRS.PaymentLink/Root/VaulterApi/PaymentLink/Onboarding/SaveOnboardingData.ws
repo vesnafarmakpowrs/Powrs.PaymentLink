@@ -2,7 +2,8 @@
 
 if(Posted == null) then BadRequest("Data could not be null");
 if(!exists(Posted.GeneralCompanyInformation) or Posted.GeneralCompanyInformation == null) then BadRequest("GeneralCompanyInfo could not be null");
-if(!exists(Posted.EconomicData) or Posted.EconomicData == null) then BadRequest("EconomicData could not be null");
+if(!exists(Posted.BussinesData) or Posted.BussinesData == null) then BadRequest("BussinesData could not be null");
+if(!exists(Posted.CompanyStructure) or Posted.CompanyStructure == null) then BadRequest("BussinesData could not be null");
 
 SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):= 
 (
