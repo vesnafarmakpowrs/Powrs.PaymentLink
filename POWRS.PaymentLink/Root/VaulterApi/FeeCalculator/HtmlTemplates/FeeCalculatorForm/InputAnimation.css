@@ -167,7 +167,7 @@
     padding: 0 10px;
     margin: 0px 10px;
     background-color: white;
-    transition: 0.2s ease;
+    /* transition: 0.2s ease; */
     z-index: 1041;
     font-size: 14px;
 }
@@ -177,7 +177,9 @@
     height: 15px;
     line-height: 15px;
     padding: 0 6px;
-    transform: translate(-10px, -7px) scale(0.88);
+    /* transform: translate(-10px, -11px) scale(0.88); */
+    margin-top: -10px !important;
+    margin-left: 4px !important;
     z-index: 1042;
 }
 

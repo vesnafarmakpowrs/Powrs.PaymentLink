@@ -19,7 +19,7 @@
     <script src="./bootstrap.js"></script>
 </head>
 <body>
-    <div class="container-fluid px-0 mx-0">
+    <div class="container-fluid">
         <div class="text-center">
             <strong>{{t_calc_Header}}</strong>
         </div>
@@ -63,7 +63,7 @@
         <!--*** HEADER END **** -->
         <!--*** INPUT FIELDS **** -->
         <!--***** Total Revenue -->
-        <div class="row col-lg-6 px-0 mx-0">
+        <div class="row col-lg-6 px-0 mx-0 mt-4">
             <div class="col"></div>
             <div class="col-lg-4">
                 <div class="animInputContainer_calc">
@@ -81,8 +81,8 @@
 
         <div class="row col-12 px-0 mx-0">
             <!--***********************************  CARD ****************************************** -->
-            <div class="col-md-6">
-                <div class="row col-12 px-0 mx-0 mt-2">
+            <div class="col-md-6 {{Card_hideDiv}}">
+                <div class="row col-12 px-0 mx-0 mt-5">
                     <!--**** Header -->
                     <div class="row col-12 px-0 mx-0 groupHeader">
                         <div class="divHeaderLabel">
@@ -191,8 +191,8 @@
                 </div>
             </div>
             <!--***********************************  A2A ******************************************* -->
-            <div class="col-md-6">
-                <div class="row col-12 px-0 mx-0 mt-2">
+            <div class="col-md-6 {{A2A_hideDiv}}">
+                <div class="row col-12 px-0 mx-0 mt-5">
                     <!--*** Header -->
                     <div class="row col-12 px-0 mx-0 groupHeader">
                         <div class="divHeaderLabel">
@@ -277,8 +277,8 @@
                 </div>
             </div>
             <!--*********************************** CARD HOLDING *********************************** -->
-            <div class="col-md-6">
-                <div class="row col-12  px-0 mx-0 mt-2">
+            <div class="col-md-6 {{CardHolding_hideDiv}}">
+                <div class="row col-12  px-0 mx-0 mt-5">
                     <!--*** Header -->
                     <div class="row col-12 px-0 mx-0 groupHeader">
                         <div class="divHeaderLabel">
@@ -394,8 +394,8 @@
                 </div>
             </div>
             <!--*********************************** A2A HOLDING ************************************ -->
-            <div class="col-md-6">
-                <div class="row col-12  px-0 mx-0 mt-2">
+            <div class="col-md-6 {{A2AHolding_hideDiv}}">
+                <div class="row col-12  px-0 mx-0 mt-5">
                     <!--*** Header -->
                     <div class="row col-12 px-0 mx-0 groupHeader">
                         <div class="divHeaderLabel">
@@ -513,7 +513,7 @@
         </div>
 
         <!--***** NOTE and reset -->
-        <div class="row col-sm-6 {{cssClass_ActiveReportGroup}} mx-0 mt-3">
+        <div class="row col-md-6 {{cssClass_ActiveReportGroup}} mx-0 mt-3">
             <div class="animInputContainer_calc noteRow">
                 <div class="animLabelline_calc animLabelline_calc_focused">{{t_calc_Note}}</div>
                 <textarea class="animTextArea_calc"

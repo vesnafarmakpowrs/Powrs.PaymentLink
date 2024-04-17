@@ -368,6 +368,39 @@
 	  <None Update="Root\Payout\HtmlTemplates\RS\VerifyEmail.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\App.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\bootstrap.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\bootstrap.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\FeeCalc.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\FeeCalculatorPage.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\index.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\InputAnimation.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\Slider.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\Style.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\SwitchToggle.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\Reports\GenerateFormPDF.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Account\ApplyForLegalId.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

@@ -4,7 +4,7 @@
     "txtTotalRevenue": Required(Str(PtxtTotalRevenue)),
     "txtNote": Required(Str(PtxtNote)),
 	
-	"chbxShowCard": Required(Str(PchbxShowCard)),
+	"chbxShowCard": Required(Bool(PchbxShowCard)),
     "txtNumberOfTrx_Card": Required(Str(PtxtNumberOfTrx_Card)),
     "txtAverAmountPerTrx_Card": Required(Str(PtxtAverAmountPerTrx_Card)),
     "txtCardFee_Card": Required(Str(PtxtCardFee_Card)),
@@ -14,7 +14,7 @@
     "saved_card": Required(Str(Psaved_card)),
     "business_card": Required(Str(Pbusiness_card)),
 	
-	"chbxShowA2A": Required(Str(PchbxShowA2A)),
+	"chbxShowA2A": Required(Bool(PchbxShowA2A)),
 	"txtNumberOfTrx_A2A": Required(Str(PtxtNumberOfTrx_A2A)),
     "txtAverAmountPerTrx_A2A": Required(Str(PtxtAverAmountPerTrx_A2A)),
     "txtVaulterA2AFee_A2A": Required(Str(PtxtVaulterA2AFee_A2A)),
@@ -22,27 +22,26 @@
     "saved_A2A": Required(Str(Psaved_A2A)),
     "business_A2A": Required(Str(Pbusiness_A2A)),
 	
-	"chbxShowCardHolding": Required(Str(PchbxShowCardHolding)),
+	"chbxShowCardHolding": Required(Bool(PchbxShowCardHolding)),
 	"txtNumberOfTrx_CardHolding": Required(Str(PtxtNumberOfTrx_CardHolding)),
     "txtAverAmountPerTrx_CardHolding": Required(Str(PtxtAverAmountPerTrx_CardHolding)),
     "txtVaulterFee_CardHolding": Required(Str(PtxtVaulterFee_CardHolding)),
     "txtNumberOfTrx_CardHolding_KickBack": Required(Str(PtxtNumberOfTrx_CardHolding_KickBack)),
     "txtVaulterKickBackPerTry_CardHolding_KickBack": Required(Str(PtxtVaulterKickBackPerTry_CardHolding_KickBack)),
     "sliderSellerBuyer_CardHolding": Required(Str(PsliderSellerBuyer_CardHolding)),
-    "TotalCost_CardHolding": Required(Str(PTotalCost_CardHolding)),
-    "TotalIncome_CardHolding_KickBack": Required(Str(PTotalIncome_CardHolding_KickBack)),
+    "totalCost_CardHolding": Required(Str(PtotalCost_CardHolding)),
+    "totalIncome_CardHolding_KickBack": Required(Str(PtotalIncome_CardHolding_KickBack)),
 	
-	"chbxShowA2AHolding": Required(Str(PchbxShowA2AHolding)),
+	"chbxShowA2AHolding": Required(Bool(PchbxShowA2AHolding)),
 	"txtNumberOfTrx_A2AHolding": Required(Str(PtxtNumberOfTrx_A2AHolding)),
     "txtAverAmountPerTrx_A2AHolding": Required(Str(PtxtAverAmountPerTrx_A2AHolding)),
     "txtVaulterFee_A2AHolding": Required(Str(PtxtVaulterFee_A2AHolding)),
     "txtNumberOfTrx_A2AHolding_KickBack": Required(Str(PtxtNumberOfTrx_A2AHolding_KickBack)),
     "txtVaulterKickBackPerTry_A2AHolding_KickBack": Required(Str(PtxtVaulterKickBackPerTry_A2AHolding_KickBack)),
     "sliderSellerBuyer_A2AHolding": Required(Str(PsliderSellerBuyer_A2AHolding)),
-    "TotalCost_A2AHolding": Required(Str(PTotalCost_A2AHolding)),
-    "TotalIncome_A2AHolding_KickBack": Required(Str(PTotalIncome_A2AHolding_KickBack))
+    "totalCost_A2AHolding": Required(Str(PtotalCost_A2AHolding)),
+    "totalIncome_A2AHolding_KickBack": Required(Str(PtotalIncome_A2AHolding_KickBack))
 }:= Posted) ??? BadRequest(Exception.Message);
-
 
 logObjectID := "TestKorisnik";
 logEventID := "GenerateFormPDF.ws";
@@ -57,9 +56,11 @@ try
 		Error("Template path does not exist");
 		
 	htmlContent := System.IO.File.ReadAllText(htmlTemplatePath);
+	
 	htmlContent := htmlContent.Replace("{{txtCustomer}}", PtxtCustomer);
 	htmlContent := htmlContent.Replace("{{txtCustomerID}}", PtxtCustomerID);
 	htmlContent := htmlContent.Replace("{{txtTotalRevenue}}", PtxtTotalRevenue);
+	
 	htmlContent := htmlContent.Replace("{{txtNumberOfTrx_Card}}", PtxtNumberOfTrx_Card);
 	htmlContent := htmlContent.Replace("{{txtAverAmountPerTrx_Card}}", PtxtAverAmountPerTrx_Card);
 	htmlContent := htmlContent.Replace("{{txtCardFee_Card}}", PtxtCardFee_Card);
@@ -68,7 +69,31 @@ try
 	htmlContent := htmlContent.Replace("{{lblVaulterCost_Card}}", PvaulterCost_Card);
 	htmlContent := htmlContent.Replace("{{lblSaved_card}}", Psaved_card);
 	htmlContent := htmlContent.Replace("{{lblBusiness_card}}", Pbusiness_card);
+
+	htmlContent := htmlContent.Replace("{{txtNumberOfTrx_A2A}}", PtxtNumberOfTrx_A2A);
+	htmlContent := htmlContent.Replace("{{txtAverAmountPerTrx_A2A}}", PtxtAverAmountPerTrx_A2A);
+	htmlContent := htmlContent.Replace("{{txtVaulterA2AFee_A2A}}", PtxtVaulterA2AFee_A2A);
+	htmlContent := htmlContent.Replace("{{lblVaulterCost_A2A}}", PvaulterCost_A2A);
+	htmlContent := htmlContent.Replace("{{lblSaved_A2A}}", Psaved_A2A);
+	htmlContent := htmlContent.Replace("{{lblBusiness_A2A}}", Pbusiness_A2A);
 	
+	htmlContent := htmlContent.Replace("{{txtNumberOfTrx_CardHolding}}", PtxtNumberOfTrx_CardHolding);
+	htmlContent := htmlContent.Replace("{{txtAverAmountPerTrx_CardHolding}}", PtxtAverAmountPerTrx_CardHolding);
+	htmlContent := htmlContent.Replace("{{txtVaulterFee_CardHolding}}", PtxtVaulterFee_CardHolding);
+	htmlContent := htmlContent.Replace("{{lblTotalCost_CardHolding}}", PtotalCost_CardHolding);
+	htmlContent := htmlContent.Replace("{{sliderSellerBuyer_CardHolding}}", PsliderSellerBuyer_CardHolding);
+	htmlContent := htmlContent.Replace("{{txtNumberOfTrx_CardHolding_KickBack}}", PtxtNumberOfTrx_CardHolding_KickBack);
+	htmlContent := htmlContent.Replace("{{txtVaulterKickBackPerTry_CardHolding_KickBack}}", PtxtVaulterKickBackPerTry_CardHolding_KickBack);
+	htmlContent := htmlContent.Replace("{{lblTotalIncome_CardHolding_KickBack}}", PtotalIncome_CardHolding_KickBack);
+
+	htmlContent := htmlContent.Replace("{{txtNumberOfTrx_A2AHolding}}", PtxtNumberOfTrx_A2AHolding);
+	htmlContent := htmlContent.Replace("{{txtAverAmountPerTrx_A2AHolding}}", PtxtAverAmountPerTrx_A2AHolding);
+	htmlContent := htmlContent.Replace("{{txtVaulterFee_A2AHolding}}", PtxtVaulterFee_A2AHolding);
+	htmlContent := htmlContent.Replace("{{lblTotalCost_A2AHolding}}", PtotalCost_A2AHolding);
+	htmlContent := htmlContent.Replace("{{sliderSellerBuyer_A2AHolding}}", PsliderSellerBuyer_A2AHolding);
+	htmlContent := htmlContent.Replace("{{txtNumberOfTrx_A2AHolding_KickBack}}", PtxtNumberOfTrx_A2AHolding_KickBack);
+	htmlContent := htmlContent.Replace("{{txtVaulterKickBackPerTry_A2AHolding_KickBack}}", PtxtVaulterKickBackPerTry_A2AHolding_KickBack);
+	htmlContent := htmlContent.Replace("{{lblTotalIncome_A2AHolding_KickBack}}", PtotalIncome_A2AHolding_KickBack);
 	
 	fileName := "NewFile";
 	newHtmlPath:= fileRootPath + "\\" + fileName + ".html";
