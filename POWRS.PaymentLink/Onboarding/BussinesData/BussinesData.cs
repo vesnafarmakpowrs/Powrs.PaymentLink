@@ -3,13 +3,13 @@ using Waher.Persistence.Attributes;
 
 namespace POWRS.PaymentLink.Onboarding
 {
-    [CollectionName(nameof(EconomicData) + "s")]
+    [CollectionName(nameof(BussinesData) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("UserName")]
-    public class EconomicData : BaseOnboardingModel<EconomicData>
+    public class BussinesData : BaseOnboardingModel<BussinesData>
     {
-        public EconomicData() { }
-        public EconomicData(string userName) : base(userName) { }
+        public BussinesData() { }
+        public BussinesData(string userName) : base(userName) { }
 
         private string bussinedModel;
         private int? retailersNumber;

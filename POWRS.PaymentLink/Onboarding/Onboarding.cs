@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POWRS.PaymentLink.Onboarding.Structure;
+using System;
 using System.Threading.Tasks;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
@@ -8,9 +9,8 @@ namespace POWRS.PaymentLink.Onboarding
     public class Onboarding
     {
         public GeneralCompanyInformation GeneralCompanyInformation { get; private set; } = new();
-        public CompanyModel CompanyModel { get; private set; } = new();
         public CompanyStructure CompanyStructure { get; private set; } = new();
-        public EconomicData EconomicData { get; private set; } = new();
+        public BussinesData EconomicData { get; private set; } = new();
 
         public static async Task<Onboarding> GetOnboardingData(string userName)
         {
@@ -21,14 +21,13 @@ namespace POWRS.PaymentLink.Onboarding
 
             var userNameFilter = new FilterFieldEqualTo("UserName", userName);
             var companyInformationsTask = Database.FindFirstDeleteRest<GeneralCompanyInformation>(userNameFilter);
-            var companyModelTask = Database.FindFirstDeleteRest<CompanyModel>(userNameFilter);
+            
             var companyStructureTask = Database.FindFirstDeleteRest<CompanyStructure>(userNameFilter);
-            var economicDataTask = Database.FindFirstDeleteRest<EconomicData>(userNameFilter);
+            var economicDataTask = Database.FindFirstDeleteRest<BussinesData>(userNameFilter);
 
             Task[] tasks = new Task[]
             {
                    companyInformationsTask,
-                   companyModelTask,
                    companyStructureTask,
                    economicDataTask
             };
@@ -38,9 +37,8 @@ namespace POWRS.PaymentLink.Onboarding
             var onboardingResult = new Onboarding
             {
                 GeneralCompanyInformation = companyInformationsTask.Result ?? new GeneralCompanyInformation(),
-                CompanyModel = companyModelTask.Result ?? new CompanyModel(),
                 CompanyStructure = companyStructureTask.Result ?? new CompanyStructure(),
-                EconomicData = economicDataTask.Result ?? new EconomicData(),
+                EconomicData = economicDataTask.Result ?? new BussinesData(),
             };
 
             return onboardingResult;

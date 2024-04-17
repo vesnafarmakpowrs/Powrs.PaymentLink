@@ -101,43 +101,48 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	  Return(0);
 );
 
-SaveEconomicData(EconomicData, UserName):= 
+SaveBussinesData(BussinesData, UserName):= 
 (
-	if(!exists(EconomicData.RetailersNumber) or
-		!exists(EconomicData.ExpectedMonthlyTurnover) or
-		!exists(EconomicData.ExpectedYearlyTurnover) or
-		!exists(EconomicData.ThreeMonthAccountTurnover) or
-		!exists(EconomicData.CardPaymentPercentage) or
-		!exists(EconomicData.AverageTransactionAmount) or
-		!exists(EconomicData.AverageDailyTurnover) or
-		!exists(EconomicData.CheapestProductAmount) or
-		!exists(EconomicData.BussinesModel) or
-		!exists(EconomicData.SellingGoodsWithDelayedDelivery) or
-		!exists(EconomicData.PeriodFromPaymentToDeliveryInDays) or
-		!exists(EconomicData.ComplaintsPerMonth) or
-		!exists(EconomicData.ComplaintsPerYear) or
-		!exists(EconomicData.MostExpensiveProductAmount)) then 
+	if(!exists(BussinesData.RetailersNumber) or
+		!exists(BussinesData.ExpectedMonthlyTurnover) or
+		!exists(BussinesData.ExpectedYearlyTurnover) or
+		!exists(BussinesData.ThreeMonthAccountTurnover) or
+		!exists(BussinesData.CardPaymentPercentage) or
+		!exists(BussinesData.AverageTransactionAmount) or
+		!exists(BussinesData.AverageDailyTurnover) or
+		!exists(BussinesData.CheapestProductAmount) or
+		!exists(BussinesData.BussinesModel) or
+		!exists(BussinesData.SellingGoodsWithDelayedDelivery) or
+		!exists(BussinesData.PeriodFromPaymentToDeliveryInDays) or
+		!exists(BussinesData.ComplaintsPerMonth) or
+		!exists(BussinesData.ComplaintsPerYear) or
+		!exists(BussinesData.MostExpensiveProductAmount)) then 
 		(
 			BadRequest("Missing data");
 		);
 
-		economicData:= select top 1 * from POWRS.PaymentLink.Onboarding.EconomicData where UserName = UserName;
-	    recordExists:= economicData != null;
+		bussinesData:= select top 1 * from POWRS.PaymentLink.Onboarding.BussinesData where UserName = UserName;
+	    recordExists:= bussinesData != null;
 
-		economicData.UserName:= UserName;
-		economicData.RetailersNumber:= EconomicData.RetailersNumber;
-		economicData.ExpectedMonthlyTurnover:= EconomicData.ExpectedMonthlyTurnover;
-		economicData.ExpectedYearlyTurnover:= EconomicData.ExpectedYearlyTurnover;
-		economicData.ThreeMonthAccountTurnover:= EconomicData.ThreeMonthAccountTurnover;
-		economicData.CardPaymentPercentage:= Int(EconomicData.CardPaymentPercentage;
-		economicData.AverageDailyTurnover:= EconomicData.AverageDailyTurnover;
-		economicData.CheapestProductAmount:= EconomicData.CheapestProductAmount;
-		economicData.MostExpensiveProductAmount:= EconomicData.MostExpensiveProductAmount;
-		economicData.BussinesModel:= EconomicData.BussinesModel;
-		economicData.SellingGoodsWithDelayedDelivery:= EconomicData.SellingGoodsWithDelayedDelivery;
-		economicData.PeriodFromPaymentToDeliveryInDays:= EconomicData.PeriodFromPaymentToDeliveryInDays;
-		economicData.ComplaintsPerMonth:= EconomicData.ComplaintsPerMonth;
-		economicData.ComplaintsPerYear:= EconomicData.ComplaintsPerYear;
+		if(bussinesData == null) then 
+		(
+			bussinesData:= Create(POWRS.PaymentLink.Onboarding.BussinesData, UserName);
+		);
+
+		bussinesData.UserName:= UserName;
+		bussinesData.RetailersNumber:= BussinesData.RetailersNumber;
+		bussinesData.ExpectedMonthlyTurnover:= BussinesData.ExpectedMonthlyTurnover;
+		bussinesData.ExpectedYearlyTurnover:= BussinesData.ExpectedYearlyTurnover;
+		bussinesData.ThreeMonthAccountTurnover:= BussinesData.ThreeMonthAccountTurnover;
+		bussinesData.CardPaymentPercentage:= Int(BussinesData.CardPaymentPercentage;
+		bussinesData.AverageDailyTurnover:= BussinesData.AverageDailyTurnover;
+		bussinesData.CheapestProductAmount:= BussinesData.CheapestProductAmount;
+		bussinesData.MostExpensiveProductAmount:= BussinesData.MostExpensiveProductAmount;
+		bussinesData.BussinesModel:= BussinesData.BussinesModel;
+		bussinesData.SellingGoodsWithDelayedDelivery:= BussinesData.SellingGoodsWithDelayedDelivery;
+		bussinesData.PeriodFromPaymentToDeliveryInDays:= BussinesData.PeriodFromPaymentToDeliveryInDays;
+		bussinesData.ComplaintsPerMonth:= BussinesData.ComplaintsPerMonth;
+		bussinesData.ComplaintsPerYear:= BussinesData.ComplaintsPerYear;
 
 		if(recordExists) then 
 		(
@@ -149,6 +154,85 @@ SaveEconomicData(EconomicData, UserName):=
 		);
 
 	  Return(0);
+);
+
+SaveCompanyStructure(CompanyStructure, UserName):=
+(
+	if(!exists(CompanyStructure.CountriesOfBusiness) or 
+	!exists(CompanyStructure.PercentageOfForeignUsers) or 
+	!exists(CompanyStructure.OffShoreFoundationInOwnerStructure) or 
+	!exists(CompanyStructure.OwnerStructure) or 
+	!exists(CompanyStructure.Owners)) then
+	(
+		BadRequest("Fields are missing from request");
+	);
+
+	structure:= select top 1 * from POWRS.PaymentLink.Onboarding.Structure.CompanyStructure where UserName = UserName;
+	alreadyExists:= structure != null;
+
+	if(structure == null) then 
+	(
+		structure:= Create(POWRS.PaymentLink.Onboarding.Structure.CompanyStructure, UserName);
+	);
+
+	countriesOfBussines:= Create(System.Collections.Generic.List,System.String);
+	owners:= Create(System.Collections.Generic.List, POWRS.PaymentLink.Onboarding.Structure.Owner);
+
+	structure.PercentageOfForeignUsers:= CompanyStructure.PercentageOfForeignUsers;
+	structure.OffShoreFoundationInOwnerStructure:= CompanyStructure.OffShoreFoundationInOwnerStructure;
+	structure.OwnerStructure:= CompanyStructure.OwnerStructure;
+
+	if(CompanyStructure.CountriesOfBusiness != null and CompanyStructure.CountriesOfBusiness.Length > 0) then 
+	(
+		foreach(country in CompanyStructure.CountriesOfBusiness) do 
+		(
+			countriesOfBussines.Add(country);
+		);
+	);
+
+	if(CompanyStructure.Owners != null and CompanyStructure.Owners.Length > 0) then 
+	(
+		foreach(item in CompanyStructure.Owners) do
+		(
+			owner:= Create(POWRS.PaymentLink.Onboarding.Structure.Owner);
+			owner.FullName:= item.FullName;
+			owner.PersonalNumber:= item.PersonalNumber;
+			owner.PlaceOfBirth:= item.PlaceOfBirth;
+			owner.OfficialOfRepublicOfSerbia:= item.OfficialOfRepublicOfSerbia;
+			owner.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType);
+			owner.DocumentNumber:= item.DocumentNumber;
+			owner.IssuerName:= item.IssuerName;
+			owner.Citizenship:= item.Citizenship;
+			owner.OwningPercentage:= item.OwningPercentage;
+			owner.Role:= item.Role;
+
+			if(item.DateOfBirth != null and and item.DateOfBirth like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
+			(
+				owner.DateOfBirth:= System.DateTime.ParseExact(item.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
+			);
+			if(item.IssueDate != null and and item.IssueDate like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
+			(
+				owner.IssueDate:= System.DateTime.ParseExact(item.IssueDate, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
+			);
+
+			owners.Add(owner);
+		);
+
+		structure.Owners:= owners;
+	);
+
+
+	if(alreadyExists) then 
+	(
+		Waher.Persistence.Database.Update(structure);
+	)
+	else 
+	(
+		Waher.Persistence.Database.Insert(structure);
+	);
+
+	Return(0);
+
 );
 
 

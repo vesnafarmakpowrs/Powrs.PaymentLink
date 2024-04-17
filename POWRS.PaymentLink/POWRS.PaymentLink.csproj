@@ -115,7 +115,6 @@
 		<None Remove="Root\VaulterApi\PaymentLink\GetAccountInfo.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Mail\SendPaylinkViaEmail.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Mail\SendPaylinkViaMail - Copy.ws" />
-		<None Remove="Root\VaulterApi\PaymentLink\Onboarding\CompanyModel.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\ReportNewState.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CancelItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetBic.ws" />
@@ -163,9 +162,6 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
 		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateItem.ws">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>		
-		<Content Include="Root\VaulterApi\PaymentLink\Onboarding\CompanyModel.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
 		<Content Include="Root\VaulterApi\PaymentLink\SMS\SendPaylinkViaSMS.ws">
@@ -418,15 +414,6 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\GetContracts.ws">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\CompanyInformation.ws">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\CompanyStructure.ws">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\EconomicData.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\GetOnboardingData.ws">

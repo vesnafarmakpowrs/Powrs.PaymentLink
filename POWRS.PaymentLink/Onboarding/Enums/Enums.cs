@@ -17,7 +17,7 @@
         No
     }
 
-    public enum OwnerStrcture
+    public enum OwnerStructure
     {
         Person,
         Company,
@@ -32,7 +32,6 @@
 
     public enum DocumentType 
     {
-        None,
         IDCard,
         Passport
     }
