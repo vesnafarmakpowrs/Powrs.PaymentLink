@@ -232,10 +232,8 @@ SaveCompanyStructure(CompanyStructure, UserName):=
 	);
 
 	Return(0);
-
 );
 
-
-
 SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
-SaveEconomicData(Posted.EconomicData, SessionUser.username);
+SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username);
+SaveBussinesData(Posted.EconomicData, SessionUser.username);
