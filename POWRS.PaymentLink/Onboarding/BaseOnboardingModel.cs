@@ -7,6 +7,11 @@ namespace POWRS.PaymentLink.Onboarding
 {
     public class BaseOnboardingModel<T> where T : class
     {
+        public virtual bool IsCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
         public BaseOnboardingModel() { }
         public BaseOnboardingModel(string userName)
         {

@@ -60,6 +60,8 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 		(
 			  if(!exists(item.FullName) or
 				!exists(item.DateOfBirth) or
+				!exists(item.StatementOfOfficialDocument) or
+				!exists(item.IdCard) or
 				!exists(item.DocumentType) or
 				!exists(item.PlaceOfIssue) or
 				!exists(item.DateOfIssue) or
@@ -83,6 +85,8 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			representative.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.None;
 			representative.DocumentNumber:= item.DocumentNumber;
 			representative.PlaceOfIssue:= item.PlaceOfIssue;
+			representative.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
+			representative.IdCard:= item.IdCard;
 
 			legalRepresentatives.Add(representative);
 	  );

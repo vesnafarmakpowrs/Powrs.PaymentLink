@@ -17,6 +17,8 @@ namespace POWRS.PaymentLink.Onboarding.Structure
         private string citizenship;
         private int? owningPercentage;
         private string role;
+        private string statementOfOfficialDocument;
+        private string idCard;
 
         public string FullName
         {
@@ -89,5 +91,8 @@ namespace POWRS.PaymentLink.Onboarding.Structure
             get { return role; }
             set { role = value; }
         }
+
+        public string StatementOfOfficialDocument { get => statementOfOfficialDocument; set => statementOfOfficialDocument = value; }
+        public string IdCard { get => idCard; set => idCard = value; }
     }
 }
