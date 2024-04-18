@@ -8521,8 +8521,11 @@ textarea.form-control-lg {
 }
 
 .text-success {
+  color: rgb(25, 135, 84) !important;
+  /*
   --bs-text-opacity: 1;
   color: rgba(var(--bs-success-rgb), var(--bs-text-opacity)) !important;
+  */
 }
 
 .text-info {
@@ -8536,8 +8539,11 @@ textarea.form-control-lg {
 }
 
 .text-danger {
+  color: rgb(220, 53, 69) !important;
+  /*
   --bs-text-opacity: 1;
   color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+  */
 }
 
 .text-light {

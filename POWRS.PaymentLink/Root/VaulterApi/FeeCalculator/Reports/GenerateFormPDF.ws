@@ -1,3 +1,5 @@
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 ({
 	"t_calc_Header": Required(Str(Pt_calc_Header)),
 	"t_calc_Customer": Required(Str(Pt_calc_Customer)),

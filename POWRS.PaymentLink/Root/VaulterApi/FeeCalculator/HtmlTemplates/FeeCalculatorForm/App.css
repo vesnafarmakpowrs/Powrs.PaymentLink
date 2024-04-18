@@ -32,3 +32,29 @@
     width: 50% !important;
 }
 
+.width25p{
+    width: 25% !important;
+}
+
+/* *** TBL -> little small then it is class name *** */
+.width100p_tbl{
+    width: 100% !important;
+}
+
+.width50p_tbl{
+    width: 48% !important;
+}
+
+.width25p_tbl{
+    width: 23% !important;
+}
+
+.displayRowContainer{
+    position: relative;
+}
+.displayRow{
+    position: relative;
+    display: inline-block;
+    padding: 1%;
+}
+
