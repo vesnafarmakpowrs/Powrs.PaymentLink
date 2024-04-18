@@ -171,10 +171,10 @@
                     <!--*** SAVED -->
                     <div class="row col-12 mx-0 mt-4">
                         <div class="row col-12 px-0 mx-0 savedFont">
-                            <div class="col-6 text-start">
+                            <div class="col-sm-6 text-start">
                                 <span class="">{{t_calc_SAVED_card}}</span>
                             </div>
-                            <div class="col-6 text-end text-success">
+                            <div class="col-sm-6 text-end text-success">
                                 <span class="">{{lblSaved_card}}</span>
                             </div>
                         </div>
@@ -333,7 +333,7 @@
                                 <strong>{{t_calc_totalCost_CardHolding}}</strong>
                             </div>
                             <div class="col-xs-6 text-end ">
-                                <strong>{lblTotalCost_CardHolding}</strong>
+                                <strong>{{lblTotalCost_CardHolding}}</strong>
                             </div>
                         </div>
                     </div>
@@ -450,7 +450,7 @@
                                 <strong>{{t_calc_totalCost_A2AHolding}}</strong>
                             </div>
                             <div class="col-xs-6 text-end ">
-                                <strong>{lblTotalCost_A2AHolding}</strong>
+                                <strong>{{lblTotalCost_A2AHolding}}</strong>
                             </div>
                         </div>
                     </div>
@@ -563,24 +563,6 @@
                     </div>
                 </div>
             </div>
-
-            <!--
-            <div class="col-md-6 col-xl-3 chartsContainerChild">
-                <TransactionsChart
-                    card={txtNumberOfTrx_Card != "" ? parseInt(txtNumberOfTrx_Card, 10) : 0}
-                    a2a={txtNumberOfTrx_A2A != "" ? parseInt(txtNumberOfTrx_A2A, 10) : 0}
-                    cardHold={txtNumberOfTrx_CardHolding != "" ? parseInt(txtNumberOfTrx_CardHolding, 10) : 0}
-                    a2aHold={txtNumberOfTrx_A2AHolding != "" ? parseInt(txtNumberOfTrx_A2AHolding, 10) : 0}
-                />
-            </div>
-
-            <div class="col-md-6 col-xl-3 chartsContainerChild">
-                <TotalNewIncomeChart
-                    saved={totalIncome_cardHolding_KickBack}
-                    kickBack={totalIncome_A2AHolding_KickBack}
-                />
-            </div>
-            -->
         </div>
     </div>
 </body>
