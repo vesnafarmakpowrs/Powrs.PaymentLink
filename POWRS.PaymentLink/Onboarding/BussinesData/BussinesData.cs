@@ -90,7 +90,7 @@ namespace POWRS.PaymentLink.Onboarding
             get => sellingGoodsWithDelayedDelivery;
             set => sellingGoodsWithDelayedDelivery = value;
         }
-        
+
         public int? PeriodFromPaymentToDeliveryInDays
         {
             get => periodFromPaymentToDeliveryInDays;
@@ -99,14 +99,29 @@ namespace POWRS.PaymentLink.Onboarding
 
         public int? ComplaintsPerMonth
         {
-            get => complaintsPerMonth; 
+            get => complaintsPerMonth;
             set => complaintsPerMonth = value;
         }
 
         public int? ComplaintsPerYear
         {
-            get => complaintsPerYear; 
+            get => complaintsPerYear;
             set => complaintsPerYear = value;
-        }       
+        }
+
+        public override bool IsCompleted()
+        {
+            return !string.IsNullOrEmpty(BussinesModel) &&
+                RetailersNumber != null &&
+                ExpectedMonthlyTurnover != null &&
+                ExpectedYearlyTurnover != null &&
+                ThreeMonthAccountTurnover != null &&
+                CardPaymentPercentage != null &&
+                AverageTransactionAmount != null &&
+                AverageDailyTurnover != null &&
+                CheapestProductAmount != null && CheapestProductAmount > 0 &&
+                ComplaintsPerMonth != null &&
+                ComplaintsPerYear != null;
+        }
     }
 }

@@ -239,6 +239,42 @@ SaveCompanyStructure(CompanyStructure, UserName):=
 	Return(0);
 );
 
+SaveLegalDocuments(LegalDocuments, UserName):= 
+(
+ if(!exists(LegalDocuments.BussinesCooperationRequest) or 
+	!exists(LegalDocuments.ContractWithVaulter) or 
+	!exists(LegalDocuments.ContractWithEMI) or 
+	!exists(LegalDocuments.PromissoryNote)) then 
+	(
+		BadRequest("Fields are missing from request");
+	);
+
+	documents:= select top 1 * from POWRS.PaymentLink.Onboarding.Documents.LegalDocuments where UserName = UserName;
+	alreadyExists:= documents != null;
+
+	if(documents == null) then 
+	(
+		documents:= Create(POWRS.PaymentLink.Onboarding.Documents.LegalDocuments, UserName);
+	);
+
+	documents.BussinesCooperationRequest:= LegalDocuments.BussinesCooperationRequest;
+	documents.ContractWithVaulter:= LegalDocuments.ContractWithVaulter;
+	documents.ContractWithEMI:= LegalDocuments.ContractWithEMI;
+	documents.PromissoryNote:= LegalDocuments.PromissoryNote;
+
+	if(alreadyExists) then 
+	(
+		Waher.Persistence.Database.Update(documents);
+	)
+	else
+	(
+		Waher.Persistence.Database.Insert(documents);
+	);
+
+	Return(0);
+);
+
 SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
 SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username);
-SaveBussinesData(Posted.EconomicData, SessionUser.username);
+SaveBussinesData(Posted.BussinesData, SessionUser.username);
+SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username);

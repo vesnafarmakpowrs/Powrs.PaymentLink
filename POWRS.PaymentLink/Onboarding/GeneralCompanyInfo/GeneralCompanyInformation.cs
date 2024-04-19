@@ -1,5 +1,6 @@
 ﻿using POWRS.PaymentLink.Onboarding.Enums;
 using System;
+using System.Linq;
 using Waher.Persistence.Attributes;
 
 namespace POWRS.PaymentLink.Onboarding
@@ -47,5 +48,35 @@ namespace POWRS.PaymentLink.Onboarding
         public string CompanyWebsite { get => companyWebsite; set => companyWebsite = value; }
         public string CompanyWebshop { get => companyWebshop; set => companyWebshop = value; }
         public LegalRepresentative[] LegalRepresentatives { get => legalRepresentatives; set => legalRepresentatives = value; }
+
+        public override bool IsCompleted()
+        {
+            bool informationsCompleted = !string.IsNullOrEmpty(FullName) &&
+                !string.IsNullOrEmpty(CompanyAddress) &&
+                !string.IsNullOrEmpty(CompanyCity) &&
+                !string.IsNullOrEmpty(OrganizationNumber) &&
+                !string.IsNullOrEmpty(TaxNumber) &&
+                !string.IsNullOrEmpty(ActivityNumber) &&
+                !string.IsNullOrEmpty(BankName) &&
+                !string.IsNullOrEmpty(BankAccountNumber) &&
+                (LegalRepresentatives != null && legalRepresentatives.Length > 0);
+
+            if (!informationsCompleted)
+            {
+                return informationsCompleted;
+            }
+
+            bool legalRepresentativesIncompleted = LegalRepresentatives.Any(m =>
+             string.IsNullOrEmpty(m.FullName) ||
+             m.DateOfBirth == null ||
+             string.IsNullOrEmpty(m.DocumentNumber) ||
+             m.DateOfIssue == null ||
+             string.IsNullOrEmpty(m.PlaceOfIssue) ||
+             string.IsNullOrEmpty(m.StatementOfOfficialDocument) ||
+             string.IsNullOrEmpty(m.IdCard));
+
+            return !legalRepresentativesIncompleted;
+
+        }
     }
 }

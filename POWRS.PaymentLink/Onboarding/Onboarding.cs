@@ -1,4 +1,5 @@
-﻿using POWRS.PaymentLink.Onboarding.Structure;
+﻿using POWRS.PaymentLink.Onboarding.Documents;
+using POWRS.PaymentLink.Onboarding.Structure;
 using System;
 using System.Threading.Tasks;
 using Waher.Persistence;
@@ -8,9 +9,21 @@ namespace POWRS.PaymentLink.Onboarding
 {
     public class Onboarding
     {
-        public GeneralCompanyInformation GeneralCompanyInformation { get; private set; } = new();
-        public CompanyStructure CompanyStructure { get; private set; } = new();
-        public BussinesData EconomicData { get; private set; } = new();
+        public GeneralCompanyInformation GeneralCompanyInformation { get; set; } = new();
+        public CompanyStructure CompanyStructure { get; set; } = new();
+        public BussinesData BussinesData { get; set; } = new();
+        public LegalDocuments LegalDocuments { get; set; } = new();
+
+        public bool CanSubmit
+        {
+            get
+            {
+                return GeneralCompanyInformation?.IsCompleted() == true &&
+                CompanyStructure?.IsCompleted() == true &&
+                BussinesData?.IsCompleted() == true &&
+                LegalDocuments?.IsCompleted() == true;
+            }
+        }
 
         public static async Task<Onboarding> GetOnboardingData(string userName)
         {
@@ -21,15 +34,16 @@ namespace POWRS.PaymentLink.Onboarding
 
             var userNameFilter = new FilterFieldEqualTo("UserName", userName);
             var companyInformationsTask = Database.FindFirstDeleteRest<GeneralCompanyInformation>(userNameFilter);
-            
             var companyStructureTask = Database.FindFirstDeleteRest<CompanyStructure>(userNameFilter);
-            var economicDataTask = Database.FindFirstDeleteRest<BussinesData>(userNameFilter);
+            var bussinesDataTask = Database.FindFirstDeleteRest<BussinesData>(userNameFilter);
+            var legalDocumentsTask = Database.FindFirstDeleteRest<LegalDocuments>(userNameFilter);
 
             Task[] tasks = new Task[]
             {
                    companyInformationsTask,
                    companyStructureTask,
-                   economicDataTask
+                   bussinesDataTask,
+                   legalDocumentsTask
             };
 
             await Task.WhenAll(tasks);
@@ -38,7 +52,8 @@ namespace POWRS.PaymentLink.Onboarding
             {
                 GeneralCompanyInformation = companyInformationsTask.Result ?? new GeneralCompanyInformation(),
                 CompanyStructure = companyStructureTask.Result ?? new CompanyStructure(),
-                EconomicData = economicDataTask.Result ?? new BussinesData(),
+                BussinesData = bussinesDataTask.Result ?? new BussinesData(),
+                LegalDocuments = legalDocumentsTask.Result ?? new LegalDocuments()
             };
 
             return onboardingResult;

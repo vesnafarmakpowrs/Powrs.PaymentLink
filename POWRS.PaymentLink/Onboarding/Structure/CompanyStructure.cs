@@ -1,6 +1,7 @@
 ﻿using System;
 using Waher.Persistence.Attributes;
 using POWRS.PaymentLink.Onboarding.Enums;
+using System.Linq;
 
 namespace POWRS.PaymentLink.Onboarding.Structure
 {
@@ -46,6 +47,32 @@ namespace POWRS.PaymentLink.Onboarding.Structure
         {
             get { return owners; }
             set { owners = value; }
+        }
+
+        public override bool IsCompleted()
+        {
+            bool isStructureValid = CountriesOfBusiness != null && CountriesOfBusiness.Length > 0 &&
+                PercentageOfForeignUsers != null &&
+                Owners != null && Owners.Length > 0;
+
+            if (!isStructureValid)
+            {
+                return isStructureValid;
+            }
+
+            bool incompleteOwnerFormsExists = Owners.Any(m => string.IsNullOrEmpty(m.FullName) ||
+                string.IsNullOrEmpty(m.PersonalNumber) ||
+                (m.DateOfBirth == null || m.DateOfBirth == DateTime.MinValue) ||
+                string.IsNullOrEmpty(m.PlaceOfBirth) ||
+                string.IsNullOrEmpty(m.DocumentNumber) ||
+                (m.IssueDate == null && m.IssueDate == DateTime.MinValue) ||
+                string.IsNullOrEmpty(m.IssuerName) ||
+                string.IsNullOrEmpty(m.Citizenship) ||
+                (m.OwningPercentage == null || m.OwningPercentage <= 0) ||
+                string.IsNullOrEmpty(m.StatementOfOfficialDocument) ||
+                string.IsNullOrEmpty(m.IdCard));
+
+            return !incompleteOwnerFormsExists;
         }
     }
 }
