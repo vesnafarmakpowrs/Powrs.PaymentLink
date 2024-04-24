@@ -92,6 +92,7 @@
 		<None Remove="Root\pay.vaulter.rs\resources\spinner.gif" />
 		<None Remove="Root\pay.vaulter.rs\resources\vaulterlogo.svg" />
 		<None Remove="Root\pay.vaulter.rs\resources\vaulter_logo.svg" />
+		<None Remove="Root\Payout\API\GenerateIPSForm.ws" />
 		<None Remove="Root\Payout\API\GetAvailableLanguages.ws" />
 		<None Remove="Root\Payout\DealInfo.ws" />
 		<None Remove="Root\Payout\Events.js" />
@@ -126,6 +127,11 @@
 		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
 		<None Remove="Scripts\StartupScripts\GetAgentSuccessfullTransactions.config" />
 		<None Remove="Scripts\StartupScripts\GetUserHierarchy.config" />
+	</ItemGroup>
+
+	
+	<ItemGroup>
+	  <Compile Include="Root\Payout\API\GenerateIPSForm.ws" />
 	</ItemGroup>
 	<ItemGroup>		
 		<Content Include="Root\pay.vaulter.rs\css\Payout.cssx">

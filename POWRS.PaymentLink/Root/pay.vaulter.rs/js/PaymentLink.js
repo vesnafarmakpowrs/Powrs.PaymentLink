@@ -163,6 +163,32 @@ function StartPayment() {
         })
 }
 
+function GenerateIPSForm() {
+    document.getElementById("payspot-submit").style.display = "none";
+    document.getElementById("tr_spinner").style.display = null;
+    let jwt = document.getElementById("jwt");
+    CollapseDetails();
+
+    SendXmlHttpRequest("../Payout/API/GenerateIPSForm.ws",
+        {
+            "isFromMobile": isMobileDevice,
+            "tabId": TabID
+        },
+        (response) => {
+            if (!response.OK) {
+                TransactionFailed(null);
+            }
+            FillAndSubmitPayspotIPSForm(response);
+        },
+        (error) => {
+            if (error.status === 408) {
+                return;
+            }
+            alert(error);
+            TransactionFailed(null);
+        })
+}
+
 function PaymentCompleted(Result) {
     location.reload();
 }
@@ -247,4 +273,28 @@ function openBase64String(base64String) {
 
     // Open a new window with the Blob URL
     var newWindow = window.open(blobURL);
+}
+
+function FillAndSubmitPayspotIPSForm(apiResponse) {
+    // Extract data from the API response
+    var data = JSON.parse(apiResponse);
+
+    // Fill the form fields with data from the API response
+    document.querySelector('input[name="companyId"]').value = data.CompanyId;
+    document.querySelector('input[name="merchantOrderID"]').value = data.MerchantOrderId;
+    document.querySelector('input[name="merchantOrderAmount"]').value = data.MerchantOrderAmount;
+    document.querySelector('input[name="merchantCurrencyCode"]').value = data.MerchantCurrencyCode;
+    document.querySelector('input[name="language"]').value = data.Language;
+    document.querySelector('input[name="callbackURL"]').value = data.CallbackURL;
+    document.querySelector('input[name="successURL"]').value = data.SuccessURL;
+    document.querySelector('input[name="cancelURL"]').value = data.CancelURL;
+    document.querySelector('input[name="errorURL"]').value = data.ErrorURL;
+    document.querySelector('input[name="hash"]').value = data.Hash;
+    document.querySelector('input[name="rnd"]').value = data.Rnd;
+    document.querySelector('input[name="currentDate"]').value = data.CurrentDate;
+
+    var payspotForm = document.getElementById('payspotForm');
+
+    payspotForm.action = data.SubmitAddress;
+    payspotForm.submit();
 }
