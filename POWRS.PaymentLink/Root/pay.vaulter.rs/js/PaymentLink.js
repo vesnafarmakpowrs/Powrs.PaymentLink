@@ -137,22 +137,23 @@ function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUs
             "functionName": "SessionUpdated"
         }));
 }
-function StartPayment() {
+
+function InitiatePaymentForm(ipsOnly, onSuccess) {
     document.getElementById("payspot-submit").style.display = "none";
     document.getElementById("tr_spinner").style.display = null;
-    let jwt = document.getElementById("jwt");
     CollapseDetails();
 
-    SendXmlHttpRequest("../Payout/API/GeneratePayspotLink.ws",
+    SendXmlHttpRequest("../Payout/API/InitiatePaymentForm.ws",
         {
             "isFromMobile": isMobileDevice,
-            "tabId": TabID
+            "tabId": TabID,
+            "ipsOnly": ipsOnly
         },
         (response) => {
             if (!response.OK) {
                 TransactionFailed(null);
             }
-            ShowPayspotPage(response);
+            onSuccess(response);
         },
         (error) => {
             if (error.status === 408) {
@@ -162,31 +163,12 @@ function StartPayment() {
             TransactionFailed(null);
         })
 }
+function StartPayment() {
+    InitiatePaymentForm(false, ShowPayspotPage);
+}
 
 function GenerateIPSForm() {
-    document.getElementById("payspot-submit").style.display = "none";
-    document.getElementById("tr_spinner").style.display = null;
-    let jwt = document.getElementById("jwt");
-    CollapseDetails();
-
-    SendXmlHttpRequest("../Payout/API/GenerateIPSForm.ws",
-        {
-            "isFromMobile": isMobileDevice,
-            "tabId": TabID
-        },
-        (response) => {
-            if (!response.OK) {
-                TransactionFailed(null);
-            }
-            FillAndSubmitPayspotIPSForm(response);
-        },
-        (error) => {
-            if (error.status === 408) {
-                return;
-            }
-            alert(error);
-            TransactionFailed(null);
-        })
+    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);   
 }
 
 function PaymentCompleted(Result) {
@@ -196,15 +178,21 @@ function PaymentCompleted(Result) {
 function ShowPayspotPage(Data) {
     if (Data == null) {
         console.log("data is empty");
+        alert("Unrecognized response");
         return;
     }
 
+    if (!Data.Success) {
+        alert("Unrecognized response");
+        console.log(Data);
+    }
+
     if (isMobileDevice) {
-        window.open(Data, '_self').focus();
+        window.open(Data.Response, '_self').focus();
     }
     else {
         document.getElementById("tr_spinner").style.display = "none";
-        document.getElementById("payspot_iframe").src = Data;
+        document.getElementById("payspot_iframe").src = Data.Response;
         document.getElementById("payspot_iframe").style.display = null;
     }
 }
@@ -275,10 +263,17 @@ function openBase64String(base64String) {
     var newWindow = window.open(blobURL);
 }
 
-function FillAndSubmitPayspotIPSForm(apiResponse) {
-    // Extract data from the API response
-    var data = JSON.parse(apiResponse);
+function FillAndSubmitPayspotIPSForm(ResponseData) {
 
+    if (ResponseData == null) {
+        return;
+    }
+
+    if (!ResponseData.Success) {
+        console.log(ResponseData);
+        return;
+    }
+    let data = ResponseData.Response;
     // Fill the form fields with data from the API response
     document.querySelector('input[name="companyId"]').value = data.CompanyId;
     document.querySelector('input[name="merchantOrderID"]').value = data.MerchantOrderId;

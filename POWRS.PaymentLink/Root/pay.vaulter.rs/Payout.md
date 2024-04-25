@@ -262,7 +262,7 @@ if ContractState == "AwaitingForPayment" then
 if(IpsOnly) then 
 (
 ]]
-<form method="post" action='' target="payspot_iframe">
+<form method="post" id="payspotForm" name="payspotForm" action='' target="payspot_iframe">
 <input type="hidden" name="companyId" value='' />
 <input type="hidden" name="merchantOrderID" value='' />
 <input type="hidden" name="merchantOrderAmount" value='' />
