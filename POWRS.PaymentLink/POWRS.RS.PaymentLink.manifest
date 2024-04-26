@@ -101,7 +101,7 @@
 			<Content fileName="Settings.md"/>
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
-				<Content fileName="GeneratePaymentForm.ws"/>
+				<Content fileName="InitiatePayment.ws"/>
 				<Content fileName="GetAvailableLanguages.ws"/>
 			</Folder>
 			<Folder name="Fonts">

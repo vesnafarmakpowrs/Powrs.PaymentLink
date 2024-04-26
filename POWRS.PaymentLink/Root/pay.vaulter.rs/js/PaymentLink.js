@@ -143,7 +143,7 @@ function InitiatePaymentForm(ipsOnly, onSuccess) {
     document.getElementById("tr_spinner").style.display = null;
     CollapseDetails();
 
-    SendXmlHttpRequest("../Payout/API/InitiatePaymentForm.ws",
+    SendXmlHttpRequest("../Payout/API/InitiatePayment.ws",
         {
             "isFromMobile": isMobileDevice,
             "tabId": TabID,
