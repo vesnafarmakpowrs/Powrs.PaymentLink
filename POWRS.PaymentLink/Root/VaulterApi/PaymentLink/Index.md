@@ -918,6 +918,99 @@ Retrieves Successful Transactions information.
 | `PaymentType`     | Payment Type (Card or IPS) |
 | `CardBrand`       | Card brand |
 
+### Get onboarding data
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/GetOnboardingData.ws")}}`  
+Method: `POST`
+
+Call this resource to get onboarding data that user already saved.
+
+Token is required. Request body is empty.
+
+*** NOTE: ** Nullable DateTime fields will have substitute string value sith 'Str' sufix. E.g.: 'DateOfBirth' -> 'DateOfBirthStr'
+
+
+**Request**
+
+````
+{
+}
+````
+
+
+**Response**
+
+````
+{
+    "GeneralCompanyInformation": {
+        "FullName": "Powrs doo",
+        "ShortName": "Powrs",
+        "CompanyAddress": "",
+        "CompanyCity": "",
+        "OrganizationNumber": "10012148",
+        "TaxNumber": "10012148",
+        "ActivityNumber": "",
+        "OtherCompanyActivities": "",
+        "BankName": "",
+        "BankAccountNumber": "",
+        "StampUsage": true,
+        "TaxLiability": false,
+        "OnboardingPurpose": "Other",
+        "PlatformUsage": "UsingVaulterPaylinkService",
+        "CompanyWebsite": "",
+        "CompanyWebshop": "",
+        "LegalRepresentatives": [
+            {
+                "FullName": "Mirko Kruščić",
+                "DateOfBirth": 1713996000,
+                "DocumentType": "IDCard",
+                "DocumentNumber": "",
+                "DateOfIssue": 1704063600,
+                "PlaceOfIssue": "",
+                "StatementOfOfficialDocument": "",
+                "IdCard": "",
+                "IsPoliticallyExposedPerson": false,
+                "DateOfBirthStr": "25/04/2024",
+                "DateOfIssueStr": "01/01/2024"
+            }
+        ],
+        "UserName": "AgentPLG"
+    },
+    "CompanyStructure": {
+        "CountriesOfBusiness": null,
+        "PercentageOfForeignUsers": null,
+        "OffShoreFoundationInOwnerStructure": false,
+        "OwnerStructure": "Person",
+        "Owners": null,
+        "UserName": null
+    },
+    "BussinesData": {
+        "BussinesModel": null,
+        "RetailersNumber": null,
+        "ExpectedMonthlyTurnover": null,
+        "ExpectedYearlyTurnover": null,
+        "ThreeMonthAccountTurnover": null,
+        "CardPaymentPercentage": null,
+        "AverageTransactionAmount": null,
+        "AverageDailyTurnover": null,
+        "CheapestProductAmount": null,
+        "MostExpensiveProductAmount": null,
+        "SellingGoodsWithDelayedDelivery": false,
+        "PeriodFromPaymentToDeliveryInDays": null,
+        "ComplaintsPerMonth": null,
+        "ComplaintsPerYear": null,
+        "UserName": null
+    },
+    "LegalDocuments": {
+        "BussinesCooperationRequest": null,
+        "ContractWithVaulter": null,
+        "ContractWithEMI": null,
+        "PromissoryNote": null,
+        "UserName": null
+    }
+}
+````
+
 ### Save onboarding data
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/SaveOnboardingData.ws")}}`  

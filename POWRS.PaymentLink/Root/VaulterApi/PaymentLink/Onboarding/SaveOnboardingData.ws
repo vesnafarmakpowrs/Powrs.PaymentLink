@@ -242,13 +242,13 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 		companyInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where OrganizationNumber = GeneralCompanyInfo.OrganizationNumber;
 		if(companyInfo != null) then
 		(
-			BadRequest("GeneralCompanyInfo: Another user has already started the onboarding for this company");
+			Error("GeneralCompanyInfo: Another user has already started the onboarding for this company");
 		);
 		generalInfo:= Create(POWRS.PaymentLink.Onboarding.GeneralCompanyInformation);
 	)
 	else if(generalInfo.OrganizationNumber != GeneralCompanyInfo.OrganizationNumber) then
 	(
-		BadRequest("GeneralCompanyInfo: you can't change organization number");
+		Error("GeneralCompanyInfo: you can't change organization number");
 	);
 
 	generalInfo.UserName := UserName;
@@ -319,7 +319,8 @@ try
 	Log.Informational("Finised method ValidatePostedData. \nErrors.cnt: " + Str(errors.Count) + "\nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
 	
 	currentMethod := "SaveGeneralCompanyInfo"; 
-	SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
+	methodResponse:= SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
+	Log.Informational("Finised method SaveGeneralCompanyInfo. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
 	
 	Log.Informational("Succeffully saved OnBoarding data.", logObjectID, logActor, logEventID, null);
 	{
