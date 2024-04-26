@@ -1,82 +1,287 @@
 ﻿SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 if(Posted == null) then BadRequest("Data could not be null");
-if(!exists(Posted.GeneralCompanyInformation) or Posted.GeneralCompanyInformation == null) then BadRequest("GeneralCompanyInfo could not be null");
+if(!exists(Posted.GeneralCompanyInformation) or Posted.GeneralCompanyInformation == null) then BadRequest("GeneralCompanyInformation could not be null");
+if(!exists(Posted.CompanyStructure) or Posted.CompanyStructure == null) then BadRequest("CompanyStructure could not be null");
 if(!exists(Posted.BussinesData) or Posted.BussinesData == null) then BadRequest("BussinesData could not be null");
-if(!exists(Posted.CompanyStructure) or Posted.CompanyStructure == null) then BadRequest("BussinesData could not be null");
+
+logObjectID := SessionUser.username;
+logEventID := "SaveOnboardingData.ws";
+logActor := Request.RemoteEndPoint.Split(":", null)[0];
+
+errors:= Create(System.Collections.Generic.List, System.String);
+currentMethod:= "";
+
+ValidatePostedData(Posted) := (	
+	if(!exists(Posted.GeneralCompanyInformation.FullName) or
+		System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.FullName))then
+	(
+		errors.Add("GeneralCompanyInformation.FullName");
+	);
+	if(!exists(Posted.GeneralCompanyInformation.ShortName) or
+		System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.ShortName))then
+	(
+		errors.Add("GeneralCompanyInformation.ShortName");
+	);
+	if(!exists(Posted.GeneralCompanyInformation.OrganizationNumber) or
+		System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.OrganizationNumber))then
+	(
+		errors.Add("GeneralCompanyInformation.OrganizationNumber");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.CompanyAddress))then(
+		errors.Add("GeneralCompanyInformation.CompanyAddress");
+	);		
+	if(!exists(Posted.GeneralCompanyInformation.CompanyCity))then(
+		errors.Add("GeneralCompanyInformation.CompanyCity");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.TaxNumber))then(
+		errors.Add("GeneralCompanyInformation.TaxNumber");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.ActivityNumber))then(
+		errors.Add("GeneralCompanyInformation.ActivityNumber");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.OtherCompanyActivities))then(
+		errors.Add("GeneralCompanyInformation.OtherCompanyActivities");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.StampUsage))then(
+		errors.Add("GeneralCompanyInformation.StampUsage");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.BankName))then(
+		errors.Add("GeneralCompanyInformation.BankName");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.BankAccountNumber))then(
+		errors.Add("GeneralCompanyInformation.BankAccountNumber");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.TaxLiability))then(
+		errors.Add("GeneralCompanyInformation.TaxLiability");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.CompanyWebsite))then(
+		errors.Add("GeneralCompanyInformation.CompanyWebsite");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.CompanyWebshop))then(
+		errors.Add("GeneralCompanyInformation.CompanyWebshop");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.LegalRepresentatives))then(
+		errors.Add("GeneralCompanyInformation.LegalRepresentatives");
+	);
+	
+	if(Posted.GeneralCompanyInformation.LegalRepresentatives != null and Posted.GeneralCompanyInformation.LegalRepresentatives.Length > 0) then
+	(
+		itemIndex := 0;
+		foreach item in Posted.GeneralCompanyInformation.LegalRepresentatives do
+		(
+			IsPoliticallyExposedPerson := false;
+			
+			if(!exists(item.FullName) or
+				System.String.IsNullOrWhiteSpace(item.FullName))then
+			(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".FullName");
+			);
+			if(!exists(item.DateOfBirth) or
+				(!System.String.IsNullOrWhiteSpace(item.DateOfBirth) and item.DateOfBirth not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"))then
+			(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DateOfBirth");
+			);
+			if(!exists(item.IsPoliticallyExposedPerson))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IsPoliticallyExposedPerson");
+			)else if(item.IsPoliticallyExposedPerson != null) then (
+				IsPoliticallyExposedPerson := item.IsPoliticallyExposedPerson;
+			);
+			if(!exists(item.StatementOfOfficialDocument))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocument");
+			)else if (IsPoliticallyExposedPerson) then(
+				if(System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument))then (
+					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocument");
+				);
+			);
+			if(!exists(item.IdCard))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
+			);
+			if(!exists(item.DocumentType))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DocumentType");
+			);
+			if(!exists(item.PlaceOfIssue))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".PlaceOfIssue");
+			);
+			if(!exists(item.DateOfIssue) or 
+				(!System.String.IsNullOrWhiteSpace(item.DateOfIssue) and item.DateOfIssue not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"))then
+			(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DateOfIssue");
+			);
+			if(!exists(item.DocumentNumber))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DocumentNumber");
+			);
+			
+			itemIndex++;
+		);
+	);
+	
+	
+	if(!exists(Posted.CompanyStructure.CountriesOfBusiness))then(
+		errors.Add("CompanyStructure.CountriesOfBusiness");
+	);	
+	if(!exists(Posted.CompanyStructure.PercentageOfForeignUsers))then(
+		errors.Add("CompanyStructure.PercentageOfForeignUsers");
+	);	
+	if(!exists(Posted.CompanyStructure.OffShoreFoundationInOwnerStructure))then(
+		errors.Add("CompanyStructure.OffShoreFoundationInOwnerStructure");
+	);	
+	if(!exists(Posted.CompanyStructure.OwnerStructure))then(
+		errors.Add("CompanyStructure.OwnerStructure");
+	);	
+	if(!exists(Posted.CompanyStructure.Owners))then(
+		errors.Add("CompanyStructure.Owners");
+	);
+	
+	if(Posted.CompanyStructure.Owners != null and Posted.CompanyStructure.Owners.Length > 0) then
+	(
+		itemIndex := 0;
+		foreach item in Posted.CompanyStructure.Owners do
+		(
+			if(!exists(item.FullName))then
+			(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
+			);
+			if(!exists(item.PersonalNumber))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".PersonalNumber");
+			);
+			if(!exists(item.PlaceOfBirth))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".PlaceOfBirth");
+			);
+			if(!exists(item.OfficialOfRepublicOfSerbia))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".OfficialOfRepublicOfSerbia");
+			);
+			if(!exists(item.DocumentType))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DocumentType");
+			);
+			if(!exists(item.DocumentNumber))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DocumentNumber");
+			);
+			if(!exists(item.IssuerName))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IssuerName");
+			);
+			if(!exists(item.Citizenship))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".Citizenship");
+			);
+			if(!exists(item.OwningPercentage))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".OwningPercentage");
+			);
+			if(!exists(item.Role))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".Role");
+			);
+			if(!exists(item.DateOfBirth))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DateOfBirth");
+			);
+			if(!exists(item.IssueDate))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IssueDate");
+			);
+			itemIndex++;
+		);
+	);
+	
+	if(!exists(Posted.BussinesData.RetailersNumber))then(
+		errors.Add("BussinesData.RetailersNumber");
+	);
+	if(!exists(Posted.BussinesData.ExpectedMonthlyTurnover))then(
+		errors.Add("BussinesData.ExpectedMonthlyTurnover");
+	);
+	if(!exists(Posted.BussinesData.ExpectedYearlyTurnover))then(
+		errors.Add("BussinesData.ExpectedYearlyTurnover");
+	);
+	if(!exists(Posted.BussinesData.ThreeMonthAccountTurnover))then(
+		errors.Add("BussinesData.ThreeMonthAccountTurnover");
+	);
+	if(!exists(Posted.BussinesData.CardPaymentPercentage))then(
+		errors.Add("BussinesData.CardPaymentPercentage");
+	);
+	if(!exists(Posted.BussinesData.AverageTransactionAmount))then(
+		errors.Add("BussinesData.AverageTransactionAmount");
+	);
+	if(!exists(Posted.BussinesData.AverageDailyTurnover))then(
+		errors.Add("BussinesData.AverageDailyTurnover");
+	);
+	if(!exists(Posted.BussinesData.CheapestProductAmount))then(
+		errors.Add("BussinesData.CheapestProductAmount");
+	);
+	if(!exists(Posted.BussinesData.BussinesModel))then(
+		errors.Add("BussinesData.BussinesModel");
+	);
+	if(!exists(Posted.BussinesData.SellingGoodsWithDelayedDelivery))then(
+		errors.Add("BussinesData.SellingGoodsWithDelayedDelivery");
+	);
+	if(!exists(Posted.BussinesData.PeriodFromPaymentToDeliveryInDays))then(
+		errors.Add("BussinesData.PeriodFromPaymentToDeliveryInDays");
+	);
+	if(!exists(Posted.BussinesData.ComplaintsPerMonth))then(
+		errors.Add("BussinesData.ComplaintsPerMonth");
+	);
+	if(!exists(Posted.BussinesData.ComplaintsPerYear))then(
+		errors.Add("BussinesData.ComplaintsPerYear");
+	);
+	if(!exists(Posted.BussinesData.MostExpensiveProductAmount))then(
+		errors.Add("BussinesData.MostExpensiveProductAmount");
+	);
+		
+	if(errors.Count > 0)then
+	(
+		Error(errors);
+		return (0);
+	)else
+	(
+		return (1); 
+	);
+);
 
 SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):= 
-(
-   if(!exists(GeneralCompanyInfo.FullName) or 
-	  !exists(GeneralCompanyInfo.ShortName) or
-	  !exists(GeneralCompanyInfo.CompanyAddress) or
-	  !exists(GeneralCompanyInfo.CompanyCity) or
-	  !exists(GeneralCompanyInfo.OrganizationNumber) or
-	  !exists(GeneralCompanyInfo.TaxNumber) or
-	  !exists(GeneralCompanyInfo.ActivityNumber) or
-	  !exists(GeneralCompanyInfo.OtherCompanyActivities) or
-	  !exists(GeneralCompanyInfo.BankName) or
-	  !exists(GeneralCompanyInfo.BankAccountNumber) or
-	  !exists(GeneralCompanyInfo.StampUsage) or
-	  !exists(GeneralCompanyInfo.TaxLiability) or
-	  !exists(GeneralCompanyInfo.CompanyWebsite) or
-	  !exists(GeneralCompanyInfo.CompanyWebshop) or
-	  !exists(GeneralCompanyInfo.LegalRepresentatives)) then
-	  (
-		BadRequest("Missing fields");
-	  );
+(	
+	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = UserName;
+	recordExists:= generalInfo != null;
 
-	  generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = UserName;
-	  recordExists:= generalInfo != null;
-
-	  if(generalInfo == null) then 
-	  (
-		generalInfo:= Create(POWRS.PaymentLink.Onboarding.GeneralCompanyInformation);
-	  );
-
-	  generalInfo.UserName := UserName;
-	  generalInfo.FullName := GeneralCompanyInfo.FullName;
-	  generalInfo.ShortName := GeneralCompanyInfo.ShortName;
-	  generalInfo.CompanyAddress := GeneralCompanyInfo.CompanyAddress;
-	  generalInfo.CompanyCity := GeneralCompanyInfo.CompanyCity;
-	  generalInfo.OrganizationNumber := GeneralCompanyInfo.OrganizationNumber;
-	  generalInfo.TaxNumber := GeneralCompanyInfo.TaxNumber;
-	  generalInfo.ActivityNumber := GeneralCompanyInfo.ActivityNumber;
-	  generalInfo.OtherCompanyActivities := GeneralCompanyInfo.OtherCompanyActivities;
-	  generalInfo.BankName := GeneralCompanyInfo.BankName;
-	  generalInfo.BankAccountNumber := GeneralCompanyInfo.BankAccountNumber;
-	  generalInfo.StampUsage := GeneralCompanyInfo.StampUsage;
-	  generalInfo.TaxLiability := GeneralCompanyInfo.TaxLiability;
-	  generalInfo.OnboardingPurpose := POWRS.PaymentLink.Onboarding.Enums.OnboardingPurpose.Other;        
-	  generalInfo.PlatformUsage := POWRS.PaymentLink.Onboarding.Enums.PlatformUsage.UsingVaulterPaylinkService;
-	  generalInfo.CompanyWebsite := GeneralCompanyInfo.CompanyWebsite;
-	  generalInfo.CompanyWebshop := GeneralCompanyInfo.CompanyWebshop;
-
-	  legalRepresentatives:= Create(System.Collections.Generic.List,POWRS.PaymentLink.Onboarding.LegalRepresentative);
-	
-	 if(GeneralCompanyInfo.LegalRepresentatives != null and GeneralCompanyInfo.LegalRepresentatives.Length > 0) then
-	 (
-		foreach item in GeneralCompanyInfo.LegalRepresentatives do
+	if(generalInfo == null) then
+	(
+		companyInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where OrganizationNumber = GeneralCompanyInfo.OrganizationNumber;
+		if(companyInfo != null) then
 		(
-			  if(!exists(item.FullName) or
-				!exists(item.DateOfBirth) or
-				!exists(item.StatementOfOfficialDocument) or
-				!exists(item.IdCard) or
-				!exists(item.DocumentType) or
-				!exists(item.PlaceOfIssue) or
-				!exists(item.DateOfIssue) or
-				!exists(item.DocumentNumber)) then
-				(
-					BadRequest("Missing fields for legal representative");
-				);
-			
+			BadRequest("GeneralCompanyInfo: Another user has already started the onboarding for this company");
+		);
+		generalInfo:= Create(POWRS.PaymentLink.Onboarding.GeneralCompanyInformation);
+	)
+	else if(generalInfo.OrganizationNumber != GeneralCompanyInfo.OrganizationNumber) then
+	(
+		BadRequest("GeneralCompanyInfo: you can't change organization number");
+	);
+
+	generalInfo.UserName := UserName;
+	generalInfo.FullName := GeneralCompanyInfo.FullName;
+	generalInfo.ShortName := GeneralCompanyInfo.ShortName;
+	generalInfo.CompanyAddress := GeneralCompanyInfo.CompanyAddress;
+	generalInfo.CompanyCity := GeneralCompanyInfo.CompanyCity;
+	generalInfo.OrganizationNumber := GeneralCompanyInfo.OrganizationNumber;
+	generalInfo.TaxNumber := GeneralCompanyInfo.TaxNumber;
+	generalInfo.ActivityNumber := GeneralCompanyInfo.ActivityNumber;
+	generalInfo.OtherCompanyActivities := GeneralCompanyInfo.OtherCompanyActivities;
+	generalInfo.StampUsage := GeneralCompanyInfo.StampUsage;
+	generalInfo.BankName := GeneralCompanyInfo.BankName;
+	generalInfo.BankAccountNumber := GeneralCompanyInfo.BankAccountNumber;
+	generalInfo.TaxLiability := GeneralCompanyInfo.TaxLiability;
+	generalInfo.OnboardingPurpose := POWRS.PaymentLink.Onboarding.Enums.OnboardingPurpose.Other;        
+	generalInfo.PlatformUsage := POWRS.PaymentLink.Onboarding.Enums.PlatformUsage.UsingVaulterPaylinkService;
+	generalInfo.CompanyWebsite := GeneralCompanyInfo.CompanyWebsite;
+	generalInfo.CompanyWebshop := GeneralCompanyInfo.CompanyWebshop;
+
+	legalRepresentatives:= Create(System.Collections.Generic.List,POWRS.PaymentLink.Onboarding.LegalRepresentative);
+
+	if(GeneralCompanyInfo.LegalRepresentatives != null and GeneralCompanyInfo.LegalRepresentatives.Length > 0) then
+	(
+		foreach item in GeneralCompanyInfo.LegalRepresentatives do
+		(			
 			representative:= Create(POWRS.PaymentLink.Onboarding.LegalRepresentative);
 
-			if(!System.String.IsNullOrEmpty(item.DateOfIssue) and item.DateOfIssue like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
+			if(!System.String.IsNullOrWhiteSpace(item.DateOfIssue)) then 
 			(
 				representative.DateOfIssue:= System.DateTime.ParseExact(item.DateOfIssue, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture)
 			);	 
-			if(!System.String.IsNullOrEmpty(item.DateOfBirth) and item.DateOfBirth like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
+			if(!System.String.IsNullOrWhiteSpace(item.DateOfBirth)) then 
 			(
 				representative.DateOfBirth:= System.DateTime.ParseExact(item.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture)
 			);
@@ -85,196 +290,51 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			representative.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.None;
 			representative.DocumentNumber:= item.DocumentNumber;
 			representative.PlaceOfIssue:= item.PlaceOfIssue;
+			representative.IsPoliticallyExposedPerson:= item.IsPoliticallyExposedPerson;
 			representative.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
 			representative.IdCard:= item.IdCard;
 
 			legalRepresentatives.Add(representative);
-	  );
-	 );	  
+		);
+	);	  
 
-	  generalInfo.LegalRepresentatives:= legalRepresentatives.ToArray();
+	generalInfo.LegalRepresentatives:= legalRepresentatives.ToArray();
 
-	  if(recordExists) then 
-	  (
+	if(recordExists) then 
+	(
 		Waher.Persistence.Database.Update(generalInfo);
-	  )
-	  else 
-	  (
-		Waher.Persistence.Database.Insert(generalInfo);
-	  );
-
-	  Return(0);
-);
-
-SaveBussinesData(BussinesData, UserName):= 
-(
-	if(!exists(BussinesData.RetailersNumber) or
-		!exists(BussinesData.ExpectedMonthlyTurnover) or
-		!exists(BussinesData.ExpectedYearlyTurnover) or
-		!exists(BussinesData.ThreeMonthAccountTurnover) or
-		!exists(BussinesData.CardPaymentPercentage) or
-		!exists(BussinesData.AverageTransactionAmount) or
-		!exists(BussinesData.AverageDailyTurnover) or
-		!exists(BussinesData.CheapestProductAmount) or
-		!exists(BussinesData.BussinesModel) or
-		!exists(BussinesData.SellingGoodsWithDelayedDelivery) or
-		!exists(BussinesData.PeriodFromPaymentToDeliveryInDays) or
-		!exists(BussinesData.ComplaintsPerMonth) or
-		!exists(BussinesData.ComplaintsPerYear) or
-		!exists(BussinesData.MostExpensiveProductAmount)) then 
-		(
-			BadRequest("Missing data");
-		);
-
-		bussinesData:= select top 1 * from POWRS.PaymentLink.Onboarding.BussinesData where UserName = UserName;
-	    recordExists:= bussinesData != null;
-
-		if(bussinesData == null) then 
-		(
-			bussinesData:= Create(POWRS.PaymentLink.Onboarding.BussinesData, UserName);
-		);
-
-		bussinesData.UserName:= UserName;
-		bussinesData.RetailersNumber:= BussinesData.RetailersNumber;
-		bussinesData.ExpectedMonthlyTurnover:= BussinesData.ExpectedMonthlyTurnover;
-		bussinesData.ExpectedYearlyTurnover:= BussinesData.ExpectedYearlyTurnover;
-		bussinesData.ThreeMonthAccountTurnover:= BussinesData.ThreeMonthAccountTurnover;
-		bussinesData.CardPaymentPercentage:= Int(BussinesData.CardPaymentPercentage;
-		bussinesData.AverageDailyTurnover:= BussinesData.AverageDailyTurnover;
-		bussinesData.CheapestProductAmount:= BussinesData.CheapestProductAmount;
-		bussinesData.MostExpensiveProductAmount:= BussinesData.MostExpensiveProductAmount;
-		bussinesData.BussinesModel:= BussinesData.BussinesModel;
-		bussinesData.SellingGoodsWithDelayedDelivery:= BussinesData.SellingGoodsWithDelayedDelivery;
-		bussinesData.PeriodFromPaymentToDeliveryInDays:= BussinesData.PeriodFromPaymentToDeliveryInDays;
-		bussinesData.ComplaintsPerMonth:= BussinesData.ComplaintsPerMonth;
-		bussinesData.ComplaintsPerYear:= BussinesData.ComplaintsPerYear;
-
-		if(recordExists) then 
-		(
-			Waher.Persistence.Database.Update(economicData);
-		)
-		else 
-		(
-			Waher.Persistence.Database.Insert(economicData);
-		);
-
-	  Return(0);
-);
-
-SaveCompanyStructure(CompanyStructure, UserName):=
-(
-	if(!exists(CompanyStructure.CountriesOfBusiness) or 
-	!exists(CompanyStructure.PercentageOfForeignUsers) or 
-	!exists(CompanyStructure.OffShoreFoundationInOwnerStructure) or 
-	!exists(CompanyStructure.OwnerStructure) or 
-	!exists(CompanyStructure.Owners)) then
-	(
-		BadRequest("Fields are missing from request");
-	);
-
-	structure:= select top 1 * from POWRS.PaymentLink.Onboarding.Structure.CompanyStructure where UserName = UserName;
-	alreadyExists:= structure != null;
-
-	if(structure == null) then 
-	(
-		structure:= Create(POWRS.PaymentLink.Onboarding.Structure.CompanyStructure, UserName);
-	);
-
-	countriesOfBussines:= Create(System.Collections.Generic.List,System.String);
-	owners:= Create(System.Collections.Generic.List, POWRS.PaymentLink.Onboarding.Structure.Owner);
-
-	structure.PercentageOfForeignUsers:= CompanyStructure.PercentageOfForeignUsers;
-	structure.OffShoreFoundationInOwnerStructure:= CompanyStructure.OffShoreFoundationInOwnerStructure;
-	structure.OwnerStructure:= CompanyStructure.OwnerStructure;
-
-	if(CompanyStructure.CountriesOfBusiness != null and CompanyStructure.CountriesOfBusiness.Length > 0) then 
-	(
-		foreach(country in CompanyStructure.CountriesOfBusiness) do 
-		(
-			countriesOfBussines.Add(country);
-		);
-	);
-
-	if(CompanyStructure.Owners != null and CompanyStructure.Owners.Length > 0) then 
-	(
-		foreach(item in CompanyStructure.Owners) do
-		(
-			owner:= Create(POWRS.PaymentLink.Onboarding.Structure.Owner);
-			owner.FullName:= item.FullName;
-			owner.PersonalNumber:= item.PersonalNumber;
-			owner.PlaceOfBirth:= item.PlaceOfBirth;
-			owner.OfficialOfRepublicOfSerbia:= item.OfficialOfRepublicOfSerbia;
-			owner.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType);
-			owner.DocumentNumber:= item.DocumentNumber;
-			owner.IssuerName:= item.IssuerName;
-			owner.Citizenship:= item.Citizenship;
-			owner.OwningPercentage:= item.OwningPercentage;
-			owner.Role:= item.Role;
-
-			if(item.DateOfBirth != null and and item.DateOfBirth like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
-			(
-				owner.DateOfBirth:= System.DateTime.ParseExact(item.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
-			);
-			if(item.IssueDate != null and and item.IssueDate like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
-			(
-				owner.IssueDate:= System.DateTime.ParseExact(item.IssueDate, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
-			);
-
-			owners.Add(owner);
-		);
-
-		structure.Owners:= owners;
-	);
-
-
-	if(alreadyExists) then 
-	(
-		Waher.Persistence.Database.Update(structure);
 	)
 	else 
 	(
-		Waher.Persistence.Database.Insert(structure);
+		Waher.Persistence.Database.Insert(generalInfo);
 	);
 
 	Return(0);
 );
 
-SaveLegalDocuments(LegalDocuments, UserName):= 
+try
 (
- if(!exists(LegalDocuments.BussinesCooperationRequest) or 
-	!exists(LegalDocuments.ContractWithVaulter) or 
-	!exists(LegalDocuments.ContractWithEMI) or 
-	!exists(LegalDocuments.PromissoryNote)) then 
-	(
-		BadRequest("Fields are missing from request");
-	);
-
-	documents:= select top 1 * from POWRS.PaymentLink.Onboarding.Documents.LegalDocuments where UserName = UserName;
-	alreadyExists:= documents != null;
-
-	if(documents == null) then 
-	(
-		documents:= Create(POWRS.PaymentLink.Onboarding.Documents.LegalDocuments, UserName);
-	);
-
-	documents.BussinesCooperationRequest:= LegalDocuments.BussinesCooperationRequest;
-	documents.ContractWithVaulter:= LegalDocuments.ContractWithVaulter;
-	documents.ContractWithEMI:= LegalDocuments.ContractWithEMI;
-	documents.PromissoryNote:= LegalDocuments.PromissoryNote;
-
-	if(alreadyExists) then 
-	(
-		Waher.Persistence.Database.Update(documents);
-	)
-	else
-	(
-		Waher.Persistence.Database.Insert(documents);
-	);
-
-	Return(0);
+	currentMethod := "ValidatePostedData"; 
+	methodResponse := ValidatePostedData(Posted);
+	Log.Informational("Finised method ValidatePostedData. \nErrors.cnt: " + Str(errors.Count) + "\nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
+	
+	currentMethod := "SaveGeneralCompanyInfo"; 
+	SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
+	
+	Log.Informational("Succeffully saved OnBoarding data.", logObjectID, logActor, logEventID, null);
+	{
+		success: true
+	}
+)
+catch
+(
+	Log.Error("Unable to save onboarding data: " + Exception.Message + "\ncurrentMethod: " + currentMethod, logObjectID, logActor, logEventID, null);
+    if(errors.Count > 0) then 
+    (
+		BadRequest(errors);
+    )
+    else 
+    (
+        BadRequest(Exception.Message);
+    );
 );
-
-SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
-SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username);
-SaveBussinesData(Posted.BussinesData, SessionUser.username);
-SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username);

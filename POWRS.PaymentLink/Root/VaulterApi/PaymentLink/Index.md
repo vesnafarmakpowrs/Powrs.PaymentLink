@@ -1,4 +1,4 @@
-Title: Vaulter API v1
+﻿Title: Vaulter API v1
 Description: This document contains information about the Vaulter API (v1)
 Author:  POWRS DOO
 Date: 2023-06-16
@@ -780,12 +780,12 @@ Call this resource to apply for legal identity.
 ````
 
 
-### Apply for legal Id
+### Apply for sub legal Id
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/ApplyForSubLegalId.ws")}}`  
 Method: `POST`
 
-Call this resource to apply for legal identity for sub user. Other properties will be taken from creator user.
+Call this resource to apply for sub legal identity. Other properties will be taken from creator user.
 
 **Request**
 
@@ -917,3 +917,95 @@ Retrieves Successful Transactions information.
 | `Currency`        | Card brand |
 | `PaymentType`     | Payment Type (Card or IPS) |
 | `CardBrand`       | Card brand |
+
+### Save onboarding data
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/SaveOnboardingData.ws")}}`  
+Method: `POST`
+
+Call this resource save data for onboarding.
+
+**Request**
+
+````
+{
+   "GeneralCompanyInformation":
+   {
+        "FullName": "Powrs doo",                -> Mandatory for 'save'
+        "ShortName": "Powrs",                   -> Mandatory for 'save'
+        "OrganizationNumber": "21761818",       -> Mandatory for 'save'
+        "CompanyAddress": "",
+        "CompanyCity": "",
+        "TaxNumber": "112890694",
+        "ActivityNumber": "",
+        "OtherCompanyActivities": "",
+        "StampUsage": true,
+        "BankName": "",
+        "BankAccountNumber": "",
+        "TaxLiability": false,
+        "CompanyWebsite": "",
+        "CompanyWebshop": "",
+        "LegalRepresentatives":[            -> Field 'FullName' is mandatory for 'save'. If nothing populated then send empty array []
+            {
+                "FullName": "Mirko Kruščić",            -> Mandatory for 'save', if nothing populated send empty array []
+                "DateOfBirth": "25/04/2024",
+                "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
+                "StatementOfOfficialDocument": "",
+                "IdCard": "",
+                "DocumentType": "IDCard",               -> Can be string 'IDCard' or 'Passport'
+                "PlaceOfIssue": "",
+                "DateOfIssue": "25/04/2024",
+                "DocumentNumber": ""
+            }
+        ]
+   },
+   "CompanyStructure":{
+        "CountriesOfBusiness": "",
+        "PercentageOfForeignUsers": "",
+        "OffShoreFoundationInOwnerStructure": "",
+        "OwnerStructure": "",
+        "Owners":[
+            {
+                "FullName": "",
+                "PersonalNumber": "",
+                "PlaceOfBirth": "",
+                "OfficialOfRepublicOfSerbia": "",
+                "DocumentType": "IDCard",               -> Can be string 'IDCard' or 'Passport'
+                "DocumentNumber": "",
+                "IssuerName": "",
+                "Citizenship": "",
+                "OwningPercentage": 25,
+                "Role": "",
+                "DateOfBirth": "25/04/2024",
+                "IssueDate": "25/04/2024"
+            }
+        ]
+   },
+   "BussinesData":{
+        "RetailersNumber": 0,
+        "ExpectedMonthlyTurnover": 0,
+        "ExpectedYearlyTurnover": 0,
+        "ThreeMonthAccountTurnover": 0,
+        "CardPaymentPercentage": 0,
+        "AverageTransactionAmount": 0,
+        "AverageDailyTurnover": 0,
+        "CheapestProductAmount": 0,
+        "BussinesModel": 0,
+        "SellingGoodsWithDelayedDelivery": false,
+        "PeriodFromPaymentToDeliveryInDays": 0,
+        "ComplaintsPerMonth": 0,
+        "ComplaintsPerYear": 0,
+        "MostExpensiveProductAmount": 0
+   }
+}
+````
+
+
+**Response**
+
+
+````
+{
+    "success": true
+}
+````

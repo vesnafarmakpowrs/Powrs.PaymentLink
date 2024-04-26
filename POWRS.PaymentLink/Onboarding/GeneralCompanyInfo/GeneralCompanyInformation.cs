@@ -21,9 +21,9 @@ namespace POWRS.PaymentLink.Onboarding
         private string taxNumber;
         private string activityNumber;
         private string otherCompanyActivities;
+        private bool stampUsage;
         private string bankName;
         private string bankAccountNumber;
-        private bool stampUsage;
         private bool taxLiability;
         private OnboardingPurpose onboardingPurpose;
         private PlatformUsage platformUsage;
@@ -51,14 +51,15 @@ namespace POWRS.PaymentLink.Onboarding
 
         public override bool IsCompleted()
         {
-            bool informationsCompleted = !string.IsNullOrEmpty(FullName) &&
-                !string.IsNullOrEmpty(CompanyAddress) &&
-                !string.IsNullOrEmpty(CompanyCity) &&
-                !string.IsNullOrEmpty(OrganizationNumber) &&
-                !string.IsNullOrEmpty(TaxNumber) &&
-                !string.IsNullOrEmpty(ActivityNumber) &&
-                !string.IsNullOrEmpty(BankName) &&
-                !string.IsNullOrEmpty(BankAccountNumber) &&
+            bool informationsCompleted = !string.IsNullOrWhiteSpace(FullName) &&
+                !string.IsNullOrWhiteSpace(ShortName) &&
+                !string.IsNullOrWhiteSpace(CompanyAddress) &&
+                !string.IsNullOrWhiteSpace(CompanyCity) &&
+                !string.IsNullOrWhiteSpace(OrganizationNumber) &&
+                !string.IsNullOrWhiteSpace(TaxNumber) &&
+                !string.IsNullOrWhiteSpace(ActivityNumber) &&
+                !string.IsNullOrWhiteSpace(BankName) &&
+                !string.IsNullOrWhiteSpace(BankAccountNumber) &&
                 (LegalRepresentatives != null && legalRepresentatives.Length > 0);
 
             if (!informationsCompleted)
@@ -67,16 +68,17 @@ namespace POWRS.PaymentLink.Onboarding
             }
 
             bool legalRepresentativesIncompleted = LegalRepresentatives.Any(m =>
-             string.IsNullOrEmpty(m.FullName) ||
+             string.IsNullOrWhiteSpace(m.FullName) ||
              m.DateOfBirth == null ||
-             string.IsNullOrEmpty(m.DocumentNumber) ||
+             string.IsNullOrWhiteSpace(m.DocumentNumber) ||
              m.DateOfIssue == null ||
-             string.IsNullOrEmpty(m.PlaceOfIssue) ||
-             string.IsNullOrEmpty(m.StatementOfOfficialDocument) ||
-             string.IsNullOrEmpty(m.IdCard));
+             string.IsNullOrWhiteSpace(m.PlaceOfIssue) ||
+             string.IsNullOrWhiteSpace(m.StatementOfOfficialDocument) ||
+             string.IsNullOrWhiteSpace(m.IdCard) ||
+             (m.IsPoliticallyExposedPerson && string.IsNullOrWhiteSpace(m.StatementOfOfficialDocument))
+             );
 
             return !legalRepresentativesIncompleted;
-
         }
     }
 }

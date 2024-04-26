@@ -7,11 +7,12 @@ namespace POWRS.PaymentLink.Onboarding
     {
         private string fullName;
         private DateTime? dateOfBirth;
+        private bool isPoliticallyExposedPerson;
+        private string statementOfOfficialDocument;
         private DocumentType documentType;
         private string documentNumber;
         private DateTime? dateOfIssue;
         private string placeOfIssue;
-        private string statementOfOfficialDocument;
         private string idCard;
 
         public string FullName { get => fullName; set => fullName = value; }
@@ -22,5 +23,6 @@ namespace POWRS.PaymentLink.Onboarding
         public string PlaceOfIssue { get => placeOfIssue; set => placeOfIssue = value; }
         public string StatementOfOfficialDocument { get => statementOfOfficialDocument; set => statementOfOfficialDocument = value; }
         public string IdCard { get => idCard; set => idCard = value; }
+        public bool IsPoliticallyExposedPerson { get => isPoliticallyExposedPerson; set => isPoliticallyExposedPerson = value; }
     }
 }

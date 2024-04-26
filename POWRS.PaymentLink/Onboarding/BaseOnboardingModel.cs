@@ -65,7 +65,7 @@ namespace POWRS.PaymentLink.Onboarding
                                 property.SetValue(instance, Enum.Parse(property.PropertyType, value.ToString()));
                             }
                             else if (property.PropertyType == typeof(DateTime))
-                            {                              
+                            {
                                 var parsedDateTime = DateTime.ParseExact(value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
                                 property.SetValue(instance, parsedDateTime);
                             }

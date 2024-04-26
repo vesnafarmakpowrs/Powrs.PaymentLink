@@ -47,6 +47,10 @@
 					<Content fileName="SendContactUsEmail.ws"/>
 					<Content fileName="SendPaylinkViaEmail.ws"/>
 				</Folder>
+				<Folder name="Onboarding">
+					<Content fileName="GetOnboardingData.ws"/>
+					<Content fileName="SaveOnboardingData.ws"/>
+				</Folder>
 				<Folder name="SMS">
 					<Content fileName="SendPaylinkViaSMS.ws"/>
 				</Folder>
@@ -58,13 +62,6 @@
 					<Content fileName="OnBoardedUsers.ws"/>
 					<Content fileName="ReportTransactions.ws"/>
 					<Content fileName="SuccessfulTransactions.ws"/>					
-				</Folder>
-				<Folder name="Onboarding">
-					<Content fileName="CompanyInformation.ws"/>
-					<Content fileName="CompanyModel.ws"/>
-					<Content fileName="CompanyStructure.ws"/>
-					<Content fileName="EconomicData.ws"/>
-					<Content fileName="GetOnboardingData.ws"/>
 				</Folder>
 			</Folder>
 		</Folder>
