@@ -1,0 +1,569 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Vaulter fee calculator" />
+    <title>Fee calculator</title>
+    <link rel="stylesheet" href="./bootstrap.css">
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./App.css">
+    <link rel="stylesheet" href="./FeeCalculatorPage.css">
+    <link rel="stylesheet" href="./Style.css">
+    <link rel="stylesheet" href="./InputAnimation.css">
+    <link rel="stylesheet" href="./SwitchToggle.css">
+    <link rel="stylesheet" href="./Slider.css">
+
+    <script src="./bootstrap.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="text-center">
+            <strong>{{t_calc_Header}}</strong>
+        </div>
+
+        <!-- *** HEADER **** -->
+        <div class="row col-12 mt-2">
+            <div class="col"></div>
+            <div class="col-md-3">
+                <span>
+                    <strong>{{t_calc_Customer}}</strong>
+                </span>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="animInputContainer_calc">
+                    <input type="text"
+                           class="animInput_calc animInput_calc_focused"
+                           value="{{txtCustomer}}"
+                           name="gplReference"></input>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <div class="row col-12 mt-2">
+            <div class="col"></div>
+            <div class="col-md-3">
+                <span>
+                    <strong>{{t_calc_CustomerID}}</strong>
+                </span>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="animInputContainer_calc">
+                    <input type="text"
+                           class="animInput_calc animInput_calc_focused"
+                           value="{{txtCustomerID}}"
+                           name="gplReference"></input>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+        <!--*** HEADER END **** -->
+        <!--*** INPUT FIELDS **** -->
+        <!--***** Total Revenue -->
+        <div class="row col-lg-6 px-0 mx-0 mt-4">
+            <div class="col"></div>
+            <div class="col-lg-4">
+                <div class="animInputContainer_calc">
+                    <div class="animLabelline_calc animLabelline_calc_focused">
+                        {{t_calc_TotalRevenue}}
+                    </div>
+                    <input type="text"
+                           class="animInput_calc"
+                           value="{{txtTotalRevenue}}"
+                           name="totalRevenue"></input>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <div class="row col-md-12 px-0 mx-0">
+            <!--***********************************  CARD ****************************************** -->
+            <div class="col-md-6 {{Card_hideDiv}}">
+                <div class="row col-md-12 px-0 mx-0 mt-5">
+                    <!--**** Header -->
+                    <div class="row col-12 px-0 mx-0 groupHeader">
+                        <div class="divHeaderLabel">
+                            <strong>{{t_calc_CARD}}</strong>
+                        </div>
+                    </div>
+                    <!--*** Header END -->
+                    <div class="row col-md-12 mx-0 inputGroup">
+                        <!--*** Number of transactions -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_NumberOfTrx_Card}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtNumberOfTrx_Card}}"
+                                       name="NumberOfTrx_Card"></input>
+                            </div>
+                        </div>
+
+                        <!--*** Average amount per transactions -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_AverAmountPerTrx_Card}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtAverAmountPerTrx_Card}}"
+                                       name="AverAmountPerTrx_Card"></input>
+                            </div>
+                        </div>
+
+                        <!--*** Card fee -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_CardFee_Card}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtCardFee_Card}}"
+                                       name="CardFee_Card"></input>
+                                <div class="labelRightSide text-danger">%</div>
+                            </div>
+                        </div>
+
+                        <!--*** Total cost -->
+                        <div class="row col-md-12 px-0 mx-0 mt-2">
+                            <div class="col-xs-8 text-start ">
+                                <strong>{{t_calc_totalCost_card}}</strong>
+                            </div>
+                            <div class="col-xs-4 text-end text-danger">
+                                <strong>{{lblTotalCost_Card}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*** Customer END -->
+                    <!--*** Vaulter -->
+                    <div class="row col-12 mx-0 mt-4 inputGroup">
+                        <!--*** Vaulter FEE -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_VaulterCardFee_Card}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtVaulterCardFee_Card}}"
+                                       name="VaulterCardFee_Card"></input>
+                                <div class="labelRightSide text-success">%</div>
+                            </div>
+                        </div>
+                        <!--*** Vaulter cost -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="col-xs-8 text-start ">
+                                <strong>{{t_calc_totalVaulterCost_card}}</strong>
+                            </div>
+                            <div class="col-xs-4 text-end text-success ">
+                                <strong>{{lblVaulterCost_Card}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*** Vaulter END -->
+                    <!--*** SAVED -->
+                    <div class="row col-12 mx-0 mt-4">
+                        <div class="row col-12 px-0 mx-0 savedFont">
+                            <div class="col-sm-6 text-start">
+                                <span class="">{{t_calc_SAVED_card}}</span>
+                            </div>
+                            <div class="col-sm-6 text-end text-success">
+                                <span class="">{{lblSaved_card}}</span>
+                            </div>
+                        </div>
+                        <div class="row col-12 px-0 mx-0 savedFont">
+                            <div class="col-xs-6 text-start">
+                                <span class="">{{t_calc_BUSINESS_card}}</span>
+                            </div>
+                            <div class="col-xs-6 text-end text-success">
+                                <span class="">{{lblBusiness_card}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*** SAVED END -->
+                </div>
+            </div>
+            <!--***********************************  A2A ******************************************* -->
+            <div class="col-md-6 {{A2A_hideDiv}}">
+                <div class="row col-12 px-0 mx-0 mt-5">
+                    <!--*** Header -->
+                    <div class="row col-12 px-0 mx-0 groupHeader">
+                        <div class="divHeaderLabel">
+                            <strong class="">{{t_calc_A2A}}</strong>
+                        </div>
+                    </div>
+                    <!--*** Header END -->
+                    <!--*** Customer details -->
+                    <div class="row col-12 mx-0 inputGroup">
+                        <!--*** Number of transactions -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_NumberOfTrx_A2A}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtNumberOfTrx_A2A}}"
+                                       name="NumberOfTrx_A2A"></input>
+                            </div>
+                        </div>
+                        <!--*** Average amount per transactions -->
+                        <div class="row col-12 px-0 mx-0 mt-2 mb-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_AverAmountPerTrx_A2A}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtAverAmountPerTrx_A2A}}"
+                                       name="AverAmountPerTrx_A2A"></input>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*** Customer END -->
+                    <!--*** Vaulter -->
+                    <div class="row col-12 mx-0 mt-4 inputGroup">
+                        <!--*** Vaulter FEE -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_VaulterA2AFee_A2A}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtVaulterA2AFee_A2A}}"
+                                       name="VaulterA2AFee_A2A"></input>
+                                <div class="labelRightSide text-success">€</div>
+                            </div>
+                        </div>
+                        <!--*** Vaulter cost -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="col-xs-8 text-start ">
+                                <strong>{{t_calc_totalVaulterCost_A2A}}</strong>
+                            </div>
+                            <div class="col-xs-4 text-end text-success ">
+                                <strong>{{lblVaulterCost_A2A}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*** Vaulter END -->
+                    <!--*** SAVED -->
+                    <div class="row col-12 mx-0 mt-4">
+                        <div class="row col-12 px-0 mx-0 savedFont">
+                            <div class="col-xs-6 text-start">
+                                <span class="">{{t_calc_SAVED_A2A}}</span>
+                            </div>
+                            <div class="col-xs-6 text-end text-success">
+                                <span class="">{{lblSaved_A2A}}</span>
+                            </div>
+                        </div>
+                        <div class="row col-12 px-0 mx-0 savedFont">
+                            <div class="col-xs-6 text-start">
+                                <span class="">{{t_calc_BUSINESS_A2A}}</span>
+                            </div>
+                            <div class="col-xs-6 text-end text-success">
+                                <span class="">{{lblBusiness_A2A}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*** SAVED END -->
+                </div>
+            </div>
+            <!--*********************************** CARD HOLDING *********************************** -->
+            <div class="col-md-6 {{CardHolding_hideDiv}}">
+                <div class="row col-12  px-0 mx-0 mt-5">
+                    <!--*** Header -->
+                    <div class="row col-12 px-0 mx-0 groupHeader">
+                        <div class="divHeaderLabel">
+                            <strong>{{t_calc_CARD_holding}}</strong>
+                        </div>
+                    </div>
+                    <!--*** Header END -->
+                    <!--*** Customer details -->
+                    <div class="row col-12 mx-0 inputGroup">
+                        <!--*** Number of transactions -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_NumberOfTrx_CardHolding}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtNumberOfTrx_CardHolding}}"
+                                       name="NumberOfTrx_CardHolding"></input>
+                            </div>
+                        </div>
+                        <!--*** Average amount per transactions -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_AverAmountPerTrx_CardHolding}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtAverAmountPerTrx_CardHolding}}"
+                                       name="AverAmountPerTrx_CardHolding"></input>
+                            </div>
+                        </div>
+
+                        <!--*** Vaulter FEE -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_VaulterFee_CardHolding}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtVaulterFee_CardHolding}}"
+                                       name="VaulterFee_CardHolding"></input>
+                                <div class="labelRightSide text-success">€</div>
+                            </div>
+                        </div>
+
+                        <!--*** Total cost -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="col-xs-6 text-start ">
+                                <strong>{{t_calc_totalCost_CardHolding}}</strong>
+                            </div>
+                            <div class="col-xs-6 text-end ">
+                                <strong>{{lblTotalCost_CardHolding}}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row col-12 mx-0 mt-2 text-center ">
+                        <div class="slider-container">
+                            <div class="text-center">
+                                <strong>{{t_slider_lblHeader}}</strong>
+                            </div>
+                            <input type="range" min="0" max="100" value="{{sliderSellerBuyer_CardHolding}}" class="slider" />
+                            <div class="sliderValueLeft">{{t_slider_lblSeller}}</div>
+                            <div class="sliderValueRight">{{t_slider_lblBuyer}}</div>
+                        </div>
+                    </div>
+
+                    <!--*** KICK BACK -->
+                    <div class="row col-12 mx-0 mt-4 text-center savedFont">
+                        <span class="">{{t_calc_KickBack_card}}</span>
+                    </div>
+                    <div class="row col-12 mx-0 mt-1 inputGroup">
+                        <!--*** Number of transactions -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_NumberOfTrx_CardHolding_KickBack}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtNumberOfTrx_CardHolding_KickBack}}"
+                                       name="NumberOfTrx_CardHolding_KickBack"></input>
+                            </div>
+                        </div>
+
+                        <!--*** Vaulter KICK BACK per trs -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_VaulterKickBackPerTry_CardHolding_KickBack}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtVaulterKickBackPerTry_CardHolding_KickBack}}"
+                                       name="VaulterKickBackPerTry_CardHolding_KickBack"></input>
+                                <div class="labelRightSide text-success">€</div>
+                            </div>
+                        </div>
+                        <!--*** Vaulter cost -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="col-xs-6 text-start ">
+                                <strong>{{t_calc_totalIncome_CardHolding_KickBack}}</strong>
+                            </div>
+                            <div class="col-xs-6 text-end text-success ">
+                                <strong>{{lblTotalIncome_CardHolding_KickBack}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*** Vaulter END -->
+                </div>
+            </div>
+            <!--*********************************** A2A HOLDING ************************************ -->
+            <div class="col-md-6 {{A2AHolding_hideDiv}}">
+                <div class="row col-12  px-0 mx-0 mt-5">
+                    <!--*** Header -->
+                    <div class="row col-12 px-0 mx-0 groupHeader">
+                        <div class="divHeaderLabel">
+                            <strong>{{t_calc_A2A_holding}}</strong>
+                        </div>
+                    </div>
+                    <!--*** Customer details -->
+                    <div class="row col-12 mx-0 inputGroup">
+                        <!--*** Number of transactions -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_NumberOfTrx_A2AHolding}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtNumberOfTrx_A2AHolding}}"
+                                       name="NumberOfTrx_A2AHolding"></input>
+                            </div>
+                        </div>
+
+                        <!--*** Average amount per transactions -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_AverAmountPerTrx_A2AHolding}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtAverAmountPerTrx_A2AHolding}}"
+                                       name="AverAmountPerTrx_A2AHolding"></input>
+                            </div>
+                        </div>
+
+                        <!--*** Vaulter fee -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_VaulterFee_A2AHolding}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc "
+                                       value="{{txtVaulterFee_A2AHolding}}"
+                                       name="VaulterFee_A2AHolding"></input>
+                                <div class="labelRightSide text-success">€</div>
+                            </div>
+                        </div>
+
+                        <!--*** Total cost -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="col-xs-6 text-start ">
+                                <strong>{{t_calc_totalCost_A2AHolding}}</strong>
+                            </div>
+                            <div class="col-xs-6 text-end ">
+                                <strong>{{lblTotalCost_A2AHolding}}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row col-12 mx-0 mt-2 text-center ">
+                        <div class="slider-container">
+                            <div class="text-center">
+                                <strong>{{t_slider_lblHeader}}</strong>
+                            </div>
+                            <input type="range" min="0" max="100" value="{{sliderSellerBuyer_A2AHolding}}" class="slider" />
+                            <div class="sliderValueLeft">{{t_slider_lblSeller}}</div>
+                            <div class="sliderValueRight">{{t_slider_lblBuyer}}</div>
+                        </div>
+                    </div>
+
+                    <!--*** KICK BACK -->
+                    <div class="row col-12 mx-0 mt-4 text-center savedFont">
+                        <span class="">{{t_calc_KickBack_A2A}}</span>
+                    </div>
+                    <div class="row col-12 mx-0 mt-1 inputGroup">
+                        <!--*** Number of transactions -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_NumberOfTrx_A2AHolding_KickBack}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtNumberOfTrx_A2AHolding_KickBack}}"
+                                       name="NumberOfTrx_A2AHolding_KickBack"></input>
+                            </div>
+                        </div>
+
+                        <!--*** Vaulter KICK BACK per trs -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="animInputContainer_calc">
+                                <div class="animLabelline_calc animLabelline_calc_focused">
+                                    {{t_calc_VaulterKickBackPerTry_A2AHolding_KickBack}}
+                                </div>
+                                <input type="text"
+                                       class="animInput_calc"
+                                       value="{{txtVaulterKickBackPerTry_A2AHolding_KickBack}}"
+                                       name="VaulterKickBackPerTry_A2AHolding_KickBack"></input>
+                                <div class="labelRightSide text-success">€</div>
+                            </div>
+                        </div>
+                        <!--*** Vaulter cost -->
+                        <div class="row col-12 px-0 mx-0 mt-2">
+                            <div class="col-xs-6 text-start ">
+                                <strong>{{t_calc_totalIncome_A2AHolding_KickBack}}</strong>
+                            </div>
+                            <div class="col-xs-6 text-end text-success ">
+                                <strong>{{lblTotalIncome_A2AHolding_KickBack}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*** Vaulter END -->
+                </div>
+            </div>
+        </div>
+
+        <!--***** NOTE and reset -->
+        <div class="row col-md-6 {{cssClass_ActiveReportGroup}} mx-0 mt-3">
+            <div class="animInputContainer_calc noteRow">
+                <div class="animLabelline_calc animLabelline_calc_focused">{{t_calc_Note}}</div>
+                <textarea class="animTextArea_calc"
+                          text="{{txtNote}}"
+                          aria-label="Note"
+                          name="calc_note"></textarea>
+            </div>
+        </div>
+        <!--*** INPUT FIELDS END **** -->
+        <!--***** TABLE AND CHARTS **** -->
+        <div class="row chartsContainer">
+            <div class="width100p chartsContainerChildSummary">
+                <div class="mx-0 mt-3">
+                    <div class="width100p displayRowContainer calcTblContainer">
+                        <div class="row width100p mx-0">
+                            <div class="displayRow width50p_tbl calcTblHeader">
+                                <strong>{{t_calc_tblHeaderTotalTrx}}</strong>
+                            </div>
+                            <div class="displayRow width50p_tbl text-center">{{cntTotalTrx_card}}</div>
+                        </div>
+                        <div class="row width100p displayRowContainer mx-0">
+                            <div class="width50p_tbl displayRow calcTblData">{{t_calc_tblData_CardTrx}}</div>
+                            <div class="width25p_tbl displayRow text-center">{{cntTrx_card}}</div>
+                            <div class="width25p_tbl displayRow text-center">{{percTrx_card}}</div>
+                        </div>
+                        <div class="row width100p displayRowContainer mx-0">
+                            <div class="width50p_tbl displayRow calcTblData">{{t_calc_tblData_A2ATrx}}</div>
+                            <div class="width25p_tbl displayRow text-center">{{cntTrx_A2A}}</div>
+                            <div class="width25p_tbl displayRow text-center">{{percTrx_A2A}}</div>
+                        </div>
+                        <div class="row width100p displayRowContainer mx-0 mt-1 mb-1 calcTblDevide"></div>
+                        <div class="row width100p displayRowContainer mx-0">
+                            <div class="width50p_tbl displayRow calcTblHeader">
+                                <strong>{{t_calc_tblHeaderHolding}}</strong>
+                            </div>
+                        </div>
+                        <div class="row width100p displayRowContainer mx-0">
+                            <div class="width50p_tbl displayRow calcTblData">{{t_calc_tblData_CardTrx}}</div>
+                            <div class="width25p_tbl displayRow text-center">{{cntTrx_cardHold}}</div>
+                            <div class="width25p_tbl displayRow text-center">{{percTrx_cardHold}}</div>
+                        </div>
+                        <div class="row width100p displayRowContainer mx-0">
+                            <div class="width50p_tbl displayRow calcTblData">{{t_calc_tblData_A2ATrx}}</div>
+                            <div class="width25p_tbl displayRow text-center">{{cntTrx_A2AHold}}</div>
+                            <div class="width25p_tbl displayRow text-center">{{percTrx_A2AHold}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

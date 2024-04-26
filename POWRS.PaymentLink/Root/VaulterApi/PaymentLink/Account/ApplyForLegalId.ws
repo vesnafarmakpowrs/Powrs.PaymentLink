@@ -20,6 +20,10 @@ SessionUser:= Global.ValidateAgentApiToken(false, false);
     "ORGTAXNUM": Required(Str(POrgTaxNumber))
 }:=Posted) ??? BadRequest("Request does not conform to the specification");
 
+logObjectID := SessionUser.username;
+logEventID := "ApplyForLegalId.ws";
+logActor := Request.RemoteEndPoint.Split(":", null)[0];
+
 try
 (
   Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
@@ -50,7 +54,7 @@ if(PCountryCode not like "[A-Z]{2}") then
 (
      errors.Add("COUNTRY");
 );
-if(POrgName not like "^[\\p{L}\\s\&?]{2,100}$") then 
+if(POrgName not like "^[\\p{L}][\\p{L}\\s.\&,?]*[\\p{L}?]{2,100}$") then 
 (
    errors.Add("ORGNAME");
 );
@@ -83,12 +87,12 @@ if(POrgBankNum not like "^(?!.*--)[\\d-]{1,25}$") then
      errors.Add("ORGBANKNUM");
 );
 
-if(POrgDept not like "\\p{L}{2,50}$") then 
+if(POrgDept not like "^[\\p{L}][\\p{L}\\s,?]*[\\p{L}?]{1,100}$") then 
 (
     errors.Add("ORGDEPT");
 );
 
-if(POrgRole not like "\\p{L}{2,50}$") then 
+if(POrgRole not like "^[\\p{L}][\\p{L}\\s,?]*[\\p{L}?]{2,50}$") then 
 (
     errors.Add("ORGROLE");
 );
@@ -176,11 +180,35 @@ if(errors.Count > 0) then
 		accountRole.ParentOrgName:= "Powrs";
 		
 		Waher.Persistence.Database.Update(accountRole);
+		
+		if(accountRole.UserName != accountRole.CreatorUserName) then (
+			try (
+				MailBody := Create(System.Text.StringBuilder);
+				MailBody.Append("Hello,");
+				MailBody.Append("<br />");
+				MailBody.Append("<br />A subuser <strong>{{subUser}}</strong> has applyed for Legal Identity.");
+				MailBody.Append("<br />Please review this request.");
+				MailBody.Append("<br />");
+				MailBody.Append("<br />Best regards");
+				MailBody.Append("<br />Vaulter");
+				
+				MailBody := Replace(MailBody, "{{subUser}}", SessionUser.username);
+				
+				ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
+				Config := ConfigClass.Instance;
+				aMLMailRecipients := GetSetting("POWRS.PaymentLink.AMLContactEmail","");
+				
+				POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, aMLMailRecipients, "Vaulter", MailBody, null, null);
+			)
+			catch(
+				Log.Error("Error while sending email: " + Exception.Message, logObjectID, logActor, logEventID, null);
+			);
+		);
 	);
 )
 catch
 (
-    Log.Error("Unable to apply for legal id: " + Exception.Message, null);
+	Log.Error("Unable to apply for legal id: " + Exception.Message, logObjectID, logActor, logEventID, null);
     if(errors.Count > 0) then 
     (
          BadRequest(errors);
@@ -189,7 +217,6 @@ catch
     (
          BadRequest(Exception.Message);
     );
-   
 )
 finally
 (

@@ -12,6 +12,25 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUserHierarchy.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
+			<Folder name="FeeCalculator">
+				<Folder name="Reports">
+					<Content fileName="GenerateFormPDF.ws"/>
+				</Folder>
+				<Folder name="HtmlTemplates">
+					<Folder name="FeeCalculatorForm">
+						<Content fileName="App.css"/>
+						<Content fileName="bootstrap.css"/>
+						<Content fileName="bootstrap.js"/>
+						<Content fileName="FeeCalc.html"/>
+						<Content fileName="FeeCalculatorPage.css"/>
+						<Content fileName="index.css"/>
+						<Content fileName="InputAnimation.css"/>
+						<Content fileName="Slider.css"/>
+						<Content fileName="Style.css"/>
+						<Content fileName="SwitchToggle.css"/>
+					</Folder>
+				</Folder>
+			</Folder>
 			<Folder name="PaymentLink">
 				<Content fileName="Index.md"/>
 				<Folder name="Account">
@@ -61,7 +80,7 @@
 					<Content fileName="ListOfTransactions.ws"/>
 					<Content fileName="OnBoardedUsers.ws"/>
 					<Content fileName="ReportTransactions.ws"/>
-					<Content fileName="SuccessfulTransactions.ws"/>					
+					<Content fileName="SuccessfulTransactions.ws"/>
 				</Folder>
 			</Folder>
 		</Folder>
@@ -88,21 +107,21 @@
 			<Folder name="js">
 				<Content fileName="Events.js"/>
 				<Content fileName="PaymentLink.js"/>
-			</Folder>			
+			</Folder>
 			<Folder name="resources">
 				<Content fileName="credit-card-payment.svg"/>
 				<Content fileName="direct_payment.svg"/>
 				<Content fileName="expand.svg"/>
 				<Content fileName="spin.svg" />
-				<Content fileName="spinner.gif"/>				
+				<Content fileName="spinner.gif"/>
 				<Content fileName="vaulter_logo.svg"/>
 				<Content fileName="vaulter_txt.svg"/>
 				<Content fileName="vaulterlogo.svg"/>
 				<Content fileName="error_red.png"/>
 				<Content fileName="success_green.png"/>
-				
+
 			</Folder>
-	    </Folder>
+		</Folder>
 		<Folder name="Payout">
 			<Content fileName="Settings.md"/>
 			<Folder name="API">
