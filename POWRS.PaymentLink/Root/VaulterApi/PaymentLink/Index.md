@@ -1063,13 +1063,13 @@ Call this resource save data for onboarding.
         "LegalRepresentatives":[                        -> Field 'FullName' is mandatory for 'save'. If nothing populated then send empty array []
             {
                 "FullName": "Mirko Kruščić",            -> Mandatory for 'save'
-                "DateOfBirth": "25/04/2024",
+                "DateOfBirth": "25/04/2024",            -> If user don't select date, send empty string
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
                 "StatementOfOfficialDocument": "",
                 "IdCard": "",
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "PlaceOfIssue": "",
-                "DateOfIssue": "25/04/2024",
+                "DateOfIssue": "25/04/2024",            -> If user don't select date, send empty string
                 "DocumentNumber": ""
             }
         ]
@@ -1082,9 +1082,9 @@ Call this resource save data for onboarding.
         "OwnerStructure": "Person",                     -> Can be string: 'Person', 'Company' or 'PersonAndCompany'
         "Owners":[                                      -> Field 'FullName' is mandatory for 'save'. If nothing populated then send empty array []
             {
-                "FullName": "Mirko Kruščić",                         -> Mandatory for 'save'
+                "FullName": "Mirko Kruščić",            -> Mandatory for 'save'
                 "PersonalNumber": "",
-                "DateOfBirth": "25/04/2024",
+                "DateOfBirth": "25/04/2024",            -> If user don't select date, send empty string
                 "PlaceOfBirth": "",
                 "AddressAndPlaceOfResidence": "",
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
@@ -1093,7 +1093,7 @@ Call this resource save data for onboarding.
                 "Role": "",
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "DocumentNumber": "",
-                "IssueDate": "25/04/2024",
+                "IssueDate": "25/04/2024",              -> If user don't select date, send empty string
                 "IssuerName": "",
                 "DocumentIssuancePlace": "",
                 "Citizenship": "",
