@@ -10,7 +10,7 @@ namespace POWRS.PaymentLink.Onboarding
     {
         public GeneralCompanyInformation GeneralCompanyInformation { get; set; } = new();
         public CompanyStructure CompanyStructure { get; set; } = new();
-        public BussinesData BussinesData { get; set; } = new();
+        public BusinessData BusinessData { get; set; } = new();
         public LegalDocuments LegalDocuments { get; set; } = new();
 
         public bool CanSubmit
@@ -19,7 +19,7 @@ namespace POWRS.PaymentLink.Onboarding
             {
                 return GeneralCompanyInformation?.IsCompleted() == true &&
                 CompanyStructure?.IsCompleted() == true &&
-                BussinesData?.IsCompleted() == true &&
+                BusinessData?.IsCompleted() == true &&
                 LegalDocuments?.IsCompleted() == true;
             }
         }
@@ -34,14 +34,14 @@ namespace POWRS.PaymentLink.Onboarding
             var userNameFilter = new FilterFieldEqualTo("UserName", userName);
             var companyInformationsTask = Database.FindFirstDeleteRest<GeneralCompanyInformation>(userNameFilter);
             var companyStructureTask = Database.FindFirstDeleteRest<CompanyStructure>(userNameFilter);
-            var bussinesDataTask = Database.FindFirstDeleteRest<BussinesData>(userNameFilter);
+            var businessDataTask = Database.FindFirstDeleteRest<BusinessData>(userNameFilter);
             var legalDocumentsTask = Database.FindFirstDeleteRest<LegalDocuments>(userNameFilter);
 
             Task[] tasks = new Task[]
             {
                    companyInformationsTask,
                    companyStructureTask,
-                   bussinesDataTask,
+                   businessDataTask,
                    legalDocumentsTask
             };
 
@@ -51,7 +51,7 @@ namespace POWRS.PaymentLink.Onboarding
             {
                 GeneralCompanyInformation = companyInformationsTask.Result ?? new GeneralCompanyInformation(),
                 CompanyStructure = companyStructureTask.Result ?? new CompanyStructure(),
-                BussinesData = bussinesDataTask.Result ?? new BussinesData(),
+                BusinessData = businessDataTask.Result ?? new BusinessData(),
                 LegalDocuments = legalDocumentsTask.Result ?? new LegalDocuments()
             };
 

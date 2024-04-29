@@ -22,6 +22,9 @@ namespace POWRS.PaymentLink.Onboarding
         private string citizenship;
         private string idCard;
 
+        private string dateOfBirthStr;
+        private string issueDateStr;
+
         public string FullName
         {
             get { return fullName; }
@@ -37,7 +40,11 @@ namespace POWRS.PaymentLink.Onboarding
         public DateTime? DateOfBirth
         {
             get { return dateOfBirth; }
-            set { dateOfBirth = value; }
+            set
+            {
+                dateOfBirth = value;
+                DateOfBirthStr = value != null ? Convert.ToDateTime(value).ToString("dd/MM/yyyy") : "";
+            }
         }
 
         public string PlaceOfBirth
@@ -71,7 +78,11 @@ namespace POWRS.PaymentLink.Onboarding
         public DateTime? IssueDate
         {
             get { return issueDate; }
-            set { issueDate = value; }
+            set
+            {
+                issueDate = value;
+                IssueDateStr = value != null ? Convert.ToDateTime(value).ToString("dd/MM/yyyy") : "";
+            }
         }
 
         public string IssuerName
@@ -115,5 +126,8 @@ namespace POWRS.PaymentLink.Onboarding
             get { return idCard; }
             set { idCard = value; }
         }
+
+        public string DateOfBirthStr { get => dateOfBirthStr; set => dateOfBirthStr = value; }
+        public string IssueDateStr { get => issueDateStr; set => issueDateStr = value; }
     }
 }

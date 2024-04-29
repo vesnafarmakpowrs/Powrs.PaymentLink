@@ -3,84 +3,84 @@ using Waher.Persistence.Attributes;
 
 namespace POWRS.PaymentLink.Onboarding
 {
-    [CollectionName(nameof(BussinesData) + "s")]
+    [CollectionName(nameof(BusinessData) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("UserName")]
-    public class BussinesData : BaseOnboardingModel<BussinesData>
+    public class BusinessData : BaseOnboardingModel<BusinessData>
     {
-        public BussinesData() { }
-        public BussinesData(string userName) : base(userName) { }
+        public BusinessData() { }
+        public BusinessData(string userName) : base(userName) { }
 
-        private string bussinedModel;
-        private int? retailersNumber;
-        private int? expectedMonthlyTurnover;
-        private int? expectedYearlyTurnover;
-        private int? threeMonthAccountTurnover;
-        private int? cardPaymentPercentage;
-        private int? averageTransactionAmount;
-        private int? averageDailyTurnover;
-        private int? cheapestProductAmount;
-        private int? mostExpensiveProductAmount;
+        private string businedModel;
+        private int retailersNumber;
+        private int expectedMonthlyTurnover;
+        private int expectedYearlyTurnover;
+        private int threeMonthAccountTurnover;
+        private int cardPaymentPercentage;
+        private int averageTransactionAmount;
+        private int averageDailyTurnover;
+        private int cheapestProductAmount;
+        private int mostExpensiveProductAmount;
         private bool sellingGoodsWithDelayedDelivery;
-        private int? periodFromPaymentToDeliveryInDays;
-        private int? complaintsPerMonth;
-        private int? complaintsPerYear;
+        private int periodFromPaymentToDeliveryInDays;
+        private int complaintsPerMonth;
+        private int complaintsPerYear;
 
-        public string BussinesModel
+        public string BusinessModel
         {
-            get => bussinedModel;
-            set => bussinedModel = value;
+            get => businedModel;
+            set => businedModel = value;
         }
 
-        public int? RetailersNumber
+        public int RetailersNumber
         {
             get { return retailersNumber; }
             set { retailersNumber = value; }
         }
 
-        public int? ExpectedMonthlyTurnover
+        public int ExpectedMonthlyTurnover
         {
             get { return expectedMonthlyTurnover; }
             set { expectedMonthlyTurnover = value; }
         }
 
-        public int? ExpectedYearlyTurnover
+        public int ExpectedYearlyTurnover
         {
             get { return expectedYearlyTurnover; }
             set { expectedYearlyTurnover = value; }
         }
 
-        public int? ThreeMonthAccountTurnover
+        public int ThreeMonthAccountTurnover
         {
             get { return threeMonthAccountTurnover; }
             set { threeMonthAccountTurnover = value; }
         }
 
-        public int? CardPaymentPercentage
+        public int CardPaymentPercentage
         {
             get { return cardPaymentPercentage; }
             set { cardPaymentPercentage = value; }
         }
 
-        public int? AverageTransactionAmount
+        public int AverageTransactionAmount
         {
             get { return averageTransactionAmount; }
             set { averageTransactionAmount = value; }
         }
 
-        public int? AverageDailyTurnover
+        public int AverageDailyTurnover
         {
             get { return averageDailyTurnover; }
             set { averageDailyTurnover = value; }
         }
 
-        public int? CheapestProductAmount
+        public int CheapestProductAmount
         {
             get { return cheapestProductAmount; }
             set { cheapestProductAmount = value; }
         }
 
-        public int? MostExpensiveProductAmount
+        public int MostExpensiveProductAmount
         {
             get { return mostExpensiveProductAmount; }
             set { mostExpensiveProductAmount = value; }
@@ -91,19 +91,19 @@ namespace POWRS.PaymentLink.Onboarding
             set => sellingGoodsWithDelayedDelivery = value;
         }
 
-        public int? PeriodFromPaymentToDeliveryInDays
+        public int PeriodFromPaymentToDeliveryInDays
         {
             get => periodFromPaymentToDeliveryInDays;
             set => periodFromPaymentToDeliveryInDays = value;
         }
 
-        public int? ComplaintsPerMonth
+        public int ComplaintsPerMonth
         {
             get => complaintsPerMonth;
             set => complaintsPerMonth = value;
         }
 
-        public int? ComplaintsPerYear
+        public int ComplaintsPerYear
         {
             get => complaintsPerYear;
             set => complaintsPerYear = value;
@@ -111,7 +111,7 @@ namespace POWRS.PaymentLink.Onboarding
 
         public override bool IsCompleted()
         {
-            return !string.IsNullOrEmpty(BussinesModel) &&
+            return !string.IsNullOrEmpty(BusinessModel) &&
                 RetailersNumber != null &&
                 ExpectedMonthlyTurnover != null &&
                 ExpectedYearlyTurnover != null &&

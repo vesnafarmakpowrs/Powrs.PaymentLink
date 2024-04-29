@@ -3,7 +3,7 @@
 if(Posted == null) then BadRequest("Data could not be null");
 if(!exists(Posted.GeneralCompanyInformation) or Posted.GeneralCompanyInformation == null) then BadRequest("GeneralCompanyInformation could not be null");
 if(!exists(Posted.CompanyStructure) or Posted.CompanyStructure == null) then BadRequest("CompanyStructure could not be null");
-if(!exists(Posted.BussinesData) or Posted.BussinesData == null) then BadRequest("BussinesData could not be null");
+if(!exists(Posted.BusinessData) or Posted.BusinessData == null) then BadRequest("BusinessData could not be null");
 
 logObjectID := SessionUser.username;
 logEventID := "SaveOnboardingData.ws";
@@ -207,47 +207,47 @@ ValidatePostedData(Posted) := (
 		);
 	);
 	
-	if(!exists(Posted.BussinesData.RetailersNumber))then(
-		errors.Add("BussinesData.RetailersNumber");
+	if(!exists(Posted.BusinessData.BusinessModel))then(
+		errors.Add("BusinessData.BusinessModel");
 	);
-	if(!exists(Posted.BussinesData.ExpectedMonthlyTurnover))then(
-		errors.Add("BussinesData.ExpectedMonthlyTurnover");
+	if(!exists(Posted.BusinessData.RetailersNumber))then(
+		errors.Add("BusinessData.RetailersNumber");
 	);
-	if(!exists(Posted.BussinesData.ExpectedYearlyTurnover))then(
-		errors.Add("BussinesData.ExpectedYearlyTurnover");
+	if(!exists(Posted.BusinessData.ExpectedMonthlyTurnover))then(
+		errors.Add("BusinessData.ExpectedMonthlyTurnover");
 	);
-	if(!exists(Posted.BussinesData.ThreeMonthAccountTurnover))then(
-		errors.Add("BussinesData.ThreeMonthAccountTurnover");
+	if(!exists(Posted.BusinessData.ExpectedYearlyTurnover))then(
+		errors.Add("BusinessData.ExpectedYearlyTurnover");
 	);
-	if(!exists(Posted.BussinesData.CardPaymentPercentage))then(
-		errors.Add("BussinesData.CardPaymentPercentage");
+	if(!exists(Posted.BusinessData.ThreeMonthAccountTurnover))then(
+		errors.Add("BusinessData.ThreeMonthAccountTurnover");
 	);
-	if(!exists(Posted.BussinesData.AverageTransactionAmount))then(
-		errors.Add("BussinesData.AverageTransactionAmount");
+	if(!exists(Posted.BusinessData.CardPaymentPercentage))then(
+		errors.Add("BusinessData.CardPaymentPercentage");
 	);
-	if(!exists(Posted.BussinesData.AverageDailyTurnover))then(
-		errors.Add("BussinesData.AverageDailyTurnover");
+	if(!exists(Posted.BusinessData.AverageTransactionAmount))then(
+		errors.Add("BusinessData.AverageTransactionAmount");
 	);
-	if(!exists(Posted.BussinesData.CheapestProductAmount))then(
-		errors.Add("BussinesData.CheapestProductAmount");
+	if(!exists(Posted.BusinessData.AverageDailyTurnover))then(
+		errors.Add("BusinessData.AverageDailyTurnover");
 	);
-	if(!exists(Posted.BussinesData.BussinesModel))then(
-		errors.Add("BussinesData.BussinesModel");
+	if(!exists(Posted.BusinessData.CheapestProductAmount))then(
+		errors.Add("BusinessData.CheapestProductAmount");
 	);
-	if(!exists(Posted.BussinesData.SellingGoodsWithDelayedDelivery))then(
-		errors.Add("BussinesData.SellingGoodsWithDelayedDelivery");
+	if(!exists(Posted.BusinessData.MostExpensiveProductAmount))then(
+		errors.Add("BusinessData.MostExpensiveProductAmount");
 	);
-	if(!exists(Posted.BussinesData.PeriodFromPaymentToDeliveryInDays))then(
-		errors.Add("BussinesData.PeriodFromPaymentToDeliveryInDays");
+	if(!exists(Posted.BusinessData.SellingGoodsWithDelayedDelivery))then(
+		errors.Add("BusinessData.SellingGoodsWithDelayedDelivery");
 	);
-	if(!exists(Posted.BussinesData.ComplaintsPerMonth))then(
-		errors.Add("BussinesData.ComplaintsPerMonth");
+	if(!exists(Posted.BusinessData.PeriodFromPaymentToDeliveryInDays))then(
+		errors.Add("BusinessData.PeriodFromPaymentToDeliveryInDays");
 	);
-	if(!exists(Posted.BussinesData.ComplaintsPerYear))then(
-		errors.Add("BussinesData.ComplaintsPerYear");
+	if(!exists(Posted.BusinessData.ComplaintsPerMonth))then(
+		errors.Add("BusinessData.ComplaintsPerMonth");
 	);
-	if(!exists(Posted.BussinesData.MostExpensiveProductAmount))then(
-		errors.Add("BussinesData.MostExpensiveProductAmount");
+	if(!exists(Posted.BusinessData.ComplaintsPerYear))then(
+		errors.Add("BusinessData.ComplaintsPerYear");
 	);
 		
 	if(errors.Count > 0)then
@@ -306,7 +306,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			representative:= Create(POWRS.PaymentLink.Onboarding.LegalRepresentative);		
 
 			representative.FullName:= item.FullName;
-			representative.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.None;
+			representative.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard;
 			representative.DocumentNumber:= item.DocumentNumber;
 			representative.PlaceOfIssue:= item.PlaceOfIssue;
 			representative.IsPoliticallyExposedPerson:= item.IsPoliticallyExposedPerson;
@@ -350,20 +350,14 @@ SaveCompanyStructure(CompanyStructure, UserName):=
 		companyStructure:= Create(POWRS.PaymentLink.Onboarding.CompanyStructure, UserName);
 	);
 
-	countriesOfBussines:= Create(System.Collections.Generic.List,System.String);
+	countriesOfBusiness:= Create(System.Collections.Generic.List, System.String);
 	owners:= Create(System.Collections.Generic.List, POWRS.PaymentLink.Onboarding.Owner);
 	
+	companyStructure.UserName:= UserName;
 	companyStructure.NameOfTheForeignExchangeAndIDNumber:= CompanyStructure.NameOfTheForeignExchangeAndIDNumber;
 	companyStructure.PercentageOfForeignUsers:= CompanyStructure.PercentageOfForeignUsers;
 	companyStructure.OffShoreFoundationInOwnerStructure:= CompanyStructure.OffShoreFoundationInOwnerStructure;
-	companyStructure.OwnerStructure:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.OwnerStructure, CompanyStructure.OwnerStructure) ??? POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.None;
-	if(CompanyStructure.CountriesOfBusiness != null and CompanyStructure.CountriesOfBusiness.Length > 0) then 
-	(
-		foreach(country in CompanyStructure.CountriesOfBusiness) do 
-		(
-			countriesOfBussines.Add(country);
-		);
-	);
+	companyStructure.OwnerStructure:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.OwnerStructure, CompanyStructure.OwnerStructure) ??? POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.Company;
 
 	if(CompanyStructure.Owners != null and CompanyStructure.Owners.Length > 0) then 
 	(
@@ -379,27 +373,27 @@ SaveCompanyStructure(CompanyStructure, UserName):=
 			owner.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
 			owner.OwningPercentage:= item.OwningPercentage;
 			owner.Role:= item.Role;
-			owner.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.None;
+			owner.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard;
 			owner.DocumentNumber:= item.DocumentNumber;
 			owner.IssuerName:= item.IssuerName;
 			owner.DocumentIssuancePlace:= item.DocumentIssuancePlace;
 			owner.Citizenship:= item.Citizenship;
 			owner.IdCard:= item.IdCard;
 
-			if(item.DateOfBirth != null) then 
+			if(!System.String.IsNullOrWhiteSpace(item.DateOfBirth)) then 
 			(
 				owner.DateOfBirth:= System.DateTime.ParseExact(item.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
 			);
-			if(item.IssueDate != null) then 
+			if(!System.String.IsNullOrWhiteSpace(item.IssueDate)) then 
 			(
 				owner.IssueDate:= System.DateTime.ParseExact(item.IssueDate, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
 			);
 
 			owners.Add(owner);
 		);
-
-		companyStructure.Owners:= owners;
 	);
+	
+	companyStructure.Owners:= owners.ToArray();
 
 	if(alreadyExists) then 
 	(
@@ -408,6 +402,44 @@ SaveCompanyStructure(CompanyStructure, UserName):=
 	else 
 	(
 		Waher.Persistence.Database.Insert(companyStructure);
+	);
+
+	Return(0);
+);
+
+SaveBusinessData(BusinessData, UserName):= 
+(
+	businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = UserName;
+	recordExists:= businessData != null;
+
+	if(businessData == null) then 
+	(
+		businessData:= Create(POWRS.PaymentLink.Onboarding.BusinessData, UserName);
+	);
+
+	businessData.UserName:= UserName;
+	businessData.BusinessModel:= BusinessData.BusinessModel;
+	businessData.RetailersNumber:= BusinessData.RetailersNumber;
+	businessData.ExpectedMonthlyTurnover:= BusinessData.ExpectedMonthlyTurnover;
+	businessData.ExpectedYearlyTurnover:= BusinessData.ExpectedYearlyTurnover;
+	businessData.ThreeMonthAccountTurnover:= BusinessData.ThreeMonthAccountTurnover;
+	businessData.CardPaymentPercentage:= Int(BusinessData.CardPaymentPercentage);
+	businessData.AverageTransactionAmount:= BusinessData.AverageTransactionAmount;
+	businessData.AverageDailyTurnover:= BusinessData.AverageDailyTurnover;
+	businessData.CheapestProductAmount:= BusinessData.CheapestProductAmount;
+	businessData.MostExpensiveProductAmount:= BusinessData.MostExpensiveProductAmount;
+	businessData.SellingGoodsWithDelayedDelivery:= BusinessData.SellingGoodsWithDelayedDelivery;
+	businessData.PeriodFromPaymentToDeliveryInDays:= BusinessData.PeriodFromPaymentToDeliveryInDays;
+	businessData.ComplaintsPerMonth:= BusinessData.ComplaintsPerMonth;
+	businessData.ComplaintsPerYear:= BusinessData.ComplaintsPerYear;
+
+	if(recordExists) then 
+	(
+		Waher.Persistence.Database.Update(businessData);
+	)
+	else 
+	(
+		Waher.Persistence.Database.Insert(businessData);
 	);
 
 	Return(0);
@@ -426,6 +458,10 @@ try
 	currentMethod := "SaveCompanyStructure"; 
 	methodResponse:= SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username);
 	Log.Informational("Finised method SaveCompanyStructure. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
+	
+	currentMethod := "SaveBusinessData"; 
+	methodResponse:= SaveBusinessData(Posted.BusinessData, SessionUser.username);
+	Log.Informational("Finised method SaveBusinessData. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
 	
 	Log.Informational("Succeffully saved OnBoarding data.", logObjectID, logActor, logEventID, null);
 	{

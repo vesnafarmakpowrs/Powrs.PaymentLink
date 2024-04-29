@@ -13,17 +13,38 @@ namespace POWRS.PaymentLink.Onboarding
         public CompanyStructure() { }
         public CompanyStructure(string userName) : base(userName) { }
 
-        private string[] countriesOfBussines;
+        private string[] countriesOfBusiness;
         private string nameOfTheForeignExchangeAndIDNumber;
         private int percentageOfForeignUsers;
         private bool offShoreFoundationInOwnerStructure;
         private OwnerStructure ownerStructure;
         private Owner[] owners;
 
+        public void InitializeCountriesOfBusiness(int arrayLength)
+        {
+           countriesOfBusiness = new string[arrayLength];
+        }
+        public bool CountriesOfBusinessSetValue(string value, int index)
+        {
+            if(countriesOfBusiness.Length > index)
+            {
+                countriesOfBusiness[index] = value;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public void CountriesOfBusinessSetValue(string strArray)
+        {
+            countriesOfBusiness = strArray.Split(",");
+        }
+
         public string[] CountriesOfBusiness
         {
-            get { return countriesOfBussines; }
-            set { countriesOfBussines = value; }
+            get { return countriesOfBusiness; }
+            set { countriesOfBusiness = value; }
         }
         public string NameOfTheForeignExchangeAndIDNumber
         {

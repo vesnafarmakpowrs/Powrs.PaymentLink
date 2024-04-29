@@ -962,7 +962,7 @@ Token is required. Request body is empty.
         "LegalRepresentatives": [
             {
                 "FullName": "Mirko Kruščić",
-                "DateOfBirth": 1713996000,
+                "DateOfBirth": 581032800,
                 "DocumentType": "IDCard",
                 "DocumentNumber": "",
                 "DateOfIssue": 1704063600,
@@ -970,7 +970,7 @@ Token is required. Request body is empty.
                 "StatementOfOfficialDocument": "",
                 "IdCard": "",
                 "IsPoliticallyExposedPerson": false,
-                "DateOfBirthStr": "25/04/2024",
+                "DateOfBirthStr": "31/05/1988",
                 "DateOfIssueStr": "01/01/2024"
             }
         ],
@@ -978,31 +978,53 @@ Token is required. Request body is empty.
     },
     "CompanyStructure": {
         "CountriesOfBusiness": null,
-        "PercentageOfForeignUsers": null,
+        "NameOfTheForeignExchangeAndIDNumber": "",
+        "PercentageOfForeignUsers": 10,
         "OffShoreFoundationInOwnerStructure": false,
-        "OwnerStructure": "Person",
-        "Owners": null,
-        "UserName": null
+        "OwnerStructure": "Company",
+        "Owners": [
+            {
+                "FullName": "Mirko Kruščić",
+                "PersonalNumber": "3105988792648",
+                "DateOfBirth": 581032800,
+                "PlaceOfBirth": "Ivanjica",
+                "AddressAndPlaceOfResidence": "Beograd, Zaplanjska 82",
+                "IsPoliticallyExposedPerson": false,
+                "DocumentType": "IDCard",
+                "DocumentNumber": "009876248",
+                "IssueDate": 1580425200,
+                "IssuerName": "PU Za Grad Beograd",
+                "DocumentIssuancePlace": "Beograd",
+                "Citizenship": "Serbian",
+                "OwningPercentage": 25,
+                "Role": "Developer",
+                "StatementOfOfficialDocument": "",
+                "IdCard": "",
+                "DateOfBirthStr": "31/05/1988",
+                "IssueDateStr": "31/01/2020"
+            }
+        ],
+        "UserName": "AgentPLG"
     },
-    "BussinesData": {
-        "BussinesModel": null,
-        "RetailersNumber": null,
-        "ExpectedMonthlyTurnover": null,
-        "ExpectedYearlyTurnover": null,
-        "ThreeMonthAccountTurnover": null,
-        "CardPaymentPercentage": null,
-        "AverageTransactionAmount": null,
-        "AverageDailyTurnover": null,
-        "CheapestProductAmount": null,
-        "MostExpensiveProductAmount": null,
+    "BusinessData": {
+        "BusinessModel": "0",
+        "RetailersNumber": 0,
+        "ExpectedMonthlyTurnover": 0,
+        "ExpectedYearlyTurnover": 0,
+        "ThreeMonthAccountTurnover": 0,
+        "CardPaymentPercentage": 0,
+        "AverageTransactionAmount": 0,
+        "AverageDailyTurnover": 0,
+        "CheapestProductAmount": 0,
+        "MostExpensiveProductAmount": 0,
         "SellingGoodsWithDelayedDelivery": false,
-        "PeriodFromPaymentToDeliveryInDays": null,
-        "ComplaintsPerMonth": null,
-        "ComplaintsPerYear": null,
-        "UserName": null
+        "PeriodFromPaymentToDeliveryInDays": 0,
+        "ComplaintsPerMonth": 0,
+        "ComplaintsPerYear": 0,
+        "UserName": "AgentPLG"
     },
     "LegalDocuments": {
-        "BussinesCooperationRequest": null,
+        "BusinessCooperationRequest": null,
         "ContractWithVaulter": null,
         "ContractWithEMI": null,
         "PromissoryNote": null,
@@ -1053,14 +1075,14 @@ Call this resource save data for onboarding.
         ]
    },
    "CompanyStructure":{
-        "CountriesOfBusiness": "Serbia, Croatia, Montenegro",
+        "CountriesOfBusiness": "Serbia,Croatia,Montenegro", -> string with ',' delimiter and no spaces between
         "NameOfTheForeignExchangeAndIDNumber": "",
         "OffShoreFoundationInOwnerStructure": false,    
         "PercentageOfForeignUsers": 0,                  
         "OwnerStructure": "Person",                     -> Can be string: 'Person', 'Company' or 'PersonAndCompany'
         "Owners":[                                      -> Field 'FullName' is mandatory for 'save'. If nothing populated then send empty array []
             {
-                "FullName": "",                         -> Mandatory for 'save'
+                "FullName": "Mirko Kruščić",                         -> Mandatory for 'save'
                 "PersonalNumber": "",
                 "DateOfBirth": "25/04/2024",
                 "PlaceOfBirth": "",
@@ -1079,7 +1101,8 @@ Call this resource save data for onboarding.
             }
         ]
    },
-   "BussinesData":{
+   "BusinessData":{
+        "BusinessModel": "",
         "RetailersNumber": 0,
         "ExpectedMonthlyTurnover": 0,
         "ExpectedYearlyTurnover": 0,
@@ -1088,12 +1111,11 @@ Call this resource save data for onboarding.
         "AverageTransactionAmount": 0,
         "AverageDailyTurnover": 0,
         "CheapestProductAmount": 0,
-        "BussinesModel": 0,
+        "MostExpensiveProductAmount": 0,
         "SellingGoodsWithDelayedDelivery": false,
         "PeriodFromPaymentToDeliveryInDays": 0,
         "ComplaintsPerMonth": 0,
-        "ComplaintsPerYear": 0,
-        "MostExpensiveProductAmount": 0
+        "ComplaintsPerYear": 0
    }
 }
 ````
