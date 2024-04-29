@@ -119,12 +119,15 @@ ValidatePostedData(Posted) := (
 	
 	if(!exists(Posted.CompanyStructure.CountriesOfBusiness))then(
 		errors.Add("CompanyStructure.CountriesOfBusiness");
-	);	
-	if(!exists(Posted.CompanyStructure.PercentageOfForeignUsers))then(
-		errors.Add("CompanyStructure.PercentageOfForeignUsers");
-	);	
+	);
+	if(!exists(Posted.CompanyStructure.NameOfTheForeignExchangeAndIDNumber))then(
+		errors.Add("CompanyStructure.NameOfTheForeignExchangeAndIDNumber");
+	);
 	if(!exists(Posted.CompanyStructure.OffShoreFoundationInOwnerStructure))then(
 		errors.Add("CompanyStructure.OffShoreFoundationInOwnerStructure");
+	);
+	if(!exists(Posted.CompanyStructure.PercentageOfForeignUsers))then(
+		errors.Add("CompanyStructure.PercentageOfForeignUsers");
 	);	
 	if(!exists(Posted.CompanyStructure.OwnerStructure))then(
 		errors.Add("CompanyStructure.OwnerStructure");
@@ -138,6 +141,8 @@ ValidatePostedData(Posted) := (
 		itemIndex := 0;
 		foreach item in Posted.CompanyStructure.Owners do
 		(
+			IsPoliticallyExposedPerson:= false;
+			
 			if(!exists(item.FullName))then
 			(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
@@ -145,23 +150,28 @@ ValidatePostedData(Posted) := (
 			if(!exists(item.PersonalNumber))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".PersonalNumber");
 			);
+			if(!exists(item.DateOfBirth) or 
+				(!System.String.IsNullOrWhiteSpace(item.DateOfBirth) and item.DateOfBirth not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"))then
+			(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DateOfBirth");
+			);
 			if(!exists(item.PlaceOfBirth))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".PlaceOfBirth");
 			);
-			if(!exists(item.OfficialOfRepublicOfSerbia))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".OfficialOfRepublicOfSerbia");
+			if(!exists(item.AddressAndPlaceOfResidence))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".AddressAndPlaceOfResidence");
+			);			
+			if(!exists(item.IsPoliticallyExposedPerson))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IsPoliticallyExposedPerson");
+			)else if(item.IsPoliticallyExposedPerson != null) then (
+				IsPoliticallyExposedPerson := item.IsPoliticallyExposedPerson;
 			);
-			if(!exists(item.DocumentType))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DocumentType");
-			);
-			if(!exists(item.DocumentNumber))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DocumentNumber");
-			);
-			if(!exists(item.IssuerName))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IssuerName");
-			);
-			if(!exists(item.Citizenship))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".Citizenship");
+			if(!exists(item.StatementOfOfficialDocument))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
+			)else if (IsPoliticallyExposedPerson) then(
+				if(System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument))then (
+					errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
+				);
 			);
 			if(!exists(item.OwningPercentage))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".OwningPercentage");
@@ -169,12 +179,30 @@ ValidatePostedData(Posted) := (
 			if(!exists(item.Role))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".Role");
 			);
-			if(!exists(item.DateOfBirth))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DateOfBirth");
+			if(!exists(item.DocumentType))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DocumentType");
 			);
-			if(!exists(item.IssueDate))then(
+			if(!exists(item.DocumentNumber))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DocumentNumber");
+			);
+			if(!exists(item.IssueDate) or 
+				(!System.String.IsNullOrWhiteSpace(item.IssueDate) and item.IssueDate not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"))then
+			(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IssueDate");
 			);
+			if(!exists(item.IssuerName))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IssuerName");
+			);
+			if(!exists(item.DocumentIssuancePlace))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DocumentIssuancePlace");
+			);
+			if(!exists(item.Citizenship))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".Citizenship");
+			);
+			if(!exists(item.IdCard))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
+			);
+			
 			itemIndex++;
 		);
 	);
@@ -275,16 +303,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	(
 		foreach item in GeneralCompanyInfo.LegalRepresentatives do
 		(			
-			representative:= Create(POWRS.PaymentLink.Onboarding.LegalRepresentative);
-
-			if(!System.String.IsNullOrWhiteSpace(item.DateOfIssue)) then 
-			(
-				representative.DateOfIssue:= System.DateTime.ParseExact(item.DateOfIssue, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture)
-			);	 
-			if(!System.String.IsNullOrWhiteSpace(item.DateOfBirth)) then 
-			(
-				representative.DateOfBirth:= System.DateTime.ParseExact(item.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture)
-			);
+			representative:= Create(POWRS.PaymentLink.Onboarding.LegalRepresentative);		
 
 			representative.FullName:= item.FullName;
 			representative.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.None;
@@ -293,7 +312,16 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			representative.IsPoliticallyExposedPerson:= item.IsPoliticallyExposedPerson;
 			representative.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
 			representative.IdCard:= item.IdCard;
-
+			
+			if(!System.String.IsNullOrWhiteSpace(item.DateOfIssue)) then 
+			(
+				representative.DateOfIssue:= System.DateTime.ParseExact(item.DateOfIssue, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture)
+			);	 
+			if(!System.String.IsNullOrWhiteSpace(item.DateOfBirth)) then 
+			(
+				representative.DateOfBirth:= System.DateTime.ParseExact(item.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture)
+			);
+			
 			legalRepresentatives.Add(representative);
 		);
 	);	  
@@ -312,6 +340,79 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	Return(0);
 );
 
+SaveCompanyStructure(CompanyStructure, UserName):=
+(
+	companyStructure:= select top 1 * from POWRS.PaymentLink.Onboarding.CompanyStructure where UserName = UserName;
+	alreadyExists:= companyStructure != null;
+
+	if(companyStructure == null) then 
+	(
+		companyStructure:= Create(POWRS.PaymentLink.Onboarding.CompanyStructure, UserName);
+	);
+
+	countriesOfBussines:= Create(System.Collections.Generic.List,System.String);
+	owners:= Create(System.Collections.Generic.List, POWRS.PaymentLink.Onboarding.Owner);
+	
+	companyStructure.NameOfTheForeignExchangeAndIDNumber:= CompanyStructure.NameOfTheForeignExchangeAndIDNumber;
+	companyStructure.PercentageOfForeignUsers:= CompanyStructure.PercentageOfForeignUsers;
+	companyStructure.OffShoreFoundationInOwnerStructure:= CompanyStructure.OffShoreFoundationInOwnerStructure;
+	companyStructure.OwnerStructure:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.OwnerStructure, CompanyStructure.OwnerStructure) ??? POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.None;
+	if(CompanyStructure.CountriesOfBusiness != null and CompanyStructure.CountriesOfBusiness.Length > 0) then 
+	(
+		foreach(country in CompanyStructure.CountriesOfBusiness) do 
+		(
+			countriesOfBussines.Add(country);
+		);
+	);
+
+	if(CompanyStructure.Owners != null and CompanyStructure.Owners.Length > 0) then 
+	(
+		foreach(item in CompanyStructure.Owners) do
+		(
+			owner:= Create(POWRS.PaymentLink.Onboarding.Owner);
+			
+			owner.FullName:= item.FullName;
+			owner.PersonalNumber:= item.PersonalNumber;
+			owner.PlaceOfBirth:= item.PlaceOfBirth;
+			owner.AddressAndPlaceOfResidence:= item.AddressAndPlaceOfResidence;
+			owner.IsPoliticallyExposedPerson:= item.IsPoliticallyExposedPerson;
+			owner.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
+			owner.OwningPercentage:= item.OwningPercentage;
+			owner.Role:= item.Role;
+			owner.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.None;
+			owner.DocumentNumber:= item.DocumentNumber;
+			owner.IssuerName:= item.IssuerName;
+			owner.DocumentIssuancePlace:= item.DocumentIssuancePlace;
+			owner.Citizenship:= item.Citizenship;
+			owner.IdCard:= item.IdCard;
+
+			if(item.DateOfBirth != null) then 
+			(
+				owner.DateOfBirth:= System.DateTime.ParseExact(item.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
+			);
+			if(item.IssueDate != null) then 
+			(
+				owner.IssueDate:= System.DateTime.ParseExact(item.IssueDate, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
+			);
+
+			owners.Add(owner);
+		);
+
+		companyStructure.Owners:= owners;
+	);
+
+	if(alreadyExists) then 
+	(
+		Waher.Persistence.Database.Update(companyStructure);
+	)
+	else 
+	(
+		Waher.Persistence.Database.Insert(companyStructure);
+	);
+
+	Return(0);
+);
+
 try
 (
 	currentMethod := "ValidatePostedData"; 
@@ -321,6 +422,10 @@ try
 	currentMethod := "SaveGeneralCompanyInfo"; 
 	methodResponse:= SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
 	Log.Informational("Finised method SaveGeneralCompanyInfo. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
+	
+	currentMethod := "SaveCompanyStructure"; 
+	methodResponse:= SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username);
+	Log.Informational("Finised method SaveCompanyStructure. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
 	
 	Log.Informational("Succeffully saved OnBoarding data.", logObjectID, logActor, logEventID, null);
 	{

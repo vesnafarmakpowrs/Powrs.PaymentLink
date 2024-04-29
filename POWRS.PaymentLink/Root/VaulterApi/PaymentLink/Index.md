@@ -1038,14 +1038,14 @@ Call this resource save data for onboarding.
         "TaxLiability": false,
         "CompanyWebsite": "",
         "CompanyWebshop": "",
-        "LegalRepresentatives":[            -> Field 'FullName' is mandatory for 'save'. If nothing populated then send empty array []
+        "LegalRepresentatives":[                        -> Field 'FullName' is mandatory for 'save'. If nothing populated then send empty array []
             {
-                "FullName": "Mirko Kruščić",            -> Mandatory for 'save', if nothing populated send empty array []
+                "FullName": "Mirko Kruščić",            -> Mandatory for 'save'
                 "DateOfBirth": "25/04/2024",
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
                 "StatementOfOfficialDocument": "",
                 "IdCard": "",
-                "DocumentType": "IDCard",               -> Can be string 'IDCard' or 'Passport'
+                "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "PlaceOfIssue": "",
                 "DateOfIssue": "25/04/2024",
                 "DocumentNumber": ""
@@ -1053,24 +1053,29 @@ Call this resource save data for onboarding.
         ]
    },
    "CompanyStructure":{
-        "CountriesOfBusiness": "",
-        "PercentageOfForeignUsers": "",
-        "OffShoreFoundationInOwnerStructure": "",
-        "OwnerStructure": "",
-        "Owners":[
+        "CountriesOfBusiness": "Serbia, Croatia, Montenegro",
+        "NameOfTheForeignExchangeAndIDNumber": "",
+        "OffShoreFoundationInOwnerStructure": false,    
+        "PercentageOfForeignUsers": 0,                  
+        "OwnerStructure": "Person",                     -> Can be string: 'Person', 'Company' or 'PersonAndCompany'
+        "Owners":[                                      -> Field 'FullName' is mandatory for 'save'. If nothing populated then send empty array []
             {
-                "FullName": "",
+                "FullName": "",                         -> Mandatory for 'save'
                 "PersonalNumber": "",
-                "PlaceOfBirth": "",
-                "OfficialOfRepublicOfSerbia": "",
-                "DocumentType": "IDCard",               -> Can be string 'IDCard' or 'Passport'
-                "DocumentNumber": "",
-                "IssuerName": "",
-                "Citizenship": "",
-                "OwningPercentage": 25,
-                "Role": "",
                 "DateOfBirth": "25/04/2024",
-                "IssueDate": "25/04/2024"
+                "PlaceOfBirth": "",
+                "AddressAndPlaceOfResidence": "",
+                "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
+                "StatementOfOfficialDocument": "",
+                "OwningPercentage": 25.1,
+                "Role": "",
+                "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
+                "DocumentNumber": "",
+                "IssueDate": "25/04/2024",
+                "IssuerName": "",
+                "DocumentIssuancePlace": "",
+                "Citizenship": "",
+                "IdCard": ""
             }
         ]
    },

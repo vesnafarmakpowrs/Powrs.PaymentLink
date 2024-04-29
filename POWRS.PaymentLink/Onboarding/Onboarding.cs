@@ -1,5 +1,4 @@
 ﻿using POWRS.PaymentLink.Onboarding.Documents;
-using POWRS.PaymentLink.Onboarding.Structure;
 using System;
 using System.Threading.Tasks;
 using Waher.Persistence;

@@ -1,7 +1,7 @@
 ﻿using POWRS.PaymentLink.Onboarding.Enums;
 using System;
 
-namespace POWRS.PaymentLink.Onboarding.Structure
+namespace POWRS.PaymentLink.Onboarding
 {
     public class Owner
     {
@@ -9,15 +9,17 @@ namespace POWRS.PaymentLink.Onboarding.Structure
         private string personalNumber;
         private DateTime? dateOfBirth;
         private string placeOfBirth;
-        private bool officialOfRepublicOfSerbia;
+        private string addressAndPlaceOfResidence;
+        private bool isPoliticallyExposedPerson;
+        private string statementOfOfficialDocument;
+        private decimal owningPercentage;
+        private string role;
         private DocumentType documentType;
         private string documentNumber;
         private DateTime? issueDate;
         private string issuerName;
+        private string documentIssuancePlace;
         private string citizenship;
-        private int? owningPercentage;
-        private string role;
-        private string statementOfOfficialDocument;
         private string idCard;
 
         public string FullName
@@ -43,11 +45,15 @@ namespace POWRS.PaymentLink.Onboarding.Structure
             get { return placeOfBirth; }
             set { placeOfBirth = value; }
         }
-
-        public bool OfficialOfRepublicOfSerbia
+        public string AddressAndPlaceOfResidence
         {
-            get { return officialOfRepublicOfSerbia; }
-            set { officialOfRepublicOfSerbia = value; }
+            get { return addressAndPlaceOfResidence; }
+            set { addressAndPlaceOfResidence = value; }
+        }
+        public bool IsPoliticallyExposedPerson
+        {
+            get { return isPoliticallyExposedPerson; }
+            set { isPoliticallyExposedPerson = value; }
         }
 
         public DocumentType DocumentType
@@ -74,13 +80,19 @@ namespace POWRS.PaymentLink.Onboarding.Structure
             set { issuerName = value; }
         }
 
+        public string DocumentIssuancePlace
+        {
+            get { return documentIssuancePlace; }
+            set { documentIssuancePlace = value; }
+        }
+
         public string Citizenship
         {
             get { return citizenship; }
             set { citizenship = value; }
         }
 
-        public int? OwningPercentage
+        public decimal OwningPercentage
         {
             get { return owningPercentage; }
             set { owningPercentage = value; }
@@ -92,7 +104,16 @@ namespace POWRS.PaymentLink.Onboarding.Structure
             set { role = value; }
         }
 
-        public string StatementOfOfficialDocument { get => statementOfOfficialDocument; set => statementOfOfficialDocument = value; }
-        public string IdCard { get => idCard; set => idCard = value; }
+        public string StatementOfOfficialDocument
+        {
+            get { return statementOfOfficialDocument; }
+            set { statementOfOfficialDocument = value; }
+        }
+
+        public string IdCard
+        {
+            get { return idCard; }
+            set { idCard = value; }
+        }
     }
 }

@@ -78,6 +78,15 @@ namespace POWRS.PaymentLink.Onboarding
 
                                 property.SetValue(instance, parsedDecimal);
                             }
+                            else if (property.PropertyType == typeof(double))
+                            {
+                                if (!double.TryParse(value?.ToString(), out double parsedDouble))
+                                {
+                                    throw new Exception();
+                                }
+
+                                property.SetValue(instance, parsedDouble);
+                            }
                             else if (property.PropertyType == typeof(int))
                             {
                                 if (!int.TryParse(value?.ToString(), out int parsedInt))
