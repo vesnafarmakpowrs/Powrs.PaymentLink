@@ -977,7 +977,11 @@ Token is required. Request body is empty.
         "UserName": "AgentPLG"
     },
     "CompanyStructure": {
-        "CountriesOfBusiness": null,
+        "CountriesOfBusiness": [
+            "Serbia",
+            "Croatia",
+            "Montenegro"
+        ],
         "NameOfTheForeignExchangeAndIDNumber": "",
         "PercentageOfForeignUsers": 10,
         "OffShoreFoundationInOwnerStructure": false,
@@ -1007,7 +1011,7 @@ Token is required. Request body is empty.
         "UserName": "AgentPLG"
     },
     "BusinessData": {
-        "BusinessModel": "0",
+        "BusinessModel": "My usiness model",
         "RetailersNumber": 0,
         "ExpectedMonthlyTurnover": 0,
         "ExpectedYearlyTurnover": 0,

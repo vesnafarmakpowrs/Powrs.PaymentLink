@@ -354,6 +354,7 @@ SaveCompanyStructure(CompanyStructure, UserName):=
 	owners:= Create(System.Collections.Generic.List, POWRS.PaymentLink.Onboarding.Owner);
 	
 	companyStructure.UserName:= UserName;
+	companyStructure.CountriesOfBusinessSetValue(CompanyStructure.CountriesOfBusiness);
 	companyStructure.NameOfTheForeignExchangeAndIDNumber:= CompanyStructure.NameOfTheForeignExchangeAndIDNumber;
 	companyStructure.PercentageOfForeignUsers:= CompanyStructure.PercentageOfForeignUsers;
 	companyStructure.OffShoreFoundationInOwnerStructure:= CompanyStructure.OffShoreFoundationInOwnerStructure;
