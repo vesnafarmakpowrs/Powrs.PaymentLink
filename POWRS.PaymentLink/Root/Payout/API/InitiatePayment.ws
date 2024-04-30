@@ -7,7 +7,7 @@
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
-    responseObject:= {"Succees": true, "Response": null, "Message": System.String.Empty};
+    responseObject:= {"Success": true, "Response": null, "Message": System.String.Empty};
 	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then 
 	(
 		Error("Not configured");
@@ -65,8 +65,8 @@ try
 )
 catch
 (
- responseObject.Success:= false
- responseObject.Message:= Exception.Message
+ responseObject.Success:= false;
+ responseObject.Message:= Exception.Message;
  Log.Error(Exception.Message, null);
 );
 

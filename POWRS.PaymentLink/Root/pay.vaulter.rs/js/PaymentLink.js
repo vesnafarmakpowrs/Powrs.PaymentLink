@@ -150,9 +150,6 @@ function InitiatePaymentForm(ipsOnly, onSuccess) {
             "ipsOnly": ipsOnly
         },
         (response) => {
-            if (!response.OK) {
-                TransactionFailed(null);
-            }
             onSuccess(response);
         },
         (error) => {
@@ -168,7 +165,7 @@ function StartPayment() {
 }
 
 function GenerateIPSForm() {
-    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);   
+    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
 }
 
 function PaymentCompleted(Result) {
@@ -264,32 +261,28 @@ function openBase64String(base64String) {
 }
 
 function FillAndSubmitPayspotIPSForm(ResponseData) {
-
     if (ResponseData == null) {
         return;
     }
+    if (ResponseData.Success) {
+        let data = ResponseData.Response;
+        // Fill the form fields with data from the API response
+        document.querySelector('input[name="companyId"]').value = data.CompanyId;
+        document.querySelector('input[name="merchantOrderID"]').value = data.MerchantOrderId;
+        document.querySelector('input[name="merchantOrderAmount"]').value = data.MerchantOrderAmount;
+        document.querySelector('input[name="merchantCurrencyCode"]').value = data.MerchantCurrencyCode;
+        document.querySelector('input[name="language"]').value = data.Language;
+        document.querySelector('input[name="callbackURL"]').value = data.CallbackURL;
+        document.querySelector('input[name="successURL"]').value = data.SuccessURL;
+        document.querySelector('input[name="cancelURL"]').value = data.CancelURL;
+        document.querySelector('input[name="errorURL"]').value = data.ErrorURL;
+        document.querySelector('input[name="hash"]').value = data.Hash;
+        document.querySelector('input[name="rnd"]').value = data.Rnd;
+        document.querySelector('input[name="currentDate"]').value = data.CurrentDate;
 
-    if (!ResponseData.Success) {
-        console.log(ResponseData);
-        return;
+        var payspotForm = document.getElementById('payspotForm');
+
+        payspotForm.action = data.SubmitAddress;
+        payspotForm.submit();
     }
-    let data = ResponseData.Response;
-    // Fill the form fields with data from the API response
-    document.querySelector('input[name="companyId"]').value = data.CompanyId;
-    document.querySelector('input[name="merchantOrderID"]').value = data.MerchantOrderId;
-    document.querySelector('input[name="merchantOrderAmount"]').value = data.MerchantOrderAmount;
-    document.querySelector('input[name="merchantCurrencyCode"]').value = data.MerchantCurrencyCode;
-    document.querySelector('input[name="language"]').value = data.Language;
-    document.querySelector('input[name="callbackURL"]').value = data.CallbackURL;
-    document.querySelector('input[name="successURL"]').value = data.SuccessURL;
-    document.querySelector('input[name="cancelURL"]').value = data.CancelURL;
-    document.querySelector('input[name="errorURL"]').value = data.ErrorURL;
-    document.querySelector('input[name="hash"]').value = data.Hash;
-    document.querySelector('input[name="rnd"]').value = data.Rnd;
-    document.querySelector('input[name="currentDate"]').value = data.CurrentDate;
-
-    var payspotForm = document.getElementById('payspotForm');
-
-    payspotForm.action = data.SubmitAddress;
-    payspotForm.submit();
 }
