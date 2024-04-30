@@ -8,7 +8,6 @@ try
 (
 	onBoardingData:= POWRS.PaymentLink.Onboarding.Onboarding.GetOnboardingData(SessionUser.username);
 	Log.Informational("Succeffully get OnBoarding data. obj: " + Str(onBoardingData), logObjectID, logActor, logEventID, null);
-
 )
 catch
 (

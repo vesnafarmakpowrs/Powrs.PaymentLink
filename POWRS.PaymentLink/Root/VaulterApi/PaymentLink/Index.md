@@ -1029,10 +1029,11 @@ Token is required. Request body is empty.
     },
     "LegalDocuments": {
         "BusinessCooperationRequest": null,
-        "ContractWithVaulter": null,
-        "ContractWithEMI": null,
-        "PromissoryNote": null,
-        "UserName": null
+        "ContractWithVaulter": "\\Powrs\\ContractWithVaulter.pdf",
+        "ContractWithEMI": "\\Powrs\\ContractWithEMI.pdf",
+        "PromissoryNote": "\\Powrs\\PromissoryNote.pdf",
+        "PoliticalStatement": "\\Powrs\\PoliticalStatement.pdf",
+        "UserName": "AgentPLG"
     }
 }
 ````
@@ -1069,8 +1070,10 @@ Call this resource save data for onboarding.
                 "FullName": "Mirko Kruščić",            -> Mandatory for 'save'
                 "DateOfBirth": "25/04/2024",            -> If user don't select date, send empty string
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
-                "StatementOfOfficialDocument": "",
-                "IdCard": "",
+				"StatementOfOfficialDocument_IsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
+                "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
+				"IdCard_IsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
+                "IdCard": "",                           -> if it is new file uplad then base 64 string, else string from API
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "PlaceOfIssue": "",
                 "DateOfIssue": "25/04/2024",            -> If user don't select date, send empty string
@@ -1092,7 +1095,8 @@ Call this resource save data for onboarding.
                 "PlaceOfBirth": "",
                 "AddressAndPlaceOfResidence": "",
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
-                "StatementOfOfficialDocument": "",
+				"StatementOfOfficialDocument_IsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
+                "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
                 "OwningPercentage": 25.1,
                 "Role": "",
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
@@ -1101,12 +1105,13 @@ Call this resource save data for onboarding.
                 "IssuerName": "",
                 "DocumentIssuancePlace": "",
                 "Citizenship": "",
-                "IdCard": ""
+				"IdCard_IsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
+                "IdCard": ""                            -> if it is new file uplad then base 64 string, else string from API
             }
         ]
    },
    "BusinessData":{
-        "BusinessModel": "",
+        "BusinessModel": "My business model",
         "RetailersNumber": 0,
         "ExpectedMonthlyTurnover": 0,
         "ExpectedYearlyTurnover": 0,
@@ -1120,6 +1125,16 @@ Call this resource save data for onboarding.
         "PeriodFromPaymentToDeliveryInDays": 0,
         "ComplaintsPerMonth": 0,
         "ComplaintsPerYear": 0
+   },
+   "LegalDocuments": {
+        "ContractWithEMI_IsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
+        "ContractWithEMI": "",                      -> if it is new file uplad then base 64 string, else string from API
+        "ContractWithVaulter_IsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
+        "ContractWithVaulter": "",                  -> if it is new file uplad then base 64 string, else string from API
+        "PromissoryNote_IsNewUpload": false,        -> if it is new file upload then 'true', else 'false'
+        "PromissoryNote": "",                       -> if it is new file uplad then base 64 string, else string from API
+        "PoliticalStatement_IsNewUpload": false,    -> if it is new file upload then 'true', else 'false'
+        "PoliticalStatement": ""                    -> if it is new file uplad then base 64 string, else string from API
    }
 }
 ````

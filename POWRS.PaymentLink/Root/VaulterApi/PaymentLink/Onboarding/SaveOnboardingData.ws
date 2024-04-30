@@ -4,6 +4,7 @@ if(Posted == null) then BadRequest("Data could not be null");
 if(!exists(Posted.GeneralCompanyInformation) or Posted.GeneralCompanyInformation == null) then BadRequest("GeneralCompanyInformation could not be null");
 if(!exists(Posted.CompanyStructure) or Posted.CompanyStructure == null) then BadRequest("CompanyStructure could not be null");
 if(!exists(Posted.BusinessData) or Posted.BusinessData == null) then BadRequest("BusinessData could not be null");
+if(!exists(Posted.LegalDocuments) or Posted.LegalDocuments == null) then BadRequest("LegalDocuments could not be null");
 
 logObjectID := SessionUser.username;
 logEventID := "SaveOnboardingData.ws";
@@ -71,6 +72,7 @@ ValidatePostedData(Posted) := (
 		foreach item in Posted.GeneralCompanyInformation.LegalRepresentatives do
 		(
 			IsPoliticallyExposedPerson := false;
+			isNewUpload := false;
 			
 			if(!exists(item.FullName) or
 				System.String.IsNullOrWhiteSpace(item.FullName))then
@@ -87,6 +89,9 @@ ValidatePostedData(Posted) := (
 			)else if(item.IsPoliticallyExposedPerson != null) then (
 				IsPoliticallyExposedPerson := item.IsPoliticallyExposedPerson;
 			);
+			if(!exists(item.StatementOfOfficialDocument_IsNewUpload))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocument_IsNewUpload");
+			);
 			if(!exists(item.StatementOfOfficialDocument))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocument");
 			)else if (IsPoliticallyExposedPerson) then(
@@ -94,8 +99,17 @@ ValidatePostedData(Posted) := (
 					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocument");
 				);
 			);
+			if(!exists(item.IdCard_IsNewUpload))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard_IsNewUpload");
+			)else(
+				isNewUpload := item.IdCard_IsNewUpload;
+			);
 			if(!exists(item.IdCard))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
+			)else if(isNewUpload)then (
+				if(System.String.IsNullOrWhiteSpace(item.IdCard))then (
+					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
+				);
 			);
 			if(!exists(item.DocumentType))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DocumentType");
@@ -141,6 +155,7 @@ ValidatePostedData(Posted) := (
 		itemIndex := 0;
 		foreach item in Posted.CompanyStructure.Owners do
 		(
+			isNewUpload := false;
 			IsPoliticallyExposedPerson:= false;
 			
 			if(!exists(item.FullName))then
@@ -165,6 +180,9 @@ ValidatePostedData(Posted) := (
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IsPoliticallyExposedPerson");
 			)else if(item.IsPoliticallyExposedPerson != null) then (
 				IsPoliticallyExposedPerson := item.IsPoliticallyExposedPerson;
+			);
+			if(!exists(item.StatementOfOfficialDocument_IsNewUpload))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument_IsNewUpload");
 			);
 			if(!exists(item.StatementOfOfficialDocument))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
@@ -198,9 +216,18 @@ ValidatePostedData(Posted) := (
 			);
 			if(!exists(item.Citizenship))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".Citizenship");
+			);			
+			if(!exists(item.IdCard_IsNewUpload))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCard_IsNewUpload");
+			)else(
+				isNewUpload := item.IdCard_IsNewUpload;
 			);
 			if(!exists(item.IdCard))then(
-				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCard");
+			)else if(isNewUpload)then (
+				if(System.String.IsNullOrWhiteSpace(item.IdCard))then (
+					errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCard");
+				);
 			);
 			
 			itemIndex++;
@@ -249,7 +276,57 @@ ValidatePostedData(Posted) := (
 	if(!exists(Posted.BusinessData.ComplaintsPerYear))then(
 		errors.Add("BusinessData.ComplaintsPerYear");
 	);
-		
+	
+	
+	if(!exists(Posted.LegalDocuments.ContractWithEMI_IsNewUpload))then(
+		errors.Add("LegalDocuments.ContractWithEMI_IsNewUpload");
+	);
+	if(!exists(Posted.LegalDocuments.ContractWithEMI))then(
+		errors.Add("LegalDocuments.ContractWithEMI");
+	)else(
+		if(Posted.LegalDocuments.ContractWithEMI_IsNewUpload and 
+			System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.ContractWithEMI))then
+		(
+			errors.Add("LegalDocuments.ContractWithEMI");
+		);
+	);
+	if(!exists(Posted.LegalDocuments.ContractWithVaulter_IsNewUpload))then(
+		errors.Add("LegalDocuments.ContractWithVaulter_IsNewUpload");
+	);
+	if(!exists(Posted.LegalDocuments.ContractWithVaulter))then(
+		errors.Add("LegalDocuments.ContractWithVaulter");
+	)else(
+		if(Posted.LegalDocuments.ContractWithVaulter_IsNewUpload and 
+			System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.ContractWithVaulter))then
+		(
+			errors.Add("LegalDocuments.ContractWithVaulter");
+		);
+	);
+	if(!exists(Posted.LegalDocuments.PromissoryNote_IsNewUpload))then(
+		errors.Add("LegalDocuments.PromissoryNote_IsNewUpload");
+	);
+	if(!exists(Posted.LegalDocuments.PromissoryNote))then(
+		errors.Add("LegalDocuments.PromissoryNote");
+	)else(
+		if(Posted.LegalDocuments.PromissoryNote_IsNewUpload and 
+			System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.PromissoryNote))then
+		(
+			errors.Add("LegalDocuments.PromissoryNote");
+		);
+	);
+	if(!exists(Posted.LegalDocuments.PoliticalStatement_IsNewUpload))then(
+		errors.Add("LegalDocuments.PoliticalStatement_IsNewUpload");
+	);
+	if(!exists(Posted.LegalDocuments.PoliticalStatement))then(
+		errors.Add("LegalDocuments.PoliticalStatement");
+	)else(
+		if(Posted.LegalDocuments.PoliticalStatement_IsNewUpload and 
+			System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.PoliticalStatement))then
+		(
+			errors.Add("LegalDocuments.PoliticalStatement");
+		);
+	);
+	
 	if(errors.Count > 0)then
 	(
 		Error(errors);
@@ -301,8 +378,15 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 
 	if(GeneralCompanyInfo.LegalRepresentatives != null and GeneralCompanyInfo.LegalRepresentatives.Length > 0) then
 	(
+		saveFileRoot := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
+		if(System.String.IsNullOrWhiteSpace(saveFileRoot)) then (
+			Error("No setting: OnBoardingFileRootPath");
+		);
+		
+		itemNo := 0;
 		foreach item in GeneralCompanyInfo.LegalRepresentatives do
-		(			
+		(
+			itemNo++;
 			representative:= Create(POWRS.PaymentLink.Onboarding.LegalRepresentative);		
 
 			representative.FullName:= item.FullName;
@@ -310,8 +394,34 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			representative.DocumentNumber:= item.DocumentNumber;
 			representative.PlaceOfIssue:= item.PlaceOfIssue;
 			representative.IsPoliticallyExposedPerson:= item.IsPoliticallyExposedPerson;
-			representative.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
-			representative.IdCard:= item.IdCard;
+			
+			if(item.StatementOfOfficialDocument_IsNewUpload)then(
+				if(!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument)) then 
+				(
+					fileName := "LegalRepresentative_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
+					fileSubRoot := "\\" + GeneralCompanyInfo.ShortName;
+					fileRootPath := saveFileRoot + fileSubRoot;
+					SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
+					
+					representative.StatementOfOfficialDocument:= fileSubRoot + "\\" + fileName;
+				);
+			)else (
+				representative.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
+			);
+			
+			if(item.IdCard_IsNewUpload)then(
+				if(!System.String.IsNullOrWhiteSpace(item.IdCard)) then 
+				(
+					fileName := "LegalRepresentative_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
+					fileSubRoot := "\\" + GeneralCompanyInfo.ShortName;
+					fileRootPath := saveFileRoot + fileSubRoot;
+					SaveFile(fileRootPath, fileName, item.IdCard);
+					
+					representative.IdCard:= fileSubRoot + "\\" + fileName;
+				);
+			)else(
+				representative.IdCard:= item.IdCard;				
+			);
 			
 			if(!System.String.IsNullOrWhiteSpace(item.DateOfIssue)) then 
 			(
@@ -340,7 +450,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	Return(0);
 );
 
-SaveCompanyStructure(CompanyStructure, UserName):=
+SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 (
 	companyStructure:= select top 1 * from POWRS.PaymentLink.Onboarding.CompanyStructure where UserName = UserName;
 	alreadyExists:= companyStructure != null;
@@ -362,8 +472,14 @@ SaveCompanyStructure(CompanyStructure, UserName):=
 
 	if(CompanyStructure.Owners != null and CompanyStructure.Owners.Length > 0) then 
 	(
+		saveFileRoot := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
+		if(System.String.IsNullOrWhiteSpace(saveFileRoot)) then (
+			Error("No setting: OnBoardingFileRootPath");
+		);
+		itemNo := 0;
 		foreach(item in CompanyStructure.Owners) do
 		(
+			itemNo++;
 			owner:= Create(POWRS.PaymentLink.Onboarding.Owner);
 			
 			owner.FullName:= item.FullName;
@@ -371,7 +487,6 @@ SaveCompanyStructure(CompanyStructure, UserName):=
 			owner.PlaceOfBirth:= item.PlaceOfBirth;
 			owner.AddressAndPlaceOfResidence:= item.AddressAndPlaceOfResidence;
 			owner.IsPoliticallyExposedPerson:= item.IsPoliticallyExposedPerson;
-			owner.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
 			owner.OwningPercentage:= item.OwningPercentage;
 			owner.Role:= item.Role;
 			owner.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard;
@@ -379,7 +494,34 @@ SaveCompanyStructure(CompanyStructure, UserName):=
 			owner.IssuerName:= item.IssuerName;
 			owner.DocumentIssuancePlace:= item.DocumentIssuancePlace;
 			owner.Citizenship:= item.Citizenship;
-			owner.IdCard:= item.IdCard;
+			
+			if(item.StatementOfOfficialDocument_IsNewUpload)then(
+				if(!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument)) then 
+				(
+					fileName := "Owner_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
+					fileSubRoot := "\\" + companyShortName;
+					fileRootPath := saveFileRoot + fileSubRoot;
+					SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
+					
+					owner.StatementOfOfficialDocument:= fileSubRoot + "\\" + fileName;
+				);
+			)else (
+				owner.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
+			);
+			
+			if(item.IdCard_IsNewUpload)then(
+				if(!System.String.IsNullOrWhiteSpace(item.IdCard)) then 
+				(
+					fileName := "Owner_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
+					fileSubRoot := "\\" + companyShortName;
+					fileRootPath := saveFileRoot + fileSubRoot;
+					SaveFile(fileRootPath, fileName, item.IdCard);
+					
+					owner.IdCard:= fileSubRoot + "\\" + fileName;
+				);
+			)else(
+				owner.IdCard:= item.IdCard;				
+			);
 
 			if(!System.String.IsNullOrWhiteSpace(item.DateOfBirth)) then 
 			(
@@ -446,6 +588,87 @@ SaveBusinessData(BusinessData, UserName):=
 	Return(0);
 );
 
+SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
+(
+	saveFileRoot := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
+	if(System.String.IsNullOrWhiteSpace(saveFileRoot)) then (
+		Error("No setting: OnBoardingFileRootPath");
+	);
+	fileSubRoot := "\\" + companyShortName;
+	fileRootPath := saveFileRoot + fileSubRoot;
+	
+
+	documents:= select top 1 * from POWRS.PaymentLink.Onboarding.LegalDocuments where UserName = UserName;
+	alreadyExists:= documents != null;
+
+	if(documents == null) then 
+	(
+		documents:= Create(POWRS.PaymentLink.Onboarding.LegalDocuments, UserName);
+	);
+
+	if(LegalDocuments.ContractWithEMI_IsNewUpload) then
+	(
+		fileName := "ContractWithEMI" + ".pdf";
+		SaveFile(fileRootPath, fileName, LegalDocuments.ContractWithEMI);
+		documents.ContractWithEMI:= fileSubRoot + "\\" + fileName;
+	)else (
+		documents.ContractWithEMI:= LegalDocuments.ContractWithEMI;
+	);
+	
+	if(LegalDocuments.ContractWithVaulter_IsNewUpload) then
+	(
+		fileName := "ContractWithVaulter" + ".pdf";
+		SaveFile(fileRootPath, fileName, LegalDocuments.ContractWithVaulter);
+		documents.ContractWithVaulter:= fileSubRoot + "\\" + fileName;
+	)else (
+		documents.ContractWithVaulter:= LegalDocuments.ContractWithVaulter;
+	);
+	
+	if(LegalDocuments.PromissoryNote_IsNewUpload) then
+	(
+		fileName := "PromissoryNote" + ".pdf";
+		SaveFile(fileRootPath, fileName, LegalDocuments.PromissoryNote);
+		documents.PromissoryNote:= fileSubRoot + "\\" + fileName;
+	)else (
+		documents.PromissoryNote:= LegalDocuments.PromissoryNote;
+	);
+	
+	if(LegalDocuments.PoliticalStatement_IsNewUpload) then
+	(
+		fileName := "PoliticalStatement" + ".pdf";
+		SaveFile(fileRootPath, fileName, LegalDocuments.PoliticalStatement);
+		documents.PoliticalStatement:= fileSubRoot + "\\" + fileName;
+	)else (
+		documents.PoliticalStatement:= LegalDocuments.PoliticalStatement;
+	);
+
+	if(alreadyExists) then 
+	(
+		Waher.Persistence.Database.Update(documents);
+	)
+	else
+	(
+		Waher.Persistence.Database.Insert(documents);
+	);
+
+	Return(0);
+);
+
+SaveFile(fileRootPath, fileName, fileBase64String):=
+(
+	if (!System.IO.Directory.Exists(fileRootPath)) then(
+		System.IO.Directory.CreateDirectory(fileRootPath);
+	);
+	
+	filePath := fileRootPath + "\\" + fileName;
+	fileBytes := System.Convert.FromBase64String(fileBase64String);
+	
+	System.IO.File.WriteAllBytes(filePath, fileBytes);
+	
+	return(1);
+);
+
+
 try
 (
 	currentMethod := "ValidatePostedData"; 
@@ -457,12 +680,17 @@ try
 	Log.Informational("Finised method SaveGeneralCompanyInfo. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
 	
 	currentMethod := "SaveCompanyStructure"; 
-	methodResponse:= SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username);
+	methodResponse:= SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username, Posted.GeneralCompanyInformation.ShortName);
 	Log.Informational("Finised method SaveCompanyStructure. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
 	
 	currentMethod := "SaveBusinessData"; 
 	methodResponse:= SaveBusinessData(Posted.BusinessData, SessionUser.username);
 	Log.Informational("Finised method SaveBusinessData. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
+	
+	currentMethod := "SaveLegalDocuments"; 
+	methodResponse:= SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username, Posted.GeneralCompanyInformation.ShortName);
+	Log.Informational("Finised method SaveLegalDocuments. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
+	
 	
 	Log.Informational("Succeffully saved OnBoarding data.", logObjectID, logActor, logEventID, null);
 	{
