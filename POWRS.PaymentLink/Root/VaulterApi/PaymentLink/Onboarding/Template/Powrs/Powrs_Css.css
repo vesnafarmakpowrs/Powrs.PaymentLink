@@ -1,0 +1,110 @@
+body {
+    margin: 10px;
+    font-family: Calibri, sans-serif;
+}
+
+h1 {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14pt;
+}
+
+p {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 12pt;
+    margin: 0pt;
+    margin-top: 11pt;
+}
+
+li {
+    display: block;
+}
+
+#l1 {
+    padding-left: 0pt;
+    counter-reset: c1 1;
+}
+
+#l1 > li > *:first-child:before {
+    counter-increment: c1;
+    content: counter(c1, decimal) ". ";
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 12pt;
+}
+
+#l1 > li:first-child > *:first-child:before {
+    counter-increment: c1 0;
+}
+
+
+table,
+tbody {
+    vertical-align: top;
+    overflow: visible;
+}
+
+.pagebreak {
+    clear: both;
+    page-break-after: always;
+}
+
+.pageHeader {
+    /* margin: 50px; */
+    padding: 20px;
+    text-align: center;
+    overflow: auto;
+    padding-top: 25pt;
+}
+
+.headerLogo {
+    display: inline-block;
+    padding-inline: 15px;
+    float: right;
+}
+.headerInfo {
+    display: inline-block;
+    padding-inline: 15px;
+    float: right;
+}
+
+.divContainer {
+    overflow: auto;
+}
+
+.companyDetailsFloatLeft {
+    display: inline-block;
+    float: left;
+}
+
+.companyDetailsFloatRight {
+    display: inline-block;
+    float: right;
+}
+
+
+/* ***************** UGOVOR ************************ */
+.pageContainer {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 1400px) {
+    .pageContainer {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+

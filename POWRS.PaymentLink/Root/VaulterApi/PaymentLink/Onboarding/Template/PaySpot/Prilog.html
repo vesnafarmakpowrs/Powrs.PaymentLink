@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Vaulter" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PaySpot</title>
+    <meta name="author" content="" />
+    <link rel="stylesheet" href="./Prilog_Css.css" />
+</head>
+<body>
+    <!-- ******************* PAGE 1 ******************* -->
+    <div class="pageContainer">
+        <div class="pageHeader">
+            <img src="./PaySpot_Logo.png" class="headerLogo" />
+            <img src="./PaySpot_CompanyInfo.png" class="headerInfo" />
+        </div>
+
+        <h1 style="margin-top: 35pt; padding-top: 2pt; padding-left: 5pt; text-indent: 0pt; text-align: left">
+            Prilog 1 - Tarifa naknada
+        </h1>
+        <br />
+
+        <!-- *** Detalji trgovca  -->
+        <div class="divContainer" style="margin-top: 15pt;">
+            <div class="companyDetailsFloatLeft">
+                <h1 style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+                    Novi Sad,
+                    <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{godina}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </u>godine
+                </h1>
+            </div>
+            
+            <div class="companyDetailsFloatRight">
+                <table style="border-collapse: collapse; margin-left: 3pt" cellspacing="0">
+                    <tr class="tbl1TR">
+                        <td class="tbl1TD">
+                            <p class="tbl1TD_paragraphHeader">
+                                Naziv Trgovca:
+                            </p>
+                        </td>
+                        <td class="tbl1TD_Underline">
+                            <p style="text-indent: 0pt; text-align: left">
+                                {{NazivTrgovca}}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr class="tbl1TR">
+                        <td class="tbl1TD">
+                            <p class="tbl1TD_paragraphHeader">MB:</p>
+                        </td>
+                        <td class="tbl1TD_Underline">
+                            <p style="text-indent: 0pt; text-align: left">
+                                {{MB}}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr class="tbl1TR">
+                        <td class="tbl1TD">
+                            <p class="tbl1TD_paragraphHeader">
+                                Adresa:
+                            </p>
+                        </td>
+                        <td class="tbl1TD_Underline">
+                            <p style="text-indent: 0pt; text-align: left">
+                                {{Adresa}}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br />
+
+        <!-- *** Tabela 1 -> procenti %  -->
+        <ol id="l1" style="margin-top: 35pt;">
+            <li data-list-text="1.">
+                <p style="padding-left: 23pt; text-indent: -17pt; text-align: left">
+                    Za uslugu prihvata platnih instrumenata na market place rešenju, PaySpot d.o.o. obračunava i
+                    naplaćuje sledeće naknade Trgovcu:
+                </p>
+                <br />
+                <table class="tbl2" cellspacing="0">
+                    <tr style="height: 21pt">
+                        <td style="background-color: #a4a4a4" colspan="6">
+                            <p class="s3" style="padding-top: 4pt; text-indent: 0pt; text-align: center">
+                                USLOVI PLAĆANJA KARTICAMA (I + II)
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 20pt">
+                        <td style="
+                                border-left-style: solid;
+                                border-left-width: 1pt;
+                                border-left-color: #c8c8c8;
+                                border-bottom-style: solid;
+                                border-bottom-width: 1pt;
+                                border-bottom-color: #c8c8c8;
+                                border-right-style: solid;
+                                border-right-width: 1pt;
+                                border-right-color: #c8c8c8;
+                            "
+                            colspan="6"
+                            bgcolor="#D9D9D9">
+                            <p class="s4" style="padding-top: 3pt; text-indent: 0pt; text-align: center; font-weight: 800;">
+                                I TRGOVAČKA NAKNADA ZA PRIHVAT PLATNE KARTICE (po transakciji)
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 49pt">
+                        <td style="width: 85pt" class="v2" bgcolor="#DEEAF6">
+                            <p class="s4"
+                               style="
+                                    padding-top: 6pt;
+                                    padding-left: 25pt;
+                                    padding-right: 23pt;
+                                    text-indent: -1pt;
+                                    text-align: left;
+                                ">
+                                Naknada prihvata
+                            </p>
+                        </td>
+                        <td style="width: 78pt" class="v2" bgcolor="#F1F1F1">
+                            <p class="s4 v3"
+                              >
+                                OTP Banca
+                            </p>
+                            <p class="s5 v3">Debit/ Prepaid, Credit i Business card</p>
+                        </td>
+                        <td style="width: 85pt" class="v2" bgcolor="#F1F1F1">
+                            <p class="s4"
+                               style="
+                                    padding-top: 6pt;
+                                    padding-left: 5pt;
+                                    padding-right: 17pt;
+                                    text-indent: 0pt;
+                                    text-align: justify;
+                                ">
+                                Ostale domaće banke <span class="s5">– Debit/ Prepaid card</span>
+                            </p>
+                        </td>
+                        <td style="width: 85pt" class="v2" bgcolor="#F1F1F1">
+                            <p class="s4"
+                               style="
+                                    padding-top: 6pt;
+                                    padding-left: 5pt;
+                                    padding-right: 17pt;
+                                    text-indent: 0pt;
+                                    text-align: justify;
+                                ">
+                                Ostale domaće banke <span class="s5">– Credit card</span>
+                            </p>
+                        </td>
+                        <td style="width: 78pt" class="v2" bgcolor="#F1F1F1">
+                            <p class="s4"
+                               style="
+                                    padding-top: 6pt;
+                                    padding-left: 5pt;
+                                    padding-right: 9pt;
+                                    text-indent: 0pt;
+                                    text-align: left;
+                                ">
+                                Ostale domaće banke <span class="s5">– Business card</span>
+                            </p>
+                        </td>
+                        <td style="width: 85pt" class="v2" bgcolor="#F1F1F1">
+                            <p class="s4"
+                               style="padding-top: 6pt; padding-left: 5pt; text-indent: 0pt; text-align: left">
+                                Internacionalne banke <span class="s5">– sve vrste kartica</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 25pt">
+                        <td style="width: 85pt" class="v2" bgcolor="#DEEAF6">
+                            <p class="s5"
+                               style="padding-top: 6pt; padding-left: 5pt; text-indent: 0pt; text-align: left">
+                                MasterCard card
+                            </p>
+                        </td>
+                        <td style="width: 78pt" class="v2">
+                            <p class="s5 v3">1,75%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5 v3">1,95%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5 v3">1,95%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 78pt" class="v2">
+                            <p class="s5 v3">2,65%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5 v3">3,55%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                    </tr>
+                    <tr style="height: 25pt">
+                        <td style="width: 85pt" class="v2" bgcolor="#DEEAF6">
+                            <p class="s5"
+                               style="padding-top: 6pt; padding-left: 5pt; text-indent: 0pt; text-align: left">
+                                Maestro card
+                            </p>
+                        </td>
+                        <td style="width: 78pt" class="v2">
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">1,75%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">1,95%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">1,95%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 78pt" class="v2">
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">2,65%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">3,55%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                    </tr>
+                    <tr style="height: 25pt">
+                        <td style="width: 85pt" class="v2" bgcolor="#DEEAF6">
+                            <p class="s5"
+                               style="padding-top: 6pt; padding-left: 5pt; text-indent: 0pt; text-align: left">
+                                Visa card
+                            </p>
+                        </td>
+                        <td style="width: 78pt" class="v2">
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">1,75%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">1,95%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">1,95%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 78pt" class="v2">
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">2,95%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">3,15%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                    </tr>
+                    <tr style="height: 25pt">
+                        <td style="width: 85pt" class="v2" bgcolor="#DEEAF6">
+                            <p class="s5 v4"
+                               style="padding-top: 6pt; padding-left: 5pt; text-indent: 0pt; text-align: left">
+                                Dina Card
+                            </p>
+                        </td>
+                        <td style="width: 78pt" class="v2">
+                            <p class="s5 v3">1,75%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5 v3">1,95%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5 v3">1,95%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 78pt" class="v2">
+                            <p class="s5 v3">2,15%</p>
+                            <p class="s5 v4">min 20,00</p>
+                        </td>
+                        <td style="width: 85pt" class="v2">
+                            <p class="s5 v3"
+                               style="padding-top: 6pt; padding-left: 28pt; text-indent: 0pt; text-align: left">
+                                /
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 23pt">
+                        <td style="width: 496pt" class="v2" colspan="6" bgcolor="#BEBEBE">
+                            <p class="s4" style="padding-top: 5pt; text-indent: 0pt; text-align: center">
+                                II NAKNADA ZA KORIŠĆENJE SERVISA PRIHVATA
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 40pt">
+                        <td style="width: 85pt" class="v2" bgcolor="#DEEAF6">
+                            <p class="s4"
+                               style="
+                                    padding-top: 7pt;
+                                    padding-left: 5pt;
+                                    padding-right: 4pt;
+                                    text-indent: 0pt;
+                                    text-align: center;
+                                ">
+                                Naknada na
+                            </p>
+                            <p class="s4"
+                               style="padding-left: 5pt; padding-right: 4pt; text-indent: 0pt; text-align: center">
+                                mesečnom nivou
+                            </p>
+                        </td>
+                        <td style="width: 411pt" class="v2" colspan="5">
+                            <p style="padding-top: 2pt; text-indent: 0pt; text-align: left">
+                                <br />
+                            </p>
+                            <p class="s5" style="text-indent: 0pt; text-align: center">Bez naknade</p>
+                        </td>
+                    </tr>
+                    <tr style="height: 24pt">
+                        <td style="width: 496pt" class="v2" colspan="6" bgcolor="#ADAAAA">
+                            <p class="s3" style="padding-top: 5pt; text-indent: 0pt; text-align: center">
+                                NAKNADA ZA PRIHVAT IPS PLAĆANJA
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 25pt">
+                        <td style="width: 85pt" class="v2" bgcolor="#DEEAF6">
+                            <p class="s4"
+                               style="padding-left: 5pt; padding-right: 4pt; text-indent: 0pt; text-align: center">
+                                IPS Plaćanja
+                            </p>
+                            <p class="s6"
+                               style="
+                                    padding-left: 5pt;
+                                    padding-right: 4pt;
+                                    text-indent: 0pt;
+                                    line-height: 11pt;
+                                    text-align: center;
+                                ">
+                                (“IPS Skeniraj”)
+                            </p>
+                        </td>
+                        <td style="width: 411pt" class="v2" colspan="5">
+                            <p class="s5" style="padding-top: 6pt; text-indent: 0pt; text-align: center">
+                                1%, min 20,00 RSD
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 24pt">
+                        <td style="width: 496pt" class="v2" colspan="6" bgcolor="#ADAAAA">
+                            <p class="s3" style="padding-top: 5pt; text-indent: 0pt; text-align: center">
+                                NAKNADA ZA PRENOS NOVČANIH SREDSTAVA
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 24pt">
+                        <td style="width: 85pt" class="v2" rowspan="2" bgcolor="#DEEAF6">
+                            <p style="padding-top: 5pt; text-indent: 0pt; text-align: left">
+                                <br />
+                            </p>
+                            <p class="s4" style="padding-left: 9pt; text-indent: 0pt; text-align: left">
+                                Nalog za prenos
+                            </p>
+                        </td>
+                        <td style="width: 163pt" class="v2" colspan="2">
+                            <p class="s5"
+                               style="padding-top: 5pt; padding-left: 51pt; text-indent: 0pt; text-align: left">
+                                Do 300.000,00
+                            </p>
+                        </td>
+                        <td style="width: 248pt" class="v2" colspan="3">
+                            <p class="s5" style="padding-top: 5pt; text-indent: 0pt; text-align: center">50,00 RSD</p>
+                        </td>
+                    </tr>
+                    <tr style="height: 24pt">
+                        <td style="width: 163pt" class="v2" colspan="2">
+                            <p class="s5"
+                               style="padding-top: 5pt; padding-left: 45pt; text-indent: 0pt; text-align: left">
+                                Preko 300.000,00
+                            </p>
+                        </td>
+                        <td style="width: 248pt" class="v2" colspan="3">
+                            <p class="s5" style="padding-top: 5pt; text-indent: 0pt; text-align: center">300,00 RSD</p>
+                        </td>
+                    </tr>
+                    <tr style="height: 24pt">
+                        <td style="width: 496pt" class="v2" colspan="6" bgcolor="#ADAAAA">
+                            <p class="s3" style="padding-top: 5pt; text-indent: 0pt; text-align: center">
+                                OSTALI USLOVI
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 89pt">
+                        <td style="width: 85pt" class="v2">
+                            <p style="text-indent: 0pt; text-align: left">
+                                <br />
+                            </p>
+                            <p class="s4"
+                               style="padding-left: 5pt; padding-right: 4pt; text-indent: 0pt; text-align: center">
+                                Rok za prenos novčanih sredstava
+                            </p>
+                        </td>
+                        <td style="width: 411pt" class="v2" colspan="5">
+                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+                                Transakcije realizovane putem platnih kartica <span class="s4">: </span>
+                                <span class="s5">do 4 radna dana od dana sačinjavanja obračuna kartičnih sistema plaćanja.</span>
+                            </p>
+                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+                                Transakcije realizovane putem IPS plaćanja:
+                                <span class="s5">1 radni dan od dana realizacije transakcije.</span>
+                            </p>
+                            <p class="s5"
+                               style="
+                                    padding-top: 12pt;
+                                    padding-left: 5pt;
+                                    padding-right: 4pt;
+                                    text-indent: 0pt;
+                                    text-align: justify;
+                                ">
+                                Nakon prijema novčanih sredstava od strane poslovnih banaka Banke, PaySpot vrši prenos
+                                novčanih sredstava najkasnije narednog poslovnog dana u skladu sa Terminskim planom na
+                                tekući račun Trgovca.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 31pt">
+                        <td style="width: 85pt" class="v2">
+                            <p class="s4"
+                               style="
+                                    padding-top: 8pt;
+                                    padding-left: 5pt;
+                                    padding-right: 4pt;
+                                    text-indent: 0pt;
+                                    text-align: center;
+                                ">
+                                LIMITI
+                            </p>
+                        </td>
+                        <td style="width: 411pt" class="v2" colspan="5">
+                            <p class="s5"
+                               style="padding-top: 2pt; padding-left: 5pt; text-indent: 0pt; text-align: left">
+                                Maksimalni iznos po transakciji platnom karticom je 600.000,00 RSD
+                            </p>
+                            <p class="s5" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+                                Maksimalni iznos po transakciji za IPS plaćanja je 300.000,00 RSD
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+        </ol>
+        
+        <p style="width: 100%; text-align: right; margin-top: 40pt;">
+            1
+        </p>
+    </div>
+
+    <!-- ******************* PAGE 2 ******************* -->
+    <div class="pagebreak"></div>
+    <div class="pageContainer">
+        <div class="pageHeader">
+            <img src="./PaySpot_Logo.png" class="headerLogo" />
+            <img src="./PaySpot_CompanyInfo.png" class="headerInfo" />
+        </div>
+
+        <h1 style="padding-top: 3pt; padding-left: 5pt; text-indent: 0pt; text-align: left; margin-top: 15pt;">Napomene:</h1>
+        <ul id="l2">
+            <li data-list-text="">
+                <p style="padding-top: 8pt; padding-left: 23pt; text-indent: -18pt; text-align: left">
+                    Trgovačka naknada se obračunava na ukupnu bruto vrednost robe ili usluga prodatih
+                    prihvatanjem e-commerce transakcije.
+                </p>
+            </li>
+            <li data-list-text="">
+                <p style="padding-left: 23pt; text-indent: -17pt; text-align: left">
+                    Iznos trgovačke naknade se odbija od iznosa transakcije i PaySpot neto iznos novčanih
+                    sredstava prenosi na račun Trgovca kod poslovne banke.
+                </p>
+            </li>
+            <li data-list-text="">
+                <p style="padding-left: 23pt; text-indent: -17pt; text-align: left">
+                    U pregledu ukupne trgovačke naknade prihvata platnih kartica su uračunati i troškovi OTP
+                    Banke a.d. Novi Sad, kao i međubankarske naknade i troškovi kartičnog sistema plaćanja (Visa, Master/Maestro, Dina).
+                </p>
+            </li>
+            <li data-list-text="">
+                <p style="padding-left: 23pt; text-indent: -18pt; line-height: 108%; text-align: left">
+                    Međubankarske naknade iznose do 0.2% za transakcije nastale debitnim karticama, odnosno do
+                    0.3% za transakcije nastale kreditnim karticama fizičkih lica u izdanju domaćih banaka.
+                </p>
+            </li>
+            <li data-list-text="">
+                <p style="padding-left: 23pt; text-indent: -17pt; line-height: 13pt; text-align: left">
+                    Za IPS plaćanja iznos međubankarske naknade iznosi 0,2%. Troškovi IPS NBS procesiranja
+                    transakcija iznose 1,00 RSD za transakcije do 600,00 RSD i 2,00 RSD za transakcije preko 600,00 RSD.
+                </p>
+            </li>
+            <li data-list-text="">
+                <p style="padding-left: 23pt; text-indent: -17pt; text-align: left">
+                    Sve naknade se obračunavaju i plaćaju u dinarima (RSD).
+                </p>
+            </li>
+        </ul>
+        <p style="padding-top: 2pt; text-indent: 0pt; text-align: left">
+        <br />
+        </p>
+        <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+            Informacije o troškovima kartičnih sistema su prikazane u tabeli ispod (tabela je informativnog karaktera.
+            Navedeni troškovi su sadržani u tabeli I).
+        </p>
+        <p style="text-indent: 0pt; text-align: left">
+            <br />
+        </p>
+        <table class="tbl3" cellspacing="0">
+            <tr style="height: 25pt">
+                <td style="width: 111pt" class="v1" bgcolor="#A6A6A6">
+                    <p class="s8" style="padding-top: 5pt; padding-left: 20pt; text-indent: 0pt; text-align: left">
+                        Kartična organizacija
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1" bgcolor="#A6A6A6">
+                    <p class="s8" style="padding-top: 5pt; padding-left: 36pt; text-indent: 0pt; text-align: left">
+                        Vrsta Kartice
+                    </p>
+                </td>
+                <td style="width: 124pt" class="v1" bgcolor="#A6A6A6">
+                    <p class="s8"
+                    style="
+                                padding-top: 4pt;
+                                padding-left: 9pt;
+                                padding-right: 2pt;
+                                text-indent: 0pt;
+                                line-height: 9pt;
+                                text-align: left;
+                            ">
+                        Iznos Međubankarske naknade
+                    </p>
+                </td>
+                <td style="width: 143pt" class="v1" bgcolor="#A6A6A6">
+                    <p class="s8"
+                    style="
+                                padding-top: 4pt;
+                                padding-left: 9pt;
+                                padding-right: 43pt;
+                                text-indent: 0pt;
+                                line-height: 9pt;
+                                text-align: left;
+                            ">
+                        Iznos troškova kartične organizacije
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 22pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        DinaCard
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Debitna</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">0.2%</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+                        RSD 1.8 po transakciji
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 22pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; text-align: left">DinaCard</p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Kreditna</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">0.3%</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+                        RSD 1.8 po transakciji
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 22pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        DinaCard
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Poslovna</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">od 0.3% do 0.83%</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+                        RSD 1.8 po transakciji
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 22pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        DinaCard
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Izdanja Banke</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 1pt; text-indent: 0pt; text-align: center">/</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10" style="text-indent: 0pt; text-align: center">/</p>
+                </td>
+            </tr>
+            <tr style="height: 29pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        VISA
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Debitna</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">0.2%</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10"
+                    style="
+                                padding-left: 5pt;
+                                padding-right: 24pt;
+                                text-indent: 0pt;
+                                line-height: 12pt;
+                                text-align: left;
+                            ">
+                        približno RSD 0.7 po transakciji plus 0.09% od iznosa transakcije
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 29pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; text-align: left">VISA</p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Kreditna</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">0.3%</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10"
+                    style="
+                                padding-left: 5pt;
+                                padding-right: 24pt;
+                                text-indent: 0pt;
+                                line-height: 12pt;
+                                text-align: left;
+                            ">
+                        približno RSD 0.7 po transakciji plus 0.09% od iznosa transakcije
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 29pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        VISA
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Poslovna</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">1.6%</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10"
+                    style="
+                                padding-left: 5pt;
+                                padding-right: 24pt;
+                                text-indent: 0pt;
+                                line-height: 12pt;
+                                text-align: left;
+                            ">
+                        približno RSD 0.7 po transakciji plus 0.09% od iznosa transakcije
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 29pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        VISA
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        Internacionalna
+                    </p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; padding-right: 2pt; text-indent: 0pt; text-align: left">
+                        od 1% do 3 % u zavisnosti od tipakartice i zemlje izdavaoca
+                    </p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left">
+                        približno RSD 5 po transakciji plus 0.39% od iznosa transakcije
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 29pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        VISA
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Izdanja Banke</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 1pt; text-indent: 0pt; text-align: center">/</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+                        0.09% od iznosa transakcije
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 29pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        MasterCard/Maestro
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Debitna</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">0.2%</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; padding-right: 24pt; text-indent: 0pt; text-align: left; line-height: 12pt;">
+                        približno RSD 1 po transakciji plus 0.25% od iznosa transakcije
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 29pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        MasterCard/Maestro
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Kreditna</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">0.3%</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; padding-right: 18pt; text-indent: 0pt; text-align: left; line-height: 12pt;">
+                        približno RSD 1 po transakciji plus 0.25% od iznosa transakcije
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 29pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        MasterCard/Maestro
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Poslovna</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; padding-right: 2pt; text-indent: 0pt; text-align: left; line-height: 12pt;">
+                        od 0.3% za transakcije do RSD 600, od 0.8% do 2.4% za transakcije preko RSD 600
+                    </p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10"
+                    style="
+                                padding-left: 5pt;
+                                padding-right: 24pt;
+                                text-indent: 0pt;
+                                line-height: 12pt;
+                                text-align: left;
+                            ">
+                        približno RSD 1 po transakciji plus 0.25% od iznosa transakcije
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 29pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        MasterCard/Maestro
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Internacionalna</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; padding-right: 2pt; text-indent: 0pt; text-align: left; line-height: 12pt;">
+                        od 1.14% do 3% u zavisnosti od tipakartice i zemlje izdavaoca
+                    </p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; padding-right: 24pt; text-indent: 0pt; text-align: left; line-height: 12pt;">
+                        približno RSD 10 po transakciji plus 0.80% od iznosa transakcije
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 29pt">
+                <td style="width: 111pt" class="v1">
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left">
+                        MasterCard/Maestro
+                    </p>
+                </td>
+                <td style="width: 110pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left">Izdanja Banke</p>
+                </td>
+                <td style="width: 124pt" class="v1">
+                    <p class="s10" style="padding-left: 1pt; text-indent: 0pt; text-align: center">/</p>
+                </td>
+                <td style="width: 143pt" class="v1">
+                    <p class="s10" style="padding-left: 5pt; text-indent: 0pt; text-align: left; line-height: 12pt;">
+                        0.06% od iznosa transakcije
+                    </p>
+                </td>
+            </tr>
+        </table>
+        
+        <p style="width: 100%; text-align: right; margin-top: 150pt;">
+            2
+        </p>
+    </div>
+
+    <!-- ******************* PAGE 3 ******************* -->
+    <div class="pagebreak"></div>
+    <div class="pageContainer">
+        <div class="pageHeader">
+            <img src="./PaySpot_Logo.png" class="headerLogo" />
+            <img src="./PaySpot_CompanyInfo.png" class="headerInfo" />
+        </div>
+
+        <p style="padding-top: 11pt; padding-left: 5pt; text-indent: 0pt; text-align: left">
+            Ukoliko ste saglasni sa ovom Ponudom molimo vas da je potpišete i overite (ukoliko koristite pečat u vašem
+            poslovanju).
+        </p>
+        <br />
+
+        <table class="tbl4">
+            <tr>
+                <td class="tbl4TD_wide">
+                    {{Company Name}}
+                </td>
+                <td class="tbl4TD_narrowly"></td>
+                <td class="tbl4TD_wide"><p>PAYSPOT DOO, NOVI SAD</p></td>
+            </tr>
+            <tr style="height: 25pt;">
+                <td>&nbsp;</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <u>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </u>
+                </td>
+                <td></td>
+                <td>
+                    <u>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </u>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <u>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </u>
+                    <span>, direktor</span>
+                </td>
+                <td></td>
+                <td><p>Dubravka Bjekić, direktor</p></td>
+            </tr>
+        </table>
+        <p style="width: 100%; text-align: right; margin-top: 650pt;">
+            3
+        </p>
+    </div>
+
+</body>
+</html>
