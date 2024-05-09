@@ -9,7 +9,7 @@ h1 {
     font-style: normal;
     font-weight: bold;
     text-decoration: none;
-    font-size: 14pt;
+    font-size: 15pt;
 }
 
 p {
@@ -18,11 +18,12 @@ p {
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
-    font-size: 12pt;
+    font-size: 13pt;
     margin: 0pt;
-    margin-top: 11pt;
+    margin-top: 12pt;
 }
 
+/*
 li {
     display: block;
 }
@@ -46,7 +47,7 @@ li {
 #l1 > li:first-child > *:first-child:before {
     counter-increment: c1 0;
 }
-
+*/
 
 table,
 tbody {

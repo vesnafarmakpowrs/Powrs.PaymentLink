@@ -492,6 +492,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\" />
+	  <Folder Include="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\" />
 	</ItemGroup>
 
 	<!-- build Serbian Production  package 

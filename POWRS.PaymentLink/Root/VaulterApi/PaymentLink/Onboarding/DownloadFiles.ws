@@ -10,8 +10,8 @@ logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
 try 
 (
-	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PaySpot";
-	htmlTemplatePath := fileRootPath + "\\Prilog.html"; 
+	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\Powrs";
+	htmlTemplatePath := fileRootPath + "\\Powrs.html"; 
 	if (!File.Exists(htmlTemplatePath)) then
 		Error("File does not exist");
 		
