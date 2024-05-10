@@ -1,0 +1,203 @@
+body {
+    margin: 10px;
+    font-family: Calibri, sans-serif;
+    text-align: justify;
+}
+
+h1 {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 15pt;
+}
+p {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 13pt;
+    margin: 0pt;
+    margin-top: 12pt;
+    /* margin-bottom: 12pt; */
+}
+
+.i {
+    margin-bottom: 12pt;
+    margin-left: -30pt;
+}
+.uDaljemTekstu {
+    margin-left: -30pt;
+}
+
+div {
+    font-size: 13pt;
+}
+
+.title {
+    margin-top: 40pt;
+}
+
+table,
+tbody {
+    vertical-align: top;
+    overflow: visible;
+}
+
+.pagebreak {
+    clear: both;
+    page-break-after: always;
+}
+
+.pageHeader {
+    /* margin: 50px; */
+    padding: 20px;
+    text-align: left;
+    overflow: auto;
+    padding-top: 15pt;
+}
+
+.headerLogo {
+    display: inline-block;
+    padding-inline: 15px;
+    /* float: left; */
+}
+.headerInfo {
+    display: inline-block;
+    padding-inline: 15px;
+    /* float: right; */
+}
+
+.pageContainer {
+    width: 50%;
+    margin-inline: auto;
+}
+
+@media (max-width: 1400px) {
+    .pageContainer {
+        width: 95%;
+    }
+}
+
+.divContainer {
+    overflow: auto;
+}
+
+.companyDetailsFloatLeft {
+    display: inline-block;
+    /* float: left; */
+}
+
+.companyDetailsFloatRight {
+    display: inline-block;
+    /* float: right; */
+}
+
+.tbl1TR {
+    height: 19pt;
+}
+
+.tbl1TD {
+    width: 65pt;
+}
+
+.tbl1TD_Underline {
+    width: 230pt;
+    border-bottom-style: solid;
+    border-bottom-width: 1pt;
+    border-bottom-color: #808080;
+}
+
+.tbl1TD_paragraphHeader {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 10pt;
+    padding-top: 3pt;
+    padding-right: 4pt;
+    text-indent: 0pt;
+    text-align: right;
+}
+
+.tbl2 {
+    border-collapse: collapse;
+    margin-inline: auto;
+    margin-top: 25pt;
+    width: 100%;
+}
+
+.tbl2 td {
+    border: 1pt solid #c8c8c8;
+}
+
+.tbl3 {
+    border-collapse: collapse;
+    margin-inline: auto;
+    margin-top: 25pt;
+    width: 100%;
+}
+
+.tbl3 td {
+    border: 1pt solid black;
+}
+
+.tbl4 {
+    border-collapse: collapse;
+    margin-inline: auto;
+    margin-top: 25pt;
+    width: 100%;
+    text-align: center;
+}
+
+.tbl4TD_wide {
+    width: 40% !important;
+}
+
+.tbl4TD_narrowly {
+    width: 20% !important;
+}
+
+.tbl1TD_UnderLine {
+    border-bottom: 1pt solid black;
+}
+
+.dashed-list {
+    list-style-type: "- ";
+}
+
+/* .dashed-list li::before {
+    content: "-"; /* Add dashes using ::before pseudo-element */
+/* margin-right: 0.5em; /* Add space between dash and text */
+/* }  */
+.tbl1 {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 50pt;
+    font-family: Calibri, sans-serif;
+    font-size: 13pt;
+}
+
+.tbl1TD_UnderLine {
+    border-bottom: 1pt solid black;
+}
+
+/* ***************** UGOVOR ************************ */
+.pageContainer {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 1400px) {
+    .pageContainer {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

@@ -12,6 +12,25 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUserHierarchy.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
+			<Folder name="FeeCalculator">
+				<Folder name="HtmlTemplates">
+					<Folder name="FeeCalculatorForm">
+						<Content fileName="App.css"/>
+						<Content fileName="bootstrap.css"/>
+						<Content fileName="bootstrap.js"/>
+						<Content fileName="FeeCalc.html"/>
+						<Content fileName="FeeCalculatorPage.css"/>
+						<Content fileName="index.css"/>
+						<Content fileName="InputAnimation.css"/>
+						<Content fileName="Slider.css"/>
+						<Content fileName="Style.css"/>
+						<Content fileName="SwitchToggle.css"/>
+					</Folder>
+				</Folder>
+				<Folder name="Reports">
+					<Content fileName="GenerateFormPDF.ws"/>
+				</Folder>
+			</Folder>
 			<Folder name="PaymentLink">
 				<Content fileName="Index.md"/>
 				<Folder name="Account">
@@ -48,11 +67,26 @@
 					<Content fileName="SendPaylinkViaEmail.ws"/>
 				</Folder>
 				<Folder name="Onboarding">
+					<Content fileName="DownloadFile.ws"/>
 					<Content fileName="GetOnboardingData.ws"/>
 					<Content fileName="SaveOnboardingData.ws"/>
-				</Folder>
-				<Folder name="SMS">
-					<Content fileName="SendPaylinkViaSMS.ws"/>
+					<Folder name="Template">
+						<Folder name="PaySpot">
+							<Content fileName="PaySpot_CompanyInfo.png"/>
+							<Content fileName="PaySpot_Logo.png"/>
+							<Content fileName="Prilog.html"/>
+							<Content fileName="Prilog_Css.css"/>
+							<Content fileName="Ugovor.html"/>
+							<Content fileName="Ugovor_Css.css"/>
+							<Content fileName="ZahtevZaUspostavljanjeSaradnje.html"/>
+							<Content fileName="ZahtevZaUspostavljanjeSaradnje_Css.css"/>
+						</Folder>
+						<Folder name="Powrs">
+							<Content fileName="Powrs_Logo.png"/>
+							<Content fileName="Powrs.html"/>
+							<Content fileName="Powrs_Css.css"/>
+						</Folder>
+					</Folder>
 				</Folder>
 				<Folder name="Reports">
 					<Content fileName="AdminPortalDashboard.ws"/>
@@ -62,6 +96,9 @@
 					<Content fileName="OnBoardedUsers.ws"/>
 					<Content fileName="ReportTransactions.ws"/>
 					<Content fileName="SuccessfulTransactions.ws"/>
+				</Folder>
+				<Folder name="SMS">
+					<Content fileName="SendPaylinkViaSMS.ws"/>
 				</Folder>
 			</Folder>
 		</Folder>
@@ -100,7 +137,6 @@
 				<Content fileName="vaulterlogo.svg"/>
 				<Content fileName="error_red.png"/>
 				<Content fileName="success_green.png"/>
-
 			</Folder>
 			<Folder name="fonts">
 				<Content fileName="Coanda-Bold.ttf"/>
