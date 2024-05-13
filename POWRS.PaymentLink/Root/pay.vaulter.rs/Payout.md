@@ -67,7 +67,19 @@ if Token.HasStateMachine then
          Return("");
     );
 
-    Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
+    Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Id = Token.Creator And State = 'Approved';
+    if(Identity == null) then 
+    (
+      ]]<b>Seller is not currently active. Please try again later.</b>[[;
+         Return("");
+    );
+
+    IpsOnly:= false;
+
+    if(exists(Identity.IPSONLY)) then 
+    (
+        IpsOnly:= Bool(Identity.IPSONLY);
+    );
 
     AgentName := "";
     OrgName := "";   
@@ -76,7 +88,6 @@ if Token.HasStateMachine then
     OrgNr := "";
     OrgActivity:= "";
     OrgActivityNumber:= "";
-    IpsOnly:= true;
 
     if Identity != null then
     (
