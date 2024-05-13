@@ -18,7 +18,7 @@ SessionUser:= Global.ValidateAgentApiToken(false, false);
     "ORGACTIVITY": Required(Str(POrgActivity)),
     "ORGACTIVITYNUM": Required(Str(POrgActivityNumber)),
     "ORGTAXNUM": Required(Str(POrgTaxNumber)),
-    "IPSONLY": Required(Bool(PIpsOnly))
+    "IPSONLY": Required(Str(PIpsOnly))
 }:=Posted) ??? BadRequest("Request does not conform to the specification");
 
 logObjectID := SessionUser.username;
@@ -42,6 +42,12 @@ if(PFirstName not like "[\\p{L}\\s]{2,30}") then
 if(PLastName not like "[\\p{L}\\s]{2,30}") then 
 (
     errors.Add("LAST");
+);
+
+boolResult:= null;
+if(!System.Boolean.TryParse(PIpsOnly, boolResult)) then 
+(
+     errors.Add("IPSONLY");
 );
 
  NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);

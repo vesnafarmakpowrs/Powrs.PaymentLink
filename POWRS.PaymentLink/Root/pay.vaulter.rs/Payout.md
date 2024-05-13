@@ -75,11 +75,7 @@ if Token.HasStateMachine then
     );
 
     IpsOnly:= false;
-
-    if(exists(Identity.IPSONLY)) then 
-    (
-        IpsOnly:= Bool(Identity.IPSONLY);
-    );
+    System.Boolean.TryParse(Identity.IPSONLY, IpsOnly);
 
     AgentName := "";
     OrgName := "";   
