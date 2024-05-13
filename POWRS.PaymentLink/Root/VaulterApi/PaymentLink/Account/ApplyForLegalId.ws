@@ -17,7 +17,8 @@ SessionUser:= Global.ValidateAgentApiToken(false, false);
     "ORGROLE": Required(Str(POrgRole)),
     "ORGACTIVITY": Required(Str(POrgActivity)),
     "ORGACTIVITYNUM": Required(Str(POrgActivityNumber)),
-    "ORGTAXNUM": Required(Str(POrgTaxNumber))
+    "ORGTAXNUM": Required(Str(POrgTaxNumber)),
+    "IPSONLY": Required(Bool(PIpsOnly))
 }:=Posted) ??? BadRequest("Request does not conform to the specification");
 
 logObjectID := SessionUser.username;
@@ -134,7 +135,8 @@ if(errors.Count > 0) then
 		{name: "ORGROLE", value: POrgRole},
 		{name: "ORGACTIVITY", value: POrgActivity},
 		{name: "ORGACTIVITYNUM", value: POrgActivityNumber},
-		{name: "ORGTAXNUM", value: POrgTaxNumber}
+		{name: "ORGTAXNUM", value: POrgTaxNumber},
+        {name: "IPSONLY", value: Str(PIpsOnly)}
 	];
     PLocalName:= "ed448";
     PNamespace:= "urn:ieee:iot:e2e:1.0";
