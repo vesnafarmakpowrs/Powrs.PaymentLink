@@ -68,7 +68,7 @@ if Token.HasStateMachine then
     );
 
     Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Id = Token.Creator And State = 'Approved';
-    if(Identity == null) then 
+    if(Identity == null) then
     (
       ]]<b>Seller is not currently active. Please try again later.</b>[[;
          Return("");
