@@ -1,0 +1,163 @@
+body {
+    margin: 50pt;
+    font-family: Calibri, sans-serif;
+    text-align: justify;
+    padding: 10pt;
+}
+
+p {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 13pt;
+    margin: 0pt;
+    margin-top: 12pt;
+    /* margin-bottom: 12pt; */
+}
+div {
+    font-size: 13pt;
+}
+.gradient-line {
+    height: 10pt;
+    background: linear-gradient(to right, #005aa7, #00bfff, #005aa7);
+    margin: 10px 0;
+}
+
+.dateAndSignature {
+    display: flex;
+}
+
+
+.line {
+    /* width: 230pt; */
+    border-bottom-style: solid;
+    border-bottom-width: 1pt;
+    border-bottom-color: black;
+    margin-left: 20pt !important;
+}
+.line2 {
+    width: 230pt;
+    border-top-style: solid;
+    border-top-width: 1pt;
+    border-top-color: black;
+    margin-top: 57pt !important;
+}
+
+.date {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.client {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.line {
+    width: 230pt;
+    /* border-bottom-style: solid; */
+    border-bottom-width: 1pt;
+    border-bottom-color: black;
+    margin-top: 20pt;
+}
+
+.containerText {
+    display: flex; /* Use flexbox */
+}
+.container1,
+.container2 {
+    flex: 1; 
+    margin: 5px;
+    /* border: 1px solid #000; Optional: Add border for visualization */
+}
+
+.headerLogo {
+    border-color: white;
+    background-color: white;
+    width: 5%;
+}
+.headerTitle{
+    margin-bottom: 15pt;
+    display: flex;
+    justify-content: flex-start;
+}
+.pageHeader {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 15pt;
+}
+
+.section{
+    display: flex;
+}
+
+.section2{
+    margin-left: 20pt;
+}
+
+.tbl1 {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: start;
+    margin-top: 20pt;
+    font-family: Calibri, sans-serif;
+    font-size: 13pt;
+    border-collapse: separate;
+    border-spacing: 10pt;
+}
+
+.tbl1 tr {
+    margin-left: 40pt; /* Adjust this value as needed */
+}
+
+.tbl1TD_Underline {
+    width: 230pt;
+    border-bottom-style: solid;
+    border-bottom-width: 1pt;
+    border-bottom-color: #808080;
+}
+.checkbox1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.yes{
+    margin-left: 7pt;
+}
+
+.yesNo {
+    display: flex;
+    margin-right: 60pt;
+}
+
+
+.stednjaPenzija,
+.nasledstvoZarada {
+    display: flex;
+}
+
+.penzija,
+.zarada {
+    margin-left: 30pt;
+}
+
+@media (min-width: 1400px) {
+    .container1 {
+        flex: 1;
+        margin-right: 40pt;
+        /* border: 1px solid #000; */
+    }
+
+    .container2 {
+        flex: 1;
+        margin-left: 40pt;
+        /* border: 1px solid #000; Optional: */
+    }
+}
