@@ -143,7 +143,7 @@
 			<Content fileName="Settings.md"/>
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
-				<Content fileName="GeneratePayspotLink.ws"/>
+				<Content fileName="InitiatePayment.ws"/>
 				<Content fileName="GetAvailableLanguages.ws"/>
 			</Folder>
 			<Folder name="Fonts">

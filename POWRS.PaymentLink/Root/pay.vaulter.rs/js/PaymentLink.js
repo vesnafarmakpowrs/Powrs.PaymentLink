@@ -137,22 +137,20 @@ function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUs
             "functionName": "SessionUpdated"
         }));
 }
-function StartPayment() {
+
+function InitiatePaymentForm(ipsOnly, onSuccess) {
     document.getElementById("payspot-submit").style.display = "none";
     document.getElementById("tr_spinner").style.display = null;
-    let jwt = document.getElementById("jwt");
     CollapseDetails();
 
-    SendXmlHttpRequest("../Payout/API/GeneratePayspotLink.ws",
+    SendXmlHttpRequest("../Payout/API/InitiatePayment.ws",
         {
             "isFromMobile": isMobileDevice,
-            "tabId": TabID
+            "tabId": TabID,
+            "ipsOnly": ipsOnly
         },
         (response) => {
-            if (!response.OK) {
-                TransactionFailed(null);
-            }
-            ShowPayspotPage(response);
+            onSuccess(response);
         },
         (error) => {
             if (error.status === 408) {
@@ -162,6 +160,13 @@ function StartPayment() {
             TransactionFailed(null);
         })
 }
+function StartPayment() {
+    InitiatePaymentForm(false, ShowPayspotPage);
+}
+
+function GenerateIPSForm() {
+    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
+}
 
 function PaymentCompleted(Result) {
     location.reload();
@@ -170,15 +175,21 @@ function PaymentCompleted(Result) {
 function ShowPayspotPage(Data) {
     if (Data == null) {
         console.log("data is empty");
+        alert("Unrecognized response");
         return;
     }
 
+    if (!Data.Success) {
+        alert("Unrecognized response");
+        console.log(Data);
+    }
+
     if (isMobileDevice) {
-        window.open(Data, '_self').focus();
+        window.open(Data.Response, '_self').focus();
     }
     else {
         document.getElementById("tr_spinner").style.display = "none";
-        document.getElementById("payspot_iframe").src = Data;
+        document.getElementById("payspot_iframe").src = Data.Response;
         document.getElementById("payspot_iframe").style.display = null;
     }
 }
@@ -247,4 +258,31 @@ function openBase64String(base64String) {
 
     // Open a new window with the Blob URL
     var newWindow = window.open(blobURL);
+}
+
+function FillAndSubmitPayspotIPSForm(ResponseData) {
+    if (ResponseData == null) {
+        return;
+    }
+    if (ResponseData.Success) {
+        let data = ResponseData.Response;
+        // Fill the form fields with data from the API response
+        document.querySelector('input[name="companyId"]').value = data.CompanyId;
+        document.querySelector('input[name="merchantOrderID"]').value = data.MerchantOrderId;
+        document.querySelector('input[name="merchantOrderAmount"]').value = data.MerchantOrderAmount;
+        document.querySelector('input[name="merchantCurrencyCode"]').value = data.MerchantCurrencyCode;
+        document.querySelector('input[name="language"]').value = data.Language;
+        document.querySelector('input[name="callbackURL"]').value = data.CallbackURL;
+        document.querySelector('input[name="successURL"]').value = data.SuccessURL;
+        document.querySelector('input[name="cancelURL"]').value = data.CancelURL;
+        document.querySelector('input[name="errorURL"]').value = data.ErrorURL;
+        document.querySelector('input[name="hash"]').value = data.Hash;
+        document.querySelector('input[name="rnd"]').value = data.Rnd;
+        document.querySelector('input[name="currentDate"]').value = data.CurrentDate;
+
+        var payspotForm = document.getElementById('payspotForm');
+
+        payspotForm.action = data.SubmitAddress;
+        payspotForm.submit();
+    }
 }
