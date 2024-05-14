@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.IO;
 
 namespace POWRS.PaymentLink.Onboarding
@@ -7,13 +8,28 @@ namespace POWRS.PaymentLink.Onboarding
     {
         private string name;
         private string content;
+
         public string Name { get => name; set => name = value; }
         public string Content { get => content; set => content = value; }
 
-        public static bool IsBase64String(string base64)
+        public static bool IsValidBase64String(string base64String, decimal maxSizeMB)
         {
-            Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
-            return Convert.TryFromBase64String(base64, buffer, out int bytesParsed);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(base64String))
+                {
+                    return false;
+                }
+
+                byte[] byteArray = System.Convert.FromBase64String(base64String);
+                return byteArray.Length <= maxSizeMB * 1024 * 1024;
+            }
+            catch (FormatException ex)
+            {
+                return false;
+            }
         }
+
+
     }
 }

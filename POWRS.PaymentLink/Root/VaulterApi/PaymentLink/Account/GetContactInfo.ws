@@ -7,7 +7,7 @@ try
     if(ValidatedUser.orgName != "") then
     (
          contactInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = ValidatedUser.orgName;
-         if(contactInfo != null and ) then 
+         if(contactInfo != null) then 
          (
 	        {
  		        "Account": ValidatedUser.username,

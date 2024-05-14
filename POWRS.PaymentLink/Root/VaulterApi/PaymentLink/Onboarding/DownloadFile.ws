@@ -13,22 +13,23 @@ try
 	if(System.String.IsNullOrWhiteSpace(PFileName)) then	
 		Error("File name can't be empty");
 	
-	allCompaniesPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
-	if(System.String.IsNullOrWhiteSpace(allCompaniesPath)) then (
+	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
+	if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
 		Error("No setting: OnBoardingFileRootPath");
 	);
 	
-	filePath := allCompaniesPath + PFileName; 
+	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
+	companySubDirPath := "\\" + generalInfo.ShortName;
+	
+	filePath := allCompaniesRootPath + companySubDirPath + "\\" + PFileName; 
 	if (!File.Exists(filePath)) then
 		Error("File does not exists");
 	
+    bytes := System.IO.File.ReadAllBytes(filePath);
 	Log.Informational("Succeffully returned file:" + PFileName, logObjectID, logActor, logEventID, null);
 	
-    bytes := System.IO.File.ReadAllBytes(filePath);
 	{
-		{
-			File: bytes
-		}
+		File: bytes
 	}
 )
 catch 

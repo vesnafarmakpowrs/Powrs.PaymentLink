@@ -948,7 +948,7 @@ Token is required. Request body is empty.
         "CompanyAddress": "",
         "CompanyCity": "",
         "OrganizationNumber": "10012148",
-        "TaxNumber": "10012148",
+        "TaxNumber": "112890694",
         "ActivityNumber": "",
         "OtherCompanyActivities": "",
         "BankName": "",
@@ -968,7 +968,7 @@ Token is required. Request body is empty.
                 "DateOfIssue": 1704063600,
                 "PlaceOfIssue": "",
                 "StatementOfOfficialDocument": "",
-                "IdCard": "",
+                "IdCard": "LegalRepresentative_1_IdCard_Mirko Kruščić.pdf",
                 "IsPoliticallyExposedPerson": false,
                 "DateOfBirthStr": "31/05/1988",
                 "DateOfIssueStr": "01/01/2024"
@@ -993,7 +993,7 @@ Token is required. Request body is empty.
                 "DateOfBirth": 581032800,
                 "PlaceOfBirth": "Ivanjica",
                 "AddressAndPlaceOfResidence": "Beograd, Zaplanjska 82",
-                "IsPoliticallyExposedPerson": false,
+                "IsPoliticallyExposedPerson": true,
                 "DocumentType": "IDCard",
                 "DocumentNumber": "009876248",
                 "IssueDate": 1580425200,
@@ -1002,8 +1002,8 @@ Token is required. Request body is empty.
                 "Citizenship": "Serbian",
                 "OwningPercentage": 25,
                 "Role": "Developer",
-                "StatementOfOfficialDocument": "",
-                "IdCard": "",
+                "StatementOfOfficialDocument": "Owner_1_Politicall_Mirko Kruščić.pdf",
+                "IdCard": "Owner_1_IdCard_Mirko Kruščić.pdf",
                 "DateOfBirthStr": "31/05/1988",
                 "IssueDateStr": "31/01/2020"
             }
@@ -1011,7 +1011,7 @@ Token is required. Request body is empty.
         "UserName": "AgentPLG"
     },
     "BusinessData": {
-        "BusinessModel": "My usiness model",
+        "BusinessModel": "My business model",
         "RetailersNumber": 0,
         "ExpectedMonthlyTurnover": 0,
         "ExpectedYearlyTurnover": 0,
@@ -1029,10 +1029,10 @@ Token is required. Request body is empty.
     },
     "LegalDocuments": {
         "BusinessCooperationRequest": null,
-        "ContractWithVaulter": "\\Powrs\\ContractWithVaulter.pdf",
-        "ContractWithEMI": "\\Powrs\\ContractWithEMI.pdf",
-        "PromissoryNote": "\\Powrs\\PromissoryNote.pdf",
-        "PoliticalStatement": "\\Powrs\\PoliticalStatement.pdf",
+        "ContractWithVaulter": "ContractWithVaulter.pdf",
+        "ContractWithEMI": "ContractWithEMI.pdf",
+        "PromissoryNote": "PromissoryNote.pdf",
+        "PoliticalStatement": "PoliticalStatement.pdf",
         "UserName": "AgentPLG"
     }
 }
