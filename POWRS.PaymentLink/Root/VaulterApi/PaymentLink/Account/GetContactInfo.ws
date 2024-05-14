@@ -4,16 +4,19 @@ ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
 try
 (
-     contactInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = ValidatedUser.orgName;
-     if(contactInfo != null) then 
-     (
-	    {
- 		    "Account": ValidatedUser.username,
- 		    "WebAddress": contactInfo.WebAddress,
- 		    "Email": contactInfo.Email,
- 		    "PhoneNumber": contactInfo.PhoneNumber,
- 		    "TermsAndConditions": contactInfo.TermsAndConditions
-        }
+    if(ValidatedUser.orgName != "") then
+    (
+         contactInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = ValidatedUser.orgName;
+         if(contactInfo != null and ) then 
+         (
+	        {
+ 		        "Account": ValidatedUser.username,
+ 		        "WebAddress": contactInfo.WebAddress,
+ 		        "Email": contactInfo.Email,
+ 		        "PhoneNumber": contactInfo.PhoneNumber,
+ 		        "TermsAndConditions": contactInfo.TermsAndConditions
+            }
+        );
     );
 )	
 catch

@@ -1,7 +1,7 @@
 ﻿SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 ({
-	"FileType": Required(Str(PFileType))
+	"FileName": Required(Str(PFileName))
 }:= Posted) ??? BadRequest(Exception.Message);
 
 logObjectID := SessionUser.username;
@@ -10,30 +10,24 @@ logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
 try 
 (
-	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PaySpot";
-	htmlTemplatePath := fileRootPath + "\\ZahtevZaUspostavljanjeSaradnje.html"; 
-	if (!File.Exists(htmlTemplatePath)) then
-		Error("File does not exist");
-		
-	htmlContent := System.IO.File.ReadAllText(htmlTemplatePath);
+	if(System.String.IsNullOrWhiteSpace(PFileName)) then	
+		Error("File name can't be empty");
 	
-	fileName := "NewFile_" + "ZahtevZaUspostavljanjeSaradnje";
-	newHtmlPath:= fileRootPath + "\\" + fileName + ".html";
-	System.IO.File.WriteAllText(newHtmlPath, htmlContent, System.Text.Encoding.UTF8);
-	pdfPath:= fileRootPath + "\\" + fileName + ".pdf";
+	allCompaniesPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
+	if(System.String.IsNullOrWhiteSpace(allCompaniesPath)) then (
+		Error("No setting: OnBoardingFileRootPath");
+	);
 	
-	ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
-		"--allow \"" + fileRootPath + "\""
-		+ " \"" + newHtmlPath + "\"" 
-		+ " \"" +  pdfPath + "\""
-		, fileRootPath);
-		
-	Log.Informational("Succeffully created pdf:" + fileName + ".pdf", logObjectID, logActor, logEventID, null);
-    bytes := System.IO.File.ReadAllBytes(pdfPath);
+	filePath := allCompaniesPath + PFileName; 
+	if (!File.Exists(filePath)) then
+		Error("File does not exists");
+	
+	Log.Informational("Succeffully returned file:" + PFileName, logObjectID, logActor, logEventID, null);
+	
+    bytes := System.IO.File.ReadAllBytes(filePath);
 	{
 		{
-			Name: fileName + ".pdf",
-			PDF: bytes
+			File: bytes
 		}
 	}
 )

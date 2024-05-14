@@ -528,7 +528,7 @@
 	  <Folder Include="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\" />
 	</ItemGroup>
 
-	<!-- build Serbian Production  package 
+	<!-- build Serbian Production package 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ApplicationManifest>POWRS.RS.PaymentLink.manifest</ApplicationManifest>
@@ -540,7 +540,7 @@
 	</Target>
 	-->
 	
-	<!-- Build Lab Serbian build = -->
+	<!-- Build Lab Serbian package = -->
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>

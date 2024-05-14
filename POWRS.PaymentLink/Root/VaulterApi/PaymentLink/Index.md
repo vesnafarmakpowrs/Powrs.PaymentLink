@@ -1065,14 +1065,14 @@ Call this resource save data for onboarding.
         "TaxLiability": false,
         "CompanyWebsite": "",
         "CompanyWebshop": "",
-        "LegalRepresentatives":[                        -> Field 'FullName' is mandatory for 'save'. If nothing populated then send empty array []
+        "LegalRepresentatives":[                        ->If nothing populated then send empty array []
             {
-                "FullName": "Mirko Kruščić",            -> Mandatory for 'save'
+                "FullName": "Mirko Kruščić",            -> Mandatory for 'save' if files updating
                 "DateOfBirth": "25/04/2024",            -> If user don't select date, send empty string
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
-				"StatementOfOfficialDocument_IsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
+				"StatementOfOfficialDocumentIsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
                 "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
-				"IdCard_IsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
+				"IdCardIsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
                 "IdCard": "",                           -> if it is new file uplad then base 64 string, else string from API
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "PlaceOfIssue": "",
@@ -1087,15 +1087,15 @@ Call this resource save data for onboarding.
         "OffShoreFoundationInOwnerStructure": false,    
         "PercentageOfForeignUsers": 0,                  
         "OwnerStructure": "Person",                     -> Can be string: 'Person', 'Company' or 'PersonAndCompany'
-        "Owners":[                                      -> Field 'FullName' is mandatory for 'save'. If nothing populated then send empty array []
+        "Owners":[                                      -> If nothing populated then send empty array []
             {
-                "FullName": "Mirko Kruščić",            -> Mandatory for 'save'
+                "FullName": "Mirko Kruščić",            -> Mandatory for 'save' if files updating
                 "PersonalNumber": "",
                 "DateOfBirth": "25/04/2024",            -> If user don't select date, send empty string
                 "PlaceOfBirth": "",
                 "AddressAndPlaceOfResidence": "",
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
-				"StatementOfOfficialDocument_IsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
+				"StatementOfOfficialDocumentIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
                 "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
                 "OwningPercentage": 25.1,
                 "Role": "",
@@ -1105,7 +1105,7 @@ Call this resource save data for onboarding.
                 "IssuerName": "",
                 "DocumentIssuancePlace": "",
                 "Citizenship": "",
-				"IdCard_IsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
+				"IdCardIsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
                 "IdCard": ""                            -> if it is new file uplad then base 64 string, else string from API
             }
         ]
@@ -1127,13 +1127,13 @@ Call this resource save data for onboarding.
         "ComplaintsPerYear": 0
    },
    "LegalDocuments": {
-        "ContractWithEMI_IsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
+        "ContractWithEMIIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
         "ContractWithEMI": "",                      -> if it is new file uplad then base 64 string, else string from API
-        "ContractWithVaulter_IsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
+        "ContractWithVaulterIsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
         "ContractWithVaulter": "",                  -> if it is new file uplad then base 64 string, else string from API
-        "PromissoryNote_IsNewUpload": false,        -> if it is new file upload then 'true', else 'false'
+        "PromissoryNoteIsNewUpload": false,        -> if it is new file upload then 'true', else 'false'
         "PromissoryNote": "",                       -> if it is new file uplad then base 64 string, else string from API
-        "PoliticalStatement_IsNewUpload": false,    -> if it is new file upload then 'true', else 'false'
+        "PoliticalStatementIsNewUpload": false,    -> if it is new file upload then 'true', else 'false'
         "PoliticalStatement": ""                    -> if it is new file uplad then base 64 string, else string from API
    }
 }

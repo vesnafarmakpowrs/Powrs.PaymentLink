@@ -99,7 +99,7 @@ tbody {
     padding-bottom: 1pt;
 }
 
-.tblOstaliPodaci {
+.tblOtherData {
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
@@ -107,11 +107,11 @@ tbody {
     font-size: 10pt;
 }
 
-.tblOstaliPodaci td{
+.tblOtherData td{
     border: 0px;
 }
 
-.tblOstaliPodaci_header{
+.tblOtherData_header{
     background-color: #dbe5f1;
 }
 
@@ -166,7 +166,7 @@ tbody {
     text-align: left;
 }
 
-.tblPotpis {
+.tblSiganture {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
@@ -176,7 +176,7 @@ tbody {
     font-size: 12pt;
 }
 
-.tblPotpisTD_UnderLine {
+.tblSigantureTD_UnderLine {
     border-bottom: 1pt solid black;
 }
 
