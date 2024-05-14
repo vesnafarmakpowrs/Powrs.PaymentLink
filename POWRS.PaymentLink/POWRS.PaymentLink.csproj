@@ -314,7 +314,7 @@
 	  <None Update="Root\pay.vaulter.rs\TermsAndCondition.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\Payout\API\GeneratePayspotLink.ws">
+	  <None Update="Root\Payout\API\InitiatePayment.ws">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\Fonts\Coanda-Bold.ttf">

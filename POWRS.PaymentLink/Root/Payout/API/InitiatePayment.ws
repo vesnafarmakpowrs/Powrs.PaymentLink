@@ -2,11 +2,13 @@
 
 ({
     "isFromMobile":Required(Bool(PIsFromMobile)),
-	"tabId": Required(Str(PTabId))
+	"tabId": Required(Str(PTabId)),
+	"ipsOnly": Required(Bool(PIpsOnly))
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
-	if(!exists(POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink)) then 
+    responseObject:= {"Success": true, "Response": null, "Message": System.String.Empty};
+	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then 
 	(
 		Error("Not configured");
 	);
@@ -17,13 +19,13 @@ try
 	token:= select top 1 * from IoTBroker.NeuroFeatures.Token t where t.TokenId = TokenId;
 	if(token == null) then 
 	(
-	 BadRequest("Token does not exists");
+		BadRequest("Token does not exists");
 	);
 	
 	currentState:= token.GetCurrentStateVariables();
 	if(currentState.State != "AwaitingForPayment") then
 	(
-	  BadRequest("Payment is not available for this contract");
+		Error("Payment is not available for this contract");
 	);
 
 	contractParameters:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, System.Object);
@@ -44,8 +46,6 @@ try
 	 identityProperties[prop.Name]:= prop.Value;
 	);
 
-	link:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(contractParameters, identityProperties);
-
 	if(!exists(Global.PayspotRequests)) then
 	(
 		Global.PayspotRequests:= Create(Waher.Runtime.Cache.Cache,System.String,System.String,System.Int32.MaxValue,System.TimeSpan.FromHours(0.5),System.TimeSpan.FromHours(0.5));	
@@ -53,12 +53,21 @@ try
 
 	Global.PayspotRequests[ContractId]:= PTabId;
 
-	{
-		link
-	}
+	if(PIpsOnly) then 
+	(
+		GeneratedIPSForm:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSForm(contractParameters, identityProperties);
+		responseObject.Response:= GeneratedIPSForm.ToDictionary();
+	)
+	else
+	(
+		responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(contractParameters, identityProperties);
+	);
 )
 catch
 (
+ responseObject.Success:= false;
+ responseObject.Message:= Exception.Message;
  Log.Error(Exception.Message, null);
- BadRequest(Exception.Message);
 );
+
+responseObject;

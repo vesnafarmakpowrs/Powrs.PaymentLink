@@ -68,6 +68,14 @@ if Token.HasStateMachine then
     );
 
     Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
+    if(Identity == null) then
+    (
+      ]]<b>Seller is not currently active. Please try again later.</b>[[;
+         Return("");
+    );
+
+    IpsOnly:= false;
+    System.Boolean.TryParse(Identity.IPSONLY, IpsOnly);
 
     AgentName := "";
     OrgName := "";   
@@ -76,7 +84,8 @@ if Token.HasStateMachine then
     OrgNr := "";
     OrgActivity:= "";
     OrgActivityNumber:= "";
-    if Identity != null then 
+
+    if Identity != null then
     (
        AgentName := MarkdownEncode(Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
        OrgName  := MarkdownEncode(Identity.ORGNAME);
@@ -109,7 +118,7 @@ if Token.HasStateMachine then
     );
 
     foreach Variable in (CurrentState.VariableValues ?? []) do 
-      (
+      (        
         Variable.Name like "Title" ?   Title := MarkdownEncode(Variable.Value);
         Variable.Name like "Description" ?   Description := MarkdownEncode(Variable.Value);
         Variable.Name like "Price" ?   ContractValue := MarkdownEncode(Variable.Value.ToString("N2"));
@@ -126,7 +135,7 @@ if Token.HasStateMachine then
      BuyerFirstName := Before(BuyerFullName," ");
      PayspotId := Before(ID,"@");
      tokenDurationInMinutes:= Int(GetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", 5));
-
+     
      PageToken:= CreateJwt(
             {
                 "iss":Gateway.Domain, 
@@ -252,31 +261,57 @@ if ContractState == "AwaitingForPayment" then
 </div>
 <div class="spaceItem"></div>
 
-
 <div class="payment-method-rs"  id="ctn-payment-method-rs" style="display:none">
   <table style="width:100%; text-align:center">
     <tr>
-      <td>
-        <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button>
-      </td>
-    </tr>
-    <tr id="tr_spinner" style="display: none;">
-      <td>
-        <img src="../resources/spin.svg" alt="loadingSpinner">
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <iframe id="payspot_iframe" class="payspot_iframe" style="display:none"></iframe>
-      </td>
-    </tr>
-  </table>
+<td>
+[[;
+if(IpsOnly) then 
+(
+]]
+<form method="post" id="payspotForm" name="payspotForm" action='' target="payspot_iframe">
+<input type="hidden" name="companyId" value='' />
+<input type="hidden" name="merchantOrderID" value='' />
+<input type="hidden" name="merchantOrderAmount" value='' />
+<input type="hidden" name="merchantCurrencyCode" value='' />
+<input type="hidden" name="language" value='' />
+<input type="hidden" name="callbackURL" value='' />
+<input type="hidden" name="successURL" value='' />
+<input type="hidden" name="cancelURL" value='' />
+<input type="hidden" name="errorURL" value='' />
+<input type="hidden" name="hash" value='' />
+<input type="hidden" name="rnd" value='' />
+<input type="hidden" name="currentDate" value='' />
+</form>
+<button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="GenerateIPSForm()">Pay now</button> 
+[[;
+)
+else 
+(
+]]
+<button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button> 
+[[;
+);
+]]
+</td>
+</tr>
+<tr id="tr_spinner" style="display: none;">
+<td>
+<img src="../resources/spin.svg" alt="loadingSpinner">
+</td>
+</tr>
+<tr>
+<td>
+<iframe id="payspot_iframe" class="payspot_iframe" style="display:none"></iframe>
+</td>
+</tr>
+</table>
 </div>
    [[;
 )
 else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" )then 
 (
-]]<div class="payment_completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>[[;
+]]<div class="payment-completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>[[;
 )
 else if ContractState == "PaymentCanceled" then 
 (
