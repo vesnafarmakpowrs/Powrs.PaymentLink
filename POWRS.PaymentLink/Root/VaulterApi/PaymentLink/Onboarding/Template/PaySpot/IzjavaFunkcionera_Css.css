@@ -11,31 +11,37 @@ p {
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
-    font-size: 13pt;
+    font-size: 9pt;
     margin: 0pt;
     margin-top: 12pt;
     /* margin-bottom: 12pt; */
 }
 div {
-    font-size: 13pt;
+    font-size: 9pt;
 }
-.gradient-line {
+
+.pageContainer {
+    /* width: 50%; */
+    margin-inline: auto;
+}
+
+/* **************GRADIENT LINE***********   */
+
+/* .gradient-line {
     height: 10pt;
     background: linear-gradient(to right, #005aa7, #00bfff, #005aa7);
-    margin: 10px 0;
-}
+    /* margin: 10px 0; */
 
-.dateAndSignature {
-    display: flex;
-}
 
+
+/* **************END***********   */
 
 .line {
     /* width: 230pt; */
     border-bottom-style: solid;
     border-bottom-width: 1pt;
     border-bottom-color: black;
-    margin-left: 20pt !important;
+
 }
 .line2 {
     width: 230pt;
@@ -45,18 +51,6 @@ div {
     margin-top: 57pt !important;
 }
 
-.date {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.client {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
 
 .line {
     width: 230pt;
@@ -66,56 +60,122 @@ div {
     margin-top: 20pt;
 }
 
-.containerText {
-    display: flex; /* Use flexbox */
-}
-.container1,
-.container2 {
-    flex: 1; 
-    margin: 5px;
-    /* border: 1px solid #000; Optional: Add border for visualization */
+
+/*************  prvi checkbox    ************/
+
+.sectionText{
+    text-align: left;
+    overflow: auto;
 }
 
-.headerLogo {
-    border-color: white;
-    background-color: white;
-    width: 5%;
+.section {
+    display: inline-block;
+    /* width: 30%; */
 }
+.section1 {
+    width: 70%;
+    display: inline-block;
+}
+/************** END *********/
+ 
+
+/************** containerText *********/
+
+.containerText{
+    overflow: auto;
+}
+
+.container {
+    width: 49%;
+    display: inline-block;
+}
+
+/************** END *********/
+
+
+
+.floatLeft {
+    float: left;
+    padding-right: 5pt;
+}
+
+.floatRight {
+    float: right;
+    padding-left: 5pt;
+}
+
+/****************       HEADER          ************/
+
+.pageHeader{
+    /* padding: 20px; */
+    /* text-align: left; */
+    overflow: auto;
+    /* padding-top: 25pt; */
+    margin-bottom: 5pt;
+
+
+}
+
+.headerLogo{
+    display: inline-block;
+    width: 50pt;
+    vertical-align: top;
+}
+
 .headerTitle{
-    margin-bottom: 15pt;
-    display: flex;
-    justify-content: flex-start;
-}
-.pageHeader {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 15pt;
+    display: inline-block;
+ padding-top: 8pt;
+    width: 90%;
+   
 }
 
-.section{
-    display: flex;
+/****************     END       *************/
+
+
+
+/****************     FUNKCIONERI      *************/
+
+.funcioneriTekst{
+
+    overflow: auto;
+
 }
 
-.section2{
-    margin-left: 20pt;
+.checkbox1{
+    display: inline-block;
+    /* width: 80%; */
+}
+.checkbox2{
+    display: inline-block;
+    width: 20%;
 }
 
-.tbl1 {
+
+
+.yesNo{
+    display: inline-block;
+}
+
+/****************     END       *************/
+
+
+
+/****************     TABELA       *************/
+
+
+ .tbl1 {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     text-align: start;
-    margin-top: 20pt;
+    margin-top: 10pt;
     font-family: Calibri, sans-serif;
-    font-size: 13pt;
+    font-size: 9pt;
     border-collapse: separate;
-    border-spacing: 10pt;
-}
+    border-spacing: 3pt;
+} 
 
-.tbl1 tr {
-    margin-left: 40pt; /* Adjust this value as needed */
-}
+
 
 .tbl1TD_Underline {
     width: 230pt;
@@ -123,41 +183,44 @@ div {
     border-bottom-width: 1pt;
     border-bottom-color: #808080;
 }
-.checkbox1 {
-    display: flex;
-    justify-content: space-between;
-}
 
-.yes{
-    margin-left: 7pt;
-}
-
-.yesNo {
-    display: flex;
-    margin-right: 60pt;
-}
+/****************     END       *************/
 
 
-.stednjaPenzija,
-.nasledstvoZarada {
-    display: flex;
+/****************   DATUM I POTPIS   *************/
+
+.dateAndSignature{
+    overflow: auto;
+
 }
+
+.date {
+    /* width: 50%; */
+    display: inline-block;
+}
+
+.date1{
+    /* width: 50%; */
+    display: inline-block;
+    padding-top:36pt
+}
+
+/****************     END       *************/
+
+.nasledstvoZarada{
+    display: inline-block;
+}
+
+.nasledstvo
+.zarada,
+.stednja,
+.penzija{
+    display: inline-block;
+}
+
 
 .penzija,
-.zarada {
-    margin-left: 30pt;
+.zarada{
+    margin-left: 5pt;
 }
 
-@media (min-width: 1400px) {
-    .container1 {
-        flex: 1;
-        margin-right: 40pt;
-        /* border: 1px solid #000; */
-    }
-
-    .container2 {
-        flex: 1;
-        margin-left: 40pt;
-        /* border: 1px solid #000; Optional: */
-    }
-}

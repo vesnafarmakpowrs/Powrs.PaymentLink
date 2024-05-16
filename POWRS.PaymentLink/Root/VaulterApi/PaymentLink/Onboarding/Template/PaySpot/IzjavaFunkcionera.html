@@ -10,25 +10,24 @@
         <link rel="stylesheet" href="./IzjavaFunkcionera_Css.css" />
     </head>
     <body>
-        <div class="mainContainer">
+        <div class="pageContainer">
             <div class="pageHeader">
                 <img src="./PaySpot_logoNoText.png" class="headerLogo" />
-
-                <p style="text-align: center" class="headerTitle">
+                <div class="headerTitle">
                     <strong> IZJAVA ZA IDENTIFIKOVANJE FUNKCIONERA - </strong> lica koja obavljaju ili su obavljala
                     određenu vrstu javne funkcije u prethodne 4 godine
-                </p>
+                </div>
             </div>
-            <div class="section">
-                <div class="section1">
+            <div class="sectionText">
+                <div class="section floatLeft">
                     <input type="checkbox" id="transaction" name="transaction" value="transaction" />
                     <label for="transaction"> Transakciju vrši kao</label><br />
                     <input type="checkbox" id="bussiness" name="bussiness" value="bussiness" class="bussiness" />
-                    <label for="bussiness"> Poslovni odnos uspostavlja kao:</label><br />
+                    <label for="bussiness"> Fizičko lice </label><br />
                 </div>
-                <div class="section2">
+                <div class="section1 floatLeft">
                     <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
-                    <label for="vehicle1"> Fizičko lice</label><br />
+                    <label for="vehicle1">Poslovni odnos uspostavlja kao</label><br />
                     <input
                         type="checkbox"
                         id="preduzetnik"
@@ -43,7 +42,9 @@
                     ><br />
                 </div>
             </div>
-            <div class="gradient-line"></div>
+            <div>
+                <img src="./IzjavaFunkcioneraLine.png" class="lineGradient" width="740pt" />
+            </div>
 
             <table class="tbl1">
                 <tr class="table">
@@ -88,46 +89,55 @@
                     <td>Naziv izdavaoca</td>
                 </tr>
             </table>
-            <div class="gradient-line"></div>
-            <p>
-                <strong
-                    >JA, DOLE POTPISANI/A, IZJAVLJUJEM POD PUNOM MATERIJALNOM I KRIVIČNOM ODGOVORNOŠĆU SLEDEĆE:</strong
-                >
-            </p>
-            <p></p>
-            <div class="checkbox1">
-                <div>
-                    <strong
-                        >Funkcioner sam Republike Srbije/član sam uže porodice i/ili bliži saradnik funkcionera
-                        Republike Srbije</strong
-                    >
-                </div>
-                <div class="yesNo">
-                    <input type="checkbox" id="yes" name="yes" value="yes" class="yes" />
-                    <label for="yes"> DA</label><br />
-                    <input type="checkbox" id="no" name="no" value="no" class="no" />
-                    <label for="no">NE</label><br />
-                </div>
+            <div>
+                <img src="./IzjavaFunkcioneraLine.png" class="lineGradient" width="740pt"/>
             </div>
-            <div class="checkbox1">
-                <div>
+            <div class="funcioneriTekst">
+                <p>
                     <strong
-                        >Funkcioner sam strane drž/međ-org., član uže porodice i/ili bliži saradnik funkcionera strane
-                        drž/međ-org.</strong
+                        >JA, DOLE POTPISANI/A, IZJAVLJUJEM POD PUNOM MATERIJALNOM I KRIVIČNOM ODGOVORNOŠĆU
+                        SLEDEĆE:</strong
                     >
-                </div>
-                <div class="yesNo">
-                    <input type="checkbox" id="yes" name="yes" value="yes" />
-                    <label for="yes"> DA</label><br />
-                    <input type="checkbox" id="no" name="no" value="no" class="no" />
-                    <label for="no">NE</label><br />
-                </div>
-            </div>
+                </p>
+                <div class="yesNOContainer">
+                    <p></p>
+                    <div class="checkbox1 floatLeft">
+                        <div>
+                            <strong
+                                >Funkcioner sam Republike Srbije/član sam uže porodice i/ili bliži saradnik funkcionera
+                                Republike Srbije</strong
+                            >
+                        </div>
+                        <div>
+                            <strong
+                                >Funkcioner sam strane drž/međ-org., član uže porodice i/ili bliži saradnik funkcionera
+                                strane drž/međ-org.</strong
+                            >
+                        </div>
+                    </div>
+                    <div class="checkbox2 floatRight">
+                        <div class="yesNo">
+                            <input type="checkbox" id="yes" name="yes" value="yes" class="yes" />
+                            <label for="yes"> DA</label><br />
+                            <input type="checkbox" id="no" name="no" value="no" class="no" />
+                            <label for="no">DA</label><br />
+                        </div>
 
-            <div class="gradient-line"></div>
+                        <div class="yesNo">
+                            <input type="checkbox" id="yes" name="yes" value="yes" />
+                            <label for="yes"> NE</label><br />
+                            <input type="checkbox" id="no" name="no" value="no" class="no" />
+                            <label for="no">NE</label><br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <img src="./IzjavaFunkcioneraLine.png" class="lineGradient" width="740pt" />
+            </div>
 
             <div class="containerText">
-                <div class="container1">
+                <div class="container floatLeft">
                     <p><strong>1. Ukoliko ste funkcioner Republike Srbije*:</strong></p>
                     <div>Period obavljanja od do</div>
                     <div><strong>Kojuod navedenih funkcija obavljate:</strong></div>
@@ -219,7 +229,7 @@
                         >
                     </div>
                 </div>
-                <div class="container2">
+                <div class="container floatRight">
                     <p><strong> 3.Ukoliko ste funkcioner međunarodne organizacije**:</strong></p>
                     <div>
                         Period obavljanja od
@@ -279,23 +289,31 @@
                     <p><strong>Podaci o poreklu imovine koje je predmet poslovnog odnosa:</strong></p>
                     <input type="checkbox" id="imovina" name="imovina" value="imovina" />
                     <label for="imovina"> Prodaja pokretne ili nepokretne imovine</label><br />
-                    <input type="checkbox" id="imovina" name="imovina" value="imovina" />
-                    <label for="imovina"> Prodaja pokretne ili nepokretne imovine</label><br />
 
                     <div class="nasledstvoZarada">
-                        <input type="checkbox" id="nasledstvo" name="nasledstvo" value="nasledstvo" />
-                        <label for="nasledstvo">Nasledstvo ili sudska odluka</label><br />
-                        <input type="checkbox" id="zarada" name="zarada" value="zarada" class="zarada" />
-                        <label for="zarada">Zarada</label><br />
+                        <div class="nasledstvo floatLeft">
+                            <input type="checkbox" id="nasledstvo" name="nasledstvo" value="nasledstvo" />
+                            <label for="nasledstvo floatRight">Nasledstvo ili sudska odluka</label><br />
+                        </div>
+                        <div class="zarada floatRight">
+                            <input type="checkbox" id="zarada" name="zarada" value="zarada" class="zarada" />
+                            <label for="zarada">Zarada</label><br />
+                        </div>
                     </div>
                     <div class="stednjaPenzija">
-                        <input type="checkbox" id="stednja" name="stednja" value="stednja" />
-                        <label for="stednja">Štednja</label><br />
-                        <input type="checkbox" id="penzija" name="penzija" value="penzija" class="penzija" />
-                        <label for="penzija">Penzija</label><br />
+                        <div class="stednja floatLeft">
+                            <input type="checkbox" id="stednja" name="stednja" value="stednja" />
+                            <label for="stednja">Štednja</label><br />
+                        </div>
+                        <div class="penzija">
+                            <input type="checkbox" id="penzija" name="penzija" value="penzija" class="penzija" />
+                            <label for="penzija">Penzija</label><br />
+                        </div>
                     </div>
-                    <input type="checkbox" id="drugo" name="drugo" value="drugo" />
-                    <label for="drugo">Drugo</label><br />
+                    <div class="drugo">
+                        <input type="checkbox" id="drugo" name="drugo" value="drugo" />
+                        <label for="drugo">Drugo</label><br />
+                    </div>
                     <p>
                         U slučaju uspostavljanja <strong>dugoročnog poslovnog odnosa</strong> preuzimam obavezu da
                         obavestim Instituciju, odnosno zastupnika, o bilo kakvim izmenama u vezi sa navedenim
@@ -304,17 +322,20 @@
                     </p>
                 </div>
             </div>
-
-            <div class="gradient-line"></div>
-
+          <div>
+                <img src="./IzjavaFunkcioneraLine.png" class="lineGradient" width="740pt" />
+            </div>
             <div class="dateAndSignature">
-                <div class="date" style="width: 50%">
-                    <p>Datum i mesto:</p>
-                    <p class="line"></p>
+                <div class="date1 floatLeft">
+                    <p>
+                        Datum i mesto:<u
+                            >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u
+                        >
+                    </p>
                 </div>
-                <div class="client" style="width: 50%">
+                <div class="date floatRight">
                     <p class="line2"></p>
-                    <p>Potpis klijenta:</p>
+                    <p style="text-align: center">Potpis klijenta:</p>
                 </div>
             </div>
         </div>

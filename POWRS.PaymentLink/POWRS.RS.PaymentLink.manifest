@@ -68,12 +68,17 @@
 				</Folder>
 				<Folder name="Onboarding">
 					<Content fileName="DownloadFile.ws"/>
+					<Content fileName="DownloadTemplateFile.ws"/>
 					<Content fileName="GetOnboardingData.ws"/>
 					<Content fileName="SaveOnboardingData.ws"/>
 					<Folder name="Template">
 						<Folder name="PaySpot">
+							<Content fileName="IzjavaFunkcionera.html"/>
+							<Content fileName="IzjavaFunkcionera_Css.css"/>
+							<Content fileName="IzjavaFunkcioneraLine.png"/>
 							<Content fileName="PaySpot_CompanyInfo.png"/>
 							<Content fileName="PaySpot_Logo.png"/>
+							<Content fileName="PaySpot_logoNoText.png"/>
 							<Content fileName="Prilog.html"/>
 							<Content fileName="Prilog_Css.css"/>
 							<Content fileName="Ugovor.html"/>

@@ -20,22 +20,6 @@ namespace POWRS.PaymentLink.Onboarding
         private OwnerStructure ownerStructure;
         private Owner[] owners;
 
-        public void InitializeCountriesOfBusiness(int arrayLength)
-        {
-           countriesOfBusiness = new string[arrayLength];
-        }
-        public bool CountriesOfBusinessSetValue(string value, int index)
-        {
-            if(countriesOfBusiness.Length > index)
-            {
-                countriesOfBusiness[index] = value;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
         public void CountriesOfBusinessSetValue(string strArray)
         {
             countriesOfBusiness = strArray.Split(",");

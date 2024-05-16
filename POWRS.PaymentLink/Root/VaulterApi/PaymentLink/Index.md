@@ -1148,3 +1148,69 @@ Call this resource save data for onboarding.
     "success": true
 }
 ````
+
+
+### Download uploaded onboarding file
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/DownloadFile.ws")}}`  
+Method: `POST`
+
+Call this resource to download file that is previously uploaded on server.
+
+**Request**
+````
+{
+    "FileName": Required(String(PFileName)
+}
+````
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `FileName`        | File name retrived from endpoint GetOnboardingData. |
+
+**Response**
+
+````
+{
+    "File": "JVBERi0xLjUNJeLjz9MNCjIwIDAgb2JqDTw8L0xpbmVhcml6 ..."
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `File `        |  Base64 encoded file |
+
+
+### Download template file
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/DownloadTemplateFile.ws")}}`  
+Method: `POST`
+
+Call this resource to download template PDF file.
+
+**Request**
+````
+{
+	"FileType": Required(String(PFileType)),
+	"IsEmptyFile":  Required(Boolean(PIsEmptyFile))
+}
+````
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+|`FileType`| Type of template file. This value can be one of strings: "ContractWithVaulter", "ContractWithEMI", "StatementOfOfficialDocument", "BusinessCooperationRequest", "PromissoryNote" . |
+|`IsEmptyFile`| `True`: return template file with no onboarding data populated. `False`: return template file populated with onboarding data |
+
+**Response**
+
+````
+{
+    "Name": "File name.pdf",
+    "File": "JVBERi0xLjUNJeLjz9MNCjIwIDAgb2JqDTw8L0xpbmVhcml6 ..."
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+|`Name`|  File name |
+|`File`|  Base64 encoded file |

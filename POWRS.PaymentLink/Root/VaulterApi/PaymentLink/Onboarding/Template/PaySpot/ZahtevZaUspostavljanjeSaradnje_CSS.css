@@ -127,8 +127,11 @@ tbody {
     background-color: #dbe5f1;
     width: 45%; /*currently there is 1 / 3 column with this class in table*/
 }
-.tbl_colData_td {
+.tbl_colData_td_2Coll {
     width: 28%; /*Currently there is 2 / 3 columns with this class in table*/
+}
+.tbl_colData_td {
+    padding-left: 3pt;
 }
 
 .footnote {
