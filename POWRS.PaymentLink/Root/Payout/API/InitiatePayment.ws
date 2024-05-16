@@ -52,16 +52,17 @@ try
 	);
 
 	Global.PayspotRequests[ContractId]:= PTabId;
-
+        
 	if(PIpsOnly) then 
 	(
-		GeneratedIPSForm:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSForm(contractParameters, identityProperties);
-		responseObject.Response:= GeneratedIPSForm.ToDictionary();
+		GeneratedIPSData:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSData(contractParameters, identityProperties);
+		responseObject.Response:= GeneratedIPSData.ToDictionary();
 	)
 	else
 	(
 		responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(contractParameters, identityProperties);
 	);
+	
 )
 catch
 (
