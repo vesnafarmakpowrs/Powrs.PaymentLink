@@ -1,0 +1,117 @@
+
+ .qr-timer {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin: 0;
+        h1 {
+          color: #111;
+          font-size: 21px;
+          margin-top: 1rem;
+        }
+        svg {
+          height: 128px;
+          width: 128px;
+        }
+        .blur {
+          filter: blur(5px);
+        }
+      }
+
+  .gen-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        .btn {
+          margin-bottom: 1rem;
+          margin-right: 0;
+
+          &.cancel {
+            margin-top: 1rem;
+            color: $color-danger;
+          }
+        }
+        .pomView {
+          display: none;
+          @include respond(large-phone) {
+            display: block;
+          }
+          position: absolute;
+          top: -2.5rem;
+          left: 4rem;
+          h1 {
+            color: #111;
+            font-size: 18px;
+          }
+        }
+      }
+
+ .form-wrapper {
+        width: 50%;
+        @include respond(tab-land) {
+          width: 100%;
+        }
+        p {
+          margin-bottom: 1rem;
+        }
+      }
+
+ .msg {
+        color: #f23535;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+
+.main .ips__content .gen-wrap .btn {
+    margin-bottom: 1rem;
+    margin-right: 0;
+}
+
+.btn__primary.red {
+    color: #f23535;
+    margin-top: -.2rem;
+}
+
+.btn__primary {
+    align-items: center;
+    background-color: #fff;
+    border: none;
+    border-radius: 25px;
+    box-shadow: -6px -6px 14.2381px #f8f8f8, 4.38095px 4.38095px 14.2381px #0000001f;
+    color: #405c75;
+    font-size: 14px;
+    font-weight: 500;
+    height: 4rem;
+    justify-content: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    width: 20rem;
+}
+
+var countDownDate = new Date("Jan 5, 2030 15:37:25").getTime();
+
+var x = setInterval(function() {
+
+  var now = new Date().getTime();
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+
