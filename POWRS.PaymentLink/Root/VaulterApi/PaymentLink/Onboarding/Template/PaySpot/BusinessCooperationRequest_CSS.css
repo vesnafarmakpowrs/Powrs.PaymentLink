@@ -22,6 +22,16 @@ p {
     margin: 0pt;
 }
 
+.divDocumentVersion{
+    float: right;
+    color: gray;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 10pt;
+}
+
 table,
 tbody {
     vertical-align: top;
@@ -34,7 +44,7 @@ tbody {
 }
 
 .pageHeader {
-    padding: 20px;
+    padding: 12px;
     text-align: center;
     overflow: auto;
     padding-top: 5pt;

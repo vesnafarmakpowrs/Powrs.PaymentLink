@@ -72,24 +72,25 @@
 					<Content fileName="GetOnboardingData.ws"/>
 					<Content fileName="SaveOnboardingData.ws"/>
 					<Folder name="Template">
+						<Content fileName="PromissoryNoteIntruction.pdf"/>
 						<Folder name="PaySpot">
+							<Content fileName="Attachment.html"/>
+							<Content fileName="Attachment_Css.css"/>
+							<Content fileName="BusinessCooperationRequest.html"/>
+							<Content fileName="BusinessCooperationRequest_Css.css"/>
+							<Content fileName="ContractPaySpot.html"/>
+							<Content fileName="ContractPaySpot_Css.css"/>
 							<Content fileName="IzjavaFunkcionera.html"/>
 							<Content fileName="IzjavaFunkcionera_Css.css"/>
 							<Content fileName="IzjavaFunkcioneraLine.png"/>
 							<Content fileName="PaySpot_CompanyInfo.png"/>
 							<Content fileName="PaySpot_Logo.png"/>
 							<Content fileName="PaySpot_logoNoText.png"/>
-							<Content fileName="Prilog.html"/>
-							<Content fileName="Prilog_Css.css"/>
-							<Content fileName="Ugovor.html"/>
-							<Content fileName="Ugovor_Css.css"/>
-							<Content fileName="ZahtevZaUspostavljanjeSaradnje.html"/>
-							<Content fileName="ZahtevZaUspostavljanjeSaradnje_Css.css"/>
 						</Folder>
 						<Folder name="Powrs">
 							<Content fileName="Powrs_Logo.png"/>
-							<Content fileName="Powrs.html"/>
-							<Content fileName="Powrs_Css.css"/>
+							<Content fileName="ContractPowrs.html"/>
+							<Content fileName="ContractPowrs_Css.css"/>
 						</Folder>
 					</Folder>
 				</Folder>

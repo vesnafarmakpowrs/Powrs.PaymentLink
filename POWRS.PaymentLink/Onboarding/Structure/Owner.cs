@@ -43,7 +43,7 @@ namespace POWRS.PaymentLink.Onboarding
             set
             {
                 dateOfBirth = value;
-                DateOfBirthStr = value != null ? Convert.ToDateTime(value).ToString("dd/MM/yyyy") : "";
+                dateOfBirthStr = value != null ? Convert.ToDateTime(value).ToString("dd/MM/yyyy") : "";
             }
         }
 
@@ -81,7 +81,7 @@ namespace POWRS.PaymentLink.Onboarding
             set
             {
                 issueDate = value;
-                IssueDateStr = value != null ? Convert.ToDateTime(value).ToString("dd/MM/yyyy") : "";
+                issueDateStr = value != null ? Convert.ToDateTime(value).ToString("dd/MM/yyyy") : "";
             }
         }
 

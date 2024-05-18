@@ -458,13 +458,34 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\SaveOnboardingData.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\IzjavaFunkcionera.html">
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\Attachment.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\IzjavaFunkcioneraLine.png">
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\Attachment_Css.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\IzjavaFunkcionera_Css.css">
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\BusinessCooperationRequest.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\BusinessCooperationRequest_CSS.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\ContractPaySpot.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\ContractPaySpot_Css.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PromissoryNoteIntruction.pdf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\StatementOfOfficialDocument.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\StatementOfOfficialDocumentLine.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\StatementOfOfficialDocument_Css.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PaySpot_CompanyInfo.png">

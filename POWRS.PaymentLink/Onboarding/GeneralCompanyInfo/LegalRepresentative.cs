@@ -25,7 +25,7 @@ namespace POWRS.PaymentLink.Onboarding
             set
             {
                 dateOfBirth = value;
-                DateOfBirthStr = value != null ? Convert.ToDateTime(value).ToString("dd/MM/yyyy") : "";
+                dateOfBirthStr = value != null ? Convert.ToDateTime(value).ToString("dd/MM/yyyy") : "";
             }
         }
         public DocumentType DocumentType { get => documentType; set => documentType = value; }
@@ -36,7 +36,7 @@ namespace POWRS.PaymentLink.Onboarding
             set
             {
                 dateOfIssue = value;
-                DateOfIssueStr = value != null ? Convert.ToDateTime(value).ToString("dd/MM/yyyy") : "";
+                dateOfIssueStr = value != null ? Convert.ToDateTime(value).ToString("dd/MM/yyyy") : "";
             }
         }
         public string PlaceOfIssue { get => placeOfIssue; set => placeOfIssue = value; }

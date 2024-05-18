@@ -2,20 +2,32 @@
 
 ({
 	"FileType": Required(Str(PFileType)),
-	"IsEmptyFile":  Required(Boolean(PIsEmptyFile))
+	"IsEmptyFile":  Required(Boolean(PIsEmptyFile)),
+	"PersonPositionInCompany": Optional(Str(PPersonPositionInCompany)),
+	"PersonIndex": Optional(Int(PPersonIndex))
 }:= Posted) ??? BadRequest(Exception.Message);
 
 logObjectID := SessionUser.username;
 logEventID := "DownloadTemplateFile.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
-DownloadTemplateContractWithVaulter(generalInfo, companyStructure, PIsEmptyFile) := (
+DownloadTemplateContractWithVaulter(PIsEmptyFile) := (
 	Log.Informational("Method DTContractWithVaulter started", logObjectID, logActor, logEventID, null);
+
+	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
+	if(generalInfo == null)then
+	(
+		Error("GeneralCompanyInformation must be populated");
+	);
+	if(generalInfo.LegalRepresentatives == null or generalInfo.LegalRepresentatives.Length == 0)then
+	(
+		Error("LegalRepresentatives must be populated");
+	);
 
 	newPDFFilePath := "";
 	
-	templateFileName := "Powrs";
-	newFileName := "New_Powrs";
+	templateFileName := "ContractPowrs";
+	newFileName := "New_ContractPowrs";
 	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\Powrs";
 	htmlTemplatePath := fileRootPath + "\\" + templateFileName + ".html"; 
 	if (!File.Exists(htmlTemplatePath)) then
@@ -38,7 +50,7 @@ DownloadTemplateContractWithVaulter(generalInfo, companyStructure, PIsEmptyFile)
 		htmlContent := htmlContent.Replace("{{CompanyAddress}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.CompanyAddress + " " + generalInfo.CompanyCity + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyOrganizationNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.OrganizationNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyTaxNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.TaxNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + companyStructure.Owners[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 	);
 	
 	Log.Informational("Method DTContractWithVaulter. finish HTML replacement. Try to start method CreatePDFFile()", logObjectID, logActor, logEventID, null);
@@ -49,13 +61,26 @@ DownloadTemplateContractWithVaulter(generalInfo, companyStructure, PIsEmptyFile)
 	Return (newPDFFilePath);
 );
 
-DownloadTemplateBusinessCooperationRequest(generalInfo, companyStructure, businessData, PIsEmptyFile) := (
+DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 	Log.Informational("Method DTBusinessCooperationRequest started", logObjectID, logActor, logEventID, null);
+
+	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
+	if(generalInfo == null)then
+	(
+		Error("GeneralCompanyInformation must be populated");
+	);
+	companyStructure:= select top 1 * from POWRS.PaymentLink.Onboarding.CompanyStructure where UserName = SessionUser.username;
+	if(companyStructure == null or companyStructure.Owners == null or companyStructure.Owners.Length == 0)then
+	(
+		Error("CompanyStructure and owners must be populated");
+	);
+	
+	businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
 
 	newPDFFilePath := "";
 	
-	templateFileName := "ZahtevZaUspostavljanjeSaradnje";
-	newFileName := "New_ZahtevZaUspostavljanjeSaradnje";
+	templateFileName := "BusinessCooperationRequest";
+	newFileName := "New_BusinessCooperationRequest";
 	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PaySpot";
 	htmlTemplatePath := fileRootPath + "\\" + templateFileName + ".html"; 
 	if (!File.Exists(htmlTemplatePath)) then
@@ -153,7 +178,12 @@ DownloadTemplateBusinessCooperationRequest(generalInfo, companyStructure, busine
 		   i++;
 		);
 		htmlContent := htmlContent.Replace("{{CountriesOfBusiness}}", countriesOfBusiness);
-		htmlContent := htmlContent.Replace("{{ExpectedMonthlyTurnover}}", Str(businessData.ExpectedMonthlyTurnover));
+		if(businessData != null and businessData.ExpectedMonthlyTurnover > 0)then(
+			htmlContent := htmlContent.Replace("{{ExpectedMonthlyTurnover}}", Str(businessData.ExpectedMonthlyTurnover));
+		)
+		else(
+			htmlContent := htmlContent.Replace("{{ExpectedMonthlyTurnover}}", "");
+		);
 		htmlContent := htmlContent.Replace("{{StampUsage}}", generalInfo.StampUsage ? "Koristi pečat" : "Ne koristi pečat");		
 		
 		ownerStructure := "";
@@ -213,7 +243,9 @@ DownloadTemplateBusinessCooperationRequest(generalInfo, companyStructure, busine
 		)else 
 		(
 			htmlContent := htmlContent.Replace("{{ShowOwners}}", "hideDiv");
-			htmlContent := htmlContent.Replace("{{OwnerStructureTable}}", "");
+			ownerStructureTable := "<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+			ownerStructureTable += "<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+			htmlContent := htmlContent.Replace("{{OwnerStructureTable}}", ownerStructureTable);
 		);
 		
 		if(generalInfo.OtherCompanyActivities != "")then
@@ -229,7 +261,7 @@ DownloadTemplateBusinessCooperationRequest(generalInfo, companyStructure, busine
 		if(generalInfo.LegalRepresentatives != null and generalInfo.LegalRepresentatives.Length > 1) then
 		(
 			legalRepresentativesStr := "";
-			FOR i := 1 TO generalInfo.LegalRepresentatives.Length STEP 1 DO
+			FOR i := 1 TO generalInfo.LegalRepresentatives.Length - 1 STEP 1 DO
 			(
 				legalRepresentativesStr +=  generalInfo.LegalRepresentatives[i].FullName + (i != generalInfo.LegalRepresentatives.Length ? ", " : "");
 			);
@@ -244,6 +276,167 @@ DownloadTemplateBusinessCooperationRequest(generalInfo, companyStructure, busine
 	);
 	
 	Log.Informational("Method TBusinessCooperationRequest. finish HTML replacement. Try to start method CreatePDFFile()", logObjectID, logActor, logEventID, null);
+	
+	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
+	Log.Informational("finish method CreatePDFFile. return newPDFFilePath: " + newPDFFilePath, logObjectID, logActor, logEventID, null);
+		
+	Return (newPDFFilePath);
+);
+
+DownloadTemplateContractWithEMI(PIsEmptyFile) := (
+	Log.Informational("Method DTContractWithEMI started", logObjectID, logActor, logEventID, null);
+
+	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
+	if(generalInfo == null)then
+	(
+		Error("GeneralCompanyInformation must be populated");
+	);
+	if(generalInfo.LegalRepresentatives == null or generalInfo.LegalRepresentatives.Length == 0)then
+	(
+		Error("LegalRepresentatives must be populated");
+	);
+
+	newPDFFilePath := "";
+	
+	templateFileName := "ContractPaySpot";
+	newFileName := "New_ContractPaySpot";
+	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PaySpot";
+	htmlTemplatePath := fileRootPath + "\\" + templateFileName + ".html"; 
+	if (!File.Exists(htmlTemplatePath)) then
+	(
+		Error("File does not exist");
+	);
+	htmlContent := System.IO.File.ReadAllText(htmlTemplatePath);
+	
+	if(PIsEmptyFile)then
+	(
+		htmlContent := htmlContent.Replace("{{CompanyFullName}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(naziv)");
+		htmlContent := htmlContent.Replace("{{CompanyAddress}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(adresa)");
+		htmlContent := htmlContent.Replace("{{CompanyOrganizationNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{CompanyTaxNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	)
+	else
+	(
+		htmlContent := htmlContent.Replace("{{CompanyFullName}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{CompanyAddress}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.CompanyAddress + " " + generalInfo.CompanyCity + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{CompanyOrganizationNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.OrganizationNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{CompanyTaxNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.TaxNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	);
+	
+	Log.Informational("Method DTContractWithEMI. finish HTML replacement. Try to start method CreatePDFFile()", logObjectID, logActor, logEventID, null);
+	
+	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
+	Log.Informational("finish method CreatePDFFile. return newPDFFilePath: " + newPDFFilePath, logObjectID, logActor, logEventID, null);
+		
+	Return (newPDFFilePath);
+);
+
+DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPosition, PPersonIndex) := (
+	Log.Informational("Method DTStatementOfOfficialDocument started", logObjectID, logActor, logEventID, null);
+
+	newPDFFilePath := "";
+	
+	templateFileName := "StatementOfOfficialDocument";
+	newFileName := "New_StatementOfOfficialDocument";
+	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PaySpot";
+	htmlTemplatePath := fileRootPath + "\\" + templateFileName + ".html"; 
+	if (!File.Exists(htmlTemplatePath)) then
+	(
+		Error("File does not exist");
+	);
+	htmlContent := System.IO.File.ReadAllText(htmlTemplatePath);
+	
+	if(PIsEmptyFile)then
+	(
+		htmlContent := htmlContent.Replace("{{Ime i prezime klijenta}}", "");
+		htmlContent := htmlContent.Replace("{{JMBG}}", "");
+		htmlContent := htmlContent.Replace("{{Datum i mesto rođenja}}", "");
+		htmlContent := htmlContent.Replace("{{Adresa prebivališta ili boravišta}}", "");
+		htmlContent := htmlContent.Replace("{{Grad prebivališta ili boravišta}}", "");
+		htmlContent := htmlContent.Replace("{{Vrsta i broj ličnog dokumenta}}", "");
+		htmlContent := htmlContent.Replace("{{Datum i mesto izdavanja}}", "");
+		htmlContent := htmlContent.Replace("{{Naziv izdavaoca}}", "");
+		
+		htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_Yes}}", "");
+		htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "");
+		htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_Yes}}", "");
+		htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_No}}", "");
+	)
+	else
+	(
+		if(PPersonPosition == "PPersonPositionInCompany")then
+		(
+			generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
+			if(generalInfo == null)then
+			(
+				Error("GeneralCompanyInformation must be populated");
+			);
+			if(generalInfo.LegalRepresentatives == null or generalInfo.LegalRepresentatives.Length < PPersonIndex + 1)then
+			(
+				Error("LegalRepresentatives must be populated");
+			);
+			
+			htmlContent := htmlContent.Replace("{{Ime i prezime klijenta}}", generalInfo.LegalRepresentatives[PPersonIndex].FullName);
+			htmlContent := htmlContent.Replace("{{JMBG}}", "");
+			htmlContent := htmlContent.Replace("{{Datum i mesto rođenja}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfBirthStr + ", ");
+			htmlContent := htmlContent.Replace("{{Adresa prebivališta ili boravišta}}", "");
+			htmlContent := htmlContent.Replace("{{Grad prebivališta ili boravišta}}", "");
+			htmlContent := htmlContent.Replace("{{Vrsta i broj ličnog dokumenta}}", (generalInfo.LegalRepresentatives[PPersonIndex].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + generalInfo.LegalRepresentatives[PPersonIndex].DocumentNumber);
+			htmlContent := htmlContent.Replace("{{Datum i mesto izdavanja}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfIssueStr + ", " + generalInfo.LegalRepresentatives[PPersonIndex].PlaceOfIssue);
+			htmlContent := htmlContent.Replace("{{Naziv izdavaoca}}", "");
+			
+			if (generalInfo.LegalRepresentatives[PPersonIndex].IsPoliticallyExposedPerson)then
+			(
+				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_Yes}}", "checked");
+				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "");
+				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_Yes}}", "");
+				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_No}}", "");
+			)
+			else
+			(
+				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_Yes}}", "");
+				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "");
+				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_Yes}}", "");
+				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_No}}", "");
+			);
+		)
+		else
+		(
+			companyStructure:= select top 1 * from POWRS.PaymentLink.Onboarding.CompanyStructure where UserName = SessionUser.username;
+			if(companyStructure == null or companyStructure.Owners == null or companyStructure.Owners.Length < PPersonIndex + 1)then
+			(
+				Error("CompanyStructure and owners must be populated");
+			);
+		
+			htmlContent := htmlContent.Replace("{{Ime i prezime klijenta}}", companyStructure.Owners[PPersonIndex].FullName);
+			htmlContent := htmlContent.Replace("{{JMBG}}", companyStructure.Owners[PPersonIndex].PersonalNumber);
+			htmlContent := htmlContent.Replace("{{Datum i mesto rođenja}}", companyStructure.Owners[PPersonIndex].DateOfBirthStr + ", " + companyStructure.Owners[PPersonIndex].PlaceOfBirth);
+			htmlContent := htmlContent.Replace("{{Adresa prebivališta ili boravišta}}", companyStructure.Owners[PPersonIndex].AddressAndPlaceOfResidence);
+			htmlContent := htmlContent.Replace("{{Grad prebivališta ili boravišta}}", "");
+			htmlContent := htmlContent.Replace("{{Vrsta i broj ličnog dokumenta}}", (companyStructure.Owners[PPersonIndex].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + companyStructure.Owners[PPersonIndex].DocumentNumber);
+			htmlContent := htmlContent.Replace("{{Datum i mesto izdavanja}}", companyStructure.Owners[PPersonIndex].DateOfIssueStr + ", " + companyStructure.Owners[PPersonIndex].PlaceOfIssue);
+			htmlContent := htmlContent.Replace("{{Naziv izdavaoca}}", companyStructure.Owners[PPersonIndex].IssuerName);
+			
+			if (companyStructure.Owners[PPersonIndex].IsPoliticallyExposedPerson)then
+			(
+				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_Yes}}", "checked");
+				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "");
+				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_Yes}}", "");
+				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_No}}", "");
+			)
+			else
+			(
+				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_Yes}}", "");
+				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "");
+				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_Yes}}", "");
+				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_No}}", "");
+			);
+		);
+	);
+	
+	Log.Informational("Method DTStatementOfOfficialDocument. finish HTML replacement. Try to start method CreatePDFFile()", logObjectID, logActor, logEventID, null);
 	
 	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
 	Log.Informational("finish method CreatePDFFile. return newPDFFilePath: " + newPDFFilePath, logObjectID, logActor, logEventID, null);
@@ -269,7 +462,6 @@ CreatePDFFile(fileRootPath, newFileName, htmlContent) := (
 	Return (newPDFFilePath);
 );
 
-
 try 
 (	
 	templateFileTypeList := Create(System.Collections.Generic.List, System.String);
@@ -287,30 +479,47 @@ try
 	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
 	if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
 		Error("No setting: OnBoardingFileRootPath");
-	);
-	
-	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
-	if(generalInfo == null)then
-	(
-		Error("GeneralCompanyInformation must be populated");
-	);
-	companyStructure:= select top 1 * from POWRS.PaymentLink.Onboarding.CompanyStructure where UserName = SessionUser.username;
-	if(companyStructure == null or companyStructure.Owners == null or companyStructure.Owners.Length == 0)then
-	(
-		Error("CompanyStructure must be populated");
-	);
-	
-	Log.Informational("Validation successfull, try to open DownloadTemplateContractWithVaulter()", logObjectID, logActor, logEventID, null);
-	
-	businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
+	);	
 	
 	returnFilePath := "";
+	fileName := "";
 	if(PFileType == "ContractWithVaulter")then
 	(
-		returnFilePath := DownloadTemplateContractWithVaulter(generalInfo, companyStructure, PIsEmptyFile);
-	)else if (PFileType == "BusinessCooperationRequest") then 
+		returnFilePath := DownloadTemplateContractWithVaulter(PIsEmptyFile);
+		fileName := "Ugovor Powrs-Vaulter.pdf";
+	)
+	else if (PFileType == "BusinessCooperationRequest") then 
 	(
-		returnFilePath := DownloadTemplateBusinessCooperationRequest(generalInfo, companyStructure, businessData, PIsEmptyFile);
+		returnFilePath := DownloadTemplateBusinessCooperationRequest(PIsEmptyFile);
+		fileName := "Zahtev za uspostavljanje saradnje.pdf";		
+	)
+	else if (PFileType == "ContractWithEMI") then 
+	(
+		returnFilePath := DownloadTemplateContractWithEMI(PIsEmptyFile);
+		fileName := "Ugovor PaySpot.pdf";		
+	)
+	else if (PFileType == "StatementOfOfficialDocument") then 
+	(
+		if (System.String.IsNullOrWhiteSpace(PPersonPositionInCompany) or !exists(PPersonIndex))then(
+			Error("Person Position and Person Index must be entered");
+		);
+		
+		personPositionList := Create(System.Collections.Generic.List, System.String);
+		personPositionList.Add("LegalRepresentative");
+		personPositionList.Add("Owner");
+		
+		if(!personPositionList.Contains(PPersonPositionInCompany))then
+		(
+			BadRequest("Parameter PersonPositionInCompany not valid");
+		);
+		
+		returnFilePath := DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompany, PPersonIndex);
+		fileName := "Izjava funkcionera_" + PPersonPositionInCompany + "_" + Str(PPersonIndex) + ".pdf";		
+	)
+	else if (PFileType == "PromissoryNote") then 
+	(
+		returnFilePath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PromissoryNoteIntruction.pdf";
+		fileName := "PromissoryNoteIntruction.pdf";
 	);
 	
 	Log.Informational("Finished metod generate PDF. result returnFilePath: " + returnFilePath, logObjectID, logActor, logEventID, null);
@@ -319,6 +528,7 @@ try
 	Log.Informational("Succeffully returned file:" + PFileType, logObjectID, logActor, logEventID, null);
 	
 	{
+		Name: fileName,
 		File: bytes
 	}
 )
