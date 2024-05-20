@@ -80,12 +80,12 @@
 							<Content fileName="BusinessCooperationRequest_Css.css"/>
 							<Content fileName="ContractPaySpot.html"/>
 							<Content fileName="ContractPaySpot_Css.css"/>
-							<Content fileName="IzjavaFunkcionera.html"/>
-							<Content fileName="IzjavaFunkcionera_Css.css"/>
-							<Content fileName="IzjavaFunkcioneraLine.png"/>
 							<Content fileName="PaySpot_CompanyInfo.png"/>
 							<Content fileName="PaySpot_Logo.png"/>
 							<Content fileName="PaySpot_logoNoText.png"/>
+							<Content fileName="StatementOfOfficialDocument.html"/>
+							<Content fileName="StatementOfOfficialDocument_Css.css"/>
+							<Content fileName="StatementOfOfficialDocumentLine.png"/>
 						</Folder>
 						<Folder name="Powrs">
 							<Content fileName="Powrs_Logo.png"/>

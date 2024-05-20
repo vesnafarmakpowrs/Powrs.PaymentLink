@@ -1068,7 +1068,7 @@ Call this resource save data for onboarding.
         "LegalRepresentatives":[                        ->If nothing populated then send empty array []
             {
                 "FullName": "Mirko Kruščić",            -> Mandatory for 'save' if files updating
-                "DateOfBirth": "25/04/2024",            -> If user don't select date, send empty string
+                "DateOfBirth": "25/04/2024",            -> Format: dd/MM/yyyy. If user don't select date, send empty string
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
 				"StatementOfOfficialDocumentIsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
                 "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
@@ -1076,7 +1076,7 @@ Call this resource save data for onboarding.
                 "IdCard": "",                           -> if it is new file uplad then base 64 string, else string from API
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "PlaceOfIssue": "",
-                "DateOfIssue": "25/04/2024",            -> If user don't select date, send empty string
+                "DateOfIssue": "25/04/2024",            -> Format: dd/MM/yyyy. If user don't select date, send empty string
                 "DocumentNumber": ""
             }
         ]
@@ -1091,7 +1091,7 @@ Call this resource save data for onboarding.
             {
                 "FullName": "Mirko Kruščić",            -> Mandatory for 'save' if files updating
                 "PersonalNumber": "",
-                "DateOfBirth": "25/04/2024",            -> If user don't select date, send empty string
+                "DateOfBirth": "25/04/2024",            -> Format: dd/MM/yyyy. If user don't select date, send empty string
                 "PlaceOfBirth": "",
                 "AddressAndPlaceOfResidence": "",
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
@@ -1101,7 +1101,7 @@ Call this resource save data for onboarding.
                 "Role": "",
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "DocumentNumber": "",
-                "IssueDate": "25/04/2024",              -> If user don't select date, send empty string
+                "IssueDate": "25/04/2024",              -> Format: dd/MM/yyyy. If user don't select date, send empty string
                 "IssuerName": "",
                 "DocumentIssuancePlace": "",
                 "Citizenship": "",
@@ -1191,7 +1191,9 @@ Call this resource to download template PDF file.
 ````
 {
 	"FileType": Required(String(PFileType)),
-	"IsEmptyFile":  Required(Boolean(PIsEmptyFile))
+	"IsEmptyFile":  Required(Boolean(PIsEmptyFile)),
+    "PersonPositionInCompany": Optional(Str(PPersonPositionInCompany)),
+	"PersonIndex": Optional(Int(PPersonIndex))
 }
 ````
 Description of properties:
@@ -1200,6 +1202,8 @@ Description of properties:
 |:------------------|:------------|
 |`FileType`| Type of template file. This value can be one of strings: "ContractWithVaulter", "ContractWithEMI", "StatementOfOfficialDocument", "BusinessCooperationRequest", "PromissoryNote" . |
 |`IsEmptyFile`| `True`: return template file with no onboarding data populated. `False`: return template file populated with onboarding data |
+|`PersonPositionInCompany`| Person position in company:. Can be string "LegalRepresentative" or "Owner" |
+|`PersonIndex`| Person position in array of LegalRepresentative or Owners, starting from 0 |
 
 **Response**
 

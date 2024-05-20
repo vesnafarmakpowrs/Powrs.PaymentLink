@@ -50,11 +50,11 @@
 
             <table class="tbl1">
                 <tr class="table">
-                    <td style="width: 30%" class="line" class="line">{{Ime i prezime klijenta}}</td>
+                    <td style="width: 30%" class="line" class="line">{{ClientFullName}}</td>
                     <td></td>
-                    <td style="width: 30%" class="line">{{JMBG}}</td>
+                    <td style="width: 30%" class="line">{{PersonalNumber}}</td>
                     <td></td>
-                    <td style="width: 30%" class="line">{{Datum i mesto rođenja}}</td>
+                    <td style="width: 30%" class="line">{{DateAndPlaceOfBirth}}</td>
                 </tr>
                 <tr class="table">
                     <td style="width: 30%">Ime i prezime klijenta</td>
@@ -64,9 +64,9 @@
                     <td style="width: 30%">Datum i mesto rođenja</td>
                 </tr>
                 <tr class="table">
-                    <td class="line" class="line">{{Adresa prebivališta ili boravišta}}</td>
+                    <td class="line" class="line">{{AddressAndPlaceOfResidence}}</td>
                     <td></td>
-                    <td class="line">{{Grad prebivališta ili boravišta}}</td>
+                    <td class="line">{{CityOdResidence}}</td>
                     <td></td>
                 </tr>
                 <tr class="table">
@@ -77,11 +77,11 @@
                     <td></td>
                 </tr>
                 <tr class="table">
-                    <td style="width: 30%" class="line" class="line">{{Vrsta i broj ličnog dokumenta}}</td>
+                    <td style="width: 30%" class="line" class="line">{{DocumentTypeAndNumber}}</td>
                     <td></td>
-                    <td style="width: 30%" class="line">{{Datum i mesto izdavanja}}</td>
+                    <td style="width: 30%" class="line">{{DocumentIssueDate}}</td>
                     <td></td>
-                    <td style="width: 30%" class="line">{{Naziv izdavaoca}}</td>
+                    <td style="width: 30%" class="line">{{DocumentIssuerName}}</td>
                 </tr>
                 <tr class="table">
                     <td>Vrsta i broj ličnog dokumenta</td>
@@ -121,13 +121,13 @@
                         <div class="yesNo">
                             <input type="checkbox" id="yes" name="yes" value="yes" class="yes" {{IsPoliticallyExposedPerson_Yes}}/>
                             <label for="yes"> DA</label><br />
-                            <input type="checkbox" id="no" name="no" value="no" class="no" {{IsForeignPoliticallyExposedPerson_Yes}} />
-                            <label for="no">DA</label><br />
+                            <input type="checkbox" id="yes" name="yes" value="yes" class="yes" {{IsForeignPoliticallyExposedPerson_Yes}} />
+                            <label for="yes" style="margin-top: -2pt">DA</label><br />
                         </div>
 
                         <div class="yesNo">
-                            <input type="checkbox" id="yes" name="yes" value="yes" {{IsPoliticallyExposedPerson_No}}/>
-                            <label for="yes"> NE</label><br />
+                            <input type="checkbox" id="no" name="no" value="no" {{IsPoliticallyExposedPerson_No}}/>
+                            <label for="no"> NE</label><br />
                             <input type="checkbox" id="no" name="no" value="no" class="no" {{IsForeignPoliticallyExposedPerson_No}}/>
                             <label for="no">NE</label><br />
                         </div>
@@ -171,7 +171,7 @@
                             Srbije**:</strong
                         >
                     </p>
-                    <div>Ime i prezime funkcionera:<u>{{Ime i prezime}}</u></div>
+                    <div>Ime i prezime funkcionera:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></div>
                     <div>Funkcija koju obavlja (Upisati jednu od funkcija ponuđenih iznad)</div>
                     <div>
                         <u
@@ -213,7 +213,7 @@
                             >2.a Ukoliko ste član uže porodice i/ili bliži saradnik funkcionera druge države**:</strong
                         >
                     </p>
-                    <div>Ime i prezime funkcionera:<u>{{Ime i prezime}}</u></div>
+                    <div>Ime i prezime funkcionera:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>&nbsp;</div>
                     <div>Funkcija koju obavlja (upisati jednu od funkcija ponuđenih iznad)</div>
                     <div>
                         <u
@@ -252,7 +252,7 @@
                             organizacije**:
                         </strong>
                     </p>
-                    <div>Ime i prezime funkcionera:<u>{{ime i prezime}}</u></div>
+                    <div>Ime i prezime funkcionera:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></div>
                     <div>Funkcija koju obavlja (upisati jednu of funkcija ponuđenih)</div>
                     <div>
                         <u

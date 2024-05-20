@@ -333,7 +333,7 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 	Return (newPDFFilePath);
 );
 
-DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPosition, PPersonIndex) := (
+DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompany, PPersonIndex) := (
 	Log.Informational("Method DTStatementOfOfficialDocument started", logObjectID, logActor, logEventID, null);
 
 	newPDFFilePath := "";
@@ -350,14 +350,14 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPosition, PPers
 	
 	if(PIsEmptyFile)then
 	(
-		htmlContent := htmlContent.Replace("{{Ime i prezime klijenta}}", "");
-		htmlContent := htmlContent.Replace("{{JMBG}}", "");
-		htmlContent := htmlContent.Replace("{{Datum i mesto rođenja}}", "");
-		htmlContent := htmlContent.Replace("{{Adresa prebivališta ili boravišta}}", "");
-		htmlContent := htmlContent.Replace("{{Grad prebivališta ili boravišta}}", "");
-		htmlContent := htmlContent.Replace("{{Vrsta i broj ličnog dokumenta}}", "");
-		htmlContent := htmlContent.Replace("{{Datum i mesto izdavanja}}", "");
-		htmlContent := htmlContent.Replace("{{Naziv izdavaoca}}", "");
+		htmlContent := htmlContent.Replace("{{ClientFullName}}", "");
+		htmlContent := htmlContent.Replace("{{PersonalNumber}}", "");
+		htmlContent := htmlContent.Replace("{{DateAndPlaceOfBirth}}", "");
+		htmlContent := htmlContent.Replace("{{AddressAndPlaceOfResidence}}", "");
+		htmlContent := htmlContent.Replace("{{CityOdResidence}}", "");
+		htmlContent := htmlContent.Replace("{{DocumentTypeAndNumber}}", "");
+		htmlContent := htmlContent.Replace("{{DocumentIssueDate}}", "");
+		htmlContent := htmlContent.Replace("{{DocumentIssuerName}}", "");
 		
 		htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_Yes}}", "");
 		htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "");
@@ -366,7 +366,7 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPosition, PPers
 	)
 	else
 	(
-		if(PPersonPosition == "PPersonPositionInCompany")then
+		if(PPersonPositionInCompany == "LegalRepresentative")then
 		(
 			generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
 			if(generalInfo == null)then
@@ -378,14 +378,14 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPosition, PPers
 				Error("LegalRepresentatives must be populated");
 			);
 			
-			htmlContent := htmlContent.Replace("{{Ime i prezime klijenta}}", generalInfo.LegalRepresentatives[PPersonIndex].FullName);
-			htmlContent := htmlContent.Replace("{{JMBG}}", "");
-			htmlContent := htmlContent.Replace("{{Datum i mesto rođenja}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfBirthStr + ", ");
-			htmlContent := htmlContent.Replace("{{Adresa prebivališta ili boravišta}}", "");
-			htmlContent := htmlContent.Replace("{{Grad prebivališta ili boravišta}}", "");
-			htmlContent := htmlContent.Replace("{{Vrsta i broj ličnog dokumenta}}", (generalInfo.LegalRepresentatives[PPersonIndex].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + generalInfo.LegalRepresentatives[PPersonIndex].DocumentNumber);
-			htmlContent := htmlContent.Replace("{{Datum i mesto izdavanja}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfIssueStr + ", " + generalInfo.LegalRepresentatives[PPersonIndex].PlaceOfIssue);
-			htmlContent := htmlContent.Replace("{{Naziv izdavaoca}}", "");
+			htmlContent := htmlContent.Replace("{{ClientFullName}}", generalInfo.LegalRepresentatives[PPersonIndex].FullName);
+			htmlContent := htmlContent.Replace("{{PersonalNumber}}", "");
+			htmlContent := htmlContent.Replace("{{DateAndPlaceOfBirth}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfBirthStr + ", ");
+			htmlContent := htmlContent.Replace("{{AddressAndPlaceOfResidence}}", "");
+			htmlContent := htmlContent.Replace("{{CityOdResidence}}", "");
+			htmlContent := htmlContent.Replace("{{DocumentTypeAndNumber}}", (generalInfo.LegalRepresentatives[PPersonIndex].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + generalInfo.LegalRepresentatives[PPersonIndex].DocumentNumber);
+			htmlContent := htmlContent.Replace("{{DocumentIssueDate}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfIssueStr + ", " + generalInfo.LegalRepresentatives[PPersonIndex].PlaceOfIssue);
+			htmlContent := htmlContent.Replace("{{DocumentIssuerName}}", "");
 			
 			if (generalInfo.LegalRepresentatives[PPersonIndex].IsPoliticallyExposedPerson)then
 			(
@@ -410,14 +410,14 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPosition, PPers
 				Error("CompanyStructure and owners must be populated");
 			);
 		
-			htmlContent := htmlContent.Replace("{{Ime i prezime klijenta}}", companyStructure.Owners[PPersonIndex].FullName);
-			htmlContent := htmlContent.Replace("{{JMBG}}", companyStructure.Owners[PPersonIndex].PersonalNumber);
-			htmlContent := htmlContent.Replace("{{Datum i mesto rođenja}}", companyStructure.Owners[PPersonIndex].DateOfBirthStr + ", " + companyStructure.Owners[PPersonIndex].PlaceOfBirth);
-			htmlContent := htmlContent.Replace("{{Adresa prebivališta ili boravišta}}", companyStructure.Owners[PPersonIndex].AddressAndPlaceOfResidence);
-			htmlContent := htmlContent.Replace("{{Grad prebivališta ili boravišta}}", "");
-			htmlContent := htmlContent.Replace("{{Vrsta i broj ličnog dokumenta}}", (companyStructure.Owners[PPersonIndex].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + companyStructure.Owners[PPersonIndex].DocumentNumber);
-			htmlContent := htmlContent.Replace("{{Datum i mesto izdavanja}}", companyStructure.Owners[PPersonIndex].DateOfIssueStr + ", " + companyStructure.Owners[PPersonIndex].PlaceOfIssue);
-			htmlContent := htmlContent.Replace("{{Naziv izdavaoca}}", companyStructure.Owners[PPersonIndex].IssuerName);
+			htmlContent := htmlContent.Replace("{{ClientFullName}}", companyStructure.Owners[PPersonIndex].FullName);
+			htmlContent := htmlContent.Replace("{{PersonalNumber}}", companyStructure.Owners[PPersonIndex].PersonalNumber);
+			htmlContent := htmlContent.Replace("{{DateAndPlaceOfBirth}}", companyStructure.Owners[PPersonIndex].DateOfBirthStr + ", " + companyStructure.Owners[PPersonIndex].PlaceOfBirth);
+			htmlContent := htmlContent.Replace("{{AddressAndPlaceOfResidence}}", companyStructure.Owners[PPersonIndex].AddressAndPlaceOfResidence);
+			htmlContent := htmlContent.Replace("{{CityOdResidence}}", "");
+			htmlContent := htmlContent.Replace("{{DocumentTypeAndNumber}}", (companyStructure.Owners[PPersonIndex].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + companyStructure.Owners[PPersonIndex].DocumentNumber);
+			htmlContent := htmlContent.Replace("{{DocumentIssueDate}}", companyStructure.Owners[PPersonIndex].DateOfIssueStr + ", " + companyStructure.Owners[PPersonIndex].PlaceOfIssue);
+			htmlContent := htmlContent.Replace("{{DocumentIssuerName}}", companyStructure.Owners[PPersonIndex].IssuerName);
 			
 			if (companyStructure.Owners[PPersonIndex].IsPoliticallyExposedPerson)then
 			(
