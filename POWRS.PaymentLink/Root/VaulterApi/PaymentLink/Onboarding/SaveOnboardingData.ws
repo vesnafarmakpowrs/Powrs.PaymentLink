@@ -79,7 +79,6 @@ ValidatePostedData(Posted) := (
 		itemIndex := 0;
 		foreach item in Posted.GeneralCompanyInformation.LegalRepresentatives do
 		(
-			IsPoliticallyExposedPerson := false;
 			isNewUpload := false;
 			
 			if(!exists(item.FullName))then
@@ -93,8 +92,6 @@ ValidatePostedData(Posted) := (
 			);
 			if(!exists(item.IsPoliticallyExposedPerson))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IsPoliticallyExposedPerson");
-			)else if(item.IsPoliticallyExposedPerson != null) then (
-				IsPoliticallyExposedPerson := item.IsPoliticallyExposedPerson;
 			);
 			if(!exists(item.StatementOfOfficialDocumentIsNewUpload))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocumentIsNewUpload");
@@ -103,19 +100,16 @@ ValidatePostedData(Posted) := (
 			);
 			if(!exists(item.StatementOfOfficialDocument))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocument");
-			)else if (IsPoliticallyExposedPerson) then(
-				if(System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument))then (
+			)else if (isNewUpload)then(
+				if(!POWRS.PaymentLink.Utils.IsValidBase64String(item.StatementOfOfficialDocument, fileMaxSizeMB))then(
 					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocument");
-				)else if (isNewUpload)then(
-					if(!POWRS.PaymentLink.Onboarding.Document.IsValidBase64String(item.StatementOfOfficialDocument, fileMaxSizeMB))then(
-						errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocument");
-						errors.Add("StatementOfOfficialDocument not valid base 64 string");
-					);
-				);
-				if(System.String.IsNullOrWhiteSpace(item.FullName))then(
-					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".FullName");
+					errors.Add("StatementOfOfficialDocument not valid base 64 string");
 				);
 			);
+			if(System.String.IsNullOrWhiteSpace(item.FullName))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".FullName");
+			);
+			
 			isNewUpload := false;
 			if(!exists(item.IdCardIsNewUpload))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCardIsNewUpload");
@@ -127,7 +121,7 @@ ValidatePostedData(Posted) := (
 			)else if(isNewUpload)then (
 				if(System.String.IsNullOrWhiteSpace(item.IdCard))then (
 					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
-				)else if(!POWRS.PaymentLink.Onboarding.Document.IsValidBase64String(item.IdCard, fileMaxSizeMB))then(
+				)else if(!POWRS.PaymentLink.Utils.IsValidBase64String(item.IdCard, fileMaxSizeMB))then(
 					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
 					errors.Add("IdCard not valid base 64 string");
 				);
@@ -180,7 +174,6 @@ ValidatePostedData(Posted) := (
 		foreach item in Posted.CompanyStructure.Owners do
 		(
 			isNewUpload := false;
-			IsPoliticallyExposedPerson:= false;
 			
 			if(!exists(item.FullName))then
 			(
@@ -202,8 +195,6 @@ ValidatePostedData(Posted) := (
 			);			
 			if(!exists(item.IsPoliticallyExposedPerson))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IsPoliticallyExposedPerson");
-			)else if(item.IsPoliticallyExposedPerson != null) then (
-				IsPoliticallyExposedPerson := item.IsPoliticallyExposedPerson;
 			);
 			if(!exists(item.StatementOfOfficialDocumentIsNewUpload))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocumentIsNewUpload");
@@ -212,19 +203,15 @@ ValidatePostedData(Posted) := (
 			);
 			if(!exists(item.StatementOfOfficialDocument))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
-			)else if (IsPoliticallyExposedPerson) then(
-				if(System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument))then (
+			)else if (isNewUpload)then(
+				if(!POWRS.PaymentLink.Utils.IsValidBase64String(item.StatementOfOfficialDocument, fileMaxSizeMB))then(
 					errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
-				) else if (isNewUpload)then(
-					if(!POWRS.PaymentLink.Onboarding.Document.IsValidBase64String(item.StatementOfOfficialDocument, fileMaxSizeMB))then(
-						errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
-						errors.Add("StatementOfOfficialDocument not valid base 64 string");
-					);
+					errors.Add("StatementOfOfficialDocument not valid base 64 string");
 				);
-				if(isNewUpload)then(
-					if(System.String.IsNullOrWhiteSpace(item.FullName))then (
-						errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
-					);
+			);
+			if(isNewUpload)then(
+				if(System.String.IsNullOrWhiteSpace(item.FullName))then (
+					errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
 				);
 			);
 			if(!exists(item.OwningPercentage))then(
@@ -264,7 +251,7 @@ ValidatePostedData(Posted) := (
 			)else if(isNewUpload)then (
 				if(System.String.IsNullOrWhiteSpace(item.IdCard))then (
 					errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCard");
-				)else if(!POWRS.PaymentLink.Onboarding.Document.IsValidBase64String(item.IdCard, fileMaxSizeMB))then(
+				)else if(!POWRS.PaymentLink.Utils.IsValidBase64String(item.IdCard, fileMaxSizeMB))then(
 					errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCard");
 					errors.Add("IdCard not valid base 64 string");
 				);
@@ -332,7 +319,7 @@ ValidatePostedData(Posted) := (
 		if(isNewUpload and 
 			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.ContractWithEMI)
 			or
-			!POWRS.PaymentLink.Onboarding.Document.IsValidBase64String(Posted.LegalDocuments.ContractWithEMI, fileMaxSizeMB)
+			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.ContractWithEMI, fileMaxSizeMB)
 			)
 		)then
 		(
@@ -352,7 +339,7 @@ ValidatePostedData(Posted) := (
 		if(isNewUpload and 
 			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.ContractWithVaulter)
 			or
-			!POWRS.PaymentLink.Onboarding.Document.IsValidBase64String(Posted.LegalDocuments.ContractWithVaulter, fileMaxSizeMB)
+			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.ContractWithVaulter, fileMaxSizeMB)
 			)
 		)then
 		(
@@ -372,7 +359,7 @@ ValidatePostedData(Posted) := (
 		if(isNewUpload and 
 			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.PromissoryNote)
 			or
-			!POWRS.PaymentLink.Onboarding.Document.IsValidBase64String(Posted.LegalDocuments.PromissoryNote, fileMaxSizeMB)
+			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.PromissoryNote, fileMaxSizeMB)
 			)
 		)then
 		(
@@ -392,7 +379,7 @@ ValidatePostedData(Posted) := (
 		if(isNewUpload and 
 			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.PoliticalStatement)
 			or
-			!POWRS.PaymentLink.Onboarding.Document.IsValidBase64String(Posted.LegalDocuments.PoliticalStatement, fileMaxSizeMB)
+			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.PoliticalStatement, fileMaxSizeMB)
 			)
 		)then
 		(
@@ -482,25 +469,19 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			representative.IsPoliticallyExposedPerson:= item.IsPoliticallyExposedPerson;
 			
 			if(item.StatementOfOfficialDocumentIsNewUpload)then(
-				if(!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument)) then 
-				(
-					fileName := "LegalRepresentative_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
-					SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
-					
-					representative.StatementOfOfficialDocument:= fileName;
-				);
+				fileName := "LegalRepresentative_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
+				SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
+				
+				representative.StatementOfOfficialDocument:= fileName;
 			)else (
 				representative.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
 			);
 			
 			if(item.IdCardIsNewUpload)then(
-				if(!System.String.IsNullOrWhiteSpace(item.IdCard)) then 
-				(
-					fileName := "LegalRepresentative_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
-					SaveFile(fileRootPath, fileName, item.IdCard);
-					
-					representative.IdCard:= fileName;
-				);
+				fileName := "LegalRepresentative_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
+				SaveFile(fileRootPath, fileName, item.IdCard);
+				
+				representative.IdCard:= fileName;
 			)else(
 				representative.IdCard:= item.IdCard;				
 			);
@@ -581,25 +562,19 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 			owner.Citizenship:= item.Citizenship;
 			
 			if(item.StatementOfOfficialDocumentIsNewUpload)then(
-				if(!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument)) then 
-				(
-					fileName := "Owner_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
-					SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
-					
-					owner.StatementOfOfficialDocument:= fileName;
-				);
+				fileName := "Owner_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
+				SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
+				
+				owner.StatementOfOfficialDocument:= fileName;
 			)else (
 				owner.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
 			);
 			
 			if(item.IdCardIsNewUpload)then(
-				if(!System.String.IsNullOrWhiteSpace(item.IdCard)) then 
-				(
-					fileName := "Owner_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
-					SaveFile(fileRootPath, fileName, item.IdCard);
-					
-					owner.IdCard:= fileName;
-				);
+				fileName := "Owner_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
+				SaveFile(fileRootPath, fileName, item.IdCard);
+				
+				owner.IdCard:= fileName;
 			)else(
 				owner.IdCard:= item.IdCard;				
 			);
