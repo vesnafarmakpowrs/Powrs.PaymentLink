@@ -70,7 +70,7 @@ function GenerateLanguageDropdown() {
                 response.forEach(language => {
                     let option = document.createElement("option");
                     option.value = language.Code;
-                    option.textContent = language.Code;
+                    option.textContent = language.Name;
                     languageDropdown.appendChild(option);
                 });
 
@@ -108,17 +108,29 @@ function DisplayTransactionResult(Result) {
     }
 }
 
-function UserAgree() {
+function UserAgree(isIPS) {
 
     if (document.getElementById("termsAndCondition").checked
         && document.getElementById("termsAndConditionAgency").checked) {
-        document.getElementById("payspot-submit").removeAttribute("disabled");
+        if (document.getElementById("payspot-submit") != null ) document.getElementById("payspot-submit").removeAttribute("disabled");
         document.getElementById("ctn-payment-method-rs").style.display = "block";
+       console.log( document.getElementById("IpsOnly").value);
+       if (document.getElementById("IpsOnly").value?.toLowerCase() === 'true')
+         LoadIPS();
     }
     else {
-        document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
+         if (document.getElementById("payspot-submit") != null) document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
         document.getElementById("ctn-payment-method-rs").style.display = "none";
     }
+}
+
+
+function LoadIPS()
+{   
+   console.log('loadIPS');
+   document.getElementById("ips-iframe").src = "";
+   if (isMobileDevice)
+     document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSPayoutM.md";
 }
 
 var updateTimer = null;

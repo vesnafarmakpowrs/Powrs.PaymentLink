@@ -27,7 +27,7 @@ if(Language == null) then
  lng:= "rs";
  Language:= Translator.GetLanguageAsync("rs");
 );
-Log.Informational(lng, null);
+
 LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
 if(LanguageNamespace == null) then 
 (
@@ -67,7 +67,7 @@ if Token.HasStateMachine then
          Return("");
     );
 
-    Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
+    Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Id = Token.Creator And State = 'Approved';
     if(Identity == null) then
     (
       ]]<b>Seller is not currently active. Please try again later.</b>[[;
@@ -145,7 +145,6 @@ if Token.HasStateMachine then
                 "id": NewGuid().ToString(),
                 "ip": Request.RemoteEndPoint,
                 "country": Country,
-                "language": lng,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
 
@@ -174,7 +173,7 @@ if Token.HasStateMachine then
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>
-
+<input type="hidden" value="((IpsOnly ))" id="IpsOnly"/>
 <input type="hidden" value="((Request.RemoteEndPoint))" id="currentIp"/>
 <input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
@@ -265,31 +264,17 @@ if ContractState == "AwaitingForPayment" then
 <div class="payment-method-rs"  id="ctn-payment-method-rs" style="display:none">
   <table style="width:100%; text-align:center">
     <tr>
-<td>
+     <td > 
 [[;
 if(IpsOnly) then 
 (
-]]
-<form method="post" id="payspotForm" name="payspotForm" action='' target="payspot_iframe">
-<input type="hidden" name="companyId" value='' />
-<input type="hidden" name="merchantOrderID" value='' />
-<input type="hidden" name="merchantOrderAmount" value='' />
-<input type="hidden" name="merchantCurrencyCode" value='' />
-<input type="hidden" name="language" value='' />
-<input type="hidden" name="callbackURL" value='' />
-<input type="hidden" name="successURL" value='' />
-<input type="hidden" name="cancelURL" value='' />
-<input type="hidden" name="errorURL" value='' />
-<input type="hidden" name="hash" value='' />
-<input type="hidden" name="rnd" value='' />
-<input type="hidden" name="currentDate" value='' />
-</form>
-<button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="GenerateIPSForm()">Pay now</button> 
-[[;
+  ]] <div class="pay-ips-div">             
+         <iframe scrolling="no" id="ips-iframe" class="pay-iframe">
+     </div>[[;
 )
 else 
 (
-]]
+ ]]
 <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button> 
 [[;
 );

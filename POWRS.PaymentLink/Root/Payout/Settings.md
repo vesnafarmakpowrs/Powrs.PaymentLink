@@ -33,6 +33,8 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.SMSTextLocalKey", Str(Posted.SMSTextLocalKey));
 	SetSetting("POWRS.PaymentLink.LIStatusContactEmail", Str(Posted.LIStatusContactEmail));
 	SetSetting("POWRS.PaymentLink.AMLContactEmail", Str(Posted.AMLContactEmail));
+	SetSetting("POWRS.PaymentLink.NotificationList", Str(Posted.NotificationList));
+	SetSetting("POWRS.PaymentLink.OnBoardingFileRootPath", Str(Posted.OnBoardingFileRootPath));
 	
 	SeeOther("Settings.md");
 );
@@ -80,6 +82,16 @@ if exists(Posted) then
 <p>
 <label for="AMLContactEmail">AML contact email: </label>  
 <input type="text" id="AMLContactEmail" name="AMLContactEmail" value='{{GetSetting("POWRS.PaymentLink.AMLContactEmail","")}}' autofocus required title="Anti-money Laundering. Multiple mails split with ;"/>
+</p>
+
+<p>
+<label for="NotificationList">Notification recipients for payment completed:</label>  
+<input type="text" id="NotificationList" name="NotificationList" value='{{GetSetting("POWRS.PaymentLink.NotificationList","")}}' title="Can be e-mail addresses. Separate using semicolon if more than one."/>
+</p>
+
+<p>
+<label for="OnBoardingFileRootPath">Root directory for onBoarding files (path ends just with file name, use excepe \):</label>  
+<input type="text" id="OnBoardingFileRootPath" name="OnBoardingFileRootPath" value='{{GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","")}}' title="Root directory for onBoarding files (path ends just with file name, use excape \)"/>
 </p>
 
 

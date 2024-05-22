@@ -1,4 +1,63 @@
 
+
+@font-face {
+font-family: 'Goanda Bold';
+src: url('../Fonts/Coanda-Bold.ttf') format('truetype');
+font-weight: bold;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'RTDromo';
+src: url('../Fonts/RTDromo-Book.woff2') format('woff2'),
+url('fonts/RTDromo-Book.woff') format('woff');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'RTDromo Book Oblique';
+src: url('../Fonts/RTDromo-BookOblique.woff2') format('woff2'),
+url('fonts/RTDromo-BookOblique.woff') format('woff');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'RTDromo Light';
+src: url('../Fonts/RTDromo-Light.woff2') format('woff2'),
+url('fonts/RTDromo-Light.woff') format('woff');
+font-weight: normal;
+font-style: normal;
+}
+
+
+@font-face {
+font-family: 'RTDromo Light Oblique';
+src: url('../Fonts/RTDromo-LightOblique.woff2') format('woff2'),
+url('fonts/RTDromo-LightOblique.woff') format('woff');
+font-weight: normal;
+font-style: normal;
+}
+
+
+@font-face {
+font-family: 'RTDromo Medium';
+src: url('../Fonts/RTDromo-Medium.woff2') format('woff2'),
+url('fonts/RTDromo-Medium.woff') format('woff');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'RTDromo Medium Oblique';
+src: url('../Fonts/RTDromo-MediumOblique.woff2') format('woff2'),
+url('fonts/RTDromo-MediumOblique.woff') format('woff');
+font-weight: normal;
+font-style: normal;
+}
+
+
  .qr-timer {
         display: flex;
         align-items: center;
@@ -79,8 +138,7 @@
     align-items: center;
     background-color: #fff;
     border: none;
-    border-radius: 25px;
-    box-shadow: -6px -6px 14.2381px #f8f8f8, 4.38095px 4.38095px 14.2381px #0000001f;
+    border-radius: 4px; box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
     color: #405c75;
     font-size: 14px;
     font-weight: 500;
@@ -91,27 +149,67 @@
     width: 20rem;
 }
 
-var countDownDate = new Date("Jan 5, 2030 15:37:25").getTime();
+.pay-btn{
+    padding: 5px 25px;
+    width : 100%;
+    text-align: center;
+    border-radius: 4px;
+    font-style: normal;
+    font-size: 1rem;
+    line-height: normal;
+    box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+    transition: all 0.2s ease;
+    font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+}
 
-var x = setInterval(function() {
+.btn-black 
+{
+ background: black;
+ color:white;
+ border: 2px solid #000;
+}
 
-  var now = new Date().getTime();
-  var distance = countDownDate - now;
+.btn-grey
+{
+ background: #D7D7D7;
+ color:black;
+ border: 2px solid #D7D7D7;
+}
 
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+.pay-div
+{
+  padding:10px 0px;
+  width:100%;
+  height:100%;
+  border:0px;
+  font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+}
 
-  // Display the result in the element with id="demo"
-  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s ";
+.pay-iframe
+{
+ width:100%;
+ height:100%;
+ border:0px;
+}
 
-  // If the count down is finished, write some text
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("demo").innerHTML = "EXPIRED";
-  }
-}, 1000);
+.bank-name-lbl
+{
+  padding-left: 0.4rem;
+  font-size: 1rem;
+  font-style: normal;
+  font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+}
 
+.search-bank-box
+{
+  width:100%;
+  border:1px;
+  border: 2px solid #D7D7D7;
+  font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+}
+
+
+.bank-list-ul
+{
+  padding-inline-start : 0px !important;
+}

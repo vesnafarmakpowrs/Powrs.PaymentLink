@@ -1,34 +1,53 @@
-document.addEventListener('DOMContentLoaded', function () {
-    let dropdown = document.querySelector(".dropdown");
-    let selectCountry = dropdown.querySelector(".select-bank");
-    let options = dropdown.querySelector(".options");
-    let optionItems = options.querySelectorAll("div");
-    // Other code...
- 
-    
-    const toggleDropdown = () => {
-        if (window.getComputedStyle(options).display == "none") {
-            options.style.display = "block";
+
+function OpenDeepLink(bankId)
+{
+  InitiateIPSPayment(bankId, GetDeepLinkSuccess);
+}
+
+function InitiateIPSPayment(bankId, onSuccess) {
+   console.log(bankId);
+    SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
+        {
+            "isFromMobile": true,
+            "tabId": TabID,
+            "ipsOnly": true,
+            "bankId": bankId
+        },
+        (response) => {
+            onSuccess(response);
+        },
+        (error) => {
+            if (error.status === 408) {
+                return;
+            }
+            alert(error);
+            TransactionFailed(null);
+        })
+}
+
+function TransactionFailed(Result) {
+    let res = {
+        IsCompleted: true,
+        IsSuccess: false,
+        Message: Translations.TransactionFailed
+    };
+
+    DisplayTransactionResult(res);
+}
+
+function DisplayTransactionResult(Result) {
+
+    if (Result.IsCompleted) {
+        if (Result.IsSuccess) {
+            setTimeout(function () {
+                location.reload();
+            }, 4000);
         }
-        else {
-            options.style.display = "none";
-        }           
-    }   
-    selectCountry.addEventListener("click", toggleDropdown);
-    
-    
-    const chooseOption = (option) => {
-        console.log(option.getAttribute("data-value")); 
-        toggleDropdown();
     }
-    optionItems.forEach(function(option, i) {
-        option.addEventListener("click", function(){chooseOption(option)});
-    });
-    
-    const closeDropdown = (e) => {
-        if (e.target.parentNode.className !== "dropdown") {
-            options.style.display = "none";
-        }
-    }
-    document.addEventListener("click", closeDropdown);
-});
+}
+
+function GetDeepLinkSuccess(ResponseData) {
+   console.log(ResponseData.Response);
+   console.log(ResponseData.Response.DeepLink);
+   window.open(ResponseData.Response.DeepLink, '_PARENT');
+}
