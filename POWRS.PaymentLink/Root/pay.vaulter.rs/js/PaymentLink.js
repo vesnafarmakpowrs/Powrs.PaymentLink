@@ -70,7 +70,7 @@ function GenerateLanguageDropdown() {
                 response.forEach(language => {
                     let option = document.createElement("option");
                     option.value = language.Code;
-                    option.textContent = language.Code;
+                    option.textContent = language.Name;
                     languageDropdown.appendChild(option);
                 });
 
