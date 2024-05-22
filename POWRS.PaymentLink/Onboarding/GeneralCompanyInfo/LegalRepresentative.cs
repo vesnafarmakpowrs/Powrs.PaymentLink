@@ -5,14 +5,35 @@ namespace POWRS.PaymentLink.Onboarding
 {
     public class LegalRepresentative
     {
+        public LegalRepresentative()
+        {
+            fullName = "";
+            personalNumber = "";
+            placeOfBirth = "";
+            addressOfResidence = "";
+            cityOfResidence = "";
+            statementOfOfficialDocument = "";
+            documentNumber = "";
+            placeOfIssue = "";
+            issuerName = "";
+            idCard = "";
+            dateOfBirthStr = "";
+            dateOfIssueStr = "";
+        }
+
         private string fullName;
+        private string personalNumber;
         private DateTime? dateOfBirth;
+        private string placeOfBirth;
+        private string addressOfResidence;
+        private string cityOfResidence;
         private bool isPoliticallyExposedPerson;
         private string statementOfOfficialDocument;
         private DocumentType documentType;
         private string documentNumber;
         private DateTime? dateOfIssue;
         private string placeOfIssue;
+        private string issuerName;
         private string idCard;
 
         private string dateOfBirthStr;
@@ -45,5 +66,10 @@ namespace POWRS.PaymentLink.Onboarding
         public bool IsPoliticallyExposedPerson { get => isPoliticallyExposedPerson; set => isPoliticallyExposedPerson = value; }
         public string DateOfBirthStr { get => dateOfBirthStr; set => dateOfBirthStr = value; }
         public string DateOfIssueStr { get => dateOfIssueStr; set => dateOfIssueStr = value; }
+        public string IssuerName { get => issuerName; set => issuerName = value; }
+        public string PlaceOfBirth { get => placeOfBirth; set => placeOfBirth = value; }
+        public string AddressOfResidence { get => addressOfResidence; set => addressOfResidence = value; }
+        public string CityOfResidence { get => cityOfResidence; set => cityOfResidence = value; }
+        public string PersonalNumber { get => personalNumber; set => personalNumber = value; }
     }
 }

@@ -992,7 +992,8 @@ Token is required. Request body is empty.
                 "PersonalNumber": "3105988792648",
                 "DateOfBirth": 581032800,
                 "PlaceOfBirth": "Ivanjica",
-                "AddressAndPlaceOfResidence": "Beograd, Zaplanjska 82",
+                "AddressOfResidence": "Zaplanjska 82",
+                "CityOfResidence": "Beograd",
                 "IsPoliticallyExposedPerson": true,
                 "DocumentType": "IDCard",
                 "DocumentNumber": "009876248",
@@ -1067,8 +1068,12 @@ Call this resource save data for onboarding.
         "CompanyWebshop": "",
         "LegalRepresentatives":[                        ->If nothing populated then send empty array []
             {
-                "FullName": "Mirko Kruščić",            -> Mandatory for 'save' if files updating
+                "FullName": "Mirko Kruščić",            -> Mandatory for 'save' if files uploading
+                "PersonalNumber": "",
                 "DateOfBirth": "25/04/2024",            -> Format: dd/MM/yyyy. If user don't select date, send empty string
+                "PlaceOfBirth" : "",
+                "AddressOfResidence": "",
+                "CityOfResidence": "",
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
 				"StatementOfOfficialDocumentIsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
                 "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
@@ -1076,6 +1081,7 @@ Call this resource save data for onboarding.
                 "IdCard": "",                           -> if it is new file uplad then base 64 string, else string from API
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "PlaceOfIssue": "",
+                "IssuerName": "",
                 "DateOfIssue": "25/04/2024",            -> Format: dd/MM/yyyy. If user don't select date, send empty string
                 "DocumentNumber": ""
             }
@@ -1089,11 +1095,12 @@ Call this resource save data for onboarding.
         "OwnerStructure": "Person",                     -> Can be string: 'Person', 'Company' or 'PersonAndCompany'
         "Owners":[                                      -> If nothing populated then send empty array []
             {
-                "FullName": "Mirko Kruščić",            -> Mandatory for 'save' if files updating
+                "FullName": "Mirko Kruščić",            -> Mandatory for 'save' if files uploading
                 "PersonalNumber": "",
                 "DateOfBirth": "25/04/2024",            -> Format: dd/MM/yyyy. If user don't select date, send empty string
                 "PlaceOfBirth": "",
-                "AddressAndPlaceOfResidence": "",
+                "AddressOfResidence": "",
+                "CityOfResidence": "",
                 "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
 				"StatementOfOfficialDocumentIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
                 "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
@@ -1157,11 +1164,13 @@ Method: `POST`
 Call this resource to download file that is previously uploaded on server.
 
 **Request**
+
 ````
 {
-    "FileName": Required(String(PFileName)
+    "FileName": string
 }
 ````
+
 Description of properties:
 
 | Name              | Description |
@@ -1172,7 +1181,7 @@ Description of properties:
 
 ````
 {
-    "File": "JVBERi0xLjUNJeLjz9MNCjIwIDAgb2JqDTw8L0xpbmVhcml6 ..."
+    "File": base 64 ecoded string
 }
 ````
 
@@ -1188,14 +1197,16 @@ Method: `POST`
 Call this resource to download template PDF file.
 
 **Request**
+
 ````
 {
-	"FileType": Required(String(PFileType)),
-	"IsEmptyFile":  Required(Boolean(PIsEmptyFile)),
-    "PersonPositionInCompany": Optional(Str(PPersonPositionInCompany)),
-	"PersonIndex": Optional(Int(PPersonIndex))
+	"FileType": string,
+	"IsEmptyFile":  boolean,
+    "PersonPositionInCompany": string,
+	"PersonIndex": int
 }
 ````
+
 Description of properties:
 
 | Name              | Description |

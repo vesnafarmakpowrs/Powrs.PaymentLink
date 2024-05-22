@@ -10,220 +10,373 @@
         <link rel="stylesheet" href="./BusinessCooperationRequest_Css.css" />
     </head>
     <body>
-        <!-- ******************* PAGE 1 ******************* -->
         <div class="pageContainer">
-            <div class="pageHeader">
-                <img src="./PaySpot_Logo.png" class="headerLogo" />
-                <img src="./PaySpot_CompanyInfo.png" class="headerInfo" />
-            </div>
+            <!-- ******************* PAGE 1 ******************* -->
+            <div>
+                <div class="pageHeader">
+                    <img src="./PaySpot_Logo.png" class="headerLogo" />
+                    <img src="./PaySpot_CompanyInfo.png" class="headerInfo" />
+                </div>
 
-            <h1 style="margin-top: 0pt; text-align: center; color: #0070c0; font-size: 15pt">
-                ZAHTEV ZA USPOSTAVLJANJE POSLOVNE SARADNJE
-            </h1>
+                <h1 style="margin-top: 0pt; text-align: center; color: #0070c0; font-size: 15pt">
+                    ZAHTEV ZA USPOSTAVLJANJE POSLOVNE SARADNJE
+                </h1>
 
-            <!-- *** Tabela 1 -->
-            <div class="divDocumentVersion" style="float: right">P053 V05</div>
-            <table class="tbl" cellspacing="0">
-                <!-- *** osnovni podaci ***-->
-                <tr>
-                    <td class="tbl_Header_td" colspan="3">I OSNOVNI PODACI O PODNOSIOCU ZAHTEVA</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Pun naziv podnosioca zahteva</td>
-                    <td class="tbl_colData_td" colspan="2">{{CompanyFullName}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Skraćeni naziv</td>
-                    <td class="tbl_colData_td" colspan="2">{{CompanyShortName}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Mesto, sedište i adresa</td>
-                    <td class="tbl_colData_td" colspan="2">{{CompanyAddress}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Matični broj/PIB</td>
-                    <td class="tbl_colData_td_2Coll tbl_colData_td">{{CompanyOrganizationNumber}}</td>
-                    <td class="tbl_colData_td_2Coll tbl_colData_td">{{CompanyTaxNumber}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Šifra pretežne delatnosti</td>
-                    <td class="tbl_colData_td" colspan="2">{{ActivityNumber}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">
-                        Da li se pored pretežne delatnosti preduzeće bavi i drugim delatnostima
-                    </td>
-                    <td class="tbl_colData_td" colspan="2">{{OtherCompanyActivitiesYesNo}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Ime i prezime ovlašćenog lica za zastupanje</td>
-                    <td class="tbl_colData_td" colspan="2">{{LegalRepresentativeFullName}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Datum i mesto rođenja ovlašćenog lica za zastupanje</td>
-                    <td class="tbl_colData_td_2Coll tbl_colData_td">{{LegalRepresentativeDateOfBirth}}</td>
-                    <td class="tbl_colData_td_2Coll tbl_colData_td">{{LegalRepresentativePlaceOfBirth}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Vrsta i broj ličnog dokumenta ovlašćenog lica za zastupanje</td>
-                    <td class="tbl_colData_td_2Coll tbl_colData_td">{{LegalRepresentativeDocumentType}}</td>
-                    <td class="tbl_colData_td_2Coll tbl_colData_td">{{LegalRepresentativeDocumentNumber}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">
-                        Datum i mesto izdavanja ličnog dokumenta ovlašćenog lica za zastupanje
-                    </td>
-                    <td class="tbl_colData_td_2Coll tbl_colData_td">{{LegalRepresentativeDateOfIssue}}</td>
-                    <td class="tbl_colData_td_2Coll tbl_colData_td">{{LegalRepresentativePlaceOfIssue}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">
-                        Da li ima više ovlašćenih lica za zastupanje (ukoliko ima uneti podatke o ostalim zastupnicima u
-                        poseban prilog)
-                    </td>
-                    <td class="tbl_colData_td" style="padding-top: 7pt" colspan="2">
-                        {{LegalRepresentativeHaveMoreThenOne}}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Kontakt osobe</td>
-                    <td class="tbl_colData_td" colspan="2">{{CompanyContactPerson}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Broj telefona (fiksni/mobilni)**</td>
-                    <td class="tbl_colData_td" colspan="2">{{CompanyTelephone}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">E mail adresa**</td>
-                    <td class="tbl_colData_td" colspan="2">{{CompanyEmail}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Web adresa</td>
-                    <td class="tbl_colData_td" colspan="2">{{CompanyWebAdresa}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Broj računa u poslovnoj banci/naziv banke</td>
-                    <td class="tbl_colData_td" colspan="2">{{CompanyAccountNumberAndBank}}</td>
-                </tr>
-
-                <!-- *** POSLOVNI ODNOS ***-->
-                <tr>
-                    <td class="tbl_Header_td" colspan="3">II POSLOVNI ODNOS</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Svrha i namena uspostavljanja poslovnog odnosa</td>
-                    <td class="tbl_colData_td" colspan="2">Ostalo</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">
-                        Opisati oblast poslovanja zbog koje se uspostavlja saradnja sa Institucijom
-                    </td>
-                    <td class="tbl_colData_td" colspan="2">
-                        <u>Korišćenje servisa Vaulter Paylink i izvršenje platne transakcije</u>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Navedite region/zemlje gde obavljate svoje poslovanje</td>
-                    <td class="tbl_colData_td" colspan="2">{{CountriesOfBusiness}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Navesti očekivani promet u RSD (mesečno)</td>
-                    <td class="tbl_colData_td" colspan="2">{{ExpectedMonthlyTurnover}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">
-                        U svom poslovanju u skladu sa odlukama nadležnih organa kojim je regulisana upotreba pečata,
-                        navesti da li podnosioc zahteva koristi pečat
-                    </td>
-                    <td class="tbl_colData_td" colspan="2">{{StampUsage}}</td>
-                </tr>
-
-                <!-- *** VLASNIČKA STRUKTURA ***-->
-                <tr>
-                    <td class="tbl_Header_td" colspan="3">III VLASNIČKA STRUKTURA</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">Lica koja se javljaju u vlasničkoj strukturi</td>
-                    <td class="tbl_colData_td" colspan="2">{{OwnerStructure}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">
-                        Da li je fizičko lice, stvarni vlasnik podnosioca zahteva (direktno ili indirektno preko drugog
-                        pravnog lica) i/ili zakonski zastupnik, i/ili prokurista i/ili punomoćnik podnosioca zahteva,
-                        funkcioner/član uže porodice funkcionera/uži saradnik funkcionera? *
-                    </td>
-                    <td class="tbl_colData_td" colspan="2">{{PoliticallyExposedPerson}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">
-                        Da li u vlasničkoj strukturi klijenta postoji pravno lica registrovano na offshore destinaciji,
-                        fondacija ili Trast
-                    </td>
-                    <td class="tbl_colData_td" colspan="2">{{OffShoreFoundationInOwnerStructure}}</td>
-                </tr>
-                <tr>
-                    <td class="tbl_colLabel_td">
-                        Ukoliko je pravno lica listirano na berzi navesti ime berze i identifikacioni broj
-                    </td>
-                    <td class="tbl_colData_td" colspan="2">{{NameOfTheForeignExchangeAndIDNumber}}</td>
-                </tr>
-            </table>
-
-            <div class="footnote">
-                *U prilogu je definicija pojma stvarnog vlasnika i funkcioner <br />
-                **Potpisivanjem ovog zahteva dajem saglasnost Instituciji da komunikaciju sa mnom (informacije,
-                instrukcije,obaveštenja u vezi sa proizvodom odobrenim na osnovu ovog zahteva i zaključenim
-                ugovorom/proizvodom) vrši elektronski - putem i-mejl adrese iz ovog zahteva
-            </div>
-
-            <!-- *** Vlasnici pravna lica sa preko 25% *** -->
-            <div class="{{ShowOwners}}">
-                <br />
-                <p class="grayTextBckgrnd width60p">Popunite stvarne vlasnike:</p>
-                <table class="tblOtherData">
-                    <tr class="tblOtherData_header">
-                        <td>Ime i prezime</td>
-                        <td>Adresa i mesto prebivališta</td>
-                        <td>Datum rođenja</td>
-                        <td>Državljanstvo</td>
-                        <td>Vlasnički udeo %</td>
-                        <td>Funkcija</td>
+                <!-- *** Tabela page 1 -->
+                <div class="divDocumentVersion" style="float: right">P053 V05</div>
+                <table class="tbl" cellspacing="0">
+                    <!-- *** osnovni podaci ***-->
+                    <tr>
+                        <td class="tbl_Header_td" colspan="3">I OSNOVNI PODACI O PODNOSIOCU ZAHTEVA</td>
                     </tr>
-                    {{OwnerStructureTable}}
+                    <tr>
+                        <td class="tbl_colLabel_td">Pun naziv podnosioca zahteva</td>
+                        <td class="" colspan="2">{{CompanyFullName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Skraćeni naziv</td>
+                        <td class="" colspan="2">{{CompanyShortName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Mesto, sedište i adresa</td>
+                        <td class="" colspan="2">{{CompanyAddress}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Matični broj/PIB</td>
+                        <td class="_2Coll">{{CompanyOrganizationNumber}}</td>
+                        <td class="_2Coll">{{CompanyTaxNumber}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Šifra pretežne delatnosti</td>
+                        <td class="" colspan="2">{{ActivityNumber}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">
+                            Da li se pored pretežne delatnosti preduzeće bavi i drugim delatnostima
+                        </td>
+                        <td class="" colspan="2">{{OtherCompanyActivitiesYesNo}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Ime i prezime ovlašćenog lica za zastupanje</td>
+                        <td class="" colspan="2">{{LegalRepresentativeFullName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Datum i mesto rođenja ovlašćenog lica za zastupanje</td>
+                        <td class="_2Coll">{{LegalRepresentativeDateOfBirth}}</td>
+                        <td class="_2Coll">{{LegalRepresentativePlaceOfBirth}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Vrsta i broj ličnog dokumenta ovlašćenog lica za zastupanje</td>
+                        <td class="_2Coll">{{LegalRepresentativeDocumentType}}</td>
+                        <td class="_2Coll">{{LegalRepresentativeDocumentNumber}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">
+                            Datum i mesto izdavanja ličnog dokumenta ovlašćenog lica za zastupanje
+                        </td>
+                        <td class="_2Coll">{{LegalRepresentativeDateOfIssue}}</td>
+                        <td class="_2Coll">{{LegalRepresentativePlaceOfIssue}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">
+                            Da li ima više ovlašćenih lica za zastupanje (ukoliko ima uneti podatke o ostalim
+                            zastupnicima u poseban prilog)
+                        </td>
+                        <td class="" style="padding-top: 7pt" colspan="2">{{LegalRepresentativeHaveMoreThenOne}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Kontakt osobe</td>
+                        <td class="" colspan="2">{{CompanyContactPerson}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Broj telefona (fiksni/mobilni)**</td>
+                        <td class="" colspan="2">{{CompanyTelephone}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">E mail adresa**</td>
+                        <td class="" colspan="2">{{CompanyEmail}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Web adresa</td>
+                        <td class="" colspan="2">{{CompanyWebAdresa}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Broj računa u poslovnoj banci/naziv banke</td>
+                        <td class="" colspan="2">{{CompanyAccountNumberAndBank}}</td>
+                    </tr>
+
+                    <!-- *** POSLOVNI ODNOS ***-->
+                    <tr>
+                        <td class="tbl_Header_td" colspan="3">II POSLOVNI ODNOS</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Svrha i namena uspostavljanja poslovnog odnosa</td>
+                        <td class="" colspan="2">Ostalo</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">
+                            Opisati oblast poslovanja zbog koje se uspostavlja saradnja sa Institucijom
+                        </td>
+                        <td class="" colspan="2">
+                            <u>Korišćenje servisa Vaulter Paylink i izvršenje platne transakcije</u>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Navedite region/zemlje gde obavljate svoje poslovanje</td>
+                        <td class="" colspan="2">{{CountriesOfBusiness}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Navesti očekivani promet u RSD (mesečno)</td>
+                        <td class="" colspan="2">{{ExpectedMonthlyTurnover}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">
+                            U svom poslovanju u skladu sa odlukama nadležnih organa kojim je regulisana upotreba pečata,
+                            navesti da li podnosioc zahteva koristi pečat
+                        </td>
+                        <td class="" colspan="2">{{StampUsage}}</td>
+                    </tr>
+
+                    <!-- *** VLASNIČKA STRUKTURA ***-->
+                    <tr>
+                        <td class="tbl_Header_td" colspan="3">III VLASNIČKA STRUKTURA</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">Lica koja se javljaju u vlasničkoj strukturi</td>
+                        <td class="" colspan="2">{{OwnerStructure}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">
+                            Da li je fizičko lice, stvarni vlasnik podnosioca zahteva (direktno ili indirektno preko
+                            drugog pravnog lica) i/ili zakonski zastupnik, i/ili prokurista i/ili punomoćnik podnosioca
+                            zahteva, funkcioner/član uže porodice funkcionera/uži saradnik funkcionera? *
+                        </td>
+                        <td class="" colspan="2">{{PoliticallyExposedPerson}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">
+                            Da li u vlasničkoj strukturi klijenta postoji pravno lica registrovano na offshore
+                            destinaciji, fondacija ili Trast
+                        </td>
+                        <td class="" colspan="2">{{OffShoreFoundationInOwnerStructure}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl_colLabel_td">
+                            Ukoliko je pravno lica listirano na berzi navesti ime berze i identifikacioni broj
+                        </td>
+                        <td class="" colspan="2">{{NameOfTheForeignExchangeAndIDNumber}}</td>
+                    </tr>
+                </table>
+
+                <div class="footnote">
+                    *U prilogu je definicija pojma stvarnog vlasnika i funkcioner <br />
+                    **Potpisivanjem ovog zahteva dajem saglasnost Instituciji da komunikaciju sa mnom (informacije,
+                    instrukcije,obaveštenja u vezi sa proizvodom odobrenim na osnovu ovog zahteva i zaključenim
+                    ugovorom/proizvodom) vrši elektronski - putem i-mejl adrese iz ovog zahteva
+                </div>
+
+                <!-- *** Vlasnici pravna lica sa preko 25% *** -->
+                <div class="{{ShowOwners}}">
+                    <br />
+                    <p class="grayTextBckgrnd width60p">Popunite stvarne vlasnike:</p>
+                    <table class="tblOtherData">
+                        <tr class="tblOtherData_header">
+                            <td>Ime i prezime</td>
+                            <td>Adresa i mesto prebivališta</td>
+                            <td>Datum rođenja</td>
+                            <td>Državljanstvo</td>
+                            <td>Vlasnički udeo %</td>
+                            <td>Funkcija</td>
+                        </tr>
+                        {{OwnerStructureTable}}
+                    </table>
+                </div>
+
+                <!-- *** Ostale delatnosti *** -->
+                <div class="{{ShowOtherCompanyActivities}}">
+                    <br />
+                    <p class="grayTextBckgrnd width60p">Navedite druge delatnosti kojima se preduzeće bavi:</p>
+                    <p><span class="blueTextBckgrnd">Opis delatnosti:</span> {{OtherCompanyActivities}}</p>
+                </div>
+
+                <!-- *** Ostali zastupnici *** -->
+                <div class="{{ShowLegalRepresentatives}}">
+                    <br />
+                    <p class="grayTextBckgrnd width60p">Popunite podatke o ostalim zastupnicima:</p>
+                    <p><span class="blueTextBckgrnd">Ime i prezime:</span> {{LegalRepresentativesStr}}</p>
+                </div>
+
+                <!-- *** POTPISIVANJE *** -->
+                <br />
+                <br />
+                <br />
+                <p class="blueTextBckgrnd width60p">
+                    Potpisivanjem ovog zahteva potvrđujem verodostojnost unetih podataka
+                </p>
+                <table class="tblSiganture">
+                    <tr>
+                        <td style="width: 40%">Mesto i datum podnošenja zahteva</td>
+                        <td style="width: 20%"></td>
+                        <td style="width: 40%">Potpis lica ovlašćenog za zastupanje pravnog lica/preduzetnika</td>
+                    </tr>
+                    <tr style="height: 20pt">
+                        <td class="tblSigantureTD_UnderLine"></td>
+                        <td></td>
+                        <td class="tblSigantureTD_UnderLine"></td>
+                    </tr>
                 </table>
             </div>
 
-            <!-- *** Ostale delatnosti *** -->
-            <div class="{{ShowOtherCompanyActivities}}">
-                <br />
-                <p class="grayTextBckgrnd width60p">Navedite druge delatnosti kojima se preduzeće bavi:</p>
-                <p><span class="blueTextBckgrnd">Opis delatnosti:</span> {{OtherCompanyActivities}}</p>
-            </div>
+            <!-- ******************* PAGE 2 ******************* -->
+            <div>
+                <div class="pageHeader">
+                    <img src="./PaySpot_Logo.png" class="headerLogo" />
+                </div>
 
-            <!-- *** Ostali zastupnici *** -->
-            <div class="{{ShowLegalRepresentatives}}">
+                <!-- *** Tabela page 2 -->
+                <div class="divDocumentVersion" style="float: right">P053a V02</div>
+                <table class="tbl2" cellspacing="0">
+                    <!-- *** osnovni podaci ***-->
+                    <tr>
+                        <td class="tbl2_Header_td" colspan="5">PRILOG ZA E COMMERCE</td>
+                    </tr>
+                    <tr>
+                        <td class="" style="font-weight: bold" colspan="5">Označite vrstu e-commerce usluge:</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_borderBottomDashed" colspan="5">
+                            <div class="divInlineContainer">
+                                <div class="divInlineBlock">
+                                    <input
+                                        type="checkbox"
+                                        id="transaction"
+                                        name="transaction"
+                                        value="transaction"
+                                        {{chBoxInternetPlatforma}}
+                                    />
+                                </div>
+                                <div class="divInlineBlock">INTERNET PLATFORMA</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_borderBottomDashed" colspan="5">
+                            <div class="divInlineContainer">
+                                <div class="divInlineBlock">
+                                    <input
+                                        type="checkbox"
+                                        id="transaction"
+                                        name="transaction"
+                                        value="transaction"
+                                        {{chBoxInternetProdajnoMesto}}
+                                    />
+                                </div>
+                                <div class="divInlineBlock">INTERNET PRODAJNO MESTO</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_Header_td" colspan="5">PODACI O POSLOVANJU PODNOSIOCA ZAHTEVA</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Ime i prezime kontakt lica za e commerce</td>
+                        <td class="" colspan="4">{{ImeIPrezimeKontaktZaEKomerc}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Kontakt telefon odgovornog lica za e commerce</td>
+                        <td class="" colspan="4">{{KontaktTelefonKontaktaZaEKomerc}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">E-mail adresa za e commerce</td>
+                        <td class="" colspan="4">{{EmailAdresaZaeCommerce}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Navesti internet adresu prodajnog mesta (URL)</td>
+                        <td class="" colspan="4">{{CompanyWebshop}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Da li klijent poseduje maloprodajne objekte / njihov broj</td>
+                        <td class="" colspan="4">{{RetailersNumber}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Koliko korisnika vaših usluga su stranci? (%)</td>
+                        <td class="" colspan="4">{{ForeignBuyers}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Prosečan iznos transakcije na internetu</td>
+                        <td class="" colspan="4">{{AverageTransactionAmount}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Prosečan dnevni promet na internetu</td>
+                        <td class="" colspan="4">{{AverageDailyTurnover}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Ukupan promet preko računa u poslednja 3 meseca</td>
+                        <td class="" colspan="4">{{ThreeMonthAccountTurnover}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Učešće kartičnog plaćanja u ukupnom prometu</td>
+                        <td class="" colspan="4">{{CardPaymentPercentage}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Opis robe koja će se prodavati putem interneta</td>
+                        <td class="" colspan="4">{{OpisRobeKojaCeSeProdavatiPutemInterneta}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Način dostave robe kupcima</td>
+                        <td class="" colspan="4">{{NacinDostaveRobeKupcima}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Očekivani promet za narednu godinu</td>
+                        <td class="" colspan="4">{{ExpectedYearlyTurnover}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Iznos najjeftinijeg artikla/robe/usluge</td>
+                        <td class="" colspan="4">{{CheapestProductAmount}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Iznos najskupljeg artikla/robe /usluge</td>
+                        <td class="" colspan="4">{{MostExpensiveProductAmount}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Da li prodajete robu sa odloženim rokom isporuke?</td>
+                        <td class="" colspan="4">{{SellingGoodsWithDelayedDelivery}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Broj dana od trenutka plaćanja do trenutka isporuke robe</td>
+                        <td class="" colspan="4">{{PeriodFromPaymentToDeliveryInDays}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Da li ste imali reklamacije korisnika?</td>
+                        <td class="" colspan="4">{{DoYouHaveCustomerComplaints}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_colLabel_td">Broj reklamacija mesečno/godišnje</td>
+                        <td class="tbl2_colLabel_backColor">Mesečno</td>
+                        <td class="">{{ComplaintsPerMonth}}</td>
+                        <td class="tbl2_colLabel_backColor">Godišnje</td>
+                        <td class="">{{ComplaintsPerYear}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tbl2_tdTextArea" colspan="5">
+                            Opišite ukratko svoj poslovni model:<br />
+                            {{BusinessModel}}
+                        </td>
+                    </tr>
+                </table>
                 <br />
-                <p class="grayTextBckgrnd width60p">Popunite podatke o ostalim zastupnicima:</p>
-                <p><span class="blueTextBckgrnd">Ime i prezime:</span> {{LegalRepresentativesStr}}</p>
+                <p style="text-align: center; font-size: 12pt">
+                    Svojim potpisom na prvoj strani Zahteva potvrđujem tačnost navedenih podataka kao i podataka
+                    navedenim u ovom Prilogu.
+                </p>
             </div>
-
-            <!-- *** POTPISIVANJE *** -->
-            <br />
-            <br />
-            <br />
-            <p class="blueTextBckgrnd width60p">Potpisivanjem ovog zahteva potvrđujem verodostojnost unetih podataka</p>
-            <table class="tblSiganture">
-                <tr>
-                    <td style="width: 40%">Mesto i datum podnošenja zahteva</td>
-                    <td style="width: 20%"></td>
-                    <td style="width: 40%">Potpis lica ovlašćenog za zastupanje pravnog lica/preduzetnika</td>
-                </tr>
-                <tr style="height: 20pt">
-                    <td class="tblSigantureTD_UnderLine"></td>
-                    <td></td>
-                    <td class="tblSigantureTD_UnderLine"></td>
-                </tr>
-            </table>
+            
+            <!-- ******************* PAGE 3 ******************* -->
+            <div>
+                <div class="pageHeader">
+                    <img src="./PaySpot_Logo.png" class="headerLogo" />
+                </div>
+            </div>
         </div>
     </body>
 </html>

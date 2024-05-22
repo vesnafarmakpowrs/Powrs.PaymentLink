@@ -8,10 +8,19 @@ namespace POWRS.PaymentLink.Onboarding
     [Index("UserName")]
     public class BusinessData : BaseOnboardingModel<BusinessData>
     {
-        public BusinessData() { }
+        public BusinessData()
+        {
+            businessModel = "";
+            methodOfDeliveringGoodsToCustomers = "";
+            descriptionOfTheGoodsToBeSoldOnline = "";
+            percentageOfForeignUsers = "";
+            eComerceContactFullName = "";
+            eComerceResponsiblePersonPhone = "";
+            eComerceContactEmail = "";
+        }
         public BusinessData(string userName) : base(userName) { }
 
-        private string businedModel;
+        private string businessModel;
         private int retailersNumber;
         private int expectedMonthlyTurnover;
         private int expectedYearlyTurnover;
@@ -26,10 +35,17 @@ namespace POWRS.PaymentLink.Onboarding
         private int complaintsPerMonth;
         private int complaintsPerYear;
 
+        private string methodOfDeliveringGoodsToCustomers;
+        private string descriptionOfTheGoodsToBeSoldOnline;
+        private string percentageOfForeignUsers;
+        private string eComerceContactFullName;
+        private string eComerceResponsiblePersonPhone;
+        private string eComerceContactEmail;
+
         public string BusinessModel
         {
-            get => businedModel;
-            set => businedModel = value;
+            get => businessModel;
+            set => businessModel = value;
         }
 
         public int RetailersNumber
@@ -108,20 +124,36 @@ namespace POWRS.PaymentLink.Onboarding
             get => complaintsPerYear;
             set => complaintsPerYear = value;
         }
+        public string MethodOfDeliveringGoodsToCustomers { get => methodOfDeliveringGoodsToCustomers; set => methodOfDeliveringGoodsToCustomers = value; }
+        public string DescriptionOfTheGoodsToBeSoldOnline { get => descriptionOfTheGoodsToBeSoldOnline; set => descriptionOfTheGoodsToBeSoldOnline = value; }
+        public string PercentageOfForeignUsers { get => percentageOfForeignUsers; set => percentageOfForeignUsers = value; }
+        public string EComerceContactFullName { get => eComerceContactFullName; set => eComerceContactFullName = value; }
+        public string EComerceResponsiblePersonPhone { get => eComerceResponsiblePersonPhone; set => eComerceResponsiblePersonPhone = value; }
+        public string EComerceContactEmail { get => eComerceContactEmail; set => eComerceContactEmail = value; }
 
         public override bool IsCompleted()
         {
-            return !string.IsNullOrEmpty(BusinessModel) &&
-                RetailersNumber != null &&
-                ExpectedMonthlyTurnover != null &&
-                ExpectedYearlyTurnover != null &&
-                ThreeMonthAccountTurnover != null &&
-                CardPaymentPercentage != null &&
-                AverageTransactionAmount != null &&
-                AverageDailyTurnover != null &&
-                CheapestProductAmount != null && CheapestProductAmount > 0 &&
-                ComplaintsPerMonth != null &&
-                ComplaintsPerYear != null;
+            return !string.IsNullOrWhiteSpace(BusinessModel) &&
+
+                RetailersNumber > 0 &&
+                ExpectedMonthlyTurnover > 0 &&
+                ExpectedYearlyTurnover > 0 &&
+                ThreeMonthAccountTurnover > 0 &&
+                CardPaymentPercentage > 0 &&
+                AverageTransactionAmount > 0 &&
+                AverageDailyTurnover > 0 &&
+                CheapestProductAmount > 0 &&
+                ComplaintsPerMonth > 0 &&
+                ComplaintsPerYear > 0 &&
+
+                businessModel != "" &&
+                methodOfDeliveringGoodsToCustomers != "" &&
+                descriptionOfTheGoodsToBeSoldOnline != "" &&
+                percentageOfForeignUsers != "" &&
+                eComerceContactFullName != "" &&
+                eComerceResponsiblePersonPhone != "" &&
+                eComerceContactEmail != ""
+            ;
         }
     }
 }

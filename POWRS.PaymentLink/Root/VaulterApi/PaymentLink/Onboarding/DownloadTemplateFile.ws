@@ -231,7 +231,7 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 			foreach (item in companyStructure.Owners) do(
 				ownerStructureTable += "<tr>";
 				ownerStructureTable += "<td>" + item.FullName + "</td>";
-				ownerStructureTable += "<td>" + item.AddressAndPlaceOfResidence + "</td>";
+				ownerStructureTable += "<td>" + item.AddressOfResidence + ", " + item.CityOfResidence"</td>";
 				ownerStructureTable += "<td>" + item.DateOfBirthStr + "</td>";
 				ownerStructureTable += "<td>" + item.Citizenship + "</td>";
 				ownerStructureTable += "<td>" + item.OwningPercentage + "</td>";
@@ -353,7 +353,7 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 		htmlContent := htmlContent.Replace("{{ClientFullName}}", "");
 		htmlContent := htmlContent.Replace("{{PersonalNumber}}", "");
 		htmlContent := htmlContent.Replace("{{DateAndPlaceOfBirth}}", "");
-		htmlContent := htmlContent.Replace("{{AddressAndPlaceOfResidence}}", "");
+		htmlContent := htmlContent.Replace("{{AddressOfResidence}}", "");
 		htmlContent := htmlContent.Replace("{{CityOdResidence}}", "");
 		htmlContent := htmlContent.Replace("{{DocumentTypeAndNumber}}", "");
 		htmlContent := htmlContent.Replace("{{DocumentIssueDate}}", "");
@@ -381,8 +381,8 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 			htmlContent := htmlContent.Replace("{{ClientFullName}}", generalInfo.LegalRepresentatives[PPersonIndex].FullName);
 			htmlContent := htmlContent.Replace("{{PersonalNumber}}", "");
 			htmlContent := htmlContent.Replace("{{DateAndPlaceOfBirth}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfBirthStr + ", ");
-			htmlContent := htmlContent.Replace("{{AddressAndPlaceOfResidence}}", "");
-			htmlContent := htmlContent.Replace("{{CityOdResidence}}", "");
+			htmlContent := htmlContent.Replace("{{AddressOfResidence}}", generalInfo.LegalRepresentatives[PPersonIndex].AddressOfResidence); 
+			htmlContent := htmlContent.Replace("{{CityOdResidence}}", generalInfo.LegalRepresentatives[PPersonIndex].CityOfResidence);
 			htmlContent := htmlContent.Replace("{{DocumentTypeAndNumber}}", (generalInfo.LegalRepresentatives[PPersonIndex].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + generalInfo.LegalRepresentatives[PPersonIndex].DocumentNumber);
 			htmlContent := htmlContent.Replace("{{DocumentIssueDate}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfIssueStr + ", " + generalInfo.LegalRepresentatives[PPersonIndex].PlaceOfIssue);
 			htmlContent := htmlContent.Replace("{{DocumentIssuerName}}", "");
@@ -413,8 +413,8 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 			htmlContent := htmlContent.Replace("{{ClientFullName}}", companyStructure.Owners[PPersonIndex].FullName);
 			htmlContent := htmlContent.Replace("{{PersonalNumber}}", companyStructure.Owners[PPersonIndex].PersonalNumber);
 			htmlContent := htmlContent.Replace("{{DateAndPlaceOfBirth}}", companyStructure.Owners[PPersonIndex].DateOfBirthStr + ", " + companyStructure.Owners[PPersonIndex].PlaceOfBirth);
-			htmlContent := htmlContent.Replace("{{AddressAndPlaceOfResidence}}", companyStructure.Owners[PPersonIndex].AddressAndPlaceOfResidence);
-			htmlContent := htmlContent.Replace("{{CityOdResidence}}", "");
+			htmlContent := htmlContent.Replace("{{AddressOfResidence}}", companyStructure.Owners[PPersonIndex].AddressOfResidence);
+			htmlContent := htmlContent.Replace("{{CityOdResidence}}", companyStructure.Owners[PPersonIndex].CityOfResidence);
 			htmlContent := htmlContent.Replace("{{DocumentTypeAndNumber}}", (companyStructure.Owners[PPersonIndex].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + companyStructure.Owners[PPersonIndex].DocumentNumber);
 			htmlContent := htmlContent.Replace("{{DocumentIssueDate}}", companyStructure.Owners[PPersonIndex].DateOfIssueStr + ", " + companyStructure.Owners[PPersonIndex].PlaceOfIssue);
 			htmlContent := htmlContent.Replace("{{DocumentIssuerName}}", companyStructure.Owners[PPersonIndex].IssuerName);

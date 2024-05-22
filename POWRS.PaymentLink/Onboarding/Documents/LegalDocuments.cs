@@ -8,7 +8,14 @@ namespace POWRS.PaymentLink.Onboarding
     [Index("UserName")]
     public class LegalDocuments : BaseOnboardingModel<LegalDocuments>
     {
-        public LegalDocuments() { }
+        public LegalDocuments()
+        {
+            businessCooperationRequest = "";
+            contractWithVaulter = "";
+            contractWithEMI = "";
+            promissoryNote = "";
+            politicalStatement = "";
+        }
         public LegalDocuments(string UserName) : base(UserName) { }
 
         private string businessCooperationRequest;

@@ -8,7 +8,12 @@ if(Posted == null) then BadRequest("Data could not be null");
 
 errors:= Create(System.Collections.Generic.List, System.String);
 currentMethod:= "";
-fileMaxSizeMB := 1;
+fileMaxSizeMB := 1.5;
+
+allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
+if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
+	BadRequest("No setting: OnBoardingFileRootPath");
+);
 
 ValidatePostedData(Posted) := (
 	if(!exists(Posted.GeneralCompanyInformation) or Posted.GeneralCompanyInformation == null) then errors.Add("GeneralCompanyInformation could not be null");
@@ -106,8 +111,9 @@ ValidatePostedData(Posted) := (
 					errors.Add("StatementOfOfficialDocument not valid base 64 string");
 				);
 			);
-			if(System.String.IsNullOrWhiteSpace(item.FullName))then(
+			if(!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument) and System.String.IsNullOrWhiteSpace(item.FullName))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".FullName");
+				errors.Add("When file exists full name must be populated");				
 			);
 			
 			isNewUpload := false;
@@ -125,9 +131,10 @@ ValidatePostedData(Posted) := (
 					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
 					errors.Add("IdCard not valid base 64 string");
 				);
-				if(System.String.IsNullOrWhiteSpace(item.FullName))then(
-					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".FullName");
-				);
+			);
+			if(!System.String.IsNullOrWhiteSpace(item.IdCard) and System.String.IsNullOrWhiteSpace(item.FullName))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".FullName");
+				errors.Add("When file exists full name must be populated");				
 			);
 			if(!exists(item.DocumentType))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DocumentType");
@@ -142,6 +149,21 @@ ValidatePostedData(Posted) := (
 			);
 			if(!exists(item.DocumentNumber))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DocumentNumber");
+			);
+			if(!exists(item.IssuerName))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IssuerName");
+			);
+			if(!exists(item.PlaceOfBirth))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".PlaceOfBirth");
+			);
+			if(!exists(item.AddressOfResidence))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".AddressOfResidence");
+			);
+			if(!exists(item.CityOfResidence))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".CityOfResidence");
+			);
+			if(!exists(item.PersonalNumber))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".PersonalNumber");
 			);
 			
 			itemIndex++;
@@ -190,8 +212,11 @@ ValidatePostedData(Posted) := (
 			if(!exists(item.PlaceOfBirth))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".PlaceOfBirth");
 			);
-			if(!exists(item.AddressAndPlaceOfResidence))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".AddressAndPlaceOfResidence");
+			if(!exists(item.AddressOfResidence))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".AddressOfResidence");
+			);
+			if(!exists(item.CityOfResidence))then(
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".CityOfResidence");
 			);			
 			if(!exists(item.IsPoliticallyExposedPerson))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IsPoliticallyExposedPerson");
@@ -204,15 +229,15 @@ ValidatePostedData(Posted) := (
 			if(!exists(item.StatementOfOfficialDocument))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
 			)else if (isNewUpload)then(
-				if(!POWRS.PaymentLink.Utils.IsValidBase64String(item.StatementOfOfficialDocument, fileMaxSizeMB))then(
+				if(System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument))then (
+					errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
+				)else if(!POWRS.PaymentLink.Utils.IsValidBase64String(item.StatementOfOfficialDocument, fileMaxSizeMB))then(
 					errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
 					errors.Add("StatementOfOfficialDocument not valid base 64 string");
 				);
 			);
-			if(isNewUpload)then(
-				if(System.String.IsNullOrWhiteSpace(item.FullName))then (
-					errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
-				);
+			if(!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument) and System.String.IsNullOrWhiteSpace(item.FullName))then (
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
 			);
 			if(!exists(item.OwningPercentage))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".OwningPercentage");
@@ -255,9 +280,9 @@ ValidatePostedData(Posted) := (
 					errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCard");
 					errors.Add("IdCard not valid base 64 string");
 				);
-				if(System.String.IsNullOrWhiteSpace(item.FullName))then (
-					errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
-				);
+			);
+			if(!System.String.IsNullOrWhiteSpace(item.IdCard) and System.String.IsNullOrWhiteSpace(item.FullName))then (
+				errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
 			);
 			
 			itemIndex++;
@@ -402,11 +427,6 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = UserName;
 	recordExists:= generalInfo != null;
 	
-	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
-	if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
-		Error("No setting: OnBoardingFileRootPath");
-	);	
-
 	if(generalInfo == null) then
 	(
 		companyInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where OrganizationNumber = GeneralCompanyInfo.OrganizationNumber;
@@ -415,6 +435,9 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			Error("GeneralCompanyInfo: Another user has already started the onboarding for this company");
 		);
 		generalInfo:= Create(POWRS.PaymentLink.Onboarding.GeneralCompanyInformation);
+		generalInfo.CanEdit := true;
+		generalInfo.CanEdit := true;
+		
 	)
 	else if(generalInfo.OrganizationNumber != GeneralCompanyInfo.OrganizationNumber) then
 	(
@@ -467,6 +490,11 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			representative.DocumentNumber:= item.DocumentNumber;
 			representative.PlaceOfIssue:= item.PlaceOfIssue;
 			representative.IsPoliticallyExposedPerson:= item.IsPoliticallyExposedPerson;
+			representative.IssuerName:= item.IssuerName;
+			representative.PlaceOfBirth:= item.PlaceOfBirth;
+			representative.AddressOfResidence:= item.AddressOfResidence;
+			representative.CityOfResidence:= item.CityOfResidence;
+			representative.PersonalNumber:= item.PersonalNumber;
 			
 			if(item.StatementOfOfficialDocumentIsNewUpload)then(
 				fileName := "LegalRepresentative_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
@@ -535,10 +563,6 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 
 	if(CompanyStructure.Owners != null and CompanyStructure.Owners.Length > 0) then 
 	(
-		allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
-		if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
-			Error("No setting: OnBoardingFileRootPath");
-		);
 		companySubDirPath := "\\" + companyShortName;
 		fileRootPath := allCompaniesRootPath + companySubDirPath;
 		
@@ -551,7 +575,8 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 			owner.FullName:= item.FullName;
 			owner.PersonalNumber:= item.PersonalNumber;
 			owner.PlaceOfBirth:= item.PlaceOfBirth;
-			owner.AddressAndPlaceOfResidence:= item.AddressAndPlaceOfResidence;
+			owner.AddressOfResidence:= item.AddressOfResidence;
+			owner.CityOfResidence:= item.CityOfResidence;
 			owner.IsPoliticallyExposedPerson:= item.IsPoliticallyExposedPerson;
 			owner.OwningPercentage:= item.OwningPercentage;
 			owner.Role:= item.Role;
@@ -646,10 +671,6 @@ SaveBusinessData(BusinessData, UserName):=
 
 SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 (
-	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
-	if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
-		Error("No setting: OnBoardingFileRootPath");
-	);
 	companySubDirPath := "\\" + companyShortName;
 	fileRootPath := allCompaniesRootPath + companySubDirPath;
 	

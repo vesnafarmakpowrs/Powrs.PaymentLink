@@ -10,7 +10,26 @@ namespace POWRS.PaymentLink.Onboarding
     [Index("UserName")]
     public class GeneralCompanyInformation : BaseOnboardingModel<GeneralCompanyInformation>
     {
-        public GeneralCompanyInformation() { }
+        public GeneralCompanyInformation()
+        {
+            fullName = "";
+            shortName = "";
+            companyAddress = "";
+            companyCity = "";
+            organizationNumber = "";
+            taxNumber = "";
+            activityNumber = "";
+            otherCompanyActivities = "";
+
+            bankName = "";
+            bankAccountNumber = "";
+
+            companyWebsite = "";
+            companyWebshop = "";
+            legalRepresentatives = new LegalRepresentative[0];
+            created = DateTime.Now;
+            canEdit = true;
+        }
         public GeneralCompanyInformation(string userName) : base(userName) { }
 
         private string fullName;
@@ -30,6 +49,8 @@ namespace POWRS.PaymentLink.Onboarding
         private string companyWebsite;
         private string companyWebshop;
         private LegalRepresentative[] legalRepresentatives;
+        private DateTime created;
+        private bool canEdit;
 
         public string FullName { get => fullName; set => fullName = value; }
         public string ShortName { get => shortName; set => shortName = value; }
@@ -48,6 +69,8 @@ namespace POWRS.PaymentLink.Onboarding
         public string CompanyWebsite { get => companyWebsite; set => companyWebsite = value; }
         public string CompanyWebshop { get => companyWebshop; set => companyWebshop = value; }
         public LegalRepresentative[] LegalRepresentatives { get => legalRepresentatives; set => legalRepresentatives = value; }
+        public DateTime Created { get => created; set => created = value; }
+        public bool CanEdit { get => canEdit; set => canEdit = value; }
 
         public override bool IsCompleted()
         {
@@ -75,7 +98,11 @@ namespace POWRS.PaymentLink.Onboarding
              string.IsNullOrWhiteSpace(m.PlaceOfIssue) ||
              string.IsNullOrWhiteSpace(m.StatementOfOfficialDocument) ||
              string.IsNullOrWhiteSpace(m.IdCard) ||
-             (m.IsPoliticallyExposedPerson && string.IsNullOrWhiteSpace(m.StatementOfOfficialDocument))
+             string.IsNullOrWhiteSpace(m.IssuerName) ||
+             string.IsNullOrWhiteSpace(m.PlaceOfBirth) ||
+             string.IsNullOrWhiteSpace(m.AddressOfResidence) ||
+             string.IsNullOrWhiteSpace(m.CityOfResidence) ||
+             string.IsNullOrWhiteSpace(m.PersonalNumber)
              );
 
             return !legalRepresentativesIncompleted;

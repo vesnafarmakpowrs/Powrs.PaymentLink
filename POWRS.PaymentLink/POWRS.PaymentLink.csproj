@@ -229,7 +229,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="PDFsharp" Version="6.0.0" />
 		<PackageReference Include="Waher.Content" Version="2.6.8" />
 		<PackageReference Include="Waher.Events" Version="1.1.3" />
 		<PackageReference Include="Waher.IoTGateway" Version="1.7.5" />
@@ -564,11 +563,20 @@
 	  <None Update="Scripts\StartupScripts\ValidatePayoutJWT.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Utils\DLLs\PdfSharp.dll">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\" />
 	  <Folder Include="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="PdfSharp">
+	    <HintPath>Utils\DLLs\PdfSharp.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<!-- build Serbian Production package 

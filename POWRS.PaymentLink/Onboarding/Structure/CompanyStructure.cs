@@ -10,7 +10,12 @@ namespace POWRS.PaymentLink.Onboarding
     [Index("UserName")]
     public class CompanyStructure : BaseOnboardingModel<CompanyStructure>
     {
-        public CompanyStructure() { }
+        public CompanyStructure() 
+        {
+            countriesOfBusiness = new string[0];
+            nameOfTheForeignExchangeAndIDNumber = "";
+            owners = new Owner[0];
+        }
         public CompanyStructure(string userName) : base(userName) { }
 
         private string[] countriesOfBusiness;
@@ -71,8 +76,9 @@ namespace POWRS.PaymentLink.Onboarding
                 string.IsNullOrWhiteSpace(m.PersonalNumber) ||
                 (m.DateOfBirth == null || m.DateOfBirth == DateTime.MinValue) ||
                 string.IsNullOrWhiteSpace(m.PlaceOfBirth) ||
-                string.IsNullOrWhiteSpace(m.AddressAndPlaceOfResidence) ||
-                (m.IsPoliticallyExposedPerson && string.IsNullOrWhiteSpace(m.StatementOfOfficialDocument)) ||
+                string.IsNullOrWhiteSpace(m.AddressOfResidence) ||
+                string.IsNullOrWhiteSpace(m.CityOfResidence) ||
+                string.IsNullOrWhiteSpace(m.StatementOfOfficialDocument) ||
                 m.OwningPercentage <= 0 ||
                 string.IsNullOrWhiteSpace(m.Role) ||
                 string.IsNullOrWhiteSpace(m.DocumentNumber) ||
