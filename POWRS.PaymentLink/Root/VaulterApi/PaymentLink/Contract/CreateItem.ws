@@ -8,8 +8,8 @@ if !exists(Posted) then BadRequest("No payload.");
     "price":Required(Double(PPrice) >= 0.1),
     "currency":Required(String(PCurrency)),
     "description":Required(String(PDescription)),
+    "paymentDeadline": Required(String(PPaymentDeadline)),
     "deliveryDate":Required(String(PDeliveryDate)),
-    "deliveryTime": Optional(String(PDeliveryTime)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
@@ -45,6 +45,10 @@ if(PDeliveryDate not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$
 (
     Error("Delivery date format not valid.");
 );
+if(PPaymentDeadline not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
+(
+    Error("PaymentDeadline date format not valid.");
+);
 if(PBuyerFirstName not like "[\\p{L}\\s]{2,20}") then 
 (
     Error("buyerFirstName not valid.");
@@ -77,23 +81,21 @@ if(System.String.IsNullOrWhiteSpace(PPassword)) then
     Error("No user with given username");
 );
 
-if(exists(PDeliveryTime)) then 
-(
-    if(System.String.IsNullOrWhiteSpace(PDeliveryTime) or PDeliveryTime not like "^(?:[01]\\d|2[0-3]):[0-5]\\d$") then 
-    (
-        Error("DeliveryTime not in correct format. Expected HH:mm.");
-    );
-)
-else
-(
-    PDeliveryTime:= "23:59";
-);
-
-PDeliveryDate+= (" " + PDeliveryTime);
-ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "dd/MM/yyyy HH:mm", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
+ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
 if(ParsedDeliveryDate < NowUtc) then 
 (
     Error("Delivery date and time must be in the future");
+);
+
+ParsedDeadlineDate:= System.DateTime.ParseExact(PPaymentDeadline, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
+if(ParsedDeadlineDate < NowUtc) then 
+(
+    Error("Deadline must be in the future.");
+);
+
+if(ParsedDeadlineDate > ParsedDeliveryDate) then 
+(
+    ParsedDeadlineDate:= ParsedDeliveryDate;
 );
 
 KeyId := GetSetting(SessionUser.username + ".KeyId","");
@@ -102,26 +104,6 @@ KeyPassword:= GetSetting(SessionUser.username + ".KeySecret","");
 if(System.String.IsNullOrEmpty(KeyId) or System.String.IsNullOrEmpty(KeyPassword)) then 
 (
     Error("No signing keys or password available for user: " + SessionUser.username);
-);
-
-if(exists(PSupportedPaymentMethods) and PSupportedPaymentMethods != null) then 
-(
-    supportedPaymentMethods:= Split(PSupportedPaymentMethods, ";");
-    if(supportedPaymentMethods != null and supportedPaymentMethods.Length > 0) then 
-    (
-       supportedPaymentMethods:= GetServiceProvidersForBuyingEdaler(PBuyerCountryCode, PCurrency).BuyEDalerServiceProvider.Id;
-       foreach allowed in supportedPaymentMethods do 
-       (
-          if(indexOf(supportedPaymentMethods, allowed) < 0) then 
-          (
-             Error("Invalid service providers selected");
-          );
-       );
-    );
-)
-else 
-(
-    PSupportedPaymentMethods:= "";
 );
 
 TemplateId:= GetSetting("POWRS.PaymentLink.TemplateId","");
@@ -168,8 +150,8 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
 	    "Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
-        "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00).ToUniversalTime(),
-        "DeliveryDate" : ParsedDeliveryDate,
+        "PaymentDeadline" : DateTime(ParsedDeadlineDate.Year, ParsedDeadlineDate.Month, ParsedDeadlineDate.Day, 23, 59, 59, 00).ToUniversalTime(),
+        "DeliveryDate" : DateTime(ParsedDeliveryDate.Year, ParsedDeliveryDate.Month, ParsedDeliveryDate.Day, 23, 59, 59, 00).ToUniversalTime(),,
         "Currency": PCurrency,
         "Country": PBuyerCountryCode,
         "Expires": TodayUtc.AddDays(364),
