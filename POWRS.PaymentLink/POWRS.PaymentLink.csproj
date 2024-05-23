@@ -573,12 +573,6 @@
 	  <Folder Include="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Reference Include="PdfSharp">
-	    <HintPath>Utils\DLLs\PdfSharp.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
-
 	<!-- build Serbian Production package 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>

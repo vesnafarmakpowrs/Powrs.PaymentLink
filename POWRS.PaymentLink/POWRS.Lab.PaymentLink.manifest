@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Module xmlns="http://waher.se/Schema/ModuleManifest.xsd">
 	<Assembly fileName="POWRS.PaymentLink.dll" />
-	<Assembly fileName="PdfSharp.dll" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ApplyForAgentLegalId.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./EncodeContractId.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateAgentApiToken.config" />

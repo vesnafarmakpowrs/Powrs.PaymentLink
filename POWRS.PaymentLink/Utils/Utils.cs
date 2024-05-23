@@ -1,5 +1,7 @@
-﻿using PdfSharp.Pdf;
+﻿/*
+using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
+*/
 using System;
 using System.Collections.Generic;
 
@@ -27,6 +29,7 @@ namespace POWRS.PaymentLink
             }
         }
 
+        /*
         public static void CopyPages(PdfDocument from, PdfDocument to)
         {
             for (int i = 0; i < from.PageCount; i++)
@@ -55,6 +58,7 @@ namespace POWRS.PaymentLink
                 throw;
             }
         }
+        */
 
 
     }
