@@ -13,7 +13,6 @@ namespace POWRS.PaymentLink.Onboarding
             businessModel = "";
             methodOfDeliveringGoodsToCustomers = "";
             descriptionOfTheGoodsToBeSoldOnline = "";
-            percentageOfForeignUsers = "";
             eComerceContactFullName = "";
             eComerceResponsiblePersonPhone = "";
             eComerceContactEmail = "";
@@ -37,7 +36,6 @@ namespace POWRS.PaymentLink.Onboarding
 
         private string methodOfDeliveringGoodsToCustomers;
         private string descriptionOfTheGoodsToBeSoldOnline;
-        private string percentageOfForeignUsers;
         private string eComerceContactFullName;
         private string eComerceResponsiblePersonPhone;
         private string eComerceContactEmail;
@@ -126,7 +124,6 @@ namespace POWRS.PaymentLink.Onboarding
         }
         public string MethodOfDeliveringGoodsToCustomers { get => methodOfDeliveringGoodsToCustomers; set => methodOfDeliveringGoodsToCustomers = value; }
         public string DescriptionOfTheGoodsToBeSoldOnline { get => descriptionOfTheGoodsToBeSoldOnline; set => descriptionOfTheGoodsToBeSoldOnline = value; }
-        public string PercentageOfForeignUsers { get => percentageOfForeignUsers; set => percentageOfForeignUsers = value; }
         public string EComerceContactFullName { get => eComerceContactFullName; set => eComerceContactFullName = value; }
         public string EComerceResponsiblePersonPhone { get => eComerceResponsiblePersonPhone; set => eComerceResponsiblePersonPhone = value; }
         public string EComerceContactEmail { get => eComerceContactEmail; set => eComerceContactEmail = value; }
@@ -149,7 +146,6 @@ namespace POWRS.PaymentLink.Onboarding
                 businessModel != "" &&
                 methodOfDeliveringGoodsToCustomers != "" &&
                 descriptionOfTheGoodsToBeSoldOnline != "" &&
-                percentageOfForeignUsers != "" &&
                 eComerceContactFullName != "" &&
                 eComerceResponsiblePersonPhone != "" &&
                 eComerceContactEmail != ""

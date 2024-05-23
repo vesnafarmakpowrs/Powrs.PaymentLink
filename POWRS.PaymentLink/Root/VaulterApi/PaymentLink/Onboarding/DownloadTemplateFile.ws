@@ -12,8 +12,6 @@ logEventID := "DownloadTemplateFile.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
 DownloadTemplateContractWithVaulter(PIsEmptyFile) := (
-	Log.Informational("Method DTContractWithVaulter started", logObjectID, logActor, logEventID, null);
-
 	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
 	if(generalInfo == null)then
 	(
@@ -53,17 +51,12 @@ DownloadTemplateContractWithVaulter(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 	);
 	
-	Log.Informational("Method DTContractWithVaulter. finish HTML replacement. Try to start method CreatePDFFile()", logObjectID, logActor, logEventID, null);
-	
 	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
-	Log.Informational("finish method CreatePDFFile. return newPDFFilePath: " + newPDFFilePath, logObjectID, logActor, logEventID, null);
 		
 	Return (newPDFFilePath);
 );
 
 DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
-	Log.Informational("Method DTBusinessCooperationRequest started", logObjectID, logActor, logEventID, null);
-
 	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
 	if(generalInfo == null)then
 	(
@@ -129,7 +122,51 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{OtherCompanyActivities}}", "");
 		htmlContent := htmlContent.Replace("{{ShowLegalRepresentatives}}", "showDiv");
 		htmlContent := htmlContent.Replace("{{LegalRepresentativesStr}}", "");
-	
+		
+		
+		htmlContent := htmlContent.Replace("{{chBoxInternetPlatforma}}", "");
+		htmlContent := htmlContent.Replace("{{chBoxInternetProdajnoMesto}}", "");
+		htmlContent := htmlContent.Replace("{{EComerceContactFullName}}", "");
+		htmlContent := htmlContent.Replace("{{EComerceResponsiblePersonPhone}}", "");
+		htmlContent := htmlContent.Replace("{{EComerceContactEmail}}", "");
+		htmlContent := htmlContent.Replace("{{CompanyWebshop}}", "");
+		htmlContent := htmlContent.Replace("{{RetailersNumber}}", "");
+		htmlContent := htmlContent.Replace("{{PercentageOfForeignUsers}}", "");
+		htmlContent := htmlContent.Replace("{{AverageTransactionAmount}}", "");
+		htmlContent := htmlContent.Replace("{{AverageDailyTurnover}}", "");
+		htmlContent := htmlContent.Replace("{{ThreeMonthAccountTurnover}}", "");
+		htmlContent := htmlContent.Replace("{{CardPaymentPercentage}}", "");
+		htmlContent := htmlContent.Replace("{{DescriptionOfTheGoodsToBeSoldOnline}}", "");
+		htmlContent := htmlContent.Replace("{{MethodOfDeliveringGoodsToCustomers}}", "");
+		htmlContent := htmlContent.Replace("{{ExpectedYearlyTurnover}}", "");
+		htmlContent := htmlContent.Replace("{{CheapestProductAmount}}", "");
+		htmlContent := htmlContent.Replace("{{MostExpensiveProductAmount}}", "");
+		htmlContent := htmlContent.Replace("{{SellingGoodsWithDelayedDelivery}}", "");
+		htmlContent := htmlContent.Replace("{{PeriodFromPaymentToDeliveryInDays}}", "");
+		htmlContent := htmlContent.Replace("{{DoYouHaveCustomerComplaints}}", "");
+		htmlContent := htmlContent.Replace("{{ComplaintsPerMonth}}", "");
+		htmlContent := htmlContent.Replace("{{ComplaintsPerYear}}", "");
+		htmlContent := htmlContent.Replace("{{BusinessModel}}", "");
+		
+		
+		htmlContent := htmlContent.Replace("{{showHideOtherLegalRepresentatives}}", "showDiv");
+		htmlContent := htmlContent.Replace("{{pagebreak}}", "pagebreak");
+		otherLegalRepresentativesTable := Create(System.Text.StringBuilder);
+		FOR i := 1 TO 4 STEP 1 DO
+		(
+			otherLegalRepresentativesTable.Append("<br />");
+			otherLegalRepresentativesTable.Append("<div>" + Str(i) + "</div>");
+			otherLegalRepresentativesTable.Append("<table class=\"tbl2\">");
+			otherLegalRepresentativesTable.Append("<tr><td class=\"tbl2_colLabel_td\">Ime i prezime zastupnika</td><td></td></tr>");
+			otherLegalRepresentativesTable.Append("<tr><td class=\"tbl2_colLabel_td\">Datum i mesto rođenja</td><td></td></tr>");
+			otherLegalRepresentativesTable.Append("<tr><td class=\"tbl2_colLabel_td\">Vrsta ličnog dokumenta i broj</td><td></td></tr>");
+			otherLegalRepresentativesTable.Append("<tr><td class=\"tbl2_colLabel_td\">Datum i mesto izdavanja ličnog dokumenta</td><td></td></tr>");
+			otherLegalRepresentativesTable.Append("<tr><td class=\"tbl2_colLabel_td\">Boravište/Prebivalište</td><td></td></tr>");
+			otherLegalRepresentativesTable.Append("</table>");
+			otherLegalRepresentativesTable.Append("<br />");
+		);
+		htmlContent := htmlContent.Replace("{{OtherLegalRepresentativesTable}}", otherLegalRepresentativesTable.ToString());
+		destroy(otherLegalRepresentativesTable);
 	)
 	else
 	(
@@ -146,7 +183,7 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		(
 			htmlContent := htmlContent.Replace("{{LegalRepresentativeFullName}}", generalInfo.LegalRepresentatives[0].FullName);
 			htmlContent := htmlContent.Replace("{{LegalRepresentativeDateOfBirth}}", generalInfo.LegalRepresentatives[0].DateOfBirthStr);
-			htmlContent := htmlContent.Replace("{{LegalRepresentativePlaceOfBirth}}", "");
+			htmlContent := htmlContent.Replace("{{LegalRepresentativePlaceOfBirth}}", generalInfo.LegalRepresentatives[0].PlaceOfBirth);
 			htmlContent := htmlContent.Replace("{{LegalRepresentativeDocumentType}}", generalInfo.LegalRepresentatives[0].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš");
 			htmlContent := htmlContent.Replace("{{LegalRepresentativeDocumentNumber}}", generalInfo.LegalRepresentatives[0].DocumentNumber);
 			htmlContent := htmlContent.Replace("{{LegalRepresentativeDateOfIssue}}", generalInfo.LegalRepresentatives[0].DateOfIssueStr);
@@ -165,9 +202,9 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 			htmlContent := htmlContent.Replace("{{LegalRepresentativeHaveMoreThenOne}}", "Da / Ne");
 		);
 		
-		htmlContent := htmlContent.Replace("{{CompanyContactPerson}}", "");
-		htmlContent := htmlContent.Replace("{{CompanyTelephone}}", "");
-		htmlContent := htmlContent.Replace("{{CompanyEmail}}", "");
+		htmlContent := htmlContent.Replace("{{CompanyContactPerson}}", businessData.EComerceContactFullName);
+		htmlContent := htmlContent.Replace("{{CompanyTelephone}}", businessData.EComerceResponsiblePersonPhone);
+		htmlContent := htmlContent.Replace("{{CompanyEmail}}", businessData.EComerceContactEmail);
 		htmlContent := htmlContent.Replace("{{CompanyWebAdresa}}", generalInfo.CompanyWebsite);
 		htmlContent := htmlContent.Replace("{{CompanyAccountNumberAndBank}}", generalInfo.BankAccountNumber + " " + generalInfo.BankName);
 		
@@ -227,20 +264,23 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		if(companyStructure.Owners != null and companyStructure.Owners.Length > 0) then 
 		(
 			htmlContent := htmlContent.Replace("{{ShowOwners}}", "showDiv");
-			ownerStructureTable := "";
+			ownerStructureTable := Create(System.Text.StringBuilder);
+			
 			foreach (item in companyStructure.Owners) do(
-				ownerStructureTable += "<tr>";
-				ownerStructureTable += "<td>" + item.FullName + "</td>";
-				ownerStructureTable += "<td>" + item.AddressOfResidence + ", " + item.CityOfResidence"</td>";
-				ownerStructureTable += "<td>" + item.DateOfBirthStr + "</td>";
-				ownerStructureTable += "<td>" + item.Citizenship + "</td>";
-				ownerStructureTable += "<td>" + item.OwningPercentage + "</td>";
-				ownerStructureTable += "<td>" + item.Role + "</td>";
-				ownerStructureTable += "</tr>";
+				ownerStructureTable.Append("<tr>");
+				ownerStructureTable.Append("<td>" + item.FullName + "</td>");
+				ownerStructureTable.Append("<td>" + item.AddressOfResidence + ", " + item.CityOfResidence + "</td>");
+				ownerStructureTable.Append("<td>" + item.DateOfBirthStr + "</td>");
+				ownerStructureTable.Append("<td>" + item.Citizenship + "</td>");
+				ownerStructureTable.Append("<td>" + item.OwningPercentage + "</td>");
+				ownerStructureTable.Append("<td>" + item.Role + "</td>");
+				ownerStructureTable.Append("</tr>");
 			);
 			
-			htmlContent := htmlContent.Replace("{{OwnerStructureTable}}", ownerStructureTable);
-		)else 
+			htmlContent := htmlContent.Replace("{{OwnerStructureTable}}", ownerStructureTable.ToString());
+			destroy(ownerStructureTable);
+		)
+		else 
 		(
 			htmlContent := htmlContent.Replace("{{ShowOwners}}", "hideDiv");
 			ownerStructureTable := "<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
@@ -263,7 +303,7 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 			legalRepresentativesStr := "";
 			FOR i := 1 TO generalInfo.LegalRepresentatives.Length - 1 STEP 1 DO
 			(
-				legalRepresentativesStr +=  generalInfo.LegalRepresentatives[i].FullName + (i != generalInfo.LegalRepresentatives.Length ? ", " : "");
+				legalRepresentativesStr +=  generalInfo.LegalRepresentatives[i].FullName + (i != generalInfo.LegalRepresentatives.Length-1 ? ", " : "");
 			);
 		
 			htmlContent := htmlContent.Replace("{{ShowLegalRepresentatives}}", "showDiv");
@@ -273,19 +313,67 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 			htmlContent := htmlContent.Replace("{{ShowLegalRepresentatives}}", "hideDiv");
 			htmlContent := htmlContent.Replace("{{LegalRepresentativesStr}}", "");
 		);
-	);
-	
-	Log.Informational("Method TBusinessCooperationRequest. finish HTML replacement. Try to start method CreatePDFFile()", logObjectID, logActor, logEventID, null);
-	
-	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
-	Log.Informational("finish method CreatePDFFile. return newPDFFilePath: " + newPDFFilePath, logObjectID, logActor, logEventID, null);
 		
+		htmlContent := htmlContent.Replace("{{chBoxInternetPlatforma}}", (generalInfo.CompanyWebsite != "" ? "checked" : ""));
+		htmlContent := htmlContent.Replace("{{chBoxInternetProdajnoMesto}}", (generalInfo.CompanyWebshop != "" ? "checked" : ""));
+		htmlContent := htmlContent.Replace("{{EComerceContactFullName}}", businessData.EComerceContactFullName);
+		htmlContent := htmlContent.Replace("{{EComerceResponsiblePersonPhone}}", businessData.EComerceResponsiblePersonPhone);
+		htmlContent := htmlContent.Replace("{{EComerceContactEmail}}", businessData.EComerceContactEmail);
+		htmlContent := htmlContent.Replace("{{CompanyWebshop}}", generalInfo.CompanyWebshop);
+		htmlContent := htmlContent.Replace("{{RetailersNumber}}", Str(businessData.RetailersNumber));
+		htmlContent := htmlContent.Replace("{{PercentageOfForeignUsers}}", Str(companyStructure.PercentageOfForeignUsers));
+		htmlContent := htmlContent.Replace("{{AverageTransactionAmount}}", Str(businessData.AverageTransactionAmount));
+		htmlContent := htmlContent.Replace("{{AverageDailyTurnover}}", Str(businessData.AverageDailyTurnover));
+		htmlContent := htmlContent.Replace("{{ThreeMonthAccountTurnover}}", Str(businessData.ThreeMonthAccountTurnover));
+		htmlContent := htmlContent.Replace("{{CardPaymentPercentage}}", Str(businessData.CardPaymentPercentage));
+		htmlContent := htmlContent.Replace("{{DescriptionOfTheGoodsToBeSoldOnline}}", businessData.DescriptionOfTheGoodsToBeSoldOnline);
+		htmlContent := htmlContent.Replace("{{MethodOfDeliveringGoodsToCustomers}}", businessData.MethodOfDeliveringGoodsToCustomers);
+		htmlContent := htmlContent.Replace("{{ExpectedYearlyTurnover}}", Str(businessData.ExpectedYearlyTurnover));
+		htmlContent := htmlContent.Replace("{{CheapestProductAmount}}", Str(businessData.CheapestProductAmount));
+		htmlContent := htmlContent.Replace("{{MostExpensiveProductAmount}}", Str(businessData.MostExpensiveProductAmount));
+		htmlContent := htmlContent.Replace("{{SellingGoodsWithDelayedDelivery}}", (businessData.SellingGoodsWithDelayedDelivery ? "Da" : "Ne"));
+		htmlContent := htmlContent.Replace("{{PeriodFromPaymentToDeliveryInDays}}", Str(businessData.PeriodFromPaymentToDeliveryInDays));
+		htmlContent := htmlContent.Replace("{{DoYouHaveCustomerComplaints}}", (businessData.ComplaintsPerMonth > 0 ? "Da" : "Ne"));
+		htmlContent := htmlContent.Replace("{{ComplaintsPerMonth}}", Str(businessData.ComplaintsPerMonth));
+		htmlContent := htmlContent.Replace("{{ComplaintsPerYear}}", Str(businessData.ComplaintsPerYear));
+		htmlContent := htmlContent.Replace("{{BusinessModel}}", businessData.BusinessModel);
+		
+		if(generalInfo.LegalRepresentatives.Length > 1) then
+		(
+			htmlContent := htmlContent.Replace("{{showHideOtherLegalRepresentatives}}", "showDiv");
+			htmlContent := htmlContent.Replace("{{pagebreak}}", "pagebreak");
+		
+			otherLegalRepresentativesTable := Create(System.Text.StringBuilder);
+			FOR i := 1 TO generalInfo.LegalRepresentatives.Length - 1 STEP 1 DO
+			(
+				otherLegalRepresentativesTable.Append("<br />");
+				otherLegalRepresentativesTable.Append("<div>" + Str(i) + "</div>");
+				otherLegalRepresentativesTable.Append("<table class=\"tbl2\">");
+				otherLegalRepresentativesTable.Append("<tr><td class=\"tbl2_colLabel_td\">Ime i prezime zastupnika</td><td>" + generalInfo.LegalRepresentatives[i].FullName + "</td></tr>");
+				otherLegalRepresentativesTable.Append("<tr><td class=\"tbl2_colLabel_td\">Datum i mesto rođenja</td><td>" + generalInfo.LegalRepresentatives[i].DateOfBirthStr + ", " + generalInfo.LegalRepresentatives[i].PlaceOfBirth + "</td></tr>");
+				otherLegalRepresentativesTable.Append("<tr><td class=\"tbl2_colLabel_td\">Vrsta ličnog dokumenta i broj</td><td>" + (generalInfo.LegalRepresentatives[i].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + generalInfo.LegalRepresentatives[i].DocumentNumber + "</td></tr>");
+				otherLegalRepresentativesTable.Append("<tr><td class=\"tbl2_colLabel_td\">Datum i mesto izdavanja ličnog dokumenta</td><td>" + generalInfo.LegalRepresentatives[i].DateOfIssueStr + ", " + generalInfo.LegalRepresentatives[i].PlaceOfIssue + "</td></tr>");
+				otherLegalRepresentativesTable.Append("<tr><td class=\"tbl2_colLabel_td\">Boravište/Prebivalište</td><td>" + generalInfo.LegalRepresentatives[i].AddressOfResidence + ", " + generalInfo.LegalRepresentatives[i].CityOfResidence + "</td></tr>");
+				otherLegalRepresentativesTable.Append("</table>");
+				otherLegalRepresentativesTable.Append("<br />");
+			);
+			htmlContent := htmlContent.Replace("{{OtherLegalRepresentativesTable}}", otherLegalRepresentativesTable.ToString());
+		)
+		else
+		(
+			htmlContent := htmlContent.Replace("{{showHideOtherLegalRepresentatives}}", "hideDiv");
+			htmlContent := htmlContent.Replace("{{pagebreak}}", "");
+			htmlContent := htmlContent.Replace("{{OtherLegalRepresentativesTable}}", "");
+		);
+		
+		destroy(otherLegalRepresentativesTable);
+	);
+
+	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
 	Return (newPDFFilePath);
 );
 
 DownloadTemplateContractWithEMI(PIsEmptyFile) := (
-	Log.Informational("Method DTContractWithEMI started", logObjectID, logActor, logEventID, null);
-
 	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
 	if(generalInfo == null)then
 	(
@@ -325,17 +413,11 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 	);
 	
-	Log.Informational("Method DTContractWithEMI. finish HTML replacement. Try to start method CreatePDFFile()", logObjectID, logActor, logEventID, null);
-	
 	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
-	Log.Informational("finish method CreatePDFFile. return newPDFFilePath: " + newPDFFilePath, logObjectID, logActor, logEventID, null);
-		
 	Return (newPDFFilePath);
 );
 
 DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompany, PPersonIndex) := (
-	Log.Informational("Method DTStatementOfOfficialDocument started", logObjectID, logActor, logEventID, null);
-
 	newPDFFilePath := "";
 	
 	templateFileName := "StatementOfOfficialDocument";
@@ -379,13 +461,13 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 			);
 			
 			htmlContent := htmlContent.Replace("{{ClientFullName}}", generalInfo.LegalRepresentatives[PPersonIndex].FullName);
-			htmlContent := htmlContent.Replace("{{PersonalNumber}}", "");
-			htmlContent := htmlContent.Replace("{{DateAndPlaceOfBirth}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfBirthStr + ", ");
-			htmlContent := htmlContent.Replace("{{AddressOfResidence}}", generalInfo.LegalRepresentatives[PPersonIndex].AddressOfResidence); 
+			htmlContent := htmlContent.Replace("{{PersonalNumber}}", generalInfo.LegalRepresentatives[PPersonIndex].PersonalNumber);
+			htmlContent := htmlContent.Replace("{{DateAndPlaceOfBirth}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfBirthStr + ", " + generalInfo.LegalRepresentatives[PPersonIndex].PlaceOfBirth);
+			htmlContent := htmlContent.Replace("{{AddressOfResidence}}", generalInfo.LegalRepresentatives[PPersonIndex].AddressOfResidence);
 			htmlContent := htmlContent.Replace("{{CityOdResidence}}", generalInfo.LegalRepresentatives[PPersonIndex].CityOfResidence);
 			htmlContent := htmlContent.Replace("{{DocumentTypeAndNumber}}", (generalInfo.LegalRepresentatives[PPersonIndex].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + generalInfo.LegalRepresentatives[PPersonIndex].DocumentNumber);
 			htmlContent := htmlContent.Replace("{{DocumentIssueDate}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfIssueStr + ", " + generalInfo.LegalRepresentatives[PPersonIndex].PlaceOfIssue);
-			htmlContent := htmlContent.Replace("{{DocumentIssuerName}}", "");
+			htmlContent := htmlContent.Replace("{{DocumentIssuerName}}", generalInfo.LegalRepresentatives[PPersonIndex].IssuerName);
 			
 			if (generalInfo.LegalRepresentatives[PPersonIndex].IsPoliticallyExposedPerson)then
 			(
@@ -397,7 +479,7 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 			else
 			(
 				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_Yes}}", "");
-				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "");
+				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "checked");
 				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_Yes}}", "");
 				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_No}}", "");
 			);
@@ -429,26 +511,20 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 			else
 			(
 				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_Yes}}", "");
-				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "");
+				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "checked");
 				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_Yes}}", "");
 				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_No}}", "");
 			);
 		);
 	);
 	
-	Log.Informational("Method DTStatementOfOfficialDocument. finish HTML replacement. Try to start method CreatePDFFile()", logObjectID, logActor, logEventID, null);
-	
 	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
-	Log.Informational("finish method CreatePDFFile. return newPDFFilePath: " + newPDFFilePath, logObjectID, logActor, logEventID, null);
-		
 	Return (newPDFFilePath);
 );
 
 CreatePDFFile(fileRootPath, newFileName, htmlContent) := (
 	newHtmlPath:= fileRootPath + "\\" + newFileName + ".html";
-	Log.Informational("Method CreatePDFFile. newHtmlPath: " + newHtmlPath, logObjectID, logActor, logEventID, null);
 	System.IO.File.WriteAllText(newHtmlPath, htmlContent, System.Text.Encoding.UTF8);
-	Log.Informational("Method CreatePDFFile. created new HTML file", logObjectID, logActor, logEventID, null);
 	newPDFFilePath:= fileRootPath + "\\" + newFileName + ".pdf";
 	
 	ShellExecute("\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"", 
@@ -456,9 +532,6 @@ CreatePDFFile(fileRootPath, newFileName, htmlContent) := (
 		+ " \"" + newHtmlPath + "\"" 
 		+ " \"" +  newPDFFilePath + "\""
 		, fileRootPath);
-	
-	Log.Informational("Method CreatePDFFile. created PDF file. newPDFFilePath: " + newPDFFilePath, logObjectID, logActor, logEventID, null);
-	
 	Return (newPDFFilePath);
 );
 
@@ -522,8 +595,6 @@ try
 		fileName := "PromissoryNoteIntruction.pdf";
 	);
 	
-	Log.Informational("Finished metod generate PDF. result returnFilePath: " + returnFilePath, logObjectID, logActor, logEventID, null);
-		
     bytes := System.IO.File.ReadAllBytes(returnFilePath);
 	Log.Informational("Succeffully returned file:" + PFileType, logObjectID, logActor, logEventID, null);
 	

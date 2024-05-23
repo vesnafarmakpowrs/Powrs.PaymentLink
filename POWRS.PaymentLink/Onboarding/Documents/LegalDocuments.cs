@@ -14,7 +14,6 @@ namespace POWRS.PaymentLink.Onboarding
             contractWithVaulter = "";
             contractWithEMI = "";
             promissoryNote = "";
-            politicalStatement = "";
         }
         public LegalDocuments(string UserName) : base(UserName) { }
 
@@ -22,13 +21,11 @@ namespace POWRS.PaymentLink.Onboarding
         private string contractWithVaulter;
         private string contractWithEMI;
         private string promissoryNote;
-        private string politicalStatement;
 
         public string BusinessCooperationRequest { get => businessCooperationRequest; set => businessCooperationRequest = value; }
         public string ContractWithVaulter { get => contractWithVaulter; set => contractWithVaulter = value; }
         public string ContractWithEMI { get => contractWithEMI; set => contractWithEMI = value; }
         public string PromissoryNote { get => promissoryNote; set => promissoryNote = value; }
-        public string PoliticalStatement { get => politicalStatement; set => politicalStatement = value; }
 
         public override bool IsCompleted()
         {

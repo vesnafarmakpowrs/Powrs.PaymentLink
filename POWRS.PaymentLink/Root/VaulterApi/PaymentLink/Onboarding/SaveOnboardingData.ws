@@ -331,6 +331,21 @@ ValidatePostedData(Posted) := (
 	if(!exists(Posted.BusinessData.ComplaintsPerYear))then(
 		errors.Add("BusinessData.ComplaintsPerYear");
 	);
+	if(!exists(Posted.BusinessData.MethodOfDeliveringGoodsToCustomers))then(
+		errors.Add("BusinessData.MethodOfDeliveringGoodsToCustomers");
+	);
+	if(!exists(Posted.BusinessData.DescriptionOfTheGoodsToBeSoldOnline))then(
+		errors.Add("BusinessData.DescriptionOfTheGoodsToBeSoldOnline");
+	);
+	if(!exists(Posted.BusinessData.EComerceContactFullName))then(
+		errors.Add("BusinessData.EComerceContactFullName");
+	);
+	if(!exists(Posted.BusinessData.EComerceResponsiblePersonPhone))then(
+		errors.Add("BusinessData.EComerceResponsiblePersonPhone");
+	);
+	if(!exists(Posted.BusinessData.EComerceContactEmail))then(
+		errors.Add("BusinessData.EComerceContactEmail");
+	);
 	
 	isNewUpload := false;
 	if(!exists(Posted.LegalDocuments.ContractWithEMIIsNewUpload))then(
@@ -393,22 +408,22 @@ ValidatePostedData(Posted) := (
 	);
 	
 	isNewUpload := false;
-	if(!exists(Posted.LegalDocuments.PoliticalStatementIsNewUpload))then(
-		errors.Add("LegalDocuments.PoliticalStatementIsNewUpload");
+	if(!exists(Posted.LegalDocuments.BusinessCooperationRequestIsNewUpload))then(
+		errors.Add("LegalDocuments.BusinessCooperationRequestIsNewUpload");
 	)else(
-		isNewUpload := Posted.LegalDocuments.PoliticalStatementIsNewUpload;
+		isNewUpload := Posted.LegalDocuments.BusinessCooperationRequestIsNewUpload;
 	);
-	if(!exists(Posted.LegalDocuments.PoliticalStatement))then(
-		errors.Add("LegalDocuments.PoliticalStatement");
+	if(!exists(Posted.LegalDocuments.BusinessCooperationRequest))then(
+		errors.Add("LegalDocuments.BusinessCooperationRequest");
 	)else(
 		if(isNewUpload and 
-			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.PoliticalStatement)
+			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.BusinessCooperationRequest)
 			or
-			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.PoliticalStatement, fileMaxSizeMB)
+			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.BusinessCooperationRequest, fileMaxSizeMB)
 			)
 		)then
 		(
-			errors.Add("LegalDocuments.PoliticalStatement");
+			errors.Add("LegalDocuments.BusinessCooperationRequest");
 		);
 	);
 	
@@ -436,8 +451,11 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 		);
 		generalInfo:= Create(POWRS.PaymentLink.Onboarding.GeneralCompanyInformation);
 		generalInfo.CanEdit := true;
-		generalInfo.CanEdit := true;
-		
+		generalInfo.Created := Now;		
+	)
+	else if(!generalInfo.CanEdit)then
+	(
+		Error("Forbidden to change data");
 	)
 	else if(generalInfo.OrganizationNumber != GeneralCompanyInfo.OrganizationNumber) then
 	(
@@ -656,6 +674,11 @@ SaveBusinessData(BusinessData, UserName):=
 	businessData.PeriodFromPaymentToDeliveryInDays:= BusinessData.PeriodFromPaymentToDeliveryInDays;
 	businessData.ComplaintsPerMonth:= BusinessData.ComplaintsPerMonth;
 	businessData.ComplaintsPerYear:= BusinessData.ComplaintsPerYear;
+	businessData.MethodOfDeliveringGoodsToCustomers:= BusinessData.MethodOfDeliveringGoodsToCustomers;
+	businessData.DescriptionOfTheGoodsToBeSoldOnline:= BusinessData.DescriptionOfTheGoodsToBeSoldOnline;
+	businessData.EComerceContactFullName:= BusinessData.EComerceContactFullName;
+	businessData.EComerceResponsiblePersonPhone:= BusinessData.EComerceResponsiblePersonPhone;
+	businessData.EComerceContactEmail:= BusinessData.EComerceContactEmail;
 
 	if(recordExists) then 
 	(
@@ -710,13 +733,13 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 		documents.PromissoryNote:= LegalDocuments.PromissoryNote;
 	);
 	
-	if(LegalDocuments.PoliticalStatementIsNewUpload) then
+	if(LegalDocuments.BusinessCooperationRequestIsNewUpload) then
 	(
-		fileName := "PoliticalStatement" + ".pdf";
-		SaveFile(fileRootPath, fileName, LegalDocuments.PoliticalStatement);
-		documents.PoliticalStatement:= fileName;
+		fileName := "BusinessCooperationRequest" + ".pdf";
+		SaveFile(fileRootPath, fileName, LegalDocuments.BusinessCooperationRequest);
+		documents.BusinessCooperationRequest:= fileName;
 	)else (
-		documents.PoliticalStatement:= LegalDocuments.PoliticalStatement;
+		documents.BusinessCooperationRequest:= LegalDocuments.BusinessCooperationRequest;
 	);
 
 	if(alreadyExists) then 

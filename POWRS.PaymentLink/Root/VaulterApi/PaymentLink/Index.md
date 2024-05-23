@@ -971,9 +971,16 @@ Token is required. Request body is empty.
                 "IdCard": "LegalRepresentative_1_IdCard_Mirko Kruščić.pdf",
                 "IsPoliticallyExposedPerson": false,
                 "DateOfBirthStr": "31/05/1988",
-                "DateOfIssueStr": "01/01/2024"
+                "DateOfIssueStr": "01/01/2024",
+                "IssuerName": "",
+                "PlaceOfBirth": "Ivanjica",
+                "AddressOfResidence": "Zaplanjska 82",
+                "CityOfResidence": "Voždovac",
+                "PersonalNumber": "3105988792648"
             }
         ],
+        "Created": 1716377168,
+        "CanEdit": true,
         "UserName": "AgentPLG"
     },
     "CompanyStructure": {
@@ -1006,7 +1013,8 @@ Token is required. Request body is empty.
                 "StatementOfOfficialDocument": "Owner_1_Politicall_Mirko Kruščić.pdf",
                 "IdCard": "Owner_1_IdCard_Mirko Kruščić.pdf",
                 "DateOfBirthStr": "31/05/1988",
-                "IssueDateStr": "31/01/2020"
+                "IssueDateStr": "31/01/2020",
+                "CityOfResidence": "Voždovac"
             }
         ],
         "UserName": "AgentPLG"
@@ -1026,14 +1034,19 @@ Token is required. Request body is empty.
         "PeriodFromPaymentToDeliveryInDays": 0,
         "ComplaintsPerMonth": 0,
         "ComplaintsPerYear": 0,
+        "MethodOfDeliveringGoodsToCustomers": "",
+        "DescriptionOfTheGoodsToBeSoldOnline": "",
+        "EComerceContactFullName": "Mirko Kruščić",
+        "EComerceResponsiblePersonPhone": "066414623",
+        "EComerceContactEmail": "mirko.kruscic@powrs.se",
         "UserName": "AgentPLG"
     },
     "LegalDocuments": {
-        "BusinessCooperationRequest": null,
-        "ContractWithVaulter": "ContractWithVaulter.pdf",
-        "ContractWithEMI": "ContractWithEMI.pdf",
-        "PromissoryNote": "PromissoryNote.pdf",
-        "PoliticalStatement": "PoliticalStatement.pdf",
+        "BusinessCooperationRequest": "",
+        "ContractWithVaulter": "",
+        "ContractWithEMI": "",
+        "PromissoryNote": "",
+        "PoliticalStatement": "",
         "UserName": "AgentPLG"
     }
 }
@@ -1131,7 +1144,12 @@ Call this resource save data for onboarding.
         "SellingGoodsWithDelayedDelivery": false,
         "PeriodFromPaymentToDeliveryInDays": 0,
         "ComplaintsPerMonth": 0,
-        "ComplaintsPerYear": 0
+        "ComplaintsPerYear": 0,
+        "MethodOfDeliveringGoodsToCustomers": "",
+        "DescriptionOfTheGoodsToBeSoldOnline": "",
+        "EComerceContactFullName": "",
+        "EComerceResponsiblePersonPhone": "",
+        "EComerceContactEmail": ""
    },
    "LegalDocuments": {
         "ContractWithEMIIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
@@ -1140,8 +1158,8 @@ Call this resource save data for onboarding.
         "ContractWithVaulter": "",                  -> if it is new file uplad then base 64 string, else string from API
         "PromissoryNoteIsNewUpload": false,        -> if it is new file upload then 'true', else 'false'
         "PromissoryNote": "",                       -> if it is new file uplad then base 64 string, else string from API
-        "PoliticalStatementIsNewUpload": false,    -> if it is new file upload then 'true', else 'false'
-        "PoliticalStatement": ""                    -> if it is new file uplad then base 64 string, else string from API
+        "BusinessCooperationRequestIsNewUpload": false,    -> if it is new file upload then 'true', else 'false'
+        "BusinessCooperationRequest": ""                    -> if it is new file uplad then base 64 string, else string from API
    }
 }
 ````

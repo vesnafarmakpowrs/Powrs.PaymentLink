@@ -43,8 +43,8 @@
                     </tr>
                     <tr>
                         <td class="tbl_colLabel_td">Matični broj/PIB</td>
-                        <td class="_2Coll">{{CompanyOrganizationNumber}}</td>
-                        <td class="_2Coll">{{CompanyTaxNumber}}</td>
+                        <td class="tbl_colData_td_2Coll">{{CompanyOrganizationNumber}}</td>
+                        <td class="tbl_colData_td_2Coll">{{CompanyTaxNumber}}</td>
                     </tr>
                     <tr>
                         <td class="tbl_colLabel_td">Šifra pretežne delatnosti</td>
@@ -62,20 +62,20 @@
                     </tr>
                     <tr>
                         <td class="tbl_colLabel_td">Datum i mesto rođenja ovlašćenog lica za zastupanje</td>
-                        <td class="_2Coll">{{LegalRepresentativeDateOfBirth}}</td>
-                        <td class="_2Coll">{{LegalRepresentativePlaceOfBirth}}</td>
+                        <td class="tbl_colData_td_2Coll">{{LegalRepresentativeDateOfBirth}}</td>
+                        <td class="tbl_colData_td_2Coll">{{LegalRepresentativePlaceOfBirth}}</td>
                     </tr>
                     <tr>
                         <td class="tbl_colLabel_td">Vrsta i broj ličnog dokumenta ovlašćenog lica za zastupanje</td>
-                        <td class="_2Coll">{{LegalRepresentativeDocumentType}}</td>
-                        <td class="_2Coll">{{LegalRepresentativeDocumentNumber}}</td>
+                        <td class="tbl_colData_td_2Coll">{{LegalRepresentativeDocumentType}}</td>
+                        <td class="tbl_colData_td_2Coll">{{LegalRepresentativeDocumentNumber}}</td>
                     </tr>
                     <tr>
                         <td class="tbl_colLabel_td">
                             Datum i mesto izdavanja ličnog dokumenta ovlašćenog lica za zastupanje
                         </td>
-                        <td class="_2Coll">{{LegalRepresentativeDateOfIssue}}</td>
-                        <td class="_2Coll">{{LegalRepresentativePlaceOfIssue}}</td>
+                        <td class="tbl_colData_td_2Coll">{{LegalRepresentativeDateOfIssue}}</td>
+                        <td class="tbl_colData_td_2Coll">{{LegalRepresentativePlaceOfIssue}}</td>
                     </tr>
                     <tr>
                         <td class="tbl_colLabel_td">
@@ -228,6 +228,7 @@
             </div>
 
             <!-- ******************* PAGE 2 ******************* -->
+            <div class="pagebreak"></div>
             <div>
                 <div class="pageHeader">
                     <img src="./PaySpot_Logo.png" class="headerLogo" />
@@ -280,15 +281,15 @@
                     </tr>
                     <tr>
                         <td class="tbl2_colLabel_td">Ime i prezime kontakt lica za e commerce</td>
-                        <td class="" colspan="4">{{ImeIPrezimeKontaktZaEKomerc}}</td>
+                        <td class="" colspan="4">{{EComerceContactFullName}}</td>
                     </tr>
                     <tr>
                         <td class="tbl2_colLabel_td">Kontakt telefon odgovornog lica za e commerce</td>
-                        <td class="" colspan="4">{{KontaktTelefonKontaktaZaEKomerc}}</td>
+                        <td class="" colspan="4">{{EComerceResponsiblePersonPhone}}</td>
                     </tr>
                     <tr>
                         <td class="tbl2_colLabel_td">E-mail adresa za e commerce</td>
-                        <td class="" colspan="4">{{EmailAdresaZaeCommerce}}</td>
+                        <td class="" colspan="4">{{EComerceContactEmail}}</td>
                     </tr>
                     <tr>
                         <td class="tbl2_colLabel_td">Navesti internet adresu prodajnog mesta (URL)</td>
@@ -300,7 +301,7 @@
                     </tr>
                     <tr>
                         <td class="tbl2_colLabel_td">Koliko korisnika vaših usluga su stranci? (%)</td>
-                        <td class="" colspan="4">{{ForeignBuyers}}</td>
+                        <td class="" colspan="4">{{PercentageOfForeignUsers}}</td>
                     </tr>
                     <tr>
                         <td class="tbl2_colLabel_td">Prosečan iznos transakcije na internetu</td>
@@ -320,11 +321,11 @@
                     </tr>
                     <tr>
                         <td class="tbl2_colLabel_td">Opis robe koja će se prodavati putem interneta</td>
-                        <td class="" colspan="4">{{OpisRobeKojaCeSeProdavatiPutemInterneta}}</td>
+                        <td class="" colspan="4">{{DescriptionOfTheGoodsToBeSoldOnline}}</td>
                     </tr>
                     <tr>
                         <td class="tbl2_colLabel_td">Način dostave robe kupcima</td>
-                        <td class="" colspan="4">{{NacinDostaveRobeKupcima}}</td>
+                        <td class="" colspan="4">{{MethodOfDeliveringGoodsToCustomers}}</td>
                     </tr>
                     <tr>
                         <td class="tbl2_colLabel_td">Očekivani promet za narednu godinu</td>
@@ -352,9 +353,9 @@
                     </tr>
                     <tr>
                         <td class="tbl2_colLabel_td">Broj reklamacija mesečno/godišnje</td>
-                        <td class="tbl2_colLabel_backColor">Mesečno</td>
+                        <td class="tbl2_colLabel_backColor" style="width: 10%;" >Mesečno</td>
                         <td class="">{{ComplaintsPerMonth}}</td>
-                        <td class="tbl2_colLabel_backColor">Godišnje</td>
+                        <td class="tbl2_colLabel_backColor" style="width: 10%;">Godišnje</td>
                         <td class="">{{ComplaintsPerYear}}</td>
                     </tr>
                     <tr>
@@ -370,12 +371,16 @@
                     navedenim u ovom Prilogu.
                 </p>
             </div>
-            
+
             <!-- ******************* PAGE 3 ******************* -->
-            <div>
+            <div class="{{pagebreak}}"></div>
+            <div class="{{showHideOtherLegalRepresentatives}}">
                 <div class="pageHeader">
                     <img src="./PaySpot_Logo.png" class="headerLogo" />
                 </div>
+                <div>Podaci o ostalim zastupnicima</div>
+
+                {{OtherLegalRepresentativesTable}}
             </div>
         </div>
     </body>
