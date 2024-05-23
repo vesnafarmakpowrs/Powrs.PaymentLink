@@ -132,9 +132,15 @@
 				</State>
 				<State id="PaymentCompleted">
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
-					<OnEvent newState="ServiceDelivered">
-						<OnDuration>PT300S</OnDuration>
+					<OnEvent actionRef="CancelPayment" newState="PaymentCanceled" failureState="PaymentCompleted">
+						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+					<OnEvent newState="ServiceDelivered">
+						<OnDateTime>{DeliveryDate}</OnDateTime>
+					</OnEvent>
+				</State>
+				<State id="PaymentCanceled">
+					<OnEnter actionRef="MarkAsDone"/>
 				</State>
 				<State id="ServiceDelivered">
 					<OnEvent actionRef="ReleaseFunds" newState="Done">
@@ -163,15 +169,15 @@
 									};
 									if(exists(PayspotOrderId)) then
 									(
-										Json.PayspotOrderId:= PayspotOrderId;
+									Json.PayspotOrderId:= PayspotOrderId;
 									);
 									if(exists(OrderId)) then
 									(
-										Json.OrderId:= OrderId;
+									Json.OrderId:= OrderId;
 									);
 									if (exists(PaymentType)) then
 									(
-										Json.PaymentType:= PaymentType;
+									Json.PaymentType:= PaymentType;
 									);
 								</Script>
 								<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
@@ -180,12 +186,12 @@
 								<Script>
 									if(exists(Response.State) and exists(Response.Success)) then
 									(
-										success:= Boolean(Response.Success);
-										Notifications[NewStatus]:= success;
+									success:= Boolean(Response.Success);
+									Notifications[NewStatus]:= success;
 									)
 									else
 									(
-										Notifications[NewStatus]:= false;
+									Notifications[NewStatus]:= false;
 									);
 								</Script>
 								<Catch exceptionVariable="ex">
@@ -227,6 +233,7 @@
 						<PersistVariable name="SellerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
+						<PersistVariable name="DeliveryDate" value="{Utc(DateTime(NowUtc.Year, NowUtc.Month, NowUtc.Day, 23, 59, 59))}" />
 						<PersistVariable name="OrderId" value="{OrderId}" />
 						<PersistVariable name="PayspotOrderId" value="{PayspotOrderId}" />
 						<PersistVariable name="PaymentType" value="{PaymentType}" />
@@ -255,6 +262,7 @@
 									ServiceProviderType:= SellerServiceProviderType;
 									AccountName:= SellerName;
 									MessageOnError:= 'ReleaseFundsToSeller error';
+									Mode:= 'Confirm';
 								]]>
 							</Script>
 							<CallAction actionRef="TrySellEdaler" />
@@ -302,6 +310,7 @@
 							<Parameter key="Message" value="Vaulter" />
 							<Parameter key="OrderId" value="{OrderId}" />
 							<Parameter key="PayspotOrderId" value="{PayspotOrderId}" />
+							<Parameter key="Mode" value="{Mode}" />
 						</SellEDaler>
 						<TextNote content="{'Amount of edaler: ' + AmountToSell + ' ' + Currency + ' sold. From: ' + SellEdalerFrom + ' to BankAccount: ' + BankAccountToSell}" />
 						<Catch exceptionVariable="ex">
