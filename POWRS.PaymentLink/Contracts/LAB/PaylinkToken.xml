@@ -120,9 +120,7 @@
 					<TagReference tag="RemoteId" />
 				</Variable>
 				<Variable id="CanCancel">
-					<Calc>
-						<![CDATA[(exists(TotalAmountToPay) and TotalAmountToPay >= Price) and (NowUtc &lt; DeliveryDate)]]>
-				</Calc>
+					<Boolean>false</Boolean>
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEvent actionRef="ProceedToBuyEdaler" newState="PaymentCompleted" failureState="AwaitingForPayment">
@@ -137,12 +135,14 @@
 				</State>
 				<State id="PaymentCompleted">
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
+					<OnEnter actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= true;" />
+					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>						
 					<OnEvent actionRef="CancelPayment" newState="PaymentCanceled" failureState="PaymentCompleted">
-						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
 					<OnEvent newState="ServiceDelivered">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
-					</OnEvent>
+					</OnEvent>					
 				</State>
 				<State id="PaymentCanceled">
 					<OnEnter actionRef="MarkAsDone"/>
@@ -157,6 +157,13 @@
 				</State>
 				<Action id="MarkAsDone">
 					<PersistVariable name="MarkedAsDone" value="true"/>
+				</Action>
+				<Action id="ChangeCanCancelValue">
+					<If condition="exists(newCanCancelValue)">
+						<Then>
+							<PersistVariable name="CanCancel" value="{newCanCancelValue}"></PersistVariable>
+						</Then>
+					</If>
 				</Action>
 				<Action id="CancelPayment">
 					<If condition="TotalAmountPaid &lt; AmountToPay">
