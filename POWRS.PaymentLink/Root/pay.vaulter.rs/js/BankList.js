@@ -1,4 +1,19 @@
 
+document.addEventListener("DOMContentLoaded", () => {
+   getQRCode();
+   startTimer();
+});
+
+function startTimer()
+{
+
+}
+
+function getQRCode()
+{
+  InitiateIPSPayment(0, GetDeepLinkSuccess);
+}
+
 function OpenDeepLink(bankId)
 {
   InitiateIPSPayment(bankId, GetDeepLinkSuccess);
@@ -36,7 +51,6 @@ function TransactionFailed(Result) {
 }
 
 function DisplayTransactionResult(Result) {
-
     if (Result.IsCompleted) {
         if (Result.IsSuccess) {
             setTimeout(function () {
@@ -50,4 +64,12 @@ function GetDeepLinkSuccess(ResponseData) {
    console.log(ResponseData.Response);
    console.log(ResponseData.Response.DeepLink);
    window.open(ResponseData.Response.DeepLink, '_PARENT');
+}
+
+function GetQRCodeLinkSuccess(ResponseData) {
+
+   console.log(ResponseData.Response);
+   console.log(ResponseData.Response.QrCode);
+   document.getElementById("QRCode").src = ResponseData.Response.QrCode;
+    
 }

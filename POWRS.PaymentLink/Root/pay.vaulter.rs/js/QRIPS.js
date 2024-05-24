@@ -1,10 +1,11 @@
 
 var Translations = {};
-const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
+
 
 document.addEventListener("DOMContentLoaded", () => {
-    GenerateTranslations();
+   GenerateTranslations();
 });
+
 
 function GenerateTranslations() {
     var element = document.getElementById("SelectedAccountOk");
@@ -12,52 +13,32 @@ function GenerateTranslations() {
         return;
     }
 
+    Translations.TransactionCompleted = document.getElementById("TransactionCompleted").value;
+    Translations.TransactionFailed = document.getElementById("TransactionFailed").value;
+    Translations.TransactionInProgress = document.getElementById("TransactionInProgress").value;
     Translations.SessionTokenExpiredMessage = document.getElementById("SessionTokenExpired").value;
 }
 
 
+function startTimer()
+{
 
-function PaymentCompleted(Result) {
-    location.reload();
 }
 
-function getbanksIE(){
-  var url = 'IPSBank.md?TYPE=IE';
-  openBankListURL(url);
+function getQRCode()
+{
+  InitiateIPSPayment(GetQRCodeLinkSuccess);
 }
 
-function getbanksLE(){
+
+function InitiateIPSPayment(onSuccess) {
   
- var url = 'IPSBank.md?TYPE=IE';
- openBankListURL(url);
-}
-
-function openBankListURL(url) {
-    var jwt = parent.document.getElementById('jwt').value;
-    
-    console.log(jwt);
-    if (jwt == "") {
-        alert("Session token not found, refresh the page and try again");
-    }
-
-    url = url + "&JWT=" + jwt.trim();
-    window.open(url, '_PARENT');
-}
-
-function GenerateIPSPayment(bankID) {
-    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
-}
-
-function InitiatePaymentForm(ipsOnly, onSuccess) {
-    document.getElementById("payspot-submit").style.display = "none";
-    document.getElementById("tr_spinner").style.display = null;
-    CollapseDetails();
-
-    SendXmlHttpRequest("../Payout/API/InitiatePayment.ws",
+    SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
         {
-            "isFromMobile": isMobileDevice,
+            "isFromMobile": false,
             "tabId": TabID,
-            "ipsOnly": true
+            "ipsOnly": true,
+            "bankId": 0           
         },
         (response) => {
             onSuccess(response);
@@ -71,18 +52,20 @@ function InitiatePaymentForm(ipsOnly, onSuccess) {
         })
 }
 
+
 function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
-    let jwt = document.getElementById("jwt");
-    if (!jwt.value.trim() === "") {
+     var jwt = parent.document.getElementById('jwt').value;
+    
+    if (!jwt.trim() === "") {
         alert("Session token not found, refresh the page and try again");
     }
-    console.log(jwt.value);
+    console.log(jwt);
     console.log(requestBody);
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", resource, true);
     xhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
     xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.setRequestHeader("Authorization", "Bearer " + jwt.value);
+    xhttp.setRequestHeader("Authorization", "Bearer " + jwt);
     xhttp.send(JSON.stringify(requestBody));
 
     xhttp.onreadystatechange = function () {
@@ -103,3 +86,32 @@ function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     };
 }
 
+function TransactionFailed(Result) {
+    let res = {
+        IsCompleted: true,
+        IsSuccess: false,
+        Message: Translations.TransactionFailed
+    };
+
+    DisplayTransactionResult(res);
+}
+
+function DisplayTransactionResult(Result) {
+    if (Result.IsCompleted) {
+        if (Result.IsSuccess) {
+            setTimeout(function () {
+                location.reload();
+            }, 4000);
+        }
+    }
+}
+
+
+function GetQRCodeLinkSuccess(ResponseData) {
+
+   console.log(ResponseData.Response);
+   if (ResponseData.Response.QrCode != null) {
+     document.getElementById("QRCode").src = ResponseData.Response.QrCode;
+   }
+    
+}
