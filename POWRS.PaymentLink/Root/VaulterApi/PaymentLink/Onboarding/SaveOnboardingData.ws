@@ -520,6 +520,10 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 				
 				representative.StatementOfOfficialDocument:= fileName;
 			)else (
+				if (item.StatementOfOfficialDocument != "" and !System.IO.File.Exists(fileRootPath + "\\" + item.StatementOfOfficialDocument)) then
+				(
+					Error("LegalRepresentative[" + Str(itemNo) + "] file " + item.StatementOfOfficialDocument + " does not exist");
+				);
 				representative.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
 			);
 			
@@ -529,6 +533,10 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 				
 				representative.IdCard:= fileName;
 			)else(
+				if (item.IdCard != "" and !System.IO.File.Exists(fileRootPath + "\\" + item.IdCard)) then
+				(
+					Error("LegalRepresentative[" + Str(itemNo) + "] file " + item.IdCard + " does not exist");
+				);
 				representative.IdCard:= item.IdCard;				
 			);
 			
@@ -610,6 +618,10 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 				
 				owner.StatementOfOfficialDocument:= fileName;
 			)else (
+				if (item.StatementOfOfficialDocument != "" and !System.IO.File.Exists(fileRootPath + "\\" + item.StatementOfOfficialDocument)) then
+				(
+					Error("Owner[" + Str(itemNo) + "] file " + item.StatementOfOfficialDocument + " does not exist");
+				);
 				owner.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
 			);
 			
@@ -619,6 +631,10 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 				
 				owner.IdCard:= fileName;
 			)else(
+				if (item.IdCard != "" and !System.IO.File.Exists(fileRootPath + "\\" + item.IdCard)) then
+				(
+					Error("Owner[" + Str(itemNo) + "] file " + item.IdCard + " does not exist");
+				);
 				owner.IdCard:= item.IdCard;				
 			);
 
@@ -712,6 +728,10 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 		SaveFile(fileRootPath, fileName, LegalDocuments.ContractWithEMI);
 		documents.ContractWithEMI:=  fileName;
 	)else (
+		if (LegalDocuments.ContractWithEMI != "" and System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.ContractWithEMI)) then
+		(
+			Error("Owner[" + Str(itemNo) + "] file " + LegalDocuments.ContractWithEMI + " does not exist");
+		);
 		documents.ContractWithEMI:= LegalDocuments.ContractWithEMI;
 	);
 	
@@ -721,6 +741,10 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 		SaveFile(fileRootPath, fileName, LegalDocuments.ContractWithVaulter);
 		documents.ContractWithVaulter:= fileName;
 	)else (
+		if (LegalDocuments.ContractWithVaulter != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.ContractWithVaulter)) then
+		(
+			Error("Owner[" + Str(itemNo) + "] file " + LegalDocuments.ContractWithVaulter + " does not exist");
+		);
 		documents.ContractWithVaulter:= LegalDocuments.ContractWithVaulter;
 	);
 	
@@ -730,6 +754,10 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 		SaveFile(fileRootPath, fileName, LegalDocuments.PromissoryNote);
 		documents.PromissoryNote:= fileName;
 	)else (
+		if (LegalDocuments.PromissoryNote != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.PromissoryNote)) then
+		(
+			Error("Owner[" + Str(itemNo) + "] file " + LegalDocuments.PromissoryNote + " does not exist");
+		);
 		documents.PromissoryNote:= LegalDocuments.PromissoryNote;
 	);
 	
@@ -739,6 +767,10 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 		SaveFile(fileRootPath, fileName, LegalDocuments.BusinessCooperationRequest);
 		documents.BusinessCooperationRequest:= fileName;
 	)else (
+		if (LegalDocuments.BusinessCooperationRequest != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.BusinessCooperationRequest)) then
+		(
+			Error("Owner[" + Str(itemNo) + "] file " + LegalDocuments.BusinessCooperationRequest + " does not exist");
+		);
 		documents.BusinessCooperationRequest:= LegalDocuments.BusinessCooperationRequest;
 	);
 

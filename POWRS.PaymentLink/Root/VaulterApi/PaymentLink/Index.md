@@ -466,9 +466,10 @@ Read **Authorization section**.
 200 OK
 	{
 		 "authorized": true,
-         "isApproved": Bool,
+         "isApproved": bool,
          "role": "User",
-         "contactInformationsPopulated": Bool
+         "contactInformationsPopulated": bool,
+         "goToOnBoarding": bool
 	}
 403 Forbidden
 	{
@@ -1046,8 +1047,7 @@ Token is required. Request body is empty.
         "ContractWithVaulter": "",
         "ContractWithEMI": "",
         "PromissoryNote": "",
-        "PoliticalStatement": "",
-        "UserName": "AgentPLG"
+        "UserName": "mirkokrule41"
     }
 }
 ````
@@ -1230,9 +1230,9 @@ Description of properties:
 | Name              | Description |
 |:------------------|:------------|
 |`FileType`| Type of template file. This value can be one of strings: "ContractWithVaulter", "ContractWithEMI", "StatementOfOfficialDocument", "BusinessCooperationRequest", "PromissoryNote" . |
-|`IsEmptyFile`| `True`: return template file with no onboarding data populated. `False`: return template file populated with onboarding data |
-|`PersonPositionInCompany`| Person position in company:. Can be string "LegalRepresentative" or "Owner" |
-|`PersonIndex`| Person position in array of LegalRepresentative or Owners, starting from 0 |
+|`IsEmptyFile`| **`True`**: return template file with no onboarding data populated. **`False`**: return template file populated with onboarding data |
+|`PersonPositionInCompany`| Uses with **FileType = StatementOfOfficialDocument**. For other types send empty string. Person position in company: Can be string "LegalRepresentative" or "Owner" |
+|`PersonIndex`| Uses with **FileType = StatementOfOfficialDocument**. For other types send 0. Person position in array of LegalRepresentative or Owners, starting from 0 |
 
 **Response**
 

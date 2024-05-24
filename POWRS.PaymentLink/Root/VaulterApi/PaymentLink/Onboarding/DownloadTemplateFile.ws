@@ -28,7 +28,7 @@ DownloadTemplateContractWithVaulter(PIsEmptyFile) := (
 	newFileName := "New_ContractPowrs";
 	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\Powrs";
 	htmlTemplatePath := fileRootPath + "\\" + templateFileName + ".html"; 
-	if (!File.Exists(htmlTemplatePath)) then
+	if (!System.IO.File.Exists(htmlTemplatePath)) then
 	(
 		Error("File does not exist");
 	);
@@ -76,7 +76,7 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 	newFileName := "New_BusinessCooperationRequest";
 	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PaySpot";
 	htmlTemplatePath := fileRootPath + "\\" + templateFileName + ".html"; 
-	if (!File.Exists(htmlTemplatePath)) then
+	if (!System.IO.File.Exists(htmlTemplatePath)) then
 	(
 		Error("File does not exist");
 	);
@@ -390,7 +390,7 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 	newFileName := "New_ContractPaySpot";
 	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PaySpot";
 	htmlTemplatePath := fileRootPath + "\\" + templateFileName + ".html"; 
-	if (!File.Exists(htmlTemplatePath)) then
+	if (!System.IO.File.Exists(htmlTemplatePath)) then
 	(
 		Error("File does not exist");
 	);
@@ -424,7 +424,7 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 	newFileName := "New_StatementOfOfficialDocument";
 	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PaySpot";
 	htmlTemplatePath := fileRootPath + "\\" + templateFileName + ".html"; 
-	if (!File.Exists(htmlTemplatePath)) then
+	if (!System.IO.File.Exists(htmlTemplatePath)) then
 	(
 		Error("File does not exist");
 	);
@@ -513,7 +513,7 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_Yes}}", "");
 				htmlContent := htmlContent.Replace("{{IsPoliticallyExposedPerson_No}}", "checked");
 				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_Yes}}", "");
-				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_No}}", "");
+				htmlContent := htmlContent.Replace("{{IsForeignPoliticallyExposedPerson_No}}", "checked");
 			);
 		);
 	);
