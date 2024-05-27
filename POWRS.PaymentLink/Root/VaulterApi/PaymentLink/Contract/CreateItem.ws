@@ -81,15 +81,16 @@ if(System.String.IsNullOrWhiteSpace(PPassword)) then
     Error("No user with given username");
 );
 
-PDeliveryDate += " 23:59";
-ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "dd/MM/yyyy HH:mm", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
+dateTemplate:= "dd/MM/yyyy HH:mm:ss"
+PDeliveryDate += " 23:59:59";
+ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate,dateTemplate , System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
 if(ParsedDeliveryDate < NowUtc) then 
 (
     Error("Delivery date and time must be in the future");
 );
 
-PPaymentDeadline += " 23:59";
-ParsedDeadlineDate:= System.DateTime.ParseExact(PPaymentDeadline, "dd/MM/yyyy HH:mm", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
+PPaymentDeadline += " 23:59:59";
+ParsedDeadlineDate:= System.DateTime.ParseExact(PPaymentDeadline, dateTemplate, System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
 if(ParsedDeadlineDate < NowUtc) then 
 (
     Error("Deadline must be in the future.");
