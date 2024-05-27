@@ -57,7 +57,7 @@
 					<Content fileName="GetBic.ws"/>
 				</Folder>
 				<Folder name="Contract">
-					<Content fileName="CancelItem.ws"/>
+					<Content fileName="InitiateRefund.ws"/>
 					<Content fileName="GetContracts.ws"/>
 					<Content fileName="CreateItem.ws"/>
 				</Folder>
