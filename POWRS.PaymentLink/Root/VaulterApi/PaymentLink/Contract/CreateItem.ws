@@ -76,7 +76,7 @@ if(System.String.IsNullOrWhiteSpace(PPassword)) then
     Error("No user with given username");
 );
 
-dateTemplate:= "dd/MM/yyyy HH:mm:ss"
+dateTemplate:= "dd/MM/yyyy HH:mm:ss";
 PPaymentDeadline += " 23:59:59";
 ParsedDeadlineDate:= System.DateTime.ParseExact(PPaymentDeadline, dateTemplate, System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
 if(ParsedDeadlineDate < NowUtc) then 
