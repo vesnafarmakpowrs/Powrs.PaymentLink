@@ -10,7 +10,7 @@
 			<RoleReference role="Creator" />
 		</Owner>
 		<TrustProvider>
-			<RoleReference role="TrustProvider" />
+			<RoleReference role="TrustProvider" /> 
 		</TrustProvider>
 		<Value>
 			<ParameterReference parameter="Value" />
