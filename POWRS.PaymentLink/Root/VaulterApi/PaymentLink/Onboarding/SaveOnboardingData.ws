@@ -10,9 +10,9 @@ errors:= Create(System.Collections.Generic.List, System.String);
 currentMethod:= "";
 fileMaxSizeMB := 1.5;
 
-allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
+allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","");
 if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
-	BadRequest("No setting: OnBoardingFileRootPath");
+	BadRequest("No setting: OnBoardingAllCompaniesRootPath");
 );
 
 ValidatePostedData(Posted) := (

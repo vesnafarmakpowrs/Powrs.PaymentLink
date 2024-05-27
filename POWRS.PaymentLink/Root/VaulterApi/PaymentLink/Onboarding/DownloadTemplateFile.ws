@@ -549,9 +549,9 @@ try
 		BadRequest("Parameter FileType not valid");
 	);
 	
-	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
+	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","");
 	if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
-		Error("No setting: OnBoardingFileRootPath");
+		Error("No setting: OnBoardingAllCompaniesRootPath");
 	);	
 	
 	returnFilePath := "";

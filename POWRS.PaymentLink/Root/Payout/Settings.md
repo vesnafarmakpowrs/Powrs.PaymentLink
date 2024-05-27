@@ -34,7 +34,7 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.LIStatusContactEmail", Str(Posted.LIStatusContactEmail));
 	SetSetting("POWRS.PaymentLink.AMLContactEmail", Str(Posted.AMLContactEmail));
 	SetSetting("POWRS.PaymentLink.NotificationList", Str(Posted.NotificationList));
-	SetSetting("POWRS.PaymentLink.OnBoardingFileRootPath", Str(Posted.OnBoardingFileRootPath));
+	SetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath", Str(Posted.OnBoardingAllCompaniesRootPath));
 	
 	SeeOther("Settings.md");
 );
@@ -90,8 +90,8 @@ if exists(Posted) then
 </p>
 
 <p>
-<label for="OnBoardingFileRootPath">Root directory for onBoarding files (path ends just with file name, use excepe \):</label>  
-<input type="text" id="OnBoardingFileRootPath" name="OnBoardingFileRootPath" value='{{GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","")}}' title="Root directory for onBoarding files (path ends just with file name, use excape \)"/>
+<label for="OnBoardingAllCompaniesRootPath">Root directory for onBoarding files (path ends just with file name, use excepe \):</label>  
+<input type="text" id="OnBoardingAllCompaniesRootPath" name="OnBoardingAllCompaniesRootPath" value='{{GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","")}}' title="Root directory for onBoarding files (path ends just with file name, use excape \)"/>
 </p>
 
 

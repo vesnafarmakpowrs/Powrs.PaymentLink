@@ -13,9 +13,9 @@ try
 	if(System.String.IsNullOrWhiteSpace(PFileName)) then	
 		Error("File name can't be empty");
 	
-	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingFileRootPath","");
+	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","");
 	if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
-		Error("No setting: OnBoardingFileRootPath");
+		Error("No setting: OnBoardingAllCompaniesRootPath");
 	);
 	
 	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;

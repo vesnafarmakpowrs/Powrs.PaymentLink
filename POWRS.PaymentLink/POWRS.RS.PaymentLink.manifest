@@ -67,6 +67,7 @@
 					<Content fileName="SendPaylinkViaEmail.ws"/>
 				</Folder>
 				<Folder name="Onboarding">
+					<Content fileName="ApplyOnboardingData.ws"/>
 					<Content fileName="DownloadFile.ws"/>
 					<Content fileName="DownloadTemplateFile.ws"/>
 					<Content fileName="GetOnboardingData.ws"/>
