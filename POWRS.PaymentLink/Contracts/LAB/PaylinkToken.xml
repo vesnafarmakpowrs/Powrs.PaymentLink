@@ -98,9 +98,6 @@
 				<Variable id="PaymentDeadline">
 					<TagReference tag="PaymentDeadline" />
 				</Variable>
-				<Variable id="DeliveryDate">
-					<TagReference tag="DeliveryDate" />
-				</Variable>
 				<Variable id="EscrowFee">
 					<TagReference tag="EscrowFee" />
 				</Variable>
@@ -390,9 +387,6 @@
 		<Tag name="PaymentDeadline">
 			<ParameterReference parameter="PaymentDeadline" />
 		</Tag>
-		<Tag name="DeliveryDate">
-			<ParameterReference parameter="DeliveryDate" />
-		</Tag>
 		<Tag name="EscrowFee">
 			<ParameterReference parameter="EscrowFee" />
 		</Tag>
@@ -582,13 +576,6 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Date and time untill buyer can pay.</text>
-				</paragraph>
-			</description>
-		</dateTimeParameter>
-		<dateTimeParameter name="DeliveryDate" exp="DeliveryDate &gt;= NowUtc">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Date and time when goods should be delivered.</text>
 				</paragraph>
 			</description>
 		</dateTimeParameter>

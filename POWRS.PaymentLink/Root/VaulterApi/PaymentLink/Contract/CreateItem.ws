@@ -9,7 +9,6 @@ if !exists(Posted) then BadRequest("No payload.");
     "currency":Required(String(PCurrency)),
     "description":Required(String(PDescription)),
     "paymentDeadline": Required(String(PPaymentDeadline)),
-    "deliveryDate":Required(String(PDeliveryDate)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
@@ -40,10 +39,6 @@ if(PCurrency not like "[A-Z]{3}") then
 if(PDescription not like "[\\p{L}\\s0-9.,;:!?()'\"\\/#_~+*@$%^& -]{5,100}") then
 (
     Error("Description not valid.");
-);
-if(PDeliveryDate not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
-(
-    Error("Delivery date format not valid.");
 );
 if(PPaymentDeadline not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
 (
@@ -82,23 +77,11 @@ if(System.String.IsNullOrWhiteSpace(PPassword)) then
 );
 
 dateTemplate:= "dd/MM/yyyy HH:mm:ss"
-PDeliveryDate += " 23:59:59";
-ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate,dateTemplate , System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
-if(ParsedDeliveryDate < NowUtc) then 
-(
-    Error("Delivery date and time must be in the future");
-);
-
 PPaymentDeadline += " 23:59:59";
 ParsedDeadlineDate:= System.DateTime.ParseExact(PPaymentDeadline, dateTemplate, System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
 if(ParsedDeadlineDate < NowUtc) then 
 (
     Error("Deadline must be in the future.");
-);
-
-if(ParsedDeadlineDate > ParsedDeliveryDate) then 
-(
-    ParsedDeadlineDate:= ParsedDeliveryDate;
 );
 
 KeyId := GetSetting(SessionUser.username + ".KeyId","");
