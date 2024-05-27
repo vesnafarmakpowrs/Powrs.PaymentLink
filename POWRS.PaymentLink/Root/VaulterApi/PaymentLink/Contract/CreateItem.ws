@@ -133,11 +133,10 @@ WebPageUrl:=  PWebPageUrl ?? "";
 Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
-	"Title": PTitle,
+	    "Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
         "PaymentDeadline" : ParsedDeadlineDate,
-        "DeliveryDate" : ParsedDeliveryDate,
         "Currency": PCurrency,
         "Country": PBuyerCountryCode,
         "Expires": TodayUtc.AddDays(364),
