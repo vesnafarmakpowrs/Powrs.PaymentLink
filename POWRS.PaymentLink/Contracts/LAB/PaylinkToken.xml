@@ -123,7 +123,7 @@
 					<Boolean>false</Boolean>
 				</Variable>
 				<State id="AwaitingForPayment">
-					<OnEvent actionRef="ProceedToBuyEdaler" newState="PaymentCompleted" failureState="AwaitingForPayment">
+					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent newState="PaymentNotPerformed">
@@ -140,17 +140,12 @@
 					<OnEvent actionRef="CancelPayment" newState="PaymentCanceled" failureState="PaymentCompleted">
 						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
-					<OnEvent newState="ServiceDelivered">
+					<OnEvent actionRef="ReleaseFunds" failureState="PaymentCompleted" newState="Done">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
 				</State>
 				<State id="PaymentCanceled">
 					<OnEnter actionRef="MarkAsDone"/>
-				</State>
-				<State id="ServiceDelivered">
-					<OnEvent actionRef="ReleaseFunds" newState="Done">
-						<OnDuration>PT1S</OnDuration>
-					</OnEvent>
 				</State>
 				<State id="Done">
 					<OnEnter actionRef="MarkAsDone"/>
@@ -240,7 +235,7 @@
 						</Then>
 					</If>
 				</Action>
-				<Action id="ProceedToBuyEdaler">
+				<Action id="ProcessCompletedPayspotPayment">
 					<Script>
 						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
 						PayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@payspotOrderId');
