@@ -278,8 +278,7 @@ else
 <button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button> 
 [[;
 );
-]]
-</td>
+]]</td>
 </tr>
 <tr id="tr_spinner" style="display: none;">
 <td>
@@ -292,8 +291,7 @@ else
 </td>
 </tr>
 </table>
-</div>
-   [[;
+</div>[[;
 )
 else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" )then 
 (

@@ -94,7 +94,7 @@
 				<Content fileName="vaulterlogo.svg"/>
 				<Content fileName="error_red.png"/>
 				<Content fileName="success_green.png"/>
-
+				<Content fileName="vaulter_logo.webp"/>
 			</Folder>
 		</Folder>
 		<Folder name="Payout">

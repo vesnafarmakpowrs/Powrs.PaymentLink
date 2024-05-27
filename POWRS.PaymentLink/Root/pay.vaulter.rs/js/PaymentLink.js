@@ -129,13 +129,13 @@ function LoadIPS()
 {   
    console.log('loadIPS');
    document.getElementById("ips-iframe").src = "";
-   document. getElementById("ips-iframe").height = "0";
    if (isMobileDevice)
      document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSPayoutMethod.md";
    else
    {
      document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md";
-     document. getElementById("ips-iframe").height = "500";
+     document.getElementById("ips-iframe").classList.remove("pay-iframe");
+     document.getElementById("ips-iframe").classList.add("pay-iframe-web");
    }
 }
 

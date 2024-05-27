@@ -23,35 +23,31 @@ JavaScript: js/QRIPS.js
                lng:= "rs";
                Language:= Translator.GetLanguageAsync("rs");
              );
-
            LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
      ]]<div class="container">
-       		<div class="content">  
-                   <div class="article">
-                         <div class="pay-div" ><button class="pay-btn btn-black" onclick="getQRCode()">Generate QR Code</button> </div>
-              		<div class="ips__logo-container" style"height:400px">
-               			<img src="./resources/ipslogo.png" alt="ipsLogoScan">
-              			<img id="QRCode" src="" alt="" />
-                        </div>
-                        <p>Mbanking aplikacijom koju imate instaliranu na svom mobilnom uređaju skenirajte prikazani jednokratan IPS QR kod i izvršite plaćanje u okruženju Vaše banke. Informacija o ishodu plaćanja biće Vam prikazana odmah po završetku obrade ali će Vam biti dostavljena i na e-mail adresu uz potvrdu o kupovini.</p>
+              <div class="content"> 
+                   <div class="article">    
+                        <div class="div-logo-ips">
+                            <img src="./resources/ipslogo.png" alt="ipsLogoScan"/>
+                            <img src="./resources/vaulter_logo.webp" alt="VaulterLogo"/>
+                        </div>    
+                        <div><label>Mbanking aplikacijom koju imate instaliranu na svom mobilnom uređaju skenirajte prikazani jednokratan IPS QR kod i izvršite plaćanje u okruženju Vaše banke. Informacija o ishodu plaćanja biće Vam prikazana odmah po završetku obrade ali će Vam biti dostavljena i na e-mail adresu uz potvrdu o kupovini.</label> </div>
                    </div> 
-                   <div class="form-wrapper">
-              		<div class="qr-timer">
-                        	<div class="pomView" data-testid="divTimer">
-                        		<h1>1:29</h1>
-                       		</div>
-              		</div>     
-	           </div>
-                    <form action="#" class="form">
-                      <div class="form__group"></div>
-                      <div class="deeplink-wrap"></div>
-                      <div class="form__button">
-                       <div class="gen-wrap">
-                          <span class="msg"> Vreme je isteklo<br>Ponovo generišite QR CODE </span>
-                          <button type="button" class="btn btn__primary red" data-testid="submit-cancel-button">Odustani</button>
+                   <div class="div-ips-code">
+                      <div> 
+                          <img id="QRCode" src="" alt="" />
+                      </div>
+                      <div class="qr-timer">
+                          <strong><div class="pomView" timer id="timer"></div></strong>
+              	      </div>   
+                      <div class="gen-wrap">
+                          <div id="msg-time-expire" class="msg"> Vreme je isteklo</div>
+                          <div id="msg-generate-qrcode" class="msg">Ponovo generišite QR CODE </div>
+                          <div class="pay-div" display="none"><button id="btnGenerateQR" class="pay-btn btn-black btn-hide" onclick="getQRCode()">GENERIŠI QR</button> </div>
+                          <div class="cancel-div"><button  id="btnCancelQR"  type="button" class="pay-btn btn-grey btn-hide" id="cancel_btn">ODUSTANI</button></div>
+                      </div> 
                   </div>
-                </div>
-              </form>
+                </div>           
         </div>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(27) ))" id="TransactionCompleted"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(28) ))" id="TransactionFailed"/>

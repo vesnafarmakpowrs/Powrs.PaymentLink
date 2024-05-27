@@ -114,6 +114,13 @@ form {
  border:0px;
 }
 
+.pay-iframe-web
+{
+ width:100%;
+ height:500px !important;
+ border:0px;
+}
+
 .pay-ips-div
 {
  width:100%;
