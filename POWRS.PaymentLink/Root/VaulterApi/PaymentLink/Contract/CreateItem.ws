@@ -81,13 +81,15 @@ if(System.String.IsNullOrWhiteSpace(PPassword)) then
     Error("No user with given username");
 );
 
-ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
+PDeliveryDate += " 23:59";
+ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "dd/MM/yyyy HH:mm", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
 if(ParsedDeliveryDate < NowUtc) then 
 (
     Error("Delivery date and time must be in the future");
 );
 
-ParsedDeadlineDate:= System.DateTime.ParseExact(PPaymentDeadline, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
+PPaymentDeadline += " 23:59";
+ParsedDeadlineDate:= System.DateTime.ParseExact(PPaymentDeadline, "dd/MM/yyyy HH:mm", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
 if(ParsedDeadlineDate < NowUtc) then 
 (
     Error("Deadline must be in the future.");
@@ -147,11 +149,11 @@ WebPageUrl:=  PWebPageUrl ?? "";
 Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
     {
         "RemoteId": PRemoteId,
-	    "Title": PTitle,
+	"Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
-        "PaymentDeadline" : DateTime(ParsedDeadlineDate.Year, ParsedDeadlineDate.Month, ParsedDeadlineDate.Day, 23, 59, 59, 00).ToUniversalTime(),
-        "DeliveryDate" : DateTime(ParsedDeliveryDate.Year, ParsedDeliveryDate.Month, ParsedDeliveryDate.Day, 23, 59, 59, 00).ToUniversalTime(),,
+        "PaymentDeadline" : ParsedDeadlineDate,
+        "DeliveryDate" : ParsedDeliveryDate,
         "Currency": PCurrency,
         "Country": PBuyerCountryCode,
         "Expires": TodayUtc.AddDays(364),
@@ -164,7 +166,7 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
         "BuyerEmail":PBuyerEmail,
         "CallBackUrl" : CallBackUrl,
         "WebPageUrl" : WebPageUrl,
-        "SupportedPaymentMethods": PSupportedPaymentMethods,
+        "SupportedPaymentMethods": "",
         "BuyerAddress": PBuyerAddress
     });
 
