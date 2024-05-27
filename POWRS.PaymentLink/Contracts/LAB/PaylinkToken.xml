@@ -136,13 +136,13 @@
 				<State id="PaymentCompleted">
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
 					<OnEnter actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= true;" />
-					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>						
+					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>
 					<OnEvent actionRef="CancelPayment" newState="PaymentCanceled" failureState="PaymentCompleted">
 						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
 					<OnEvent newState="ServiceDelivered">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
-					</OnEvent>					
+					</OnEvent>
 				</State>
 				<State id="PaymentCanceled">
 					<OnEnter actionRef="MarkAsDone"/>
@@ -168,7 +168,7 @@
 				<Action id="CancelPayment">
 					<If condition="TotalAmountPaid &lt; AmountToPay">
 						<Then>
-							<TextNote content="The amount paid is not sufficient" />
+							<TextNote content="The amount paid is not sufficient" />							
 						</Then>
 						<Else>
 							<Script>
