@@ -67,11 +67,11 @@
 					<Content fileName="SendPaylinkViaEmail.ws"/>
 				</Folder>
 				<Folder name="Onboarding">
-					<Content fileName="ApplyOnboardingData.ws"/>
 					<Content fileName="DownloadFile.ws"/>
 					<Content fileName="DownloadTemplateFile.ws"/>
 					<Content fileName="GetOnboardingData.ws"/>
 					<Content fileName="SaveOnboardingData.ws"/>
+					<Content fileName="SubmitOnboardingData.ws"/>
 					<Folder name="Template">
 						<Content fileName="PromissoryNoteIntruction.pdf"/>						
 						<Folder name="PaySpot">

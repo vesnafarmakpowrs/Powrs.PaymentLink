@@ -303,7 +303,7 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 			legalRepresentativesStr := "";
 			FOR i := 1 TO generalInfo.LegalRepresentatives.Length - 1 STEP 1 DO
 			(
-				legalRepresentativesStr +=  generalInfo.LegalRepresentatives[i].FullName + (i != generalInfo.LegalRepresentatives.Length-1 ? ", " : "");
+				legalRepresentativesStr +=  generalInfo.LegalRepresentatives[i].FullName + (i != generalInfo.LegalRepresentatives.Length - 1 ? ", " : "");
 			);
 		
 			htmlContent := htmlContent.Replace("{{ShowLegalRepresentatives}}", "showDiv");

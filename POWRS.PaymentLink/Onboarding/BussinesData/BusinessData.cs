@@ -33,6 +33,7 @@ namespace POWRS.PaymentLink.Onboarding
         private int periodFromPaymentToDeliveryInDays;
         private int complaintsPerMonth;
         private int complaintsPerYear;
+        private bool iPSOnly;
 
         private string methodOfDeliveringGoodsToCustomers;
         private string descriptionOfTheGoodsToBeSoldOnline;
@@ -127,6 +128,7 @@ namespace POWRS.PaymentLink.Onboarding
         public string EComerceContactFullName { get => eComerceContactFullName; set => eComerceContactFullName = value; }
         public string EComerceResponsiblePersonPhone { get => eComerceResponsiblePersonPhone; set => eComerceResponsiblePersonPhone = value; }
         public string EComerceContactEmail { get => eComerceContactEmail; set => eComerceContactEmail = value; }
+        public bool IPSOnly { get => iPSOnly; set => iPSOnly = value; }
 
         public override bool IsCompleted()
         {

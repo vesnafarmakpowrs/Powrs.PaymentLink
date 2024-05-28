@@ -207,6 +207,7 @@ if(errors.Count > 0) then
 				aMLMailRecipients := GetSetting("POWRS.PaymentLink.AMLContactEmail","");
 				
 				POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, aMLMailRecipients, "Vaulter", MailBody, null, null);
+	            destroy(MailBody);
 			)
 			catch(
 				Log.Error("Error while sending email: " + Exception.Message, logObjectID, logActor, logEventID, null);

@@ -346,6 +346,9 @@ ValidatePostedData(Posted) := (
 	if(!exists(Posted.BusinessData.EComerceContactEmail))then(
 		errors.Add("BusinessData.EComerceContactEmail");
 	);
+	if(!exists(Posted.BusinessData.IPSOnly))then(
+		errors.Add("BusinessData.IPSOnly");
+	);
 	
 	isNewUpload := false;
 	if(!exists(Posted.LegalDocuments.ContractWithEMIIsNewUpload))then(
@@ -695,6 +698,7 @@ SaveBusinessData(BusinessData, UserName):=
 	businessData.EComerceContactFullName:= BusinessData.EComerceContactFullName;
 	businessData.EComerceResponsiblePersonPhone:= BusinessData.EComerceResponsiblePersonPhone;
 	businessData.EComerceContactEmail:= BusinessData.EComerceContactEmail;
+	businessData.IPSOnly:= BusinessData.IPSOnly;
 
 	if(recordExists) then 
 	(

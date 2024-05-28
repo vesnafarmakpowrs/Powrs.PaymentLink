@@ -31,8 +31,7 @@ namespace POWRS.PaymentLink.Onboarding
         {
             return !string.IsNullOrEmpty(this.BusinessCooperationRequest) &&
                     !string.IsNullOrEmpty(this.ContractWithVaulter) &&
-                    !string.IsNullOrEmpty(this.ContractWithEMI) &&
-                    !string.IsNullOrEmpty(this.PromissoryNote);
+                    !string.IsNullOrEmpty(this.ContractWithEMI);
         }
     }
 }

@@ -455,7 +455,7 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\DownloadFile.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\ApplyOnboardingData.ws">
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\SubmitOnboardingData.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\SaveOnboardingData.ws">
