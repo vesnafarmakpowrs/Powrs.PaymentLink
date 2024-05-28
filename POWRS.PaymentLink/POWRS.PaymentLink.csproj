@@ -443,7 +443,7 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Auth\VerifyToken.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Contract\CancelItem.ws">
+	  <None Update="Root\VaulterApi\PaymentLink\Contract\InitiateRefund.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\GetContracts.ws">

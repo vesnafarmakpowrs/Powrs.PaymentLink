@@ -57,7 +57,7 @@
 					<Content fileName="GetBic.ws"/>
 				</Folder>
 				<Folder name="Contract">
-					<Content fileName="CancelItem.ws"/>
+					<Content fileName="InitiateRefund.ws"/>
 					<Content fileName="GetContracts.ws"/>
 					<Content fileName="CreateItem.ws"/>
 				</Folder>
@@ -135,15 +135,15 @@
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="credit-card-payment.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
-				<Content fileName="direct_payment.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
-				<Content fileName="expand.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
-				<Content fileName="spin.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
-				<Content fileName="spinner.gif" altFolder="..\..\pay.vaulter.rs\resources"/>
-				<Content fileName="vaulter_logo.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
-				<Content fileName="vaulter_txt.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
-				<Content fileName="vaulterlogo.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
-				<Content fileName="error_red.png" altFolder="..\..\pay.vaulter.rs\resources"/>
-				<Content fileName="success_green.png" altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="direct_payment.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="expand.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="spin.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="spinner.gif"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulter_logo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulter_txt.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulterlogo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="error_red.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="success_green.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
 			</Folder>
 		</Folder>
 		<Folder name="Payout">
