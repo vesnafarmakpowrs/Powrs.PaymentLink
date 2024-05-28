@@ -149,7 +149,8 @@ namespace POWRS.PaymentLink.Onboarding
                 CheapestProductAmount > 0 &&
                 MostExpensiveProductAmount > 0 &&
                 ComplaintsPerMonth >= 0 &&
-                ComplaintsPerYear >= 0
+                ComplaintsPerYear >= 0 &&
+                PeriodFromPaymentToDeliveryInDays >= 0
             ;
         }
     }
