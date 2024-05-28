@@ -17,23 +17,6 @@ JavaScript: js/PaymentLink.js
 <div class="container">
 <div class="content">
 {{
-  Language:= null;
-if(exists(lng)) then 
-(
-  Language:= Translator.GetLanguageAsync(lng);
-);
-if(Language == null) then 
-(
- lng:= "rs";
- Language:= Translator.GetLanguageAsync("rs");
-);
-
-LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
-if(LanguageNamespace == null) then 
-(
- ]]<b>Page is not available at the moment</b>[[;
- Return("");
-);
 
 try
 (
@@ -131,7 +114,33 @@ if Token.HasStateMachine then
         Variable.Name like "AmountToPay" ?   AmountToPay := MarkdownEncode(Variable.Value.ToString("N2"));
       );
 
-     Country := 'RS';
+     if(Country == "") then 
+     (
+        Country := 'RS';
+     );
+
+      Language:= null;
+      if(exists(lng)) then 
+      (
+        Language:= Translator.GetLanguageAsync(lng);
+      )
+      else 
+      (
+        Language:= Translator.GetLanguageAsync(Country.ToLowerInvariant());
+      );
+
+      if(Language == null) then 
+      (
+        Language:= Translator.GetLanguageAsync("rs");
+      );
+      
+      LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
+      if(LanguageNamespace == null) then 
+      (
+       ]]<b>Page is not available at the moment</b>[[;
+       Return("");
+      );
+
      BuyerFirstName := Before(BuyerFullName," ");
      PayspotId := Before(ID,"@");
      tokenDurationInMinutes:= Int(GetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", 5));
@@ -145,6 +154,7 @@ if Token.HasStateMachine then
                 "id": NewGuid().ToString(),
                 "ip": Request.RemoteEndPoint,
                 "country": Country,
+                "language": Language.Code.ToUpper(),
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
 
@@ -160,7 +170,7 @@ if Token.HasStateMachine then
 </tr>
 </table>
 
-<input type="hidden" value="((lng ))" id="prefferedLanguage"/>
+<input type="hidden" value="((Language.Code ))" id="prefferedLanguage"/>
 <input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
 

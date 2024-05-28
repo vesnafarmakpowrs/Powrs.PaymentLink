@@ -21,7 +21,12 @@ try
 	(
 		BadRequest("Token does not exists");
 	);
-	
+
+	addNoteEndpoint:="https://" + Gateway.Domain + "/AddNote/" + TokenId;
+	namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
+	Post(addNoteEndpoint ,<LanguageChanged xmlns=namespace language=SessionToken.Claims.language />,{},Waher.IoTGateway.Gateway.Certificate);
+	Sleep(500);
+
 	currentState:= token.GetCurrentStateVariables();
 	if(currentState.State != "AwaitingForPayment") then
 	(
