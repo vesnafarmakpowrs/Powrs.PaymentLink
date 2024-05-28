@@ -63,9 +63,12 @@ namespace POWRS.PaymentLink.Onboarding
 
         public override bool IsCompleted()
         {
-            bool isStructureValid = CountriesOfBusiness != null && CountriesOfBusiness.Length > 0 &&
-                PercentageOfForeignUsers < 0 &&
-                Owners != null && Owners.Length > 0;
+            bool isStructureValid = 
+                CountriesOfBusiness != null && 
+                CountriesOfBusiness.Length > 0 &&
+                PercentageOfForeignUsers >= 0 &&
+                Owners != null && 
+                Owners.Length > 0;
 
             if (!isStructureValid)
             {

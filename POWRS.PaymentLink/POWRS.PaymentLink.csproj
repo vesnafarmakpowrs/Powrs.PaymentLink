@@ -485,6 +485,12 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\ContractPowrs_Css.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment2.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment2_Css.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PromissoryNoteIntruction.pdf">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

@@ -35,8 +35,6 @@ ValidateSavedData(onBoardingData):=(
 );
 
 ApplyForLeglalID(onBoardingData):=(
-	dictionary:= {};
-
 	accountRole := 
 		Select top 1 * 
 		from POWRS.PaymentLink.Models.BrokerAccountRole
@@ -68,6 +66,7 @@ ApplyForLeglalID(onBoardingData):=(
 		);
 	);
 		
+	dictionary:= {};
 	dictionary["FIRST"]:= firstName;
 	dictionary["LAST"]:= lastName;
 	dictionary["PNR"]:= onBoardingData.CompanyStructure.Owners[0].PersonalNumber;
@@ -77,7 +76,7 @@ ApplyForLeglalID(onBoardingData):=(
 	dictionary["ORGCITY"]:= onBoardingData.GeneralCompanyInformation.CompanyCity;
 	dictionary["ORGCOUNTRY"]:= "RS";
 	dictionary["ORGADDR"]:= onBoardingData.GeneralCompanyInformation.CompanyAddress;
-	dictionary["ORGADDR2"]:= "";
+	dictionary["ORGADDR2"]:= " ";
 	dictionary["ORGBANKNUM"]:= onBoardingData.GeneralCompanyInformation.BankAccountNumber;
 	dictionary["ORGACTIVITYNUM"]:= onBoardingData.GeneralCompanyInformation.ActivityNumber;
 	dictionary["ORGACTIVITY"]:= onBoardingData.GeneralCompanyInformation.ActivityNumber;
@@ -88,8 +87,11 @@ ApplyForLeglalID(onBoardingData):=(
 	
 	PropertiesVector := [FOREACH prop IN dictionary: {name: prop.Key, value: prop.Value}];
 	Global.ApplyForAgentLegalId(SessionUser, Password, PropertiesVector);
-	Log.Informational("Succeffully apply for legal id.", logObjectID, logActor, logEventID, null);
 	
+	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
+	generalInfo.CanEdit := false;
+	Waher.Persistence.Database.Update(generalInfo);
+		
 	return(1);
 );
 
@@ -158,12 +160,14 @@ try
 	onBoardingData:= POWRS.PaymentLink.Onboarding.Onboarding.GetOnboardingData(SessionUser.username);
 	if(!onBoardingData.CanSubmit)then(
 		ValidateSavedData(onBoardingData);
+	)else(
+        Error("Onboarding is not allowed to edit or submit content.");
 	);
 	
 	ApplyForLeglalID(onBoardingData);
 	SendEmail(onBoardingData);
 	
-	Log.Informational("Succeffully submited onboarding.", logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully submited onboarding for user: " + SessionUser.username, logObjectID, logActor, logEventID, null);
 	{
 		success: true
 	}
