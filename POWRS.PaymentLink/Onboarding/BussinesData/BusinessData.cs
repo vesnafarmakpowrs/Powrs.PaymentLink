@@ -133,24 +133,23 @@ namespace POWRS.PaymentLink.Onboarding
         public override bool IsCompleted()
         {
             return !string.IsNullOrWhiteSpace(BusinessModel) &&
+                !string.IsNullOrWhiteSpace(methodOfDeliveringGoodsToCustomers) &&
+                !string.IsNullOrWhiteSpace(descriptionOfTheGoodsToBeSoldOnline) &&
+                !string.IsNullOrWhiteSpace(eComerceContactFullName) &&
+                !string.IsNullOrWhiteSpace(eComerceResponsiblePersonPhone) &&
+                !string.IsNullOrWhiteSpace(eComerceContactEmail) &&
 
                 RetailersNumber > 0 &&
                 ExpectedMonthlyTurnover > 0 &&
                 ExpectedYearlyTurnover > 0 &&
                 ThreeMonthAccountTurnover > 0 &&
                 CardPaymentPercentage > 0 &&
-                AverageTransactionAmount > 0 &&
-                AverageDailyTurnover > 0 &&
+                AverageTransactionAmount >= 0 &&
+                AverageDailyTurnover >= 0 &&
                 CheapestProductAmount > 0 &&
-                ComplaintsPerMonth > 0 &&
-                ComplaintsPerYear > 0 &&
-
-                businessModel != "" &&
-                methodOfDeliveringGoodsToCustomers != "" &&
-                descriptionOfTheGoodsToBeSoldOnline != "" &&
-                eComerceContactFullName != "" &&
-                eComerceResponsiblePersonPhone != "" &&
-                eComerceContactEmail != ""
+                MostExpensiveProductAmount > 0 &&
+                ComplaintsPerMonth >= 0 &&
+                ComplaintsPerYear >= 0
             ;
         }
     }

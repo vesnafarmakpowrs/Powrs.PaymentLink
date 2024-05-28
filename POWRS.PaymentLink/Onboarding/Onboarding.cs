@@ -19,7 +19,9 @@ namespace POWRS.PaymentLink.Onboarding
                 return GeneralCompanyInformation?.IsCompleted() == true &&
                 CompanyStructure?.IsCompleted() == true &&
                 BusinessData?.IsCompleted() == true &&
-                LegalDocuments?.IsCompleted() == true;
+                LegalDocuments?.IsCompleted() == true &&
+                BusinessData?.IPSOnly == string.IsNullOrWhiteSpace(LegalDocuments?.PromissoryNote)
+                ;
             }
         }
 

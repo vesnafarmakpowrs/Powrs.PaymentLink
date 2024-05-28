@@ -1040,6 +1040,7 @@ Token is required. Request body is empty.
         "EComerceContactFullName": "Mirko Kruščić",
         "EComerceResponsiblePersonPhone": "066414623",
         "EComerceContactEmail": "mirko.kruscic@powrs.se",
+        "IPSOnly": false,
         "UserName": "AgentPLG"
     },
     "LegalDocuments": {
@@ -1149,7 +1150,8 @@ Call this resource save data for onboarding.
         "DescriptionOfTheGoodsToBeSoldOnline": "",
         "EComerceContactFullName": "",
         "EComerceResponsiblePersonPhone": "",
-        "EComerceContactEmail": ""
+        "EComerceContactEmail": "",
+        "IPSOnly": false
    },
    "LegalDocuments": {
         "ContractWithEMIIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
@@ -1161,6 +1163,30 @@ Call this resource save data for onboarding.
         "BusinessCooperationRequestIsNewUpload": false,    -> if it is new file upload then 'true', else 'false'
         "BusinessCooperationRequest": ""                    -> if it is new file uplad then base 64 string, else string from API
    }
+}
+````
+
+
+**Response**
+
+
+````
+{
+    "success": true
+}
+````
+
+### Submit onboarding data
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/SubmitOnboardingData.ws")}}`  
+Method: `POST`
+
+Call this resource to submit onboarding.
+
+**Request**
+
+````
+{
 }
 ````
 

@@ -10,6 +10,7 @@
 logObjectID := SessionUser.username;
 logEventID := "DownloadTemplateFile.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
+errors:= Create(System.Collections.Generic.List, System.String);
 
 DownloadTemplateContractWithVaulter(PIsEmptyFile) := (
 	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
@@ -44,6 +45,31 @@ DownloadTemplateContractWithVaulter(PIsEmptyFile) := (
 	)
 	else
 	(
+		if(System.String.IsNullOrWhiteSpace(generalInfo.FullName))then(
+			errors.Add("GeneralCompanyInformation.FullName");
+		);
+		if(System.String.IsNullOrWhiteSpace(generalInfo.CompanyAddress))then(
+			errors.Add("GeneralCompanyInformation.CompanyAddress");
+		);
+		if(System.String.IsNullOrWhiteSpace(generalInfo.CompanyCity))then(
+			errors.Add("GeneralCompanyInformation.CompanyCity");
+		);
+		if(System.String.IsNullOrWhiteSpace(generalInfo.OrganizationNumber))then(
+			errors.Add("GeneralCompanyInformation.OrganizationNumber");
+		);
+		if(System.String.IsNullOrWhiteSpace(generalInfo.TaxNumber))then(
+			errors.Add("GeneralCompanyInformation.TaxNumber");
+		);
+		if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[0].FullName))then(
+			errors.Add("GeneralCompanyInformation.LegalRepresentatives;0.FullName");
+		);
+		
+		if(errors.Count > 0)then
+		(
+			Error(errors);
+			return (0);
+		);
+	
 		htmlContent := htmlContent.Replace("{{CompanyFullName}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyAddress}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.CompanyAddress + " " + generalInfo.CompanyCity + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyOrganizationNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.OrganizationNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -406,6 +432,32 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 	)
 	else
 	(
+		
+		if(System.String.IsNullOrWhiteSpace(generalInfo.FullName))then(
+			errors.Add("GeneralCompanyInformation.FullName");
+		);
+		if(System.String.IsNullOrWhiteSpace(generalInfo.CompanyAddress))then(
+			errors.Add("GeneralCompanyInformation.CompanyAddress");
+		);
+		if(System.String.IsNullOrWhiteSpace(generalInfo.CompanyCity))then(
+			errors.Add("GeneralCompanyInformation.CompanyCity");
+		);
+		if(System.String.IsNullOrWhiteSpace(generalInfo.OrganizationNumber))then(
+			errors.Add("GeneralCompanyInformation.OrganizationNumber");
+		);
+		if(System.String.IsNullOrWhiteSpace(generalInfo.TaxNumber))then(
+			errors.Add("GeneralCompanyInformation.TaxNumber");
+		);
+		if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[0].FullName))then(
+			errors.Add("GeneralCompanyInformation.LegalRepresentatives;0.FullName");
+		);
+		
+		if(errors.Count > 0)then
+		(
+			Error(errors);
+			return (0);
+		);
+	
 		htmlContent := htmlContent.Replace("{{CompanyFullName}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyAddress}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.CompanyAddress + " " + generalInfo.CompanyCity + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyOrganizationNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.OrganizationNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -460,6 +512,40 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 				Error("LegalRepresentatives must be populated");
 			);
 			
+			if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[PPersonIndex].FullName))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + PPersonIndex +".FullName");
+			);
+			if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[PPersonIndex].PersonalNumber))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + PPersonIndex +".PersonalNumber");
+			);
+			if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[PPersonIndex].DateOfBirthStr))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + PPersonIndex +".DateOfBirthStr");
+			);
+			if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[PPersonIndex].PlaceOfBirth))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + PPersonIndex +".PlaceOfBirth");
+			);
+			if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[PPersonIndex].AddressOfResidence))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + PPersonIndex +".AddressOfResidence");
+			);
+			if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[PPersonIndex].CityOfResidence))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + PPersonIndex +".CityOfResidence");
+			);
+			if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[PPersonIndex].DateOfIssueStr))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + PPersonIndex +".DateOfIssueStr");
+			);
+			if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[PPersonIndex].PlaceOfIssue))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + PPersonIndex +".PlaceOfIssue");
+			);
+			if(System.String.IsNullOrWhiteSpace(generalInfo.LegalRepresentatives[PPersonIndex].IssuerName))then(
+				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + PPersonIndex +".IssuerName");
+			);
+			
+			if(errors.Count > 0)then
+			(
+				Error(errors);
+				return (0);
+			);
+			
 			htmlContent := htmlContent.Replace("{{ClientFullName}}", generalInfo.LegalRepresentatives[PPersonIndex].FullName);
 			htmlContent := htmlContent.Replace("{{PersonalNumber}}", generalInfo.LegalRepresentatives[PPersonIndex].PersonalNumber);
 			htmlContent := htmlContent.Replace("{{DateAndPlaceOfBirth}}", generalInfo.LegalRepresentatives[PPersonIndex].DateOfBirthStr + ", " + generalInfo.LegalRepresentatives[PPersonIndex].PlaceOfBirth);
@@ -490,6 +576,40 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 			if(companyStructure == null or companyStructure.Owners == null or companyStructure.Owners.Length < PPersonIndex + 1)then
 			(
 				Error("CompanyStructure and owners must be populated");
+			);
+			
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].FullName))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".FullName");
+			);
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].PersonalNumber))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".PersonalNumber");
+			);
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].DateOfBirthStr))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".DateOfBirthStr");
+			);
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].PlaceOfBirth))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".PlaceOfBirth");
+			);
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].AddressOfResidence))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".AddressOfResidence");
+			);
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].CityOfResidence))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".CityOfResidence");
+			);
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].DateOfIssueStr))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".DateOfIssueStr");
+			);
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].PlaceOfIssue))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".PlaceOfIssue");
+			);
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].IssuerName))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".IssuerName");
+			);
+			
+			if(errors.Count > 0)then
+			(
+				Error(errors);
+				return (0);
 			);
 		
 			htmlContent := htmlContent.Replace("{{ClientFullName}}", companyStructure.Owners[PPersonIndex].FullName);
