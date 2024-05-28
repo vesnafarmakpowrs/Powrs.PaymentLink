@@ -8,4 +8,9 @@
 			<xs:attribute name="paymentType" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="LanguageChanged">
+	<xs:complexType>
+		<xs:attribute name="language" type="xs:string" use="required" />
+	</xs:complexType>
+</xs:element>
 </xs:schema>
