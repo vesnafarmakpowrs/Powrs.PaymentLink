@@ -57,7 +57,7 @@
 					<Content fileName="GetBic.ws"/>
 				</Folder>
 				<Folder name="Contract">
-					<Content fileName="CancelItem.ws"/>
+					<Content fileName="InitiateRefund.ws"/>
 					<Content fileName="GetContracts.ws"/>
 					<Content fileName="CreateItem.ws"/>
 				</Folder>
@@ -91,9 +91,9 @@
 				<Content fileName="Cancel.md" altFolder="..\..\pay.vaulter.rs\Redirect"/>
 				<Content fileName="Error.md" altFolder="..\..\pay.vaulter.rs\Redirect"/>
 				<Folder name="Mobile">
-					<Content fileName="Success.md" altFolder="..\..\..\pay.vaulter.rs\Mobile"/>
-					<Content fileName="Cancel.md" altFolder="..\..\..\pay.vaulter.rs\Mobile"/>
-					<Content fileName="Error.md" altFolder="..\..\..\pay.vaulter.rs\Mobile"/>
+					<Content fileName="Success.md" altFolder="..\..\..\pay.vaulter.rs\Redirect\Mobile"/>
+					<Content fileName="Cancel.md" altFolder="..\..\..\pay.vaulter.rs\Redirect\Mobile"/>
+					<Content fileName="Error.md" altFolder="..\..\..\pay.vaulter.rs\Redirect\Mobile"/>
 				</Folder>
 			</Folder>
 			<Folder name="css" >
@@ -101,10 +101,11 @@
 				<Content fileName="Status.css" altFolder="..\..\pay.vaulter.rs\css"/>
 			</Folder>
 			<Folder name="js">
-				<Content fileName="Events.js"/>
-				<Content fileName="PaymentLink.js"/>
+				<Content fileName="Events.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="PaymentLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
 			</Folder>
 			<Folder name="resources">
+<<<<<<< HEAD
 				<Content fileName="credit-card-payment.svg"/>
 				<Content fileName="direct_payment.svg"/>
 				<Content fileName="expand.svg"/>
@@ -116,6 +117,19 @@
 				<Content fileName="error_red.png"/>
 				<Content fileName="success_green.png"/>
 				<Content fileName="vaulter_logo.webp"/>
+=======
+				<Content fileName="credit-card-payment.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="direct_payment.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="expand.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="spin.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="spinner.gif"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulter_logo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulter_txt.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulterlogo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="error_red.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="success_green.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
+
+>>>>>>> Master
 			</Folder>
 		</Folder>
 		<Folder name="Payout">
