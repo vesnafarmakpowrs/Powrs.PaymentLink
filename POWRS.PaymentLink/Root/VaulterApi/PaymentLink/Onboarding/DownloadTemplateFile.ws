@@ -77,6 +77,14 @@ DownloadTemplateContractWithVaulter(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 	);
 	
+	htmlAttachment1Path := fileRootPath + "\\PowrsAttachment1.html"; 
+	htmlAttachment1Content := System.IO.File.ReadAllText(htmlAttachment1Path);
+	htmlContent := htmlContent.Replace("{{Attachment1}}", htmlAttachment1Content);
+	
+	htmlAttachment2Path := fileRootPath + "\\PowrsAttachment2.html"; 
+	htmlAttachment2Content := System.IO.File.ReadAllText(htmlAttachment2Path);
+	htmlContent := htmlContent.Replace("{{Attachment2}}", htmlAttachment2Content);
+	
 	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
 		
 	Return (newPDFFilePath);
