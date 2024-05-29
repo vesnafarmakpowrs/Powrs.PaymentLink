@@ -48,7 +48,7 @@ JavaScript: js/XmlHttp.js
                        Contains(bank.Name,"BANKA") ? bankName := Replace(bank.Name,"BANKA","");
                        bankName := TrimEnd(bankName);
                        bankName := TrimStart(bankName);
-                       imgSrc := "..\\resources\\personal_round\\"+ imageName + ".png";
+                       imgSrc := "..\\resources\\personal_round\\"+ imageName + ".jpg";
                        ]]<li class="dropdown-item" onClick="OpenDeepLink( ((bank.ID )) )"> <img src="(( imgSrc))" width="40px" height="100%">((bankName ))</li> [[;
                    );     
             ]]</ul>            
