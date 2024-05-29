@@ -114,13 +114,13 @@ if Token.HasStateMachine then
         Variable.Name like "AmountToPay" ?   AmountToPay := MarkdownEncode(Variable.Value.ToString("N2"));
       );
 
-     if(Country == "") then 
+     if(!exists(Country)) then 
      (
         Country := 'RS';
      );
 
       Language:= null;
-      if(exists(lng)) then 
+      if(exists(lng) and lng != "") then
       (
         Language:= Translator.GetLanguageAsync(lng);
       )
@@ -129,7 +129,7 @@ if Token.HasStateMachine then
         Language:= Translator.GetLanguageAsync(Country.ToLowerInvariant());
       );
 
-      if(Language == null) then 
+      if(Language == null) then
       (
         Language:= Translator.GetLanguageAsync("rs");
       );
@@ -139,6 +139,13 @@ if Token.HasStateMachine then
       (
        ]]<b>Page is not available at the moment</b>[[;
        Return("");
+      );
+
+      if(ContractState == "AwaitingForPayment" and Country != Language.Code.ToUpper()) then
+      (
+        addNoteEndpoint:="https://" + Gateway.Domain + "/AddNote/" + Token.TokenId;
+	    namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
+	    Post(addNoteEndpoint ,<LanguageChanged xmlns=namespace language=Language.Code.ToUpper() />,{},Waher.IoTGateway.Gateway.Certificate);
       );
 
      BuyerFirstName := Before(BuyerFullName," ");
@@ -154,7 +161,7 @@ if Token.HasStateMachine then
                 "id": NewGuid().ToString(),
                 "ip": Request.RemoteEndPoint,
                 "country": Country,
-                "language": Language.Code.ToUpper(),
+                "ipsOnly": IpsOnly,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
 

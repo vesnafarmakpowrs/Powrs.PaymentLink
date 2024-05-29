@@ -2,8 +2,7 @@
 
 ({
     "isFromMobile":Required(Bool(PIsFromMobile)),
-	"tabId": Required(Str(PTabId)),
-	"ipsOnly": Required(Bool(PIpsOnly))
+	"tabId": Required(Str(PTabId))
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
@@ -11,6 +10,13 @@ try
 	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then 
 	(
 		Error("Not configured");
+	);
+
+	IpsOnly:= false;
+
+	if(exists(SessionToken.Claims.ipsOnly)) then 
+	(
+		IpsOnly:=  SessionToken.Claims.ipsOnly
 	);
 
 	ContractId:= SessionToken.Claims.contractId;
@@ -21,11 +27,6 @@ try
 	(
 		BadRequest("Token does not exists");
 	);
-
-	addNoteEndpoint:="https://" + Gateway.Domain + "/AddNote/" + TokenId;
-	namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
-	Post(addNoteEndpoint ,<LanguageChanged xmlns=namespace language=SessionToken.Claims.language />,{},Waher.IoTGateway.Gateway.Certificate);
-	Sleep(500);
 
 	currentState:= token.GetCurrentStateVariables();
 	if(currentState.State != "AwaitingForPayment") then
@@ -58,7 +59,7 @@ try
 
 	Global.PayspotRequests[ContractId]:= PTabId;
 
-	if(PIpsOnly) then 
+	if(IpsOnly) then 
 	(
 		GeneratedIPSForm:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSForm(contractParameters, identityProperties);
 		responseObject.Response:= GeneratedIPSForm.ToDictionary();
