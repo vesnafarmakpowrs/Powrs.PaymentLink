@@ -1,6 +1,7 @@
 
 var Translations = {};
 document.addEventListener("DOMContentLoaded", () => {
+   getQRCode();
    GenerateTranslations();
 });
 

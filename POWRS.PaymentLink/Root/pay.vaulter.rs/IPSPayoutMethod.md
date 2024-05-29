@@ -11,7 +11,7 @@ Parameter: ID
 Parameter: JWT
 JavaScript: js/IPSPayment.js
 
-<main class="main page-padding ips">
+<main class="main page-padding content-ips-method">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
     <div class="container"> 
                    <div >

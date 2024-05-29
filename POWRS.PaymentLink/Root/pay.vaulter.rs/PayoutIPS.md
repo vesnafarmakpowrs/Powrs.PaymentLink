@@ -264,13 +264,10 @@ if ContractState == "AwaitingForPayment" then
 <div class="payment-method-rs"  id="ctn-payment-method-rs" style="display:none">
   <table style="width:100%; text-align:center">
     <tr>
-     <td > 
-[[;
+     <td>[[;
 if(IpsOnly) then 
 (
-  ]] <div class="pay-ips-div">             
-         <iframe scrolling="no" id="ips-iframe" class="pay-iframe">
-     </div>[[;
+  ]]<div class="pay-ips-div"><iframe scrolling="no" id="ips-iframe" class="pay-iframe"></iframe></div>[[;
 )
 else 
 (

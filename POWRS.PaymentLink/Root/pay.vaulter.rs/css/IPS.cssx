@@ -154,7 +154,7 @@ font-style: normal;
 
 .pay-btn{
     padding: 5px 25px;
-    width : 200px;
+    width : 100%;
     text-align: center;
     border-radius: 4px;
     font-style: normal;
@@ -163,6 +163,11 @@ font-style: normal;
     box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
     transition: all 0.2s ease;
     font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+}
+
+.content-ips-method
+{
+ font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
 }
 
 .btn-black 

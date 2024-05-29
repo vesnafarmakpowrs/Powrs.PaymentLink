@@ -164,8 +164,7 @@ function InitiatePaymentForm(ipsOnly, onSuccess) {
     SendXmlHttpRequest("../Payout/API/InitiatePayment.ws",
         {
             "isFromMobile": isMobileDevice,
-            "tabId": TabID,
-            "ipsOnly": ipsOnly
+            "tabId": TabID
         },
         (response) => {
             onSuccess(response);

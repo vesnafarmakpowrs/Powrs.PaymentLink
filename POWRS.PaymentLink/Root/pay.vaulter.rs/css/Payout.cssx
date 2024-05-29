@@ -899,6 +899,8 @@ padding: 0 2% 1% 2%;
 width: 95%;
 min-height:100%;
 margin: 0.5rem auto;
+border: 0px !important;
+box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
 }
 
 input[type="checkbox"] + label:before {

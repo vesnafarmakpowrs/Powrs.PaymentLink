@@ -1,19 +1,4 @@
 
-document.addEventListener("DOMContentLoaded", () => {
-   getQRCode();
-   startTimer();
-});
-
-function startTimer()
-{
-
-}
-
-function getQRCode()
-{
-  InitiateIPSPayment(0, GetDeepLinkSuccess);
-}
-
 function OpenDeepLink(bankId)
 {
   InitiateIPSPayment(bankId, GetDeepLinkSuccess);

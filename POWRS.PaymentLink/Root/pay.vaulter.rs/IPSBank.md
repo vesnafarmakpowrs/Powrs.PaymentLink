@@ -12,14 +12,10 @@ viewport : Width=device-width, initial-scale=1
 Parameter: TYPE
 Parameter: JWT
 JavaScript: js/Events.js
-JavaScript: js/IPSPayment.js
 JavaScript: js/BankList.js
-JavaScript: https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js
-JavaScript: https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js
-JavaScript: https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js
-JavaScript: https://code.jquery.com/jquery-3.5.1.slim.min.js
+JavaScript: js/XmlHttp.js
 
-<main class="main page-padding ips">
+<main class="main page-padding content-bank">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
        {{
   	    Language:= null;
@@ -41,15 +37,19 @@ JavaScript: https://code.jquery.com/jquery-3.5.1.slim.min.js
              bankList := POWRS.Payment.PaySpot.PayspotService.GetLegalBankList();
            );
            ]]<div class="dropdown"> 
-              <input type="text" class="search-bank-box" id="searchBank" onkeyup="searchBank()" placeholder="Search for bank..">
+              <label class="select-bank-lbl">Izaberi banka</label>
               <ul id="bankList" class="bank-list-ul"> [[;
                   foreach bank in bankList do 
                     ( 
+                       bankName:= bank.Name;
                        imageName :=  Before(bank.Name," ") != null ? Before(bank.Name," ") : bank.Name;
                        Contains(bank.Name,"INTESA") ? imageName := "intesa";
                        Contains(bank.Name,"POŠTANSKA") ? imageName := "pbs";
+                       Contains(bank.Name,"BANKA") ? bankName := Replace(bank.Name,"BANKA","");
+                       bankName := TrimEnd(bankName);
+                       bankName := TrimStart(bankName);
                        imgSrc := "..\\resources\\personal_round\\"+ imageName + ".png";
-                       ]]<li class="dropdown-item" onClick="OpenDeepLink( ((bank.ID )) )"> <img src="(( imgSrc))" width="50px" height="100%">((bank.Name ))</li> [[;
+                       ]]<li class="dropdown-item" onClick="OpenDeepLink( ((bank.ID )) )"> <img src="(( imgSrc))" width="40px" height="100%">((bankName ))</li> [[;
                    );     
             ]]</ul>            
         </div> 

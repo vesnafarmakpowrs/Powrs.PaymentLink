@@ -9,7 +9,6 @@ Icon: favicon.ico
 viewport : Width=device-width, initial-scale=1
 Parameter: ID
 JavaScript: js/Events.js
-JavaScript: js/BankList.js
 JavaScript: js/QRIPS.js
 
 <main class="main page-padding ips">
