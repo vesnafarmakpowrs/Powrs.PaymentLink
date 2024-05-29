@@ -138,7 +138,7 @@ function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUs
         }));
 }
 
-function InitiatePaymentForm(ipsOnly, onSuccess) {
+function InitiatePaymentForm(onSuccess) {
     document.getElementById("payspot-submit").style.display = "none";
     document.getElementById("tr_spinner").style.display = null;
     CollapseDetails();
@@ -146,8 +146,7 @@ function InitiatePaymentForm(ipsOnly, onSuccess) {
     SendXmlHttpRequest("../Payout/API/InitiatePayment.ws",
         {
             "isFromMobile": isMobileDevice,
-            "tabId": TabID,
-            "ipsOnly": ipsOnly
+            "tabId": TabID
         },
         (response) => {
             onSuccess(response);
@@ -161,11 +160,11 @@ function InitiatePaymentForm(ipsOnly, onSuccess) {
         })
 }
 function StartPayment() {
-    InitiatePaymentForm(false, ShowPayspotPage);
+    InitiatePaymentForm(ShowPayspotPage);
 }
 
 function GenerateIPSForm() {
-    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
+    InitiatePaymentForm(FillAndSubmitPayspotIPSForm);
 }
 
 function PaymentCompleted(Result) {

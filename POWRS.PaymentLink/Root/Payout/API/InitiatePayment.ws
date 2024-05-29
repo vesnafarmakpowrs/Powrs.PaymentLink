@@ -2,8 +2,7 @@
 
 ({
     "isFromMobile":Required(Bool(PIsFromMobile)),
-	"tabId": Required(Str(PTabId)),
-	"ipsOnly": Required(Bool(PIpsOnly))
+	"tabId": Required(Str(PTabId))
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
@@ -11,6 +10,13 @@ try
 	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then 
 	(
 		Error("Not configured");
+	);
+
+	IpsOnly:= false;
+
+	if(exists(SessionToken.Claims.ipsOnly)) then 
+	(
+		IpsOnly:=  SessionToken.Claims.ipsOnly
 	);
 
 	ContractId:= SessionToken.Claims.contractId;
@@ -53,7 +59,7 @@ try
 
 	Global.PayspotRequests[ContractId]:= PTabId;
 
-	if(PIpsOnly) then 
+	if(IpsOnly) then 
 	(
 		GeneratedIPSForm:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSForm(contractParameters, identityProperties);
 		responseObject.Response:= GeneratedIPSForm.ToDictionary();
