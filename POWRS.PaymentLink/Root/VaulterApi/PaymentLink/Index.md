@@ -259,7 +259,7 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
     "description":Required(String(PDescription)),
     "deliveryDate":Required(DateTime(PDeliveryDate)),
-    "deliveryTime":Optional(String(PDeliveryTime)),
+    "paymentDeadline":Required(DateTime(PPaymentDeadline)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
@@ -281,6 +281,7 @@ Description of properties:
 | `currency`        | Currency used by the price. Must be a 3-upper-case-letter currency symbol. |
 | `description`     | Displayable description of item. |
 | `deliveryDate`    | Delivery Date of item. dd/MM/YYYY |
+| `paymentDeadline`    | Payment deadline of item. dd/MM/YYYY. Untill link is valid. |
 | `buyerFirstName`  | Buyer First name. |
 | `buyerLastName`   | Buyer Last name. |
 | `buyerEmail`      | Buyer email. |
@@ -301,19 +302,18 @@ Description of properties:
 ````
 
 
-### Cancel Item
+### Initiate Refund
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/CancelItem.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/InitiateRefund.ws")}}`  
 Method: `POST`
 
-Call this resource to cancel an Item in Vaulter. JSON in the following format is expected in the call.
+Call this resource to perform a void of transaction related to the payment link. JSON in the following format is expected in the call.
 
 **Request**
 
 ````
 {
-    "contractId": Required(String(contractId)),
-    "refundAmount" : Optional(int(PRefundAmount))
+    "tokenId": Required(String(PTokenId))
 }
 ````
 
@@ -321,8 +321,7 @@ Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
-| `contractId`      | Contract Id. This id is returned as a response of sellItem |
-| `refundAmount`      | If payment is aleady done from the buyer side, how much to refunt to buyer. Rest of it will be released to seller's bank account. Could not be more than |
+| `tokenId`      | Token Id. |
 
 **Response**
 
@@ -330,7 +329,7 @@ Description of properties:
 {
  200 OK 
  {
-   "canceled" : true
+   "canceled" : true | false
  }
  403 Forbidden
  {
@@ -338,7 +337,6 @@ Description of properties:
  }
  400 Bad Request
  {
-	 // Amount not valid or contract not valid.
  }
 }
 ````

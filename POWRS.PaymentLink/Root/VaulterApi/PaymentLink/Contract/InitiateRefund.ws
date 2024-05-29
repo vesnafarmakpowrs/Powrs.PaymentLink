@@ -31,15 +31,17 @@ try
 	                "personal":false
                   },
 		          {"Accept" : "application/json",
-                  "Authorization": SessionUser.jwt});
+                  "Authorization": "Bearer " + SessionUser.jwt});
 
-result:= false;
 Counter:= 0;
+responseMessage:= "";
+State:= "";
 
-while result == false and Counter < 5 do
+while Counter < 10 and responseMessage == "" do
 (
- state:= select top 1 State from StateMachineCurrentStates where StateMachineId = Token.TokenId;
- result:= state == "PaymentCanceled";
+ variables:= token.GetCurrentStateVariables();
+ State:= variables.State;
+ responseMessage:= select top 1 Value from tokenVariables.VariableValues where Name = "RefundPaymentMessage";
  
  Counter += 1;
  Sleep(1000);
@@ -49,10 +51,10 @@ while result == false and Counter < 5 do
 catch
 (
  Log.Error(Exception, null);
- BadRequest(Exception.Message, null);
+ BadRequest(Exception.Message);
 );
 
 {
-     "canceled" : result
+    "canceled" : State == "PaymentCanceled"
 }
 
