@@ -44,6 +44,12 @@ ValidatePostedData(Posted) := (
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.CompanyAddress))then(
 		errors.Add("GeneralCompanyInformation.CompanyAddress");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.StampUsage))then(
+		errors.Add("GeneralCompanyInformation.StampUsage");
+	);	
+	if(!exists(Posted.GeneralCompanyInformation.TaxLiability))then(
+		errors.Add("GeneralCompanyInformation.TaxLiability");
 	);		
 	if(!exists(Posted.GeneralCompanyInformation.CompanyCity))then(
 		errors.Add("GeneralCompanyInformation.CompanyCity");
@@ -56,18 +62,12 @@ ValidatePostedData(Posted) := (
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.OtherCompanyActivities))then(
 		errors.Add("GeneralCompanyInformation.OtherCompanyActivities");
-	);	
-	if(!exists(Posted.GeneralCompanyInformation.StampUsage))then(
-		errors.Add("GeneralCompanyInformation.StampUsage");
-	);	
+	);
 	if(!exists(Posted.GeneralCompanyInformation.BankName))then(
 		errors.Add("GeneralCompanyInformation.BankName");
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.BankAccountNumber))then(
 		errors.Add("GeneralCompanyInformation.BankAccountNumber");
-	);	
-	if(!exists(Posted.GeneralCompanyInformation.TaxLiability))then(
-		errors.Add("GeneralCompanyInformation.TaxLiability");
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.CompanyWebsite))then(
 		errors.Add("GeneralCompanyInformation.CompanyWebsite");
@@ -85,7 +85,7 @@ ValidatePostedData(Posted) := (
 		foreach item in Posted.GeneralCompanyInformation.LegalRepresentatives do
 		(
 			isNewUpload := false;
-			
+				
 			if(!exists(item.FullName))then
 			(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".FullName");
@@ -95,7 +95,8 @@ ValidatePostedData(Posted) := (
 			(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DateOfBirth");
 			);
-			if(!exists(item.IsPoliticallyExposedPerson))then(
+			if(!exists(item.IsPoliticallyExposedPerson))then
+			(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IsPoliticallyExposedPerson");
 			);
 			if(!exists(item.StatementOfOfficialDocumentIsNewUpload))then(
@@ -170,6 +171,7 @@ ValidatePostedData(Posted) := (
 		);
 	);
 	
+	Int(Posted.CompanyStructure.PercentageOfForeignUsers) ??? errors.Add("CompanyStructure.PercentageOfForeignUsers");
 	
 	if(!exists(Posted.CompanyStructure.CountriesOfBusiness))then(
 		errors.Add("CompanyStructure.CountriesOfBusiness");
@@ -180,9 +182,6 @@ ValidatePostedData(Posted) := (
 	if(!exists(Posted.CompanyStructure.OffShoreFoundationInOwnerStructure))then(
 		errors.Add("CompanyStructure.OffShoreFoundationInOwnerStructure");
 	);
-	if(!exists(Posted.CompanyStructure.PercentageOfForeignUsers))then(
-		errors.Add("CompanyStructure.PercentageOfForeignUsers");
-	);	
 	if(!exists(Posted.CompanyStructure.OwnerStructure))then(
 		errors.Add("CompanyStructure.OwnerStructure");
 	);	
@@ -197,6 +196,8 @@ ValidatePostedData(Posted) := (
 		(
 			isNewUpload := false;
 			
+			Int(item.OwningPercentage) ??? errors.Add("CompanyStructure.Owners;" + itemIndex + ".OwningPercentage");
+						
 			if(!exists(item.FullName))then
 			(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
@@ -217,14 +218,14 @@ ValidatePostedData(Posted) := (
 			);
 			if(!exists(item.CityOfResidence))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".CityOfResidence");
-			);			
+			);
 			if(!exists(item.IsPoliticallyExposedPerson))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IsPoliticallyExposedPerson");
 			);
 			if(!exists(item.StatementOfOfficialDocumentIsNewUpload))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocumentIsNewUpload");
 			)else(
-				isNewUpload :=  item.StatementOfOfficialDocumentIsNewUpload;
+				isNewUpload :=  item.StatementOfOfficialDocumentIsNewUpload ??? false;
 			);
 			if(!exists(item.StatementOfOfficialDocument))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
@@ -239,9 +240,7 @@ ValidatePostedData(Posted) := (
 			if(!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument) and System.String.IsNullOrWhiteSpace(item.FullName))then (
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
 			);
-			if(!exists(item.OwningPercentage))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".OwningPercentage");
-			);
+			
 			if(!exists(item.Role))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".Role");
 			);
@@ -269,7 +268,7 @@ ValidatePostedData(Posted) := (
 			if(!exists(item.IdCardIsNewUpload))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCardIsNewUpload");
 			)else(
-				isNewUpload := item.IdCardIsNewUpload;
+				isNewUpload := item.IdCardIsNewUpload ??? false;
 			);
 			if(!exists(item.IdCard))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCard");
@@ -289,50 +288,27 @@ ValidatePostedData(Posted) := (
 		);
 	);
 	
+	Int(Posted.BusinessData.RetailersNumber) ??? errors.Add("BusinessData.RetailersNumber");
+	Int(Posted.BusinessData.ExpectedMonthlyTurnover) ??? errors.Add("BusinessData.ExpectedMonthlyTurnover");
+	Int(Posted.BusinessData.ExpectedYearlyTurnover) ??? errors.Add("BusinessData.ExpectedYearlyTurnover");
+	Int(Posted.BusinessData.ThreeMonthAccountTurnover) ??? errors.Add("BusinessData.ThreeMonthAccountTurnover");
+	Int(Posted.BusinessData.CardPaymentPercentage) ??? errors.Add("BusinessData.CardPaymentPercentage");
+	Int(Posted.BusinessData.AverageTransactionAmount) ??? errors.Add("BusinessData.AverageTransactionAmount");
+	Int(Posted.BusinessData.AverageDailyTurnover) ??? errors.Add("BusinessData.AverageDailyTurnover");
+	Int(Posted.BusinessData.CheapestProductAmount) ??? errors.Add("BusinessData.CheapestProductAmount");
+	Int(Posted.BusinessData.MostExpensiveProductAmount) ??? errors.Add("BusinessData.MostExpensiveProductAmount");
+	Int(Posted.BusinessData.PeriodFromPaymentToDeliveryInDays) ??? errors.Add("BusinessData.PeriodFromPaymentToDeliveryInDays");
+	Int(Posted.BusinessData.ComplaintsPerMonth) ??? errors.Add("BusinessData.ComplaintsPerMonth");
+	Int(Posted.BusinessData.ComplaintsPerYear) ??? errors.Add("BusinessData.ComplaintsPerYear");
+	
 	if(!exists(Posted.BusinessData.BusinessModel))then(
 		errors.Add("BusinessData.BusinessModel");
 	);
-	if(!exists(Posted.BusinessData.RetailersNumber))then(
-		errors.Add("BusinessData.RetailersNumber");
-	);
-	if(!exists(Posted.BusinessData.ExpectedMonthlyTurnover))then(
-		errors.Add("BusinessData.ExpectedMonthlyTurnover");
-	);
-	if(!exists(Posted.BusinessData.ExpectedYearlyTurnover))then(
-		errors.Add("BusinessData.ExpectedYearlyTurnover");
-	);
-	if(!exists(Posted.BusinessData.ThreeMonthAccountTurnover))then(
-		errors.Add("BusinessData.ThreeMonthAccountTurnover");
-	);
-	if(!exists(Posted.BusinessData.CardPaymentPercentage))then(
-		errors.Add("BusinessData.CardPaymentPercentage");
-	);
-	if(!exists(Posted.BusinessData.AverageTransactionAmount))then(
-		errors.Add("BusinessData.AverageTransactionAmount");
-	);
-	if(!exists(Posted.BusinessData.AverageDailyTurnover))then(
-		errors.Add("BusinessData.AverageDailyTurnover");
-	);
-	if(!exists(Posted.BusinessData.CheapestProductAmount))then(
-		errors.Add("BusinessData.CheapestProductAmount");
-	);
-	if(!exists(Posted.BusinessData.MostExpensiveProductAmount))then(
-		errors.Add("BusinessData.MostExpensiveProductAmount");
+	if(!exists(Posted.BusinessData.MethodOfDeliveringGoodsToCustomers))then(
+		errors.Add("BusinessData.MethodOfDeliveringGoodsToCustomers");
 	);
 	if(!exists(Posted.BusinessData.SellingGoodsWithDelayedDelivery))then(
 		errors.Add("BusinessData.SellingGoodsWithDelayedDelivery");
-	);
-	if(!exists(Posted.BusinessData.PeriodFromPaymentToDeliveryInDays))then(
-		errors.Add("BusinessData.PeriodFromPaymentToDeliveryInDays");
-	);
-	if(!exists(Posted.BusinessData.ComplaintsPerMonth))then(
-		errors.Add("BusinessData.ComplaintsPerMonth");
-	);
-	if(!exists(Posted.BusinessData.ComplaintsPerYear))then(
-		errors.Add("BusinessData.ComplaintsPerYear");
-	);
-	if(!exists(Posted.BusinessData.MethodOfDeliveringGoodsToCustomers))then(
-		errors.Add("BusinessData.MethodOfDeliveringGoodsToCustomers");
 	);
 	if(!exists(Posted.BusinessData.DescriptionOfTheGoodsToBeSoldOnline))then(
 		errors.Add("BusinessData.DescriptionOfTheGoodsToBeSoldOnline");
@@ -354,7 +330,7 @@ ValidatePostedData(Posted) := (
 	if(!exists(Posted.LegalDocuments.ContractWithEMIIsNewUpload))then(
 		errors.Add("LegalDocuments.ContractWithEMIIsNewUpload");
 	)else(
-		isNewUpload := Posted.LegalDocuments.ContractWithEMIIsNewUpload;
+		isNewUpload := Posted.LegalDocuments.ContractWithEMIIsNewUpload; 
 	);
 	if(!exists(Posted.LegalDocuments.ContractWithEMI))then(
 		errors.Add("LegalDocuments.ContractWithEMI");
@@ -621,7 +597,7 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 				
 				owner.StatementOfOfficialDocument:= fileName;
 			)else (
-				if (item.StatementOfOfficialDocument != "" and !System.IO.File.Exists(fileRootPath + "\\" + item.StatementOfOfficialDocument)) then
+				if (!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument) and !System.IO.File.Exists(fileRootPath + "\\" + item.StatementOfOfficialDocument)) then
 				(
 					Error("Owner[" + Str(itemNo) + "] file " + item.StatementOfOfficialDocument + " does not exist");
 				);
@@ -634,7 +610,7 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 				
 				owner.IdCard:= fileName;
 			)else(
-				if (item.IdCard != "" and !System.IO.File.Exists(fileRootPath + "\\" + item.IdCard)) then
+				if (!System.String.IsNullOrWhiteSpace(item.IdCard) and !System.IO.File.Exists(fileRootPath + "\\" + item.IdCard)) then
 				(
 					Error("Owner[" + Str(itemNo) + "] file " + item.IdCard + " does not exist");
 				);

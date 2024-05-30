@@ -34,7 +34,6 @@ namespace POWRS.PaymentLink.Onboarding
         private int complaintsPerMonth;
         private int complaintsPerYear;
         private bool iPSOnly;
-
         private string methodOfDeliveringGoodsToCustomers;
         private string descriptionOfTheGoodsToBeSoldOnline;
         private string eComerceContactFullName;
