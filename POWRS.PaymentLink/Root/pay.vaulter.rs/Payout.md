@@ -4,6 +4,8 @@ Date: 2023-08-04
 Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Expires: 0
 CSS: css/Payout.cssx
 Icon: favicon.ico
 viewport : Width=device-width, initial-scale=1

@@ -10,6 +10,7 @@ viewport : Width=device-width, initial-scale=1
 Parameter: ID
 JavaScript: js/Events.js
 JavaScript: js/QRIPS.js
+JavaScript: js/XmlHttp.js
 
 <main class="main page-padding ips">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,7 +44,7 @@ JavaScript: js/QRIPS.js
                           <div id="msg-time-expire" class="msg"> Vreme je isteklo</div>
                           <div id="msg-generate-qrcode" class="msg">Ponovo generišite QR CODE </div>
                           <div class="pay-div" display="none"><button id="btnGenerateQR" class="pay-btn btn-black btn-hide" onclick="getQRCode()">GENERIŠI QR</button> </div>
-                          <div class="cancel-div"><button  id="btnCancelQR"  type="button" class="pay-btn btn-grey btn-hide" id="cancel_btn">ODUSTANI</button></div>
+                          <div class="cancel-div"><button  id="btnCancelQR"  onclick="cancelTransaction()"  type="button" class="pay-btn btn-grey btn-hide" id="cancel_btn">ODUSTANI</button></div>
                       </div> 
                   </div>
                 </div>           
