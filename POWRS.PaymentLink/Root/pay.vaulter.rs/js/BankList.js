@@ -1,17 +1,23 @@
 
 function OpenDeepLink(bankId)
 {
-  InitiateIPSPayment(bankId, GetDeepLinkSuccess);
+  var type = parent.document.getElementById('type').value;
+    let isCompany = false;
+     console.log("type: " + type); 
+    if (type.toLowerCase().trim() == "le")
+      isCompany = true;
+   InitiateIPSPayment(bankId, isCompany, GetDeepLinkSuccess);
 }
 
-function InitiateIPSPayment(bankId, onSuccess) {
-   console.log(bankId);
+function InitiateIPSPayment(bankId,  isCompany, onSuccess) {
+  
     SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
         {
             "isFromMobile": true,
             "tabId": TabID,
             "ipsOnly": true,
-            "bankId": bankId
+            "bankId": bankId,
+            "isCompany": isCompany
         },
         (response) => {
             onSuccess(response);

@@ -57,7 +57,8 @@ function InitiatePaymentForm(ipsOnly, onSuccess) {
         {
             "isFromMobile": isMobileDevice,
             "tabId": TabID,
-            "ipsOnly": true
+            "ipsOnly": true,
+            "isCompany": false
         },
         (response) => {
             onSuccess(response);

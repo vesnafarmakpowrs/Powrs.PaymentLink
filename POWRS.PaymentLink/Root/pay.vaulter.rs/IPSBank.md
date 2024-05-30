@@ -54,6 +54,7 @@ JavaScript: js/XmlHttp.js
             ]]</ul>            
         </div> 
   <input type="hidden" value="((JWT ))" id="jwt"/>
+  <input type="hidden" value="((TYPE ))" id="type"/>
   <input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>[[;
 }}
 </main>
