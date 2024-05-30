@@ -10,7 +10,7 @@ h1 {
     font-style: normal;
     font-weight: bold;
     text-decoration: none;
-    font-size: 15pt;
+    font-size: 21pt;
 }
 
 p {
@@ -19,14 +19,14 @@ p {
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
-    font-size: 13pt;
+    font-size: 19.5pt;
     margin: 0pt;
-    margin-top: 12pt;
+    margin-top: 18pt;
 }
 
 li {
     font-family: Calibri, sans-serif;
-    font-size: 13pt;
+    font-size: 19.5pt;
 }
 
 table,
@@ -74,14 +74,14 @@ tbody {
 }
 
 .pageContainer {
-    width: 50%;
+    width: 840pt;
     margin-left: auto;
     margin-right: auto;
 }
 
 @media (max-width: 1400px) {
     .pageContainer {
-        width: 80%;
+        width: 840pt;
         margin-left: auto;
         margin-right: auto;
     }
@@ -94,7 +94,7 @@ tbody {
     text-align: center;
     margin-top: 35pt;
     font-family: Calibri, sans-serif;
-    font-size: 13pt;
+    font-size: 19.5pt;
 }
 
 .tbl1TD_UnderLine {
