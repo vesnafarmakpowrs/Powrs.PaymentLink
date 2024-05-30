@@ -133,6 +133,10 @@ function ShowBtn(show, btn)
    }
 }
 
+function PaymentCompleted(Result) {
+    parent.location.reload();
+}
+
 function cancelTransaction()
 {
      window.open("Redirect/Cancel.md", '_self');
