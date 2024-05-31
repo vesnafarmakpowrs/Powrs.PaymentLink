@@ -24,10 +24,12 @@ try
         errorMessages.Add("Mode");
     );
 
-    if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryWeek and 
-        (!System.Enum.TryParse(System.DayOfWeek,PWorkDay true, day) or day == System.DayOfWeek.Monday or  day == System.DayOfWeek.Sunday)) then 
+    if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryWeek) then 
     (
-            errorMessages.Add("WorkDay");
+        if(!System.Enum.TryParse(System.DayOfWeek,PWorkDay, true, day) or day == System.DayOfWeek.Monday or day == System.DayOfWeek.Sunday) then 
+        (
+              errorMessages.Add("WorkDay");
+        );
     )
     else if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryMonth and 
         (PDayInMonth < 1 || PDayInMonth > 31)) then 
