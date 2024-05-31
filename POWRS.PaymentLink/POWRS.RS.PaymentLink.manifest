@@ -85,10 +85,6 @@
 							<Content fileName="StatementOfOfficialDocument.html"/>
 							<Content fileName="StatementOfOfficialDocument_Css.css"/>
 							<Content fileName="StatementOfOfficialDocumentLine.png"/>
-							<Content fileName="PaySpotAttachment1.html"/>
-							<Content fileName="PaySpotAttachment1_Css.css"/>
-							<Content fileName="PayspotAttachment2.html"/>
-							<Content fileName="PaySpotAttachment2_Css.html"/>
 							<Content fileName="PayspotAttachment2_Page01.png"/>
 							<Content fileName="PayspotAttachment2_Page02.png"/>
 							<Content fileName="PayspotAttachment2_Page03.png"/>
@@ -111,13 +107,12 @@
 							<Content fileName="PayspotAttachment2_Page20.png"/>
 							<Content fileName="PayspotAttachment2_Page21.png"/>
 							<Content fileName="PayspotAttachment2_Page22.png"/>
+							<Content fileName="PaySpotAttachment3.png"/>
 						</Folder>
 						<Folder name="Powrs">
 							<Content fileName="Powrs_Logo.png"/>
 							<Content fileName="ContractPowrs.html"/>
 							<Content fileName="ContractPowrs_Css.css"/>
-							<Content fileName="PowrsAttachment1.html"/>
-							<Content fileName="PowrsAttachment1_Css.html"/>
 							<Content fileName="PowrsAttachment1_Page01.png"/>
 							<Content fileName="PowrsAttachment1_Page02.png"/>
 							<Content fileName="PowrsAttachment1_Page03.png"/>
@@ -127,8 +122,6 @@
 							<Content fileName="PowrsAttachment1_Page07.png"/>
 							<Content fileName="PowrsAttachment1_Page08.png"/>
 							<Content fileName="PowrsAttachment1_Page09.png"/>
-							<Content fileName="PowrsAttachment2.html"/>
-							<Content fileName="PowrsAttachment2_Page01.css"/>
 						</Folder>
 					</Folder>
 				</Folder>

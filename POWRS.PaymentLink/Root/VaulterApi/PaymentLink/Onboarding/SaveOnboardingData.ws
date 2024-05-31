@@ -41,7 +41,11 @@ ValidatePostedData(Posted) := (
 		System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.OrganizationNumber))then
 	(
 		errors.Add("GeneralCompanyInformation.OrganizationNumber");
-	);	
+	)
+	else if(Posted.GeneralCompanyInformation.OrganizationNumber not like "^\\d{8}$") then
+	(
+		errors.Add("GeneralCompanyInformation.OrganizationNumber");
+	);
 	if(!exists(Posted.GeneralCompanyInformation.CompanyAddress))then(
 		errors.Add("GeneralCompanyInformation.CompanyAddress");
 	);	
@@ -165,6 +169,18 @@ ValidatePostedData(Posted) := (
 			);
 			if(!exists(item.PersonalNumber))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".PersonalNumber");
+			)else
+			(
+				if(!System.String.IsNullOrWhiteSpace(item.PersonalNumber))then
+				(
+					NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize("RS", item.PersonalNumber);
+					isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid("RS", NormalizedPersonalNumber);
+
+					if(item.PersonalNumber not like "^\\d{13}$" or isPersonalNumberValid != true) then 
+					(
+						errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".PersonalNumber");
+					);
+				);
 			);
 			
 			itemIndex++;
@@ -204,6 +220,19 @@ ValidatePostedData(Posted) := (
 			);
 			if(!exists(item.PersonalNumber))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".PersonalNumber");
+			)
+			else
+			(
+				if(!System.String.IsNullOrWhiteSpace(item.PersonalNumber))then
+				(
+					NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize("RS", item.PersonalNumber);
+					isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid("RS", NormalizedPersonalNumber);
+
+					if(item.PersonalNumber not like "^\\d{13}$" or isPersonalNumberValid != true) then 
+					(
+						errors.Add("CompanyStructure.Owners;" + itemIndex + ".PersonalNumber");
+					);
+				);
 			);
 			if(!exists(item.DateOfBirth) or 
 				(!System.String.IsNullOrWhiteSpace(item.DateOfBirth) and item.DateOfBirth not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"))then

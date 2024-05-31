@@ -10,7 +10,7 @@ h1 {
     font-style: normal;
     font-weight: bold;
     text-decoration: none;
-    font-size: 15pt;
+    font-size: 22pt;
 }
 p {
     color: black;
@@ -18,10 +18,10 @@ p {
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
-    font-size: 13pt;
+    font-size: 20pt;
     margin: 0pt;
-    margin-top: 12pt;
-    /* margin-bottom: 12pt; */
+    margin-top: 18pt;
+    /* margin-bottom: 18pt; */
 }
 
 .i {
@@ -33,7 +33,7 @@ p {
 }
 
 div {
-    font-size: 13pt;
+    font-size: 20pt;
 }
 
 .title {
@@ -56,7 +56,7 @@ tbody {
     padding: 20px;
     text-align: left;
     overflow: auto;
-    padding-top: 15pt;
+    padding-top: 22pt;
 }
 
 .headerLogo {
@@ -71,13 +71,13 @@ tbody {
 }
 
 .pageContainer {
-    width: 50%;
+    width: 840pt;
     margin-inline: auto;
 }
 
 @media (max-width: 1400px) {
     .pageContainer {
-        width: 95%;
+        width: 840pt;
     }
 }
 
@@ -180,14 +180,13 @@ tbody {
     text-align: center;
     margin-top: 50pt;
     font-family: Calibri, sans-serif;
-    font-size: 13pt;
+    font-size: 20pt;
 }
 
 .tbl1TD_UnderLine {
     border-bottom: 1pt solid black;
 }
 
-/* ***************** UGOVOR ************************ */
 .pageContainer {
     width: 50%;
     margin-left: auto;
@@ -200,4 +199,257 @@ tbody {
         margin-left: auto;
         margin-right: auto;
     }
+}
+
+
+
+
+/* ********************************* Attachment 1 **************************************** */
+/* ********************************* Attachment 1 **************************************** */
+/* ********************************* Attachment 1 **************************************** */
+
+.pageContainerAttachment1 h1 {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 22pt;
+}
+
+.pageContainerAttachment1 p {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 19.5pt;
+    margin: 0pt;
+}
+
+.s3 {
+    color: #fff;
+    font-family: Calibri, sans-serif;
+    font-style: normal !important;
+    font-weight: bold !important;
+    text-decoration: none;
+    font-size: 16pt;
+}
+
+.s4 {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 16pt;
+}
+
+.s5 {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal !important;
+    font-weight: normal !important;
+    text-decoration: none;
+    font-size: 16pt !important;
+}
+
+.s6 {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: italic;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 16pt;
+}
+
+.s7 {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: italic !important;
+    font-weight: bold !important;
+    text-decoration: none;
+    font-size: 16pt;
+}
+
+.s8 {
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 16pt;
+}
+
+.s9 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 16pt;
+}
+
+.s10 {
+    color: black;
+    font-family: "Microsoft Sans Serif", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 16pt;
+}
+
+#v1 {
+    border-top-style: solid;
+    border-top-width: 1pt;
+    border-left-style: solid;
+    border-left-width: 1pt;
+    border-bottom-style: solid;
+    border-bottom-width: 1pt;
+    border-right-style: solid;
+    border-right-width: 1pt;
+}
+
+#v2 {
+    border-top-style: solid;
+    border-top-width: 1pt;
+    border-top-color: #c8c8c8;
+    border-left-style: solid;
+    border-left-width: 1pt;
+    border-left-color: #c8c8c8;
+    border-bottom-style: solid;
+    border-bottom-width: 1pt;
+    border-bottom-color: #c8c8c8;
+    border-right-style: solid;
+    border-right-width: 1pt;
+    border-right-color: #c8c8c8;
+}
+
+.v3 {
+    padding-left: 5pt;
+    text-indent: 0pt;
+    line-height: 17pt;
+    text-align: left;
+}
+
+.v4 {
+    padding-left: 5pt;
+    text-indent: 0pt;
+    line-height: 17pt;
+    text-align: left;
+}
+
+.pageContainerAttachment1 table,
+.pageContainerAttachment1 tbody {
+    vertical-align: top;
+    overflow: visible;
+}
+
+.pagebreak {
+    clear: both;
+    page-break-after: always;
+}
+
+.pageHeaderAttachment1 {
+    /* margin: 50px; */
+    padding: 20px;
+    text-align: center;
+    overflow: auto;
+    padding-top: 25pt;
+}
+
+.headerLogoAttachment1 {
+    display: inline-block;
+    padding-inline: 15px;
+    float: left;
+}
+.headerInfoAttachment1 {
+    display: inline-block;
+    padding-inline: 15px;
+    float: right;
+}
+
+.pageContainerAttachment1 {
+    width: 940pt;
+    margin-left: 50pt;
+}
+
+.divContainer {
+    overflow: auto;
+}
+
+.companyDetailsFloatLeft {
+    display: inline-block;
+    float: left;
+}
+
+.companyDetailsFloatRight {
+    display: inline-block;
+    float: right;
+}
+
+.tbl1TR {
+    height: 19pt;
+}
+
+.tbl1TD {
+    width: 120pt;
+}
+
+.tbl1TD_Underline {
+    width: 400pt;
+    border-bottom-style: solid;
+    border-bottom-width: 1pt;
+    border-bottom-color: #808080;
+}
+
+.tbl1TD_paragraphHeaderAttachment1 {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 16pt;
+    padding-top: 3pt;
+    padding-right: 4pt;
+    text-indent: 0pt;
+    text-align: right;
+}
+
+.tbl2 {
+    border-collapse: collapse;
+    margin-inline: auto;
+    margin-top: 10pt;
+    width: 100%;
+}
+
+.tbl2 td {
+    border: 1pt solid #c8c8c8;
+}
+
+.tbl3 {
+    border-collapse: collapse;
+    margin-inline: auto;
+    margin-top: 25pt;
+    width: 100%;
+}
+
+.tbl3 td {
+    border: 1pt solid black;
+}
+
+.tbl4 {
+    border-collapse: collapse;
+    margin-inline: auto;
+    margin-top: 25pt;
+    width: 100%;
+    text-align: center;
+}
+
+.tbl4TD_wide {
+    width: 40% !important;
+}
+
+.tbl4TD_narrowly {
+    width: 20% !important;
 }

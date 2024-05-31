@@ -77,14 +77,6 @@ DownloadTemplateContractWithVaulter(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 	);
 	
-	htmlAttachment1Path := fileRootPath + "\\PowrsAttachment1.html"; 
-	htmlAttachment1Content := System.IO.File.ReadAllText(htmlAttachment1Path);
-	htmlContent := htmlContent.Replace("{{Attachment1}}", htmlAttachment1Content);
-	
-	htmlAttachment2Path := fileRootPath + "\\PowrsAttachment2.html"; 
-	htmlAttachment2Content := System.IO.File.ReadAllText(htmlAttachment2Path);
-	htmlContent := htmlContent.Replace("{{Attachment2}}", htmlAttachment2Content);
-	
 	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
 		
 	Return (newPDFFilePath);
@@ -472,6 +464,7 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{CompanyTaxNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.TaxNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 	);
+	Log.Informational("Finish prepering HTML content. Start creating PDF file...", logObjectID, logActor, logEventID, null);
 	
 	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
 	Return (newPDFFilePath);
@@ -722,6 +715,7 @@ try
 		returnFilePath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PromissoryNoteIntruction.pdf";
 		fileName := "PromissoryNoteIntruction.pdf";
 	);
+	Log.Informational("Finish creating pdf file. start coverting to bytes...", logObjectID, logActor, logEventID, null);
 	
     bytes := System.IO.File.ReadAllBytes(returnFilePath);
 	Log.Informational("Succeffully returned file:" + PFileType, logObjectID, logActor, logEventID, null);
