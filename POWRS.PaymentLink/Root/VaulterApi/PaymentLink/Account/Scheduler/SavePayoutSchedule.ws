@@ -25,7 +25,7 @@ try
     );
 
     if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryWeek and 
-        !System.Enum.TryParse(System.DayOfWeek,PWorkDay true, day)) then 
+        (!System.Enum.TryParse(System.DayOfWeek,PWorkDay true, day) or day == System.DayOfWeek.Monday or  day == System.DayOfWeek.Sunday)) then 
     (
             errorMessages.Add("WorkDay");
     )
