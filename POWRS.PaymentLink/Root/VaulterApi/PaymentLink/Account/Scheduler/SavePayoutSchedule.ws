@@ -24,19 +24,15 @@ try
         errorMessages.Add("Mode");
     );
 
-    if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryWeek) then 
-    (       
-        if(!System.Enum.TryParse(System.DayOfWeek,PWorkDay true, day)) then 
-        (
-            errorMessages.Add("WorkDay");
-        );
-    )
-    else if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryMonth) then 
+    if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryWeek and 
+        !System.Enum.TryParse(System.DayOfWeek,PWorkDay true, day)) then 
     (
-        if(PDayInMonth < 1 || PDayInMonth > 31) then 
-        (
+            errorMessages.Add("WorkDay");
+    )
+    else if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryMonth and 
+        (PDayInMonth < 1 || PDayInMonth > 31)) then 
+    (
             errorMessages.Add("DayInMonth");
-        );
     );
 
     if(errorMessages.Length > 0) then 
@@ -51,6 +47,7 @@ try
     payoutSchedule.Mode:= parsedMode;
     payoutSchedule.WorkingDay:= day;
     payoutSchedule.DayInMonth:= PDayInMonth;
+    payoutSchedule.LastUpdated:= NowUtc;
     
     if(System.String.IsNullOrWhiteSpace(payoutSchedule.ObjectId)) then 
     (

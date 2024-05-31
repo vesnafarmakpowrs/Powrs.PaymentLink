@@ -12,7 +12,8 @@ try
  		    "WebAddress": contactInfo.WebAddress,
  		    "Email": contactInfo.Email,
  		    "PhoneNumber": contactInfo.PhoneNumber,
- 		    "TermsAndConditions": contactInfo.TermsAndConditions
+ 		    "TermsAndConditions": contactInfo.TermsAndConditions,
+            "CanModify": ValidatedUser.role == POWRS.PaymentLink.Models.AccountRole.ClientAdmin.ToString()
         }
     );
 )	

@@ -14,7 +14,8 @@ try
     {
        "WorkingDay": payoutSchedule.WorkingDay,
        "Mode": payoutSchedule.Mode,
-       "DayInMonth": payoutSchedule.DayInMonth
+       "DayInMonth": payoutSchedule.DayInMonth,
+       "CanModify": SessionUser.role == POWRS.PaymentLink.Models.AccountRole.ClientAdmin.ToString()
     }
 )
 catch

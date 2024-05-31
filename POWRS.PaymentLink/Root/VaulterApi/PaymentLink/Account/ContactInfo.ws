@@ -1,6 +1,11 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
 ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
+if(ValidatedUser.role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin.ToString()) then 
+(
+    Forbidden("");
+);
+
 ({
     "PhoneNumber": Required(Str(POrgPhoneNumber)),
     "WebAddress": Required(Str(POrgWebAddress)),
