@@ -10,14 +10,19 @@ function OpenDeepLink(bankId)
 }
 
 function InitiateIPSPayment(bankId,  isCompany, onSuccess) {
-  
+
+    var returnURL = (window.location != window.parent.location)
+        ? document.referrer
+        : document.location.href;
+
     SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
         {
             "isFromMobile": true,
             "tabId": TabID,
             "ipsOnly": true,
             "bankId": bankId,
-            "isCompany": isCompany
+            "isCompany": isCompany,
+            "returnURL": returnURL
         },
         (response) => {
             onSuccess(response);

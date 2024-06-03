@@ -4,8 +4,9 @@ SessionToken:=  Global.ValidatePayoutJWT();
     "isFromMobile":Required(Bool(PIsFromMobile)),
 	"tabId": Required(Str(PTabId)),
 	"ipsOnly": Required(Bool(PIpsOnly)),
-	"bankId": Optional(PBankId),
-        "isCompany" : Optional(PIsCompany)
+	"bankId": Required(PBankId),
+    "isCompany" : Required(PIsCompany),
+	"returnURL" : Required(PReturnURL)
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
@@ -58,7 +59,7 @@ try
 	if (PIpsOnly) then 
 	(
 	   if (exists(PBankId)) then (
-	     GeneratedIPSData:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSData(contractParameters, identityProperties, PBankId, 150, PIsCompany);
+	     GeneratedIPSData:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSData(contractParameters, identityProperties, PBankId, 150, PIsCompany, PReturnURL);
 		 responseObject.Response:= GeneratedIPSData.ToDictionary();
 	   );		
 	)

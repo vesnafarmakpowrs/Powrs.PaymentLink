@@ -50,7 +50,8 @@ function InitiateIPSPayment(onSuccess) {
             "isFromMobile": false,
             "tabId": TabID,
             "ipsOnly": true,
-            "bankId": 0           
+            "bankId": 0,
+            "returnURL": null
         },
         (response) => {
             onSuccess(response);
