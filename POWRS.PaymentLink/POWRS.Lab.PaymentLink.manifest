@@ -47,6 +47,10 @@
 					<Content fileName="VerifyEmail.ws"/>
 					<Content fileName="CreatePasswordResetRequest.ws"/>
 					<Content fileName="ResetPassword.ws"/>
+					<Folder name="Scheduler">
+						<Content fileName="GetPayoutSchedule.ws"/>
+						<Content fileName="SavePayoutSchedule.ws"/>
+					</Folder>
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>

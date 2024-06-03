@@ -872,6 +872,68 @@ Retrieves contact information for organizaion.
 | `PhoneNumber `  | Phone number to contact company |
 | `TermsAndConditions `  | Terms and conditions url for company |
 
+### SavePayoutSchedule
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/Scheduler/SavePayoutSchedule.ws")}}`  
+Method: `POST`
+
+Call this resource insert or update payout scheduler informations.
+
+**Request**
+
+````
+{
+    "WorkingDay": Required(Str(WorkingDay),
+    "Mode": Required(Str(Mode),
+    "DayInMonth": Required(Int(DayInMonth)
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `WorkingDay`       | String representation of working day (weekends not supported) (Monday, Tuesday, Wednesday, Thursday, Friday). Mandatory if mode 'EveryWeek' |
+| `Mode`        | Mode for scheduler. EveryDay, EveryWeek, EveryMonth. Default (EveryDay) |
+| `DayInMonth`  | Integer representation for day of month. Min 1, max 31. |
+
+**Response**
+
+
+````
+{
+    "Message": String
+},
+BadRequest,
+Forbidden
+````
+
+### GetPayoutSchedule
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/Scheduler/GetPayoutSchedule.ws")}}`  
+Method: `POST`
+
+Call this resource to retrieve update payout scheduler informations.
+
+**Request**
+
+````
+{
+}
+````
+
+**Response**
+
+
+````
+{
+    "WorkingDay": "Monday|Tuesday|Wednsday|Thursday|Friday",
+    "Mode": EveryDay|EveryWeek|EveryMonth",
+    "DayInMonth": Int (1-31) Can be 0 if mode is EveryDay|EveryWeek,
+    "CanModify": Boolean (Can user modify for his company. Must be admin.)
+}
+````
+
+
+
 ### Generate Transactions Report
 ````
     "from":Required(String(PDateFrom)),

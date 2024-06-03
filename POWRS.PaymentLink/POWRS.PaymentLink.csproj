@@ -111,6 +111,8 @@
 		<None Remove="Root\VaulterApi\PaymentLink\Account\CreatePasswordResetRequest.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Account\GetUsers.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Account\ResetPassword.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Account\Scheduler\GetPayoutSchedule.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Account\Scheduler\SavePayoutSchedule.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CreateItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetAccountInfo.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Mail\SendPaylinkViaEmail.ws" />
@@ -159,6 +161,12 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Account\ResetPassword.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\Account\Scheduler\GetPayoutSchedule.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\Account\Scheduler\SavePayoutSchedule.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
 		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateItem.ws">
