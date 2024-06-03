@@ -132,9 +132,6 @@
 					<OnEvent actionRef="ChangeBuyerLanguage">
 						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
-					<OnEvent actionRef="PayoutDateUpdated">
-						<OnExternalXmlNote localName="PayoutDateUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
-					</OnEvent>
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
@@ -147,7 +144,10 @@
 					<OnEnter actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= true;" />
 					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>
 					<OnEvent actionRef="CancelPayment" newState="PaymentCanceled" failureState="PaymentCompleted">
-						<OnXmlNote  localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+					</OnEvent>
+					<OnEvent actionRef="PayoutDateUpdated">
+						<OnExternalXmlNote localName="PayoutDateUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent actionRef="ReleaseFunds" failureState="PaymentCompleted" newState="Done">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
