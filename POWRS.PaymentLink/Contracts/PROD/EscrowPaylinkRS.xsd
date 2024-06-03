@@ -10,7 +10,7 @@
 	</xs:element>
 	<xs:element name="PayoutDateUpdated">
 		<xs:complexType>
-			<xs:attribute type="xs:dateTime" use="required" name="expectedPayoutDate" />
+			<xs:attribute type="xs:string" use="required" name="expectedPayoutDate" />
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="LanguageChanged">

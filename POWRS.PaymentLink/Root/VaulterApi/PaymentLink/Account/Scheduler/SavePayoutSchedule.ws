@@ -37,7 +37,7 @@ try
             errorMessages.Add("DayInMonth");
     );
 
-    if(errorMessages.Length > 0) then 
+    if(errorMessages.Count > 0) then 
     (
         Error("");
     );

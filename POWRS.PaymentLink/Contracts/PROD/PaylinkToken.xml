@@ -164,7 +164,7 @@
 						newPayoutDate:= SelectXmlStr(Note,'/default:PayoutDateUpdated/@expectedPayoutDate');
 					</Script>
 
-					<PersistVariable name="ExpectedPayoutDate" value="{newPayoutDate}" />
+					<PersistVariable name="ExpectedPayoutDate" value="{DateTimeUtc(newPayoutDate)}" />
 				</Action>
 				<Action id="ChangeBuyerLanguage">
 					<Script>
