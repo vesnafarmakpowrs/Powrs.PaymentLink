@@ -202,6 +202,13 @@ font-style: normal;
   border:0px;
 }
 
+.pay-div-header
+{
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
 
 .cancel-div
 {

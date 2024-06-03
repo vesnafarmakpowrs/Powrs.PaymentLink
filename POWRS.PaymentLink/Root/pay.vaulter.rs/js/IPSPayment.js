@@ -28,7 +28,7 @@ function getbanksIE(){
 
 function getbanksLE(){
   
- var url = 'IPSBank.md?TYPE=IE';
+ var url = 'IPSBank.md?TYPE=LE';
  openBankListURL(url);
 }
 
@@ -45,7 +45,7 @@ function openBankListURL(url) {
 }
 
 function GenerateIPSPayment(bankID) {
-    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
+       InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
 }
 
 function InitiatePaymentForm(ipsOnly, onSuccess) {
@@ -71,6 +71,12 @@ function InitiatePaymentForm(ipsOnly, onSuccess) {
             TransactionFailed(null);
         })
 }
+
+
+  function infoPopup() { 
+            const overlay = document.getElementById('popupOverlay'); 
+            overlay.classList.toggle('show'); 
+        } 
 
 function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     let jwt = document.getElementById("jwt");

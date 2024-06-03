@@ -49,7 +49,7 @@ JavaScript: js/XmlHttp.js
                        bankName := TrimEnd(bankName);
                        bankName := TrimStart(bankName);
                        imgSrc := "..\\resources\\personal_round\\"+ imageName + ".jpg";
-                       ]]<li class="dropdown-item" onClick="OpenDeepLink( ((bank.ID )) )"> <img src="(( imgSrc))" width="40px" height="100%">((bankName ))</li> [[;
+                       ]]<li class="dropdown-item" onClick="OpenDeepLink( ((bank.ID )) )"> <img src="(( imgSrc))" class="bank-img" />((bankName ))</li> [[;
                    );     
             ]]</ul>            
         </div> 

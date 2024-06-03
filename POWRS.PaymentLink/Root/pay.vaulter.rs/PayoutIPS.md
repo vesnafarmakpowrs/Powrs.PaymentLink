@@ -10,7 +10,7 @@ viewport : Width=device-width, initial-scale=1
 Parameter: ID
 Parameter: lng
 JavaScript: js/Events.js
-JavaScript: js/PaymentLink.js
+JavaScript: js/PaymentLinkIPS.js
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
