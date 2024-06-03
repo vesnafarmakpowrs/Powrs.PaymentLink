@@ -172,7 +172,7 @@ try
            Config := ConfigClass.Instance;
            POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, Parameters["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
            NotificationList := GetSetting("POWRS.PaymentLink.NotificationList","");
-           POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, NotificationList, "Vaulter", FormatedHtml, Base64Attachment, FileName);
+           POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, NotificationList, "Plaćanje uspešno završeno", FormatedHtml, Base64Attachment, FileName);
         
         );
 
