@@ -13,4 +13,9 @@
 			<xs:attribute name="language" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="PayoutDateUpdated">
+		<xs:complexType>
+			<xs:attribute type="xs:dateTime" use="required" name="expectedPayoutDate" />
+		</xs:complexType>
+	</xs:element>
 </xs:schema>

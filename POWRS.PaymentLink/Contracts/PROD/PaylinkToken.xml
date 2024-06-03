@@ -129,6 +129,9 @@
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+					<OnEvent actionRef="PayoutDateUpdated">
+						<OnExternalXmlNote localName="PayoutDateUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
 					<OnEvent actionRef="ChangeBuyerLanguage">
 						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -156,6 +159,13 @@
 				<State id="Done">
 					<OnEnter actionRef="MarkAsDone"/>
 				</State>
+				<Action id="PayoutDateUpdated">
+					<Script>
+						newPayoutDate:= SelectXmlStr(Note,'/default:PayoutDateUpdated/@expectedPayoutDate');
+					</Script>
+
+					<PersistVariable name="ExpectedPayoutDate" value="{newPayoutDate}" />
+				</Action>
 				<Action id="ChangeBuyerLanguage">
 					<Script>
 						newLanguage:= SelectXmlStr(Note,'/default:LanguageChanged/@language');
