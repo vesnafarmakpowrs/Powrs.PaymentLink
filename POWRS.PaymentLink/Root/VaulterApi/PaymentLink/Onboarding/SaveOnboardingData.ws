@@ -60,8 +60,12 @@ ValidatePostedData(Posted) := (
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.TaxNumber))then(
 		errors.Add("GeneralCompanyInformation.TaxNumber");
+	)else if (!System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.TaxNumber) and Posted.GeneralCompanyInformation.TaxNumber not like "^\\d{9}$")then(
+		errors.Add("GeneralCompanyInformation.TaxNumber");
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.ActivityNumber))then(
+		errors.Add("GeneralCompanyInformation.ActivityNumber");
+	)else if (!System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.ActivityNumber) and Posted.GeneralCompanyInformation.ActivityNumber not like "^\\d{4}$")then(
 		errors.Add("GeneralCompanyInformation.ActivityNumber");
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.OtherCompanyActivities))then(
@@ -737,9 +741,9 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 		SaveFile(fileRootPath, fileName, LegalDocuments.ContractWithEMI);
 		documents.ContractWithEMI:=  fileName;
 	)else (
-		if (LegalDocuments.ContractWithEMI != "" and System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.ContractWithEMI)) then
+		if (LegalDocuments.ContractWithEMI != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.ContractWithEMI)) then
 		(
-			Error("Owner[" + Str(itemNo) + "] file " + LegalDocuments.ContractWithEMI + " does not exist");
+			Error("ContractWithEMI file " + LegalDocuments.ContractWithEMI + " does not exist");
 		);
 		documents.ContractWithEMI:= LegalDocuments.ContractWithEMI;
 	);
@@ -752,7 +756,7 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 	)else (
 		if (LegalDocuments.ContractWithVaulter != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.ContractWithVaulter)) then
 		(
-			Error("Owner[" + Str(itemNo) + "] file " + LegalDocuments.ContractWithVaulter + " does not exist");
+			Error("ContractWithVaulter file " + LegalDocuments.ContractWithVaulter + " does not exist");
 		);
 		documents.ContractWithVaulter:= LegalDocuments.ContractWithVaulter;
 	);
@@ -765,7 +769,7 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 	)else (
 		if (LegalDocuments.PromissoryNote != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.PromissoryNote)) then
 		(
-			Error("Owner[" + Str(itemNo) + "] file " + LegalDocuments.PromissoryNote + " does not exist");
+			Error("PromissoryNote file " + LegalDocuments.PromissoryNote + " does not exist");
 		);
 		documents.PromissoryNote:= LegalDocuments.PromissoryNote;
 	);
@@ -778,7 +782,7 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 	)else (
 		if (LegalDocuments.BusinessCooperationRequest != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.BusinessCooperationRequest)) then
 		(
-			Error("Owner[" + Str(itemNo) + "] file " + LegalDocuments.BusinessCooperationRequest + " does not exist");
+			Error("BusinessCooperationRequest file " + LegalDocuments.BusinessCooperationRequest + " does not exist");
 		);
 		documents.BusinessCooperationRequest:= LegalDocuments.BusinessCooperationRequest;
 	);

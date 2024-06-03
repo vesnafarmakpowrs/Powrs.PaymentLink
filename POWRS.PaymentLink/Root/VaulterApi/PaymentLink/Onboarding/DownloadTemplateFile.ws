@@ -597,11 +597,11 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].CityOfResidence))then(
 				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".CityOfResidence");
 			);
-			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].DateOfIssueStr))then(
-				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".DateOfIssueStr");
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].IssueDateStr))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".IssueDateStr");
 			);
-			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].PlaceOfIssue))then(
-				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".PlaceOfIssue");
+			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].DocumentIssuancePlace))then(
+				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".DocumentIssuancePlace");
 			);
 			if(System.String.IsNullOrWhiteSpace(companyStructure.Owners[PPersonIndex].IssuerName))then(
 				errors.Add("CompanyStructure.Owners;" + PPersonIndex +".IssuerName");
@@ -619,7 +619,7 @@ DownloadTemplateStatementOfOfficialDocument(PIsEmptyFile, PPersonPositionInCompa
 			htmlContent := htmlContent.Replace("{{AddressOfResidence}}", companyStructure.Owners[PPersonIndex].AddressOfResidence);
 			htmlContent := htmlContent.Replace("{{CityOdResidence}}", companyStructure.Owners[PPersonIndex].CityOfResidence);
 			htmlContent := htmlContent.Replace("{{DocumentTypeAndNumber}}", (companyStructure.Owners[PPersonIndex].DocumentType == POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard ? "Lična karta" : "Pasoš") + ", " + companyStructure.Owners[PPersonIndex].DocumentNumber);
-			htmlContent := htmlContent.Replace("{{DocumentIssueDate}}", companyStructure.Owners[PPersonIndex].DateOfIssueStr + ", " + companyStructure.Owners[PPersonIndex].PlaceOfIssue);
+			htmlContent := htmlContent.Replace("{{DocumentIssueDate}}", companyStructure.Owners[PPersonIndex].IssueDateStr + ", " + companyStructure.Owners[PPersonIndex].DocumentIssuancePlace);
 			htmlContent := htmlContent.Replace("{{DocumentIssuerName}}", companyStructure.Owners[PPersonIndex].IssuerName);
 			
 			if (companyStructure.Owners[PPersonIndex].IsPoliticallyExposedPerson)then
