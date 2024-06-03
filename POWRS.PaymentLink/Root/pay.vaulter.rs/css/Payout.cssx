@@ -68,7 +68,7 @@ html {
 
 body
 {
-   font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+   font-family: "RTDromo", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
    font-size: 1rem !important;  
    background-color: #f3f3f3;
     color:¤TextColor¤;
@@ -197,6 +197,7 @@ form {
 {
   font-size: 0.8rem !important;
   padding-left: 10px !important;
+  font-family: 'RTDromo Light';
 }
 
 .agent-contact-info
@@ -1011,10 +1012,10 @@ width:10em;
 }
 
 .footer {
-  position: relative;
+  position: fixed;
    bottom: 0pt;
-width: 100%;
-margin: 0 auto;
+   width: 100%;
+   margin: 0 auto;
 }
 
 #spinnerContainer{
