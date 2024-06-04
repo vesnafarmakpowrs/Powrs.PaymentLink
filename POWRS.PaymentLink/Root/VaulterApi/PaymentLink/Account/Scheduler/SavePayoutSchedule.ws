@@ -1,9 +1,8 @@
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
 ({
-    "WorkingDay":Required(String(PWorkDay)),
     "Mode":Required(String(PMode)),
-    "DayInMonth":Required(Int(PDayInMonth))
+    "Day":Required(Int(PDay))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 SessionUser:= Global.ValidateAgentApiToken(true, false);
@@ -13,28 +12,30 @@ if(SessionUser.role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin.ToString
     Forbidden("Insuficient permissions");
 );
 
+errorMessages:= Create(System.Collections.Generic.List, System.String);
 try
-(
-    errorMessages:= Create(System.Collections.Generics.List, System.String);
-    parsedMode:= POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryDay;
-    day:= System.DayOfWeek.Monday;
+(   
+    parsedMode:= POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.Daily;
+    day:= -1;
 
-    if(!System.Enum.TryParse(POWRS.Payment.PaySpot.Scheduler.RecurrenceMode, true, parsedMode)) then 
+    if(!System.Enum.TryParse(POWRS.Payment.PaySpot.Scheduler.RecurrenceMode,PMode, true, parsedMode)) then 
     (
         errorMessages.Add("Mode");
     );
 
-    if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryWeek) then 
+    if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.Weekly) then 
     (
-        if(!System.Enum.TryParse(System.DayOfWeek,PWorkDay, true, day) or day == System.DayOfWeek.Monday or day == System.DayOfWeek.Sunday) then 
+        if(PDay < 1 || PDay > 5) then 
         (
-              errorMessages.Add("WorkDay");
+            errorMessages.Add("Day");
         );
     )
-    else if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.EveryMonth and 
-        (PDayInMonth < 1 || PDayInMonth > 31)) then 
+    else if(parsedMode == POWRS.Payment.PaySpot.Scheduler.RecurrenceMode.Monthly) then 
     (
-            errorMessages.Add("DayInMonth");
+        if(PDay < 1 || PDay > 31) then 
+        (
+             errorMessages.Add("Day");
+        );
     );
 
     if(errorMessages.Count > 0) then 
@@ -47,9 +48,7 @@ try
 
     payoutSchedule.OrganizationName:= SessionUser.orgName;
     payoutSchedule.Mode:= parsedMode;
-    payoutSchedule.WorkingDay:= day;
-    payoutSchedule.DayInMonth:= PDayInMonth;
-    payoutSchedule.LastUpdated:= NowUtc;
+    payoutSchedule.Day:= PDay;
     
     if(System.String.IsNullOrWhiteSpace(payoutSchedule.ObjectId)) then 
     (
@@ -66,9 +65,7 @@ try
 )
 catch
 (
-    Log.Informational(Exception.Message, null);
-
-    if(errorMessages.Length > 0) then 
+    if(errorMessages.Count > 0) then 
     (
        BadRequest(errorMessages);
     )

@@ -882,17 +882,15 @@ Call this resource insert or update payout scheduler informations.
 
 ````
 {
-    "WorkingDay": Required(Str(WorkingDay),
     "Mode": Required(Str(Mode),
-    "DayInMonth": Required(Int(DayInMonth)
+    "Day": Required(Int(Day)
 }
 ````
 
 | Name              | Description |
 |:------------------|:------------|
-| `WorkingDay`       | String representation of working day (weekends not supported) (Monday, Tuesday, Wednesday, Thursday, Friday). Mandatory if mode 'EveryWeek' |
 | `Mode`        | Mode for scheduler. EveryDay, EveryWeek, EveryMonth. Default (EveryDay) |
-| `DayInMonth`  | Integer representation for day of month. Min 1, max 31. |
+| `Day`  | Integer representation of day. For Mode: Weekly: (1-5), Monthly: (1-31). |
 
 **Response**
 
@@ -924,9 +922,8 @@ Call this resource to retrieve update payout scheduler informations.
 
 ````
 {
-    "WorkingDay": "Monday|Tuesday|Wednsday|Thursday|Friday",
-    "Mode": EveryDay|EveryWeek|EveryMonth",
-    "DayInMonth": Int (1-31) Can be 0 if mode is EveryDay|EveryWeek,
+    "Mode": Daily|Weekly|Monthly",
+    "Day": Int,
     "CanModify": Boolean (Can user modify for his company. Must be admin.)
 }
 ````
