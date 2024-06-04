@@ -112,14 +112,14 @@ function UserAgree(isIPS) {
 
     if (document.getElementById("termsAndCondition").checked
         && document.getElementById("termsAndConditionAgency").checked) {
-        if (document.getElementById("payspot-submit") != null ) document.getElementById("payspot-submit").removeAttribute("disabled");
+        if (document.getElementById("payspot-submit") != null) document.getElementById("payspot-submit").removeAttribute("disabled");
         document.getElementById("ctn-payment-method-rs").style.display = "block";
-       console.log( document.getElementById("IpsOnly").value);
-       if (document.getElementById("IpsOnly").value?.toLowerCase() === 'true')
-         LoadIPS();
+        console.log(document.getElementById("IpsOnly").value);
+        if (document.getElementById("IpsOnly").value?.toLowerCase() === 'true')
+            LoadIPS();
     }
     else {
-         if (document.getElementById("payspot-submit") != null) document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
+        if (document.getElementById("payspot-submit") != null) document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
         document.getElementById("ctn-payment-method-rs").style.display = "none";
     }
 }
@@ -134,7 +134,7 @@ function LoadIPS() {
     if (isMobileDevice)
         document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSPayoutMethod.md?JWT=" + jwt.value;
     else {
-        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md";
+        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md?JWT=" + jwt.value;
         document.getElementById("ips-iframe").classList.remove("pay-iframe");
         document.getElementById("ips-iframe").classList.add("pay-iframe-web");
     }

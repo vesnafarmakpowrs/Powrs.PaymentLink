@@ -68,7 +68,11 @@
 			<String id="65">Informacija o ishodu plaćanja biće Vam prikazana odmah po završetku obrade ali će Vam biti dostavljena i na e-mail adresu uz potvrdu o kupovini.</String>
 			<String id="66">Zatvori</String>
 			<String id="67">Platite mbanking aplikacijom svoje banke</String>
-			
+			<String id="68">Mbanking aplikacijom koju imate instaliranu na svom mobilnom uređaju skenirajte prikazani jednokratan IPS QR kod i izvršite plaćanje u okruženju Vaše banke. Informacija o ishodu plaćanja biće Vam prikazana odmah po završetku obrade ali će Vam biti dostavljena i na e-mail adresu uz potvrdu o kupovini.</String>
+			<String id="69">Vreme je isteklo</String>
+			<String id="70">Ponovo generišite QR CODE</String>
+			<String id="71">GENERIŠI QR</String>
+			<String id="72">ODUSTANI</String>
 		</Namespace>
 	</Language>
 </Translation>
