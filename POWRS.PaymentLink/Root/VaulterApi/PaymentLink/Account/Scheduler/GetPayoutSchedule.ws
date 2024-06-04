@@ -8,13 +8,12 @@ try
         if(payoutSchedule == null) then 
         (
             payoutSchedule:=  Create(POWRS.Payment.PaySpot.Scheduler.PayoutSchedule);
-            payoutSchedule.WorkingDay:= System.DayOfWeek.Monday;
+            payoutSchedule.Day:= -1;
         );   
     
     {
-       "WorkingDay": payoutSchedule.WorkingDay,
        "Mode": payoutSchedule.Mode,
-       "DayInMonth": payoutSchedule.DayInMonth,
+       "Day": payoutSchedule.Day,
        "CanModify": SessionUser.role == POWRS.PaymentLink.Models.AccountRole.ClientAdmin.ToString()
     }
 )
