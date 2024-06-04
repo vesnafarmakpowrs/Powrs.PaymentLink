@@ -158,6 +158,9 @@ try
 	);
 	
 	onBoardingData:= POWRS.PaymentLink.Onboarding.Onboarding.GetOnboardingData(SessionUser.username);
+	if(!onBoardingData.GeneralCompanyInformation.CanEdit)then(
+		Error("Forbidden for submit");
+	);
 	if(!onBoardingData.CanSubmit)then(
 		ValidateSavedData(onBoardingData);
 	)else(

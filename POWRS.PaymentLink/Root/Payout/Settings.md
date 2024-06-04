@@ -96,8 +96,8 @@ if exists(Posted) then
 </p>
 
 <p>
-<label for="OnBoardingSubmitMailList">List of mail that will receive notification when onbvoarding is submited:</label>  
-<input type="text" id="OnBoardingSubmitMailList" name="OnBoardingSubmitMailList" value='{{GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","")}}' title="List of mail that will receive notification when onbvoarding is submited. Use ; as delimiter between multiple mails "/>
+<label for="OnBoardingSubmitMailList">List of mail that will receive notification when onboarding is submited:</label>  
+<input type="text" id="OnBoardingSubmitMailList" name="OnBoardingSubmitMailList" value='{{GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","")}}' title="List of mail that will receive notification when onboarding is submited. Use ; as delimiter between multiple mails "/>
 </p>
 
 <button type="submit" class="posButton">Apply</button>

@@ -3,9 +3,10 @@ Description: On this page user can find all onboardings.
 Date: 2024-06-03
 Author: Mirko Kruscic
 Master: /Master.md
-UserVariable: User
-Privilege: Admin.Legal.ShowOnboardings
+JavaScript: /VaulterApi/PaymentLink/Onboarding/ShowAllOnboardings.js
+Privilege: Admin.Onboarding.Modify
 Login: /Login.md
+UserVariable: User
 
 ================================================================
 
@@ -14,22 +15,30 @@ All Onboardings
 
 <br />
 
-| UserName | Company short name | Org number (MB) | Tax number | Created | Can Edit | Options |
-|:---------|:-------------------|:---------------:|:----------:|:--------|:--------:|:--------|
+| UserName | Company short name | Org number (MB) | Tax number | Created | User can edit | Options |
+|:---------|:-------------------|:---------------:|:----------:|:--------|:-------------:|:--------|
 {{
 
 CanEditLabel(item):=
 (
 	if item.CanEdit then
-		"Yes"
-	else 
-		"No";
+		"<span >Yes</span>"
+	else
+		"<span id='lblCanEdit_" + item.ObjectId + "'>No</span>"
 );
 
 ShowButtonAllowEdit(item):=
 (
-	if !item.CanEdit then
-		"<button type='button' class='posButton' onclick='ReturnToEdit()' title='Allow user to edit onboarding data'>Return to edit</button>"
+	if (!item.CanEdit) then
+	(
+		legalIdentityId:= select top 1 Id from LegalIdentities where Account = item.UserName and State = "Approved" order by Created desc;
+		if (System.String.IsNullOrWhiteSpace(legalIdentityId)) then
+		(
+			"<button id='btnAllowEdit_" + item.ObjectId + "' type='button' class='posButton' onclick=\"AllowEditOnboarding('" + item.ObjectId + "', '" +  + item.UserName + "')\" title='Allow user to edit onboarding data'>Allow edit</button>";
+		)
+		else 
+			" ";
+	)
 	else 
 		" ";
 );
