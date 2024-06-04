@@ -63,6 +63,11 @@
 			<String id="60">Activity</String>
 			<String id="61">Activity number</String>
 			<String id="62">Website</String>
+			<String id="63">Individuals</String>
+			<String id="64">Legal entities</String>
+			<String id="65">Information about the outcome of the payment will be shown to you immediately after the processing is completed, but it will also be delivered to your e-mail address along with the purchase confirmation.</String>
+			<String id="66">Close</String>
+			<String id="67">Pay with your mbanking app</String>
 		</Namespace>
 	</Language>
 </Translation>

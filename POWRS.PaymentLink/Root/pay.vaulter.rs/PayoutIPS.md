@@ -4,6 +4,8 @@ Date: 2023-08-04
 Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Expires: 0
 CSS: css/Payout.cssx
 Icon: favicon.ico
 viewport : Width=device-width, initial-scale=1
@@ -67,7 +69,7 @@ if Token.HasStateMachine then
          Return("");
     );
 
-    Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Id = Token.Creator And State = 'Approved';
+    Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
     if(Identity == null) then
     (
       ]]<b>Seller is not currently active. Please try again later.</b>[[;
@@ -145,6 +147,7 @@ if Token.HasStateMachine then
                 "id": NewGuid().ToString(),
                 "ip": Request.RemoteEndPoint,
                 "country": Country,
+                "language": lng,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
 
@@ -262,7 +265,7 @@ if ContractState == "AwaitingForPayment" then
 <div class="spaceItem"></div>
 
 <div class="payment-method-rs"  id="ctn-payment-method-rs" style="display:none">
-  <table style="width:100%; text-align:center">
+  <table class="payment-method-tbl-rs">
     <tr>
      <td>[[;
 if(IpsOnly) then 

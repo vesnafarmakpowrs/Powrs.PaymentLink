@@ -63,6 +63,12 @@
 			<String id="60">Delatnost</String>
 			<String id="61">Šifra delatnosti</String>
 			<String id="62">Web-sajt</String>
+			<String id="63">Fizicka lica</String>
+			<String id="64">Pravna lica ili preduzetnike</String>
+			<String id="65">Informacija o ishodu plaćanja biće Vam prikazana odmah po završetku obrade ali će Vam biti dostavljena i na e-mail adresu uz potvrdu o kupovini.</String>
+			<String id="66">Zatvori</String>
+			<String id="67">Platite mbanking aplikacijom svoje banke</String>
+			
 		</Namespace>
 	</Language>
 </Translation>

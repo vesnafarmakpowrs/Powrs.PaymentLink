@@ -125,18 +125,19 @@ function UserAgree(isIPS) {
 }
 
 
-function LoadIPS()
-{   
-   console.log('loadIPS');
-   document.getElementById("ips-iframe").src = "";
-   if (isMobileDevice)
-     document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSPayoutMethod.md";
-   else
-   {
-     document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md";
-     document.getElementById("ips-iframe").classList.remove("pay-iframe");
-     document.getElementById("ips-iframe").classList.add("pay-iframe-web");
-   }
+function LoadIPS() {
+    console.log('loadIPS');
+    document.getElementById("ips-iframe").src = "";
+    let jwt = document.getElementById("jwt");
+    console.log(jwt);
+
+    if (isMobileDevice)
+        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSPayoutMethod.md?JWT=" + jwt.value;
+    else {
+        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md";
+        document.getElementById("ips-iframe").classList.remove("pay-iframe");
+        document.getElementById("ips-iframe").classList.add("pay-iframe-web");
+    }
 }
 
 var updateTimer = null;
