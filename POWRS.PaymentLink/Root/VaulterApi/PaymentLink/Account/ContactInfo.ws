@@ -87,6 +87,11 @@ if(errors.Count > 0) then
     BadRequest(errors);
 );
 
+if(ValidatedUser.orgName == "")then
+(
+    BadRequest("You need to apply for legal id first");
+);
+
 organizationInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = ValidatedUser.orgName;
 
 if(organizationInfo != null) then 

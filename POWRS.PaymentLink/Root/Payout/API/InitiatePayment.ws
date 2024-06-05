@@ -47,7 +47,7 @@ try
 	legalIdentityProperties:= select top 1 Properties from LegalIdentities where Id = Token.Owner;
 	identityProperties:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, Waher.Persistence.CaseInsensitiveString);
 
-	foreach prop in legalIdentityProperties do 
+	foreach prop in legalIdentityProperties do  
 	(
 	 identityProperties[prop.Name]:= prop.Value;
 	);
