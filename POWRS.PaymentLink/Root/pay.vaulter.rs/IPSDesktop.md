@@ -22,7 +22,7 @@ JavaScript: js/XmlHttp.js
      LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
      ]]<div class="container">
               <div class="content"> 
-                   <div class="article">    
+                   <div class="article">
                         <div class="div-logo-ips">
                             <img src="./resources/ipslogo.png" alt="ipsLogoScan"/>
                             <img src="./resources/vaulter_logo.webp" alt="VaulterLogo"/>
