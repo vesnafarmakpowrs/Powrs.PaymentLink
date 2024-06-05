@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     let jwt = document.getElementById("jwt");
-    if (!jwt.value.trim() === "") {
+    if (jwt == null && !jwt.value.trim() == "") {
         alert("Session token not found, refresh the page and try again");
     }
 
