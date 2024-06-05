@@ -2,7 +2,6 @@ function AllowEditOnboarding(id, userName) {
 
     try {
         if (window.confirm("Confirm you want to allow user : '" + userName + "' to modify onboarding data?")) {
-
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (xhttp.readyState == 4) {

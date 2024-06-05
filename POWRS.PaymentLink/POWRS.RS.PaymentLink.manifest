@@ -187,6 +187,8 @@
 		</Folder>
 		<Folder name="Payout">
 			<Content fileName="Settings.md"/>
+			<Content fileName="ShowAllOnboardings.js"/>
+			<Content fileName="ShowAllOnboardings.md"/>
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>

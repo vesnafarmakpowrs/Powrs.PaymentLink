@@ -77,8 +77,6 @@
 					<Content fileName="GetOnboardingData.ws"/>
 					<Content fileName="SaveOnboardingData.ws"/>
 					<Content fileName="SubmitOnboardingData.ws"/>
-					<Content fileName="ShowAllOnboardings.js"/>
-					<Content fileName="ShowAllOnboardings.md"/>
 					<Folder name="Template">
 						<Content fileName="PromissoryNoteIntruction.pdf"/>						
 						<Folder name="PaySpot">
@@ -185,6 +183,8 @@
 		</Folder>
 		<Folder name="Payout">
 			<Content fileName="Settings.md"/>
+			<Content fileName="ShowAllOnboardings.js"/>
+			<Content fileName="ShowAllOnboardings.md"/>
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>

@@ -3,7 +3,7 @@ Description: On this page user can find all onboardings.
 Date: 2024-06-03
 Author: Mirko Kruscic
 Master: /Master.md
-JavaScript: /VaulterApi/PaymentLink/Onboarding/ShowAllOnboardings.js
+JavaScript: ShowAllOnboardings.js
 Privilege: Admin.Onboarding.Modify
 Login: /Login.md
 UserVariable: User

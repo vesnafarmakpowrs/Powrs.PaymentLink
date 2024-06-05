@@ -466,10 +466,10 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\DownloadFile.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\ShowAllOnboardings.js">
+	  <None Update="Root\Payout\ShowAllOnboardings.js">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\ShowAllOnboardings.md">
+	  <None Update="Root\Payout\ShowAllOnboardings.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\SubmitOnboardingData.ws">
