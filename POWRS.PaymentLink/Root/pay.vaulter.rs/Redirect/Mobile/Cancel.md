@@ -44,14 +44,14 @@ if !exists(Token) then
   ]]<b>Payment link is not valid</b>[[;
   Return("");
 );
-
+ContractState:= "";
 if Token.HasStateMachine then
 (
 	CurrentState:=Token.GetCurrentStateVariables();
 	if exists(CurrentState) then
 		ContractState:= CurrentState.State;
 );
-if (ContractState == "AwaitingForPayment") then 
+if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" || ContractState == "Done" || System.String.IsNullOrEmpty(ContractState)) then 
 (
     Contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= Token.OwnershipContract;
    
@@ -95,15 +95,14 @@ if (ContractState == "AwaitingForPayment") then
          <tr class="welcomeLbl">   
          <td><img class="vaulterLogo" src="../../resources/vaulter_txt.svg" alt="Vaulter"/> </td>
     <td coolspan="2">
-       <select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
+       <select class="select-lng" style="display:none" title="languageDropdown" id="languageDropdown"></select></td>
   </tr>
    <tr>
-     <td><td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td></td>
+     <td coolspan="2">**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
 </tr>
 </table>
 
 <input type="hidden" value="((lng ))" id="prefferedLanguage"/>
-<input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
 
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(27) ))" id="TransactionCompleted"/>
@@ -137,18 +136,6 @@ if (ContractState == "AwaitingForPayment") then
     <tr id="tr_space" class="spaceUnder">
       <td colspan="2"></td>
     </tr>
-    <tr id="tr_fees" class="spaceUnder">
-      <td colspan="2" class="item border-radius">
-        <table style="vertical-align:middle; width:100%;">
-          <tr>
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(21) ))</td>
-            <td class="itemPrice" rowspan="2">((EscrowFee))
-            <td>
-            <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
     <tr class="spaceUnder">
       <td colspan="2"></td>
     </tr>
@@ -156,7 +143,7 @@ if (ContractState == "AwaitingForPayment") then
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
           <tr>
-            <td style="width:80%">**((LanguageNamespace.GetStringAsync(20) ))**</td>
+            <td style="width:80%">**((LanguageNamespace.GetStringAsync(55) ))**</td>
             <td class="itemPrice" rowspan="2">((AmountToPay))
             <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
