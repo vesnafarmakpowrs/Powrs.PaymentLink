@@ -56,6 +56,7 @@ ApplyForLeglalID(onBoardingData):=(
 	if(fullNameArray.Length == 1)then
 	(
 		firstName := onBoardingData.CompanyStructure.Owners[0].FullName;
+		lastName := " ";
 	)
 	else 
 	(
