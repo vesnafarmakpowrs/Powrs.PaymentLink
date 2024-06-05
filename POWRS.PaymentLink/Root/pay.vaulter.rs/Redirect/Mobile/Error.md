@@ -51,8 +51,7 @@ if Token.HasStateMachine then
 	if exists(CurrentState) then
 		ContractState:= CurrentState.State;
 );
-if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" || ContractState == "Done" || System.String.IsNullOrEmpty(ContractState)) then 
-(
+
     Contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= Token.OwnershipContract;
    
     if !exists(Contract) then
@@ -154,9 +153,7 @@ if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" |
   </table>
 </div>
 <div class="spaceItem"></div>
-
-
- <div class="vaulter-details container">
+<div class="vaulter-details container">
         <div class="messageContainer messageContainer_width">
           <div class="messageContainer messageContainer_width">
             <div class="imageContainer">
@@ -167,14 +164,7 @@ if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" |
             </div>
         </div>
      </div>
-    </div>
-
-   [[;
-)
-else 
-(
-]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
-)
+    </div>[[;
 }}
 
 </div>
