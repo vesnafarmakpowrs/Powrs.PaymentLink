@@ -79,6 +79,7 @@ body
 .container {
     min-height:100%;
     position:relative;
+    height: 95vh;
 }
 
 
@@ -340,7 +341,7 @@ padding: 20px;
 padding: 0 5% 1% 5%;
 background-color:white;
 width: 90%;
-height:90%;
+height:100%;
 top:3em;
 z-index:2;
 margin: 0.5rem auto 0rem auto;
@@ -855,7 +856,16 @@ height: auto;
 border-radius: 8px;
 padding: 2px;
 text-align:centar;
+flex: 1 1 auto;
 }
+
+.payment-method-tbl-rs
+{
+  width:100%;
+  height:100%; 
+  text-align:center;
+}
+
 
 .payspot_iframe
 {
@@ -962,6 +972,8 @@ min-height:100%;
 margin: 0.5rem auto;
 border: 0px !important;
 box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+display: flex;
+flex-direction: column;
 }
 
 input[type="checkbox"] + label:before {
