@@ -6,7 +6,7 @@ logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
 errors:= Create(System.Collections.Generic.List, System.String);
 
-ValidateSavedData(onBoardingData):=(
+GetPreciseErrors(onBoardingData):=(
 	if(!onBoardingData.GeneralCompanyInformation.IsCompleted())then
 	(
 		errors.Add("GeneralCompanyInformation");
@@ -22,6 +22,10 @@ ValidateSavedData(onBoardingData):=(
 	if(!onBoardingData.LegalDocuments.IsCompleted())then
 	(
 		errors.Add("LegalDocuments");
+	);
+	if(onBoardingData.BusinessData.IPSOnly != System.String.IsNullOrWhiteSpace(onBoardingData.LegalDocuments.PromissoryNote))then
+    (
+		errors.Add("BusinessData.IPSOnly");
 	);
 	
 	if(errors.Count > 0)then
@@ -84,7 +88,7 @@ ApplyForLeglalID(onBoardingData):=(
 	dictionary["ORGTAXNUM"]:= onBoardingData.GeneralCompanyInformation.TaxNumber;
 	dictionary["ORGDEPT"]:= "Management";
 	dictionary["ORGROLE"]:= "Manager";
-	dictionary["IPSONLY"]:= onBoardingData.LegalDocuments.PromissoryNote == "" ? "True" : "False";
+	dictionary["IPSONLY"]:= onBoardingData.BusinessData.IPSOnly;
 	
 	PropertiesVector := [FOREACH prop IN dictionary: {name: prop.Key, value: prop.Value}];
 	Global.ApplyForAgentLegalId(SessionUser, Password, PropertiesVector);
@@ -163,9 +167,7 @@ try
 		Error("Forbidden for submit");
 	);
 	if(!onBoardingData.CanSubmit)then(
-		ValidateSavedData(onBoardingData);
-	)else(
-        Error("Onboarding is not allowed to edit or submit content.");
+		GetPreciseErrors(onBoardingData);
 	);
 	
 	ApplyForLeglalID(onBoardingData);

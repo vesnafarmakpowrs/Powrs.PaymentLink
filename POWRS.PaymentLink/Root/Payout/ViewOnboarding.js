@@ -29,14 +29,3 @@ function AllowEditOnboarding(id, userName) {
         window.alert("Error: ", error);
     }
 }
-
-function ViewOnboarding(id, userName) {
-
-    try {
-        url = "/Payout/ViewOnboarding.md?ObjectId=" + id;
-        window.open(url, '_blank');
-    }
-    catch (error) {
-        window.alert("Error: ", error);
-    }
-}
