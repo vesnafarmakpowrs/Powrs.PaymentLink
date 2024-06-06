@@ -8,7 +8,7 @@ if(Posted == null) then BadRequest("Data could not be null");
 
 errors:= Create(System.Collections.Generic.List, System.String);
 currentMethod:= "";
-fileMaxSizeMB := 1.5;
+fileMaxSizeMB := 20;
 
 allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","");
 if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
