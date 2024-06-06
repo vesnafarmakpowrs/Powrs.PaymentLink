@@ -162,6 +162,11 @@
 			<Folder name="css">
 				<Content fileName="Payout.cssx"/>
 				<Content fileName="Status.css"/>
+				<Folder name="fonts">
+					<Content fileName="Coanda-Bold.ttf"/>
+					<Content fileName="RTDromo-Medium.woff2"/>
+					<Content fileName="RTDromo-Medium.woff"/>
+				</Folder>
 			</Folder>
 			<Folder name="js">
 				<Content fileName="Events.js"/>
@@ -179,11 +184,7 @@
 				<Content fileName="error_red.png"/>
 				<Content fileName="success_green.png"/>
 			</Folder>
-			<Folder name="fonts">
-				<Content fileName="Coanda-Bold.ttf"/>
-				<Content fileName="RTDromo-Medium.woff2"/>
-				<Content fileName="RTDromo-Medium.woff"/>
-			</Folder>
+			
 		</Folder>
 		<Folder name="Payout">
 			<Content fileName="Settings.md"/>
