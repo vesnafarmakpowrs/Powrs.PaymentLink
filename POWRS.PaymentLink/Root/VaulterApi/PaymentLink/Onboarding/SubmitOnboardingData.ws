@@ -88,7 +88,7 @@ ApplyForLeglalID(onBoardingData):=(
 	dictionary["ORGTAXNUM"]:= onBoardingData.GeneralCompanyInformation.TaxNumber;
 	dictionary["ORGDEPT"]:= "Management";
 	dictionary["ORGROLE"]:= "Manager";
-	dictionary["IPSONLY"]:= onBoardingData.BusinessData.IPSOnly;
+	dictionary["IPSONLY"]:= onBoardingData.BusinessData.IPSOnly ? "True" : "False";
 	
 	PropertiesVector := [FOREACH prop IN dictionary: {name: prop.Key, value: prop.Value}];
 	Global.ApplyForAgentLegalId(SessionUser, Password, PropertiesVector);

@@ -31,6 +31,28 @@ else
 (
 onBoardingData:= POWRS.PaymentLink.Onboarding.Onboarding.GetOnboardingData(UserName);
 
+CanEditLabel(item):=
+(
+	if (item.CanEdit) then
+		"<span >Yes</span>"
+	else
+		"<span id='lblCanEdit_" + item.ObjectId + "'>No</span>"
+);
+
+ShowBtnAllowEdit(item):=
+(
+	s := "";
+	if (!item.CanEdit) then
+	(
+		legalIdentityId:= select top 1 Id from LegalIdentities where Account = item.UserName and State = "Approved" order by Created desc;
+		if (System.String.IsNullOrWhiteSpace(legalIdentityId)) then
+		(
+			s += " <button id='btnAllowEdit_" + item.ObjectId + "' type='button' class='posButton' onclick=\"AllowEditOnboarding('" + item.ObjectId + "', '" +  + item.UserName + "')\" title='Allow user to edit onboarding data'>Allow edit</button>";
+		);
+	);
+	s
+);
+
 ShowUploadedFileDownloadLink(orgShortName, fileName):=
 (
 	neuronDomain:= "https://" + Gateway.Domain;
@@ -38,7 +60,6 @@ ShowUploadedFileDownloadLink(orgShortName, fileName):=
 	s := "<a href=\"" + companyLink + fileName + "\">" + MarkdownEncode(fileName) + "</a>";
 	s
 );
-
 
 
 ]]<div>
@@ -51,6 +72,8 @@ ShowUploadedFileDownloadLink(orgShortName, fileName):=
 <strong>Org number (MB):</strong> ((MarkdownEncode(onBoardingData.GeneralCompanyInformation.OrganizationNumber) ))
 <br />
 <strong>Tax number:</strong> ((MarkdownEncode(onBoardingData.GeneralCompanyInformation.TaxNumber) ))
+<br />
+<strong>User can edit data:</strong> ((CanEditLabel(onBoardingData.GeneralCompanyInformation) ))
 </div>
 
 [[;
@@ -101,6 +124,8 @@ Promissory Note: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInf
 <br />
 Contract With Vaulter: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.ContractWithVaulter) ))
 
+<br /><br />
+((ShowBtnAllowEdit(onBoardingData.GeneralCompanyInformation) ))
 [[;
 
 );
