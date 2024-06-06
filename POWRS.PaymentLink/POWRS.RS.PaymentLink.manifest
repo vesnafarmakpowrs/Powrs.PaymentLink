@@ -189,6 +189,8 @@
 			<Content fileName="Settings.md"/>
 			<Content fileName="ShowAllOnboardings.js"/>
 			<Content fileName="ShowAllOnboardings.md"/>
+			<Content fileName="ViewOnboarding.js"/>
+			<Content fileName="ViewOnboarding.md"/>
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
