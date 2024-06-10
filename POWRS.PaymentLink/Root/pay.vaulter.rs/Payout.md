@@ -328,7 +328,7 @@ else
 </div>
    [[;
 )
-else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" )then 
+else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" || ContractState == "ReleaseFundsToSellerFailed" )then 
 (
 ]]<div class="payment-completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>[[;
 )
