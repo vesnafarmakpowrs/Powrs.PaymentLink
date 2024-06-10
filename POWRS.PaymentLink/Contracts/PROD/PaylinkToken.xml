@@ -149,8 +149,13 @@
 					<OnEvent actionRef="PayoutDateUpdated">
 						<OnExternalXmlNote localName="PayoutDateUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
-					<OnEvent actionRef="ReleaseFunds" failureState="PaymentCompleted" newState="Done">
+					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
+					</OnEvent>
+				</State>
+				<State id="ReleaseFundsToSellerFailed">
+					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
+						<OnExternalXmlNote localName="RetryReleaseFundsToSeller" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 				</State>
 				<State id="PaymentCanceled">
@@ -201,7 +206,7 @@
 									ServiceProviderId:= SellerServiceProviderId;
 									ServiceProviderType:= SellerServiceProviderType;
 									AccountName:= SellerName;
-									MessageOnError:= 'ReleaseFundsToSeller error';
+									MessageOnError:= 'CancelPayment error';
 									Mode:= 'Refund';
 									Message:= "Povrat novca."
 								]]>
@@ -331,7 +336,12 @@
 									Message:= "";
 								]]>
 							</Script>
-							<CallAction actionRef="TrySellEdaler" />
+							<Try>
+								<CallAction actionRef="TrySellEdaler" />
+								<Catch exceptionVariable="ex">
+									<PersistVariable name="ReleaseFundsToSellerError" value="{ex.Message}"/>
+								</Catch>
+							</Try>
 						</Else>
 					</If>
 				</Action>
