@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
@@ -16,12 +17,18 @@ namespace POWRS.PaymentLink.Onboarding
         {
             get
             {
-                return GeneralCompanyInformation?.IsCompleted() == true &&
+                bool canSubmit = GeneralCompanyInformation?.IsCompleted() == true &&
                 CompanyStructure?.IsCompleted() == true &&
                 BusinessData?.IsCompleted() == true &&
-                LegalDocuments?.IsCompleted() == true &&
-                BusinessData?.IPSOnly == string.IsNullOrWhiteSpace(LegalDocuments?.PromissoryNote)
-                ;
+                LegalDocuments?.IsCompleted() == true;
+
+                if (!canSubmit)
+                    return false;
+
+                if (!BusinessData.IPSOnly && string.IsNullOrWhiteSpace(LegalDocuments?.PromissoryNote))
+                    return false;
+                else
+                    return true;
             }
         }
 

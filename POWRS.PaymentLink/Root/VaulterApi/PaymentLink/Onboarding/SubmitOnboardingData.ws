@@ -23,7 +23,7 @@ GetPreciseErrors(onBoardingData):=(
 	(
 		errors.Add("LegalDocuments");
 	);
-	if(onBoardingData.BusinessData.IPSOnly != System.String.IsNullOrWhiteSpace(onBoardingData.LegalDocuments.PromissoryNote))then
+	if(!onBoardingData.BusinessData.IPSOnly and System.String.IsNullOrWhiteSpace(onBoardingData.LegalDocuments.PromissoryNote))then
     (
 		errors.Add("BusinessData.IPSOnly");
 	);
