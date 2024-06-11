@@ -19,4 +19,6 @@
 			<xs:attribute type="xs:string" use="required" name="expectedPayoutDate" />
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="SMSCounterUpdate" type="Empty">
+	</xs:element>
 </xs:schema>
