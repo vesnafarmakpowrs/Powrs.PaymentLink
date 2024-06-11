@@ -709,7 +709,7 @@
 	  <Folder Include="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\" />
 	</ItemGroup>
 
-	<!-- Build Lab Serbian package = -->
+	<!-- Build Lab Serbian package -->
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
