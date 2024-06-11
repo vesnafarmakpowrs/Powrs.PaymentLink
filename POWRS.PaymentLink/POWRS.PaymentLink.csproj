@@ -11,10 +11,13 @@
 	<ItemGroup>
 	  <Compile Remove="Root\pay.lab.vaulter.rs\**" />
 	  <Compile Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
+	  <Compile Remove="Root\VaulterApi\PaymentLink\Onboarding\Template\**" />
 	  <EmbeddedResource Remove="Root\pay.lab.vaulter.rs\**" />
 	  <EmbeddedResource Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
+	  <EmbeddedResource Remove="Root\VaulterApi\PaymentLink\Onboarding\Template\**" />
 	  <None Remove="Root\pay.lab.vaulter.rs\**" />
 	  <None Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
+	  <None Remove="Root\VaulterApi\PaymentLink\Onboarding\Template\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -257,6 +260,147 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Language\POWRS.PaymentLink.sv.lng">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\BusinessCooperationRequest.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\BusinessCooperationRequest_CSS.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\ContractPaySpot.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\ContractPaySpot_Css.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page01.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page02.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page03.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page04.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page05.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page06.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page07.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page08.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page09.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page10.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page11.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page12.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page13.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page14.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page15.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page16.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page17.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page18.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page19.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page20.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page21.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PayspotAttachment2_Page22.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PaySpotAttachment3.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PaySpot_CompanyInfo.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PaySpot_Logo.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\PaySpot_logoNoText.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\StatementOfOfficialDocument.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\StatementOfOfficialDocumentLine.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\StatementOfOfficialDocument_Css.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\ContractPowrs.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\ContractPowrs_Css.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page01.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page02.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page03.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page04.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page05.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page06.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page07.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page08.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page09.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment2_Page01.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\Powrs\Powrs_Logo.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PromissoryNoteIntruction.pdf">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="POWRS.Lab.PaymentLink.manifest">
@@ -523,207 +667,6 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\SaveOnboardingData.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\Attachment.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\Attachment_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\BusinessCooperationRequest.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\BusinessCooperationRequest_CSS.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\ContractPaySpot.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\ContractPaySpot_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PaySpotAttachment1.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PaySpotAttachment1_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PaySpotAttachment2_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page01.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page02.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page03.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page04.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page05.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page06.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page07.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page08.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page09.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page10.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page11.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page12.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page13.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page14.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page15.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page16.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page17.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page18.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page19.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page20.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page21.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment2_Page22.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment3.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PaySpotAttachment3.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PayspotAttachment3_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\ContractPowrs.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\ContractPowrs_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1_Page01.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1_Page02.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1_Page03.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1_Page04.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1_Page05.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1_Page06.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1_Page07.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1_Page08.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment1_Page09.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment2.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment2_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\PowrsAttachment2_Page01.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PromissoryNoteIntruction.pdf">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\StatementOfOfficialDocument.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\StatementOfOfficialDocumentLine.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\StatementOfOfficialDocument_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PaySpot_CompanyInfo.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PaySpot_Logo.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\PaySpot_logoNoText.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\Prilog.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\Prilog_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\Ugovor.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\Ugovor_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\ZahtevZaUspostavljanjeSaradnje.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\PaySpot\ZahtevZaUspostavljanjeSaradnje_CSS.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\Powrs.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\Powrs_Css.css">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\Powrs_Logo.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\DownloadTemplateFile.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -764,9 +707,20 @@
 
 	<ItemGroup>
 	  <Folder Include="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\" />
-	  <Folder Include="Root\VaulterApi\PaymentLink\Onboarding\Template\Powrs\" />
 	</ItemGroup>
 
+	<!-- Build Lab Serbian package -->
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
+	</PropertyGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Install.exe&quot; -p &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot; -k 5d98ddf8138a851f6822be199ee9324e -m &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.Lab.PaymentLink.manifest&quot;" />
+		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Sign.exe&quot; -c ed448 -priv &quot;qGe+NyQy0hjvuNPK61LfvHmkJZxD0SHdo7UozOsWpGPj3GmSxAa8X4Ch7gJv23tRfUm4+IJIJCo=&quot; -o &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.signature&quot; -s &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot;" />
+	</Target>
+
+	<!-- Build PRODUCTION Serbian package
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ApplicationManifest>POWRS.RS.PaymentLink.manifest</ApplicationManifest>
@@ -776,4 +730,5 @@
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Install.exe&quot; -p &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot; -k 5d98ddf8138a851f6822be199ee9324e -m &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.RS.PaymentLink.manifest&quot;" />
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Sign.exe&quot; -c ed448 -priv &quot;qGe+NyQy0hjvuNPK61LfvHmkJZxD0SHdo7UozOsWpGPj3GmSxAa8X4Ch7gJv23tRfUm4+IJIJCo=&quot; -o &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.signature&quot; -s &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot;" />
 	</Target>
+	-->
 </Project>

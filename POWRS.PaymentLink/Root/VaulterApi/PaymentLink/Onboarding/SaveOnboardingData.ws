@@ -817,25 +817,19 @@ SaveFile(fileRootPath, fileName, fileBase64String):=
 try
 (
 	currentMethod := "ValidatePostedData"; 
-	methodResponse := ValidatePostedData(Posted);
-	Log.Informational("Finised method ValidatePostedData. \nErrors.cnt: " + Str(errors.Count) + "\nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
+	ValidatePostedData(Posted);
 	
 	currentMethod := "SaveGeneralCompanyInfo"; 
-	methodResponse:= SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
-	Log.Informational("Finised method SaveGeneralCompanyInfo. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
+	SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
 	
 	currentMethod := "SaveCompanyStructure"; 
-	methodResponse:= SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username, Posted.GeneralCompanyInformation.ShortName);
-	Log.Informational("Finised method SaveCompanyStructure. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
+	SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username, Posted.GeneralCompanyInformation.ShortName);
 	
 	currentMethod := "SaveBusinessData"; 
-	methodResponse:= SaveBusinessData(Posted.BusinessData, SessionUser.username);
-	Log.Informational("Finised method SaveBusinessData. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
+	SaveBusinessData(Posted.BusinessData, SessionUser.username);
 	
 	currentMethod := "SaveLegalDocuments"; 
-	methodResponse:= SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username, Posted.GeneralCompanyInformation.ShortName);
-	Log.Informational("Finised method SaveLegalDocuments. \nmethodResponse: " + Str(methodResponse), logObjectID, logActor, logEventID, null);
-	
+	SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username, Posted.GeneralCompanyInformation.ShortName);
 	
 	Log.Informational("Succeffully saved OnBoarding data.", logObjectID, logActor, logEventID, null);
 	{
