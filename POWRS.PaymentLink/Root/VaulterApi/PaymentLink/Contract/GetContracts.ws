@@ -18,7 +18,7 @@ try
 		DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 		DTDateTo := DTDateTo.AddDays(1);
 	) else (
-		DTDateFrom := System.DateTime.ParseExact("01/01/2023", dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+		DTDateFrom := TodayUtc.AddMonths(-1);
 		DTDateTo := TodayUtc.AddDays(1);
 	);
 	
