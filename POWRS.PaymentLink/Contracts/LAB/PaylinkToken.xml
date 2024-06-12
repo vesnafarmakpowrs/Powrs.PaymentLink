@@ -104,6 +104,9 @@
 				<Variable id="SMSCounter">
 					<TagReference tag="SMSCounter" />
 				</Variable>
+				<Variable id="EmailSentCounter">
+					<TagReference tag="EmailSentCounter" />
+				</Variable>
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
@@ -138,6 +141,10 @@
 					<OnEvent actionRef="UpdateSMSCounter">
 						<OnExternalXmlNote localName="SMSCounterUpdate" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+					<OnEvent actionRef="UpdateEmailSentCounter">
+						<OnExternalXmlNote localName="EmailSentCounterUpdate" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
@@ -169,15 +176,13 @@
 				</State>
 				<State id="Done">
 					<OnEnter actionRef="MarkAsDone"/>
-				</State>
-
-				<Action id="UpdateSMSCounter">
-					<Script>
-					   	     newSMSCounter:= SMSCounter +  1;						
-					</Script>
-					<PersistVariable name="SMSCounter" value="{newSMSCounter}" />
+				</State>				
+				<Action id="UpdateEmailSentCounter">
+					<PersistVariable name="EmailSentCounter" value="{EmailSentCounter + 1}" />
 				</Action>
-				
+				<Action id="UpdateSMSCounter">
+					<PersistVariable name="SMSCounter" value="{SMSCounter + 1 }" />
+				</Action>				
 				<Action id="PayoutDateUpdated">
 					<Script>
 						newPayoutDate:= SelectXmlStr(Note,'/default:PayoutDateUpdated/@expectedPayoutDate');
@@ -491,6 +496,9 @@
 		</Tag>
 		<Tag name="SMSCounter">
 			<ParameterReference parameter="SMSCounter" />
+		</Tag>
+		<Tag name="EmailSentCounter">
+			<ParameterReference parameter="EmailSentCounter" />
 		</Tag>		
 		<Tag name="SupportedPaymentMethods">
 			<ParameterReference parameter="SupportedPaymentMethods" />
@@ -570,6 +578,14 @@
 				</paragraph>
 			</description>
 		</numericalParameter>
+		<numericalParameter name="EmailSentCounter" value="0" guide="Email Sent Counter" min="0" minIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Num of sent Email messages with link</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+		
 		<stringParameter name="Currency" value="RSD" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
 			<description xml:lang="en">
 				<paragraph>

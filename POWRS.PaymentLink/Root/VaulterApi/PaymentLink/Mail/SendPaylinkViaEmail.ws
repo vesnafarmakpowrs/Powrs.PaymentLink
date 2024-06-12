@@ -82,6 +82,10 @@ try
 	Config := ConfigClass.Instance;
 	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, buyerEmail, "Vaulter", MailBody, null, null);
 		
+	addNoteEndpoint:="https://" + Gateway.Domain + "/AddNote/" + tokenObj.TokenId;
+	namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
+	Post(addNoteEndpoint ,<EmailSentCounterUpdate xmlns=namespace  />,{},Waher.IoTGateway.Gateway.Certificate);
+
 	"Success";
 )
 catch

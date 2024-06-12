@@ -2,6 +2,8 @@
 	<xs:complexType name="Empty" />
 	<xs:element name="CancelPayment" type="Empty"/>
 	<xs:element name="RetryReleaseFundsToSeller" type="Empty"/>
+	<xs:element name="SMSCounterUpdate" type="Empty"/>
+	<xs:element name="EmailSentCounterUpdate" type="Empty"/>
 	<xs:element name="PayspotPaymentCompleted">
 		<xs:complexType>
 			<xs:attribute name="payspotOrderId" type="xs:string" use="required" />
