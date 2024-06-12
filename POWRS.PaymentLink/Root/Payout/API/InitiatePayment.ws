@@ -2,8 +2,7 @@
 
 ({
     "isFromMobile":Required(Bool(PIsFromMobile)),
-	"tabId": Required(Str(PTabId)),
-	"ipsOnly": Required(Bool(PIpsOnly))
+	"tabId": Required(Str(PTabId))
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
@@ -11,6 +10,13 @@ try
 	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then 
 	(
 		Error("Not configured");
+	);
+
+	IpsOnly:= false;
+
+	if(exists(SessionToken.Claims.ipsOnly)) then 
+	(
+		IpsOnly:=  SessionToken.Claims.ipsOnly
 	);
 
 	ContractId:= SessionToken.Claims.contractId;
@@ -21,7 +27,7 @@ try
 	(
 		BadRequest("Token does not exists");
 	);
-	
+
 	currentState:= token.GetCurrentStateVariables();
 	if(currentState.State != "AwaitingForPayment") then
 	(
@@ -41,7 +47,7 @@ try
 	legalIdentityProperties:= select top 1 Properties from LegalIdentities where Id = Token.Owner;
 	identityProperties:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, Waher.Persistence.CaseInsensitiveString);
 
-	foreach prop in legalIdentityProperties do 
+	foreach prop in legalIdentityProperties do  
 	(
 	 identityProperties[prop.Name]:= prop.Value;
 	);
@@ -52,17 +58,16 @@ try
 	);
 
 	Global.PayspotRequests[ContractId]:= PTabId;
-        
-	if(PIpsOnly) then 
+
+	if(IpsOnly) then 
 	(
-		GeneratedIPSData:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSData(contractParameters, identityProperties);
-		responseObject.Response:= GeneratedIPSData.ToDictionary();
+		GeneratedIPSForm:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSForm(contractParameters, identityProperties);
+		responseObject.Response:= GeneratedIPSForm.ToDictionary();
 	)
 	else
 	(
 		responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(contractParameters, identityProperties);
 	);
-	
 )
 catch
 (

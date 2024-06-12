@@ -1,4 +1,4 @@
-Title: Vaulter API v1
+﻿Title: Vaulter API v1
 Description: This document contains information about the Vaulter API (v1)
 Author:  POWRS DOO
 Date: 2023-06-16
@@ -259,7 +259,7 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "currency":Required(String(PCurrency) like "[A-Z]{3}"),
     "description":Required(String(PDescription)),
     "deliveryDate":Required(DateTime(PDeliveryDate)),
-    "deliveryTime":Optional(String(PDeliveryTime)),
+    "paymentDeadline":Required(DateTime(PPaymentDeadline)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
@@ -281,6 +281,7 @@ Description of properties:
 | `currency`        | Currency used by the price. Must be a 3-upper-case-letter currency symbol. |
 | `description`     | Displayable description of item. |
 | `deliveryDate`    | Delivery Date of item. dd/MM/YYYY |
+| `paymentDeadline`    | Payment deadline of item. dd/MM/YYYY. Untill link is valid. |
 | `buyerFirstName`  | Buyer First name. |
 | `buyerLastName`   | Buyer Last name. |
 | `buyerEmail`      | Buyer email. |
@@ -301,19 +302,18 @@ Description of properties:
 ````
 
 
-### Cancel Item
+### Initiate Refund
 
-URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/CancelItem.ws")}}`  
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/InitiateRefund.ws")}}`  
 Method: `POST`
 
-Call this resource to cancel an Item in Vaulter. JSON in the following format is expected in the call.
+Call this resource to perform a void of transaction related to the payment link. JSON in the following format is expected in the call.
 
 **Request**
 
 ````
 {
-    "contractId": Required(String(contractId)),
-    "refundAmount" : Optional(int(PRefundAmount))
+    "tokenId": Required(String(PTokenId))
 }
 ````
 
@@ -321,8 +321,7 @@ Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
-| `contractId`      | Contract Id. This id is returned as a response of sellItem |
-| `refundAmount`      | If payment is aleady done from the buyer side, how much to refunt to buyer. Rest of it will be released to seller's bank account. Could not be more than |
+| `tokenId`      | Token Id. |
 
 **Response**
 
@@ -330,7 +329,7 @@ Description of properties:
 {
  200 OK 
  {
-   "canceled" : true
+   "canceled" : true | false
  }
  403 Forbidden
  {
@@ -338,7 +337,6 @@ Description of properties:
  }
  400 Bad Request
  {
-	 // Amount not valid or contract not valid.
  }
 }
 ````
@@ -466,9 +464,10 @@ Read **Authorization section**.
 200 OK
 	{
 		 "authorized": true,
-         "isApproved": Bool,
+         "isApproved": bool,
          "role": "User",
-         "contactInformationsPopulated": Bool
+         "contactInformationsPopulated": bool,
+         "goToOnBoarding": bool
 	}
 403 Forbidden
 	{
@@ -780,12 +779,12 @@ Call this resource to apply for legal identity.
 ````
 
 
-### Apply for legal Id
+### Apply for sub legal Id
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/ApplyForSubLegalId.ws")}}`  
 Method: `POST`
 
-Call this resource to apply for legal identity for sub user. Other properties will be taken from creator user.
+Call this resource to apply for sub legal identity. Other properties will be taken from creator user.
 
 **Request**
 
@@ -873,6 +872,65 @@ Retrieves contact information for organizaion.
 | `PhoneNumber `  | Phone number to contact company |
 | `TermsAndConditions `  | Terms and conditions url for company |
 
+### SavePayoutSchedule
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/Scheduler/SavePayoutSchedule.ws")}}`  
+Method: `POST`
+
+Call this resource insert or update payout scheduler informations.
+
+**Request**
+
+````
+{
+    "Mode": Required(Str(Mode),
+    "Day": Required(Int(Day)
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `Mode`        | Mode for scheduler. EveryDay, EveryWeek, EveryMonth. Default (EveryDay) |
+| `Day`  | Integer representation of day. For Mode: Weekly: (1-5), Monthly: (1-31). |
+
+**Response**
+
+
+````
+{
+    "Message": String
+},
+BadRequest,
+Forbidden
+````
+
+### GetPayoutSchedule
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Account/Scheduler/GetPayoutSchedule.ws")}}`  
+Method: `POST`
+
+Call this resource to retrieve update payout scheduler informations.
+
+**Request**
+
+````
+{
+}
+````
+
+**Response**
+
+
+````
+{
+    "Mode": Daily|Weekly|Monthly",
+    "Day": Int,
+    "CanModify": Boolean (Can user modify for his company. Must be admin.)
+}
+````
+
+
+
 ### Generate Transactions Report
 ````
     "from":Required(String(PDateFrom)),
@@ -917,3 +975,358 @@ Retrieves Successful Transactions information.
 | `Currency`        | Card brand |
 | `PaymentType`     | Payment Type (Card or IPS) |
 | `CardBrand`       | Card brand |
+
+### Get onboarding data
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/GetOnboardingData.ws")}}`  
+Method: `POST`
+
+Call this resource to get onboarding data that user already saved.
+
+Token is required. Request body is empty.
+
+*** NOTE: ** Nullable DateTime fields will have substitute string value sith 'Str' sufix. E.g.: 'DateOfBirth' -> 'DateOfBirthStr'
+
+
+**Request**
+
+````
+{
+}
+````
+
+
+**Response**
+
+````
+{
+    "GeneralCompanyInformation": {
+        "FullName": "Powrs doo",
+        "ShortName": "Powrs",
+        "CompanyAddress": "",
+        "CompanyCity": "",
+        "OrganizationNumber": "10012148",
+        "TaxNumber": "112890694",
+        "ActivityNumber": "",
+        "OtherCompanyActivities": "",
+        "BankName": "",
+        "BankAccountNumber": "",
+        "StampUsage": true,
+        "TaxLiability": false,
+        "OnboardingPurpose": "Other",
+        "PlatformUsage": "UsingVaulterPaylinkService",
+        "CompanyWebsite": "",
+        "CompanyWebshop": "",
+        "LegalRepresentatives": [
+            {
+                "FullName": "Mirko Kruščić",
+                "DateOfBirth": 581032800,
+                "DocumentType": "IDCard",
+                "DocumentNumber": "",
+                "DateOfIssue": 1704063600,
+                "PlaceOfIssue": "",
+                "StatementOfOfficialDocument": "",
+                "IdCard": "LegalRepresentative_1_IdCard_Mirko Kruščić.pdf",
+                "IsPoliticallyExposedPerson": false,
+                "DateOfBirthStr": "31/05/1988",
+                "DateOfIssueStr": "01/01/2024",
+                "IssuerName": "",
+                "PlaceOfBirth": "Ivanjica",
+                "AddressOfResidence": "Zaplanjska 82",
+                "CityOfResidence": "Voždovac",
+                "PersonalNumber": "3105988792648"
+            }
+        ],
+        "Created": 1716377168,
+        "CanEdit": true,
+        "UserName": "AgentPLG"
+    },
+    "CompanyStructure": {
+        "CountriesOfBusiness": [
+            "Serbia",
+            "Croatia",
+            "Montenegro"
+        ],
+        "NameOfTheForeignExchangeAndIDNumber": "",
+        "PercentageOfForeignUsers": 10,
+        "OffShoreFoundationInOwnerStructure": false,
+        "OwnerStructure": "Company",
+        "Owners": [
+            {
+                "FullName": "Mirko Kruščić",
+                "PersonalNumber": "3105988792648",
+                "DateOfBirth": 581032800,
+                "PlaceOfBirth": "Ivanjica",
+                "AddressOfResidence": "Zaplanjska 82",
+                "CityOfResidence": "Beograd",
+                "IsPoliticallyExposedPerson": true,
+                "DocumentType": "IDCard",
+                "DocumentNumber": "009876248",
+                "IssueDate": 1580425200,
+                "IssuerName": "PU Za Grad Beograd",
+                "DocumentIssuancePlace": "Beograd",
+                "Citizenship": "Serbian",
+                "OwningPercentage": 25,
+                "Role": "Developer",
+                "StatementOfOfficialDocument": "Owner_1_Politicall_Mirko Kruščić.pdf",
+                "IdCard": "Owner_1_IdCard_Mirko Kruščić.pdf",
+                "DateOfBirthStr": "31/05/1988",
+                "IssueDateStr": "31/01/2020",
+                "CityOfResidence": "Voždovac"
+            }
+        ],
+        "UserName": "AgentPLG"
+    },
+    "BusinessData": {
+        "BusinessModel": "My business model",
+        "RetailersNumber": 0,
+        "ExpectedMonthlyTurnover": 0,
+        "ExpectedYearlyTurnover": 0,
+        "ThreeMonthAccountTurnover": 0,
+        "CardPaymentPercentage": 0,
+        "AverageTransactionAmount": 0,
+        "AverageDailyTurnover": 0,
+        "CheapestProductAmount": 0,
+        "MostExpensiveProductAmount": 0,
+        "SellingGoodsWithDelayedDelivery": false,
+        "PeriodFromPaymentToDeliveryInDays": 0,
+        "ComplaintsPerMonth": 0,
+        "ComplaintsPerYear": 0,
+        "MethodOfDeliveringGoodsToCustomers": "",
+        "DescriptionOfTheGoodsToBeSoldOnline": "",
+        "EComerceContactFullName": "Mirko Kruščić",
+        "EComerceResponsiblePersonPhone": "066414623",
+        "EComerceContactEmail": "mirko.kruscic@powrs.se",
+        "IPSOnly": false,
+        "UserName": "AgentPLG"
+    },
+    "LegalDocuments": {
+        "BusinessCooperationRequest": "",
+        "ContractWithVaulter": "",
+        "ContractWithEMI": "",
+        "PromissoryNote": "",
+        "UserName": "mirkokrule41"
+    }
+}
+````
+
+### Save onboarding data
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/SaveOnboardingData.ws")}}`  
+Method: `POST`
+
+Call this resource save data for onboarding.
+
+**Request**
+
+````
+{
+   "GeneralCompanyInformation":
+   {
+        "FullName": "Powrs doo",                -> Mandatory for 'save'
+        "ShortName": "Powrs",                   -> Mandatory for 'save'
+        "OrganizationNumber": "21761818",       -> Mandatory for 'save'
+        "CompanyAddress": "",
+        "CompanyCity": "",
+        "TaxNumber": "112890694",
+        "ActivityNumber": "",
+        "OtherCompanyActivities": "",
+        "StampUsage": true,
+        "BankName": "",
+        "BankAccountNumber": "",
+        "TaxLiability": false,
+        "CompanyWebsite": "",
+        "CompanyWebshop": "",
+        "LegalRepresentatives":[                        ->If nothing populated then send empty array []
+            {
+                "FullName": "Mirko Kruščić",            -> Mandatory for 'save' if files uploading
+                "PersonalNumber": "",
+                "DateOfBirth": "25/04/2024",            -> Format: dd/MM/yyyy. If user don't select date, send empty string
+                "PlaceOfBirth" : "",
+                "AddressOfResidence": "",
+                "CityOfResidence": "",
+                "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
+				"StatementOfOfficialDocumentIsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
+                "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
+				"IdCardIsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
+                "IdCard": "",                           -> if it is new file uplad then base 64 string, else string from API
+                "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
+                "PlaceOfIssue": "",
+                "IssuerName": "",
+                "DateOfIssue": "25/04/2024",            -> Format: dd/MM/yyyy. If user don't select date, send empty string
+                "DocumentNumber": ""
+            }
+        ]
+   },
+   "CompanyStructure":{
+        "CountriesOfBusiness": "Serbia,Croatia,Montenegro", -> string with ',' delimiter and no spaces between
+        "NameOfTheForeignExchangeAndIDNumber": "",
+        "OffShoreFoundationInOwnerStructure": false,    
+        "PercentageOfForeignUsers": 0,                  
+        "OwnerStructure": "Person",                     -> Can be string: 'Person', 'Company' or 'PersonAndCompany'
+        "Owners":[                                      -> If nothing populated then send empty array []
+            {
+                "FullName": "Mirko Kruščić",            -> Mandatory for 'save' if files uploading
+                "PersonalNumber": "",
+                "DateOfBirth": "25/04/2024",            -> Format: dd/MM/yyyy. If user don't select date, send empty string
+                "PlaceOfBirth": "",
+                "AddressOfResidence": "",
+                "CityOfResidence": "",
+                "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
+				"StatementOfOfficialDocumentIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
+                "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
+                "OwningPercentage": 25.1,
+                "Role": "",
+                "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
+                "DocumentNumber": "",
+                "IssueDate": "25/04/2024",              -> Format: dd/MM/yyyy. If user don't select date, send empty string
+                "IssuerName": "",
+                "DocumentIssuancePlace": "",
+                "Citizenship": "",
+				"IdCardIsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
+                "IdCard": ""                            -> if it is new file uplad then base 64 string, else string from API
+            }
+        ]
+   },
+   "BusinessData":{
+        "BusinessModel": "My business model",
+        "RetailersNumber": 0,
+        "ExpectedMonthlyTurnover": 0,
+        "ExpectedYearlyTurnover": 0,
+        "ThreeMonthAccountTurnover": 0,
+        "CardPaymentPercentage": 0,
+        "AverageTransactionAmount": 0,
+        "AverageDailyTurnover": 0,
+        "CheapestProductAmount": 0,
+        "MostExpensiveProductAmount": 0,
+        "SellingGoodsWithDelayedDelivery": false,
+        "PeriodFromPaymentToDeliveryInDays": 0,
+        "ComplaintsPerMonth": 0,
+        "ComplaintsPerYear": 0,
+        "MethodOfDeliveringGoodsToCustomers": "",
+        "DescriptionOfTheGoodsToBeSoldOnline": "",
+        "EComerceContactFullName": "",
+        "EComerceResponsiblePersonPhone": "",
+        "EComerceContactEmail": "",
+        "IPSOnly": false
+   },
+   "LegalDocuments": {
+        "ContractWithEMIIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
+        "ContractWithEMI": "",                      -> if it is new file uplad then base 64 string, else string from API
+        "ContractWithVaulterIsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
+        "ContractWithVaulter": "",                  -> if it is new file uplad then base 64 string, else string from API
+        "PromissoryNoteIsNewUpload": false,        -> if it is new file upload then 'true', else 'false'
+        "PromissoryNote": "",                       -> if it is new file uplad then base 64 string, else string from API
+        "BusinessCooperationRequestIsNewUpload": false,    -> if it is new file upload then 'true', else 'false'
+        "BusinessCooperationRequest": ""                    -> if it is new file uplad then base 64 string, else string from API
+   }
+}
+````
+
+
+**Response**
+
+
+````
+{
+    "success": true
+}
+````
+
+### Submit onboarding data
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/SubmitOnboardingData.ws")}}`  
+Method: `POST`
+
+Call this resource to submit onboarding.
+
+**Request**
+
+````
+{
+}
+````
+
+
+**Response**
+
+
+````
+{
+    "success": true
+}
+````
+
+
+### Download uploaded onboarding file
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/DownloadFile.ws")}}`  
+Method: `POST`
+
+Call this resource to download file that is previously uploaded on server.
+
+**Request**
+
+````
+{
+    "FileName": string
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `FileName`        | File name retrived from endpoint GetOnboardingData. |
+
+**Response**
+
+````
+{
+    "File": base 64 ecoded string
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+| `File `        |  Base64 encoded file |
+
+
+### Download template file
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/DownloadTemplateFile.ws")}}`  
+Method: `POST`
+
+Call this resource to download template PDF file.
+
+**Request**
+
+````
+{
+	"FileType": string,
+	"IsEmptyFile":  boolean,
+    "PersonPositionInCompany": string,
+	"PersonIndex": int
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+|`FileType`| Type of template file. This value can be one of strings: "ContractWithVaulter", "ContractWithEMI", "StatementOfOfficialDocument", "BusinessCooperationRequest", "PromissoryNote" . |
+|`IsEmptyFile`| **`True`**: return template file with no onboarding data populated. **`False`**: return template file populated with onboarding data |
+|`PersonPositionInCompany`| Uses with **FileType = StatementOfOfficialDocument**. For other types send empty string. Person position in company: Can be string "LegalRepresentative" or "Owner" |
+|`PersonIndex`| Uses with **FileType = StatementOfOfficialDocument**. For other types send 0. Person position in array of LegalRepresentative or Owners, starting from 0 |
+
+**Response**
+
+````
+{
+    "Name": "File name.pdf",
+    "File": "JVBERi0xLjUNJeLjz9MNCjIwIDAgb2JqDTw8L0xpbmVhcml6 ..."
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+|`Name`|  File name |
+|`File`|  Base64 encoded file |

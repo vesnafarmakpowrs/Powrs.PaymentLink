@@ -1,6 +1,9 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://rs.neuron.vaulter.nu/Downloads/EscrowPaylinkRS.xsd" targetNamespace="https://rs.neuron.vaulter.nu/Downloads/EscrowPaylinkRS.xsd" elementFormDefault="qualified">
 	<xs:complexType name="Empty" />
 	<xs:element name="CancelPayment" type="Empty"/>
+	<xs:element name="RetryReleaseFundsToSeller" type="Empty"/>
+	<xs:element name="SMSCounterUpdate" type="Empty"/>
+	<xs:element name="EmailSentCounterUpdate" type="Empty"/>
 	<xs:element name="PayspotPaymentCompleted">
 		<xs:complexType>
 			<xs:attribute name="payspotOrderId" type="xs:string" use="required" />
@@ -8,4 +11,14 @@
 			<xs:attribute name="paymentType" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="PayoutDateUpdated">
+		<xs:complexType>
+			<xs:attribute type="xs:string" use="required" name="expectedPayoutDate" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LanguageChanged">
+	<xs:complexType>
+		<xs:attribute name="language" type="xs:string" use="required" />
+	</xs:complexType>
+</xs:element>
 </xs:schema>

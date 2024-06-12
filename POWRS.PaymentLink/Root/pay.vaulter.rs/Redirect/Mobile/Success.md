@@ -6,14 +6,13 @@ Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
 CSS: ../../css/Payout.cssx
 CSS: ../../css/Status.css
-JavaScript: ../../js/PaymentLink.js
 viewport : Width=device-width, initial-scale=1
 Parameter: ORDERID
 Parameter: lng
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<div class="container">
+<div class="container-status">
 <div class="content">
 {{
   Language:= null;
@@ -26,7 +25,6 @@ if(Language == null) then
  lng:= "rs";
  Language:= Translator.GetLanguageAsync("rs");
 );
-
 LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
 if(LanguageNamespace == null) then 
 (
@@ -37,13 +35,13 @@ if(LanguageNamespace == null) then
 Order := select top 1 OrderId, ContractId, TokenId from PayspotPayments where OrderId = ORDERID;
 TokenID := Order.TokenId[0];
 ID := Order.ContractId[0];
-
 Token := select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId=TokenID;
 if !exists(Token) then
 (
   ]]<b>Payment link is not valid</b>[[;
   Return("");
 );
+
 ContractState:= "";
 if Token.HasStateMachine then
 (
@@ -51,8 +49,7 @@ if Token.HasStateMachine then
 	if exists(CurrentState) then
 		ContractState:= CurrentState.State;
 );
-if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" || ContractState == "Done" || System.String.IsNullOrEmpty(ContractState)) then 
-(
+
     Contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= Token.OwnershipContract;
    
     if !exists(Contract) then
@@ -94,24 +91,20 @@ if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" |
       ]]  <table style="width:100%">
          <tr class="welcomeLbl">   
          <td><img class="vaulterLogo" src="../../resources/vaulter_txt.svg" alt="Vaulter"/> </td>
-    <td coolspan="2">
-       <select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
+         <td coolspan="2">
+         </td>
   </tr>
    <tr>
      <td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
 </tr>
 </table>
-
 <input type="hidden" value="((lng ))" id="prefferedLanguage"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
-
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(27) ))" id="TransactionCompleted"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(28) ))" id="TransactionFailed"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
-
 <input type="hidden" value="((Country ))" id="country"/>
-
 <div class="payment-details">
   <table style="width:100%">
     <tr id="tr_header" class="table-row">
@@ -136,18 +129,6 @@ if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" |
     <tr id="tr_space" class="spaceUnder">
       <td colspan="2"></td>
     </tr>
-    <tr id="tr_fees" class="spaceUnder">
-      <td colspan="2" class="item border-radius">
-        <table style="vertical-align:middle; width:100%;">
-          <tr>
-            <td style="width:80%">((LanguageNamespace.GetStringAsync(21) ))</td>
-            <td class="itemPrice" rowspan="2">((EscrowFee))
-            <td>
-            <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
     <tr class="spaceUnder">
       <td colspan="2"></td>
     </tr>
@@ -155,7 +136,7 @@ if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" |
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
           <tr>
-            <td style="width:80%">**((LanguageNamespace.GetStringAsync(20) ))**</td>
+            <td style="width:80%">**((LanguageNamespace.GetStringAsync(55) ))**</td>
             <td class="itemPrice" rowspan="2">((AmountToPay))
             <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
@@ -166,8 +147,6 @@ if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" |
   </table>
 </div>
 <div class="spaceItem"></div>
-
-
  <div class="vaulter-details container">
         <div class="messageContainer messageContainer_width">
             <div class="imageContainer">
@@ -180,19 +159,10 @@ if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" |
                 <span>((LanguageNamespace.GetStringAsync(51) ))</span>
             </div>
         </div>
-    </div>
-
-   [[;
-)
-else if ContractState == "PaymentCanceled" then 
-(
-]]**((LanguageNamespace.GetStringAsync(14) ))**ed[[;
-)
+    </div>[[;
 }}
-
 </div>
 </main>
-
 <div class="footer-parent">
   <div class="footer">
    Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - 2024 POWRS 

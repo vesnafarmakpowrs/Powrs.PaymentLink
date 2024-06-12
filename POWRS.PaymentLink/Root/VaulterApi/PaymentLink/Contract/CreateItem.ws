@@ -44,12 +44,12 @@ if(PPaymentDeadline not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{
 (
     Error("PaymentDeadline date format not valid.");
 );
-if(PBuyerFirstName not like "[\\p{L}\\s]{2,20}") then 
+if(PBuyerFirstName not like "[\\p{L}\\s\/,.&_-]{2,20}") then 
 (
     Error("buyerFirstName not valid.");
 );
 
-if(PBuyerLastName not like "[\\p{L}\\s]{2,20}") then
+if(PBuyerLastName not like "[\\p{L}\\s\/,.&_-]{2,20}") then
 (
     Error("buyerLastName not valid.");
 );

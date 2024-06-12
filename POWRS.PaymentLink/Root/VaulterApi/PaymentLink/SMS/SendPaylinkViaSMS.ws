@@ -66,6 +66,11 @@ try
 	Form["sender"] := "Vaulter";
 	Form["message"] := SMSBody;
 	Post("https://api.txtlocal.com/send/", Form);
+
+	addNoteEndpoint:="https://" + Gateway.Domain + "/AddNote/" + tokenObj.TokenId;
+	namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
+	Post(addNoteEndpoint ,<SMSCounterUpdate xmlns=namespace  />,{},Waher.IoTGateway.Gateway.Certificate);
+
 		
 	"Success";
 )

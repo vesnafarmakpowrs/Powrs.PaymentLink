@@ -9,7 +9,8 @@ namespace POWRS.PaymentLink.Module
         {
             return Task.FromResult(new IConfigurablePage[]
             {
-                new ConfigurablePage("PaymentLink", "/Payout/Settings.md", "Admin.Payments.Powrs.PaymentLink")
+                new ConfigurablePage("PaymentLink", "/Payout/Settings.md", "Admin.Payments.Powrs.PaymentLink"),
+                new ConfigurablePage("ShowAllOnboardings", "/Payout/ShowAllOnboardings.md", "Admin.Onboarding.Modify")
             });
         }
 

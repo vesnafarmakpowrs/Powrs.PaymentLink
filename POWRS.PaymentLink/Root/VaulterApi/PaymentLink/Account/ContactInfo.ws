@@ -1,6 +1,11 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
 ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
+if(ValidatedUser.role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin.ToString()) then 
+(
+    Forbidden("");
+);
+
 ({
     "PhoneNumber": Required(Str(POrgPhoneNumber)),
     "WebAddress": Required(Str(POrgWebAddress)),
@@ -80,6 +85,11 @@ if(System.String.IsNullOrEmpty(POrgTermsAndConditions) or
 if(errors.Count > 0) then 
 (
     BadRequest(errors);
+);
+
+if(ValidatedUser.orgName == "")then
+(
+    BadRequest("You need to apply for legal id first");
 );
 
 organizationInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = ValidatedUser.orgName;

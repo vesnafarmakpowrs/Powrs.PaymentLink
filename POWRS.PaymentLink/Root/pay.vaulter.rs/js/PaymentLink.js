@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     let jwt = document.getElementById("jwt");
-    if (!jwt.value.trim() === "") {
+    if (jwt == null && !jwt.value.trim() == "") {
         alert("Session token not found, refresh the page and try again");
     }
 
@@ -68,10 +68,12 @@ function GenerateLanguageDropdown() {
             if (response != null && response.length > 0) {
                 const languageDropdown = document.getElementById("languageDropdown");
                 response.forEach(language => {
-                    let option = document.createElement("option");
-                    option.value = language.Code;
-                    option.textContent = language.Name;
-                    languageDropdown.appendChild(option);
+                    if (language.Code != 'sv') {
+                        let option = document.createElement("option");
+                        option.value = language.Code;
+                        option.textContent = language.Name;
+                        languageDropdown.appendChild(option);
+                    }
                 });
 
                 languageDropdown.value = prefferedLanguage.value;
@@ -156,7 +158,7 @@ function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUs
         }));
 }
 
-function InitiatePaymentForm(ipsOnly, onSuccess) {
+function InitiatePaymentForm(onSuccess) {
     document.getElementById("payspot-submit").style.display = "none";
     document.getElementById("tr_spinner").style.display = null;
     CollapseDetails();
@@ -178,11 +180,11 @@ function InitiatePaymentForm(ipsOnly, onSuccess) {
         })
 }
 function StartPayment() {
-    InitiatePaymentForm(false, ShowPayspotPage);
+    InitiatePaymentForm(ShowPayspotPage);
 }
 
 function GenerateIPSForm() {
-    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
+    InitiatePaymentForm(FillAndSubmitPayspotIPSForm);
 }
 
 function PaymentCompleted(Result) {

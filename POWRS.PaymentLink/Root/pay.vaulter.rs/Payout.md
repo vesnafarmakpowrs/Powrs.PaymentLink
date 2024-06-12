@@ -19,23 +19,6 @@ JavaScript: js/PaymentLink.js
 <div class="container">
 <div class="content">
 {{
-  Language:= null;
-if(exists(lng)) then 
-(
-  Language:= Translator.GetLanguageAsync(lng);
-);
-if(Language == null) then 
-(
- lng:= "rs";
- Language:= Translator.GetLanguageAsync("rs");
-);
-Log.Informational(lng, null);
-LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
-if(LanguageNamespace == null) then 
-(
- ]]<b>Page is not available at the moment</b>[[;
- Return("");
-);
 
 try
 (
@@ -133,7 +116,40 @@ if Token.HasStateMachine then
         Variable.Name like "AmountToPay" ?   AmountToPay := MarkdownEncode(Variable.Value.ToString("N2"));
       );
 
-     Country := 'RS';
+     if(!exists(Country)) then 
+     (
+        Country := 'RS';
+     );
+
+      Language:= null;
+      if(exists(lng) and lng != "") then
+      (
+        Language:= Translator.GetLanguageAsync(lng);
+      )
+      else 
+      (
+        Language:= Translator.GetLanguageAsync(Country.ToLowerInvariant());
+      );
+
+      if(Language == null) then
+      (
+        Language:= Translator.GetLanguageAsync("rs");
+      );
+      
+      LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
+      if(LanguageNamespace == null) then 
+      (
+       ]]<b>Page is not available at the moment</b>[[;
+       Return("");
+      );
+
+      if(ContractState == "AwaitingForPayment" and Country != Language.Code.ToUpper()) then
+      (
+        addNoteEndpoint:="https://" + Gateway.Domain + "/AddNote/" + Token.TokenId;
+	    namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
+	    Post(addNoteEndpoint ,<LanguageChanged xmlns=namespace language=Language.Code.ToUpper() />,{},Waher.IoTGateway.Gateway.Certificate);
+      );
+
      BuyerFirstName := Before(BuyerFullName," ");
      PayspotId := Before(ID,"@");
      tokenDurationInMinutes:= Int(GetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", 5));
@@ -147,7 +163,7 @@ if Token.HasStateMachine then
                 "id": NewGuid().ToString(),
                 "ip": Request.RemoteEndPoint,
                 "country": Country,
-                "language": lng,
+                "ipsOnly": IpsOnly,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
 
@@ -163,7 +179,7 @@ if Token.HasStateMachine then
 </tr>
 </table>
 
-<input type="hidden" value="((lng ))" id="prefferedLanguage"/>
+<input type="hidden" value="((Language.Code ))" id="prefferedLanguage"/>
 <input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
 
@@ -312,7 +328,7 @@ else
 </div>
    [[;
 )
-else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" )then 
+else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" || ContractState == "ReleaseFundsToSellerFailed" )then 
 (
 ]]<div class="payment-completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>[[;
 )

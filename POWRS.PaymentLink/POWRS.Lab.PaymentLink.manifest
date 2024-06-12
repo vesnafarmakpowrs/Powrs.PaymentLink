@@ -13,9 +13,6 @@
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="FeeCalculator">
-				<Folder name="Reports">
-					<Content fileName="GenerateFormPDF.ws"/>
-				</Folder>
 				<Folder name="HtmlTemplates">
 					<Folder name="FeeCalculatorForm">
 						<Content fileName="App.css"/>
@@ -29,6 +26,9 @@
 						<Content fileName="Style.css"/>
 						<Content fileName="SwitchToggle.css"/>
 					</Folder>
+				</Folder>
+				<Folder name="Reports">
+					<Content fileName="GenerateFormPDF.ws"/>
 				</Folder>
 			</Folder>
 			<Folder name="PaymentLink">
@@ -47,6 +47,10 @@
 					<Content fileName="VerifyEmail.ws"/>
 					<Content fileName="CreatePasswordResetRequest.ws"/>
 					<Content fileName="ResetPassword.ws"/>
+					<Folder name="Scheduler">
+						<Content fileName="GetPayoutSchedule.ws"/>
+						<Content fileName="SavePayoutSchedule.ws"/>
+					</Folder>
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>
@@ -66,8 +70,66 @@
 					<Content fileName="SendContactUsEmail.ws"/>
 					<Content fileName="SendPaylinkViaEmail.ws"/>
 				</Folder>
-				<Folder name="SMS">
-					<Content fileName="SendPaylinkViaSMS.ws"/>
+				<Folder name="Onboarding">
+					<Content fileName="AllowEdit.ws"/>
+					<Content fileName="DownloadFile.ws"/>
+					<Content fileName="DownloadTemplateFile.ws"/>
+					<Content fileName="GetOnboardingData.ws"/>
+					<Content fileName="SaveOnboardingData.ws"/>
+					<Content fileName="SubmitOnboardingData.ws"/>
+					<Folder name="Template">
+						<Content altFolder="..\..\..\..\..\Onboarding\TemplateFiles" fileName="PromissoryNoteIntruction.pdf"/>						
+						<Folder name="PaySpot">
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest.html"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest_Css.css"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="ContractPaySpot.html"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="ContractPaySpot_Css.css"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpot_CompanyInfo.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpot_Logo.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpot_logoNoText.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocument.html"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocument_Css.css"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocumentLine.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page01.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page02.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page03.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page04.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page05.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page06.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page07.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page08.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page09.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page10.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page11.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page12.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page13.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page14.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page15.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page16.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page17.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page18.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page19.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page20.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page21.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page22.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpotAttachment3.png"/>
+						</Folder>
+						<Folder name="Powrs">
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="Powrs_Logo.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="ContractPowrs.html"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="ContractPowrs_Css.css"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page01.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page02.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page03.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page04.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page05.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page06.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page07.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page08.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page09.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment2_Page01.png"/>
+						</Folder>
+					</Folder>
 				</Folder>
 				<Folder name="Reports">
 					<Content fileName="AdminPortalDashboard.ws"/>
@@ -77,6 +139,9 @@
 					<Content fileName="OnBoardedUsers.ws"/>
 					<Content fileName="ReportTransactions.ws"/>
 					<Content fileName="SuccessfulTransactions.ws"/>
+				</Folder>
+				<Folder name="SMS">
+					<Content fileName="SendPaylinkViaSMS.ws"/>
 				</Folder>
 			</Folder>
 		</Folder>
@@ -105,19 +170,6 @@
 				<Content fileName="PaymentLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
 			</Folder>
 			<Folder name="resources">
-<<<<<<< HEAD
-				<Content fileName="credit-card-payment.svg"/>
-				<Content fileName="direct_payment.svg"/>
-				<Content fileName="expand.svg"/>
-				<Content fileName="spin.svg" />
-				<Content fileName="spinner.gif"/>
-				<Content fileName="vaulter_logo.svg"/>
-				<Content fileName="vaulter_txt.svg"/>
-				<Content fileName="vaulterlogo.svg"/>
-				<Content fileName="error_red.png"/>
-				<Content fileName="success_green.png"/>
-				<Content fileName="vaulter_logo.webp"/>
-=======
 				<Content fileName="credit-card-payment.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="direct_payment.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="expand.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
@@ -128,12 +180,14 @@
 				<Content fileName="vaulterlogo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="error_red.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="success_green.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
-
->>>>>>> Master
 			</Folder>
 		</Folder>
 		<Folder name="Payout">
 			<Content fileName="Settings.md"/>
+			<Content fileName="ShowAllOnboardings.js"/>
+			<Content fileName="ShowAllOnboardings.md"/>
+			<Content fileName="ViewOnboarding.js"/>
+			<Content fileName="ViewOnboarding.md"/>
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>

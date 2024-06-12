@@ -10,7 +10,7 @@
 			<RoleReference role="Creator" />
 		</Owner>
 		<TrustProvider>
-			<RoleReference role="TrustProvider" /> 
+			<RoleReference role="TrustProvider" />
 		</TrustProvider>
 		<Value>
 			<ParameterReference parameter="Value" />
@@ -101,6 +101,12 @@
 				<Variable id="EscrowFee">
 					<TagReference tag="EscrowFee" />
 				</Variable>
+				<Variable id="SMSCounter">
+					<TagReference tag="SMSCounter" />
+				</Variable>
+				<Variable id="EmailSentCounter">
+					<TagReference tag="EmailSentCounter" />
+				</Variable>
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
@@ -122,10 +128,23 @@
 				<Variable id="CanCancel">
 					<Boolean>false</Boolean>
 				</Variable>
+				<Variable id="RefundedAmount">
+					<Number>0</Number>
+				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+					<OnEvent actionRef="ChangeBuyerLanguage">
+						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="UpdateSMSCounter">
+						<OnExternalXmlNote localName="SMSCounterUpdate" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="UpdateEmailSentCounter">
+						<OnExternalXmlNote localName="EmailSentCounterUpdate" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
@@ -138,10 +157,18 @@
 					<OnEnter actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= true;" />
 					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>
 					<OnEvent actionRef="CancelPayment" newState="PaymentCanceled" failureState="PaymentCompleted">
-						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
-					<OnEvent actionRef="ReleaseFunds" failureState="PaymentCompleted" newState="Done">
+					<OnEvent actionRef="PayoutDateUpdated">
+						<OnExternalXmlNote localName="PayoutDateUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
+					</OnEvent>
+				</State>
+				<State id="ReleaseFundsToSellerFailed">
+					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
+						<OnExternalXmlNote localName="RetryReleaseFundsToSeller" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 				</State>
 				<State id="PaymentCanceled">
@@ -149,7 +176,30 @@
 				</State>
 				<State id="Done">
 					<OnEnter actionRef="MarkAsDone"/>
-				</State>
+				</State>				
+				<Action id="UpdateEmailSentCounter">
+					<PersistVariable name="EmailSentCounter" value="{EmailSentCounter + 1}" />
+				</Action>
+				<Action id="UpdateSMSCounter">
+					<PersistVariable name="SMSCounter" value="{SMSCounter + 1 }" />
+				</Action>				
+				<Action id="PayoutDateUpdated">
+					<Script>
+						newPayoutDate:= SelectXmlStr(Note,'/default:PayoutDateUpdated/@expectedPayoutDate');
+					</Script>
+
+					<PersistVariable name="ExpectedPayoutDate" value="{DateTimeUtc(newPayoutDate)}" />
+				</Action>
+				<Action id="ChangeBuyerLanguage">
+					<Script>
+						newLanguage:= SelectXmlStr(Note,'/default:LanguageChanged/@language');
+					</Script>
+					<If condition="newLanguage like '[A-Z]{2}' and newLanguage != Country">
+						<Then>
+							<PersistVariable name="Country" value="{newLanguage}"></PersistVariable>
+						</Then>
+					</If>
+				</Action>
 				<Action id="MarkAsDone">
 					<PersistVariable name="MarkedAsDone" value="true"/>
 				</Action>
@@ -163,23 +213,32 @@
 				<Action id="CancelPayment">
 					<If condition="TotalAmountPaid &lt; AmountToPay">
 						<Then>
-							<TextNote content="The amount paid is not sufficient" />							
+							<TextNote content="The amount paid is not sufficient" />
 						</Then>
 						<Else>
+							<PersistVariable name="RefundPaymentMessage" value="" />
 							<Script>
-								<![CDATA[					
+								<![CDATA[
 									AmountToSell:= AmountToPay;
 									BankAccountToSell:= "";
 									SellEdalerFrom:= Seller;
 									ServiceProviderId:= SellerServiceProviderId;
 									ServiceProviderType:= SellerServiceProviderType;
 									AccountName:= SellerName;
-									MessageOnError:= 'ReleaseFundsToSeller error';
+									MessageOnError:= 'CancelPayment error';
 									Mode:= 'Refund';
 									Message:= "Povrat novca."
 								]]>
 							</Script>
-							<CallAction actionRef="TrySellEdaler" />
+							<Try>
+								<CallAction actionRef="TrySellEdaler" />
+								<PersistVariable name="RefundPaymentMessage" value="ok" />
+								<Catch exceptionVariable="ex">
+									<PersistVariable name="RefundPaymentMessage" value="ex.Message" />
+									<Error reason="ex.Message"></Error>
+								</Catch>
+							</Try>
+							<PersistVariable name="RefundedAmount" value="{AmountToPay}" />
 						</Else>
 					</If>
 				</Action>
@@ -296,7 +355,12 @@
 									Message:= "";
 								]]>
 							</Script>
-							<CallAction actionRef="TrySellEdaler" />
+							<Try>
+								<CallAction actionRef="TrySellEdaler" />
+								<Catch exceptionVariable="ex">
+									<PersistVariable name="ReleaseFundsToSellerError" value="{ex.Message}"/>
+								</Catch>
+							</Try>
 						</Else>
 					</If>
 				</Action>
@@ -430,6 +494,12 @@
 		<Tag name="EscrowFee">
 			<ParameterReference parameter="EscrowFee" />
 		</Tag>
+		<Tag name="SMSCounter">
+			<ParameterReference parameter="SMSCounter" />
+		</Tag>
+		<Tag name="EmailSentCounter">
+			<ParameterReference parameter="EmailSentCounter" />
+		</Tag>		
 		<Tag name="SupportedPaymentMethods">
 			<ParameterReference parameter="SupportedPaymentMethods" />
 		</Tag>
@@ -501,6 +571,21 @@
 				</paragraph>
 			</description>
 		</numericalParameter>
+		<numericalParameter name="SMSCounter" value="0" guide="SMS Counter" min="0" minIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Num of sent SMS messages with link</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+		<numericalParameter name="EmailSentCounter" value="0" guide="Email Sent Counter" min="0" minIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Num of sent Email messages with link</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+		
 		<stringParameter name="Currency" value="RSD" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
 			<description xml:lang="en">
 				<paragraph>
