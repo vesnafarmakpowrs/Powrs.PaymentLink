@@ -24,7 +24,6 @@ ValidatePostedData(Posted) := (
 	if(errors.Count > 0)then
 	(
 		Error(errors);
-		return (0);
 	);
 
 	if(!exists(Posted.GeneralCompanyInformation.FullName) or
@@ -442,11 +441,9 @@ ValidatePostedData(Posted) := (
 	if(errors.Count > 0)then
 	(
 		Error(errors);
-		return (0);
-	)else
-	(
-		return (1); 
 	);
+	
+	return (1); 
 );
 
 SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):= 
