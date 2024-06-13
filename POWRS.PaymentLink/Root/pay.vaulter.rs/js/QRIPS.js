@@ -51,7 +51,7 @@ function InitiateIPSPayment(onSuccess) {
             "tabId": TabID,
             "ipsOnly": true,
             "bankId": 0,
-            "returnURL": ""
+            "isCompany": false
         },
         (response) => {
             onSuccess(response);

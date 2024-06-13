@@ -5,8 +5,7 @@ SessionToken:=  Global.ValidatePayoutJWT();
 	"tabId": Required(Str(PTabId)),
 	"ipsOnly": Required(Bool(PIpsOnly)),
 	"bankId": Required(PBankId),
-    "isCompany" : Required(PIsCompany),
-	"returnURL" : Required(PReturnURL)
+    "isCompany" : Required(PIsCompany)
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
@@ -59,7 +58,7 @@ try
 	if (PIpsOnly) then 
 	(
 	   if (exists(PBankId)) then (
-	     GeneratedIPSData:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSData(contractParameters, identityProperties, PBankId, 150, PIsCompany, PReturnURL);
+	     GeneratedIPSData:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSData(contractParameters, identityProperties, PBankId, 150, PIsCompany);
 		 responseObject.Response:= GeneratedIPSData.ToDictionary();
 	   );		
 	)
