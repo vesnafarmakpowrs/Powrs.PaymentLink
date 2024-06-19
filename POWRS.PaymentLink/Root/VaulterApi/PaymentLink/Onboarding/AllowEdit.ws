@@ -5,7 +5,7 @@ Authorize(User,"Admin.Onboarding.Modify");
 	"ObjectId": Required(Str(PObjectId))
 }:= Posted) ??? BadRequest(Exception.Message);
 
-logObjectID := "Neuron User";
+logObject := "Neuron User";
 logEventID := "AllowEdit.ws";
 logActor := Request.RemoteEndPoint;
 
@@ -18,7 +18,7 @@ try
 	generalInfo.CanEdit := true;
 	Waher.Persistence.Database.Update(generalInfo);
 
-	Log.Informational("Succeffully allow edit onboarding for user: " + generalInfo.UserName, logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully allow edit onboarding for user: " + generalInfo.UserName, logObject, logActor, logEventID, null);
 	
 	{
 		success: true
@@ -26,7 +26,7 @@ try
 )
 catch
 (
-	Log.Error(Exception.Message, logObjectID, logActor, logEventID, null);
+	Log.Error(Exception.Message, logObject, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );
 

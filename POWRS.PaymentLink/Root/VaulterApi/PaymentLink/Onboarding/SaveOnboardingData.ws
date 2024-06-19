@@ -1,6 +1,6 @@
 ﻿SessionUser:= Global.ValidateAgentApiToken(false, false);
 
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "SaveOnboardingData.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
@@ -828,14 +828,14 @@ try
 	currentMethod := "SaveLegalDocuments"; 
 	SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username, Posted.GeneralCompanyInformation.ShortName);
 	
-	Log.Informational("Succeffully saved OnBoarding data.", logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully saved OnBoarding data.", logObject, logActor, logEventID, null);
 	{
 		success: true
 	}
 )
 catch
 (
-	Log.Error("Unable to save onboarding data: " + Exception.Message + "\ncurrentMethod: " + currentMethod, logObjectID, logActor, logEventID, null);
+	Log.Error("Unable to save onboarding data: " + Exception.Message + "\ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
     if(errors.Count > 0) then 
     (
 		BadRequest(errors);

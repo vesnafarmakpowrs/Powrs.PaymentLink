@@ -7,7 +7,7 @@
 	"PersonIndex": Optional(Int(PPersonIndex))
 }:= Posted) ??? BadRequest(Exception.Message);
 
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "DownloadTemplateFile.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 errors:= Create(System.Collections.Generic.List, System.String);
@@ -464,7 +464,7 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{CompanyTaxNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.TaxNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 	);
-	Log.Informational("Finish prepering HTML content. Start creating PDF file...", logObjectID, logActor, logEventID, null);
+	Log.Informational("Finish prepering HTML content. Start creating PDF file...", logObject, logActor, logEventID, null);
 	
 	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
 	Return (newPDFFilePath);
@@ -713,12 +713,12 @@ try
 	else if (PFileType == "PromissoryNote") then 
 	(
 		returnFilePath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PromissoryNoteIntruction.pdf";
-		fileName := "PromissoryNoteIntruction.pdf";
+		fileName := "PromissoryNoteIntsruction.pdf";
 	);
-	Log.Informational("Finish creating pdf file. start coverting to bytes...", logObjectID, logActor, logEventID, null);
+	Log.Informational("Finish creating pdf file. start coverting to bytes...", logObject, logActor, logEventID, null);
 	
     bytes := System.IO.File.ReadAllBytes(returnFilePath);
-	Log.Informational("Succeffully returned file:" + PFileType, logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully returned file: " + PFileType, logObject, logActor, logEventID, null);
 	
 	{
 		Name: fileName,
@@ -727,6 +727,6 @@ try
 )
 catch 
 (
-	Log.Error(Exception.Message, logObjectID, logActor, logEventID, null);
+	Log.Error(Exception.Message, logObject, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );
