@@ -31,6 +31,7 @@ try
 	);
 	
 	update BrokerAccounts set Password = PPassword where UserName == PUserName;
+	XmppServerModule.PersistenceLayer.AccountUpdated(PUserName);
 
 	{
 	}
