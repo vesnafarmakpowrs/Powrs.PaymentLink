@@ -18,7 +18,7 @@ try
 		DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 		DTDateTo := DTDateTo.AddDays(1);
 	) else (
-		DTDateFrom := TodayUtc.AddMonths(-1);
+		DTDateFrom := NowUtc.MinValue;
 		DTDateTo := TodayUtc.AddDays(1);
 	);
 	
