@@ -19,7 +19,7 @@ try
  );
 
  ContactEmail := GetSetting("POWRS.PaymentLink.ContactEmail","");  
- htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\EN\\ContactUs.html";
+ htmlTemplatePath:= Gateway.GetUrl("Payout\\HtmlTemplates\\EN\\ContactUs.html");
 
  if (!File.Exists(htmlTemplatePath)) then
     Error("Template path does not exist");
