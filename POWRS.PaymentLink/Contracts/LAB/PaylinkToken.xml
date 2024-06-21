@@ -175,7 +175,7 @@
 				</State>
 				<State id="Done">
 					<OnEnter actionRef="MarkAsDone"/>
-				</State>				
+				</State>
 				<Action id="EmailToBuyerSent">
 					<Script>
 						newEmail:= SelectXmlStr(Note,'/default:EmailToBuyerSent/@email');
@@ -185,7 +185,7 @@
 						<Then>
 							<PersistVariable name="BuyerEmail" value="{newEmail}" />	
 						</Then>
-					</If>					
+					</If>
 				</Action>
 				<Action id="SMSToBuyerSent">
 					<Script>

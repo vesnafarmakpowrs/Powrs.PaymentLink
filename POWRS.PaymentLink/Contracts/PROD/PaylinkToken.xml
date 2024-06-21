@@ -176,9 +176,6 @@
 				<State id="Done">
 					<OnEnter actionRef="MarkAsDone"/>
 				</State>
-				<Action id="UpdateEmailSentCounter">
-					<PersistVariable name="EmailSentCounter" value="{EmailSentCounter + 1}" />
-				</Action>
 				<Action id="EmailToBuyerSent">
 					<Script>
 						newEmail:= SelectXmlStr(Note,'/default:EmailToBuyerSent/@email');
@@ -200,6 +197,13 @@
 							<PersistVariable name="BuyerPhoneNumber" value="{newPhoneNumber}" />
 						</Then>
 					</If>
+				</Action>
+				<Action id="PayoutDateUpdated">
+					<Script>
+						newPayoutDate:= SelectXmlStr(Note,'/default:PayoutDateUpdated/@expectedPayoutDate');
+					</Script>
+
+					<PersistVariable name="ExpectedPayoutDate" value="{DateTimeUtc(newPayoutDate)}" />
 				</Action>
 				<Action id="ChangeBuyerLanguage">
 					<Script>
