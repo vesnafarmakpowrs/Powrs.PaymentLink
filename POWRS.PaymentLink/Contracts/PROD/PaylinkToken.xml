@@ -100,13 +100,7 @@
 				</Variable>
 				<Variable id="EscrowFee">
 					<TagReference tag="EscrowFee" />
-				</Variable>
-				<Variable id="SMSCounter">
-					<TagReference tag="SMSCounter" />
-				</Variable>
-				<Variable id="EmailSentCounter">
-					<TagReference tag="EmailSentCounter" />
-				</Variable>
+				</Variable>				
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
@@ -131,6 +125,12 @@
 				<Variable id="RefundedAmount">
 					<Number>0</Number>
 				</Variable>
+				<Variable id="SMSCounter">
+					<Number>0</Number>
+				</Variable>
+				<Variable id="EmailCounter">
+					<Number>0</Number>
+				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
@@ -138,13 +138,12 @@
 					<OnEvent actionRef="ChangeBuyerLanguage">
 						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
-					<OnEvent actionRef="UpdateSMSCounter">
-						<OnExternalXmlNote localName="SMSCounterUpdate" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					<OnEvent actionRef="SMSToBuyerSent">
+						<OnExternalXmlNote localName="SMSToBuyerSent" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
-					<OnEvent actionRef="UpdateEmailSentCounter">
-						<OnExternalXmlNote localName="EmailSentCounterUpdate" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					<OnEvent actionRef="EmailToBuyerSent">
+						<OnExternalXmlNote localName="EmailToBuyerSent" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
-					
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
@@ -180,15 +179,27 @@
 				<Action id="UpdateEmailSentCounter">
 					<PersistVariable name="EmailSentCounter" value="{EmailSentCounter + 1}" />
 				</Action>
-				<Action id="UpdateSMSCounter">
-					<PersistVariable name="SMSCounter" value="{SMSCounter + 1 }" />
-				</Action>				
-				<Action id="PayoutDateUpdated">
+				<Action id="EmailToBuyerSent">
 					<Script>
-						newPayoutDate:= SelectXmlStr(Note,'/default:PayoutDateUpdated/@expectedPayoutDate');
+						newEmail:= SelectXmlStr(Note,'/default:EmailToBuyerSent/@email');
 					</Script>
-
-					<PersistVariable name="ExpectedPayoutDate" value="{DateTimeUtc(newPayoutDate)}" />
+					<PersistVariable name="EmailCounter" value="{EmailCounter + 1}" />
+					<If condition="newEmail != BuyerEmail">
+						<Then>
+							<PersistVariable name="BuyerEmail" value="{newEmail}" />
+						</Then>
+					</If>
+				</Action>
+				<Action id="SMSToBuyerSent">
+					<Script>
+						newPhoneNumber:= SelectXmlStr(Note,'/default:SMSToBuyerSent/@phoneNumber');
+					</Script>
+					<PersistVariable name="SMSCounter" value="{SMSCounter + 1 }" />
+					<If condition="newPhoneNumber != BuyerPhoneNumber">
+						<Then>
+							<PersistVariable name="BuyerPhoneNumber" value="{newPhoneNumber}" />
+						</Then>
+					</If>
 				</Action>
 				<Action id="ChangeBuyerLanguage">
 					<Script>
@@ -570,22 +581,7 @@
 					<text>Vaulter transaction fees.</text>
 				</paragraph>
 			</description>
-		</numericalParameter>
-		<numericalParameter name="SMSCounter" value="0" guide="SMS Counter" min="0" minIncluded="true">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Num of sent SMS messages with link</text>
-				</paragraph>
-			</description>
-		</numericalParameter>
-		<numericalParameter name="EmailSentCounter" value="0" guide="Email Sent Counter" min="0" minIncluded="true">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Num of sent Email messages with link</text>
-				</paragraph>
-			</description>
-		</numericalParameter>
-		
+		</numericalParameter>		
 		<stringParameter name="Currency" value="RSD" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
 			<description xml:lang="en">
 				<paragraph>

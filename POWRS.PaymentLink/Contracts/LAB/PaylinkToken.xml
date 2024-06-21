@@ -143,8 +143,7 @@
 					</OnEvent>
 					<OnEvent actionRef="EmailToBuyerSent">
 						<OnExternalXmlNote localName="EmailToBuyerSent" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
-					</OnEvent>
-					
+					</OnEvent>					
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
@@ -182,14 +181,22 @@
 						newEmail:= SelectXmlStr(Note,'/default:EmailToBuyerSent/@email');
 					</Script>
 					<PersistVariable name="EmailCounter" value="{EmailCounter + 1}" />
-					<PersistVariable name="BuyerEmail" value="{newEmail}" />
+					<If condition="newEmail != BuyerEmail">
+						<Then>
+							<PersistVariable name="BuyerEmail" value="{newEmail}" />	
+						</Then>
+					</If>					
 				</Action>
 				<Action id="SMSToBuyerSent">
 					<Script>
 						newPhoneNumber:= SelectXmlStr(Note,'/default:SMSToBuyerSent/@phoneNumber');
-					</Script>		
+					</Script>
 					<PersistVariable name="SMSCounter" value="{SMSCounter + 1 }" />
-					<PersistVariable name="BuyerPhoneNumber" value="{newPhoneNumber}" />
+					<If condition="newPhoneNumber != BuyerPhoneNumber">
+						<Then>
+							<PersistVariable name="BuyerPhoneNumber" value="{newPhoneNumber}" />
+						</Then>
+					</If>
 				</Action>				
 				<Action id="PayoutDateUpdated">
 					<Script>
