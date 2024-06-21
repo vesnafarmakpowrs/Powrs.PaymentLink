@@ -199,6 +199,8 @@ while StateMachineInitialized == false and Counter < 10 do
 {
     "Link" : PaymentLinkAddress + "/Payout.md?ID=" + Global.EncodeContractId(ContractId),
     "EscrowFee": EscrowFee,
+    "BuyerEmail": PBuyerEmail,
+    "BuyerPhoneNumber": BuyerPhoneNumber,
     "Currency": PCurrency
 }
 

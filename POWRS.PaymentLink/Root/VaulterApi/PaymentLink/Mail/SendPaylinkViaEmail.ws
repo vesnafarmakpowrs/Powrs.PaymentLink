@@ -3,88 +3,73 @@
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
-	"Link":Required(String(PLink))
+	"Link":Required(String(PLink)),
+	"Email": Optional(String(PEmail))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 try
-(	
-	contractId := "";
-	buyerEmail := "";	
-	buyerName := "";
-	sellerName := "";
-
-	linkParts := Split(PLink, "?ID=");
-	if(count(linkParts) > 1) then 
+(
+	linkParts:= Split(PLink, "?ID=");
+	if(count(linkParts) < 2) then 
 	(
-		contractId := Global.DecodeContractId(linkParts[1]) ;
-	)
-	else 
-	(
-		BadRequest("Input link not valid...");
+		Error("Input link not valid...");
 	);
+
+	contractId:= Global.DecodeContractId(linkParts[1]);
 	
-	tokenObj :=
+	tokenObj:=
 		select top 1 * 
 		from IoTBroker.NeuroFeatures.Token t
 		where OwnershipContract = contractId;
 
 	if(tokenObj == null) then 
 	(
-		BadRequest("Input link not valid...");
+		Error("Input link not valid...");
 	);
 
 	variables := tokenObj.GetCurrentStateVariables();
 	
-	foreach variable in variables.VariableValues do
+	if(exists(PEmail)) then 
 	(
-		if(variable != null && variable.Name == "BuyerEmail") then 
+		if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
 		(
-			buyerEmail := variable.Value ?? "";
+			Error("Email not valid");
 		);
-		
-		if(variable != null && variable.Name == "Buyer") then 
-		(
-			buyerName := variable.Value ?? "";
-		);
-		
-		
-		if(variable != null && variable.Name == "SellerName") then 
-		(
-			sellerName := variable.Value ?? "";
-		);
-		
+
+		buyerEmail:= PEmail;
+	)
+	else
+	(
+		buyerEmail:= select top 1 Value from variables.VariableValues where Name = "BuyerEmail";
 	);
 	
-	buyerEmail := buyerEmail ?? "";
-	buyerName := buyerName ?? "";
-	sellerName := sellerName ?? "";
+	buyerName:= select top 1 Value from variables.VariableValues where Name = "Buyer";
+	sellerName:= select top 1 Value from variables.VariableValues where Name = "SellerName";
+	country:= select top 1 Value from variables.VariableValues where Name = "Country";
 	
-	if(buyerEmail == "") then
+	buyerEmail ?? Error("Buyer email could not be empty.");
+	buyerName ?? Error("Buyer name could not be empty.");
+	sellerName ?? Error("Seller name could not be empty.");
+	country:= country ?? "RS";
+	
+	mailTemplateUrl:= Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + country + "\\SendLinkViaEmail.html";
+	if (!File.Exists(mailTemplateUrl)) then
 	(
-		BadRequest("Buyer email not found...");
+		Error("Template path does not exist");
 	);
-	
-	MailBody := 
-		"Dear {{buyerName}},"
-		+ "<br />"
-		+ "<br /><strong>{{PKupac}}</strong> has created a Vaulter payment link for you. Click on the following &nbsp"
-		+ "<a href = '{{PLink}}'>LINK</a>"
-		+ "&nbsp to proceed with the payment."
-		+ "<br /><br />Best regards,"
-		+ "<br />Vaulter"
-		;
-	
-	MailBody := Replace(MailBody, "{{buyerName}}", buyerName);
-	MailBody := Replace(MailBody, "{{PKupac}}", sellerName);
-	MailBody := Replace(MailBody, "{{PLink}}", PLink);
+
+	MailBody:= System.IO.File.ReadAllText(mailTemplateUrl);
+	MailBody := MailBody.Replace("{{buyerName}}",buyerName);
+	MailBody := MailBody.Replace("{{sellerName}}", sellerName);
+	MailBody := MailBody.Replace("{{link}}", PLink);
 	
 	ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
 	Config := ConfigClass.Instance;
 	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, buyerEmail, "Vaulter", MailBody, null, null);
-		
-	addNoteEndpoint:="https://" + Gateway.Domain + "/AddNote/" + tokenObj.TokenId;
-	namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
-	Post(addNoteEndpoint ,<EmailSentCounterUpdate xmlns=namespace  />,{},Waher.IoTGateway.Gateway.Certificate);
+	
+	addNoteEndpoint:= Gateway.GetUrl("/AddNote/" + tokenObj.TokenId);
+	namespace:= Gateway.GetUrl("/Downloads/EscrowPaylinkRS.xsd");
+	Post(addNoteEndpoint,<EmailToBuyerSent xmlns=Gateway.GetUrl("/Downloads/EscrowPaylinkRS.xsd") email=buyerEmail />,{},Gateway.Certificate);
 
 	"Success";
 )
