@@ -205,6 +205,7 @@
 					<Content fileName="PaymentCompletedIPS.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
+					<Content fileName="SendLinkViaEmail.html"></Content>
 				</Folder>
 				<Folder name="RS">
 					<Content fileName="ContactUs.html"></Content>
@@ -212,6 +213,7 @@
 					<Content fileName="PaymentCompletedIPS.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
+					<Content fileName="SendLinkViaEmail.html"></Content>
 				</Folder>
 			</Folder>
 
