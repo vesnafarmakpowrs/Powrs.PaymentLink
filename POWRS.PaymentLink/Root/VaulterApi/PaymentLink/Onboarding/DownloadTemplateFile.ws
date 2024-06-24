@@ -464,7 +464,6 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{CompanyTaxNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.TaxNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 	);
-	Log.Informational("Finish prepering HTML content. Start creating PDF file...", logObject, logActor, logEventID, null);
 	
 	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);
 	Return (newPDFFilePath);
@@ -715,7 +714,6 @@ try
 		returnFilePath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PromissoryNoteIntruction.pdf";
 		fileName := "PromissoryNoteIntsruction.pdf";
 	);
-	Log.Informational("Finish creating pdf file. start coverting to bytes...", logObject, logActor, logEventID, null);
 	
     bytes := System.IO.File.ReadAllBytes(returnFilePath);
 	Log.Informational("Succeffully returned file: " + PFileType, logObject, logActor, logEventID, null);
