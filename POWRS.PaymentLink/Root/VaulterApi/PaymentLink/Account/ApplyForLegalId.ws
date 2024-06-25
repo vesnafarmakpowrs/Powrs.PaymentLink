@@ -21,7 +21,7 @@ SessionUser:= Global.ValidateAgentApiToken(false, false);
     "IPSONLY": Required(Str(PIpsOnly))
 }:=Posted) ??? BadRequest("Request does not conform to the specification");
 
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "ApplyForLegalId.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
@@ -214,14 +214,14 @@ try
 	            destroy(MailBody);
 			)
 			catch(
-				Log.Error("Error while sending email: " + Exception.Message, logObjectID, logActor, logEventID, null);
+				Log.Error("Error while sending email: " + Exception.Message, logObject, logActor, logEventID, null);
 			);
 		);
 	);
 )
 catch
 (
-	Log.Error("Unable to apply for legal id: " + Exception.Message, logObjectID, logActor, logEventID, null);
+	Log.Error("Unable to apply for legal id: " + Exception.Message, logObject, logActor, logEventID, null);
     if(errors.Count > 0) then 
     (
          BadRequest(errors);

@@ -108,6 +108,7 @@ SendEmail(onBoardingData):= (
 	MailBody.Append("<br />Organization short name: <strong>{{organizationShortName}}</strong>");
 	MailBody.Append("<br />Organization number: <strong>{{organizationNumber}}</strong>");
 	MailBody.Append("<br />Organization tax number: <strong>{{organizationTaxNumber}}</strong>");
+	MailBody.Append("<br />");
 	MailBody.Append("<br />Uploaded documents:");
 	MailBody.Append("<br />{{uploadedDocuments}}");
 	MailBody.Append("<br />");
