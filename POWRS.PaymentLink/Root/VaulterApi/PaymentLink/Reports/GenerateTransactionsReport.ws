@@ -36,7 +36,7 @@ try
     );
 
     stringBuilder:= Create(System.Text.StringBuilder);
-    headers:= ["Referenca", "Cena", "Način plaćanja", "Tip kartice", "Datum/vreme uplate"];
+    headers:= ["Referenca", "Cena", "Način plaćanja", "Tip kartice", "Datum/vreme uplate", "Očekivani datum isplate"];
     
     stringBuilder.Append("<tr>");
     foreach (h in headers) do 
@@ -78,6 +78,18 @@ try
 
             stringBuilder.Append("<td>");
             stringBuilder.Append(payment.DateCompleted.ToLocalTime().ToString("dd-MM-yyyy HH:mm"));
+            stringBuilder.Append("</td>");
+
+            stringBuilder.Append("<td>");
+            if(payment.ExpectedPayoutDate != null) then
+            (
+                 stringBuilder.Append(payment.ExpectedPayoutDate.ToLocalTime().ToString("dd-MM-yyyy"));
+            )
+            else 
+            (
+                stringBuilder.Append("");
+            );
+           
             stringBuilder.Append("</td>");
 
             stringBuilder.Append("</tr>");
