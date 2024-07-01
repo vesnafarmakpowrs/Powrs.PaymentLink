@@ -66,7 +66,7 @@ try(
 	);
 			
     Update BrokerAccounts set Enabled = false where UserName = PSubUserName;
-	XmppServerModule.PersistenceLayer.AccountUpdated(PUserName);
+	XmppServerModule.PersistenceLayer.AccountUpdated(PSubUserName);
 	
 	MailBody := Create(System.Text.StringBuilder);
 	MailBody.Append("Hello,");
