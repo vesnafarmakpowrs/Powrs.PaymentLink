@@ -78,7 +78,7 @@
 					<Content fileName="SaveOnboardingData.ws"/>
 					<Content fileName="SubmitOnboardingData.ws"/>
 					<Folder name="Template">
-						<Content altFolder="..\..\..\..\..\Onboarding\TemplateFiles" fileName="PromissoryNoteIntruction.pdf"/>						
+						<Content altFolder="..\..\..\..\..\Onboarding\TemplateFiles" fileName="PromissoryNoteInstruction.pdf"/>						
 						<Folder name="PaySpot">
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest.html"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest_Css.css"/>
@@ -90,28 +90,6 @@
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocument.html"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocument_Css.css"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocumentLine.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page01.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page02.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page03.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page04.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page05.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page06.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page07.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page08.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page09.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page10.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page11.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page12.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page13.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page14.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page15.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page16.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page17.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page18.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page19.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page20.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page21.png"/>
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PayspotAttachment2_Page22.png"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpotAttachment3.png"/>
 						</Folder>
 						<Folder name="Powrs">

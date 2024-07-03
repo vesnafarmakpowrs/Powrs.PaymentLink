@@ -408,7 +408,7 @@
 	  <None Update="Onboarding\TemplateFiles\Powrs\Powrs_Logo.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Onboarding\TemplateFiles\PromissoryNoteIntruction.pdf">
+	  <None Update="Onboarding\TemplateFiles\PromissoryNoteInstruction.pdf">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="POWRS.Lab.PaymentLink.manifest">

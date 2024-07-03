@@ -711,7 +711,7 @@ try
 	)
 	else if (PFileType == "PromissoryNote") then 
 	(
-		returnFilePath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PromissoryNoteIntruction.pdf";
+		returnFilePath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\PaymentLink\\Onboarding\\Template\\PromissoryNoteInstruction.pdf";
 		fileName := "PromissoryNoteIntsruction.pdf";
 	);
 	
