@@ -38,6 +38,6 @@ try
 )
 catch
 (
-	BadRequest(Exception.Message);
 	Log.Error(Exception.Message, null);
+	BadRequest(Exception.Message);
 );
