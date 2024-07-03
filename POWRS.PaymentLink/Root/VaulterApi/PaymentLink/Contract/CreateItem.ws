@@ -206,7 +206,7 @@ if(businessData != null) then
 );
 
 if IpsOnly then PayoutPage := "PayoutIPS.md";
-Log.Informational("ipsOnly: " + IpsOnly + ",\nPayoutPage: " + PayoutPage, logObject, logActor, logEventID, null);
+Log.Informational("ipsOnly: " + IpsOnly + ",\nPayoutPage: " + PayoutPage, null, null, null, null);
 
 {
     "Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractId),
