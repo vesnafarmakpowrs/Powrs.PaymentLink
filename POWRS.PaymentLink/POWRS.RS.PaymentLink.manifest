@@ -113,6 +113,7 @@
 					<Content fileName="OnBoardedUsers.ws"/>
 					<Content fileName="ReportTransactions.ws"/>
 					<Content fileName="SuccessfulTransactions.ws"/>
+					<Content fileName="PayspotTransactions.ws"/>
 				</Folder>
 				<Folder name="SMS">
 					<Content fileName="SendPaylinkViaSMS.ws"/>

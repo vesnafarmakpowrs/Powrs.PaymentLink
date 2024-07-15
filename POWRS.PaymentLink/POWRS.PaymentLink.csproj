@@ -681,7 +681,7 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Reports\GenerateTransactionsReport.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Reports\SuccessfulTransactions.ws">
+	  <None Update="Root\VaulterApi\PaymentLink\Reports\PayspotTransactions.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Scripts\StartupScripts\ApplyForAgentLegalId.config">
