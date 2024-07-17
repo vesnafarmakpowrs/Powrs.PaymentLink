@@ -57,9 +57,6 @@
 					<Content fileName="LoginSmartAdmin.ws"/>
 					<Content fileName="VerifyToken.ws"/>
 				</Folder>
-				<Folder name="Bank">
-					<Content fileName="GetBic.ws"/>
-				</Folder>
 				<Folder name="Contract">
 					<Content fileName="InitiateRefund.ws"/>
 					<Content fileName="GetContracts.ws"/>
