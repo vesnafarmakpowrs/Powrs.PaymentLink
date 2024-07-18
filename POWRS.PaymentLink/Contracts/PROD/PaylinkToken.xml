@@ -100,7 +100,13 @@
 				</Variable>
 				<Variable id="EscrowFee">
 					<TagReference tag="EscrowFee" />
-				</Variable>				
+				</Variable>
+				<Variable id="SMSCounter">
+					<Number>0</Number>
+				</Variable>
+				<Variable id="EmailCounter">
+					<Number>0</Number>
+				</Variable>
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
@@ -123,12 +129,6 @@
 					<Boolean>false</Boolean>
 				</Variable>
 				<Variable id="RefundedAmount">
-					<Number>0</Number>
-				</Variable>
-				<Variable id="SMSCounter">
-					<Number>0</Number>
-				</Variable>
-				<Variable id="EmailCounter">
 					<Number>0</Number>
 				</Variable>
 				<State id="AwaitingForPayment">
@@ -509,12 +509,6 @@
 		<Tag name="EscrowFee">
 			<ParameterReference parameter="EscrowFee" />
 		</Tag>
-		<Tag name="SMSCounter">
-			<ParameterReference parameter="SMSCounter" />
-		</Tag>
-		<Tag name="EmailSentCounter">
-			<ParameterReference parameter="EmailSentCounter" />
-		</Tag>		
 		<Tag name="SupportedPaymentMethods">
 			<ParameterReference parameter="SupportedPaymentMethods" />
 		</Tag>
