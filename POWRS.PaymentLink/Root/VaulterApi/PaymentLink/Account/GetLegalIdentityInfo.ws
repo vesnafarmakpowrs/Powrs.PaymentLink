@@ -24,14 +24,16 @@ try
 			Parameter.Value != null ? IdentityProperties.Add(Parameter.Name, Parameter.Value);
 		);
 		hasApplied := IdentityProperties.Count > 0;
-	)else (
-			
+	)
+	else 
+	(			
 		brokerAccRole := 
 			Select top 1 *
 			from POWRS.PaymentLink.Models.BrokerAccountRole
 			where UserName = ValidatedUser.username;
 		
-		if(brokerAccRole != null && brokerAccRole.Role == POWRS.PaymentLink.Models.AccountRole.ClientAdmin) then (
+		if(brokerAccRole != null && brokerAccRole.Role == POWRS.PaymentLink.Models.AccountRole.ClientAdmin) then
+		(
 			creatorIdentity := 
 				select top 1 Properties 
 				from LegalIdentities 
@@ -43,7 +45,8 @@ try
 			(
 				foreach Parameter in creatorIdentity do 
 				(
-					if(Parameter.Value != null && Parameter.Name != "FIRST" && Parameter.Name != "LAST" && Parameter.Name != "PNR" && Parameter.Name != "COUNTRY") then ( 
+					if(Parameter.Value != null && Parameter.Name != "FIRST" && Parameter.Name != "LAST" && Parameter.Name != "PNR" && Parameter.Name != "COUNTRY") then
+					( 
 						IdentityProperties.Add(Parameter.Name, Parameter.Value);
 					);
 				);

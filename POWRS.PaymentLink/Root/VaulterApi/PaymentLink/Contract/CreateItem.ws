@@ -22,6 +22,10 @@ if !exists(Posted) then BadRequest("No payload.");
 
 SessionUser:= Global.ValidateAgentApiToken(true, true);
 
+logObject := SessionUser.username;
+logEventID := "CreateItem.ws";
+logActor := Request.RemoteEndPoint.Split(":", null)[0];
+
 try
 (
 if(PRemoteId not like "^[\\p{L}\\s0-9-\/#-._]{1,50}$") then 
@@ -185,16 +189,19 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
 
 StateMachineInitialized:= false;
 Counter:= 0;
+TokenId := "";
 while StateMachineInitialized == false and Counter < 10 do 
 (
  Token:= select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract= Contract.ContractId;
  if(Token != null) then 
  (
     StateMachineInitialized:= Token.HasStateMachine;    
+    TokenId := Token.TokenId;
  );
  Counter += 1;
  Sleep(1000);
 );
+
 
 PayoutPage := "Payout.md";
 IpsOnly := false;
@@ -206,10 +213,11 @@ if(businessData != null) then
 );
 
 if IpsOnly then PayoutPage := "PayoutIPS.md";
-Log.Informational("ipsOnly: " + IpsOnly + ",\nPayoutPage: " + PayoutPage, null, null, null, null);
-
+Log.Informational("ipsOnly: " + IpsOnly + ",\nPayoutPage: " + PayoutPage, logObject, logActor, logEventID, null);
+Log.Informational("Succeffully cerated item.", logObject, logActor, logEventID, null);
 {
-    "Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractId),
+    "Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractId),	
+    "TokenId" : TokenId,
     "EscrowFee": EscrowFee,
     "BuyerEmail": PBuyerEmail,
     "BuyerPhoneNumber": BuyerPhoneNumber,
@@ -219,6 +227,6 @@ Log.Informational("ipsOnly: " + IpsOnly + ",\nPayoutPage: " + PayoutPage, null, 
 )
 catch
 (
-    Log.Error(Exception, null);
+	Log.Error(Exception, logObject, logActor, logEventID, null);
     BadRequest(Exception.Message);
 );

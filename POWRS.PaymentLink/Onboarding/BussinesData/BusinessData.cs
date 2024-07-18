@@ -138,11 +138,11 @@ namespace POWRS.PaymentLink.Onboarding
                 !string.IsNullOrWhiteSpace(eComerceResponsiblePersonPhone) &&
                 !string.IsNullOrWhiteSpace(eComerceContactEmail) &&
 
-                RetailersNumber > 0 &&
+                RetailersNumber >= 0 &&
                 ExpectedMonthlyTurnover > 0 &&
                 ExpectedYearlyTurnover > 0 &&
                 ThreeMonthAccountTurnover > 0 &&
-                CardPaymentPercentage > 0 &&
+                CardPaymentPercentage >= 0 &&
                 AverageTransactionAmount >= 0 &&
                 AverageDailyTurnover >= 0 &&
                 CheapestProductAmount > 0 &&
