@@ -1,6 +1,8 @@
 
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
+logEventID := "LoginSmartAdmin.ws";
+logActor := Request.RemoteEndPoint.Split(':', null)[0];
 ({
    "userName": Required(Str(PUserName)),
    "nonce": Required(Str(PNonce)),
@@ -19,7 +21,7 @@ try
 		BadRequest("Invalid user name or password.");
 	);
 
-    Log.Informational("Called method LoginSmartAdmin for userName :" + PUserName, "", "SmartAdmin",null);
+    Log.Informational("Called method LoginSmartAdmin for userName :" + PUserName, PUserName ,logActor, logEventID, null);
 
     validInSeconds:= 1800;
     Resp:= null;
@@ -53,6 +55,6 @@ try
 )
 catch
 (
-    Log.Error(Exception.Message, "", "SmartAdmin", null);
+    Log.Error(Exception.Message, "SmartAdmin", logActor, logEventID, null);
     BadRequest(Exception.Message);
 );
