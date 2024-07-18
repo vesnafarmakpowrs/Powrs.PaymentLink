@@ -8,8 +8,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "price":Required(Double(PPrice) >= 0.1),
     "currency":Required(String(PCurrency)),
     "description":Required(String(PDescription)),
-    "deliveryDate":Required(String(PDeliveryDate)),
-    "deliveryTime": Optional(String(PDeliveryTime)),
+    "paymentDeadline": Required(String(PPaymentDeadline)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
@@ -22,6 +21,10 @@ if !exists(Posted) then BadRequest("No payload.");
 }:=Posted) ??? BadRequest(Exception.Message);
 
 SessionUser:= Global.ValidateAgentApiToken(true, true);
+
+logObject := SessionUser.username;
+logEventID := "CreateItem.ws";
+logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
 try
 (
@@ -41,16 +44,16 @@ if(PDescription not like "[\\p{L}\\s0-9.,;:!?()'\"\\/#_~+*@$%^& -]{5,100}") then
 (
     Error("Description not valid.");
 );
-if(PDeliveryDate not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
+if(PPaymentDeadline not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
 (
-    Error("Delivery date format not valid.");
+    Error("PaymentDeadline date format not valid.");
 );
-if(PBuyerFirstName not like "[\\p{L}\\s]{2,20}") then 
+if(PBuyerFirstName not like "[\\p{L}\\s\/,.&_-]{2,20}") then 
 (
     Error("buyerFirstName not valid.");
 );
 
-if(PBuyerLastName not like "[\\p{L}\\s]{2,20}") then
+if(PBuyerLastName not like "[\\p{L}\\s\/,.&_-]{2,20}") then
 (
     Error("buyerLastName not valid.");
 );
@@ -77,23 +80,12 @@ if(System.String.IsNullOrWhiteSpace(PPassword)) then
     Error("No user with given username");
 );
 
-if(exists(PDeliveryTime)) then 
+dateTemplate:= "dd/MM/yyyy HH:mm:ss";
+PPaymentDeadline += " 23:59:59";
+ParsedDeadlineDate:= System.DateTime.ParseExact(PPaymentDeadline, dateTemplate, System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
+if(ParsedDeadlineDate < NowUtc) then 
 (
-    if(System.String.IsNullOrWhiteSpace(PDeliveryTime) or PDeliveryTime not like "^(?:[01]\\d|2[0-3]):[0-5]\\d$") then 
-    (
-        Error("DeliveryTime not in correct format. Expected HH:mm.");
-    );
-)
-else
-(
-    PDeliveryTime:= "23:59";
-);
-
-PDeliveryDate+= (" " + PDeliveryTime);
-ParsedDeliveryDate:= System.DateTime.ParseExact(PDeliveryDate, "dd/MM/yyyy HH:mm", System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
-if(ParsedDeliveryDate < NowUtc) then 
-(
-    Error("Delivery date and time must be in the future");
+    Error("Deadline must be in the future.");
 );
 
 KeyId := GetSetting(SessionUser.username + ".KeyId","");
@@ -102,26 +94,6 @@ KeyPassword:= GetSetting(SessionUser.username + ".KeySecret","");
 if(System.String.IsNullOrEmpty(KeyId) or System.String.IsNullOrEmpty(KeyPassword)) then 
 (
     Error("No signing keys or password available for user: " + SessionUser.username);
-);
-
-if(exists(PSupportedPaymentMethods) and PSupportedPaymentMethods != null) then 
-(
-    supportedPaymentMethods:= Split(PSupportedPaymentMethods, ";");
-    if(supportedPaymentMethods != null and supportedPaymentMethods.Length > 0) then 
-    (
-       supportedPaymentMethods:= GetServiceProvidersForBuyingEdaler(PBuyerCountryCode, PCurrency).BuyEDalerServiceProvider.Id;
-       foreach allowed in supportedPaymentMethods do 
-       (
-          if(indexOf(supportedPaymentMethods, allowed) < 0) then 
-          (
-             Error("Invalid service providers selected");
-          );
-       );
-    );
-)
-else 
-(
-    PSupportedPaymentMethods:= "";
 );
 
 TemplateId:= GetSetting("POWRS.PaymentLink.TemplateId","");
@@ -168,8 +140,7 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
 	    "Title": PTitle,
         "Description": PDescription,
         "Value": PPrice,
-        "PaymentDeadline" : DateTime(Today.Year, Today.Month, Today.Day, 23, 59, 59, 00).ToUniversalTime(),
-        "DeliveryDate" : ParsedDeliveryDate,
+        "PaymentDeadline" : ParsedDeadlineDate,
         "Currency": PCurrency,
         "Country": PBuyerCountryCode,
         "Expires": TodayUtc.AddDays(364),
@@ -182,7 +153,7 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
         "BuyerEmail":PBuyerEmail,
         "CallBackUrl" : CallBackUrl,
         "WebPageUrl" : WebPageUrl,
-        "SupportedPaymentMethods": PSupportedPaymentMethods,
+        "SupportedPaymentMethods": "",
         "BuyerAddress": PBuyerAddress
     });
 
@@ -218,26 +189,44 @@ POST(NeuronAddress + "/Agent/Legal/SignContract",
 
 StateMachineInitialized:= false;
 Counter:= 0;
+TokenId := "";
 while StateMachineInitialized == false and Counter < 10 do 
 (
  Token:= select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract= Contract.ContractId;
  if(Token != null) then 
  (
     StateMachineInitialized:= Token.HasStateMachine;    
+    TokenId := Token.TokenId;
  );
  Counter += 1;
  Sleep(1000);
 );
 
+
+PayoutPage := "Payout.md";
+IpsOnly := false;
+
+businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
+if(businessData != null) then 
+(
+ IpsOnly := businessData.IPSOnly;
+);
+
+if IpsOnly then PayoutPage := "PayoutIPS.md";
+Log.Informational("ipsOnly: " + IpsOnly + ",\nPayoutPage: " + PayoutPage, logObject, logActor, logEventID, null);
+Log.Informational("Succeffully cerated item.", logObject, logActor, logEventID, null);
 {
-    "Link" : PaymentLinkAddress + "/Payout.md?ID=" + Global.EncodeContractId(ContractId),
+    "Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractId),	
+    "TokenId" : TokenId,
     "EscrowFee": EscrowFee,
+    "BuyerEmail": PBuyerEmail,
+    "BuyerPhoneNumber": BuyerPhoneNumber,
     "Currency": PCurrency
 }
 
 )
 catch
 (
-    Log.Error(Exception, null);
+	Log.Error(Exception, logObject, logActor, logEventID, null);
     BadRequest(Exception.Message);
 );

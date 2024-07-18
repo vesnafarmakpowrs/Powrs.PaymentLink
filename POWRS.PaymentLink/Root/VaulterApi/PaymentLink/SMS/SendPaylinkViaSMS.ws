@@ -3,24 +3,19 @@
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
-	"Link":Required(String(PLink))
+	"Link":Required(String(PLink)),
+	"PhoneNumber": Optional(String(PPhoneNumber))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 try
-(	
-	contractId := "";
-	buyerPhoneNumber := "";
-	sellerName := "";
-
+(
 	linkParts := Split(PLink, "?ID=");
-	if(count(linkParts) > 1) then 
-	(
-		contractId := Global.DecodeContractId(linkParts[1]) ;
-	)
-	else 
+	if(count(linkParts) < 2) then 
 	(
 		BadRequest("Input link not valid...");
 	);
+
+	contractId := Global.DecodeContractId(linkParts[1]);
 	
 	tokenObj :=
 		select top 1 * 
@@ -34,31 +29,34 @@ try
 
 	variables := tokenObj.GetCurrentStateVariables();
 	
-	foreach variable in variables.VariableValues do
+	if(exists(PPhoneNumber)) then 
 	(
-		if(variable != null && variable.Name == "BuyerPhoneNumber") then 
+		if(PPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
 		(
-			buyerPhoneNumber := variable.Value ?? "";
+			Error("Phone number invalid");
 		);
-		
-		if(variable != null && variable.Name == "SellerName") then 
-		(
-			sellerName := variable.Value ?? "";
-		);
-		
+		buyerPhoneNumber:= PPhoneNumber;
+	)
+	else 
+	(
+		buyerPhoneNumber:= select top 1 Value from variables.VariableValues where Name = "BuyerPhoneNumber";
 	);
 	
-	buyerPhoneNumber := buyerPhoneNumber ?? "";
-	sellerName := sellerName ?? "";
+	sellerName:= select top 1 Value from variables.VariableValues where Name = "SellerName";
+	country:= select top 1 Value from variables.VariableValues where Name = "Country";
 	
-	if(buyerPhoneNumber == "") then
-	(
-		BadRequest("Buyer mobile number not found...");
-	);
-		
-	ApiKey := GetSetting("POWRS.PaymentLink.SMSTextLocalKey","");	
+	buyerPhoneNumber ?? Error("Phone number could not be empty.");
+	sellerName ?? Error("Seller name could not be empty.");
+	country:= country ?? "RS";
 
-	SMSBody := sellerName + " salje link za placanje: " + PLink;
+	translation:= " is sending Vaulter payment link: ";
+	if(country == "RS") then 
+	(
+		translation:= " šalje Vaulter link za plaćanje: ";
+	);
+	
+	ApiKey := GetSetting("POWRS.PaymentLink.SMSTextLocalKey","");	
+	SMSBody := sellerName + translation + PLink;
 	
 	Form := Create(System.Collections.Generic.Dictionary,System.String,System.String);
 	Form["apikey"] := ApiKey;
@@ -66,6 +64,10 @@ try
 	Form["sender"] := "Vaulter";
 	Form["message"] := SMSBody;
 	Post("https://api.txtlocal.com/send/", Form);
+
+	addNoteEndpoint:= Gateway.GetUrl("/AddNote/" + tokenObj.TokenId);
+	namespace:= Gateway.GetUrl("/Downloads/EscrowPaylinkRS.xsd");
+	Post(addNoteEndpoint ,<SMSToBuyerSent xmlns=namespace phoneNumber=buyerPhoneNumber  />,{},Waher.IoTGateway.Gateway.Certificate);
 		
 	"Success";
 )

@@ -1,0 +1,258 @@
+body {
+    margin: 10px;
+    font-family: Calibri, sans-serif;
+}
+
+h1 {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 12pt;
+}
+
+p {
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 10pt;
+    margin: 0pt;
+}
+
+.divDocumentVersion{
+    float: right;
+    color: gray;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 10pt;
+}
+
+table,
+tbody {
+    vertical-align: top;
+    overflow: visible;
+}
+
+.pagebreak {
+    clear: both;
+    page-break-after: always;
+}
+
+.pageHeader {
+    padding: 12px;
+    text-align: center;
+    overflow: auto;
+    padding-top: 5pt;
+}
+
+.headerLogo {
+    display: inline-block;
+    padding-inline: 15px;
+    float: left;
+}
+.headerInfo {
+    display: inline-block;
+    /* padding-inline: 15px; */
+    float: right;
+}
+
+.pageContainer {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 1400px) {
+    .pageContainer {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.divContainer {
+    overflow: auto;
+}
+
+.companyDetailsFloatLeft {
+    display: inline-block;
+    float: left;
+}
+
+.companyDetailsFloatRight {
+    display: inline-block;
+    float: right;
+}
+
+/* *** TABLE Page 1 ***  */
+.tbl {
+    border-collapse: collapse;
+    margin-inline: auto;
+    margin-top: 10pt;
+    width: 100%;
+
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 10pt;
+    text-align: left;
+}
+
+.tbl td {
+    border: 1pt solid #548dd4;
+    padding-top: 1pt;
+    padding-bottom: 1pt;
+}
+
+.tblOtherData {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    font-size: 10pt;
+}
+
+.tblOtherData td{
+    border: 0px;
+}
+
+.tblOtherData_header{
+    background-color: #dbe5f1;
+}
+
+.tbl_Header_td {
+    background-color: #8ea9db;
+
+    font-weight: bold;
+    font-size: 12pt;
+    text-align: center;
+}
+
+.tbl_colLabel_td {
+    background-color: #dbe5f1;
+    width: 45%; /*currently there is 1 / 3 column with this class in table*/
+}
+.tbl_colData_td_2Coll {
+    width: 28%; /*Currently there is 2 / 3 columns with this class in table*/
+}
+.tbl_colData_td {
+    padding-left: 3pt;
+}
+
+
+/* *** TABLE Page 2 *** */
+.tbl2 {
+    border-collapse: collapse;
+    margin-inline: auto;
+    margin-top: 10pt;
+    width: 100%;
+
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 11pt;
+    text-align: left;
+}
+
+.tbl2_Header_td{
+    background-color: #D9E1F2;
+
+    font-weight: bold;
+    font-size: 13pt;
+    text-align: center;
+}
+
+.tbl2 td {
+    border: 1pt solid #548dd4;
+    padding-top: 3pt;
+    padding-bottom: 3pt;
+    padding-left: 3pt;
+}
+
+.tbl2_borderBottomDashed{
+    border-bottom: 1pt dotted #548dd4 !important;
+}
+.tbl2_colLabel_td {
+    background-color: #D9E1F2;
+    width: 45%; /*currently there is 1 / 3 column with this class in table*/
+}
+
+.tbl2_colLabel_backColor{
+    background-color: #D9E1F2;
+}
+
+.tbl2_tdTextArea{
+    height: 75pt;
+}
+
+.divInlineContainer{
+    overflow: auto;
+}
+
+.divInlineBlock{
+    display: inline-block;
+}
+
+.footnote {
+    width: 60%;
+
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 9pt;
+    text-align: left;
+}
+
+.blueTextBckgrnd {
+    background-color: #d9e1f2;
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 10pt;
+    text-align: left;
+}
+
+.width60p{
+    width: 60%;
+}
+
+.grayTextBckgrnd {
+    background-color: #d6dce4;
+    color: black;
+    font-family: Calibri, sans-serif;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 10pt;
+    text-align: left;
+}
+
+.tblSiganture {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 10pt;
+    font-family: Calibri, sans-serif;
+    font-size: 12pt;
+}
+
+.tblSigantureTD_UnderLine {
+    border-bottom: 1pt solid black;
+}
+
+.hideDiv{
+    display: none;
+}
+
+.showDiv{
+    display: block;
+}

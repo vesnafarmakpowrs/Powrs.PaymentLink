@@ -98,11 +98,14 @@
 				<Variable id="PaymentDeadline">
 					<TagReference tag="PaymentDeadline" />
 				</Variable>
-				<Variable id="DeliveryDate">
-					<TagReference tag="DeliveryDate" />
-				</Variable>
 				<Variable id="EscrowFee">
 					<TagReference tag="EscrowFee" />
+				</Variable>
+				<Variable id="SMSCounter">
+					<Number>0</Number>
+				</Variable>
+				<Variable id="EmailCounter">
+					<Number>0</Number>
 				</Variable>
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
@@ -122,10 +125,28 @@
 				<Variable id="RemoteId">
 					<TagReference tag="RemoteId" />
 				</Variable>
+				<Variable id="CanCancel">
+					<Boolean>false</Boolean>
+				</Variable>
+				<Variable id="RefundedAmount">
+					<Number>0</Number>
+				</Variable>
 				<State id="AwaitingForPayment">
-					<OnEvent actionRef="ProceedToBuyEdaler" newState="PaymentCompleted" failureState="AwaitingForPayment">
+					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+					<OnEvent actionRef="ProcessPayspotPaymentStatus" newState="AwaitingForPayment" failureState="AwaitingForPayment">
+						<OnExternalXmlNote localName="PayspotPaymentStatus" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>					
+					<OnEvent actionRef="ChangeBuyerLanguage">
+						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="SMSToBuyerSent">
+						<OnExternalXmlNote localName="SMSToBuyerSent" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="EmailToBuyerSent">
+						<OnExternalXmlNote localName="EmailToBuyerSent" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>					
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
@@ -135,20 +156,109 @@
 				</State>
 				<State id="PaymentCompleted">
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
-					<OnEvent newState="ServiceDelivered">
-						<OnDuration>PT300S</OnDuration>
+					<OnEnter actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= true;" />
+					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>
+					<OnEvent actionRef="CancelPayment" newState="PaymentCanceled" failureState="PaymentCompleted">
+						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+					</OnEvent>
+					<OnEvent actionRef="PayoutDateUpdated">
+						<OnExternalXmlNote localName="PayoutDateUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
+						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
 				</State>
-				<State id="ServiceDelivered">
-					<OnEvent actionRef="ReleaseFunds" newState="Done">
-						<OnDuration>PT1S</OnDuration>
+				<State id="ReleaseFundsToSellerFailed">
+					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
+						<OnExternalXmlNote localName="RetryReleaseFundsToSeller" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+				</State>
+				<State id="PaymentCanceled">
+					<OnEnter actionRef="MarkAsDone"/>
 				</State>
 				<State id="Done">
 					<OnEnter actionRef="MarkAsDone"/>
 				</State>
+				<Action id="EmailToBuyerSent">
+					<Script>
+						newEmail:= SelectXmlStr(Note,'/default:EmailToBuyerSent/@email');
+					</Script>
+					<PersistVariable name="EmailCounter" value="{EmailCounter + 1}" />
+					<If condition="newEmail != BuyerEmail">
+						<Then>
+							<PersistVariable name="BuyerEmail" value="{newEmail}" />	
+						</Then>
+					</If>
+				</Action>
+				<Action id="SMSToBuyerSent">
+					<Script>
+						newPhoneNumber:= SelectXmlStr(Note,'/default:SMSToBuyerSent/@phoneNumber');
+					</Script>
+					<PersistVariable name="SMSCounter" value="{SMSCounter + 1 }" />
+					<If condition="newPhoneNumber != BuyerPhoneNumber">
+						<Then>
+							<PersistVariable name="BuyerPhoneNumber" value="{newPhoneNumber}" />
+						</Then>
+					</If>
+				</Action>				
+				<Action id="PayoutDateUpdated">
+					<Script>
+						newPayoutDate:= SelectXmlStr(Note,'/default:PayoutDateUpdated/@expectedPayoutDate');
+					</Script>
+
+					<PersistVariable name="ExpectedPayoutDate" value="{DateTimeUtc(newPayoutDate)}" />
+				</Action>
+				<Action id="ChangeBuyerLanguage">
+					<Script>
+						newLanguage:= SelectXmlStr(Note,'/default:LanguageChanged/@language');
+					</Script>
+					<If condition="newLanguage like '[A-Z]{2}' and newLanguage != Country">
+						<Then>
+							<PersistVariable name="Country" value="{newLanguage}"></PersistVariable>
+						</Then>
+					</If>
+				</Action>
 				<Action id="MarkAsDone">
 					<PersistVariable name="MarkedAsDone" value="true"/>
+				</Action>
+				<Action id="ChangeCanCancelValue">
+					<If condition="exists(newCanCancelValue)">
+						<Then>
+							<PersistVariable name="CanCancel" value="{newCanCancelValue}"></PersistVariable>
+						</Then>
+					</If>
+				</Action>
+				<Action id="CancelPayment">
+					<If condition="TotalAmountPaid &lt; AmountToPay">
+						<Then>
+							<TextNote content="The amount paid is not sufficient" />
+						</Then>
+						<Else>
+							<PersistVariable name="RefundPaymentMessage" value="" />
+							<Script>
+								<![CDATA[
+									AmountToSell:= AmountToPay;
+									BankAccountToSell:= "";
+									SellEdalerFrom:= Seller;
+									ServiceProviderId:= SellerServiceProviderId;
+									ServiceProviderType:= SellerServiceProviderType;
+									AccountName:= SellerName;
+									MessageOnError:= 'CancelPayment error';
+									Mode:= 'Refund';
+									Message:= "Povrat novca."
+								]]>
+							</Script>
+							<Try>
+								<CallAction actionRef="TrySellEdaler" />
+								<PersistVariable name="RefundPaymentMessage" value="ok" />
+								<Catch exceptionVariable="ex">
+									<PersistVariable name="RefundPaymentMessage" value="ex.Message" />
+									<Error reason="ex.Message"></Error>
+								</Catch>
+							</Try>
+							<PersistVariable name="RefundedAmount" value="{AmountToPay}" />
+						</Else>
+					</If>
 				</Action>
 				<Action id="ReportNewState">
 					<If condition="!exists(Notifications[NewStatus])">
@@ -166,15 +276,15 @@
 									};
 									if(exists(PayspotOrderId)) then
 									(
-										Json.PayspotOrderId:= PayspotOrderId;
+									Json.PayspotOrderId:= PayspotOrderId;
 									);
 									if(exists(OrderId)) then
 									(
-										Json.OrderId:= OrderId;
+									Json.OrderId:= OrderId;
 									);
 									if (exists(PaymentType)) then
 									(
-										Json.PaymentType:= PaymentType;
+									Json.PaymentType:= PaymentType;
 									);
 								</Script>
 								<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
@@ -183,12 +293,12 @@
 								<Script>
 									if(exists(Response.State) and exists(Response.Success)) then
 									(
-										success:= Boolean(Response.Success);
-										Notifications[NewStatus]:= success;
+									success:= Boolean(Response.Success);
+									Notifications[NewStatus]:= success;
 									)
 									else
 									(
-										Notifications[NewStatus]:= false;
+									Notifications[NewStatus]:= false;
 									);
 								</Script>
 								<Catch exceptionVariable="ex">
@@ -202,7 +312,24 @@
 						</Then>
 					</If>
 				</Action>
-				<Action id="ProceedToBuyEdaler">
+				<Action id="ProcessPayspotPaymentStatus">
+					<Script>
+						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
+						PayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@payspotOrderId');
+						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentType');
+						PaymentStatusCode := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentStatusCode');
+						PaymentStatusDescr := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentStatusDescr');
+						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr})")
+					</Script>
+					<Try>
+						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessPayspotPaymentStatus, paymentStatus: ' + PaymentStatus }" object="{Buyer}" type="Informational" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="ProcessPayspotPaymentStatus" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="ProcessCompletedPayspotPayment">
 					<Script>
 						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
 						PayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@payspotOrderId');
@@ -230,6 +357,7 @@
 						<PersistVariable name="SellerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
+						<PersistVariable name="DeliveryDate" value="{Utc(DateTime(NowUtc.Year, NowUtc.Month, NowUtc.Day, 23, 30, 00))}" />
 						<PersistVariable name="OrderId" value="{OrderId}" />
 						<PersistVariable name="PayspotOrderId" value="{PayspotOrderId}" />
 						<PersistVariable name="PaymentType" value="{PaymentType}" />
@@ -258,9 +386,16 @@
 									ServiceProviderType:= SellerServiceProviderType;
 									AccountName:= SellerName;
 									MessageOnError:= 'ReleaseFundsToSeller error';
+									Mode:= 'Confirm';
+									Message:= "";
 								]]>
 							</Script>
-							<CallAction actionRef="TrySellEdaler" />
+							<Try>
+								<CallAction actionRef="TrySellEdaler" />
+								<Catch exceptionVariable="ex">
+									<PersistVariable name="ReleaseFundsToSellerError" value="{ex.Message}"/>
+								</Catch>
+							</Try>
 						</Else>
 					</If>
 				</Action>
@@ -302,9 +437,10 @@
 							<Parameter key="AccountName" value="{AccountName}" />
 							<Parameter key="ContractId" value="{TokenContract}" />
 							<Parameter key="TokenId" value="{TokenId}" />
-							<Parameter key="Message" value="Vaulter" />
+							<Parameter key="Message" value="{Message}" />
 							<Parameter key="OrderId" value="{OrderId}" />
 							<Parameter key="PayspotOrderId" value="{PayspotOrderId}" />
+							<Parameter key="Mode" value="{Mode}" />
 						</SellEDaler>
 						<TextNote content="{'Amount of edaler: ' + AmountToSell + ' ' + Currency + ' sold. From: ' + SellEdalerFrom + ' to BankAccount: ' + BankAccountToSell}" />
 						<Catch exceptionVariable="ex">
@@ -390,9 +526,6 @@
 		<Tag name="PaymentDeadline">
 			<ParameterReference parameter="PaymentDeadline" />
 		</Tag>
-		<Tag name="DeliveryDate">
-			<ParameterReference parameter="DeliveryDate" />
-		</Tag>
 		<Tag name="EscrowFee">
 			<ParameterReference parameter="EscrowFee" />
 		</Tag>
@@ -467,6 +600,7 @@
 				</paragraph>
 			</description>
 		</numericalParameter>
+		
 		<stringParameter name="Currency" value="RSD" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
 			<description xml:lang="en">
 				<paragraph>
@@ -582,13 +716,6 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Date and time untill buyer can pay.</text>
-				</paragraph>
-			</description>
-		</dateTimeParameter>
-		<dateTimeParameter name="DeliveryDate" exp="DeliveryDate &gt;= Now">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Date and time when goods should be delivered.</text>
 				</paragraph>
 			</description>
 		</dateTimeParameter>

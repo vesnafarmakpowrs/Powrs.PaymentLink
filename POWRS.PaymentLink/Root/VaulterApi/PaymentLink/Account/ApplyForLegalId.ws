@@ -21,108 +21,109 @@ SessionUser:= Global.ValidateAgentApiToken(false, false);
     "IPSONLY": Required(Str(PIpsOnly))
 }:=Posted) ??? BadRequest("Request does not conform to the specification");
 
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "ApplyForLegalId.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
 try
 (
-  Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
-  if(System.String.IsNullOrWhiteSpace(Password)) then 
-  (
-    Error("No user with given username");
-  );
+	Password:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
+	if(System.String.IsNullOrWhiteSpace(Password)) then 
+	(
+		Error("No user with given username");
+	);
 
-errors:= Create(System.Collections.Generic.List, System.String);
+	errors:= Create(System.Collections.Generic.List, System.String);
 
-if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
-(
-    errors.Add("FIRST");    
-);
-if(PLastName not like "[\\p{L}\\s]{2,30}") then 
-(
-    errors.Add("LAST");
-);
+	POrgAddress2 := POrgAddress2 ?? "";
 
-boolResult:= null;
-if(!System.Boolean.TryParse(PIpsOnly, boolResult)) then 
-(
-     errors.Add("IPSONLY");
-);
+	if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
+	(
+		errors.Add("FIRST");    
+	);
+	if(PLastName not like "[\\p{L}\\s]{2,30}") then 
+	(
+		errors.Add("LAST");
+	);
 
- NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
- isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
+	boolResult:= null;
+	if(!System.Boolean.TryParse(PIpsOnly, boolResult)) then 
+	(
+		errors.Add("IPSONLY");
+	);
 
-if(PPersonalNumber not like "^\\d{13}$" or isPersonalNumberValid != true) then 
-(
-    errors.Add("PNR");
-);
-if(PCountryCode not like "[A-Z]{2}") then 
-(
-     errors.Add("COUNTRY");
-);
-if(POrgName not like "^[\\p{L}][\\p{L}\\s.\&,?]*[\\p{L}?]{2,100}$") then 
-(
-   errors.Add("ORGNAME");
-);
-if(POrgNumber not like "\\d{8,10}$") then 
-(
-    errors.Add("ORGNR");
-);
-if(POrgCity not like "[\\p{L}\\s]{2,50}$") then 
-(
-     errors.Add("ORGCITY");
-);
-if(POrgCountry not like "[\\p{L}\\s]{2,50}$") then 
-(
-    errors.Add("ORGCOUNTRY");
-);
-if(POrgAddress not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
-(
-     errors.Add("ORGADDR");
-);
+	NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
+	isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
 
-POrgAddress2 := POrgAddress2 ?? "";
+	if(PPersonalNumber not like "^\\d{13}$" or isPersonalNumberValid != true) then 
+	(
+		errors.Add("PNR");
+	);
+	if(PCountryCode not like "[A-Z]{2}") then 
+	(
+		errors.Add("COUNTRY");
+	);
+	if(POrgName not like "^[\\p{L}][\\p{L}\\s.\&,?]*[\\p{L}?]{2,100}$") then 
+	(
+		errors.Add("ORGNAME");
+	);
+	if(POrgNumber not like "\\d{8,10}$") then 
+	(
+		errors.Add("ORGNR");
+	);
+	if(POrgCity not like "[\\p{L}\\s]{2,50}$") then 
+	(
+		errors.Add("ORGCITY");
+	);
+	if(POrgCountry not like "[\\p{L}\\s]{2,50}$") then 
+	(
+		errors.Add("ORGCOUNTRY");
+	);
+	if(POrgAddress not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
+	(
+		errors.Add("ORGADDR");
+	);
 
-if(POrgAddress2 != "" && POrgAddress2 not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
-(
-     errors.Add("ORGADDR2");
-);
 
-if(POrgBankNum not like "^(?!.*--)[\\d-]{1,25}$") then 
-(
-     errors.Add("ORGBANKNUM");
-);
+	if(POrgAddress2 != "" && POrgAddress2 not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
+	(
+		errors.Add("ORGADDR2");
+	);
 
-if(POrgDept not like "^[\\p{L}][\\p{L}\\s,?]*[\\p{L}?]{1,100}$") then 
-(
-    errors.Add("ORGDEPT");
-);
+	if(POrgBankNum not like "^(?!.*--)[\\d-]{1,25}$") then 
+	(
+		errors.Add("ORGBANKNUM");
+	);
 
-if(POrgRole not like "^[\\p{L}][\\p{L}\\s,?]*[\\p{L}?]{2,50}$") then 
-(
-    errors.Add("ORGROLE");
-);
+	if(POrgDept not like "^[\\p{L}][\\p{L}\\s,?]*[\\p{L}?]{1,100}$") then 
+	(
+		errors.Add("ORGDEPT");
+	);
 
-if(POrgActivity not like "^[\\p{L}\\s]{1,100}$") then 
-(
-    errors.Add("ORGACTIVITY");
-);
+	if(POrgRole not like "^[\\p{L}][\\p{L}\\s,?]*[\\p{L}?]{2,50}$") then 
+	(
+		errors.Add("ORGROLE");
+	);
 
-if(POrgActivityNumber not like "\\d{4,5}$") then 
-(
-    errors.Add("ORGACTIVITYNUM");
-);
+	if(POrgActivity not like "^[\\p{L}\\s]{1,100}$") then 
+	(
+		errors.Add("ORGACTIVITY");
+	);
 
-if(POrgTaxNumber not like "\\d{8,10}$") then
-(
-   errors.Add("ORGTAXNUM");
-);
+	if(POrgActivityNumber not like "\\d{4,5}$") then 
+	(
+		errors.Add("ORGACTIVITYNUM");
+	);
 
-if(errors.Count > 0) then
-(
-    Error(errors);
-);
+	if(POrgTaxNumber not like "\\d{8,10}$") then
+	(
+		errors.Add("ORGTAXNUM");
+	);
+
+	if(errors.Count > 0) then
+	(
+		Error(errors);
+	);
     neuronDomain:= "https://" + Gateway.Domain;
 
     PropertiesVector:= [
@@ -166,18 +167,21 @@ if(errors.Count > 0) then
 
     RequestSignature:= Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(Password)));
 
-    NewIdentity:= POST(neuronDomain + "/Agent/Legal/ApplyId",
-                 {
-                    "keyId": Str(KeyId),
-	             "nonce": Str(Nonce),
-	             "keySignature":  Str(KeySignature),
-	             "requestSignature": Str(RequestSignature),
-	             "Properties":  PropertiesVector
-		 },
-		   {"Accept" : "application/json",
-		    "Authorization": "Bearer " + SessionUser.jwt,
-		    "Referer": neuronDomain + "/VaulterApi/PaymentLink/Account/CreateAccount.ws"
-		   });
+    NewIdentity:= POST(
+		neuronDomain + "/Agent/Legal/ApplyId",
+		{
+			"keyId": Str(KeyId),
+			"nonce": Str(Nonce),
+			"keySignature":  Str(KeySignature),
+			"requestSignature": Str(RequestSignature),
+			"Properties":  PropertiesVector
+		},
+		{
+			"Accept" : "application/json",
+			"Authorization": "Bearer " + SessionUser.jwt,
+			"Referer": neuronDomain + "/VaulterApi/PaymentLink/Account/CreateAccount.ws"
+		}
+	);
 
 	accountRole := Select top 1 * 
 	from POWRS.PaymentLink.Models.BrokerAccountRole
@@ -207,16 +211,17 @@ if(errors.Count > 0) then
 				aMLMailRecipients := GetSetting("POWRS.PaymentLink.AMLContactEmail","");
 				
 				POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, aMLMailRecipients, "Vaulter", MailBody, null, null);
+	            destroy(MailBody);
 			)
 			catch(
-				Log.Error("Error while sending email: " + Exception.Message, logObjectID, logActor, logEventID, null);
+				Log.Error("Error while sending email: " + Exception.Message, logObject, logActor, logEventID, null);
 			);
 		);
 	);
 )
 catch
 (
-	Log.Error("Unable to apply for legal id: " + Exception.Message, logObjectID, logActor, logEventID, null);
+	Log.Error("Unable to apply for legal id: " + Exception.Message, logObject, logActor, logEventID, null);
     if(errors.Count > 0) then 
     (
          BadRequest(errors);

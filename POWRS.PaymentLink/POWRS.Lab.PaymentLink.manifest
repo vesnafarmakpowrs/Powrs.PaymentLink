@@ -13,9 +13,6 @@
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="FeeCalculator">
-				<Folder name="Reports">
-					<Content fileName="GenerateFormPDF.ws"/>
-				</Folder>
 				<Folder name="HtmlTemplates">
 					<Folder name="FeeCalculatorForm">
 						<Content fileName="App.css"/>
@@ -29,6 +26,9 @@
 						<Content fileName="Style.css"/>
 						<Content fileName="SwitchToggle.css"/>
 					</Folder>
+				</Folder>
+				<Folder name="Reports">
+					<Content fileName="GenerateFormPDF.ws"/>
 				</Folder>
 			</Folder>
 			<Folder name="PaymentLink">
@@ -47,17 +47,18 @@
 					<Content fileName="VerifyEmail.ws"/>
 					<Content fileName="CreatePasswordResetRequest.ws"/>
 					<Content fileName="ResetPassword.ws"/>
+					<Folder name="Scheduler">
+						<Content fileName="GetPayoutSchedule.ws"/>
+						<Content fileName="SavePayoutSchedule.ws"/>
+					</Folder>
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>
 					<Content fileName="LoginSmartAdmin.ws"/>
 					<Content fileName="VerifyToken.ws"/>
 				</Folder>
-				<Folder name="Bank">
-					<Content fileName="GetBic.ws"/>
-				</Folder>
 				<Folder name="Contract">
-					<Content fileName="CancelItem.ws"/>
+					<Content fileName="InitiateRefund.ws"/>
 					<Content fileName="GetContracts.ws"/>
 					<Content fileName="CreateItem.ws"/>
 				</Folder>
@@ -66,8 +67,44 @@
 					<Content fileName="SendContactUsEmail.ws"/>
 					<Content fileName="SendPaylinkViaEmail.ws"/>
 				</Folder>
-				<Folder name="SMS">
-					<Content fileName="SendPaylinkViaSMS.ws"/>
+				<Folder name="Onboarding">
+					<Content fileName="AllowEdit.ws"/>
+					<Content fileName="DownloadFile.ws"/>
+					<Content fileName="DownloadTemplateFile.ws"/>
+					<Content fileName="GetOnboardingData.ws"/>
+					<Content fileName="SaveOnboardingData.ws"/>
+					<Content fileName="SubmitOnboardingData.ws"/>
+					<Folder name="Template">
+						<Content altFolder="..\..\..\..\..\Onboarding\TemplateFiles" fileName="PromissoryNoteInstruction.pdf"/>						
+						<Folder name="PaySpot">
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest.html"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest_Css.css"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="ContractPaySpot.html"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="ContractPaySpot_Css.css"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpot_CompanyInfo.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpot_Logo.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpot_logoNoText.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocument.html"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocument_Css.css"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocumentLine.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpotAttachment3.png"/>
+						</Folder>
+						<Folder name="Powrs">
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="Powrs_Logo.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="ContractPowrs.html"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="ContractPowrs_Css.css"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page01.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page02.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page03.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page04.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page05.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page06.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page07.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page08.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment1_Page09.png"/>
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment2_Page01.png"/>
+						</Folder>
+					</Folder>
 				</Folder>
 				<Folder name="Reports">
 					<Content fileName="AdminPortalDashboard.ws"/>
@@ -77,6 +114,10 @@
 					<Content fileName="OnBoardedUsers.ws"/>
 					<Content fileName="ReportTransactions.ws"/>
 					<Content fileName="SuccessfulTransactions.ws"/>
+					<Content fileName="PayspotTransactions.ws"/>
+				</Folder>
+				<Folder name="SMS">
+					<Content fileName="SendPaylinkViaSMS.ws"/>
 				</Folder>
 			</Folder>
 		</Folder>
@@ -91,9 +132,9 @@
 				<Content fileName="Cancel.md" altFolder="..\..\pay.vaulter.rs\Redirect"/>
 				<Content fileName="Error.md" altFolder="..\..\pay.vaulter.rs\Redirect"/>
 				<Folder name="Mobile">
-					<Content fileName="Success.md" altFolder="..\..\..\pay.vaulter.rs\Mobile"/>
-					<Content fileName="Cancel.md" altFolder="..\..\..\pay.vaulter.rs\Mobile"/>
-					<Content fileName="Error.md" altFolder="..\..\..\pay.vaulter.rs\Mobile"/>
+					<Content fileName="Success.md" altFolder="..\..\..\pay.vaulter.rs\Redirect\Mobile"/>
+					<Content fileName="Cancel.md" altFolder="..\..\..\pay.vaulter.rs\Redirect\Mobile"/>
+					<Content fileName="Error.md" altFolder="..\..\..\pay.vaulter.rs\Redirect\Mobile"/>
 				</Folder>
 			</Folder>
 			<Folder name="css" >
@@ -101,25 +142,28 @@
 				<Content fileName="Status.css" altFolder="..\..\pay.vaulter.rs\css"/>
 			</Folder>
 			<Folder name="js">
-				<Content fileName="Events.js"/>
-				<Content fileName="PaymentLink.js"/>
+				<Content fileName="Events.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="PaymentLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
 			</Folder>
 			<Folder name="resources">
-				<Content fileName="credit-card-payment.svg"/>
-				<Content fileName="direct_payment.svg"/>
-				<Content fileName="expand.svg"/>
-				<Content fileName="spin.svg" />
-				<Content fileName="spinner.gif"/>
-				<Content fileName="vaulter_logo.svg"/>
-				<Content fileName="vaulter_txt.svg"/>
-				<Content fileName="vaulterlogo.svg"/>
-				<Content fileName="error_red.png"/>
-				<Content fileName="success_green.png"/>
-
+				<Content fileName="credit-card-payment.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="direct_payment.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="expand.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="spin.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="spinner.gif"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulter_logo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulter_txt.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulterlogo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="error_red.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="success_green.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
 			</Folder>
 		</Folder>
 		<Folder name="Payout">
 			<Content fileName="Settings.md"/>
+			<Content fileName="ShowAllOnboardings.js"/>
+			<Content fileName="ShowAllOnboardings.md"/>
+			<Content fileName="ViewOnboarding.js"/>
+			<Content fileName="ViewOnboarding.md"/>
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
@@ -137,6 +181,7 @@
 					<Content fileName="PaymentCompletedIPS.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
+					<Content fileName="SendLinkViaEmail.html"></Content>
 				</Folder>
 				<Folder name="RS">
 					<Content fileName="ContactUs.html"></Content>
@@ -144,6 +189,7 @@
 					<Content fileName="PaymentCompletedIPS.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
+					<Content fileName="SendLinkViaEmail.html"></Content>
 				</Folder>
 			</Folder>
 

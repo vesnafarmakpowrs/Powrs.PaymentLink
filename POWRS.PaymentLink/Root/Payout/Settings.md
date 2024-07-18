@@ -33,6 +33,9 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.SMSTextLocalKey", Str(Posted.SMSTextLocalKey));
 	SetSetting("POWRS.PaymentLink.LIStatusContactEmail", Str(Posted.LIStatusContactEmail));
 	SetSetting("POWRS.PaymentLink.AMLContactEmail", Str(Posted.AMLContactEmail));
+	SetSetting("POWRS.PaymentLink.NotificationList", Str(Posted.NotificationList));
+	SetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath", Str(Posted.OnBoardingAllCompaniesRootPath));
+	SetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList", Str(Posted.OnBoardingSubmitMailList));
 	
 	SeeOther("Settings.md");
 );
@@ -74,14 +77,28 @@ if exists(Posted) then
 </p>
 <p>
 <label for="LIStatusContactEmail">List of email recipients for disable legal id request: </label>  
-<input type="text" id="LIStatusContactEmail" name="LIStatusContactEmail" value='{{GetSetting("POWRS.PaymentLink.LIStatusContactEmail","")}}' autofocus required title="List of email who will receive email when legal id disable is requested. Multiple mails split with ;"/>
+<input type="text" id="LIStatusContactEmail" name="LIStatusContactEmail" value='{{GetSetting("POWRS.PaymentLink.LIStatusContactEmail","")}}' autofocus required title="List of email who will receive email when legal id disable is requested. Use ; as delimiter between multiple mails"/>
 </p>
 
 <p>
 <label for="AMLContactEmail">AML contact email: </label>  
-<input type="text" id="AMLContactEmail" name="AMLContactEmail" value='{{GetSetting("POWRS.PaymentLink.AMLContactEmail","")}}' autofocus required title="Anti-money Laundering. Multiple mails split with ;"/>
+<input type="text" id="AMLContactEmail" name="AMLContactEmail" value='{{GetSetting("POWRS.PaymentLink.AMLContactEmail","")}}' autofocus required title="Anti-money Laundering. Use ; as delimiter between multiple mails"/>
 </p>
 
+<p>
+<label for="NotificationList">Notification recipients for payment completed:</label>  
+<input type="text" id="NotificationList" name="NotificationList" value='{{GetSetting("POWRS.PaymentLink.NotificationList","")}}' title="Can be e-mail addresses. Separate using semicolon if more than one."/>
+</p>
+
+<p>
+<label for="OnBoardingAllCompaniesRootPath">Root directory for onBoarding files (path ends just with file name, use excepe \):</label>  
+<input type="text" id="OnBoardingAllCompaniesRootPath" name="OnBoardingAllCompaniesRootPath" value='{{GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","")}}' title="Root directory for onBoarding files (path ends just with file name, use excape \)"/>
+</p>
+
+<p>
+<label for="OnBoardingSubmitMailList">List of mail that will receive notification when onboarding is submited:</label>  
+<input type="text" id="OnBoardingSubmitMailList" name="OnBoardingSubmitMailList" value='{{GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","")}}' title="List of mail that will receive notification when onboarding is submited. Use ; as delimiter between multiple mails "/>
+</p>
 
 <button type="submit" class="posButton">Apply</button>
 </fieldset>

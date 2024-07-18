@@ -31,12 +31,13 @@ try
 	);
 	
 	update BrokerAccounts set Password = PPassword where UserName == PUserName;
+	XmppServerModule.PersistenceLayer.AccountUpdated(PUserName);
 
 	{
 	}
 )
 catch
 (
-	BadRequest(Exception.Message);
 	Log.Error(Exception.Message, null);
+	BadRequest(Exception.Message);
 );
