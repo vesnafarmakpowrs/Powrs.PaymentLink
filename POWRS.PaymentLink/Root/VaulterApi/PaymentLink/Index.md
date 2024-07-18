@@ -359,6 +359,13 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 }
 ````
 
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `DateFrom`        | Optional parameter. If not send then default value is DateTime.Now - 1 month  |
+| `DateTo`          | Optional parameter. If not send then default value is DateTime.Now + 1 day    |
+
 **Response**
 
 ````

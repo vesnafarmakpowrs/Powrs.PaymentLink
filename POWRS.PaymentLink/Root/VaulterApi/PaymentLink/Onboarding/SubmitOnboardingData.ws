@@ -1,6 +1,6 @@
 ﻿SessionUser:= Global.ValidateAgentApiToken(false, false);
 
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "SubmitOnboardingData.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
@@ -108,6 +108,7 @@ SendEmail(onBoardingData):= (
 	MailBody.Append("<br />Organization short name: <strong>{{organizationShortName}}</strong>");
 	MailBody.Append("<br />Organization number: <strong>{{organizationNumber}}</strong>");
 	MailBody.Append("<br />Organization tax number: <strong>{{organizationTaxNumber}}</strong>");
+	MailBody.Append("<br />");
 	MailBody.Append("<br />Uploaded documents:");
 	MailBody.Append("<br />{{uploadedDocuments}}");
 	MailBody.Append("<br />");
@@ -173,14 +174,14 @@ try
 	ApplyForLeglalID(onBoardingData);
 	SendEmail(onBoardingData);
 	
-	Log.Informational("Succeffully submited onboarding for user: " + SessionUser.username, logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully submited onboarding for user: " + SessionUser.username, logObject, logActor, logEventID, null);
 	{
 		success: true
 	}
 )
 catch
 (
-	Log.Error("Unable to submit onboarding: " + Exception.Message, logObjectID, logActor, logEventID, null);
+	Log.Error("Unable to submit onboarding: " + Exception.Message, logObject, logActor, logEventID, null);
     if(errors.Count > 0) then 
     (
 		BadRequest(errors);

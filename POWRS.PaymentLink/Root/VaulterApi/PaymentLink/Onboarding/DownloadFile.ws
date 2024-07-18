@@ -4,7 +4,7 @@
 	"FileName": Required(Str(PFileName))
 }:= Posted) ??? BadRequest(Exception.Message);
 
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "DownloadFile.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
@@ -26,7 +26,7 @@ try
 		Error("File does not exists");
 	
     bytes := System.IO.File.ReadAllBytes(filePath);
-	Log.Informational("Succeffully returned file:" + PFileName, logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully returned file:" + PFileName, logObject, logActor, logEventID, null);
 	
 	{
 		File: bytes
@@ -34,6 +34,6 @@ try
 )
 catch 
 (
-	Log.Error(Exception.Message, logObjectID, logActor, logEventID, null);
+	Log.Error(Exception.Message, logObject, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );

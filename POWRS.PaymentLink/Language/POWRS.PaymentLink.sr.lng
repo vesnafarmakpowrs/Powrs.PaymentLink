@@ -73,6 +73,10 @@
 			<String id="70">Ponovo generišite QR CODE</String>
 			<String id="71">GENERIŠI QR</String>
 			<String id="72">ODUSTANI</String>
+<<<<<<< HEAD
+=======
+			<String id="73">Plati</String>
+>>>>>>> Master
 		</Namespace>
 	</Language>
 </Translation>

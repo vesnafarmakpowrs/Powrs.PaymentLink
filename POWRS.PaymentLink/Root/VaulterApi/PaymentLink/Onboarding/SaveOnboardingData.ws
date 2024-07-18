@@ -1,10 +1,10 @@
 ﻿SessionUser:= Global.ValidateAgentApiToken(false, false);
 
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "SaveOnboardingData.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
-if(Posted == null) then BadRequest("Data could not be null");
+if(Posted == null) then NotAcceptable("Data could not be null");
 
 errors:= Create(System.Collections.Generic.List, System.String);
 currentMethod:= "";
@@ -810,7 +810,6 @@ SaveFile(fileRootPath, fileName, fileBase64String):=
 	return(1);
 );
 
-
 try
 (
 	currentMethod := "ValidatePostedData"; 
@@ -828,17 +827,17 @@ try
 	currentMethod := "SaveLegalDocuments"; 
 	SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username, Posted.GeneralCompanyInformation.ShortName);
 	
-	Log.Informational("Succeffully saved OnBoarding data.", logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully saved OnBoarding data.", logObject, logActor, logEventID, null);
 	{
 		success: true
 	}
 )
 catch
 (
-	Log.Error("Unable to save onboarding data: " + Exception.Message + "\ncurrentMethod: " + currentMethod, logObjectID, logActor, logEventID, null);
+	Log.Error("Unable to save onboarding data: " + Exception.Message + "\ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
     if(errors.Count > 0) then 
     (
-		BadRequest(errors);
+		NotAcceptable(errors);
     )
     else 
     (

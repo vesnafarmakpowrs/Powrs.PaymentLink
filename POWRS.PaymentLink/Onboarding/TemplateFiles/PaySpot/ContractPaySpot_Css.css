@@ -453,3 +453,111 @@ tbody {
 .tbl4TD_narrowly {
     width: 20% !important;
 }
+
+
+/************   ATACHMENT2   **********/
+/************   ATACHMENT2   **********/
+/************   ATACHMENT2   **********/
+/************   ATACHMENT2   **********/
+
+.Atachment2 div{
+    font-size: 17pt;
+
+}
+
+.Atachment2 p{
+    font-size: 17pt;
+
+}
+
+.floatLeft {
+    float: left;
+    padding-right: 5pt;
+}
+
+.floatRight {
+    float: right;
+    padding-left: 5pt;
+}
+
+.headerLogoAttachment2 {
+    display: inline-block;
+    padding-inline: 15px;
+    float: left;
+}
+
+.leftSide,
+.rightSide {
+    width: 48%;
+    display: inline-block;
+}
+
+.footerAttachment2 {
+    /* width: 90%; */
+    margin-left: auto;
+    margin-right: auto;
+    /* margin-inline: auto; */
+    overflow: auto;
+    border-top: 2px solid black;
+}
+
+.pageContainerAttachment2 {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    /* margin-inline: auto; */
+    overflow: auto;
+}
+.pageHeader2{
+    padding: 10px;
+    text-align: left;
+    overflow: auto;
+    padding-top: 5pt;
+}
+
+.pageHeader1{
+    padding: 20px;
+    text-align: left;
+    overflow: auto;
+    padding-top: 20pt;
+    padding-bottom: 20pt ;
+}
+
+.leftSideFooter {
+    text-align: end !important;
+    width: 80%;
+}
+
+.rightSideFooter {
+    width: 15%;
+    text-align: end;
+}
+
+.leftSideFooter,
+.rightSideFooter {
+    font-size: 14pt !important;
+}
+
+.tdAtachment2 {
+    border: 2px solid black ;
+    padding: 8px;
+    text-align: left;
+    background-color: #deeaf6;
+    font-size: 17pt;
+    font-weight: normal;
+}
+
+.bordered-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.bordered-table th, .bordered-table td {
+    border: 2px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.bordered-table th {
+    background-color: #f2f2f2;
+}

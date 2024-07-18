@@ -4,13 +4,13 @@ using PdfSharp.Pdf.IO;
 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace POWRS.PaymentLink
 {
-    public class Utils
+    public static class Utils
     {
-
-
         public static bool IsValidBase64String(string base64String, decimal maxSizeMB)
         {
             try
@@ -28,39 +28,6 @@ namespace POWRS.PaymentLink
                 return false;
             }
         }
-
-        /*
-        public static void CopyPages(PdfDocument from, PdfDocument to)
-        {
-            for (int i = 0; i < from.PageCount; i++)
-            {
-                to.AddPage(from.Pages[i]);
-            }
-        }
-        public static void CombinePDFs(List<string> listPDF, string outputPDF)
-        {
-            try
-            {
-                using (PdfDocument outPDF = new PdfDocument())
-                {
-                    foreach (string item in listPDF)
-                    {
-                        using (PdfDocument pdfDocument = PdfReader.Open(item, PdfDocumentOpenMode.Import))
-                        {
-                            CopyPages(pdfDocument, outPDF);
-                        }
-                    }
-                    outPDF.Save(outputPDF);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-        */
-
-
     }
 
 

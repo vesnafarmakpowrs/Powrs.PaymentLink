@@ -1,26 +1,26 @@
-﻿Response.SetHeader("Access-Control-Allow-Origin","*");
+﻿SessionUser:= Global.ValidateAgentApiToken(true, false);
 
-({
-    "DateFrom": Optional(Str(PDateFrom)),
-    "DateTo": Optional(Str(PdateTo))
-}:=Posted) ??? BadRequest(Exception);
-
-SessionUser:= Global.ValidateAgentApiToken(true, false);
+logObject := SessionUser.username;
+logEventID := "GetContracts.ws";
+logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
 try 
 (
-	PDateFrom := PDateFrom ?? "";
-	PDateTo := PDateTo ?? "";
-	dateFormat:= "dd/MM/yyyy";
-	
-	if(!IsEmpty(PDateFrom) and !IsEmpty(PDateTo)) then (
-		DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
-		DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+	if(exists(Posted.DateFrom) and !System.String.IsNullOrWhiteSpace(Posted.DateFrom) and
+		exists(Posted.DateTo) and !System.String.IsNullOrWhiteSpace(Posted.DateTo))then
+	(
+		dateFormat:= "dd/MM/yyyy";
+		DTDateFrom := System.DateTime.ParseExact(Posted.DateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+		DTDateTo := System.DateTime.ParseExact(Posted.DateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 		DTDateTo := DTDateTo.AddDays(1);
-	) else (
-		DTDateFrom := System.DateTime.ParseExact("01/01/2023", dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+	)
+	else
+	(
+		DTDateFrom := TodayUtc.AddMonths(-1);
 		DTDateTo := TodayUtc.AddDays(1);
 	);
+	
+	Log.Informational("DTDateFrom: " + DTDateFrom + ",\nDTDateTo: " + DTDateTo, logObject, logActor, logEventID, null);
 	
 	PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
 	cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
@@ -70,7 +70,7 @@ try
 )
 catch
 (
-	Log.Error(Exception, null);
+	Log.Error(Exception.Message, logObject, logActor, logEventID, null);
 	InternalServerError(Exception.Message)
 );
 

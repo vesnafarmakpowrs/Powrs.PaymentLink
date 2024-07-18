@@ -73,6 +73,10 @@
 			<String id="70">Regenerate the QR CODE</String>
 			<String id="71">GENERATE QR</String>
 			<String id="72">Cancel</String>
+<<<<<<< HEAD
+=======
+			<String id="73">Pay Now</String>
+>>>>>>> Master
 		</Namespace>
 	</Language>
 </Translation>

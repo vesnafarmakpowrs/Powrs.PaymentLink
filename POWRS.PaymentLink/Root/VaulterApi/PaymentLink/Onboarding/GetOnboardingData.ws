@@ -1,17 +1,17 @@
 ﻿SessionUser:= Global.ValidateAgentApiToken(false, false);
 
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "GetOnboardingData.ws";
 logActor := Request.RemoteEndPoint.Split(":", null)[0];
 
 try
 (
 	onBoardingData:= POWRS.PaymentLink.Onboarding.Onboarding.GetOnboardingData(SessionUser.username);
-	Log.Informational("Succeffully get OnBoarding data. obj: " + Str(onBoardingData), logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully get OnBoarding data. obj: " + Str(onBoardingData), logObject, logActor, logEventID, null);
 )
 catch
 (
-	Log.Error(Exception.Message, logObjectID, logActor, logEventID, null);
+	Log.Error(Exception.Message, logObject, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );
 

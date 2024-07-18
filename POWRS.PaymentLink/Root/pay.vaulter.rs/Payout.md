@@ -302,13 +302,13 @@ if(IpsOnly) then
 <input type="hidden" name="rnd" value='' />
 <input type="hidden" name="currentDate" value='' />
 </form>
-<button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="GenerateIPSForm()">Pay now</button> 
+<button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="GenerateIPSForm()">((LanguageNamespace.GetStringAsync(73) ))</button> 
 [[;
 )
 else 
 (
 ]]
-<button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button> 
+<button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">((LanguageNamespace.GetStringAsync(73) ))</button> 
 [[;
 );
 ]]

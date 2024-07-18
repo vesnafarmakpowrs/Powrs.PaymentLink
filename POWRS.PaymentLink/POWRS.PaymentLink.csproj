@@ -101,6 +101,8 @@
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\GetAvailableLanguages.ws" />
 		<None Remove="Root\Payout\HtmlTemplates\EN\ReleaseFundsReport.html" />
+		<None Remove="Root\Payout\HtmlTemplates\EN\SendLinkViaEmail.html" />
+		<None Remove="Root\Payout\HtmlTemplates\RS\SendLinkViaEmail.html" />
 		<None Remove="Root\Payout\InitiatePayment.ws" />
 		<None Remove="Root\Payout\PaymentLink.js" />
 		<None Remove="Root\Payout\Payout - Copy.md" />
@@ -157,6 +159,12 @@
 		<Content Include="Root\Payout\API\GetAvailableLanguages.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<Content Include="Root\Payout\HtmlTemplates\EN\SendLinkViaEmail.html">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\Payout\HtmlTemplates\RS\SendLinkViaEmail.html">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Account\CreatePasswordResetRequest.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -201,9 +209,6 @@
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Account\GetLegalIdentityInfo.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\Bank\GetBic.ws">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Mail\ReportNewState.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -400,7 +405,7 @@
 	  <None Update="Onboarding\TemplateFiles\Powrs\Powrs_Logo.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Onboarding\TemplateFiles\PromissoryNoteIntruction.pdf">
+	  <None Update="Onboarding\TemplateFiles\PromissoryNoteInstruction.pdf">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="POWRS.Lab.PaymentLink.manifest">

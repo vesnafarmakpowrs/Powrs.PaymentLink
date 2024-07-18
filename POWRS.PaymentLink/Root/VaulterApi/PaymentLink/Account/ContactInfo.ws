@@ -63,7 +63,7 @@ errors:= Create(System.Collections.Generic.List, System.String);
 
 try
 (
-   if(POrgPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
+   if(POrgPhoneNumber not like "^[+]?[0-9]{6,15}$") then
 (
 	errors.Add("PhoneNumber");
 );
