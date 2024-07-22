@@ -173,6 +173,10 @@ function PaymentCompleted(Result) {
     location.reload();
 }
 
+function PaySpotPaymentStatus(Result) {
+    console.log(Result);
+}
+
 function ShowPayspotPage(Data) {
     if (Data == null) {
         console.log("data is empty");

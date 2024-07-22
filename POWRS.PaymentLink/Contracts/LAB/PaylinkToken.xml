@@ -135,6 +135,9 @@
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+					<OnEvent actionRef="ProcessPayspotPaymentStatus" newState="AwaitingForPayment" failureState="AwaitingForPayment">
+						<OnExternalXmlNote localName="PayspotPaymentStatus" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>					
 					<OnEvent actionRef="ChangeBuyerLanguage">
 						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -308,6 +311,23 @@
 							<PersistVariable name="Notifications" value="{Notifications}"/>
 						</Then>
 					</If>
+				</Action>
+				<Action id="ProcessPayspotPaymentStatus">
+					<Script>
+						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
+						PayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@payspotOrderId');
+						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentType');
+						PaymentStatusCode := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentStatusCode');
+						PaymentStatusDescr := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentStatusDescr');
+						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr})")
+					</Script>
+					<Try>
+						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessPayspotPaymentStatus, paymentStatus: ' + PaymentStatus }" object="{Buyer}" type="Informational" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="ProcessPayspotPaymentStatus" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
 				</Action>
 				<Action id="ProcessCompletedPayspotPayment">
 					<Script>
