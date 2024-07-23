@@ -13,6 +13,9 @@
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="FeeCalculator">
+				<Folder name="Data">
+					<Content fileName="SaveFeeCalculatorData.ws"/>
+				</Folder>
 				<Folder name="HtmlTemplates">
 					<Folder name="FeeCalculatorForm">
 						<Content fileName="App.css"/>

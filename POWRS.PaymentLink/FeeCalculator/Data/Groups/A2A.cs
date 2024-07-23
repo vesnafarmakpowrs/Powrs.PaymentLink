@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace POWRS.PaymentLink.FeeCalculator.Data
 {
     public class A2A : BaseFeeCalculatorModel

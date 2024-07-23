@@ -10,7 +10,10 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
     {
         public FeeCalculator()
         {
-            userName = "";
+            CreatorUserName = "";
+            Created = DateTime.Now;
+            EditorUserName = "";
+            Edited = DateTime.Now;
             companyName = "";
             organizationNumber = "";
             contactPerson = "";
@@ -18,7 +21,10 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
         }
 
         private string objectId;
-        private string userName;
+        private string creatorUserName;
+        private DateTime created;
+        private string editorUserName;
+        private DateTime edited;
 
         private string companyName;
         private string organizationNumber;
@@ -32,10 +38,14 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
 
         private decimal totalSaved;
         private decimal kickBack_Discount;
+        private decimal currency;
 
         [ObjectId]
         public string ObjectId { get => this.objectId; set => this.objectId = value; }
-        public string UserName { get => userName; set => userName = value; }
+        public string CreatorUserName { get => creatorUserName; set => creatorUserName = value; }
+        public DateTime Created { get => created; set => created = value; }
+        public string EditorUserName { get => editorUserName; set => editorUserName = value; }
+        public DateTime Edited { get => edited; set => edited = value; }
         public string CompanyName { get => companyName; set => companyName = value; }
         public string OrganizationNumber { get => organizationNumber; set => organizationNumber = value; }
         public string ContactPerson { get => contactPerson; set => contactPerson = value; }
@@ -46,5 +56,6 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
         public HoldingService HoldingServiceData { get => holdingServiceData; set => holdingServiceData = value; }
         public decimal TotalSaved { get => totalSaved; set => totalSaved = value; }
         public decimal KickBack_Discount { get => kickBack_Discount; set => kickBack_Discount = value; }
+        public decimal Currency { get => currency; set => currency = value; }
     }
 }
