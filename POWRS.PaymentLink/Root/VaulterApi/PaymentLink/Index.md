@@ -983,6 +983,10 @@ Retrieves Successful Transactions information.
 | `PaymentType`     | Payment Type (Card or IPS) |
 | `CardBrand`       | Card brand |
 
+
+OnBoarding
+---------------------
+
 ### Get onboarding data
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/GetOnboardingData.ws")}}`  
@@ -1337,3 +1341,121 @@ Description of properties:
 |:------------------|:------------|
 |`Name`|  File name |
 |`File`|  Base64 encoded file |
+
+
+Fee Calculator
+---------------------
+
+### FeeCalculator - LogIn
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/FeeCalculator/Auth/LoginFeeCalculator.ws")}}`  
+Method: `POST`
+
+Call this resource to log in, to get JWT. Payload is same as `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Auth/Login.ws")}}`  in PLG.
+
+LogIn is restricted to users: **`Emir`**, **`Robert`** and **`AgentPLG`**
+
+
+### FeeCalculator - SaveData
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/FeeCalculator/Data/SaveFeeCalculatorData.ws")}}`  
+Method: `POST`
+
+Call this resource to save data for fee calculator.
+
+**Request**
+
+````
+{
+	"CompanyName": "Powrs doo",
+	"OrganizationNumber": "1234567890",
+	"ContactPerson": "",
+	"ContactEmail": "",
+	"CurrentData":{
+		"TotalRevenue": 0,
+		"AverageAmount": 0.0,
+		"TotalTransactions": 0,
+		"CardTransactionPercentage": 0.0,
+		"CardFee": 0.0,
+		"TotalCardTransactions": 0,
+		"TotalCardCost": 0.0
+	},
+	"CardData":{
+		"ShowGroup": true,
+		"TransactionPercentage": 0.0,
+		"NumberOfTransactions": 0,
+		"AverageAmount": 0.0,
+		"Fee": 0.0,
+		"Cost": 0.0,
+		"Saved": 0.0
+	},
+	"A2AData":{
+		"ShowGroup": false,
+		"TransactionPercentage": 0.0,
+		"NumberOfTransactions": 0,
+		"AverageAmount": 0.0,
+		"Fee": 0.0,
+		"Cost": 0.0,
+		"Saved": 0.0		
+	},
+	"HoldingServiceData":{
+		"ShowGroup": false,
+		"TransactionPercentage": 0.0,
+		"NumberOfTransactions": 0,
+		"Fee": 0.0,
+		"Cost": 0.0,
+		"CostPay": "Buyer",     "Buyer|Seller"
+		"KickBackPerTransaction": 0.0,
+		"IncomeSummary": 0.0
+	},
+	"TotalSaved": 0.0,
+	"KickBack_Discount": 0.0,
+	"Currency": "eur"
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+|`Variable tiyps`   | Variables with value **`0.0`** is decimal, **`0`** is integet, string are in **`""`**, boolean are just **`true`** or **`false`** |
+|`Mandatory fields` | **`CompanyName, OrganizationNumber, ContactPerson, ContactEmail`** |
+
+
+**Response**
+
+
+````
+{
+    "success": true
+}
+````
+
+
+### FeeCalculator - GetData
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/FeeCalculator/Data/GetFeeCalculatorData.ws")}}`  
+Method: `POST`
+
+Call this resource to save data for fee calculator.
+
+**Request**
+
+````
+{
+	"ObjectId": "2e33a3f7-e26c-3664-200c-25b5b4d492fd"
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+|`ObjectId`   | If this is populated then endpoint returns specific object, else endpoint will return all data saved by user, according JWT |
+
+
+**Response**
+
+
+````
+{
+    "success": true
+}
+````

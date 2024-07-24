@@ -6,18 +6,20 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
     [CollectionName(nameof(FeeCalculator) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("OrganizationNumber")]
+    [Index("CreatorUserName")]
     public class FeeCalculator
     {
         public FeeCalculator()
         {
-            CreatorUserName = "";
-            Created = DateTime.Now;
-            EditorUserName = "";
-            Edited = DateTime.Now;
+            creatorUserName = "";
+            created = DateTime.Now;
+            editorUserName = "";
+            edited = DateTime.Now;
             companyName = "";
             organizationNumber = "";
             contactPerson = "";
             contactEmail = "";
+            currency = "";
         }
 
         private string objectId;
@@ -38,7 +40,7 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
 
         private decimal totalSaved;
         private decimal kickBack_Discount;
-        private decimal currency;
+        private string currency;
 
         [ObjectId]
         public string ObjectId { get => this.objectId; set => this.objectId = value; }
@@ -56,6 +58,6 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
         public HoldingService HoldingServiceData { get => holdingServiceData; set => holdingServiceData = value; }
         public decimal TotalSaved { get => totalSaved; set => totalSaved = value; }
         public decimal KickBack_Discount { get => kickBack_Discount; set => kickBack_Discount = value; }
-        public decimal Currency { get => currency; set => currency = value; }
+        public string Currency { get => currency; set => currency = value; }
     }
 }

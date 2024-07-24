@@ -13,7 +13,11 @@
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="FeeCalculator">
+				<Folder name="Auth">
+					<Content fileName="LoginFeeCalculator.ws"/>
+				</Folder>
 				<Folder name="Data">
+					<Content fileName="GetFeeCalculatorData.ws"/>
 					<Content fileName="SaveFeeCalculatorData.ws"/>
 				</Folder>
 				<Folder name="HtmlTemplates">

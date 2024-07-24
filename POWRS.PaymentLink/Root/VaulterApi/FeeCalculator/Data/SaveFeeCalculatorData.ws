@@ -9,11 +9,10 @@ if(Posted == null) then NotAcceptable("Data could not be null");
 errors:= Create(System.Collections.Generic.List, System.String);
 currentMethod:= "";
 
-
 ValidatePostedData(Posted) := (
 	if(!exists(Posted.CurrentData) or Posted.CurrentData == null) then errors.Add("CurrentData could not be null");
 	if(!exists(Posted.CardData) or Posted.CardData == null) then errors.Add("CardData could not be null");
-	if(!exists(Posted.A2AData) or Posted.BusinessData == null) then errors.Add("A2AData could not be null");
+	if(!exists(Posted.A2AData) or Posted.A2AData == null) then errors.Add("A2AData could not be null");
 	if(!exists(Posted.HoldingServiceData) or Posted.HoldingServiceData == null) then errors.Add("HoldingServiceData could not be null");
 	
 	if(errors.Count > 0)then
@@ -103,17 +102,87 @@ ValidatePostedData(Posted) := (
 );
 
 SaveData(Posted, userName) := (
+	feeCalculatorObj := select top 1 * from POWRS.PaymentLink.FeeCalculator.Data.FeeCalculator where OrganizationNumber = Posted.OrganizationNumber;
+	recordExists := feeCalculatorObj != null;
 	
+	if(recordExists)then
+	(
+		feeCalculatorObj.EditorUserName := userName;
+		feeCalculatorObj.Edited := Now;
+	)
+	else
+	(
+		feeCalculatorObj := Create(POWRS.PaymentLink.FeeCalculator.Data.FeeCalculator);
+		feeCalculatorObj.CurrentData := Create(POWRS.PaymentLink.FeeCalculator.Data.Current);
+		feeCalculatorObj.CardData := Create(POWRS.PaymentLink.FeeCalculator.Data.Card);
+		feeCalculatorObj.A2AData := Create(POWRS.PaymentLink.FeeCalculator.Data.A2A);
+		feeCalculatorObj.HoldingServiceData := Create(POWRS.PaymentLink.FeeCalculator.Data.HoldingService);
+		
+		feeCalculatorObj.CreatorUserName := userName;
+		feeCalculatorObj.Created := Now;
+		feeCalculatorObj.OrganizationNumber := Posted.OrganizationNumber;
+	);
+	
+	feeCalculatorObj.CompanyName := Posted.CompanyName;
+	feeCalculatorObj.ContactPerson := Posted.ContactPerson;
+	feeCalculatorObj.ContactEmail := Posted.ContactEmail;	
+	
+	feeCalculatorObj.CurrentData.TotalRevenue := Posted.CurrentData.TotalRevenue;
+	feeCalculatorObj.CurrentData.AverageAmount := Posted.CurrentData.AverageAmount;
+	feeCalculatorObj.CurrentData.TotalTransactions := Posted.CurrentData.TotalTransactions;
+	feeCalculatorObj.CurrentData.CardTransactionPercentage := Posted.CurrentData.CardTransactionPercentage;
+	feeCalculatorObj.CurrentData.CardFee := Posted.CurrentData.CardFee;
+	feeCalculatorObj.CurrentData.TotalCardTransactions := Posted.CurrentData.TotalCardTransactions;
+	feeCalculatorObj.CurrentData.TotalCardCost := Posted.CurrentData.TotalCardCost;
+	
+	feeCalculatorObj.CardData.ShowGroup := Posted.CardData.ShowGroup;
+	feeCalculatorObj.CardData.TransactionPercentage := Posted.CardData.TransactionPercentage;
+	feeCalculatorObj.CardData.NumberOfTransactions := Posted.CardData.NumberOfTransactions;
+	feeCalculatorObj.CardData.AverageAmount := Posted.CardData.AverageAmount;
+	feeCalculatorObj.CardData.Fee := Posted.CardData.Fee;
+	feeCalculatorObj.CardData.Cost := Posted.CardData.Cost;
+	feeCalculatorObj.CardData.Saved := Posted.CardData.Saved;
+	
+	feeCalculatorObj.A2AData.ShowGroup := Posted.A2AData.ShowGroup;
+	feeCalculatorObj.A2AData.TransactionPercentage := Posted.A2AData.TransactionPercentage;
+	feeCalculatorObj.A2AData.NumberOfTransactions := Posted.A2AData.NumberOfTransactions;
+	feeCalculatorObj.A2AData.AverageAmount := Posted.A2AData.AverageAmount;
+	feeCalculatorObj.A2AData.Fee := Posted.A2AData.Fee;
+	feeCalculatorObj.A2AData.Cost := Posted.A2AData.Cost;
+	feeCalculatorObj.A2AData.Saved := Posted.A2AData.Saved;
+	
+	feeCalculatorObj.HoldingServiceData.ShowGroup := Posted.HoldingServiceData.ShowGroup;
+	feeCalculatorObj.HoldingServiceData.TransactionPercentage := Posted.HoldingServiceData.TransactionPercentage;
+	feeCalculatorObj.HoldingServiceData.NumberOfTransactions := Posted.HoldingServiceData.NumberOfTransactions;
+	feeCalculatorObj.HoldingServiceData.Fee := Posted.HoldingServiceData.Fee;
+	feeCalculatorObj.HoldingServiceData.Cost := Posted.HoldingServiceData.Cost;
+	feeCalculatorObj.HoldingServiceData.CostPay := System.Enum.Parse(POWRS.PaymentLink.FeeCalculator.Enums.CostPay, Posted.HoldingServiceData.CostPay) ??? POWRS.PaymentLink.FeeCalculator.Enums.CostPay.Buyer;
+	feeCalculatorObj.HoldingServiceData.KickBackPerTransaction := Posted.HoldingServiceData.KickBackPerTransaction;
+	feeCalculatorObj.HoldingServiceData.IncomeSummary := Posted.HoldingServiceData.IncomeSummary;
+	
+	feeCalculatorObj.TotalSaved := Posted.TotalSaved;
+	feeCalculatorObj.KickBack_Discount := Posted.KickBack_Discount;
+	feeCalculatorObj.Currency := Posted.Currency;
+	
+	if(recordExists)then
+	(
+		Waher.Persistence.Database.Update(feeCalculatorObj);
+	)
+	else
+	(
+		Waher.Persistence.Database.Insert(feeCalculatorObj);
+	);
 );
 
 try
 (
+	Log.Informational("Calling save fee calculator data. Posted:" + Str(Posted), logObject, logActor, logEventID, null);
+
 	currentMethod := "ValidatePostedData"; 
-	ValidatePostedData(Posted, SessionUser.username);
-	
+	ValidatePostedData(Posted);
 	
 	currentMethod := "SaveData"; 
-	SaveData(Posted);
+	SaveData(Posted, SessionUser.username);
 	
 	Log.Informational("Succeffully saved fee calculator data.", logObject, logActor, logEventID, null);
 	{

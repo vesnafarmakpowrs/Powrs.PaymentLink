@@ -576,7 +576,13 @@
 	  <None Update="Root\Payout\ViewOnboarding.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\Auth\LoginFeeCalculator.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\FeeCalculator\Data\SaveFeeCalculator.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\Data\GetFeeCalculatorData.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\FeeCalculator\Data\SaveFeeCalculatorData.ws">
