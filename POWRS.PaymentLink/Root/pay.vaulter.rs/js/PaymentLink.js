@@ -174,7 +174,15 @@ function PaymentCompleted(Result) {
 }
 
 function PaySpotPaymentStatus(Result) {
-    console.log(Result);
+
+    if (Result != null && Result.StatusCode != null && Result.StatusCode != "00") {
+        var div = document.getElementById('ctn-payment-method-rs');
+        div.innerHTML = '';
+        var boldText = document.createElement('strong');
+        boldText.textContent = 'Payment failed';
+        boldText.style.color = 'red';
+        div.appendChild(boldText);
+    }
 }
 
 function ShowPayspotPage(Data) {
