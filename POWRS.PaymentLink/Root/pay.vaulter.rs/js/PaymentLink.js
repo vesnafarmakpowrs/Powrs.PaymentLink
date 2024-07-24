@@ -53,6 +53,7 @@ function GenerateTranslations() {
     Translations.TransactionInProgress = document.getElementById("TransactionInProgress").value;
     Translations.OpenLinkOnPhoneMessage = document.getElementById("OpenLinkOnPhoneMessage").value;
     Translations.SessionTokenExpiredMessage = document.getElementById("SessionTokenExpired").value;
+    Translations.PaymentFailed = document.getElementById("PaymentFailed").value;
 }
 
 function GenerateLanguageDropdown() {
@@ -174,7 +175,15 @@ function PaymentCompleted(Result) {
 }
 
 function PaySpotPaymentStatus(Result) {
-    console.log(Result);
+
+    if (Result != null && Result.StatusCode != null && Result.StatusCode != "00") {
+        var div = document.getElementById('ctn-payment-method-rs');
+        div.innerHTML = '';
+        var boldText = document.createElement('strong');
+        boldText.textContent = Translations.PaymentFailed;
+        boldText.style.color = 'red';
+        div.appendChild(boldText);
+    }
 }
 
 function ShowPayspotPage(Data) {

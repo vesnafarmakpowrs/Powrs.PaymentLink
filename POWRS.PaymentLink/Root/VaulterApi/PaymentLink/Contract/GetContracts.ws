@@ -20,8 +20,6 @@ try
 		DTDateTo := TodayUtc.AddDays(1);
 	);
 	
-	Log.Informational("DTDateFrom: " + DTDateFrom + ",\nDTDateTo: " + DTDateTo, logObject, logActor, logEventID, null);
-	
 	PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
 	cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
 	doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
