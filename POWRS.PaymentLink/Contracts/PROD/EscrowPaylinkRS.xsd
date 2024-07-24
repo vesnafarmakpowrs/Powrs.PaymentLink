@@ -19,10 +19,10 @@
 			<xs:attribute name="paymentStatusCode" type="xs:string" use="required" />
 			<xs:attribute name="paymentStatusDescr" type="xs:string" use="required" />
 		</xs:complexType>
-	</xs:element>
-	<xs:element name="PayoutDateUpdated">
+	</xs:element>	
+	<xs:element name="LanguageChanged">
 		<xs:complexType>
-			<xs:attribute type="xs:string" use="required" name="expectedPayoutDate" />
+			<xs:attribute name="language" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="EmailToBuyerSent">
@@ -35,9 +35,9 @@
 			<xs:attribute name="phoneNumber" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="LanguageChanged">
-	<xs:complexType>
-		<xs:attribute name="language" type="xs:string" use="required" />
-	</xs:complexType>
-</xs:element>
+	<xs:element name="PayoutDateUpdated">
+		<xs:complexType>
+			<xs:attribute type="xs:string" use="required" name="expectedPayoutDate" />
+		</xs:complexType>
+	</xs:element>	
 </xs:schema>
