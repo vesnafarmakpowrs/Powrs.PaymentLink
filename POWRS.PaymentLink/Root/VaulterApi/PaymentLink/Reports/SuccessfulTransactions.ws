@@ -3,7 +3,7 @@ SessionUser:= Global.ValidateAgentApiToken(true, true);
 
 logObjectID := SessionUser.username;
 logEventID := "SuccessfulTransactions.ws";
-logActor := Request.RemoteEndPoint.Split(':', null)[0];
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 
 ({

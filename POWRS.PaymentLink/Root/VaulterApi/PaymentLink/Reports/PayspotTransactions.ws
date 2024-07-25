@@ -1,9 +1,9 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
-SessionUser:= Global.ValidateAgentApiToken(true, true);
+SessionUser:= Global.ValidateAgentApiToken(true,false);
 
 logObjectID := SessionUser.username;
-logEventID := "SuccessfulTransactions.ws";
-logActor := Request.RemoteEndPoint.Split(':', null)[0];
+logEventID := "PaySpotTransactions.ws";
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 
 ({
@@ -13,19 +13,23 @@ logActor := Request.RemoteEndPoint.Split(':', null)[0];
 try
 (
 
-  OrderList := Select  TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, ExpectedPayoutDate, PayoutDate, Amount,  SenderFee  
+  dateFormat := "dd/MM/yyyy";
+  DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+  DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+  DTDateTo := DTDateTo.AddDays(1);
+  OrderList := Select TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, ExpectedPayoutDate, PayoutDate, Amount,  SenderFee  
 				from PayspotPayments 
-			    where DateCreated >= PDateFrom LimitDate and DateCreated <=PDateTo;
+			    where DateCreated >= DTDateFrom and DateCreated <= DTDateTo and Result='00';
 
 
-  ReponseDic := Create(System.Collections.Generic.List, System.Object);
+  ReponseDict := Create(System.Collections.Generic.List, System.Object);
   foreach order in OrderList do (
 	       OrderCreatorLegalId := select top 1 Creator
 				                 	from IoTBroker.NeuroFeatures.Token 
 					                where TokenId = order[0];
            SellerAccount :=  select top 1 Account from LegalIdentities where Id=OrderCreatorLegalId;
            fee := order[8] == null ? 0 : Double(order[8]);
-           ReponseDic.Add({
+           ReponseDict.Add({
 						"TokenId": order[0],
 						"OrderId": order[1],
 						"OrderReference": order[2],
