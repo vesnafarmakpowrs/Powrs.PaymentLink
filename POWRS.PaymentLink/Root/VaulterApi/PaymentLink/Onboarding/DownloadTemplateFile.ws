@@ -9,7 +9,7 @@
 
 logObject := SessionUser.username;
 logEventID := "DownloadTemplateFile.ws";
-logActor := Request.RemoteEndPoint.Split(":", null)[0];
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 errors:= Create(System.Collections.Generic.List, System.String);
 
 DownloadTemplateContractWithVaulter(PIsEmptyFile) := (

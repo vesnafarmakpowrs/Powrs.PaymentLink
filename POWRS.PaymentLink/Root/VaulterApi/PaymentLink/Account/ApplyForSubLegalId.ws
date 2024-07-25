@@ -9,7 +9,7 @@ SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 logObjectID := SessionUser.username;
 logEventID := "ApplyForSubLegalId.ws";
-logActor := Request.RemoteEndPoint.Split(":", null)[0];
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
