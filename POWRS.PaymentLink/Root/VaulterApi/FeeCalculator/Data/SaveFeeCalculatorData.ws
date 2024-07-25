@@ -2,7 +2,7 @@
 
 logObject := SessionUser.username;
 logEventID := "SaveFeeCalculatorData.ws";
-logActor := Request.RemoteEndPoint.Split(":", null)[0];
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 if(Posted == null) then NotAcceptable("Data could not be null");
 

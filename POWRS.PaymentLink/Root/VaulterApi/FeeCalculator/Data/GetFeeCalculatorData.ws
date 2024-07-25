@@ -2,7 +2,7 @@
 
 logObject := SessionUser.username;
 logEventID := "GetFeeCalculatorData.ws";
-logActor := Request.RemoteEndPoint.Split(":", null)[0];
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 ({
     "ObjectId": Optional(Str(PObjectId))
