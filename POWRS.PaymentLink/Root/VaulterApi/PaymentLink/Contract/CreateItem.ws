@@ -24,7 +24,7 @@ SessionUser:= Global.ValidateAgentApiToken(true, true);
 
 logObject := SessionUser.username;
 logEventID := "CreateItem.ws";
-logActor := Request.RemoteEndPoint.Split(":", null)[0];
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (

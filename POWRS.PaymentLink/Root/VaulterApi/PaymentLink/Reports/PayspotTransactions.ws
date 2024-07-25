@@ -3,7 +3,7 @@ SessionUser:= Global.ValidateAgentApiToken(true,false);
 
 logObjectID := SessionUser.username;
 logEventID := "PaySpotTransactions.ws";
-logActor := Request.RemoteEndPoint.Split(':', null)[0];
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 
 ({

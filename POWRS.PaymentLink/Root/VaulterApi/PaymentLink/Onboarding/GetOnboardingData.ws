@@ -2,7 +2,7 @@
 
 logObject := SessionUser.username;
 logEventID := "GetOnboardingData.ws";
-logActor := Request.RemoteEndPoint.Split(":", null)[0];
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (

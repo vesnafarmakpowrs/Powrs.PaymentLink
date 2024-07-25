@@ -8,7 +8,7 @@ Response.SetHeader("Access-Control-Allow-Origin","*");
 try
 (
  numberOfEmailSent:= 0;
- remoteEndpoint:= Request.RemoteEndPoint.Split(':', null)[0];
+ remoteEndpoint:= Split(Request.RemoteEndPoint, ":")[0];
  if(exists(Global.ContactUsEmailSent[remoteEndpoint])) then 
  (
      numberOfEmailSent:= Global.ContactUsEmailSent[remoteEndpoint];

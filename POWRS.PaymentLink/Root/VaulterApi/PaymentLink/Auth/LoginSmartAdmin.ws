@@ -2,7 +2,7 @@
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
 logEventID := "LoginSmartAdmin.ws";
-logActor := Request.RemoteEndPoint.Split(':', null)[0];
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 ({
    "userName": Required(Str(PUserName)),
    "nonce": Required(Str(PNonce)),
