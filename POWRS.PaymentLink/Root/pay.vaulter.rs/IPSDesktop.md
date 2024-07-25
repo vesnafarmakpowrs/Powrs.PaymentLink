@@ -9,9 +9,11 @@ Icon: favicon.ico
 viewport : Width=device-width, initial-scale=1
 Parameter: ID
 Parameter: JWT
+Parameter: TabID
 JavaScript: js/Events.js
-JavaScript: js/QRIPS.js
 JavaScript: js/XmlHttp.js
+JavaScript: js/QRIPS.js
+
 
 <main class="main page-padding ips">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -48,6 +50,7 @@ JavaScript: js/XmlHttp.js
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(27) ))" id="TransactionCompleted"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(28) ))" id="TransactionFailed"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>[[
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>
+<input type="hidden" value="((TabID ))" id="TabID"/>[[
 }}
 </main>

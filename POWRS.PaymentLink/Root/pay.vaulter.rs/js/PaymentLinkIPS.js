@@ -53,6 +53,7 @@ function GenerateTranslations() {
     Translations.TransactionInProgress = document.getElementById("TransactionInProgress").value;
     Translations.OpenLinkOnPhoneMessage = document.getElementById("OpenLinkOnPhoneMessage").value;
     Translations.SessionTokenExpiredMessage = document.getElementById("SessionTokenExpired").value;
+    Translations.PaymentFailed = document.getElementById("PaymentFailed").value;
 }
 
 function GenerateLanguageDropdown() {
@@ -134,7 +135,7 @@ function LoadIPS() {
     if (isMobileDevice)
         document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSPayoutMethod.md?JWT=" + jwt.value;
     else {
-        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md?JWT=" + jwt.value;
+        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md?JWT=" + jwt.value + "&TabID=" + TabID;
         document.getElementById("ips-iframe").classList.remove("pay-iframe");
         document.getElementById("ips-iframe").classList.add("pay-iframe-web");
     }
@@ -188,6 +189,19 @@ function GenerateIPSForm() {
 
 function PaymentCompleted(Result) {
     location.reload();
+}
+
+function PaySpotPaymentStatus(Result) {
+    console.log(Result);
+
+    if (Result != null && Result.StatusCode != null && Result.StatusCode != "00") {
+        var div = document.getElementById('ctn-payment-method-rs');
+        div.innerHTML = '';
+        var boldText = document.createElement('strong');
+        boldText.textContent = 'Payment failed';
+        boldText.style.color = 'red';
+        div.appendChild(boldText);
+    }
 }
 
 function ShowPayspotPage(Data) {

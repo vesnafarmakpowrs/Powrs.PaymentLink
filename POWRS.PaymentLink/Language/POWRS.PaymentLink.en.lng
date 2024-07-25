@@ -73,10 +73,8 @@
 			<String id="70">Regenerate the QR CODE</String>
 			<String id="71">GENERATE QR</String>
 			<String id="72">Cancel</String>
-<<<<<<< HEAD
-=======
 			<String id="73">Pay Now</String>
->>>>>>> Master
+			<String id="74">Payment failed! Check that you have enough funds in your account and that you have entered the correct information, then try again.</String>
 		</Namespace>
 	</Language>
 </Translation>

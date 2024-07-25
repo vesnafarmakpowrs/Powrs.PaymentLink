@@ -1,11 +1,4 @@
-﻿/*
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
-*/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System;
 
 namespace POWRS.PaymentLink
 {
@@ -20,10 +13,10 @@ namespace POWRS.PaymentLink
                     return false;
                 }
 
-                byte[] byteArray = System.Convert.FromBase64String(base64String);
+                byte[] byteArray = Convert.FromBase64String(base64String);
                 return byteArray.Length <= maxSizeMB * 1024 * 1024;
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 return false;
             }
