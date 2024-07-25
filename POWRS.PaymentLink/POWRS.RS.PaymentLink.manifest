@@ -34,6 +34,9 @@
 						<Content fileName="SwitchToggle.css"/>
 					</Folder>
 				</Folder>
+				<Folder name="Mail">
+					<Content fileName="SendMailContactUs.ws"/>
+				</Folder>
 				<Folder name="Reports">
 					<Content fileName="GenerateFormPDF.ws"/>
 				</Folder>
