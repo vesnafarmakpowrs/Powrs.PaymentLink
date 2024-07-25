@@ -19,7 +19,7 @@ try
   DTDateTo := DTDateTo.AddDays(1);
   OrderList := Select TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, ExpectedPayoutDate, PayoutDate, Amount,  SenderFee  
 				from PayspotPayments 
-			    where DateCreated >= DTDateFrom and DateCreated <= DTDateTo;
+			    where DateCreated >= DTDateFrom and DateCreated <= DTDateTo and Result='00';
 
 
   ReponseDict := Create(System.Collections.Generic.List, System.Object);
