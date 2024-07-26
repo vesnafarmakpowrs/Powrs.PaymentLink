@@ -1453,6 +1453,38 @@ Description of properties:
 
 **Response**
 
+````
+{
+    "success": true
+}
+````
+
+
+
+### FeeCalculator - Contact support
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/FeeCalculator/Mail/SendMailContactUs.ws")}}`  
+Method: `POST`
+
+Call this resource to send mail to support. Before calling this method **data must be saved**, because other details will be populated from db.
+
+**Request**
+
+````
+{
+	"message": "My test message",
+	"organizationNumber": "0123456789"
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+|`message`          | Property type is string, users message to be send to customer support |
+|`organizationNumber`   | Property type is string, customer number for getting some necessary data from db |
+
+
+**Response**
 
 ````
 {

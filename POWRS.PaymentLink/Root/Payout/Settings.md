@@ -36,6 +36,7 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.NotificationList", Str(Posted.NotificationList));
 	SetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath", Str(Posted.OnBoardingAllCompaniesRootPath));
 	SetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList", Str(Posted.OnBoardingSubmitMailList));
+	SetSetting("POWRS.PaymentLink.FeeCalculatorSupportEmail", Str(Posted.FeeCalculatorSupportEmail));
 	
 	SeeOther("Settings.md");
 );
@@ -99,6 +100,12 @@ if exists(Posted) then
 <label for="OnBoardingSubmitMailList">List of mail that will receive notification when onboarding is submited:</label>  
 <input type="text" id="OnBoardingSubmitMailList" name="OnBoardingSubmitMailList" value='{{GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","")}}' title="List of mail that will receive notification when onboarding is submited. Use ; as delimiter between multiple mails "/>
 </p>
+
+<p>
+<label for="FeeCalculatorSupportEmail">Fee calculator support mail list, when user click CONTACT SUPPORT:</label>  
+<input type="text" id="FeeCalculatorSupportEmail" name="FeeCalculatorSupportEmail" value='{{GetSetting("POWRS.PaymentLink.FeeCalculatorSupportEmail","")}}' title="List of mail that will receive notification when user click CONTACT SUPPORT . Use ; as delimiter between multiple mails "/>
+</p>
+
 
 <button type="submit" class="posButton">Apply</button>
 </fieldset>
