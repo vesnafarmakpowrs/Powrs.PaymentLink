@@ -202,11 +202,21 @@ while StateMachineInitialized == false and Counter < 10 do
  Sleep(1000);
 );
 
-	Log.Informational("Succeffully cerated item.", logObject, logActor, logEventID, null);
 
+PayoutPage := "Payout.md";
+IpsOnly := false;
 
+businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
+if(businessData != null) then 
+(
+ IpsOnly := businessData.IPSOnly;
+);
+
+if IpsOnly then PayoutPage := "PayoutIPS.md";
+Log.Informational("ipsOnly: " + IpsOnly + ",\nPayoutPage: " + PayoutPage, logObject, logActor, logEventID, null);
+Log.Informational("Succeffully cerated item.", logObject, logActor, logEventID, null);
 {
-    "Link" : PaymentLinkAddress + "/Payout.md?ID=" + Global.EncodeContractId(ContractId),
+    "Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractId),	
     "TokenId" : TokenId,
     "EscrowFee": EscrowFee,
     "BuyerEmail": PBuyerEmail,
