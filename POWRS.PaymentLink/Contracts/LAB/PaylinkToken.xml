@@ -107,6 +107,12 @@
 				<Variable id="EmailCounter">
 					<Number>0</Number>
 				</Variable>
+				<Variable id="PaySpotStatusCode">
+					<TagReference tag="PaySpotStatusCode"/>
+				</Variable>
+				<Variable id="PaySpotStatusMsg">
+					<TagReference tag="PaySpotStatusMsg"/>
+				</Variable>
 				<Variable id="Notifications">
 					<Calc><![CDATA[{}]]></Calc>
 				</Variable>
@@ -135,6 +141,9 @@
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+					<OnEvent actionRef="ProcessPayspotPaymentStatus" newState="AwaitingForPayment" failureState="AwaitingForPayment">
+						<OnExternalXmlNote localName="PayspotPaymentStatus" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>					
 					<OnEvent actionRef="ChangeBuyerLanguage">
 						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -308,6 +317,25 @@
 							<PersistVariable name="Notifications" value="{Notifications}"/>
 						</Then>
 					</If>
+				</Action>
+				<Action id="ProcessPayspotPaymentStatus">
+					<Script>
+						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@orderId');
+						PayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@payspotOrderId');
+						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentType');
+						PaymentStatusCode := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusCode');
+						PaymentStatusDescr := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusDescr');
+						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr})")
+					</Script>
+					<Try>
+						<PersistVariable name="PaySpotStatusCode" value="{PaymentStatusCode}" />
+						<PersistVariable name="PaySpotStatusMsg" value="{PaymentStatusDescr}" />
+						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessPayspotPaymentStatus, paymentStatus: ' + PaymentStatus }" object="{Buyer}" type="Informational" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="ProcessPayspotPaymentStatus" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
 				</Action>
 				<Action id="ProcessCompletedPayspotPayment">
 					<Script>
@@ -509,6 +537,12 @@
 		<Tag name="EscrowFee">
 			<ParameterReference parameter="EscrowFee" />
 		</Tag>
+		<Tag name="PaySpotStatusCode">
+			<ParameterReference parameter="PaySpotStatusCode" />
+		</Tag>
+		<Tag name="PaySpotStatusMsg">
+			<ParameterReference parameter="PaySpotStatusMsg" />
+		</Tag>
 		<Tag name="SupportedPaymentMethods">
 			<ParameterReference parameter="SupportedPaymentMethods" />
 		</Tag>
@@ -671,6 +705,20 @@
 				</paragraph>
 			</description>
 		</stringParameter>
+		<stringParameter name="PaySpotStatusCode" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>PaySpot status code of paymentr</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="PaySpotStatusMsg" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>PaySpot status message of paymentr</text>
+				</paragraph>
+			</description>
+		</stringParameter>		
 		<stringParameter name="BuyerFullName" value="" minLength="2">
 			<description xml:lang="en">
 				<paragraph>

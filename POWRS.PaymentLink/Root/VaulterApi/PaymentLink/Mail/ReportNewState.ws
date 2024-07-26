@@ -1,4 +1,4 @@
-remoteEndpoint:= Request.RemoteEndPoint.Split(':', null)[0];
+remoteEndpoint:= Split(Request.RemoteEndPoint, ":")[0];
 blocked:= select Blocked from RemoteEndpoints where Endpoint = remoteEndpoint;
 logContractID := "";
 try

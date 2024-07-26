@@ -113,7 +113,7 @@ Response.SetHeader("Access-Control-Allow-Origin","*");
 
 logObjectID := "TestKorisnik";
 logEventID := "GenerateFormPDF.ws";
-logActor := Request.RemoteEndPoint.Split(":", null)[0];
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (

@@ -8,7 +8,7 @@ Response.SetHeader("Access-Control-Allow-Origin","*");
 try
 (
     portal := "paylink." + After(domain,"neuron.");
-    remoteEndpoint:= Request.RemoteEndPoint.Split(':', null)[0];
+    remoteEndpoint:= Split(Request.RemoteEndPoint, ":")[0];
 
     if !exists(Global.VerifyingEmailIP) then 
     (
