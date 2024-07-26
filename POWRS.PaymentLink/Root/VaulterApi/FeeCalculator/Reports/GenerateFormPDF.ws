@@ -2,66 +2,59 @@ SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 ({
 	"t_calc_Header": Required(Str(Pt_calc_Header)),
-	"t_calc_Customer": Required(Str(Pt_calc_Customer)),
-	"t_calc_CustomerID": Required(Str(Pt_calc_CustomerID)),
-	"t_calc_TotalRevenue": Required(Str(Pt_calc_TotalRevenue)),
+	"t_calc_Now_Title": Required(Str(Pt_calc_Now_Title)),
+	"t_calc_Forecast_Title": Required(Str(Pt_calc_Forecast_Title)),
 	
-	"t_calc_CARD": Required(Str(Pt_calc_CARD)),
-    "t_calc_NumberOfTrx_Card": Required(Str(Pt_calc_NumberOfTrx_Card)),
-    "t_calc_AverAmountPerTrx_Card": Required(Str(Pt_calc_AverAmountPerTrx_Card)),
-    "t_calc_CardFee_Card": Required(Str(Pt_calc_CardFee_Card)),
-    "t_calc_totalCost_card": Required(Str(Pt_calc_totalCost_card)),
-    "t_calc_VaulterCardFee_Card": Required(Str(Pt_calc_VaulterCardFee_Card)),
-    "t_calc_totalVaulterCost_card": Required(Str(Pt_calc_totalVaulterCost_card)),
-    "t_calc_SAVED_card": Required(Str(Pt_calc_SAVED_card)),
-    "t_calc_BUSINESS_card": Required(Str(Pt_calc_BUSINESS_card)),
+	"t_calc_CurrentData_TotalRevenue": Required(Str(Pt_calc_CurrentData_TotalRevenue)),
+	"t_calc_CurrentData_AvgAmountPerTrn": Required(Str(Pt_calc_CurrentData_AvgAmountPerTrn)),
+	"t_calc_CurrentData_TotalTrn": Required(Str(Pt_calc_CurrentData_TotalTrn)),
+	"t_calc_CurrentData_CardTrnPercentage": Required(Str(Pt_calc_CurrentData_CardTrnPercentage)),
+	"t_calc_CurrentData_CardFee": Required(Str(Pt_calc_CurrentData_CardFee)),
+	"t_calc_CurrentData_TotalCardPercentage_lbl": Required(Str(Pt_calc_CurrentData_TotalCardPercentage_lbl)),
+	"t_calc_CurrentData_TotalCardCost_lbl": Required(Str(Pt_calc_CurrentData_TotalCardCost_lbl)),
 	
-	"t_calc_A2A": Required(Str(Pt_calc_A2A)),
-	"t_calc_NumberOfTrx_A2A": Required(Str(Pt_calc_NumberOfTrx_A2A)),
-	"t_calc_AverAmountPerTrx_A2A": Required(Str(Pt_calc_AverAmountPerTrx_A2A)),
-	"t_calc_VaulterA2AFee_A2A": Required(Str(Pt_calc_VaulterA2AFee_A2A)),
-	"t_calc_totalVaulterCost_A2A": Required(Str(Pt_calc_totalVaulterCost_A2A)),
-	"t_calc_SAVED_A2A": Required(Str(Pt_calc_SAVED_A2A)),
-	"t_calc_BUSINESS_A2A": Required(Str(Pt_calc_BUSINESS_A2A)),
+	"t_calc_Card_Title": Required(Str(Pt_calc_Card_Title)),
+    "t_calc_Card_TrnPercentage": Required(Str(Pt_calc_Card_TrnPercentage)),
+    "t_calc_Card_NumberOfTrn": Required(Str(Pt_calc_Card_NumberOfTrn)),
+    "t_calc_Card_AvgAmountPerTrn": Required(Str(Pt_calc_Card_AvgAmountPerTrn)),
+    "t_calc_Card_VaulterFee": Required(Str(Pt_calc_Card_VaulterFee)),
+    "t_calc_Card_VaulterCost_lbl": Required(Str(Pt_calc_Card_VaulterCost_lbl)),
+    "t_calc_Card_Saved_lbl": Required(Str(Pt_calc_Card_Saved_lbl)),
 	
-	"t_calc_CARD_holding": Required(Str(Pt_calc_CARD_holding)),
-	"t_calc_NumberOfTrx_CardHolding": Required(Str(Pt_calc_NumberOfTrx_CardHolding)),
-	"t_calc_AverAmountPerTrx_CardHolding": Required(Str(Pt_calc_AverAmountPerTrx_CardHolding)),
-	"t_calc_VaulterFee_CardHolding": Required(Str(Pt_calc_VaulterFee_CardHolding)),
-	"t_calc_totalCost_CardHolding": Required(Str(Pt_calc_totalCost_CardHolding)),
-	"t_calc_KickBack_card": Required(Str(Pt_calc_KickBack_card)),
-	"t_calc_NumberOfTrx_CardHolding_KickBack": Required(Str(Pt_calc_NumberOfTrx_CardHolding_KickBack)),
-	"t_calc_VaulterKickBackPerTry_CardHolding_KickBack": Required(Str(Pt_calc_VaulterKickBackPerTry_CardHolding_KickBack)),
-	"t_calc_totalIncome_CardHolding_KickBack": Required(Str(Pt_calc_totalIncome_CardHolding_KickBack)),
+	"t_calc_A2A_Title": Required(Str(Pt_calc_A2A_Title)),
+    "t_calc_A2A_TrnPercentage": Required(Str(Pt_calc_A2A_TrnPercentage)),
+    "t_calc_A2A_NumberOfTrn": Required(Str(Pt_calc_A2A_NumberOfTrn)),
+    "t_calc_A2A_AvgAmountPerTrn": Required(Str(Pt_calc_A2A_AvgAmountPerTrn)),
+    "t_calc_A2A_VaulterFee": Required(Str(Pt_calc_A2A_VaulterFee)),
+    "t_calc_A2A_VaulterCost_lbl": Required(Str(Pt_calc_A2A_VaulterCost_lbl)),
+    "t_calc_A2A_Saved_lbl": Required(Str(Pt_calc_A2A_Saved_lbl)),
 	
-	"t_calc_A2A_holding": Required(Str(Pt_calc_A2A_holding)),
-	"t_calc_NumberOfTrx_A2AHolding": Required(Str(Pt_calc_NumberOfTrx_A2AHolding)),
-	"t_calc_AverAmountPerTrx_A2AHolding": Required(Str(Pt_calc_AverAmountPerTrx_A2AHolding)),
-	"t_calc_VaulterFee_A2AHolding": Required(Str(Pt_calc_VaulterFee_A2AHolding)),
-	"t_calc_totalCost_A2AHolding": Required(Str(Pt_calc_totalCost_A2AHolding)),
-	"t_calc_KickBack_A2A": Required(Str(Pt_calc_KickBack_A2A)),
-	"t_calc_NumberOfTrx_A2AHolding_KickBack": Required(Str(Pt_calc_NumberOfTrx_A2AHolding_KickBack)),
-	"t_calc_VaulterKickBackPerTry_A2AHolding_KickBack": Required(Str(Pt_calc_VaulterKickBackPerTry_A2AHolding_KickBack)),
-	"t_calc_totalIncome_A2AHolding_KickBack": Required(Str(Pt_calc_totalIncome_A2AHolding_KickBack)),
+	"t_calc_Holding_Title": Required(Str(Pt_calc_Holding_Title)),
+    "t_calc_Holding_TrnPercentage": Required(Str(Pt_calc_Holding_TrnPercentage)),
+    "t_calc_Holding_NumberOfTrn": Required(Str(Pt_calc_Holding_NumberOfTrn)),
+    "t_calc_Holding_HoldingFee": Required(Str(Pt_calc_Holding_HoldingFee)),
+    "t_calc_Holding_VaulterCost_lbl": Required(Str(Pt_calc_Holding_VaulterCost)),
+    "t_calc_Holding_WhoWillPayCost_Title": Required(Str(Pt_calc_Holding_WhoWillPayCost_Title)),
+    "t_calc_Holding_Buyer_lbl": Required(Str(Pt_calc_Holding_Buyer_lbl)),
+    "t_calc_Holding_Seller_lbl": Required(Str(Pt_calc_Holding_Seller_lbl)),
+    "t_calc_Holding_KickBackDiscount_Title": Required(Str(Pt_calc_Holding_KickBackDiscount_Title)),
+    "t_calc_Holding_KickBackPerTrn": Required(Str(Pt_calc_Holding_KickBackPerTrn)),
+    "t_calc_Holding_IncomeSummary_lbl": Required(Str(Pt_calc_Holding_IncomeSummary_lbl)),
 	
-	"t_slider_lblHeader": Required(Str(Pt_slider_lblHeader)),
-	"t_slider_lblSeller": Required(Str(Pt_slider_lblSeller)),
-	"t_slider_lblBuyer": Required(Str(Pt_slider_lblBuyer)),
+	"t_calc_Summary_Title": Required(Str(Pt_calc_Summary_Title)),
+	"t_calc_Saved_lbl": Required(Str(Pt_calc_Saved_lbl)),
+	"t_calc_KickBackDiscount_lbl": Required(Str(Pt_calc_KickBackDiscount_lbl)),
 	
 	"t_calc_Note": Required(Str(Pt_calc_Note)),
-	
-	"t_calc_tblHeaderTotalTrx": Required(Str(Pt_calc_tblHeaderTotalTrx)),
-	"t_calc_tblData_CardTrx": Required(Str(Pt_calc_tblData_CardTrx)),
-	"t_calc_tblData_A2ATrx": Required(Str(Pt_calc_tblData_A2ATrx)),
+		
+	"t_calc_tblHeaderTotalTrn": Required(Str(Pt_calc_tblHeaderTotalTrn)),
+	"t_calc_tblData_CardTrn": Required(Str(Pt_calc_tblData_CardTrn)),
+	"t_calc_tblData_A2ATrn": Required(Str(Pt_calc_tblData_A2ATrn)),
 	"t_calc_tblHeaderHolding": Required(Str(Pt_calc_tblHeaderHolding)),
-    
-	"txtCustomer": Required(Str(PtxtCustomer)),
-    "txtCustomerID": Required(Str(PtxtCustomerID)),
-    "txtTotalRevenue": Required(Str(PtxtTotalRevenue)),
-    "txtNote": Required(Str(PtxtNote)),
-	
+	"t_calc_tblData_HoldingTrn": Required(Str(Pt_calc_tblData_HoldingTrn)),
+    	
 	"organizationNumber": Required(Str(PorganizationNumber)),
-	"sendToEmail": Required(Boolean(PsendToEmail)),
+	"sendToEmail": Required(Bool(PsendToEmail)),
 	"email": Optional(Str(Pemail))
 }:= Posted) ??? BadRequest(Exception.Message);
 
@@ -74,12 +67,20 @@ try
 	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\FeeCalculator\\HtmlTemplates\\FeeCalculatorForm";
 	htmlTemplatePath := fileRootPath + "\\FeeCalc.html"; 
 	if (!File.Exists(htmlTemplatePath)) then
-		Error("Template path does not exist");
-		
+	(
+		Error("Template file does not exist");
+	);
+
+	feeCalcObj := select top 1 * from POWRS.PaymentLink.FeeCalculator.Data.FeeCalculator where OrganizationNumber = POrganizationNumber;
+	if(feeCalcObj == null) then 
+	(
+		Error("OrganizationNumber don't exists in db");
+	);
+	
 	htmlContent := System.IO.File.ReadAllText(htmlTemplatePath);
 	
 	htmlContent := htmlContent.Replace("{{t_calc_Header}}", Pt_calc_Header);
-	htmlContent := htmlContent.Replace("{{t_calc_Customer}}", Pt_calc_Customer);
+	htmlContent := htmlContent.Replace("{{t_calc_CurrentData_Title}}", Pt_calc_Customer);
 	htmlContent := htmlContent.Replace("{{t_calc_CustomerID}}", Pt_calc_CustomerID);
 	htmlContent := htmlContent.Replace("{{t_calc_TotalRevenue}}", Pt_calc_TotalRevenue);	
 	htmlContent := htmlContent.Replace("{{t_calc_Note}}", Pt_calc_Note);
