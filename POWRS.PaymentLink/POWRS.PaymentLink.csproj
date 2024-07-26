@@ -573,34 +573,49 @@
 	  <None Update="Root\Payout\ViewOnboarding.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\App.css">
+	  <None Update="Root\VaulterApi\FeeCalculator\Auth\LoginFeeCalculator.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\bootstrap.css">
+	  <None Update="Root\VaulterApi\FeeCalculator\Data\SaveFeeCalculator.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\bootstrap.js">
+	  <None Update="Root\VaulterApi\FeeCalculator\Data\GetFeeCalculatorData.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\FeeCalc.html">
+	  <None Update="Root\VaulterApi\FeeCalculator\Data\SaveFeeCalculatorData.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\FeeCalculatorPage.css">
+	  <None Update="FeeCalculator\TemplateFiles\FeeCalculatorForm\App.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\index.css">
+	  <None Update="FeeCalculator\TemplateFiles\FeeCalculatorForm\bootstrap.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\InputAnimation.css">
+	  <None Update="FeeCalculator\TemplateFiles\FeeCalculatorForm\bootstrap.js">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\Slider.css">
+	  <None Update="FeeCalculator\TemplateFiles\FeeCalculatorForm\FeeCalc.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\Style.css">
+	  <None Update="FeeCalculator\TemplateFiles\FeeCalculatorForm\FeeCalculatorPage.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\SwitchToggle.css">
+	  <None Update="FeeCalculator\TemplateFiles\FeeCalculatorForm\index.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="FeeCalculator\TemplateFiles\FeeCalculatorForm\InputAnimation.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="FeeCalculator\TemplateFiles\FeeCalculatorForm\Slider.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="FeeCalculator\TemplateFiles\FeeCalculatorForm\Style.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="FeeCalculator\TemplateFiles\FeeCalculatorForm\SwitchToggle.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\FeeCalculator\Mail\SendMailContactUs.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\FeeCalculator\Reports\GenerateFormPDF.ws">
@@ -708,7 +723,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Root\VaulterApi\FeeCalculator\HtmlTemplates\FeeCalculatorForm\" />
+	  <Folder Include="FeeCalculator\TemplateFiles\FeeCalculatorForm\" />
 	</ItemGroup>
 
 	<!-- Build Lab Serbian package -->
@@ -717,12 +732,12 @@
 		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
 	</PropertyGroup>
 
-	<!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Install.exe&quot; -p &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot; -k 5d98ddf8138a851f6822be199ee9324e -m &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.Lab.PaymentLink.manifest&quot;" />
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Sign.exe&quot; -c ed448 -priv &quot;qGe+NyQy0hjvuNPK61LfvHmkJZxD0SHdo7UozOsWpGPj3GmSxAa8X4Ch7gJv23tRfUm4+IJIJCo=&quot; -o &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.signature&quot; -s &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot;" />
-	</Target>-->
+	</Target>
 
-	<!-- Build PRODUCTION Serbian package
+	<!-- Build PRODUCTION Serbian package 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ApplicationManifest>POWRS.RS.PaymentLink.manifest</ApplicationManifest>
