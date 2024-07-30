@@ -64,6 +64,11 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (	
+	if(PsendToEmail and System.String.IsNullOrWhiteSpace(Pemail))then
+	(
+		Error("Recipient email must be populated...");
+	);
+
 	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\FeeCalculator\\HtmlTemplates\\FeeCalculatorForm";
 	htmlTemplatePath := fileRootPath + "\\FeeCalc.html"; 
 	if (!File.Exists(htmlTemplatePath)) then
@@ -71,7 +76,7 @@ try
 		Error("Template file does not exist");
 	);
 
-	feeCalcObj := select top 1 * from POWRS.PaymentLink.FeeCalculator.Data.FeeCalculator where OrganizationNumber = POrganizationNumber;
+	feeCalcObj := select top 1 * from POWRS.PaymentLink.FeeCalculator.Data.FeeCalculator where OrganizationNumber = PorganizationNumber;
 	if(feeCalcObj == null) then 
 	(
 		Error("OrganizationNumber don't exists in db");
@@ -165,14 +170,25 @@ try
 		MailBody.Append("<br />");
 		MailBody.Append("<br />In mail attachment is you Vaulter calculation.");
 		MailBody.Append("<br />");
-		MailBody.Append("<br />Best regards");
-		MailBody.Append("<br />Vaulter");
+		MailBody.Append("<br />***");
+		MailBody.Append("<br />");
+		MailBody.Append("<br />Zdravo,");
+		MailBody.Append("<br />");
+		MailBody.Append("<br />U prilogu maila ti dostavljamo Vaulter troškovni proračun.");
+		MailBody.Append("<br />");
+		MailBody.Append("<br />");
+		MailBody.Append("<br /><i>Best regards / Srdačan pozdrav");
+		MailBody.Append("<br />Vaulter</i>");
 	
 		ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
 		Config := ConfigClass.Instance;
 		
-		POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, Pemail, "Vaulter Calculation", MailBody, Base64Encode(bytes), "Vaulter calculation");
-	
+		bytesStr := Base64Encode(bytes);
+		
+		POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, Pemail, "Vaulter Calculation", Str(MailBody), bytesStr, "Vaulter calculation.pdf");
+		
+		destroy(MailBody);
+		
 		{
 			success: true
 		}

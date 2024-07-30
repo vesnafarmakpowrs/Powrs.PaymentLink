@@ -7,6 +7,8 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
     [TypeName(TypeNameSerialization.None)]
     [Index("OrganizationNumber")]
     [Index("CreatorUserName")]
+    [Index("EditorUserName")]
+    [Index("CreatorUserName", "EditorUserName")]
     public class FeeCalculator
     {
         public FeeCalculator()
