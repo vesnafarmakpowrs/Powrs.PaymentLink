@@ -1,4 +1,4 @@
-Response.SetHeader("Access-Control-Allow-Origin","*");
+SessionUser:= Global.ValidateAgentApiToken(false, false);
 
 ({
 	"t_calc_Header": Required(Str(Pt_calc_Header)),
@@ -60,64 +60,17 @@ Response.SetHeader("Access-Control-Allow-Origin","*");
     "txtTotalRevenue": Required(Str(PtxtTotalRevenue)),
     "txtNote": Required(Str(PtxtNote)),
 	
-	"chbxShowCard": Required(Bool(PchbxShowCard)),
-    "txtNumberOfTrx_Card": Required(Str(PtxtNumberOfTrx_Card)),
-    "txtAverAmountPerTrx_Card": Required(Str(PtxtAverAmountPerTrx_Card)),
-    "txtCardFee_Card": Required(Str(PtxtCardFee_Card)),
-    "txtVaulterCardFee_Card": Required(Str(PtxtVaulterCardFee_Card)),
-    "totalCost_Card": Required(Str(PtotalCost_Card)),
-    "vaulterCost_Card": Required(Str(PvaulterCost_Card)),
-    "saved_card": Required(Str(Psaved_card)),
-    "business_card": Required(Str(Pbusiness_card)),
-	
-	"chbxShowA2A": Required(Bool(PchbxShowA2A)),
-	"txtNumberOfTrx_A2A": Required(Str(PtxtNumberOfTrx_A2A)),
-    "txtAverAmountPerTrx_A2A": Required(Str(PtxtAverAmountPerTrx_A2A)),
-    "txtVaulterA2AFee_A2A": Required(Str(PtxtVaulterA2AFee_A2A)),
-    "vaulterCost_A2A": Required(Str(PvaulterCost_A2A)),
-    "saved_A2A": Required(Str(Psaved_A2A)),
-    "business_A2A": Required(Str(Pbusiness_A2A)),
-	
-	"chbxShowCardHolding": Required(Bool(PchbxShowCardHolding)),
-	"txtNumberOfTrx_CardHolding": Required(Str(PtxtNumberOfTrx_CardHolding)),
-    "txtAverAmountPerTrx_CardHolding": Required(Str(PtxtAverAmountPerTrx_CardHolding)),
-    "txtVaulterFee_CardHolding": Required(Str(PtxtVaulterFee_CardHolding)),
-    "txtNumberOfTrx_CardHolding_KickBack": Required(Str(PtxtNumberOfTrx_CardHolding_KickBack)),
-    "txtVaulterKickBackPerTry_CardHolding_KickBack": Required(Str(PtxtVaulterKickBackPerTry_CardHolding_KickBack)),
-    "sliderSellerBuyer_CardHolding": Required(Str(PsliderSellerBuyer_CardHolding)),
-    "totalCost_CardHolding": Required(Str(PtotalCost_CardHolding)),
-    "totalIncome_CardHolding_KickBack": Required(Str(PtotalIncome_CardHolding_KickBack)),
-	
-	"chbxShowA2AHolding": Required(Bool(PchbxShowA2AHolding)),
-	"txtNumberOfTrx_A2AHolding": Required(Str(PtxtNumberOfTrx_A2AHolding)),
-    "txtAverAmountPerTrx_A2AHolding": Required(Str(PtxtAverAmountPerTrx_A2AHolding)),
-    "txtVaulterFee_A2AHolding": Required(Str(PtxtVaulterFee_A2AHolding)),
-    "txtNumberOfTrx_A2AHolding_KickBack": Required(Str(PtxtNumberOfTrx_A2AHolding_KickBack)),
-    "txtVaulterKickBackPerTry_A2AHolding_KickBack": Required(Str(PtxtVaulterKickBackPerTry_A2AHolding_KickBack)),
-    "sliderSellerBuyer_A2AHolding": Required(Str(PsliderSellerBuyer_A2AHolding)),
-    "totalCost_A2AHolding": Required(Str(PtotalCost_A2AHolding)),
-    "totalIncome_A2AHolding_KickBack": Required(Str(PtotalIncome_A2AHolding_KickBack)),
-	
-	"cntTotalTrx_card": Required(Str(PcntTotalTrx_card)),
-	"cntTrx_card": Required(Str(PcntTrx_card)),
-	"percTrx_card": Required(Str(PpercTrx_card)),
-	"cntTrx_A2A": Required(Str(PcntTrx_A2A)),
-	"percTrx_A2A": Required(Str(PpercTrx_A2A)),
-	"cntTrx_cardHold": Required(Str(PcntTrx_cardHold)),
-	"percTrx_cardHold": Required(Str(PpercTrx_cardHold)),
-	"cntTrx_A2AHold": Required(Str(PcntTrx_A2AHold)),
-	"percTrx_A2AHold": Required(Str(PpercTrx_A2AHold))
-	
-	
+	"organizationNumber": Required(Str(PorganizationNumber)),
+	"sendToEmail": Required(Boolean(PsendToEmail)),
+	"email": Optional(Str(Pemail))
 }:= Posted) ??? BadRequest(Exception.Message);
 
-logObjectID := "TestKorisnik";
+logObjectID := SessionUser.username;
 logEventID := "GenerateFormPDF.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
-(
-	
+(	
 	fileRootPath := Waher.IoTGateway.Gateway.RootFolder + "VaulterApi\\FeeCalculator\\HtmlTemplates\\FeeCalculatorForm";
 	htmlTemplatePath := fileRootPath + "\\FeeCalc.html"; 
 	if (!File.Exists(htmlTemplatePath)) then
