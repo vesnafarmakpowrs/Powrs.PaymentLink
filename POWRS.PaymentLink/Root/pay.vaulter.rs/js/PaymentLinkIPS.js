@@ -115,9 +115,7 @@ function UserAgree(isIPS) {
         && document.getElementById("termsAndConditionAgency").checked) {
         if (document.getElementById("payspot-submit") != null) document.getElementById("payspot-submit").removeAttribute("disabled");
         document.getElementById("ctn-payment-method-rs").style.display = "block";
-        console.log(document.getElementById("IpsOnly").value);
-        if (document.getElementById("IpsOnly").value?.toLowerCase() === 'true')
-            LoadIPS();
+        LoadIPS();
     }
     else {
         if (document.getElementById("payspot-submit") != null) document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
