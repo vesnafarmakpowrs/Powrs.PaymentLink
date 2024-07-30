@@ -19,12 +19,12 @@ try
 		BadRequest("Username, Nonce and Signature could not be empty");
     );
 
-	availableUsersList := Create(System.Collections.Generic.List, System.String);
-	availableUsersList.Add("AgentPLG");
-	availableUsersList.Add("Emir");
-	availableUsersList.Add("Robert");
+	allowedUsersList := Create(System.Collections.Generic.List, System.String);
+	allowedUsersList.Add("AgentPLG");
+	allowedUsersList.Add("Emir");
+	allowedUsersList.Add("Robert");
 	
-	if(!availableUsersList.Contains(PUserName))then
+	if(!allowedUsersList.Contains(PUserName))then
 	(
 		Forbidden("Invalid user name or password.");
 	);
