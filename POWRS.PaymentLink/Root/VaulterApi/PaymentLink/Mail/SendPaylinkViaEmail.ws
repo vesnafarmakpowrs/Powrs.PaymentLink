@@ -67,7 +67,7 @@ try
 	Config := ConfigClass.Instance;
 	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, buyerEmail, "Vaulter", MailBody, null, null);
 	
-	addNoteEndpoint:= Gateway.GetUrl("/AddNote/" + tokenObj.TokenId);
+	addNoteEndpoint:= Gateway.GetUrl(":8088/AddNote/" + tokenObj.TokenId);
 	namespace:= Gateway.GetUrl("/Downloads/EscrowPaylinkRS.xsd");
 	Post(addNoteEndpoint,<EmailToBuyerSent xmlns=Gateway.GetUrl("/Downloads/EscrowPaylinkRS.xsd") email=buyerEmail />,{},Gateway.Certificate);
 
