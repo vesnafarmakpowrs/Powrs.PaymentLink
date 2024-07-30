@@ -65,7 +65,7 @@ try
 	Form["message"] := SMSBody;
 	Post("https://api.txtlocal.com/send/", Form);
 
-	addNoteEndpoint:= Gateway.GetUrl("/AddNote/" + tokenObj.TokenId);
+	addNoteEndpoint:= Gateway.GetUrl(":8088/AddNote/" + tokenObj.TokenId);
 	namespace:= Gateway.GetUrl("/Downloads/EscrowPaylinkRS.xsd");
 	Post(addNoteEndpoint ,<SMSToBuyerSent xmlns=namespace phoneNumber=buyerPhoneNumber  />,{},Waher.IoTGateway.Gateway.Certificate);
 		

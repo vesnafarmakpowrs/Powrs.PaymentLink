@@ -145,9 +145,21 @@ if Token.HasStateMachine then
 
       if(ContractState == "AwaitingForPayment" and Country != Language.Code.ToUpper()) then
       (
-        addNoteEndpoint:="https://" + Gateway.Domain + "/AddNote/" + Token.TokenId;
-	    namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
-	    Post(addNoteEndpoint ,<LanguageChanged xmlns=namespace language=Language.Code.ToUpper() />,{},Waher.IoTGateway.Gateway.Certificate);
+        SendLangaugeNote(tokenId, languageCode):= 
+        (
+            try
+            (
+                addNoteEndpoint:= Gateway.GetUrl(":8088/AddNote/" + tokenId);
+	            namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
+	            Post(addNoteEndpoint ,<LanguageChanged xmlns=namespace language=languageCode.ToUpper() />,{},Waher.IoTGateway.Gateway.Certificate);
+            )
+            catch
+            (
+                Log.Error(Exception.Message);
+            );
+        );
+
+        Background(SendLangaugeNote(Token.TokenId, Language.Code));
       );
 
      BuyerFirstName := Before(BuyerFullName," ");
