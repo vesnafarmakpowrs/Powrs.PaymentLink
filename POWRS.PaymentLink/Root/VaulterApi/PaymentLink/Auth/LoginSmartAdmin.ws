@@ -17,8 +17,16 @@ try
 		BadRequest("Username, Nonce and Signature could not be empty");
     );
 
-	if(PUserName != "PowrsAgent" && PUserName != "VaulterInvestor") then (
-		BadRequest("Invalid user name or password.");
+	allowedUsersList_RoleSuperAdmin := Create(System.Collections.Generic.List, System.String);
+	allowedUsersList_RoleSuperAdmin.Add("PowrsAgent");
+	allowedUsersList_RoleSuperAdmin.Add("IvanaPowrs");
+	
+	allowedUsersList_RoleUsers := Create(System.Collections.Generic.List, System.String);
+	allowedUsersList_RoleUsers.Add("VaulterInvestor");
+
+	if(!allowedUsersList_RoleSuperAdmin.Contains(PUserName) and !allowedUsersList_RoleUsers.Contains(PUserName))then
+	(
+		Forbidden("Invalid user name or password.");
 	);
 
     Log.Informational("Called method LoginSmartAdmin for userName :" + PUserName, PUserName ,logActor, logEventID, null);
@@ -37,9 +45,9 @@ try
 				);
 
 	role := "";
-	if (PUserName == "PowrsAgent") then (
+	if (allowedUsersList_RoleSuperAdmin.Contains(PUserName)) then (
 		role := "SuperAdmin";
-	)else(
+	)else if (allowedUsersList_RoleUsers.Contains(PUserName)) then (
 		role := "User";
 	);
 
