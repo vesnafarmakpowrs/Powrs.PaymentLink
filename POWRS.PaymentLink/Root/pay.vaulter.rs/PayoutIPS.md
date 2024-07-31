@@ -264,33 +264,26 @@ if ContractState == "AwaitingForPayment" then
  </table>
 </div>
 <div class="spaceItem"></div>
-
+<div id="retry-payment" style="display:none">
+   <div class="retry-div" >
+    <button id="payspot-submit" class="retry-button" onclick="RetryPayment()">((LanguageNamespace.GetStringAsync(75) ))</button> 
+  </div>
+</div>
+<div id="payment-msg-div"  style="display:none">
+   <div id="payment-msg" class="retry-div" ></div>
+</div>
 <div class="payment-method-rs"  id="ctn-payment-method-rs" style="display:none">
   <table class="payment-method-tbl-rs">
     <tr>
-     <td>[[;
-if(IpsOnly) then 
-(
-  ]]<div class="pay-ips-div"><iframe scrolling="no" id="ips-iframe" class="pay-iframe"></iframe></div>[[;
-)
-else 
-(
- ]]
-<button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">Pay now</button> 
-[[;
-);
-]]</td>
-</tr>
-<tr id="tr_spinner" style="display: none;">
-<td>
-<img src="../resources/spin.svg" alt="loadingSpinner">
-</td>
-</tr>
-<tr>
-<td>
-<iframe id="payspot_iframe" class="payspot_iframe" style="display:none"></iframe>
-</td>
-</tr>
+     <td style="vertical-align: top;">
+      <div class="pay-ips-div"><iframe scrolling="no" id="ips-iframe" class="pay-iframe"></iframe></div>
+     </td>
+   </tr>
+   <tr id="tr_spinner" style="display: none;">
+     <td>
+       <img src="../resources/spin.svg" alt="loadingSpinner">
+     </td>
+   </tr>
 </table>
 </div>[[;
 )

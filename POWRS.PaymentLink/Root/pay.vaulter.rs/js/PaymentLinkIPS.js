@@ -94,7 +94,7 @@ function TransactionFailed(Result) {
         IsSuccess: false,
         Message: Translations.TransactionFailed
     };
-
+    document.getElementById("ctn-payment-method-rs").style.display = "block";
     DisplayTransactionResult(res);
 }
 
@@ -188,18 +188,31 @@ function GenerateIPSForm() {
 function PaymentCompleted(Result) {
     location.reload();
 }
-
 function PaySpotPaymentStatus(Result) {
     console.log(Result);
 
     if (Result != null && Result.StatusCode != null && Result.StatusCode != "00") {
-        var div = document.getElementById('ctn-payment-method-rs');
-        div.innerHTML = '';
+        document.getElementById('ctn-payment-method-rs').style.display = "none";
+        var div = document.getElementById('payment-msg-div'); 
+        div.style.display = "block";
+		var div = document.getElementById('payment-msg'); 
+		div.innerHTML = '';
         var boldText = document.createElement('strong');
-        boldText.textContent = 'Payment failed';
+        boldText.textContent = Translations.PaymentFailed;;
         boldText.style.color = 'red';
+		boldText.style.width = '70%';
         div.appendChild(boldText);
+        document.getElementById('retry-payment').style.display = "block";
     }
+}
+
+function RetryPayment() {
+    document.getElementById('retry-payment').style.display = "none";
+    var div = document.getElementById('payment-msg');
+    div.innerHTML = '';
+	document.getElementById('payment-msg-div').style.display = "none";
+	document.getElementById("ips-iframe").src = "";
+    UserAgree();
 }
 
 function ShowPayspotPage(Data) {
