@@ -42,7 +42,7 @@ JavaScript: js/QRIPS.js
                           <div id="msg-time-expire" class="msg">((LanguageNamespace.GetStringAsync(69) ))</div>
                           <div id="msg-generate-qrcode" class="msg">((LanguageNamespace.GetStringAsync(70) ))</div>
                           <div class="pay-div" display="none"><button id="btnGenerateQR" class="pay-btn btn-black btn-hide" onclick="getQRCode()">((LanguageNamespace.GetStringAsync(71) ))</button> </div>
-                          <div class="cancel-div"><button  id="btnCancelQR"  onclick="cancelTransaction()"  type="button" class="pay-btn btn-grey btn-hide" id="cancel_btn">((LanguageNamespace.GetStringAsync(72) ))</button></div>
+                          <div class="cancel-div"> <button  id="btnCancelQR"  onclick="cancelTransaction()"  type="button" class="pay-btn btn-grey" id="cancel_btn">((LanguageNamespace.GetStringAsync(72) ))</button></div>
                       </div> 
                   </div>
                 </div>           
