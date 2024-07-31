@@ -109,7 +109,7 @@ function DisplayTransactionResult(Result) {
     }
 }
 
-function UserAgree(isIPS) {
+function UserAgree() {
 
     if (document.getElementById("termsAndCondition").checked
         && document.getElementById("termsAndConditionAgency").checked) {
@@ -193,14 +193,15 @@ function PaySpotPaymentStatus(Result) {
 
     if (Result != null && Result.StatusCode != null && Result.StatusCode != "00") {
         document.getElementById('ctn-payment-method-rs').style.display = "none";
-        var div = document.getElementById('payment-msg-div'); 
+        var div = document.getElementById('payment-msg-div');
         div.style.display = "block";
-		var div = document.getElementById('payment-msg'); 
-		div.innerHTML = '';
+        var div = document.getElementById('payment-msg');
+        div.innerHTML = '';
         var boldText = document.createElement('strong');
         boldText.textContent = Translations.PaymentFailed;;
         boldText.style.color = 'red';
-		boldText.style.width = '70%';
+        boldText.style.width = '70%';
+        boldText.style.textAlign = 'center';
         div.appendChild(boldText);
         document.getElementById('retry-payment').style.display = "block";
     }
@@ -210,8 +211,8 @@ function RetryPayment() {
     document.getElementById('retry-payment').style.display = "none";
     var div = document.getElementById('payment-msg');
     div.innerHTML = '';
-	document.getElementById('payment-msg-div').style.display = "none";
-	document.getElementById("ips-iframe").src = "";
+    document.getElementById('payment-msg-div').style.display = "none";
+    document.getElementById("ips-iframe").src = "";
     UserAgree();
 }
 
