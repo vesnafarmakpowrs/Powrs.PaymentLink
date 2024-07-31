@@ -1,7 +1,4 @@
-﻿
-
-
-@font-face {
+﻿@font-face {
 font-family: 'Goanda Bold';
 src: url('../Fonts/Coanda-Bold.ttf') format('truetype');
 font-weight: bold;
@@ -342,11 +339,13 @@ color: #ffffff !important;
 }
 
 .content {
+display: flex;
+flex-direction: column;
+height: 100%;
 padding: 20px;
 padding: 0 5% 1% 5%;
 background-color:white;
 width: 90%;
-height: 90vh;
 top:3em;
 z-index:2;
 margin: 0.5rem auto 0rem auto;
@@ -704,7 +703,7 @@ height:10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top:10px;
+  padding-top: 10px;
 }
 
 .retry-button
