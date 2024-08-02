@@ -29,6 +29,11 @@ try
 
 	variables := tokenObj.GetCurrentStateVariables();
 	
+	if(variables.State != "AwaitingForPayment") then 
+	(
+		Error("Link is no longer valid");
+	);
+
 	if(exists(PPhoneNumber)) then 
 	(
 		if(PPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
