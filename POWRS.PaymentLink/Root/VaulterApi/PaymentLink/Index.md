@@ -1494,7 +1494,7 @@ Description of properties:
 
 
 
-### FeeCalculator - Download PDF / Send PDF to email
+### FeeCalculator - Download PDF / Send PDF to email (SHARE)
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/FeeCalculator/Reports/GenerateFormPDF.ws")}}`  
 Method: `POST`
 

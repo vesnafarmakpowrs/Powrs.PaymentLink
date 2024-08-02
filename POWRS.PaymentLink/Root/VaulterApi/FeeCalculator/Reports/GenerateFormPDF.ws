@@ -96,6 +96,15 @@ try
 	htmlContent := htmlContent.Replace("{{t_calc_CurrentData_TotalCardPercentage_lbl}}", Pt_calc_CurrentData_TotalCardPercentage_lbl);
 	htmlContent := htmlContent.Replace("{{t_calc_CurrentData_TotalCardCost_lbl}}", Pt_calc_CurrentData_TotalCardCost_lbl);
 	
+	htmlContent := htmlContent.Replace("{{CurrentData_TotalRevenue}}", Str(feeCalcObj.CurrentData.TotalRevenue));
+	htmlContent := htmlContent.Replace("{{CurrentData_AvgAmountPerTrn}}", Str(feeCalcObj.CurrentData.AverageAmount));
+	htmlContent := htmlContent.Replace("{{CurrentData_TotalTrn}}", Str(feeCalcObj.CurrentData.TotalTransactions));
+	htmlContent := htmlContent.Replace("{{CurrentData_CardTrnPercentage}}", Str(feeCalcObj.CurrentData.CardTransactionPercentage));
+	htmlContent := htmlContent.Replace("{{CurrentData_CardFee}}", Str(feeCalcObj.CurrentData.CardFee));
+	htmlContent := htmlContent.Replace("{{CurrentData_TotalCardPercentage_lbl}}", Str(feeCalcObj.CurrentData.TotalCardTransactions));
+	htmlContent := htmlContent.Replace("{{CurrentData_TotalCardCost_lbl}}", Str(feeCalcObj.CurrentData.TotalCardCost));
+		
+	
 	if(feeCalcObj.CardData.ShowGroup) then (
 		htmlContent := htmlContent.Replace("{{t_calc_Card_Title}}", Pt_calc_Card_Title);
 		htmlContent := htmlContent.Replace("{{t_calc_Card_TrnPercentage}}", Pt_calc_Card_TrnPercentage);
@@ -104,6 +113,13 @@ try
 		htmlContent := htmlContent.Replace("{{t_calc_Card_VaulterFee}}", Pt_calc_Card_VaulterFee);
 		htmlContent := htmlContent.Replace("{{t_calc_Card_VaulterCost_lbl}}", Pt_calc_Card_VaulterCost_lbl);
 		htmlContent := htmlContent.Replace("{{t_calc_Card_Saved_lbl}}", Pt_calc_Card_Saved_lbl);
+		
+		htmlContent := htmlContent.Replace("{{Card_TrnPercentage}}", Str(feeCalcObj.CardData.TransactionPercentage));
+		htmlContent := htmlContent.Replace("{{Card_NumberOfTrn}}", Str(feeCalcObj.CardData.NumberOfTransactions));
+		htmlContent := htmlContent.Replace("{{Card_AvgAmountPerTrn}}", Str(feeCalcObj.CardData.AverageAmount));
+		htmlContent := htmlContent.Replace("{{Card_VaulterFee}}", Str(feeCalcObj.CardData.Fee));
+		htmlContent := htmlContent.Replace("{{Card_VaulterCost_lbl}}", Str(feeCalcObj.CardData.Cost));
+		htmlContent := htmlContent.Replace("{{Card_Saved_lbl}}", Str(feeCalcObj.CardData.Saved));
 	) else (
 		htmlContent := htmlContent.Replace("{{Card_hideDiv}}", "hideDiv");
 	);
@@ -116,6 +132,13 @@ try
 		htmlContent := htmlContent.Replace("{{t_calc_A2A_VaulterFee}}", Pt_calc_A2A_VaulterFee);
 		htmlContent := htmlContent.Replace("{{t_calc_A2A_VaulterCost_lbl}}", Pt_calc_A2A_VaulterCost_lbl);
 		htmlContent := htmlContent.Replace("{{t_calc_A2A_Saved_lbl}}", Pt_calc_A2A_Saved_lbl);
+		
+		htmlContent := htmlContent.Replace("{{A2A_TrnPercentage}}", Str(feeCalcObj.A2AData.TransactionPercentage));
+		htmlContent := htmlContent.Replace("{{A2A_NumberOfTrn}}", Str(feeCalcObj.A2AData.NumberOfTransactions));
+		htmlContent := htmlContent.Replace("{{A2A_AvgAmountPerTrn}}", Str(feeCalcObj.A2AData.AverageAmount));
+		htmlContent := htmlContent.Replace("{{A2A_VaulterFee}}", Str(feeCalcObj.A2AData.Fee));
+		htmlContent := htmlContent.Replace("{{A2A_VaulterCost_lbl}}", Str(feeCalcObj.A2AData.Cost));
+		htmlContent := htmlContent.Replace("{{A2A_Saved_lbl}}", Str(feeCalcObj.A2AData.Saved));
 	) else (
 		htmlContent := htmlContent.Replace("{{A2A_hideDiv}}", "hideDiv");
 	);
@@ -132,21 +155,46 @@ try
 		htmlContent := htmlContent.Replace("{{t_calc_Holding_KickBackDiscount_Title}}", Pt_calc_Holding_KickBackDiscount_Title);
 		htmlContent := htmlContent.Replace("{{t_calc_Holding_KickBackPerTrn}}", Pt_calc_Holding_KickBackPerTrn);
 		htmlContent := htmlContent.Replace("{{t_calc_Holding_IncomeSummary_lbl}}", Pt_calc_Holding_IncomeSummary_lbl);
+	
+		htmlContent := htmlContent.Replace("{{Holding_TrnPercentage}}", Str(feeCalcObj.HoldingServiceData.TransactionPercentage));
+		htmlContent := htmlContent.Replace("{{Holding_NumberOfTrn}}", Str(feeCalcObj.HoldingServiceData.NumberOfTransactions));
+		htmlContent := htmlContent.Replace("{{Holding_HoldingFee}}", Str(feeCalcObj.HoldingServiceData.Fee));
+		htmlContent := htmlContent.Replace("{{Holding_VaulterCost_lbl}}", Str(feeCalcObj.HoldingServiceData.Cost));
+		
+		if(feeCalcObj.HoldingServiceData.CostPay == POWRS.PaymentLink.FeeCalculator.Enums.CostPay.Buyer) then
+		(
+			htmlContent := htmlContent.Replace("{{checked_Buyer}}", "checked='cheked'");
+			htmlContent := htmlContent.Replace("{{checked_Seller}}", "");
+		) 
+		else 
+		(
+			htmlContent := htmlContent.Replace("{{checked_Buyer}}", "");
+			htmlContent := htmlContent.Replace("{{checked_Seller}}", "checked='cheked'");
+		);
+		
+		htmlContent := htmlContent.Replace("{{Holding_KickBackPerTrn}}", Str(feeCalcObj.HoldingServiceData.KickBackPerTransaction));
+		htmlContent := htmlContent.Replace("{{Holding_IncomeSummary_lbl}}", Str(feeCalcObj.HoldingServiceData.IncomeSummary));
 	) else (
-		htmlContent := htmlContent.Replace("{{CardHolding_hideDiv}}", "hideDiv");
+		htmlContent := htmlContent.Replace("{{HoldingService_hideDiv}}", "hideDiv");
 	);
 	
 	htmlContent := htmlContent.Replace("{{t_calc_Summary_Title}}", Pt_calc_Summary_Title);
 	htmlContent := htmlContent.Replace("{{t_calc_Saved_lbl}}", Pt_calc_Saved_lbl);
 	htmlContent := htmlContent.Replace("{{t_calc_KickBackDiscount_lbl}}", Pt_calc_KickBackDiscount_lbl);
 	
+	htmlContent := htmlContent.Replace("{{Saved_lbl}}", Str(feeCalcObj.TotalSaved));
+	htmlContent := htmlContent.Replace("{{KickBackDiscount_lbl}}", Str(feeCalcObj.KickBack_Discount));
+	
 	htmlContent := htmlContent.Replace("{{t_calc_Note}}", Pt_calc_Note);
+	htmlContent := htmlContent.Replace("{{txtNote}}", "feeCalcObj.Note");
 	
 	htmlContent := htmlContent.Replace("{{t_calc_tblHeaderTotalTrn}}", Pt_calc_tblHeaderTotalTrn);
 	htmlContent := htmlContent.Replace("{{t_calc_tblData_CardTrn}}", Pt_calc_tblData_CardTrn);
 	htmlContent := htmlContent.Replace("{{t_calc_tblData_A2ATrn}}", Pt_calc_tblData_A2ATrn);
 	htmlContent := htmlContent.Replace("{{t_calc_tblHeaderHolding}}", Pt_calc_tblHeaderHolding);
 	htmlContent := htmlContent.Replace("{{t_calc_tblData_HoldingTrn}}", Pt_calc_tblData_HoldingTrn);
+	
+	htmlContent := htmlContent.Replace("{{currency}}", feeCalcObj.Currency);
 	
 		
 	fileName := "NewFile";

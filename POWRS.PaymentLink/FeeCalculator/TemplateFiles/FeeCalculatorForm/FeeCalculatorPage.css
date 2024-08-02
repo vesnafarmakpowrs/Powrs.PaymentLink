@@ -20,7 +20,7 @@
     width: 100%;
     text-align: center;
     line-height: 1.2em;
-    font-size: 1.2em;
+    font-size: 1.4em;
     z-index: 1001;
 }
 .divHeaderLabel_Inactive {
@@ -37,6 +37,19 @@
     padding: 15px 25px !important;
     box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.5);
 }
+
+.input_33p{
+    width: 32%;
+    padding: 10px !important;
+    display: inline-block;
+}
+
+.input_50p{
+    width: 49%;
+    padding: 10px !important;
+    display: inline-block;
+}
+
 
 .labelRightSide {
     position: absolute;
@@ -102,4 +115,19 @@
     padding-bottom: 50px;
     display: inline-block;
     align-self: flex-end;
+}
+
+.groupTitleBackGround{
+    background-color: rgb(237, 243, 242);
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.textSizeLarge{
+    font-size: 1.5em;
+}
+
+.textSizeMedium{
+    font-size: 1.3em;
 }
