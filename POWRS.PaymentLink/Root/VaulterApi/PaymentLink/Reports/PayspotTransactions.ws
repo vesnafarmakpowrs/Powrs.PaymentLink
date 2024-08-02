@@ -17,31 +17,39 @@ try
   DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
   DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
   DTDateTo := DTDateTo.AddDays(1);
-  OrderList := Select TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, ExpectedPayoutDate, PayoutDate, Amount,  SenderFee  
-				from PayspotPayments 
-			    where DateCreated >= DTDateFrom and DateCreated <= DTDateTo and Result='00';
 
+  OrderList:= Select TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, 
+					 ExpectedPayoutDate, PayoutDate, Amount,SenderFee 
+					 from PayspotPayments
+					 where DateCreated >= DTDateFrom and DateCreated <= DTDateTo and Result='00';
 
-  ReponseDict := Create(System.Collections.Generic.List, System.Object);
+ReponseDict := Create(System.Collections.Generic.List, System.Object);
   foreach order in OrderList do (
-	       OrderCreatorLegalId := select top 1 Creator
-				                 	from IoTBroker.NeuroFeatures.Token 
-					                where TokenId = order[0];
-           SellerAccount :=  select top 1 Account from LegalIdentities where Id=OrderCreatorLegalId;
-           fee := order[8] == null ? 0 : Double(order[8]);
-           ReponseDict.Add({
+	   Token:= select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId = order[0];
+	   Variables:= Token.GetCurrentStateVariables().VariableValues ??? null;
+
+			if(Token != null and Variables != null) then 
+			(
+				SellerAccount :=  Split(Token.CreatorJid, "@")[0];
+				RemoteId:= select top 1 Value from Variables where Name = "RemoteId";
+				fee := order[8] == null ? 0 : Double(order[8]);
+				amount:= order[7] == null ? 0 : order[7];
+
+				ReponseDict.Add({
 						"TokenId": order[0],
 						"OrderId": order[1],
 						"OrderReference": order[2],
 						"PayspotTransactionId": order[3],
 						"DateCreated": order[4],
 						"ExpectedPayoutDate": order[5],
-						 "PayoutDate" :  order[6],
-						"Amount": order[7],
+						"PayoutDate" :  order[6],
+						"Amount": amount,
 						"SenderFee": fee,
-						"SellerRecivedAmount" : Dbl(order[7])-fee,
-						"Seller" :  SellerAccount
-					});		
+						"SellerRecivedAmount" : Dbl(amount)-fee,
+						"Seller" :  SellerAccount,
+						"RemoteId": RemoteId
+						});
+				);	   
          );
 )
 catch
