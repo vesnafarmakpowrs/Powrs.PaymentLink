@@ -32,6 +32,8 @@ ReponseDict := Create(System.Collections.Generic.List, System.Object);
 			(
 				SellerAccount :=  Split(Token.CreatorJid, "@")[0];
 				RemoteId:= select top 1 Value from Variables where Name = "RemoteId";
+				SmsCounter:= select top 1 Value from Variables where Name = "SMSCounter";
+				EmailCounter:= select top 1 Value from Variables where Name = "EmailCounter";
 				fee := order[8] == null ? 0 : Double(order[8]);
 				amount:= order[7] == null ? 0 : order[7];
 
@@ -47,7 +49,9 @@ ReponseDict := Create(System.Collections.Generic.List, System.Object);
 						"SenderFee": fee,
 						"SellerRecivedAmount" : Dbl(amount)-fee,
 						"Seller" :  SellerAccount,
-						"RemoteId": RemoteId
+						"RemoteId": RemoteId,
+						"SMSCounter": SmsCounter, 
+						"EmailCounter": EmailCounter
 						});
 				);	   
          );
