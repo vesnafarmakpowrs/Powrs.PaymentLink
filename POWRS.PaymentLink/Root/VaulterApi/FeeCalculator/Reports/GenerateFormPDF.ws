@@ -33,7 +33,7 @@ SessionUser:= Global.ValidateAgentApiToken(false, false);
     "t_calc_Holding_TrnPercentage": Required(Str(Pt_calc_Holding_TrnPercentage)),
     "t_calc_Holding_NumberOfTrn": Required(Str(Pt_calc_Holding_NumberOfTrn)),
     "t_calc_Holding_HoldingFee": Required(Str(Pt_calc_Holding_HoldingFee)),
-    "t_calc_Holding_VaulterCost_lbl": Required(Str(Pt_calc_Holding_VaulterCost)),
+    "t_calc_Holding_VaulterCost_lbl": Required(Str(Pt_calc_Holding_VaulterCost_lbl)),
     "t_calc_Holding_WhoWillPayCost_Title": Required(Str(Pt_calc_Holding_WhoWillPayCost_Title)),
     "t_calc_Holding_Buyer_lbl": Required(Str(Pt_calc_Holding_Buyer_lbl)),
     "t_calc_Holding_Seller_lbl": Required(Str(Pt_calc_Holding_Seller_lbl)),
@@ -148,7 +148,8 @@ try
 		htmlContent := htmlContent.Replace("{{t_calc_Holding_TrnPercentage}}", Pt_calc_Holding_TrnPercentage);
 		htmlContent := htmlContent.Replace("{{t_calc_Holding_NumberOfTrn}}", Pt_calc_Holding_NumberOfTrn);
 		htmlContent := htmlContent.Replace("{{t_calc_Holding_HoldingFee}}", Pt_calc_Holding_HoldingFee);
-		htmlContent := htmlContent.Replace("{{t_calc_Holding_VaulterCost}}", Pt_calc_Holding_VaulterCost);
+		htmlContent := htmlContent.Replace("{{t_calc_Holding_HoldingFee}}", Pt_calc_Holding_HoldingFee);		
+		htmlContent := htmlContent.Replace("{{t_calc_Holding_VaulterCost_lbl}}", Pt_calc_Holding_VaulterCost_lbl);
 		htmlContent := htmlContent.Replace("{{t_calc_Holding_WhoWillPayCost_Title}}", Pt_calc_Holding_WhoWillPayCost_Title);
 		htmlContent := htmlContent.Replace("{{t_calc_Holding_Buyer_lbl}}", Pt_calc_Holding_Buyer_lbl);
 		htmlContent := htmlContent.Replace("{{t_calc_Holding_Seller_lbl}}", Pt_calc_Holding_Seller_lbl);
