@@ -48,16 +48,16 @@ if(PPaymentDeadline not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{
 (
     Error("PaymentDeadline date format not valid.");
 );
-if(PBuyerFirstName not like "[\\p{L}\\s\/,.&_-]{2,20}") then 
+if(PBuyerFirstName not like "[\\p{L}\\s\/,.&_-]{2,30}") then 
 (
     Error("buyerFirstName not valid.");
 );
 
-if(PBuyerLastName not like "[\\p{L}\\s\/,.&_-]{2,20}") then
+if(PBuyerLastName not like "[\\p{L}\\s\/,.&_-]{2,30}") then
 (
     Error("buyerLastName not valid.");
 );
-if(PBuyerEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
+if(PBuyerEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,50}") then 
 (
     Error("BuyerEmail not valid.");
 );
@@ -202,7 +202,7 @@ while StateMachineInitialized == false and Counter < 10 do
  Sleep(1000);
 );
 
-	Log.Informational("Succeffully cerated item.", logObject, logActor, logEventID, null);
+Log.Informational("Succeffully cerated item.", logObject, logActor, logEventID, null);
 
 
 {
