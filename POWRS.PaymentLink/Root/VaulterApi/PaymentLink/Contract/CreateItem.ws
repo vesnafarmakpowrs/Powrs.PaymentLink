@@ -30,48 +30,48 @@ try
 (
 if(PRemoteId not like "^[\\p{L}\\s0-9-\/#-._]{1,50}$") then 
 (
-    Error("RemoteId not valid.");
+    Error("RemoteId not valid: " + PRemoteId);
 );
 if(PTitle not like "[\\p{L}\\s0-9.,;:!?()'\"\\/#_~+*@$%^& -]{2,30}") then
 (
-    Error("Title not valid.");
+    Error("Title not valid: " + PTitle);
 );
 if(PCurrency not like "[A-Z]{3}") then 
 (
-    Error("Currency not valid.");
+    Error("Currency not valid: " + PCurrency);
 );
 if(PDescription not like "[\\p{L}\\s0-9.,;:!?()'\"\\/#_~+*@$%^& -]{5,100}") then
 (
-    Error("Description not valid.");
+    Error("Description not valid: " + PDescription);
 );
 if(PPaymentDeadline not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
 (
-    Error("PaymentDeadline date format not valid.");
+    Error("PaymentDeadline date format not valid: " + PPaymentDeadline);
 );
-if(PBuyerFirstName not like "[\\p{L}\\s\/,.&_-]{2,30}") then 
+if(PBuyerFirstName not like "[\\p{L}\\s\/,.&_-]{2,35}") then 
 (
-    Error("buyerFirstName not valid.");
+    Error("buyerFirstName not valid: " + PBuyerFirstName);
 );
 
-if(PBuyerLastName not like "[\\p{L}\\s\/,.&_-]{2,30}") then
+if(PBuyerLastName not like "[\\p{L}\\s\/,.&_-]{2,35}") then
 (
-    Error("buyerLastName not valid.");
+    Error("buyerLastName not valid: " + PBuyerLastName);
 );
 if(PBuyerEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,50}") then 
 (
-    Error("BuyerEmail not valid.");
+    Error("BuyerEmail not valid: " + PBuyerEmail);
 );
 if(PBuyerPhoneNumber != null and PBuyerPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
 (
-    Error("buyerPhoneNumber not valid.");
+    Error("buyerPhoneNumber not valid: " + PBuyerPhoneNumber);
 );
 if(PBuyerAddress not like "^[\\p{L}\\p{N}\\s,./#-]{3,100}$") then 
 (
-    Error("buyerAddress not valid.");
+    Error("buyerAddress not valid: " + PBuyerAddress);
 );
 if(PBuyerCountryCode not like "[A-Z]{2}") then 
 (
-    Error("BuyerCountry not valid.");
+    Error("BuyerCountry not valid: " + PBuyerCountryCode);
 );
 
 PPassword:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
