@@ -450,6 +450,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 (
 	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = UserName;
 	recordExists:= generalInfo != null;
+	newShortName := Trim(GeneralCompanyInfo.ShortName);
 	
 	if(generalInfo == null) then
 	(
@@ -470,23 +471,23 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	(
 		Error("GeneralCompanyInfo: you can't change organization number");
 	)
-	else if(generalInfo.ShortName != GeneralCompanyInfo.ShortName) then
+	else if(generalInfo.ShortName != newShortName) then
 	(
 		oldCompanySubDirPath := "\\" + generalInfo.ShortName;
 		oldFileRootPath := allCompaniesRootPath + oldCompanySubDirPath;
 				
 		if(System.IO.Directory.Exists(oldFileRootPath)) then
 		(
-			System.IO.Directory.Move(oldFileRootPath, allCompaniesRootPath + "\\" + GeneralCompanyInfo.ShortName);
+			System.IO.Directory.Move(oldFileRootPath, allCompaniesRootPath + "\\" + newShortName);
 		);		
 	);
 	
-	companySubDirPath := "\\" + GeneralCompanyInfo.ShortName;
+	companySubDirPath := "\\" + newShortName;
 	fileRootPath := allCompaniesRootPath + companySubDirPath;
 
 	generalInfo.UserName := UserName;
-	generalInfo.FullName := GeneralCompanyInfo.FullName;
-	generalInfo.ShortName := GeneralCompanyInfo.ShortName;
+	generalInfo.FullName := Trim(GeneralCompanyInfo.FullName);
+	generalInfo.ShortName := newShortName;
 	generalInfo.CompanyAddress := GeneralCompanyInfo.CompanyAddress;
 	generalInfo.CompanyCity := GeneralCompanyInfo.CompanyCity;
 	generalInfo.OrganizationNumber := GeneralCompanyInfo.OrganizationNumber;
@@ -512,7 +513,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			itemNo++;
 			representative:= Create(POWRS.PaymentLink.Onboarding.LegalRepresentative);		
 
-			representative.FullName:= item.FullName;
+			representative.FullName:= Trim(item.FullName);
 			representative.DocumentType:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.DocumentType, item.DocumentType) ??? POWRS.PaymentLink.Onboarding.Enums.DocumentType.IDCard;
 			representative.DocumentNumber:= item.DocumentNumber;
 			representative.PlaceOfIssue:= item.PlaceOfIssue;
@@ -607,7 +608,7 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 			itemNo++;
 			owner:= Create(POWRS.PaymentLink.Onboarding.Owner);
 			
-			owner.FullName:= item.FullName;
+			owner.FullName:= Trim(item.FullName);
 			owner.PersonalNumber:= item.PersonalNumber;
 			owner.PlaceOfBirth:= item.PlaceOfBirth;
 			owner.AddressOfResidence:= item.AddressOfResidence;
@@ -812,20 +813,20 @@ SaveFile(fileRootPath, fileName, fileBase64String):=
 
 try
 (
-	currentMethod := "ValidatePostedData"; 
+	currentMethod := "ValidatePostedData";
 	ValidatePostedData(Posted);
 	
 	currentMethod := "SaveGeneralCompanyInfo"; 
 	SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
 	
 	currentMethod := "SaveCompanyStructure"; 
-	SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username, Posted.GeneralCompanyInformation.ShortName);
+	SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username, Trim(Posted.GeneralCompanyInformation.ShortName));
 	
 	currentMethod := "SaveBusinessData"; 
 	SaveBusinessData(Posted.BusinessData, SessionUser.username);
 	
 	currentMethod := "SaveLegalDocuments"; 
-	SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username, Posted.GeneralCompanyInformation.ShortName);
+	SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username, Trim(Posted.GeneralCompanyInformation.ShortName));
 	
 	Log.Informational("Succeffully saved OnBoarding data.", logObject, logActor, logEventID, null);
 	{
