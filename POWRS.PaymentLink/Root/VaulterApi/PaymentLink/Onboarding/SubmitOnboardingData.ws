@@ -5,6 +5,7 @@ logEventID := "SubmitOnboardingData.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 errors:= Create(System.Collections.Generic.List, System.String);
+currentMethod := "";
 
 GetPreciseErrors(onBoardingData):=(
 	if(!onBoardingData.GeneralCompanyInformation.IsCompleted())then
@@ -171,7 +172,9 @@ try
 		GetPreciseErrors(onBoardingData);
 	);
 	
+    currentMethod := "ApplyForLeglalID";
 	ApplyForLeglalID(onBoardingData);
+    currentMethod := "currentMethod";
 	SendEmail(onBoardingData);
 	
 	Log.Informational("Succeffully submited onboarding for user: " + SessionUser.username, logObject, logActor, logEventID, null);
@@ -181,7 +184,7 @@ try
 )
 catch
 (
-	Log.Error("Unable to submit onboarding: " + Exception.Message, logObject, logActor, logEventID, null);
+	Log.Error("Unable to submit onboarding: " + Exception.Message + ", \ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
     if(errors.Count > 0) then 
     (
 		BadRequest(errors);
