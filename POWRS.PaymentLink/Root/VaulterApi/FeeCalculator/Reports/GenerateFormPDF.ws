@@ -141,6 +141,8 @@ try
 		htmlContent := htmlContent.Replace("{{A2A_Saved_lbl}}", Str(feeCalcObj.A2AData.Saved));
 	) else (
 		htmlContent := htmlContent.Replace("{{A2A_hideDiv}}", "hideDiv");
+		htmlContent := htmlContent.Replace("{{A2A_TrnPercentage}}", "0");
+		htmlContent := htmlContent.Replace("{{A2A_NumberOfTrn}}", "0");
 	);
 	
 	if(feeCalcObj.HoldingServiceData.ShowGroup) then (
@@ -177,6 +179,8 @@ try
 		htmlContent := htmlContent.Replace("{{Holding_IncomeSummary_lbl}}", Str(feeCalcObj.HoldingServiceData.IncomeSummary));
 	) else (
 		htmlContent := htmlContent.Replace("{{HoldingService_hideDiv}}", "hideDiv");
+		htmlContent := htmlContent.Replace("{{Holding_TrnPercentage}}", "0");
+		htmlContent := htmlContent.Replace("{{Holding_NumberOfTrn}}", "0");
 	);
 	
 	htmlContent := htmlContent.Replace("{{t_calc_Summary_Title}}", Pt_calc_Summary_Title);
