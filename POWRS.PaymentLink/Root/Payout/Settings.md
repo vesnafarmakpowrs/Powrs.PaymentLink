@@ -36,6 +36,7 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.NotificationList", Str(Posted.NotificationList));
 	SetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath", Str(Posted.OnBoardingAllCompaniesRootPath));
 	SetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList", Str(Posted.OnBoardingSubmitMailList));
+	SetSetting("POWRS.PaymentLink.OnBoardingFileMaxSize", Str(Posted.OnBoardingFileMaxSize));
 	SetSetting("POWRS.PaymentLink.FeeCalculatorSupportEmail", Str(Posted.FeeCalculatorSupportEmail));
 	
 	SeeOther("Settings.md");
@@ -99,6 +100,11 @@ if exists(Posted) then
 <p>
 <label for="OnBoardingSubmitMailList">List of mail that will receive notification when onboarding is submited:</label>  
 <input type="text" id="OnBoardingSubmitMailList" name="OnBoardingSubmitMailList" value='{{GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","")}}' title="List of mail that will receive notification when onboarding is submited. Use ; as delimiter between multiple mails "/>
+</p>
+
+<p>
+<label for="OnBoardingFileMaxSize">Onboarding max file size:</label>  
+<input type="text" id="OnBoardingFileMaxSize" name="OnBoardingFileMaxSize" value='{{GetSetting("POWRS.PaymentLink.OnBoardingFileMaxSize","")}}' title="Enter int value"/>
 </p>
 
 <p>
