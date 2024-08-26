@@ -21,8 +21,7 @@ try
 
 	allowedUsersList := Create(System.Collections.Generic.List, System.String);
 	allowedUsersList.Add("AgentPLG");
-	allowedUsersList.Add("Emir");
-	allowedUsersList.Add("Robert");
+	allowedUsersList.Add("EmirKapic");
 	
 	if(!allowedUsersList.Contains(PUserName))then
 	(

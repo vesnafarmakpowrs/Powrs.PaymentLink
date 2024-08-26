@@ -7,6 +7,8 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
     [TypeName(TypeNameSerialization.None)]
     [Index("OrganizationNumber")]
     [Index("CreatorUserName")]
+    [Index("EditorUserName")]
+    [Index("CreatorUserName", "EditorUserName")]
     public class FeeCalculator
     {
         public FeeCalculator()
@@ -41,6 +43,7 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
         private decimal totalSaved;
         private decimal kickBack_Discount;
         private string currency;
+        private string note;
 
         [ObjectId]
         public string ObjectId { get => this.objectId; set => this.objectId = value; }
@@ -59,5 +62,6 @@ namespace POWRS.PaymentLink.FeeCalculator.Data
         public decimal TotalSaved { get => totalSaved; set => totalSaved = value; }
         public decimal KickBack_Discount { get => kickBack_Discount; set => kickBack_Discount = value; }
         public string Currency { get => currency; set => currency = value; }
+        public string Note { get => note; set => note = value; }
     }
 }
