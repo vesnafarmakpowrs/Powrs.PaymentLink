@@ -1343,6 +1343,32 @@ Description of properties:
 |`File`|  Base64 encoded file |
 
 
+### Get upload file max size
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/GetFileMaxSize.ws")}}`  
+Method: `POST`
+
+Call this resource to download upload file max size.
+
+**Request**
+
+````
+{
+}
+````
+
+**Response**
+
+````
+{
+    "fileMaxSize": 25
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+|`fileMaxSize`|  File max size in MB. Type: int. |
+
+
 Fee Calculator
 ---------------------
 
