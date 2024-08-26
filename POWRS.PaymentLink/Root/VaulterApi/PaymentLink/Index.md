@@ -1491,3 +1491,100 @@ Description of properties:
     "success": true
 }
 ````
+
+
+
+### FeeCalculator - Download PDF / Send PDF to email (SHARE)
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/FeeCalculator/Reports/GenerateFormPDF.ws")}}`  
+Method: `POST`
+
+Call this resource to download PDF report or send mail to customer. Before calling this method **data must be saved**, because other details will be populated from db.
+
+**Request**
+
+````
+{
+    "t_calc_Header": Required(Str(Pt_calc_Header)),
+	"t_calc_Now_Title": Required(Str(Pt_calc_Now_Title)),
+	"t_calc_Forecast_Title": Required(Str(Pt_calc_Forecast_Title)),
+	
+	"t_calc_CurrentData_TotalRevenue": Required(Str(Pt_calc_CurrentData_TotalRevenue)),
+	"t_calc_CurrentData_AvgAmountPerTrn": Required(Str(Pt_calc_CurrentData_AvgAmountPerTrn)),
+	"t_calc_CurrentData_TotalTrn": Required(Str(Pt_calc_CurrentData_TotalTrn)),
+	"t_calc_CurrentData_CardTrnPercentage": Required(Str(Pt_calc_CurrentData_CardTrnPercentage)),
+	"t_calc_CurrentData_CardFee": Required(Str(Pt_calc_CurrentData_CardFee)),
+	"t_calc_CurrentData_TotalCardPercentage_lbl": Required(Str(Pt_calc_CurrentData_TotalCardPercentage_lbl)),
+	"t_calc_CurrentData_TotalCardCost_lbl": Required(Str(Pt_calc_CurrentData_TotalCardCost_lbl)),
+	
+	"t_calc_Card_Title": Required(Str(Pt_calc_Card_Title)),
+    "t_calc_Card_TrnPercentage": Required(Str(Pt_calc_Card_TrnPercentage)),
+    "t_calc_Card_NumberOfTrn": Required(Str(Pt_calc_Card_NumberOfTrn)),
+    "t_calc_Card_AvgAmountPerTrn": Required(Str(Pt_calc_Card_AvgAmountPerTrn)),
+    "t_calc_Card_VaulterFee": Required(Str(Pt_calc_Card_VaulterFee)),
+    "t_calc_Card_VaulterCost_lbl": Required(Str(Pt_calc_Card_VaulterCost_lbl)),
+    "t_calc_Card_Saved_lbl": Required(Str(Pt_calc_Card_Saved_lbl)),
+	
+	"t_calc_A2A_Title": Required(Str(Pt_calc_A2A_Title)),
+    "t_calc_A2A_TrnPercentage": Required(Str(Pt_calc_A2A_TrnPercentage)),
+    "t_calc_A2A_NumberOfTrn": Required(Str(Pt_calc_A2A_NumberOfTrn)),
+    "t_calc_A2A_AvgAmountPerTrn": Required(Str(Pt_calc_A2A_AvgAmountPerTrn)),
+    "t_calc_A2A_VaulterFee": Required(Str(Pt_calc_A2A_VaulterFee)),
+    "t_calc_A2A_VaulterCost_lbl": Required(Str(Pt_calc_A2A_VaulterCost_lbl)),
+    "t_calc_A2A_Saved_lbl": Required(Str(Pt_calc_A2A_Saved_lbl)),
+	
+	"t_calc_Holding_Title": Required(Str(Pt_calc_Holding_Title)),
+    "t_calc_Holding_TrnPercentage": Required(Str(Pt_calc_Holding_TrnPercentage)),
+    "t_calc_Holding_NumberOfTrn": Required(Str(Pt_calc_Holding_NumberOfTrn)),
+    "t_calc_Holding_HoldingFee": Required(Str(Pt_calc_Holding_HoldingFee)),
+    "t_calc_Holding_VaulterCost_lbl": Required(Str(Pt_calc_Holding_VaulterCost)),
+    "t_calc_Holding_WhoWillPayCost_Title": Required(Str(Pt_calc_Holding_WhoWillPayCost_Title)),
+    "t_calc_Holding_Buyer_lbl": Required(Str(Pt_calc_Holding_Buyer_lbl)),
+    "t_calc_Holding_Seller_lbl": Required(Str(Pt_calc_Holding_Seller_lbl)),
+    "t_calc_Holding_KickBackDiscount_Title": Required(Str(Pt_calc_Holding_KickBackDiscount_Title)),
+    "t_calc_Holding_KickBackPerTrn": Required(Str(Pt_calc_Holding_KickBackPerTrn)),
+    "t_calc_Holding_IncomeSummary_lbl": Required(Str(Pt_calc_Holding_IncomeSummary_lbl)),
+	
+	"t_calc_Summary_Title": Required(Str(Pt_calc_Summary_Title)),
+	"t_calc_Saved_lbl": Required(Str(Pt_calc_Saved_lbl)),
+	"t_calc_KickBackDiscount_lbl": Required(Str(Pt_calc_KickBackDiscount_lbl)),
+	
+	"t_calc_Note": Required(Str(Pt_calc_Note)),
+		
+	"t_calc_tblHeaderTotalTrn": Required(Str(Pt_calc_tblHeaderTotalTrn)),
+	"t_calc_tblData_CardTrn": Required(Str(Pt_calc_tblData_CardTrn)),
+	"t_calc_tblData_A2ATrn": Required(Str(Pt_calc_tblData_A2ATrn)),
+	"t_calc_tblHeaderHolding": Required(Str(Pt_calc_tblHeaderHolding)),
+	"t_calc_tblData_HoldingTrn": Required(Str(Pt_calc_tblData_HoldingTrn)),
+    	
+	"organizationNumber": Required(Str(PorganizationNumber)),
+	"sendToEmail": Required(Bool(PsendToEmail)),
+	"email": Optional(Str(Pemail))
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+|`t_ ...`          | Property type is string, it is translations for labels in PDF that will be created |
+|`sendToEmail / email`   | If the property `sendToEmail` is **`true`** then property `email` must be populated and an email will be send to provided email with PDF in attach |
+
+
+**Response**
+
+If `sendToEmail` = **`true`** then response will be:
+
+````
+{
+    "success": true
+}
+````
+
+If `sendToEmail` = **`false`** then response will be:
+
+````
+{
+    "Name": "NewFile.pdf",
+    "PDF": "file bytes array"
+}
+````

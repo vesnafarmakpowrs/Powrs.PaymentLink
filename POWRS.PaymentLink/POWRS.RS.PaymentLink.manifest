@@ -23,10 +23,10 @@
 				<Folder name="HtmlTemplates">
 					<Folder name="FeeCalculatorForm">
 						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="App.css"/>
-						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm"  fileName="bootstrap.css"/>
-						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm"  fileName="bootstrap.js"/>
-						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm"  fileName="FeeCalc.html"/>
-						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm"  fileName="FeeCalculatorPage.css"/>
+						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="bootstrap.css"/>
+						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="bootstrap.js"/>
+						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="FeeCalc.html"/>
+						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="FeeCalculatorPage.css"/>
 						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="index.css"/>
 						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="InputAnimation.css"/>
 						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="Slider.css"/>
