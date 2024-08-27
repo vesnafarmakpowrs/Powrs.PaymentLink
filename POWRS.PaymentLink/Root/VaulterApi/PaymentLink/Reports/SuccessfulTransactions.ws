@@ -1,7 +1,7 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
 SessionUser:= Global.ValidateAgentApiToken(true, true);
 
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "SuccessfulTransactions.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
@@ -23,6 +23,6 @@ try
 )
 catch
 (
-	Log.Error(Exception.Message, logObjectID, logActor, logEventID, null);
+	Log.Error(Exception.Message, logObject, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );
