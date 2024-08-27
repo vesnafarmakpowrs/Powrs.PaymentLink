@@ -485,6 +485,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	companySubDirPath := "\\" + newShortName;
 	fileRootPath := allCompaniesRootPath + companySubDirPath;
 
+	generalInfo.Updated := Now;
 	generalInfo.UserName := UserName;
 	generalInfo.FullName := Trim(GeneralCompanyInfo.FullName);
 	generalInfo.ShortName := newShortName;

@@ -28,6 +28,7 @@ namespace POWRS.PaymentLink.Onboarding
             companyWebshop = "";
             legalRepresentatives = new LegalRepresentative[0];
             created = DateTime.Now;
+            updated = DateTime.Now;
             canEdit = true;
         }
         public GeneralCompanyInformation(string userName) : base(userName) { }
@@ -50,6 +51,7 @@ namespace POWRS.PaymentLink.Onboarding
         private string companyWebshop;
         private LegalRepresentative[] legalRepresentatives;
         private DateTime created;
+        private DateTime updated;
         private bool canEdit;
 
         public string FullName { get => fullName; set => fullName = value; }
@@ -70,6 +72,7 @@ namespace POWRS.PaymentLink.Onboarding
         public string CompanyWebshop { get => companyWebshop; set => companyWebshop = value; }
         public LegalRepresentative[] LegalRepresentatives { get => legalRepresentatives; set => legalRepresentatives = value; }
         public DateTime Created { get => created; set => created = value; }
+        public DateTime Updated { get => updated; set => updated = value; }
         public bool CanEdit { get => canEdit; set => canEdit = value; }
 
         public override bool IsCompleted()
