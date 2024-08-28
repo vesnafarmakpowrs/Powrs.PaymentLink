@@ -13,8 +13,8 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 try
 (
 	dateFormat:= "dd/MM/yyyy";
-	ParsedFromDate:= System.DateTime.ParseExact(PFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
-	ParsedToDate:= System.DateTime.ParseExact(PTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+	ParsedFromDate:= System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+	ParsedToDate:= System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	ParsedToDate := ParsedToDate.AddDays(1);
 	
 	if(ParsedFromDate >= ParsedToDate) then
