@@ -56,7 +56,7 @@ try
     paymentTypesDict[POWRS.Networking.PaySpot.Consants.PaymentType.IPSPayment.ToString()]:= "IPS";
     paymentTypesDict[POWRS.Networking.PaySpot.Consants.PaymentType.PaymentCard.ToString()]:= "Kartica";
 
-    payments:= GetAgentSuccessfullTransactions(SessionUser.username, PDateFrom, PDateTo, PIncludeIps, PCardBrands);
+    payments:= GetAgentSuccessfullTransactions(SessionUser.username, PDateFrom, PDateTo, PIncludeIps, PCardBrands, "DateCompleted");
     foreach payment in payments do
     (
 		stringBuilder.Append("<tr>");

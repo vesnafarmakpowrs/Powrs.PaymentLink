@@ -31,8 +31,8 @@ try
 		from POWRS.Networking.PaySpot.Data.PayspotPayment pp 
 			join NeuroFeatureTokens t on t.TokenId = pp.TokenId
 			join StateMachineCurrentStates s on s.StateMachineId == pp.TokenId
-		where pp.DateCompleted >= ParsedFromDate and
-			pp.DateCompleted <= ParsedToDate and
+		where pp.PayoutDate >= ParsedFromDate and
+			pp.PayoutDate < ParsedToDate and
 			pp.Result like "00" and
 			t.CreatorJid IN Creators
 		order by PayoutDate desc;
