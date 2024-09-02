@@ -43,6 +43,7 @@ try
 	totalAmount := 0;
 	totalFee := 0;
 	isFirst := true;
+	transactionsCount := 0;
 	
 	foreach payment in filteredData do
 	(
@@ -60,11 +61,13 @@ try
 					"Currency": currentCurrency,
 					"TotalAmount": totalAmount,
 					"TotalFee": totalFee,
+					"transactionsCount": transactionsCount,
 					"SellerRecivedAmount" : totalAmount - totalFee
 				});
 				
 				totalAmount := 0;
 				totalFee := 0;
+				transactionsCount := 0;
 			);
 			
 			isFirst := false;
@@ -72,6 +75,7 @@ try
 			currentCurrency := currency;
 			totalAmount += amount;
 			totalFee += fee;
+			transactionsCount ++;
 		);
 	);
 	
@@ -82,6 +86,7 @@ try
 			"Currency": currentCurrency,
 			"TotalAmount": totalAmount,
 			"TotalFee": totalFee,
+			"transactionsCount": transactionsCount,
 			"SellerRecivedAmount" : totalAmount - totalFee
 		});
 	);
