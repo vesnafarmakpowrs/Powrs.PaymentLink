@@ -8,7 +8,7 @@ if(Posted == null) then NotAcceptable("Data could not be null");
 
 errors:= Create(System.Collections.Generic.List, System.String);
 currentMethod:= "";
-fileMaxSizeMB := GetSetting("POWRS.PaymentLink.OnBoardingFileMaxSize", "25");
+fileMaxSizeMB := Dbl(GetSetting("POWRS.PaymentLink.OnBoardingFileMaxSize", "25"));
 
 allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","");
 if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
