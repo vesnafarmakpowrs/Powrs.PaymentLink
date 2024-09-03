@@ -20,6 +20,14 @@ try
 		DTDateTo := TodayUtc.AddDays(1);
 	);
 	
+	filterByToken := false;
+	filterTokenID := "";
+	if(exists(Posted.TokenId) and !System.String.IsNullOrWhiteSpace(Posted.TokenId))then
+	(	
+		filterByToken := true;
+		filterTokenID := Str(Posted.TokenId);
+	);
+	
 	PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
 	cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
 	doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
@@ -43,13 +51,23 @@ try
 	
 	foreach item in listBrokerAcc do (
 		creatorJID := item.UserName + "@" + Gateway.Domain;
-		tokens := 
-			select * 
-			from IoTBroker.NeuroFeatures.Token t 
-			where t.CreatorJid = creatorJID
-				and Created >= DTDateFrom
-				and Created < DTDateTo
-			order by Created desc;
+		tokens := null;
+		
+		if(filterByToken)then
+		(
+			tokens := select * 
+				from IoTBroker.NeuroFeatures.Token t 
+				where t.CreatorJid = creatorJID
+					and TokenId = filterTokenID;
+		)
+		else(
+			tokens := select * 
+				from IoTBroker.NeuroFeatures.Token t 
+				where t.CreatorJid = creatorJID
+					and Created >= DTDateFrom
+					and Created < DTDateTo
+				order by Created desc;
+		);
 		
 		foreach token in tokens do (
 			tokenVariables := token.GetCurrentStateVariables();

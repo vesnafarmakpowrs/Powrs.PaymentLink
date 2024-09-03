@@ -356,6 +356,7 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 {
     "DateFrom": Optional(Str(PDateFrom)) format [dd/MM/yyyy],
     "DateTo": Optional(Str(PdateTo)) format [dd/MM/yyyy]
+    "TokenId": Optional(Str(PTokenId))
 }
 ````
 
@@ -363,8 +364,9 @@ Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
-| `DateFrom`        | Optional parameter. If not send then default value is DateTime.Now - 1 month  |
-| `DateTo`          | Optional parameter. If not send then default value is DateTime.Now + 1 day    |
+| `DateFrom`        | Optional parameter. If not provided, the default value is DateTime.Now minus 1 month  |
+| `DateTo`          | Optional parameter. If not provided, the default value is DateTime.Now plus 1 day     |
+| `TokenId`         | Optional parameter. If provided, then record with the specified token will be returned  |
 
 **Response**
 
@@ -1117,6 +1119,8 @@ Token is required. Request body is empty.
         "ContractWithVaulter": "",
         "ContractWithEMI": "",
         "PromissoryNote": "",
+        "RequestForPromissoryNotesRegistration": "",
+        "CardOfDepositedSignatures": "",
         "UserName": "mirkokrule41"
     }
 }
@@ -1146,7 +1150,7 @@ Call this resource save data for onboarding.
         "StampUsage": true,
         "BankName": "",
         "BankAccountNumber": "",
-        "TaxLiability": false,
+        "TaxLiability": true|false,
         "CompanyWebsite": "",
         "CompanyWebshop": "",
         "LegalRepresentatives":[                        ->If nothing populated then send empty array []
@@ -1157,10 +1161,10 @@ Call this resource save data for onboarding.
                 "PlaceOfBirth" : "",
                 "AddressOfResidence": "",
                 "CityOfResidence": "",
-                "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
-				"StatementOfOfficialDocumentIsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
+                "IsPoliticallyExposedPerson": true|false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
+				"StatementOfOfficialDocumentIsNewUpload": true|false,   -> if it is new file upload then 'true', else 'false'
                 "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
-				"IdCardIsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
+				"IdCardIsNewUpload": true|false,            -> if it is new file upload then 'true', else 'false'
                 "IdCard": "",                           -> if it is new file uplad then base 64 string, else string from API
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "PlaceOfIssue": "",
@@ -1173,7 +1177,7 @@ Call this resource save data for onboarding.
    "CompanyStructure":{
         "CountriesOfBusiness": "Serbia,Croatia,Montenegro", -> string with ',' delimiter and no spaces between
         "NameOfTheForeignExchangeAndIDNumber": "",
-        "OffShoreFoundationInOwnerStructure": false,    
+        "OffShoreFoundationInOwnerStructure": true|false,    
         "PercentageOfForeignUsers": 0,                  
         "OwnerStructure": "Person",                     -> Can be string: 'Person', 'Company' or 'PersonAndCompany'
         "Owners":[                                      -> If nothing populated then send empty array []
@@ -1184,7 +1188,7 @@ Call this resource save data for onboarding.
                 "PlaceOfBirth": "",
                 "AddressOfResidence": "",
                 "CityOfResidence": "",
-                "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
+                "IsPoliticallyExposedPerson": true|false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
 				"StatementOfOfficialDocumentIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
                 "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
                 "OwningPercentage": 25.1,
@@ -1195,7 +1199,7 @@ Call this resource save data for onboarding.
                 "IssuerName": "",
                 "DocumentIssuancePlace": "",
                 "Citizenship": "",
-				"IdCardIsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
+				"IdCardIsNewUpload": true|false,            -> if it is new file upload then 'true', else 'false'
                 "IdCard": ""                            -> if it is new file uplad then base 64 string, else string from API
             }
         ]
@@ -1211,7 +1215,7 @@ Call this resource save data for onboarding.
         "AverageDailyTurnover": 0,
         "CheapestProductAmount": 0,
         "MostExpensiveProductAmount": 0,
-        "SellingGoodsWithDelayedDelivery": false,
+        "SellingGoodsWithDelayedDelivery": true|false,
         "PeriodFromPaymentToDeliveryInDays": 0,
         "ComplaintsPerMonth": 0,
         "ComplaintsPerYear": 0,
@@ -1220,17 +1224,21 @@ Call this resource save data for onboarding.
         "EComerceContactFullName": "",
         "EComerceResponsiblePersonPhone": "",
         "EComerceContactEmail": "",
-        "IPSOnly": false
+        "IPSOnly": true|false
    },
    "LegalDocuments": {
-        "ContractWithEMIIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
+        "ContractWithEMIIsNewUpload": true|false,       -> if it is new file upload then 'true', else 'false'
         "ContractWithEMI": "",                      -> if it is new file uplad then base 64 string, else string from API
-        "ContractWithVaulterIsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
+        "ContractWithVaulterIsNewUpload": true|false,   -> if it is new file upload then 'true', else 'false'
         "ContractWithVaulter": "",                  -> if it is new file uplad then base 64 string, else string from API
-        "PromissoryNoteIsNewUpload": false,        -> if it is new file upload then 'true', else 'false'
+        "PromissoryNoteIsNewUpload": true|false,        -> if it is new file upload then 'true', else 'false'
         "PromissoryNote": "",                       -> if it is new file uplad then base 64 string, else string from API
-        "BusinessCooperationRequestIsNewUpload": false,    -> if it is new file upload then 'true', else 'false'
-        "BusinessCooperationRequest": ""                    -> if it is new file uplad then base 64 string, else string from API
+        "BusinessCooperationRequestIsNewUpload": true|false,    -> if it is new file upload then 'true', else 'false'
+        "BusinessCooperationRequest": "",                    -> if it is new file uplad then base 64 string, else string from API
+        "RequestForPromissoryNotesRegistrationIsNewUpload": true|false,
+        "RequestForPromissoryNotesRegistration": "",
+        "CardOfDepositedSignaturesIsNewUpload": true|false,
+        "CardOfDepositedSignatures": "",
    }
 }
 ````

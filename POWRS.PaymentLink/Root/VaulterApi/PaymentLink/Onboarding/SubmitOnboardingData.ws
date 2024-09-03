@@ -142,9 +142,16 @@ SendEmail(onBoardingData):= (
 	(
 		uploadedDocuments.Append("<br /><a href=\"" + companyLink + onBoardingData.LegalDocuments.PromissoryNote +"\">" + onBoardingData.LegalDocuments.PromissoryNote + "</a>");
 	);
+	if(onBoardingData.LegalDocuments.RequestForPromissoryNotesRegistration != "")then
+	(
+		uploadedDocuments.Append("<br /><a href=\"" + companyLink + onBoardingData.LegalDocuments.RequestForPromissoryNotesRegistration +"\">" + onBoardingData.LegalDocuments.RequestForPromissoryNotesRegistration + "</a>");
+	);
+	if(onBoardingData.LegalDocuments.CardOfDepositedSignatures != "")then
+	(
+		uploadedDocuments.Append("<br /><a href=\"" + companyLink + onBoardingData.LegalDocuments.CardOfDepositedSignatures +"\">" + onBoardingData.LegalDocuments.CardOfDepositedSignatures + "</a>");
+	);
 	
 	MailBody := Replace(MailBody, "{{uploadedDocuments}}", uploadedDocuments.ToString());
-	
 	
 	ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
 	Config := ConfigClass.Instance;
