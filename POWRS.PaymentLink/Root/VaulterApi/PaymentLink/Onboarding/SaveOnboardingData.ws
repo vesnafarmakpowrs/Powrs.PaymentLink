@@ -438,6 +438,46 @@ ValidatePostedData(Posted) := (
 		);
 	);
 	
+	isNewUpload := false;
+	if(!exists(Posted.LegalDocuments.RequestForPromissoryNotesRegistrationIsNewUpload))then(
+		errors.Add("LegalDocuments.RequestForPromissoryNotesRegistrationIsNewUpload");
+	)else(
+		isNewUpload := Posted.LegalDocuments.RequestForPromissoryNotesRegistrationIsNewUpload;
+	);
+	if(!exists(Posted.LegalDocuments.RequestForPromissoryNotesRegistration))then(
+		errors.Add("LegalDocuments.RequestForPromissoryNotesRegistration");
+	)else(
+		if(isNewUpload and 
+			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.RequestForPromissoryNotesRegistration)
+			or
+			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.RequestForPromissoryNotesRegistration, fileMaxSizeMB)
+			)
+		)then
+		(
+			errors.Add("LegalDocuments.RequestForPromissoryNotesRegistration");
+		);
+	);
+	
+	isNewUpload := false;
+	if(!exists(Posted.LegalDocuments.CardOfDepositedSignaturesIsNewUpload))then(
+		errors.Add("LegalDocuments.CardOfDepositedSignaturesIsNewUpload");
+	)else(
+		isNewUpload := Posted.LegalDocuments.CardOfDepositedSignaturesIsNewUpload;
+	);
+	if(!exists(Posted.LegalDocuments.CardOfDepositedSignatures))then(
+		errors.Add("LegalDocuments.CardOfDepositedSignatures");
+	)else(
+		if(isNewUpload and 
+			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.CardOfDepositedSignatures)
+			or
+			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.CardOfDepositedSignatures, fileMaxSizeMB)
+			)
+		)then
+		(
+			errors.Add("LegalDocuments.CardOfDepositedSignatures");
+		);
+	);
+	
 	if(errors.Count > 0)then
 	(
 		Error(errors);
@@ -784,6 +824,32 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 			Error("BusinessCooperationRequest file " + LegalDocuments.BusinessCooperationRequest + " does not exist");
 		);
 		documents.BusinessCooperationRequest:= LegalDocuments.BusinessCooperationRequest;
+	);
+	
+	if(LegalDocuments.RequestForPromissoryNotesRegistrationIsNewUpload) then
+	(
+		fileName := "RequestForPromissoryNotesRegistration" + ".pdf";
+		SaveFile(fileRootPath, fileName, LegalDocuments.RequestForPromissoryNotesRegistration);
+		documents.RequestForPromissoryNotesRegistration:= fileName;
+	)else (
+		if (LegalDocuments.RequestForPromissoryNotesRegistration != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.RequestForPromissoryNotesRegistration)) then
+		(
+			Error("RequestForPromissoryNotesRegistration file " + LegalDocuments.RequestForPromissoryNotesRegistration + " does not exist");
+		);
+		documents.RequestForPromissoryNotesRegistration:= LegalDocuments.RequestForPromissoryNotesRegistration;
+	);
+	
+	if(LegalDocuments.CardOfDepositedSignaturesIsNewUpload) then
+	(
+		fileName := "CardOfDepositedSignatures" + ".pdf";
+		SaveFile(fileRootPath, fileName, LegalDocuments.CardOfDepositedSignatures);
+		documents.CardOfDepositedSignatures:= fileName;
+	)else (
+		if (LegalDocuments.CardOfDepositedSignatures != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.CardOfDepositedSignatures)) then
+		(
+			Error("CardOfDepositedSignatures file " + LegalDocuments.CardOfDepositedSignatures + " does not exist");
+		);
+		documents.CardOfDepositedSignatures:= LegalDocuments.CardOfDepositedSignatures;
 	);
 
 	if(alreadyExists) then 
