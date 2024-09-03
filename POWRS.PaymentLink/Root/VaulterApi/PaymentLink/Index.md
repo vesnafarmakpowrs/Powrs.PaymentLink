@@ -356,6 +356,7 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 {
     "DateFrom": Optional(Str(PDateFrom)) format [dd/MM/yyyy],
     "DateTo": Optional(Str(PdateTo)) format [dd/MM/yyyy]
+    "TokenId": Optional(Str(PTokenId))
 }
 ````
 
@@ -363,8 +364,9 @@ Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
-| `DateFrom`        | Optional parameter. If not send then default value is DateTime.Now - 1 month  |
-| `DateTo`          | Optional parameter. If not send then default value is DateTime.Now + 1 day    |
+| `DateFrom`        | Optional parameter. If not provided, the default value is DateTime.Now minus 1 month  |
+| `DateTo`          | Optional parameter. If not provided, the default value is DateTime.Now plus 1 day     |
+| `TokenId`         | Optional parameter. If provided, then record with the specified token will be returned  |
 
 **Response**
 
