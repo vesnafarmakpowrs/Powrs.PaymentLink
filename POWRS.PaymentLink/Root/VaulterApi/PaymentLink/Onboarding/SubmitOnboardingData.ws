@@ -101,7 +101,7 @@ ApplyForLeglalID(onBoardingData):=(
 	return(1);
 );
 
-SendEmail(onBoardingData):= (	
+SendEmailToVaulter(onBoardingData):= (	
 	MailBody := Create(System.Text.StringBuilder);
 	MailBody.Append("Hello,");
 	MailBody.Append("<br />");
@@ -164,6 +164,35 @@ SendEmail(onBoardingData):= (
 	return(1);
 );
 
+SendEmailToUser():= (	
+	MailBody := Create(System.Text.StringBuilder);
+	MailBody.Append("Zdravo {{user}},");
+	MailBody.Append("<br />");
+	MailBody.Append("<br />Tvoja prijava na Vulter sistem je evidentirana.");
+	MailBody.Append("<br />");
+	MailBody.Append("<br />Sledeći koraci su:");
+	MailBody.Append("<br />");
+	MailBody.Append("<ul>");
+	MailBody.Append("<li>Mi proverimo tvoju prijav. Ukoliko bude potrebe obaveštavamo te šta je potrebno izmeniti, ukoliko je sve u redu obaveštavamo te da nam fizički pošalješ dokuentaciju.</li>");
+	MailBody.Append("<li>Nakon potvrde dokumentacije obaveštavamo te da je sve u redu i odobravamo ti nalog za pristup portalu i kreiranje linkova.</li>");
+	MailBody.Append("</ul>");
+	MailBody.Append("<br />");
+	MailBody.Append("<br />Srdačan pozdrav");
+	MailBody.Append("<br />Vaulter");
+	
+	MailBody := Replace(MailBody, "{{user}}", SessionUser.username);
+	
+	ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
+	Config := ConfigClass.Instance;
+	mailRecipient := Select EMail from BrokerAccounts where UserName = SessionUser.username;
+	
+	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailRecipient, "Powrs Vaulter OnBoarding", MailBody, null, null);
+				
+	destroy(MailBody);
+	destroy(uploadedDocuments);
+	return(1);
+);
+
 try
 (
 	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","");
@@ -181,8 +210,10 @@ try
 	
     currentMethod := "ApplyForLeglalID";
 	ApplyForLeglalID(onBoardingData);
-    currentMethod := "currentMethod";
-	SendEmail(onBoardingData);
+    currentMethod := "SendEmailToVaulter";
+	SendEmailToVaulter(onBoardingData);
+    currentMethod := "SendEmailToUser";
+	SendEmailToUser();
 	
 	Log.Informational("Succeffully submited onboarding for user: " + SessionUser.username, logObject, logActor, logEventID, null);
 	{
