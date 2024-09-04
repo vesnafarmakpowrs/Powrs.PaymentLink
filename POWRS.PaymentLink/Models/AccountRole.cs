@@ -69,8 +69,6 @@ namespace POWRS.PaymentLink.Models
             }
 
             return enumDictionary;
-        }
-
-     
+        }     
     }
 }
