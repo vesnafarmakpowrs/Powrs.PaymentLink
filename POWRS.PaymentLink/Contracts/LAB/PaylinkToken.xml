@@ -137,13 +137,13 @@
 				<Variable id="RefundedAmount">
 					<Number>0</Number>
 				</Variable>
-				<State id="AwaitingForPayment">
+				<State id="AwaitingForPayment">					
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent actionRef="ProcessPayspotPaymentStatus" newState="AwaitingForPayment" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentStatus" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
-					</OnEvent>					
+					</OnEvent>
 					<OnEvent actionRef="ChangeBuyerLanguage">
 						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -152,7 +152,10 @@
 					</OnEvent>
 					<OnEvent actionRef="EmailToBuyerSent">
 						<OnExternalXmlNote localName="EmailToBuyerSent" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
-					</OnEvent>					
+					</OnEvent>
+					<OnEvent newState="PaymentNotPerformed">
+						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+					</OnEvent>
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
@@ -192,7 +195,7 @@
 					<PersistVariable name="EmailCounter" value="{EmailCounter + 1}" />
 					<If condition="newEmail != BuyerEmail">
 						<Then>
-							<PersistVariable name="BuyerEmail" value="{newEmail}" />	
+							<PersistVariable name="BuyerEmail" value="{newEmail}" />
 						</Then>
 					</If>
 				</Action>
@@ -206,7 +209,7 @@
 							<PersistVariable name="BuyerPhoneNumber" value="{newPhoneNumber}" />
 						</Then>
 					</If>
-				</Action>				
+				</Action>
 				<Action id="PayoutDateUpdated">
 					<Script>
 						newPayoutDate:= SelectXmlStr(Note,'/default:PayoutDateUpdated/@expectedPayoutDate');
@@ -614,7 +617,7 @@
 				</paragraph>
 			</description>
 		</numericalParameter>
-		
+
 		<stringParameter name="Currency" value="RSD" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
 			<description xml:lang="en">
 				<paragraph>
@@ -718,7 +721,7 @@
 					<text>PaySpot status message of paymentr</text>
 				</paragraph>
 			</description>
-		</stringParameter>		
+		</stringParameter>
 		<stringParameter name="BuyerFullName" value="" minLength="2">
 			<description xml:lang="en">
 				<paragraph>
