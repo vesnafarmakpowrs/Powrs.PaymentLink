@@ -341,6 +341,46 @@ Description of properties:
 }
 ````
 
+### Invalidate contract
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/InvalidateContract.ws")}}`  
+Method: `POST`
+
+Call this resource to invalidate contract and link for payment, so buyer will not be able to pay. 
+Make sure that buyer is not in the middle of payment, in case of successfull payment, payment will not be registered in contract.
+
+**Request**
+
+````
+{
+    "tokenId": Required(String(PTokenId))
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `tokenId`      | Token Id. |
+
+**Response**
+
+````
+{
+ 200 OK 
+ {
+   "invalidated" : true | false
+ }
+ 403 Forbidden
+ {
+	   // Token not valid.
+ }
+ 400 Bad Request
+ {
+ }
+}
+````
+
 
 ### Get Contracts
 
