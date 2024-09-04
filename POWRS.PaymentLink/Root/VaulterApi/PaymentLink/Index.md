@@ -266,8 +266,7 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber),
     "callbackUrl":Optional(String(PCallbackUrl)),
-    "webPageUrl":Optional(String(PWebPageUrl)),
-    "supportedPaymentMethods": Optional(String(PSupportedPaymentMethods))
+    "webPageUrl":Optional(String(PWebPageUrl))
 }
 ````
 
@@ -289,7 +288,6 @@ Description of properties:
 | `buyerCountryCode`| Buyer country code. |
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
 | `webPageUrl` | Web page of selling item|
-|`supportedPaymentMethods`| List of Supported Payment methods joined with ";" in single string. |
 
 **Response**
 
