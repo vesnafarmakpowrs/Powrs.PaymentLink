@@ -16,8 +16,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerAddress": Required(Str(PBuyerAddress)) ,
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "callbackUrl":Optional(String(PCallBackUrl)),
-    "webPageUrl":Optional(String(PWebPageUrl)),
-    "supportedPaymentMethods": Optional(String(PSupportedPaymentMethods))
+    "webPageUrl":Optional(String(PWebPageUrl))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 SessionUser:= Global.ValidateAgentApiToken(true, true);
