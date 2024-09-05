@@ -409,6 +409,7 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 	(
 		Error("LegalRepresentatives must be populated");
 	);
+	businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
 
 	newPDFFilePath := "";
 	
@@ -463,6 +464,9 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{CompanyOrganizationNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.OrganizationNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyTaxNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.TaxNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{EmailAdresaTrgovac}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + businessData.EComerceContactEmail + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{KontaktOsobaTrgovac}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + businessData.EComerceContactFullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{TelefonTrgovac}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + businessData.EComerceResponsiblePersonPhone + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 	);
 	
 	newPDFFilePath := CreatePDFFile(fileRootPath, newFileName, htmlContent);

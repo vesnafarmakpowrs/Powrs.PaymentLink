@@ -29,6 +29,11 @@ try
 
 	variables := tokenObj.GetCurrentStateVariables();
 	
+	if(variables.State != "AwaitingForPayment") then 
+	(
+		Error("Link is no longer valid");
+	);
+
 	if(exists(PEmail)) then 
 	(
 		if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 

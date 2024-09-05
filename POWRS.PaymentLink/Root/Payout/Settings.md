@@ -36,6 +36,7 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.NotificationList", Str(Posted.NotificationList));
 	SetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath", Str(Posted.OnBoardingAllCompaniesRootPath));
 	SetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList", Str(Posted.OnBoardingSubmitMailList));
+	SetSetting("POWRS.PaymentLink.OnBoardingFileMaxSize", Str(Posted.OnBoardingFileMaxSize));
 	SetSetting("POWRS.PaymentLink.FeeCalculatorSupportEmail", Str(Posted.FeeCalculatorSupportEmail));
 	
 	SeeOther("Settings.md");
@@ -76,6 +77,7 @@ if exists(Posted) then
 <label for="SMSTextLocalKey">SMS TextLocal Key: </label>  
 <input type="text" id="SMSTextLocalKey" name="SMSTextLocalKey" value='{{GetSetting("POWRS.PaymentLink.SMSTextLocalKey","")}}' autofocus required title="Key for sending SMS"/>
 </p>
+
 <p>
 <label for="LIStatusContactEmail">List of email recipients for disable legal id request: </label>  
 <input type="text" id="LIStatusContactEmail" name="LIStatusContactEmail" value='{{GetSetting("POWRS.PaymentLink.LIStatusContactEmail","")}}' autofocus required title="List of email who will receive email when legal id disable is requested. Use ; as delimiter between multiple mails"/>
@@ -99,6 +101,11 @@ if exists(Posted) then
 <p>
 <label for="OnBoardingSubmitMailList">List of mail that will receive notification when onboarding is submited:</label>  
 <input type="text" id="OnBoardingSubmitMailList" name="OnBoardingSubmitMailList" value='{{GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","")}}' title="List of mail that will receive notification when onboarding is submited. Use ; as delimiter between multiple mails "/>
+</p>
+
+<p>
+<label for="OnBoardingFileMaxSize">Onboarding max file size:</label>  
+<input type="text" id="OnBoardingFileMaxSize" name="OnBoardingFileMaxSize" value='{{GetSetting("POWRS.PaymentLink.OnBoardingFileMaxSize","")}}' title="Enter int value"/>
 </p>
 
 <p>

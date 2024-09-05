@@ -120,9 +120,13 @@ Business Cooperation Request EMI: ((ShowUploadedFileDownloadLink(onBoardingData.
 <br />
 Contract With EMI: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.ContractWithEMI) ))
 <br />
+Contract With Vaulter: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.ContractWithVaulter) ))
+<br />
 Promissory Note: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.PromissoryNote) ))
 <br />
-Contract With Vaulter: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.ContractWithVaulter) ))
+Request For Promissory Notes Registration: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.RequestForPromissoryNotesRegistration) ))
+<br />
+Card Of Deposited Signatures: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.CardOfDepositedSignatures) ))
 
 <br /><br />
 ((ShowBtnAllowEdit(onBoardingData.GeneralCompanyInformation) ))

@@ -9,6 +9,10 @@
     "role": Optional(Int(PUserRole))
 }:=Posted) ??? BadRequest(Exception.Message);
 
+logObject := SessionUser.username;
+logEventID := "CreateAccount.ws";
+logActor := Split(Request.RemoteEndPoint, ":")[0];
+
 try
 (
     if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
@@ -57,9 +61,6 @@ try
         Error("Keys are missing");
     );
 	
-	Log.Informational("Create account validation successful. UserName: " + PUserName + ", email: " + PEmail + ", pw: " + PPassword + ", role: " + PUserRole, "", "CreateAccount", null);
-	
-
     Nonce:= Base64Encode(RandomBytes(32));
     S:= PUserName + ":" + Gateway.Domain + ":" + PEmail + ":" + PPassword + ":" + apiKey + ":" + Nonce;
     Signature := Base64Encode(Sha2_256HMac(Utf8Encode(S),Utf8Encode(apiKeySecret)));
@@ -80,8 +81,6 @@ try
     enabled:= Update BrokerAccounts set Enabled = true where UserName = PUserName;
     Global.VerifyingNumbers.Remove(PEmail);
 
-	Log.Informational("Create account -> broker account created and and email removed from global", "", "CreateAccount", null);
-	
 	try
 	(
 		if(!exists(NewAccount.jwt)) then 
@@ -118,11 +117,11 @@ try
 		SetSetting(PUserName  + ".KeyId", PKeyId);
 		SetSetting(PUserName  + ".KeySecret", KeyPassword);
 		
-		Log.Informational("Create account -> cripted keys created", "", "CreateAccount", null);
+		Log.Informational("Create account -> cripted keys created", logObject, logActor, logEventID, null);
 	)
 	catch
 	(
-		Log.Error("Unable to create key: " + Exception.Message, null);
+		Log.Error("Unable to create key: " + Exception.Message, logObject, logActor, logEventID, null);
 		Error("Unable to create key: " + Exception.Message);
 	)
 	finally
@@ -153,14 +152,13 @@ try
 			if(PNewSubUser) then (
 				SessionUser:= Global.ValidateAgentApiToken(true, false);
 				
-				creatorUserName :=  SessionUser.username;
+				creatorUserName := SessionUser.username;
 				creatorBrokerAccRole := 
 					Select top 1 *
 					from POWRS.PaymentLink.Models.BrokerAccountRole
 					where UserName = creatorUserName;
 				
-				if(creatorBrokerAccRole != null) then (
-					
+				if(creatorBrokerAccRole != null) then (					
 					if (creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.SuperAdmin &&
 						creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin
 					) then (
@@ -202,11 +200,11 @@ try
 
 		Waher.Persistence.Database.Insert(accountRole);
 		
-		Log.Informational("Create account -> broker acc roles inserted for user name: " + PUserName, "", "CreateAccount", null);
+		Log.Informational("Create account -> broker acc roles inserted for user name: " + PUserName, logObject, logActor, logEventID, null);
 	)
 	catch
 	(
-		Log.Error("Unable to create broker acc role: " + Exception.Message, "", "CreateAccount", null);
+		Log.Error("Unable to create broker acc role: " + Exception.Message, logObject, logActor, logEventID, null);
 		Error("Unable to create  broker acc role: " + Exception.Message);
 	);
 		
@@ -226,11 +224,11 @@ catch
 		)
 		catch
 		(
-			Log.Error("Unable to cleanup for user " + PUserName, "", "CreateAccount", null);
+			Log.Error("Unable to cleanup for user " + PUserName, logObject, logActor, logEventID, null);
 		);
     );
     
-    Log.Error("Unable to create user: " + Exception.Message, "", "CreateAccount", null);
+	Log.Error("Unable to create user: " + Exception.Message, logObject, logActor, logEventID, null);
     BadRequest(Exception.Message);
 )
 finally

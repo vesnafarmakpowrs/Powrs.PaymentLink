@@ -14,7 +14,7 @@
     position: absolute;
     left: 0;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid #dbdbdb;
     background: transparent;
     outline: none;
@@ -41,7 +41,7 @@
     height: 100%;
     cursor: text;
     padding: 10px 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid #dbdbdb;
     background: transparent;
     outline: none;
@@ -58,7 +58,7 @@
     height: 100%;
     cursor: pointer;
     padding: 10px 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid #dbdbdb;
     background: transparent;
     outline: none;
@@ -105,7 +105,7 @@
     position: absolute;
     left: 0;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid #dbdbdb;
     background: transparent;
     outline: none;
@@ -132,7 +132,7 @@
     height: 100%;
     cursor: text;
     padding: 10px 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid #dbdbdb;
     background: transparent;
     outline: none;
@@ -149,7 +149,7 @@
     height: 100%;
     cursor: pointer;
     padding: 10px 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid #dbdbdb;
     background: transparent;
     outline: none;

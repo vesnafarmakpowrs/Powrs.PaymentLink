@@ -2,7 +2,7 @@
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    width: 98%;
+    width: 80%;
     margin-top: 100px;
     padding-bottom: 70px;
     min-height: 98vh;
@@ -13,11 +13,17 @@
     .App {
         margin-left: auto;
         margin-right: auto;
-        width: 99%;
+        width: 80%;
         /*padding-top: 100px;*/
         padding-bottom: 100px;
         min-height: 100vh;
     }
+}
+
+.feeCalcContainer{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .appInputValidationError{

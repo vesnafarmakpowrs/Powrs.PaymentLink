@@ -37,7 +37,7 @@ try(
 		from mSelect2
 		where Account in (AgentArray);
 	
-	mReturnData:=select Max(Month(DateCompleted)) as "Month", Account, Count(*)/2 as "Cnt"
+	mReturnData:=select Max(Month(DateCompleted)) as "Month", Account, Count(*) as "Cnt"
 		from mSelect3
 		group by Month(DateCompleted), Account;
 		

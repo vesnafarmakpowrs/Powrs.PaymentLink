@@ -3,7 +3,7 @@
 }:=Posted) ??? BadRequest(Exception.Message);
 
 SessionUser:= Global.ValidateAgentApiToken(true, false);
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "DeactivateUser.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
@@ -132,11 +132,11 @@ try(
 	Config := ConfigClass.Instance;
 	POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailReceivers, "PLGenerator - Disable identity", MailBody, null, null);	
 
-	Log.Informational("Succeffully deactivated user: " + subUserName, logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully deactivated user: " + subUserName, logObject, logActor, logEventID, null);
 				
 	x:= "ok";
 )
 catch(
-	Log.Error(Exception.Message, logObjectID, logActor, logEventID, null);
+	Log.Error(Exception.Message, logObject, logActor, logEventID, null);
     BadRequest("Unable to process request. Error: " + Exception.Message);	
 );

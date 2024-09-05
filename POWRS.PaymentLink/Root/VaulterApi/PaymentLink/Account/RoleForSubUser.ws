@@ -1,5 +1,8 @@
-
 SessionUser:= Global.ValidateAgentApiToken(true, false);
+
+logObject := SessionUser.username;
+logEventID := "RoleForSubUser.ws";
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
@@ -23,7 +26,7 @@ try
 )
 catch
 (
-	Log.Error("Unable to get new user roles: " + Exception.Message, "", "", null);
+	Log.Error("Unable to get new user roles: " + Exception.Message, logObject, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );	
 

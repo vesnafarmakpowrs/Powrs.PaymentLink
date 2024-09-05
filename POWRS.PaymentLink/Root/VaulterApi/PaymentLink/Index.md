@@ -266,8 +266,7 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber),
     "callbackUrl":Optional(String(PCallbackUrl)),
-    "webPageUrl":Optional(String(PWebPageUrl)),
-    "supportedPaymentMethods": Optional(String(PSupportedPaymentMethods))
+    "webPageUrl":Optional(String(PWebPageUrl))
 }
 ````
 
@@ -289,7 +288,6 @@ Description of properties:
 | `buyerCountryCode`| Buyer country code. |
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
 | `webPageUrl` | Web page of selling item|
-|`supportedPaymentMethods`| List of Supported Payment methods joined with ";" in single string. |
 
 **Response**
 
@@ -341,6 +339,46 @@ Description of properties:
 }
 ````
 
+### Invalidate contract
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/InvalidateContract.ws")}}`  
+Method: `POST`
+
+Call this resource to invalidate contract and link for payment, so buyer will not be able to pay. 
+Make sure that buyer is not in the middle of payment, in case of successfull payment, payment will not be registered in contract.
+
+**Request**
+
+````
+{
+    "tokenId": Required(String(PTokenId))
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `tokenId`      | Token Id. |
+
+**Response**
+
+````
+{
+ 200 OK 
+ {
+   "invalidated" : true | false
+ }
+ 403 Forbidden
+ {
+	   // Token not valid.
+ }
+ 400 Bad Request
+ {
+ }
+}
+````
+
 
 ### Get Contracts
 
@@ -356,6 +394,7 @@ If token is not provided, or token is invalid, `Bad request` will be thrown, Als
 {
     "DateFrom": Optional(Str(PDateFrom)) format [dd/MM/yyyy],
     "DateTo": Optional(Str(PdateTo)) format [dd/MM/yyyy]
+    "TokenId": Optional(Str(PTokenId))
 }
 ````
 
@@ -363,8 +402,9 @@ Description of properties:
 
 | Name              | Description |
 |:------------------|:------------|
-| `DateFrom`        | Optional parameter. If not send then default value is DateTime.Now - 1 month  |
-| `DateTo`          | Optional parameter. If not send then default value is DateTime.Now + 1 day    |
+| `DateFrom`        | Optional parameter. If not provided, the default value is DateTime.Now minus 1 month  |
+| `DateTo`          | Optional parameter. If not provided, the default value is DateTime.Now plus 1 day     |
+| `TokenId`         | Optional parameter. If provided, then record with the specified token will be returned  |
 
 **Response**
 
@@ -966,10 +1006,11 @@ Retrieves Successful Transactions information.
 **Request**
 
 ````
-    "DateFrom":Required(String(PDateFrom)),
-	"DateTo":Required(String(PDateTo)),
-	"PaymentType":Optional(String(PPaymentType)),
-	"CardBrand":Optional(String(PCardBrand))
+    "from":Required(String(PDateFrom) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
+    "to":Required(String(PDateTo) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
+    "ips": Required(Bool(PIncludeIps)),
+    "cardBrands":Optional(String(PCardBrands)), 
+    "filterType": Optional(String(PFitlerType))  ->  Report|Payout.  Report: Filter over DateCompleted. Payout: Filter over PayoutDate
 ````
 
 **Response**
@@ -1116,6 +1157,8 @@ Token is required. Request body is empty.
         "ContractWithVaulter": "",
         "ContractWithEMI": "",
         "PromissoryNote": "",
+        "RequestForPromissoryNotesRegistration": "",
+        "CardOfDepositedSignatures": "",
         "UserName": "mirkokrule41"
     }
 }
@@ -1145,7 +1188,7 @@ Call this resource save data for onboarding.
         "StampUsage": true,
         "BankName": "",
         "BankAccountNumber": "",
-        "TaxLiability": false,
+        "TaxLiability": true|false,
         "CompanyWebsite": "",
         "CompanyWebshop": "",
         "LegalRepresentatives":[                        ->If nothing populated then send empty array []
@@ -1156,10 +1199,10 @@ Call this resource save data for onboarding.
                 "PlaceOfBirth" : "",
                 "AddressOfResidence": "",
                 "CityOfResidence": "",
-                "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
-				"StatementOfOfficialDocumentIsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
+                "IsPoliticallyExposedPerson": true|false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
+				"StatementOfOfficialDocumentIsNewUpload": true|false,   -> if it is new file upload then 'true', else 'false'
                 "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
-				"IdCardIsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
+				"IdCardIsNewUpload": true|false,            -> if it is new file upload then 'true', else 'false'
                 "IdCard": "",                           -> if it is new file uplad then base 64 string, else string from API
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "PlaceOfIssue": "",
@@ -1172,7 +1215,7 @@ Call this resource save data for onboarding.
    "CompanyStructure":{
         "CountriesOfBusiness": "Serbia,Croatia,Montenegro", -> string with ',' delimiter and no spaces between
         "NameOfTheForeignExchangeAndIDNumber": "",
-        "OffShoreFoundationInOwnerStructure": false,    
+        "OffShoreFoundationInOwnerStructure": true|false,    
         "PercentageOfForeignUsers": 0,                  
         "OwnerStructure": "Person",                     -> Can be string: 'Person', 'Company' or 'PersonAndCompany'
         "Owners":[                                      -> If nothing populated then send empty array []
@@ -1183,7 +1226,7 @@ Call this resource save data for onboarding.
                 "PlaceOfBirth": "",
                 "AddressOfResidence": "",
                 "CityOfResidence": "",
-                "IsPoliticallyExposedPerson": false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
+                "IsPoliticallyExposedPerson": true|false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
 				"StatementOfOfficialDocumentIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
                 "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
                 "OwningPercentage": 25.1,
@@ -1194,7 +1237,7 @@ Call this resource save data for onboarding.
                 "IssuerName": "",
                 "DocumentIssuancePlace": "",
                 "Citizenship": "",
-				"IdCardIsNewUpload": false,            -> if it is new file upload then 'true', else 'false'
+				"IdCardIsNewUpload": true|false,            -> if it is new file upload then 'true', else 'false'
                 "IdCard": ""                            -> if it is new file uplad then base 64 string, else string from API
             }
         ]
@@ -1210,7 +1253,7 @@ Call this resource save data for onboarding.
         "AverageDailyTurnover": 0,
         "CheapestProductAmount": 0,
         "MostExpensiveProductAmount": 0,
-        "SellingGoodsWithDelayedDelivery": false,
+        "SellingGoodsWithDelayedDelivery": true|false,
         "PeriodFromPaymentToDeliveryInDays": 0,
         "ComplaintsPerMonth": 0,
         "ComplaintsPerYear": 0,
@@ -1219,17 +1262,21 @@ Call this resource save data for onboarding.
         "EComerceContactFullName": "",
         "EComerceResponsiblePersonPhone": "",
         "EComerceContactEmail": "",
-        "IPSOnly": false
+        "IPSOnly": true|false
    },
    "LegalDocuments": {
-        "ContractWithEMIIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
+        "ContractWithEMIIsNewUpload": true|false,       -> if it is new file upload then 'true', else 'false'
         "ContractWithEMI": "",                      -> if it is new file uplad then base 64 string, else string from API
-        "ContractWithVaulterIsNewUpload": false,   -> if it is new file upload then 'true', else 'false'
+        "ContractWithVaulterIsNewUpload": true|false,   -> if it is new file upload then 'true', else 'false'
         "ContractWithVaulter": "",                  -> if it is new file uplad then base 64 string, else string from API
-        "PromissoryNoteIsNewUpload": false,        -> if it is new file upload then 'true', else 'false'
+        "PromissoryNoteIsNewUpload": true|false,        -> if it is new file upload then 'true', else 'false'
         "PromissoryNote": "",                       -> if it is new file uplad then base 64 string, else string from API
-        "BusinessCooperationRequestIsNewUpload": false,    -> if it is new file upload then 'true', else 'false'
-        "BusinessCooperationRequest": ""                    -> if it is new file uplad then base 64 string, else string from API
+        "BusinessCooperationRequestIsNewUpload": true|false,    -> if it is new file upload then 'true', else 'false'
+        "BusinessCooperationRequest": "",                    -> if it is new file uplad then base 64 string, else string from API
+        "RequestForPromissoryNotesRegistrationIsNewUpload": true|false,
+        "RequestForPromissoryNotesRegistration": "",
+        "CardOfDepositedSignaturesIsNewUpload": true|false,
+        "CardOfDepositedSignatures": "",
    }
 }
 ````
@@ -1341,6 +1388,32 @@ Description of properties:
 |:------------------|:------------|
 |`Name`|  File name |
 |`File`|  Base64 encoded file |
+
+
+### Get upload file max size
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Onboarding/GetFileMaxSize.ws")}}`  
+Method: `POST`
+
+Call this resource to download upload file max size.
+
+**Request**
+
+````
+{
+}
+````
+
+**Response**
+
+````
+{
+    "fileMaxSize": 25
+}
+````
+
+| Name              | Description |
+|:------------------|:------------|
+|`fileMaxSize`|  File max size in MB. Type: int. |
 
 
 Fee Calculator
@@ -1489,5 +1562,102 @@ Description of properties:
 ````
 {
     "success": true
+}
+````
+
+
+
+### FeeCalculator - Download PDF / Send PDF to email (SHARE)
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/FeeCalculator/Reports/GenerateFormPDF.ws")}}`  
+Method: `POST`
+
+Call this resource to download PDF report or send mail to customer. Before calling this method **data must be saved**, because other details will be populated from db.
+
+**Request**
+
+````
+{
+    "t_calc_Header": Required(Str(Pt_calc_Header)),
+	"t_calc_Now_Title": Required(Str(Pt_calc_Now_Title)),
+	"t_calc_Forecast_Title": Required(Str(Pt_calc_Forecast_Title)),
+	
+	"t_calc_CurrentData_TotalRevenue": Required(Str(Pt_calc_CurrentData_TotalRevenue)),
+	"t_calc_CurrentData_AvgAmountPerTrn": Required(Str(Pt_calc_CurrentData_AvgAmountPerTrn)),
+	"t_calc_CurrentData_TotalTrn": Required(Str(Pt_calc_CurrentData_TotalTrn)),
+	"t_calc_CurrentData_CardTrnPercentage": Required(Str(Pt_calc_CurrentData_CardTrnPercentage)),
+	"t_calc_CurrentData_CardFee": Required(Str(Pt_calc_CurrentData_CardFee)),
+	"t_calc_CurrentData_TotalCardPercentage_lbl": Required(Str(Pt_calc_CurrentData_TotalCardPercentage_lbl)),
+	"t_calc_CurrentData_TotalCardCost_lbl": Required(Str(Pt_calc_CurrentData_TotalCardCost_lbl)),
+	
+	"t_calc_Card_Title": Required(Str(Pt_calc_Card_Title)),
+    "t_calc_Card_TrnPercentage": Required(Str(Pt_calc_Card_TrnPercentage)),
+    "t_calc_Card_NumberOfTrn": Required(Str(Pt_calc_Card_NumberOfTrn)),
+    "t_calc_Card_AvgAmountPerTrn": Required(Str(Pt_calc_Card_AvgAmountPerTrn)),
+    "t_calc_Card_VaulterFee": Required(Str(Pt_calc_Card_VaulterFee)),
+    "t_calc_Card_VaulterCost_lbl": Required(Str(Pt_calc_Card_VaulterCost_lbl)),
+    "t_calc_Card_Saved_lbl": Required(Str(Pt_calc_Card_Saved_lbl)),
+	
+	"t_calc_A2A_Title": Required(Str(Pt_calc_A2A_Title)),
+    "t_calc_A2A_TrnPercentage": Required(Str(Pt_calc_A2A_TrnPercentage)),
+    "t_calc_A2A_NumberOfTrn": Required(Str(Pt_calc_A2A_NumberOfTrn)),
+    "t_calc_A2A_AvgAmountPerTrn": Required(Str(Pt_calc_A2A_AvgAmountPerTrn)),
+    "t_calc_A2A_VaulterFee": Required(Str(Pt_calc_A2A_VaulterFee)),
+    "t_calc_A2A_VaulterCost_lbl": Required(Str(Pt_calc_A2A_VaulterCost_lbl)),
+    "t_calc_A2A_Saved_lbl": Required(Str(Pt_calc_A2A_Saved_lbl)),
+	
+	"t_calc_Holding_Title": Required(Str(Pt_calc_Holding_Title)),
+    "t_calc_Holding_TrnPercentage": Required(Str(Pt_calc_Holding_TrnPercentage)),
+    "t_calc_Holding_NumberOfTrn": Required(Str(Pt_calc_Holding_NumberOfTrn)),
+    "t_calc_Holding_HoldingFee": Required(Str(Pt_calc_Holding_HoldingFee)),
+    "t_calc_Holding_VaulterCost_lbl": Required(Str(Pt_calc_Holding_VaulterCost)),
+    "t_calc_Holding_WhoWillPayCost_Title": Required(Str(Pt_calc_Holding_WhoWillPayCost_Title)),
+    "t_calc_Holding_Buyer_lbl": Required(Str(Pt_calc_Holding_Buyer_lbl)),
+    "t_calc_Holding_Seller_lbl": Required(Str(Pt_calc_Holding_Seller_lbl)),
+    "t_calc_Holding_KickBackDiscount_Title": Required(Str(Pt_calc_Holding_KickBackDiscount_Title)),
+    "t_calc_Holding_KickBackPerTrn": Required(Str(Pt_calc_Holding_KickBackPerTrn)),
+    "t_calc_Holding_IncomeSummary_lbl": Required(Str(Pt_calc_Holding_IncomeSummary_lbl)),
+	
+	"t_calc_Summary_Title": Required(Str(Pt_calc_Summary_Title)),
+	"t_calc_Saved_lbl": Required(Str(Pt_calc_Saved_lbl)),
+	"t_calc_KickBackDiscount_lbl": Required(Str(Pt_calc_KickBackDiscount_lbl)),
+	
+	"t_calc_Note": Required(Str(Pt_calc_Note)),
+		
+	"t_calc_tblHeaderTotalTrn": Required(Str(Pt_calc_tblHeaderTotalTrn)),
+	"t_calc_tblData_CardTrn": Required(Str(Pt_calc_tblData_CardTrn)),
+	"t_calc_tblData_A2ATrn": Required(Str(Pt_calc_tblData_A2ATrn)),
+	"t_calc_tblHeaderHolding": Required(Str(Pt_calc_tblHeaderHolding)),
+	"t_calc_tblData_HoldingTrn": Required(Str(Pt_calc_tblData_HoldingTrn)),
+    	
+	"organizationNumber": Required(Str(PorganizationNumber)),
+	"sendToEmail": Required(Bool(PsendToEmail)),
+	"email": Optional(Str(Pemail))
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+|`t_ ...`          | Property type is string, it is translations for labels in PDF that will be created |
+|`sendToEmail / email`   | If the property `sendToEmail` is **`true`** then property `email` must be populated and an email will be send to provided email with PDF in attach |
+
+
+**Response**
+
+If `sendToEmail` = **`true`** then response will be:
+
+````
+{
+    "success": true
+}
+````
+
+If `sendToEmail` = **`false`** then response will be:
+
+````
+{
+    "Name": "NewFile.pdf",
+    "PDF": "file bytes array"
 }
 ````

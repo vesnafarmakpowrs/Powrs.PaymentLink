@@ -23,10 +23,10 @@
 				<Folder name="HtmlTemplates">
 					<Folder name="FeeCalculatorForm">
 						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="App.css"/>
-						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm"  fileName="bootstrap.css"/>
-						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm"  fileName="bootstrap.js"/>
-						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm"  fileName="FeeCalc.html"/>
-						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm"  fileName="FeeCalculatorPage.css"/>
+						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="bootstrap.css"/>
+						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="bootstrap.js"/>
+						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="FeeCalc.html"/>
+						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="FeeCalculatorPage.css"/>
 						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="index.css"/>
 						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="InputAnimation.css"/>
 						<Content altFolder="..\..\..\..\..\FeeCalculator\TemplateFiles\FeeCalculatorForm" fileName="Slider.css"/>
@@ -71,6 +71,7 @@
 					<Content fileName="InitiateRefund.ws"/>
 					<Content fileName="GetContracts.ws"/>
 					<Content fileName="CreateItem.ws"/>
+					<Content fileName="InvalidateContract.ws"/>
 				</Folder>
 				<Folder name="Mail">
 					<Content fileName="ReportNewState.ws"/>
@@ -78,8 +79,10 @@
 					<Content fileName="SendPaylinkViaEmail.ws"/>
 				</Folder>
 				<Folder name="Onboarding">
+					<Content fileName="AllowEdit.ws"/>
 					<Content fileName="DownloadFile.ws"/>
 					<Content fileName="DownloadTemplateFile.ws"/>
+					<Content fileName="GetFileMaxSize.ws"/>
 					<Content fileName="GetOnboardingData.ws"/>
 					<Content fileName="SaveOnboardingData.ws"/>
 					<Content fileName="SubmitOnboardingData.ws"/>
@@ -122,6 +125,7 @@
 					<Content fileName="ListOfTransactions.ws"/>
 					<Content fileName="OnBoardedUsers.ws"/>
 					<Content fileName="ReportTransactions.ws"/>
+					<Content fileName="ReportPayouts.ws"/>
 					<Content fileName="SuccessfulTransactions.ws"/>
 					<Content fileName="PayspotTransactions.ws"/>
 				</Folder>
