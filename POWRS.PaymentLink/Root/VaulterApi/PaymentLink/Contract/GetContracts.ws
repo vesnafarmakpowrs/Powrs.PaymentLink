@@ -27,11 +27,22 @@ try
 		filterByToken := true;
 		filterTokenID := Str(Posted.TokenId);
 	);
-	
+
+	PayoutPage := "Payout.md";
+    IpsOnly := false;
+
+    businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
+    if(businessData != null) then 
+    (
+      IpsOnly := businessData.IPSOnly;
+    );
+
+    if IpsOnly then PayoutPage := "PayoutIPS.md";
+		
 	PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
 	cancelAllowedStates:= {"AwaitingForPayment": true, "PaymentCompleted": true};
 	doneStates:= {"Cancel": true, "Done": true, "": true, "PaymentNotPerformed": true};
-	template:= "https://" + PaylinkDomain + "/Payout.md?ID={0}";
+	template:= "https://" + PaylinkDomain + "/" + PayoutPage + "?ID={0}";
 	ResultList:= Create(System.Collections.Generic.List, System.Object);
 
 	objBrokerAccountRole := 
