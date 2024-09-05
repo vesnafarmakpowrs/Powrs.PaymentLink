@@ -242,7 +242,7 @@ finally
 
 if(exists(!NewIdentity.Id)) then 
 (
-  BadRequest("Identity not created");
+	BadRequest("Identity not created");
 );
 
 Return("ok");
