@@ -38,6 +38,8 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList", Str(Posted.OnBoardingSubmitMailList));
 	SetSetting("POWRS.PaymentLink.OnBoardingFileMaxSize", Str(Posted.OnBoardingFileMaxSize));
 	SetSetting("POWRS.PaymentLink.FeeCalculatorSupportEmail", Str(Posted.FeeCalculatorSupportEmail));
+	SetSetting("POWRS.PaymentLink.ApiIntegrationSignatureKey", Str(Posted.ApiIntegrationSignatureKey));
+	SetSetting("POWRS.PaymentLink.PayspotAuthorizationResponseUrl", Str(Posted.PayspotAuthorizationResponseUrl));
 	
 	SeeOther("Settings.md");
 );
@@ -111,6 +113,16 @@ if exists(Posted) then
 <p>
 <label for="FeeCalculatorSupportEmail">Fee calculator support mail list, when user click CONTACT SUPPORT:</label>  
 <input type="text" id="FeeCalculatorSupportEmail" name="FeeCalculatorSupportEmail" value='{{GetSetting("POWRS.PaymentLink.FeeCalculatorSupportEmail","")}}' title="List of mail that will receive notification when user click CONTACT SUPPORT . Use ; as delimiter between multiple mails "/>
+</p>
+
+<p>
+<label for="ApiIntegrationSignatureKey">ApiIntegrationSignatureKey:</label>  
+<input type="text" id="ApiIntegrationSignatureKey" name="ApiIntegrationSignatureKey" value='{{GetSetting("POWRS.PaymentLink.ApiIntegrationSignatureKey","")}}' title="ApiIntegrationSignatureKey"/>
+</p>
+
+<p>
+<label for="PayspotAuthorizationResponseUrl">PayspotAuthorizationResponseUrl:</label>  
+<input type="text" id="PayspotAuthorizationResponseUrl" name="PayspotAuthorizationResponseUrl" value='{{GetSetting("POWRS.PaymentLink.PayspotAuthorizationResponseUrl","")}}' title="PayspotAuthorizationResponseUrl"/>
 </p>
 
 
