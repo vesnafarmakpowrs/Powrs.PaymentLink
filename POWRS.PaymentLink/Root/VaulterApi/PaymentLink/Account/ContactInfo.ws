@@ -1,5 +1,4 @@
-﻿Response.SetHeader("Access-Control-Allow-Origin","*");
-ValidatedUser:= Global.ValidateAgentApiToken(false, false);
+﻿ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
 if(ValidatedUser.role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin.ToString()) then 
 (
@@ -12,6 +11,10 @@ if(ValidatedUser.role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin.ToStri
     "Email": Required(Str(POrgEmailAddress)),
     "TermsAndConditions": Required(Str(POrgTermsAndConditions))
 }:=Posted) ??? BadRequest(Exception.Message);
+
+logObject := ValidatedUser.username;
+logEventID := "ContactInfo.ws";
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 ValidateUrl(url):= 
 (
@@ -63,70 +66,71 @@ errors:= Create(System.Collections.Generic.List, System.String);
 
 try
 (
-   if(POrgPhoneNumber not like "^[+]?[0-9]{6,15}$") then
-(
-	errors.Add("PhoneNumber");
-);
-   if(POrgWebAddress not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$" or ValidateUrl(POrgWebAddress) == false) then 
-(
-	errors.Add("WebAddress");
-);
-   if(POrgEmailAddress not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
-(
-	errors.Add("Email");
-);
+	if(POrgPhoneNumber not like "^[+]?[0-9]{6,15}$") then
+	(
+		errors.Add("PhoneNumber");
+	);
+	if(POrgWebAddress not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$" or ValidateUrl(POrgWebAddress) == false) then 
+	(
+		errors.Add("WebAddress");
+	);
+	if(POrgEmailAddress not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
+	(
+		errors.Add("Email");
+	);
 
-if(System.String.IsNullOrEmpty(POrgTermsAndConditions) or 
-    (!ValidateUrl(POrgTermsAndConditions) and !IsValidBase64(POrgTermsAndConditions))) then 
-(
-    errors.Add("TermsAndConditions");
-);
+	if(System.String.IsNullOrEmpty(POrgTermsAndConditions) or 
+	(!ValidateUrl(POrgTermsAndConditions) and !IsValidBase64(POrgTermsAndConditions))) then 
+	(
+		errors.Add("TermsAndConditions");
+	);
 
-if(errors.Count > 0) then 
-(
-    BadRequest(errors);
-);
+	if(errors.Count > 0) then 
+	(
+		BadRequest(errors);
+	);
 
-if(ValidatedUser.orgName == "")then
-(
-    BadRequest("You need to apply for legal id first");
-);
+	if(ValidatedUser.orgName == "")then
+	(
+		BadRequest("You need to apply for legal id first");
+	);
 
-organizationInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = ValidatedUser.orgName;
+	organizationInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = ValidatedUser.orgName;
 
-if(organizationInfo != null) then 
-(
-    organizationInfo.WebAddress:= POrgWebAddress;
-    organizationInfo.Email:= POrgEmailAddress;
-    organizationInfo.PhoneNumber:= POrgPhoneNumber;
-    organizationInfo.TermsAndConditions:= POrgTermsAndConditions;
+	if(organizationInfo != null) then 
+	(
+		organizationInfo.WebAddress:= POrgWebAddress;
+		organizationInfo.Email:= POrgEmailAddress;
+		organizationInfo.PhoneNumber:= POrgPhoneNumber;
+		organizationInfo.TermsAndConditions:= POrgTermsAndConditions;
 
-    Waher.Persistence.Database.Update(organizationInfo);
-)
-else
-(
-    info:= Create(POWRS.PaymentLink.Models.OrganizationContactInformation);
-    info.OrganizationName:= ValidatedUser.orgName;
-    info.WebAddress:= POrgWebAddress;
-    info.Email:= POrgEmailAddress;
-    info.PhoneNumber:= POrgPhoneNumber;
-    info.TermsAndConditions:= POrgTermsAndConditions;
-    
-    Waher.Persistence.Database.Insert(info);
-);
- {
- }
+		Waher.Persistence.Database.Update(organizationInfo);
+	)
+	else
+	(
+		info:= Create(POWRS.PaymentLink.Models.OrganizationContactInformation);
+		info.OrganizationName:= ValidatedUser.orgName;
+		info.WebAddress:= POrgWebAddress;
+		info.Email:= POrgEmailAddress;
+		info.PhoneNumber:= POrgPhoneNumber;
+		info.TermsAndConditions:= POrgTermsAndConditions;
+
+		Waher.Persistence.Database.Insert(info);
+	);
+
+	{
+	}
 )
 catch
 (
-    Log.Error(Exception, "", "ContactInfo", "", null);
+	Log.Error("Unable to save contact info: " + Exception.Message, logObject, logActor, logEventID, null);
 
     if(errors.Count > 0) then 
     (
-          BadRequest(errors);
+        BadRequest(errors);
     )
     else 
     (
-          BadRequest(Exception.Message);
+        BadRequest(Exception.Message);
     );
 );
