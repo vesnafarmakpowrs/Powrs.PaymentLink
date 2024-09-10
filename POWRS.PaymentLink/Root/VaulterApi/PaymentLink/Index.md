@@ -263,6 +263,8 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
+    "buyerAddress": Required(Str(PBuyerAddress)) ,
+    "buyerCity": Optional(Str(PBuyerCity)) ,
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber),
     "callbackUrl":Optional(String(PCallbackUrl)),
@@ -285,6 +287,8 @@ Description of properties:
 | `buyerLastName`   | Buyer Last name. |
 | `buyerEmail`      | Buyer email. |
 | `buyerPhoneNumber`| Buyer phone number to send notification. |
+| `buyerAddress`    | Buyer billing address. |
+| `buyerCity`       | Buyer Billing city. |
 | `buyerCountryCode`| Buyer country code. |
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
 | `webPageUrl` | Web page of selling item|

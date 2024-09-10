@@ -14,6 +14,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber)),
     "buyerAddress": Required(Str(PBuyerAddress)) ,
+    "buyerCity": Optional(Str(PBuyerCity)) ,
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "callbackUrl":Optional(String(PCallBackUrl)),
     "webPageUrl":Optional(String(PWebPageUrl))
@@ -67,6 +68,14 @@ if(PBuyerPhoneNumber != null and PBuyerPhoneNumber not like "^[+]?[0-9]{6,15}$")
 if(PBuyerAddress not like "^[\\p{L}\\p{N}\\s,./#-]{3,100}$") then 
 (
     Error("buyerAddress not valid: " + PBuyerAddress);
+);
+if( exists(PBuyerCity) &&  (PBuyerCity not like "^[A-Za-z]{0,50}$")) then 
+(
+    Error("buyerCity not valid: " + PBuyerAddress);
+)
+else
+(
+  PBuyerCity := "";
 );
 if(PBuyerCountryCode not like "[A-Z]{2}") then 
 (
@@ -153,7 +162,8 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
         "CallBackUrl" : CallBackUrl,
         "WebPageUrl" : WebPageUrl,
         "SupportedPaymentMethods": "",
-        "BuyerAddress": PBuyerAddress
+        "BuyerAddress": PBuyerAddress,
+        "BuyerCity" : PBuyerCity
     });
 
 Nonce := Base64Encode(RandomBytes(32));
