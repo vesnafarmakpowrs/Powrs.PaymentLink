@@ -69,14 +69,14 @@ if(PBuyerAddress not like "^[\\p{L}\\p{N}\\s,./#-]{3,100}$") then
 (
     Error("buyerAddress not valid: " + PBuyerAddress);
 );
-if( exists(PBuyerCity) &&  (PBuyerCity not like "^[A-Za-z]{0,50}$")) then 
+ 
+if (!exists(PBuyerCity)) then PBuyerCity := "";
+
+if (PBuyerCity not like "^[A-Za-z]{0,50}$") then 
 (
-    Error("buyerCity not valid: " + PBuyerAddress);
-)
-else
-(
-  PBuyerCity := "";
+    Error("buyerCity not valid: " + PBuyerCity);
 );
+
 if(PBuyerCountryCode not like "[A-Z]{2}") then 
 (
     Error("BuyerCountry not valid: " + PBuyerCountryCode);
