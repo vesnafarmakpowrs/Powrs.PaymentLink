@@ -142,16 +142,27 @@ try
 		MailBody := Create(System.Text.StringBuilder);
 		MailBody.Append("Hello,");
 		MailBody.Append("<br />");
-		MailBody.Append("<br />New account created for PLG SRB. User name: <strong>" + PUserName + " </strong>.");
+		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>.");
 		MailBody.Append("<br />");
 		MailBody.Append("<br /><i>Best regards</i>");
 		MailBody.Append("<br /><i>Vaulter</i>");
+		
+		MailBody := MailBody.Replace("{{userName}}", PUserName);
+		
+		if(PNewSubUser)then
+		(
+			MailBody := MailBody.Replace("{{accountType}}", "sub account");
+		)
+		else
+		(
+			MailBody := MailBody.Replace("{{accountType}}", "account");
+		);
 		
 		ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
 		Config := ConfigClass.Instance;
 		mailRecipients := GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","");
 		
-		POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailRecipients, "Powrs Vaulter Create Acc", MailBody, null, null);
+		POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailRecipients, "Powrs Vaulter Create Acc", Str(MailBody), "", "");
 					
 		destroy(MailBody);
 	)
