@@ -287,7 +287,11 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{OffShoreFoundationInOwnerStructure}}", companyStructure.OffShoreFoundationInOwnerStructure ? "Da" : "Ne");
 		htmlContent := htmlContent.Replace("{{NameOfTheForeignExchangeAndIDNumber}}", companyStructure.NameOfTheForeignExchangeAndIDNumber);
 		
-		if(companyStructure.Owners != null and companyStructure.Owners.Length > 0) then 
+		if((companyStructure.OwnerStructure == POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.Company
+				or companyStructure.OwnerStructure == POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.PersonAndCompany
+			)
+			and companyStructure.Owners != null and companyStructure.Owners.Length > 0
+		) then 
 		(
 			htmlContent := htmlContent.Replace("{{ShowOwners}}", "showDiv");
 			ownerStructureTable := Create(System.Text.StringBuilder);
