@@ -1,3 +1,4 @@
+Response.SetHeader("Access-Control-Allow-Origin","*");
 ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
 logObject := SessionUser.username;
