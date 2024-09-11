@@ -173,7 +173,7 @@ SendEmailToUser():= (
 	MailBody.Append("<br />Sledeći koraci su:");
 	MailBody.Append("<br />");
 	MailBody.Append("<ul>");
-	MailBody.Append("<li>Mi proverimo tvoju prijav. Ukoliko bude potrebe obaveštavamo te šta je potrebno izmeniti, ukoliko je sve u redu obaveštavamo te da nam fizički pošalješ dokuentaciju.</li>");
+	MailBody.Append("<li>Mi proverimo tvoju prijavu. Ukoliko bude potrebe obaveštavamo te šta je potrebno izmeniti, ukoliko je sve u redu obaveštavamo te da nam fizički pošalješ dokumentaciju.</li>");
 	MailBody.Append("<li>Nakon potvrde dokumentacije obaveštavamo te da je sve u redu i odobravamo ti nalog za pristup portalu i kreiranje linkova.</li>");
 	MailBody.Append("<li>Prilikom prvog pristupa portalu potrebno je da uneseš osnovne kontakt informacije kompanije i period isplate</li>");
 	MailBody.Append("</ul>");
