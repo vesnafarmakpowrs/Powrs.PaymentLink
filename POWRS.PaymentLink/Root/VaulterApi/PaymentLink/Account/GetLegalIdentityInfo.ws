@@ -1,9 +1,12 @@
 Response.SetHeader("Access-Control-Allow-Origin","*");
+ValidatedUser:= Global.ValidateAgentApiToken(false, false);
+
+logObject := SessionUser.username;
+logEventID := "GetLegalIdentityInfo.ws";
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
-	ValidatedUser:= Global.ValidateAgentApiToken(false, false);
-	
 	if(System.String.IsNullOrEmpty(ValidatedUser.legalId)) then 
 	(
 		Identity := select top 1 Properties from LegalIdentities where Account = ValidatedUser.username and State = "Created" order by Created desc;
@@ -63,6 +66,6 @@ try
 )
 catch
 (
-    Log.Error(Exception, null);
+	Log.Error("Unable retrive legal id info: " + Exception.Message, logObject, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );

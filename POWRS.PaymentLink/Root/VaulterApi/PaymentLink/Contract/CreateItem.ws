@@ -14,10 +14,10 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerEmail":Required(String(PBuyerEmail)),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber)),
     "buyerAddress": Required(Str(PBuyerAddress)) ,
+    "buyerCity": Optional(Str(PBuyerCity)) ,
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "callbackUrl":Optional(String(PCallBackUrl)),
-    "webPageUrl":Optional(String(PWebPageUrl)),
-    "supportedPaymentMethods": Optional(String(PSupportedPaymentMethods))
+    "webPageUrl":Optional(String(PWebPageUrl))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 SessionUser:= Global.ValidateAgentApiToken(true, true);
@@ -69,6 +69,14 @@ if(PBuyerAddress not like "^[\\p{L}\\p{N}\\s,./#-]{3,100}$") then
 (
     Error("buyerAddress not valid: " + PBuyerAddress);
 );
+ 
+if (!exists(PBuyerCity)) then PBuyerCity := "";
+
+if (PBuyerCity not like "^[A-Za-z]{0,50}$") then 
+(
+    Error("buyerCity not valid: " + PBuyerCity);
+);
+
 if(PBuyerCountryCode not like "[A-Z]{2}") then 
 (
     Error("BuyerCountry not valid: " + PBuyerCountryCode);
@@ -154,7 +162,8 @@ Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
         "CallBackUrl" : CallBackUrl,
         "WebPageUrl" : WebPageUrl,
         "SupportedPaymentMethods": "",
-        "BuyerAddress": PBuyerAddress
+        "BuyerAddress": PBuyerAddress,
+        "BuyerCity" : PBuyerCity
     });
 
 Nonce := Base64Encode(RandomBytes(32));

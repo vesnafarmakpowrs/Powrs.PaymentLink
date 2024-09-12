@@ -68,6 +68,9 @@
 				<Variable id="BuyerAddress">
 					<TagReference tag="BuyerAddress" />
 				</Variable>
+				<Variable id="BuyerCity">
+					<TagReference tag="BuyerCity" />
+				</Variable>
 				<Variable id="CallBackUrl">
 					<TagReference tag="CallBackUrl" />
 				</Variable>
@@ -486,6 +489,9 @@
 		<Tag name="BuyerAddress">
 			<ParameterReference parameter="BuyerAddress" />
 		</Tag>
+		<Tag name="BuyerCity">
+			<ParameterReference parameter="BuyerCity" />
+		</Tag>		
 		<Tag name="CallBackUrl">
 			<ParameterReference parameter="CallBackUrl" />
 		</Tag>
@@ -739,7 +745,14 @@
 		<stringParameter name="BuyerAddress">
 			<description xml:lang="en">
 				<paragraph>
-					<text>Address of the buyer to be presented on the paylink and confirmation screen.</text>
+					<text>Billing Address of the buyer to be presented on the paylink and confirmation screen.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerCity" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>City of billing Address of the buyer to be presented on the paylink and confirmation screen.</text>
 				</paragraph>
 			</description>
 		</stringParameter>

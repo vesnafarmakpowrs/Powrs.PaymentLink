@@ -7,7 +7,7 @@
 
 SessionUser:= Global.ValidateAgentApiToken(false, false);
 
-logObjectID := SessionUser.username;
+logObject := SessionUser.username;
 logEventID := "ApplyForSubLegalId.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
@@ -111,7 +111,7 @@ try
 
 	PropertiesVector := [FOREACH prop IN dictionary: {name: prop.Key, value: prop.Value}];
 	Global.ApplyForAgentLegalId(SessionUser, Password, PropertiesVector);
-	Log.Informational("Succeffully apply for sub legal id.", logObjectID, logActor, logEventID, null);
+	Log.Informational("Succeffully apply for sub legal id.", logObject, logActor, logEventID, null);
 	
 	try (
 		MailBody := Create(System.Text.StringBuilder);
@@ -132,12 +132,12 @@ try
 		POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, aMLMailRecipients, "Vaulter", MailBody, null, null);
 	)
 	catch(
-		Log.Error("Error while sending email: " + Exception.Message, logObjectID, logActor, logEventID, null);
+		Log.Error("Error while sending email: " + Exception.Message, logObject, logActor, logEventID, null);
 	);
 )
 catch
 (
-	Log.Error(Exception.Message, logObjectID, logActor, logEventID, null);
+	Log.Error(Exception.Message, logObject, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );
 

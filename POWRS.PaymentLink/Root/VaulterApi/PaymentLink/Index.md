@@ -263,6 +263,8 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
     "buyerEmail":Required(String(PBuyerEmail)),
+    "buyerAddress": Required(Str(PBuyerAddress)) ,
+    "buyerCity": Optional(Str(PBuyerCity)) ,
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber),
     "callbackUrl":Optional(String(PCallbackUrl)),
@@ -285,6 +287,8 @@ Description of properties:
 | `buyerLastName`   | Buyer Last name. |
 | `buyerEmail`      | Buyer email. |
 | `buyerPhoneNumber`| Buyer phone number to send notification. |
+| `buyerAddress`    | Buyer billing address. |
+| `buyerCity`       | Buyer Billing city. |
 | `buyerCountryCode`| Buyer country code. |
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
 | `webPageUrl` | Web page of selling item|
@@ -1008,7 +1012,7 @@ Retrieves Successful Transactions information.
 ````
     "from":Required(String(PDateFrom) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
     "to":Required(String(PDateTo) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
-    "ips": Required(Bool(PIncludeIps)),
+    "ips": Optional(Bool(PIncludeIps)),
     "cardBrands":Optional(String(PCardBrands)), 
     "filterType": Optional(String(PFitlerType))  ->  Report|Payout.  Report: Filter over DateCompleted. Payout: Filter over PayoutDate
 ````
@@ -1020,9 +1024,9 @@ Retrieves Successful Transactions information.
 | `TokenId `        | Token Id . |
 | `RemoteId`        | Remote Id|
 | `Amount`          | Amount |
-| `Currency`        | Card brand |
+| `Currency`        | Currency brand |
 | `PaymentType`     | Payment Type (Card or IPS) |
-| `CardBrand`       | Card brand |
+| `CardBrand`       | Brand of card ( VISA,MASTERCARD,DINA, MAESTRO) |
 
 
 OnBoarding

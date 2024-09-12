@@ -9,7 +9,7 @@
     "role": Optional(Int(PUserRole))
 }:=Posted) ??? BadRequest(Exception.Message);
 
-logObject := SessionUser.username;
+logObject := "";
 logEventID := "CreateAccount.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
@@ -52,6 +52,8 @@ try
 	if(PUserRole >= 0 && !POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PUserRole)) then (
         Error("Role doesn't exists.");
 	);
+
+	logObject := PUserName;
 
     apiKey:= GetSetting("POWRS.PaymentLink.ApiKey", "");
     apiKeySecret:= GetSetting("POWRS.PaymentLink.ApiKeySecret", "");
@@ -133,6 +135,40 @@ try
 		Destroy(RequestSignature);
 		Destroy(PKeyId);
 		Destroy(KeySignature);
+	);
+	
+	try
+	(
+		MailBody := Create(System.Text.StringBuilder);
+		MailBody.Append("Hello,");
+		MailBody.Append("<br />");
+		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>.");
+		MailBody.Append("<br />");
+		MailBody.Append("<br /><i>Best regards</i>");
+		MailBody.Append("<br /><i>Vaulter</i>");
+		
+		MailBody := MailBody.Replace("{{userName}}", PUserName);
+		
+		if(PNewSubUser)then
+		(
+			MailBody := MailBody.Replace("{{accountType}}", "sub account");
+		)
+		else
+		(
+			MailBody := MailBody.Replace("{{accountType}}", "account");
+		);
+		
+		ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
+		Config := ConfigClass.Instance;
+		mailRecipients := GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","");
+		
+		POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailRecipients, "Powrs Vaulter Create Acc", Str(MailBody), "", "");
+					
+		destroy(MailBody);
+	)
+	catch
+	(
+		Log.Error("Unable to send email notification to Powrs support team" + Exception.Message, logObject, logActor, logEventID, null);
 	);
 	
 	try

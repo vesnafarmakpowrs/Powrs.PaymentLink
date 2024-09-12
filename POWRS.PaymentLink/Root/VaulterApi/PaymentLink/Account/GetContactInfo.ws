@@ -1,6 +1,8 @@
-﻿Response.SetHeader("Access-Control-Allow-Origin","*");
+﻿ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
-ValidatedUser:= Global.ValidateAgentApiToken(false, false);
+logObject := ValidatedUser.username;
+logEventID := "GetContactInfo.ws";
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
@@ -22,6 +24,6 @@ try
 )	
 catch
 (
-    Log.Error(Exception, "", "GetContactInfo", "", null);
+	Log.Error("Unable to get contact info: " + Exception.Message, logObject, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );
