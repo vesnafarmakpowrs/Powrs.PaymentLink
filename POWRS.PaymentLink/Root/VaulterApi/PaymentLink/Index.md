@@ -1012,8 +1012,8 @@ Retrieves Successful Transactions information.
 ````
     "from":Required(String(PDateFrom) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
     "to":Required(String(PDateTo) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
-    "ips": Optional(Bool(PIncludeIps)),
-    "cardBrands":Optional(String(PCardBrands)), 
+    "paymentType": Optional(String(PPaymentType)),  -> IPS|CARDS
+    "cardBrands":Optional(String(PCardBrands)),     -> VISA|
     "filterType": Optional(String(PFitlerType))  ->  Report|Payout.  Report: Filter over DateCompleted. Payout: Filter over PayoutDate
 ````
 
