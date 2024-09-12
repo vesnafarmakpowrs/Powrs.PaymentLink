@@ -1012,7 +1012,7 @@ Retrieves Successful Transactions information.
 ````
     "from":Required(String(PDateFrom) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
     "to":Required(String(PDateTo) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
-    "ips": Required(Bool(PIncludeIps)),
+    "ips": Optional(Bool(PIncludeIps)),
     "cardBrands":Optional(String(PCardBrands)), 
     "filterType": Optional(String(PFitlerType))  ->  Report|Payout.  Report: Filter over DateCompleted. Payout: Filter over PayoutDate
 ````
@@ -1024,9 +1024,9 @@ Retrieves Successful Transactions information.
 | `TokenId `        | Token Id . |
 | `RemoteId`        | Remote Id|
 | `Amount`          | Amount |
-| `Currency`        | Card brand |
+| `Currency`        | Currency brand |
 | `PaymentType`     | Payment Type (Card or IPS) |
-| `CardBrand`       | Card brand |
+| `CardBrand`       | Brand of card ( VISA,MASTERCARD,DINA, MAESTRO) |
 
 
 OnBoarding
