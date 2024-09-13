@@ -160,6 +160,20 @@
 					<Content fileName="RTDromo-Medium.woff"/>
 				</Folder>
 			</Folder>
+			<Folder name="EC">
+				<Folder name="js">
+					<Content fileName="BankList.js" />
+					<Content fileName="IPS.js" />
+					<Content fileName="IPSType.js" />
+					<Content fileName="PayForm.js"/>
+					<Content fileName="QRIPS.js"/>
+				</Folder>
+				<Content fileName="favicon.ico" />
+				<Content fileName="IPSBank.md"/>
+				<Content fileName="IPSQR.md" />
+				<Content fileName="IPSType.md"/>
+				<Content fileName="Payout.md" />
+			</Folder>
 			<Folder name="js">
 				<Content fileName="Events.js"/>
 				<Content fileName="PaymentLink.js"/>
