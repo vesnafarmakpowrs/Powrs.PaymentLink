@@ -89,7 +89,12 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		Error("GeneralCompanyInformation must be populated");
 	);
 	companyStructure:= select top 1 * from POWRS.PaymentLink.Onboarding.CompanyStructure where UserName = SessionUser.username;
-	if(companyStructure == null or companyStructure.Owners == null or companyStructure.Owners.Length == 0)then
+	if(companyStructure == null or 
+		(companyStructure.OwnerStructure != POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.Person 
+			and 
+			(companyStructure.Owners == null or companyStructure.Owners.Length == 0)
+		)
+	)then
 	(
 		Error("CompanyStructure and owners must be populated");
 	);
