@@ -4,8 +4,8 @@ SessionToken:=  Global.ValidatePayoutJWT();
     "isFromMobile":Required(Bool(PIsFromMobile)),
 	"tabId": Required(Str(PTabId)),
 	"ipsOnly": Required(Bool(PIpsOnly)),
-	"bankId": Required(PBankId),
-    "isCompany" : Required(PIsCompany)
+	"bankId": Required(Int(PBankId)),
+        "isCompany" : Required(Bool(PIsCompany))
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
