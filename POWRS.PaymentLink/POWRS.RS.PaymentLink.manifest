@@ -71,6 +71,7 @@
 					<Content fileName="InitiateRefund.ws"/>
 					<Content fileName="GetContracts.ws"/>
 					<Content fileName="CreateItem.ws"/>
+					<Content fileName="CreateItemIPS.ws"/>
 					<Content fileName="InvalidateContract.ws"/>
 				</Folder>
 				<Folder name="Mail">
