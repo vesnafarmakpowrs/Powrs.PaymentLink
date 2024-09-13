@@ -983,11 +983,20 @@ Call this resource to retrieve update payout scheduler informations.
 
 
 ### Generate Transactions Report
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Reports/GenerateTransactionsReport.ws")}}`
+Method: `POST`
+
+Retrieves base64string of PDF file with successful transactions information.
+
+**Request**
+
 ````
-    "from":Required(String(PDateFrom)),
-	"to":Required(String(PDateTo)),
-	"ips":Required(String(PPaymentType)),
-	"cardBrands":Optional(String(PCardBrand))
+    "from":Required(String(PDateFrom) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
+    "to":Required(String(PDateTo) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
+    "paymentType": Optional(String(PPaymentType)),  -> IPS|CARDS
+    "cardBrands":Optional(String(PCardBrands)),     -> VISA|DINA|MASTERCARD|MAESTRO
+    "filterType": Optional(String(PFitlerType))  ->  Report|Payout.  Report: Filter over DateCompleted. Payout: Filter over PayoutDate
 ````
 
 Creates pdf report for successful transaction for given criteria.
@@ -1012,8 +1021,8 @@ Retrieves Successful Transactions information.
 ````
     "from":Required(String(PDateFrom) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
     "to":Required(String(PDateTo) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
-    "ips": Optional(Bool(PIncludeIps)),
-    "cardBrands":Optional(String(PCardBrands)), 
+    "paymentType": Optional(String(PPaymentType)),  -> IPS|CARDS
+    "cardBrands":Optional(String(PCardBrands)),     -> VISA|DINA|MASTERCARD|MAESTRO
     "filterType": Optional(String(PFitlerType))  ->  Report|Payout.  Report: Filter over DateCompleted. Payout: Filter over PayoutDate
 ````
 

@@ -4,8 +4,8 @@ SessionUser:= Global.ValidateAgentApiToken(true, true);
 ({
     "from":Required(String(PDateFrom) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
     "to":Required(String(PDateTo) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
-    "ips": Required(Bool(PIncludeIps)),
-    "cardBrands":Optional(String(PCardBrands)),
+    "paymentType": Optional(String(PPaymentType)),
+    "cardBrands":Optional(String(PCardBrands)), 
     "filterType": Optional(String(PFitlerType))
 }:=Posted) ??? BadRequest(Exception.Message);
 
@@ -57,9 +57,12 @@ try
     paymentTypesDict[POWRS.Networking.PaySpot.Consants.PaymentType.IPSPayment.ToString()]:= "IPS";
     paymentTypesDict[POWRS.Networking.PaySpot.Consants.PaymentType.PaymentCard.ToString()]:= "Kartica";
 
+    PPaymentType := PPaymentType ?? "";
+	PCardBrands := PCardBrands ?? "";
     PFitlerType := PFitlerType ?? "Report";
-    payments:= GetAgentSuccessfullTransactions(SessionUser.username, PDateFrom, PDateTo, PIncludeIps, PCardBrands, PFitlerType);
-    foreach payment in payments do
+    payments:= GetAgentSuccessfullTransactions(SessionUser.username, PDateFrom, PDateTo, PPaymentType, PCardBrands, PFitlerType);
+    
+	foreach payment in payments do
     (
 		stringBuilder.Append("<tr>");
 
