@@ -204,7 +204,6 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{ActivityNumber}}", generalInfo.ActivityNumber);
 		htmlContent := htmlContent.Replace("{{OtherCompanyActivitiesYesNo}}", generalInfo.OtherCompanyActivities != "" ? "DA" : "NE");
 		
-		
 		if(generalInfo.LegalRepresentatives != null and generalInfo.LegalRepresentatives.Length > 0) then
 		(
 			htmlContent := htmlContent.Replace("{{LegalRepresentativeFullName}}", generalInfo.LegalRepresentatives[0].FullName);
@@ -242,7 +241,7 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		);
 		htmlContent := htmlContent.Replace("{{CountriesOfBusiness}}", countriesOfBusiness);
 		if(businessData != null and businessData.ExpectedMonthlyTurnover > 0)then(
-			htmlContent := htmlContent.Replace("{{ExpectedMonthlyTurnover}}", Str(businessData.ExpectedMonthlyTurnover));
+			htmlContent := htmlContent.Replace("{{ExpectedMonthlyTurnover}}", Str(businessData.ExpectedMonthlyTurnover) + " RSD");
 		)
 		else(
 			htmlContent := htmlContent.Replace("{{ExpectedMonthlyTurnover}}", "");
@@ -287,7 +286,10 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{OffShoreFoundationInOwnerStructure}}", companyStructure.OffShoreFoundationInOwnerStructure ? "Da" : "Ne");
 		htmlContent := htmlContent.Replace("{{NameOfTheForeignExchangeAndIDNumber}}", companyStructure.NameOfTheForeignExchangeAndIDNumber);
 		
-		if(companyStructure.Owners != null and companyStructure.Owners.Length > 0) then 
+		if(companyStructure.OwnerStructure != POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.Person and 
+			companyStructure.Owners != null and 
+			companyStructure.Owners.Length > 0
+		) then 
 		(
 			htmlContent := htmlContent.Replace("{{ShowOwners}}", "showDiv");
 			ownerStructureTable := Create(System.Text.StringBuilder);
@@ -347,16 +349,16 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		htmlContent := htmlContent.Replace("{{EComerceContactEmail}}", businessData.EComerceContactEmail);
 		htmlContent := htmlContent.Replace("{{CompanyWebshop}}", generalInfo.CompanyWebshop);
 		htmlContent := htmlContent.Replace("{{RetailersNumber}}", Str(businessData.RetailersNumber));
-		htmlContent := htmlContent.Replace("{{PercentageOfForeignUsers}}", Str(companyStructure.PercentageOfForeignUsers));
-		htmlContent := htmlContent.Replace("{{AverageTransactionAmount}}", Str(businessData.AverageTransactionAmount));
-		htmlContent := htmlContent.Replace("{{AverageDailyTurnover}}", Str(businessData.AverageDailyTurnover));
-		htmlContent := htmlContent.Replace("{{ThreeMonthAccountTurnover}}", Str(businessData.ThreeMonthAccountTurnover));
-		htmlContent := htmlContent.Replace("{{CardPaymentPercentage}}", Str(businessData.CardPaymentPercentage));
+		htmlContent := htmlContent.Replace("{{PercentageOfForeignUsers}}", Str(companyStructure.PercentageOfForeignUsers) + " %");
+		htmlContent := htmlContent.Replace("{{AverageTransactionAmount}}", Str(businessData.AverageTransactionAmount) + " RSD");
+		htmlContent := htmlContent.Replace("{{AverageDailyTurnover}}", Str(businessData.AverageDailyTurnover) + " RSD");
+		htmlContent := htmlContent.Replace("{{ThreeMonthAccountTurnover}}", Str(businessData.ThreeMonthAccountTurnover) + " RSD");
+		htmlContent := htmlContent.Replace("{{CardPaymentPercentage}}", Str(businessData.CardPaymentPercentage) + " %");
 		htmlContent := htmlContent.Replace("{{DescriptionOfTheGoodsToBeSoldOnline}}", businessData.DescriptionOfTheGoodsToBeSoldOnline);
 		htmlContent := htmlContent.Replace("{{MethodOfDeliveringGoodsToCustomers}}", businessData.MethodOfDeliveringGoodsToCustomers);
-		htmlContent := htmlContent.Replace("{{ExpectedYearlyTurnover}}", Str(businessData.ExpectedYearlyTurnover));
-		htmlContent := htmlContent.Replace("{{CheapestProductAmount}}", Str(businessData.CheapestProductAmount));
-		htmlContent := htmlContent.Replace("{{MostExpensiveProductAmount}}", Str(businessData.MostExpensiveProductAmount));
+		htmlContent := htmlContent.Replace("{{ExpectedYearlyTurnover}}", Str(businessData.ExpectedYearlyTurnover) + " RSD");
+		htmlContent := htmlContent.Replace("{{CheapestProductAmount}}", Str(businessData.CheapestProductAmount) + " RSD");
+		htmlContent := htmlContent.Replace("{{MostExpensiveProductAmount}}", Str(businessData.MostExpensiveProductAmount) + " RSD");
 		htmlContent := htmlContent.Replace("{{SellingGoodsWithDelayedDelivery}}", (businessData.SellingGoodsWithDelayedDelivery ? "Da" : "Ne"));
 		htmlContent := htmlContent.Replace("{{PeriodFromPaymentToDeliveryInDays}}", Str(businessData.PeriodFromPaymentToDeliveryInDays));
 		htmlContent := htmlContent.Replace("{{DoYouHaveCustomerComplaints}}", (businessData.ComplaintsPerMonth > 0 ? "Da" : "Ne"));
