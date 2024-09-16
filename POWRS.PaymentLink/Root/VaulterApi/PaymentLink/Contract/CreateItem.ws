@@ -72,7 +72,7 @@ if(PBuyerAddress not like "^[\\p{L}\\p{N}\\s,./#-]{3,100}$") then
  
 if (!exists(PBuyerCity)) then PBuyerCity := "";
 
-if (PBuyerCity not like "^[A-Za-z]{0,50}$") then 
+if (PBuyerCity not like "^[\\p{L}\\s\/,.&_-]{0,50}$") then 
 (
     Error("buyerCity not valid: " + PBuyerCity);
 );
