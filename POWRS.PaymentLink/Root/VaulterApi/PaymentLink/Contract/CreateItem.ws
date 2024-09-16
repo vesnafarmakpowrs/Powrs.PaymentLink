@@ -30,62 +30,76 @@ try
 (
 if(PRemoteId not like "^[\\p{L}\\s0-9-\/#-._]{1,50}$") then 
 (
-    Error("RemoteId not valid: " + PRemoteId);
+    Log.Debug("RemoteId not valid: " + PRemoteId, logObject, logActor, logEventID, null);
+    Error("RemoteId");
 );
 if(PTitle not like "[\\p{L}\\s0-9.,;:!?()'\"\\/#_~+*@$%^& -]{2,30}") then
 (
-    Error("Title not valid: " + PTitle);
+    Log.Debug("Title not valid: " + PTitle, logObject, logActor, logEventID, null);
+    Error("Title");
 );
 if(PCurrency not like "[A-Z]{3}") then 
 (
-    Error("Currency not valid: " + PCurrency);
+    Log.Debug("Currency not valid: " + PCurrency, logObject, logActor, logEventID, null);
+    Error("Currency");
 );
 if(PDescription not like "[\\p{L}\\s0-9.,;:!?()'\"\\/#_~+*@$%^& -]{5,100}") then
 (
-    Error("Description not valid: " + PDescription);
+    Log.Debug("Description not valid: " + PDescription, logObject, logActor, logEventID, null);
+    Error("Description");
 );
 if(PPaymentDeadline not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
 (
-    Error("PaymentDeadline date format not valid: " + PPaymentDeadline);
+    Log.Debug("PaymentDeadline not valid: " + PPaymentDeadline, logObject, logActor, logEventID, null);
+    Error("PaymentDeadline");
 );
 if(PBuyerFirstName not like "[\\p{L}\\s\/,.&_-]{2,35}") then 
 (
-    Error("buyerFirstName not valid: " + PBuyerFirstName);
+    Log.Debug("buyerFirstName not valid: " + PBuyerFirstName, logObject, logActor, logEventID, null);
+    Error("buyerFirstName");
 );
 
 if(PBuyerLastName not like "[\\p{L}\\s\/,.&_-]{2,35}") then
 (
-    Error("buyerLastName not valid: " + PBuyerLastName);
+    Log.Debug("buyerLastName not valid: " + PBuyerLastName, logObject, logActor, logEventID, null);
+    Error("buyerLastName");
 );
 if(PBuyerEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,50}") then 
 (
-    Error("BuyerEmail not valid: " + PBuyerEmail);
+    Log.Debug("BuyerEmail not valid: " + PBuyerEmail, logObject, logActor, logEventID, null);
+    Error("BuyerEmail");
 );
 if(PBuyerPhoneNumber != null and PBuyerPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
 (
-    Error("buyerPhoneNumber not valid: " + PBuyerPhoneNumber);
+    Log.Debug("buyerPhoneNumber not valid: " + PBuyerPhoneNumber, logObject, logActor, logEventID, null);
+    Error("buyerPhoneNumber");
 );
 if(PBuyerAddress not like "^[\\p{L}\\p{N}\\s,./#-]{3,100}$") then 
-(
-    Error("buyerAddress not valid: " + PBuyerAddress);
+( 
+    Log.Debug("buyerAddress not valid: " + PBuyerAddress, logObject, logActor, logEventID, null);
+    Error("buyerAddress");
 );
  
 if (!exists(PBuyerCity)) then PBuyerCity := "";
 
 if (PBuyerCity not like "^[\\p{L}\\s\/,.&_-]{0,50}$") then 
 (
-    Error("buyerCity not valid: " + PBuyerCity);
+    Log.Debug("buyerCity not valid: " + PBuyerCity, logObject, logActor, logEventID, null);
+    Error("buyerCity");
 );
 
 if(PBuyerCountryCode not like "[A-Z]{2}") then 
 (
-    Error("BuyerCountry not valid: " + PBuyerCountryCode);
+    Log.Debug("BuyerCountry not valid: " + PBuyerCountryCode, logObject, logActor, logEventID, null);
+    Error("BuyerCountry");
 );
 
 PPassword:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
+
 if(System.String.IsNullOrWhiteSpace(PPassword)) then 
 (
-    Error("No user with given username");
+     Log.Debug("PPassword is not valid: " + PPassword, logObject, logActor, logEventID, null);
+     Error("PPassword");
 );
 
 dateTemplate:= "dd/MM/yyyy HH:mm:ss";
@@ -227,5 +241,5 @@ Log.Informational("Succeffully cerated item.", logObject, logActor, logEventID, 
 catch
 (
 	Log.Error(Exception, logObject, logActor, logEventID, null);
-    BadRequest(Exception.Message);
+        BadRequest(Exception.Message);
 );
