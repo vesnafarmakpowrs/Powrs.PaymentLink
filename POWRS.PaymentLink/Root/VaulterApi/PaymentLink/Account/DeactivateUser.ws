@@ -71,7 +71,7 @@ try(
 	MailBody := Create(System.Text.StringBuilder);
 	MailBody.Append("Hello,");
 	MailBody.Append("<br />");
-	MailBody.Append("<br />Request to deactivate Legal identity:");
+	MailBody.Append("<br />Request to deactivate Legal identity on domen: {{domen}} :");
 	MailBody.Append("<br />");
 	MailBody.Append("<br /><strong>User to be deactivated:</strong>");
 	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Username:</strong> {{subUserName}}");
@@ -121,6 +121,7 @@ try(
 	MailBody := Replace(MailBody, "{{subUserName}}", subUserName);
 	MailBody := Replace(MailBody, "{{subFirstLast}}", subFirstLast);
 	MailBody := Replace(MailBody, "{{subUserEmail}}", subUserEmail);
+	MailBody := Replace(MailBody, "{{domen}}", Gateway.Domain);
 	
 	mailReceivers := GetSetting("POWRS.PaymentLink.LIStatusContactEmail","");
 	if(System.String.IsNullOrWhiteSpace(mailReceivers)) then 
