@@ -71,14 +71,14 @@ try(
 	MailBody := Create(System.Text.StringBuilder);
 	MailBody.Append("Hello,");
 	MailBody.Append("<br />");
-	MailBody.Append("<br />Request to deactivate Legal identity on domen: {{domen}} :");
+	MailBody.Append("<br />Request to deactivate Legal identity on domen <i>{{domen}}</i> :");
 	MailBody.Append("<br />");
 	MailBody.Append("<br /><strong>User to be deactivated:</strong>");
 	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Username:</strong> {{subUserName}}");
 	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Name:</strong> {{subFirstLast}}");
 	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Email:</strong> {{subUserEmail}}");
 	MailBody.Append("<br />");
-	MailBody.Append("<br /><strong>Requested by client admin:</strong>");
+	MailBody.Append("<br /><strong>Requested by:</strong>");
 	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Username:</strong> {{clientUserName}}");
 	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Name:</strong> {{clientFirstLast}}");
 	MailBody.Append("<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Email:</strong> {{clientUserEmail}}");
