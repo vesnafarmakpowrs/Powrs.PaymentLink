@@ -28,31 +28,42 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
+    PayoutPage := "Payout.md";
+    IpsOnly := false;
 
     ContractInfo := Global.CreateItem(SessionUser, PRemoteId, 
-            PTitle, PPrice, PCurrency, 
-            PDescription, PPaymentDeadline, 
-			PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,
-			PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
-			PBuyerPhoneNumber ?? "" , 
-			PCallBackUrl ?? "", 
-			logActor);
-			
+                PTitle, PPrice, PCurrency, 
+                PDescription, PPaymentDeadline, 
+			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,
+			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
+			    PBuyerPhoneNumber ?? "" , 
+			    PCallBackUrl ?? "", 
+			    logActor);
 			
     PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 
-{
-    "Link" : PaymentLinkAddress + "/Payout.md?ID=" + Global.EncodeContractId(ContractInfo.ContractId),
-	"TokenId" : ContractInfo.TokenId,
-	"EscrowFee": ContractInfo.EscrowFee,
-	"BuyerEmail": ContractInfo.BuyerEmail,
-	"BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,
-	"Currency": ContractInfo.Currency
-}
+    businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
+    if(businessData != null) then 
+    (
+     IpsOnly := businessData.IPSOnly;
+    );
+
+    if IpsOnly then PayoutPage := "PayoutIPS.md";
+    Log.Informational("ipsOnly: " + IpsOnly + ",\nPayoutPage: " + PayoutPage, logObject, logActor, logEventID, null);
+    Log.Informational("Succeffully crated item.", logObject, logActor, logEventID, null);
+    
+    {
+        "Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),	
+        "TokenId" : ContractInfo.TokenId,
+        "EscrowFee": ContractInfo.EscrowFee,
+        "BuyerEmail": ContractInfo.BuyerEmail,
+        "BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,
+        "Currency": ContractInfo.Currency
+    }
 
 )
 catch
 (
 	Log.Error(Exception, logObject, logActor, logEventID, null);
-        BadRequest(Exception.Message);
+    BadRequest(Exception.Message);
 );
