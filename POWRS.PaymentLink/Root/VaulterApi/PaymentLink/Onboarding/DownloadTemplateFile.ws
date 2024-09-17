@@ -425,6 +425,14 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 	);
 	htmlContent := System.IO.File.ReadAllText(htmlTemplatePath);
 	
+	fileAttachment1Path := fileRootPath + "\\Attachment1.html";
+	if (!System.IO.File.Exists(fileAttachment1Path)) then
+	(
+		Error("File Attachment1 does not exist");
+	);
+	attachmentHtmlContent := System.IO.File.ReadAllText(fileAttachment1Path);
+	htmlContent := htmlContent.Replace("{{Attachment1}}", attachmentHtmlContent);
+	
 	if(PIsEmptyFile)then
 	(
 		htmlContent := htmlContent.Replace("{{CompanyFullName}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(naziv)");
