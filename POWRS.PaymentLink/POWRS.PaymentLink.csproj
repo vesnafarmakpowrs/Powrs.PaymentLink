@@ -264,6 +264,9 @@
 	  <None Update="Language\POWRS.PaymentLink.sr.lng">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\Attachment1.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Onboarding\TemplateFiles\PaySpot\BusinessCooperationRequest.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
