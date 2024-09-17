@@ -1,7 +1,7 @@
 Response.SetHeader("Access-Control-Allow-Origin","*");
 ValidatedUser:= Global.ValidateAgentApiToken(false, false);
 
-logObject := SessionUser.username;
+logObject := ValidatedUser.username;
 logEventID := "GetLegalIdentityInfo.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
