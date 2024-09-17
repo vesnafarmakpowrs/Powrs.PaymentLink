@@ -28,213 +28,26 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
-if(PRemoteId not like "^[\\p{L}\\s0-9-\/#-._]{1,50}$") then 
-(
-    Log.Debug("RemoteId not valid: " + PRemoteId, logObject, logActor, logEventID, null);
-    Error("RemoteId");
-);
-if(PTitle not like "[\\p{L}\\s0-9.,;:!?()'\"\\/#_~+*@$%^& -]{2,30}") then
-(
-    Log.Debug("Title not valid: " + PTitle, logObject, logActor, logEventID, null);
-    Error("Title");
-);
-if(PCurrency not like "[A-Z]{3}") then 
-(
-    Log.Debug("Currency not valid: " + PCurrency, logObject, logActor, logEventID, null);
-    Error("Currency");
-);
-if(PDescription not like "[\\p{L}\\s0-9.,;:!?()'\"\\/#_~+*@$%^& -]{5,100}") then
-(
-    Log.Debug("Description not valid: " + PDescription, logObject, logActor, logEventID, null);
-    Error("Description");
-);
-if(PPaymentDeadline not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$") then 
-(
-    Log.Debug("PaymentDeadline not valid: " + PPaymentDeadline, logObject, logActor, logEventID, null);
-    Error("PaymentDeadline");
-);
-if(PBuyerFirstName not like "[\\p{L}\\s\/,.&_-]{2,35}") then 
-(
-    Log.Debug("buyerFirstName not valid: " + PBuyerFirstName, logObject, logActor, logEventID, null);
-    Error("buyerFirstName");
-);
 
-if(PBuyerLastName not like "[\\p{L}\\s\/,.&_-]{2,35}") then
-(
-    Log.Debug("buyerLastName not valid: " + PBuyerLastName, logObject, logActor, logEventID, null);
-    Error("buyerLastName");
-);
-if(PBuyerEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,50}") then 
-(
-    Log.Debug("BuyerEmail not valid: " + PBuyerEmail, logObject, logActor, logEventID, null);
-    Error("BuyerEmail");
-);
-if(PBuyerPhoneNumber != null and PBuyerPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
-(
-    Log.Debug("buyerPhoneNumber not valid: " + PBuyerPhoneNumber, logObject, logActor, logEventID, null);
-    Error("buyerPhoneNumber");
-);
-if(PBuyerAddress not like "^[\\p{L}\\p{N}\\s,./#-]{3,100}$") then 
-( 
-    Log.Debug("buyerAddress not valid: " + PBuyerAddress, logObject, logActor, logEventID, null);
-    Error("buyerAddress");
-);
- 
-if (!exists(PBuyerCity)) then PBuyerCity := "";
-
-if (PBuyerCity not like "^[\\p{L}\\s\/,.&_-]{0,50}$") then 
-(
-    Log.Debug("buyerCity not valid: " + PBuyerCity, logObject, logActor, logEventID, null);
-    Error("buyerCity");
-);
-
-if(PBuyerCountryCode not like "[A-Z]{2}") then 
-(
-    Log.Debug("BuyerCountry not valid: " + PBuyerCountryCode, logObject, logActor, logEventID, null);
-    Error("BuyerCountry");
-);
-
-PPassword:= select top 1 Password from BrokerAccounts where UserName = SessionUser.username;
-
-if(System.String.IsNullOrWhiteSpace(PPassword)) then 
-(
-     Log.Debug("PPassword is not valid: " + PPassword, logObject, logActor, logEventID, null);
-     Error("PPassword");
-);
-
-dateTemplate:= "dd/MM/yyyy HH:mm:ss";
-PPaymentDeadline += " 23:59:59";
-ParsedDeadlineDate:= System.DateTime.ParseExact(PPaymentDeadline, dateTemplate, System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
-if(ParsedDeadlineDate < NowUtc) then 
-(
-    Error("Deadline must be in the future.");
-);
-
-KeyId := GetSetting(SessionUser.username + ".KeyId","");
-KeyPassword:= GetSetting(SessionUser.username + ".KeySecret","");
-
-if(System.String.IsNullOrEmpty(KeyId) or System.String.IsNullOrEmpty(KeyPassword)) then 
-(
-    Error("No signing keys or password available for user: " + SessionUser.username);
-);
-
-TemplateId:= GetSetting("POWRS.PaymentLink.TemplateId","");
-
-if(System.String.IsNullOrWhiteSpace(TemplateId)) then 
-(
-    Error("Not configured correctly");
-);
-
-ContractParameters:= select top 1 Parameters from Contracts where ContractId = TemplateId;
-if(ContractParameters == null) then 
-(
- Error("Parameters for the contract does not exists.");
-);
-
-EscrowFee:= 0;
-foreach Parameter in ContractParameters do 
-(
-  Parameter.Name like "EscrowFee" ?   EscrowFee := Parameter.ObjectValue;
-);
-
-  Identity := select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = SessionUser.username And State = 'Approved';
-
-    AgentName := Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST;
-    OrgName  := Identity.ORGNAME;
-   
-    if (System.String.IsNullOrEmpty(Identity.ORGBANKNUM)) then
-       Error("Legal identity for this " + SessionUser.username + " mising bank account number");
-    
-    SellerBankAccount := Identity.ORGBANKNUM;
-    SellerCountry := Identity.ORGCOUNTRY;
-    SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
-
-    PSellerServiceProviderId := "";
-    PSellerServiceProviderType := "";
-
-BuyerPhoneNumber:= PBuyerPhoneNumber ?? "";
-CallBackUrl:=  PCallBackUrl ?? "";
-WebPageUrl:=  PWebPageUrl ?? "";
-
-Contract:=CreateContract(SessionUser.username, TemplateId, "Public",
-    {
-        "RemoteId": PRemoteId,
-	    "Title": PTitle,
-        "Description": PDescription,
-        "Value": PPrice,
-        "PaymentDeadline" : ParsedDeadlineDate,
-        "Currency": PCurrency,
-        "Country": PBuyerCountryCode,
-        "Expires": TodayUtc.AddDays(364),
-        "SellerBankAccount" : SellerBankAccount,
-        "SellerName" : SellerName,
-        "SellerServiceProviderId" : PSellerServiceProviderId,
-        "SellerServiceProviderType" : PSellerServiceProviderType,
-        "BuyerFullName": PBuyerFirstName + " " + PBuyerLastName,
-        "BuyerPhoneNumber": BuyerPhoneNumber,
-        "BuyerEmail":PBuyerEmail,
-        "CallBackUrl" : CallBackUrl,
-        "WebPageUrl" : WebPageUrl,
-        "SupportedPaymentMethods": "",
-        "BuyerAddress": PBuyerAddress,
-        "BuyerCity" : PBuyerCity
-    });
-
-Nonce := Base64Encode(RandomBytes(32));
-
-LocalName := "ed448";
-Namespace := "urn:ieee:iot:e2e:1.0";
-
-S1 := SessionUser.username + ":" + Waher.IoTGateway.Gateway.Domain + ":" + LocalName + ":" + Namespace + ":" + KeyId;
-KeySignature := Base64Encode(Sha2_256HMac(Utf8Encode(S1),Utf8Encode(KeyPassword)));
-
-ContractId := Contract.ContractId;
-Role := "Creator";
-
-S2 := S1 + ":" + KeySignature + ":" + Nonce + ":" + SessionUser.legalId + ":" + ContractId + ":" + Role;
-RequestSignature := Base64Encode(Sha2_256HMac(Utf8Encode(S2),Utf8Encode(PPassword)));
-NeuronAddress:= "https://" + Waher.IoTGateway.Gateway.Domain;
-PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
-POST(NeuronAddress + "/Agent/Legal/SignContract",
-                             {
-	                        "keyId": KeyId,
-	                        "legalId": SessionUser.legalId,
-	                        "contractId": ContractId,
-	                        "role": Role,
-	                        "nonce": Nonce,
-	                        "keySignature": KeySignature,
-	                        "requestSignature": RequestSignature
-                                },
-			      {
-			       "Accept" : "application/json",
-			       "Authorization": "Bearer " + SessionUser.jwt
-                              });
-
-StateMachineInitialized:= false;
-Counter:= 0;
-TokenId := "";
-while StateMachineInitialized == false and Counter < 10 do 
-(
- Token:= select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract= Contract.ContractId;
- if(Token != null) then 
- (
-    StateMachineInitialized:= Token.HasStateMachine;    
-    TokenId := Token.TokenId;
- );
- Counter += 1;
- Sleep(1000);
-);
-
-Log.Informational("Succeffully cerated item.", logObject, logActor, logEventID, null);
-
+    ContractInfo := Global.CreateItem(SessionUser, PRemoteId, 
+            PTitle, PPrice, PCurrency, 
+            PDescription, PPaymentDeadline, 
+			PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,
+			PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
+			PBuyerPhoneNumber ?? "" , 
+			PCallBackUrl ?? "", 
+			logActor);
+			
+			
+    PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 
 {
-    "Link" : PaymentLinkAddress + "/Payout.md?ID=" + Global.EncodeContractId(ContractId),
-    "TokenId" : TokenId,
-    "EscrowFee": EscrowFee,
-    "BuyerEmail": PBuyerEmail,
-    "BuyerPhoneNumber": BuyerPhoneNumber,
-    "Currency": PCurrency
+    "Link" : PaymentLinkAddress + "/Payout.md?ID=" + Global.EncodeContractId(ContractInfo.ContractId),
+	"TokenId" : ContractInfo.TokenId,
+	"EscrowFee": ContractInfo.EscrowFee,
+	"BuyerEmail": ContractInfo.BuyerEmail,
+	"BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,
+	"Currency": ContractInfo.Currency
 }
 
 )
