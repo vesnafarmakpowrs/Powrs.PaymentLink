@@ -10,6 +10,7 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateStateMachineCurrentStateIndex.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetAgentSuccessfullTransactions.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUserHierarchy.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateItem.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="FeeCalculator">
