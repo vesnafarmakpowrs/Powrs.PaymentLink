@@ -10,6 +10,7 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateStateMachineCurrentStateIndex.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetAgentSuccessfullTransactions.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUserHierarchy.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateItem.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="FeeCalculator">
@@ -91,6 +92,7 @@
 					<Folder name="Template">
 						<Content altFolder="..\..\..\..\..\Onboarding\TemplateFiles" fileName="PromissoryNoteInstruction.pdf"/>
 						<Folder name="PaySpot">
+							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="Attachment1.html"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest.html"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest_Css.css"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="ContractPaySpot.html"/>
