@@ -192,8 +192,27 @@
 				<Content fileName="vaulterlogo.svg"/>
 				<Content fileName="error_red.png"/>
 				<Content fileName="success_green.png"/>
+				<Folder name="personal_round">
+					<Content fileName="addiko.jpg" />
+					<Content fileName="adriatic.jpg" />
+					<Content fileName="aik.jpg" />
+					<Content fileName="alta.jpg" />
+					<Content fileName="erste.jpg" />
+					<Content fileName="EUROBANK-DIREKTNA.jpg" />
+					<Content fileName="halkbank.jpg" />
+					<Content fileName="intesa.jpg" />
+					<Content fileName="mobi.jpg" />
+					<Content fileName="nlb.jpg"/>
+					<Content fileName="otp.jpg" />
+					<Content fileName="pbs.jpg" />
+					<Content fileName="RAIFFEISEN.jpg" />
+					<Content fileName="rba.jpg"/>
+					<Content fileName="srpska.jpg"/>
+					<Content fileName="unicredit.jpg"/>
+					<Content fileName="unit.jpg"/>
+					<Content fileName="yettel.jpg"/>
+				</Folder>
 			</Folder>
-			
 		</Folder>
 		<Folder name="Payout">
 			<Content fileName="Settings.md"/>

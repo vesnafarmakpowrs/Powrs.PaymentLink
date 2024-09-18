@@ -188,6 +188,26 @@
 				<Content fileName="error_red.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="success_green.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
 			</Folder>
+		    <Folder name="personal_round">
+				<Content fileName="addiko.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="adriatic.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="aik.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="alta.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="erste.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="EUROBANK-DIREKTNA.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="halkbank.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="intesa.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="mobi.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="nlb.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="otp.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="pbs.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="RAIFFEISEN.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="rba.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="srpska.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="unicredit.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="unit.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			    <Content fileName="yettel.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+			</Folder>
 		</Folder>
 		<Folder name="Payout">
 			<Content fileName="Settings.md"/>
