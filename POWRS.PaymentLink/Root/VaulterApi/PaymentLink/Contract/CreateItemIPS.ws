@@ -62,6 +62,7 @@ try
 	   )
 	); 
 	
+	PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 	{
 		"Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId)+ Parameter,	
 		"TokenId" : ContractInfo.TokenId,
