@@ -6,7 +6,8 @@
     "repeatedPassword":Required(Str(PRepeatedPassword)),
     "email" : Required(Str(PEmail)),
 	"newSubUser": Optional(Boolean(PNewSubUser)),
-    "role": Optional(Int(PUserRole))
+    "role": Optional(Int(PUserRole)),
+	"locationPathName": Optional(Str(PlocationPathName))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 logObject := "";
@@ -15,6 +16,10 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
+	PNewSubUser := PNewSubUser ?? false;
+	PUserRole := PUserRole ?? -1;
+	PlocationPathName := PlocationPathName ?? "";
+
     if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
     (
 		Error("Email in not valid format.")
@@ -45,9 +50,6 @@ try
         AccountAlreadyExists:= true;
         Error("Account with " + PUserName + " already exists");
     );
-	
-	PNewSubUser := PNewSubUser ?? false;
-	PUserRole := PUserRole ?? -1;
 	
 	if(PUserRole >= 0 && !POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PUserRole)) then (
         Error("Role doesn't exists.");
