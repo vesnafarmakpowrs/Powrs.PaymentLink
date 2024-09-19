@@ -14,9 +14,9 @@ namespace POWRS.PaymentLink.ClientType.Enums
         {
             switch (pathName)
             {
-                case "registration":
-                    return ClientType.Small;
                 case "registerclient":
+                    return ClientType.Small;
+                case "registration":
                     return ClientType.Medium;
                 case "registerorganization":
                     return ClientType.Large;

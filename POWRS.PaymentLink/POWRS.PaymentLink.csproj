@@ -267,6 +267,15 @@
 	  <None Update="Onboarding\TemplateFiles\PaySpot\Attachment1.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\Attachment1\Large\Attachment1.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\Attachment1\Medium\Attachment1.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\Attachment1\Small\Attachment1.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Onboarding\TemplateFiles\PaySpot\BusinessCooperationRequest.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

@@ -189,6 +189,26 @@ SendEmailToUser():= (
 	return(1);
 );
 
+SetOrganizationClientTyle(onBoardingData) := (
+	brokerAccClientType := POWRS.PaymentLink.ClientType.OrgClientType.GetBrokerAccClientType(SessionUser.username);
+	orgClientType := POWRS.PaymentLink.ClientType.OrgClientType.GetOrgClientTypeData(onBoardingData.GeneralCompanyInformation.ShortName);
+	orgClientTypeAlreadyExists := orgClientType.OrganizationClientType.OrganizationName != null;
+	
+	orgClientType.OrganizationClientType.OrganizationName := onBoardingData.GeneralCompanyInformation.ShortName;
+	orgClientType.OrganizationClientType.OrgClientType := brokerAccClientType.BrokerAccountOnboaradingClientTypeTMP.OrgClientType;
+	
+	if(orgClientTypeAlreadyExists)then
+	(
+		Waher.Persistence.Database.Update(orgClientType.OrganizationClientType);
+	)
+	else
+	(	
+		Waher.Persistence.Database.Insert(orgClientType.OrganizationClientType);
+	);
+	
+	Waher.Persistence.Database.Delete(brokerAccClientType.BrokerAccountOnboaradingClientTypeTMP);
+);
+
 try
 (
 	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","");
@@ -206,10 +226,34 @@ try
 	
     currentMethod := "ApplyForLeglalID";
 	ApplyForLeglalID(onBoardingData);
-    currentMethod := "SendEmailToVaulter";
-	SendEmailToVaulter(onBoardingData);
-    currentMethod := "SendEmailToUser";
-	SendEmailToUser();
+	
+	try
+	(
+		currentMethod := "SendEmailToVaulter";
+		SendEmailToVaulter(onBoardingData);
+	)
+	catch
+	(
+		Log.Error("Unable to send email to Powrs onboarding: " + Exception.Message + ", \ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+	);
+	try
+	(
+		currentMethod := "SendEmailToUser";
+		SendEmailToUser();
+	)
+	catch
+	(
+		Log.Error("Unable to send email to user: " + Exception.Message + ", \ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+	);
+	try
+	(
+		currentMethod := "UpdateClientType";
+		SetOrganizationClientTyle(onBoardingData);
+	)
+	catch
+	(
+		Log.Error("Unable to set org client type: " + Exception.Message + ", \ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+	);
 	
 	Log.Informational("Succeffully submited onboarding for user: " + SessionUser.username, logObject, logActor, logEventID, null);
 	{
