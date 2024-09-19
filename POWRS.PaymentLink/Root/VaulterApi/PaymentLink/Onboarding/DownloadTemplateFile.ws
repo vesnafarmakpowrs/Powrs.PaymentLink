@@ -426,16 +426,16 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 	htmlContent := System.IO.File.ReadAllText(htmlTemplatePath);
 	
 	clientTypeStr := "";
-	brokerAccClientType := POWRS.PaymentLink.ClientType.OrgClientType.GetBrokerAccClientType(SessionUser.username);
-	if(brokerAccClientType.BrokerAccountOnboaradingClientTypeTMP.UserName = null)
-	then
+	
+	brokerAccClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP where UserName = SessionUser.username;
+	if(brokerAccClientType = null) then
 	(
-		orgClientType := POWRS.PaymentLink.ClientType.OrgClientType.GetOrgClientTypeData(generalInfo.ShortName);
-		clientTypeStr := orgClientType.OrganizationClientType.OrgClientType.ToString();
+		orgClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = generalInfo.ShortName;
+		clientTypeStr := orgClientType.OrgClientType.ToString();
 	)
-	else 
+	else
 	(
-		clientTypeStr := brokerAccClientType.BrokerAccountOnboaradingClientTypeTMP.OrgClientType.ToString();
+		clientTypeStr := brokerAccClientType.OrgClientType.ToString();
 	);
 	
 	fileAttachment1Path := fileRootPath + "\\Attachment1\\" + clientTypeStr + "\\Attachment1.html";

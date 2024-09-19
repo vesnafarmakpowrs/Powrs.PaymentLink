@@ -190,23 +190,22 @@ SendEmailToUser():= (
 );
 
 SetOrganizationClientTyle(onBoardingData) := (
-	brokerAccClientType := POWRS.PaymentLink.ClientType.OrgClientType.GetBrokerAccClientType(SessionUser.username);
-	orgClientType := POWRS.PaymentLink.ClientType.OrgClientType.GetOrgClientTypeData(onBoardingData.GeneralCompanyInformation.ShortName);
-	orgClientTypeAlreadyExists := orgClientType.OrganizationClientType.OrganizationName != null;
+	organizationClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = onBoardingData.GeneralCompanyInformation.ShortName;
+	brokerAccClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP where UserName = SessionUser.username;
 	
-	orgClientType.OrganizationClientType.OrganizationName := onBoardingData.GeneralCompanyInformation.ShortName;
-	orgClientType.OrganizationClientType.OrgClientType := brokerAccClientType.BrokerAccountOnboaradingClientTypeTMP.OrgClientType;
-	
-	if(orgClientTypeAlreadyExists)then
+	if(organizationClientType = null)then
 	(
-		Waher.Persistence.Database.Update(orgClientType.OrganizationClientType);
-	)
-	else
-	(	
-		Waher.Persistence.Database.Insert(orgClientType.OrganizationClientType);
+		organizationClientType := Create(POWRS.PaymentLink.ClientType.Models.OrganizationClientType);
+		organizationClientType.OrganizationName := onBoardingData.GeneralCompanyInformation.ShortName;
+		organizationClientType.OrgClientType := brokerAccClientType != null ? brokerAccClientType.OrgClientType : POWRS.PaymentLink.ClientType.Enums.ClientType.Medium;
+		
+		Waher.Persistence.Database.Insert(organizationClientType);
 	);
-	
-	Waher.Persistence.Database.Delete(brokerAccClientType.BrokerAccountOnboaradingClientTypeTMP);
+
+	if(brokerAccClientType != null) then
+	(
+		Waher.Persistence.Database.Delete(brokerAccClientType);
+	);
 );
 
 try
