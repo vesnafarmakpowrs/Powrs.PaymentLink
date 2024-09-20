@@ -144,12 +144,13 @@ try
 		MailBody := Create(System.Text.StringBuilder);
 		MailBody.Append("Hello,");
 		MailBody.Append("<br />");
-		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>.");
+		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>. Domen: <strong><i>{{domen}}</i></strong>");
 		MailBody.Append("<br />");
 		MailBody.Append("<br /><i>Best regards</i>");
 		MailBody.Append("<br /><i>Vaulter</i>");
 		
 		MailBody := MailBody.Replace("{{userName}}", PUserName);
+		MailBody := MailBody.Replace("{{domen}}", Gateway.Domain);
 		
 		if(PNewSubUser)then
 		(
