@@ -90,7 +90,6 @@
 					<Folder name="Template">
 						<Content altFolder="..\..\..\..\..\Onboarding\TemplateFiles" fileName="PromissoryNoteInstruction.pdf"/>						
 						<Folder name="PaySpot">
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="Attachment1.html"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest.html"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest_Css.css"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="ContractPaySpot.html"/>
@@ -102,6 +101,17 @@
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocument_Css.css"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocumentLine.png"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpotAttachment3.png"/>
+							<Folder name="Attachment1">
+								<Folder name="Small">
+									<Content altFolder="..\..\..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot\Attachment1\Small" fileName="Attachment1.html"/>
+								</Folder>
+								<Folder name="Medium">
+									<Content altFolder="..\..\..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot\Attachment1\Medium" fileName="Attachment1.html"/>
+								</Folder>
+								<Folder name="Large">
+									<Content altFolder="..\..\..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot\Attachment1\Large" fileName="Attachment1.html"/>
+								</Folder>
+							</Folder>
 						</Folder>
 						<Folder name="Powrs">
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="Powrs_Logo.png"/>

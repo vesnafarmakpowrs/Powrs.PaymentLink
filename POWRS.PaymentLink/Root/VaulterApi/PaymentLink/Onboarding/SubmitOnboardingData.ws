@@ -196,7 +196,7 @@ SendEmailToUser():= (
 	MailBody.Append("<br />Dokumentacija koju ste dodali na naš sistem potrebno je da bude proverena od strane platne institucije, nakon čega će Vas kontaktirati Vaulter tim. Proces verifikacije traje do 5 radnih dana.");
 	MailBody.Append("<br />Za sva pitanja možete nas kontaktirati na email adresu queries@vaulter.se ili pozivom na broj 0800 40 40 44.");
 	MailBody.Append("<br />");
-	MailBody.Append("<br />Srdačan pozdrav");
+	MailBody.Append("<br />Srdačan pozdrav,");
 	MailBody.Append("<br />Vaulter");
 	
 	MailBody := Replace(MailBody, "{{user}}", SessionUser.username);
@@ -210,6 +210,25 @@ SendEmailToUser():= (
 	destroy(MailBody);
 	destroy(uploadedDocuments);
 	return(1);
+);
+
+SetOrganizationClientTyle(onBoardingData) := (
+	organizationClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = onBoardingData.GeneralCompanyInformation.ShortName;
+	brokerAccClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP where UserName = SessionUser.username;
+	
+	if(organizationClientType = null)then
+	(
+		organizationClientType := Create(POWRS.PaymentLink.ClientType.Models.OrganizationClientType);
+		organizationClientType.OrganizationName := onBoardingData.GeneralCompanyInformation.ShortName;
+		organizationClientType.OrgClientType := brokerAccClientType != null ? brokerAccClientType.OrgClientType : POWRS.PaymentLink.ClientType.Enums.ClientType.Medium;
+		
+		Waher.Persistence.Database.Insert(organizationClientType);
+	);
+
+	if(brokerAccClientType != null) then
+	(
+		Waher.Persistence.Database.Delete(brokerAccClientType);
+	);
 );
 
 try
@@ -229,10 +248,34 @@ try
 	
     currentMethod := "ApplyForLeglalID";
 	ApplyForLeglalID(onBoardingData);
-    currentMethod := "SendEmailToVaulter";
-	SendEmailToVaulter(onBoardingData);
-    currentMethod := "SendEmailToUser";
-	SendEmailToUser();
+	
+	try
+	(
+		currentMethod := "SendEmailToVaulter";
+		SendEmailToVaulter(onBoardingData);
+	)
+	catch
+	(
+		Log.Error("Unable to send email to Powrs onboarding: " + Exception.Message + ", \ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+	);
+	try
+	(
+		currentMethod := "SendEmailToUser";
+		SendEmailToUser();
+	)
+	catch
+	(
+		Log.Error("Unable to send email to user: " + Exception.Message + ", \ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+	);
+	try
+	(
+		currentMethod := "UpdateClientType";
+		SetOrganizationClientTyle(onBoardingData);
+	)
+	catch
+	(
+		Log.Error("Unable to set org client type: " + Exception.Message + ", \ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+	);
 	
 	Log.Informational("Succeffully submited onboarding for user: " + SessionUser.username, logObject, logActor, logEventID, null);
 	{

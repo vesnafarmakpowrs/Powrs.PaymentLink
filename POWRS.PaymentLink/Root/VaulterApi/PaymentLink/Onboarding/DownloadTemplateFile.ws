@@ -430,7 +430,20 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 	);
 	htmlContent := System.IO.File.ReadAllText(htmlTemplatePath);
 	
-	fileAttachment1Path := fileRootPath + "\\Attachment1.html";
+	clientTypeStr := "";
+	
+	brokerAccClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP where UserName = SessionUser.username;
+	if(brokerAccClientType = null) then
+	(
+		orgClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = generalInfo.ShortName;
+		clientTypeStr := orgClientType.OrgClientType.ToString();
+	)
+	else
+	(
+		clientTypeStr := brokerAccClientType.OrgClientType.ToString();
+	);
+	
+	fileAttachment1Path := fileRootPath + "\\Attachment1\\" + clientTypeStr + "\\Attachment1.html";
 	if (!System.IO.File.Exists(fileAttachment1Path)) then
 	(
 		Error("File Attachment1 does not exist");
