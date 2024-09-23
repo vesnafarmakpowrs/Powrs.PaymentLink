@@ -173,7 +173,7 @@ SendEmailToUser():= (
 	MailBody.Append("<br />Dokumentacija koju ste dodali na naš sistem potrebno je da bude proverena od strane platne institucije, nakon čega će Vas kontaktirati Vaulter tim. Proces verifikacije traje do 5 radnih dana.");
 	MailBody.Append("<br />Za sva pitanja možete nas kontaktirati na email adresu queries@vaulter.se ili pozivom na broj 0800 40 40 44.");
 	MailBody.Append("<br />");
-	MailBody.Append("<br />Srdačan pozdrav");
+	MailBody.Append("<br />Srdačan pozdrav,");
 	MailBody.Append("<br />Vaulter");
 	
 	MailBody := Replace(MailBody, "{{user}}", SessionUser.username);
