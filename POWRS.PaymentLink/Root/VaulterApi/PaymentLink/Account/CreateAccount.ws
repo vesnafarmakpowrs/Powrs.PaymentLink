@@ -6,7 +6,8 @@
     "repeatedPassword":Required(Str(PRepeatedPassword)),
     "email" : Required(Str(PEmail)),
 	"newSubUser": Optional(Boolean(PNewSubUser)),
-    "role": Optional(Int(PUserRole))
+    "role": Optional(Int(PUserRole)),
+	"locationPathName": Optional(Str(PlocationPathName))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 logObject := "";
@@ -15,6 +16,10 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
+	PNewSubUser := PNewSubUser ?? false;
+	PUserRole := PUserRole ?? -1;
+	PlocationPathName := PlocationPathName ?? "";
+
     if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
     (
 		Error("Email in not valid format.")
@@ -46,14 +51,11 @@ try
         Error("Account with " + PUserName + " already exists");
     );
 	
-	PNewSubUser := PNewSubUser ?? false;
-	PUserRole := PUserRole ?? -1;
-	
 	if(PUserRole >= 0 && !POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PUserRole)) then (
         Error("Role doesn't exists.");
 	);
 
-	logObject := PUserName;
+	logObject := PUserName;	
 
     apiKey:= GetSetting("POWRS.PaymentLink.ApiKey", "");
     apiKeySecret:= GetSetting("POWRS.PaymentLink.ApiKeySecret", "");
@@ -142,19 +144,23 @@ try
 		MailBody := Create(System.Text.StringBuilder);
 		MailBody.Append("Hello,");
 		MailBody.Append("<br />");
-		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>.");
+		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>. {{clientType}} Domain: <strong><i>{{domen}}</i></strong>");
 		MailBody.Append("<br />");
 		MailBody.Append("<br /><i>Best regards</i>");
 		MailBody.Append("<br /><i>Vaulter</i>");
 		
 		MailBody := MailBody.Replace("{{userName}}", PUserName);
+		MailBody := MailBody.Replace("{{domen}}", Gateway.Domain);
 		
 		if(PNewSubUser)then
 		(
 			MailBody := MailBody.Replace("{{accountType}}", "sub account");
+			MailBody := MailBody.Replace("{{clientType}}", "");
 		)
 		else
 		(
+			newClientType := POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetEnumByUrlPathName(PlocationPathName);
+			MailBody := MailBody.Replace("{{clientType}}", "Client type: <strong>" + newClientType.ToString() + "</strong>.");
 			MailBody := MailBody.Replace("{{accountType}}", "account");
 		);
 		
@@ -218,7 +224,7 @@ try
 		catch
 		(
 			if(PNewSubUser) then(
-				Error("Unable to create new user... " + Exception.Message);
+				Error("Unable to create new sub user... " + Exception.Message);
 			);
 			
 			enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.ClientAdmin;
@@ -241,7 +247,24 @@ try
 	catch
 	(
 		Log.Error("Unable to create broker acc role: " + Exception.Message, logObject, logActor, logEventID, null);
-		Error("Unable to create  broker acc role: " + Exception.Message);
+		Error("Unable to create broker acc role: " + Exception.Message);
+	);
+	
+	try
+	(
+		if(!PNewSubUser)then
+		(
+			newObj := Create(POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP);
+			newObj.UserName := PUserName;
+			newObj.OrgClientType := POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetEnumByUrlPathName(PlocationPathName);
+			
+			Waher.Persistence.Database.Insert(newObj);
+			Log.Informational("Create account -> broker acc onboarding client type successfully inserted for user name: " + PUserName, logObject, logActor, logEventID, null);
+		);
+	)
+	catch
+	(
+		Log.Error("Unable to insert client type: " + Exception.Message, logObject, logActor, logEventID, null);
 	);
 		
 	{
