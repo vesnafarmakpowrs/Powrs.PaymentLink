@@ -151,7 +151,7 @@
 			<Content fileName="Payout.md"/>
 			<Content fileName="TermsAndCondition.html"/>
 			<Content fileName="PrivacyPolicy.html"/>
-			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>			
+			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>
 			<Folder name="Redirect">
 				<Content fileName="Success.md"/>
 				<Content fileName="Cancel.md"/>
