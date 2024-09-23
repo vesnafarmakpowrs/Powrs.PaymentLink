@@ -75,6 +75,7 @@
 					<Content fileName="InvalidateContract.ws"/>
 				</Folder>
 				<Folder name="Mail">
+					<Content fileName="NotifyIdentityStateChanged.ws"/>
 					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="SendContactUsEmail.ws"/>
 					<Content fileName="SendPaylinkViaEmail.ws"/>
@@ -189,6 +190,8 @@
 			<Content fileName="ShowAllOnboardings.md"/>
 			<Content fileName="ViewOnboarding.js"/>
 			<Content fileName="ViewOnboarding.md"/>
+			<Content fileName="PaylinkLegalIdentities.js"/>
+			<Content fileName="PaylinkLegalIdentities.md"/>
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
@@ -207,6 +210,7 @@
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
+					<Content fileName="ApprovedLegalIdentity.html"></Content>
 				</Folder>
 				<Folder name="RS">
 					<Content fileName="ContactUs.html"></Content>
@@ -215,6 +219,7 @@
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
+					<Content fileName="ApprovedLegalIdentity.html"></Content>
 				</Folder>
 			</Folder>
 
