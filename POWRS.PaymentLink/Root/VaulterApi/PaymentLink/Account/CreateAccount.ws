@@ -144,7 +144,7 @@ try
 		MailBody := Create(System.Text.StringBuilder);
 		MailBody.Append("Hello,");
 		MailBody.Append("<br />");
-		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>. Domen: <strong><i>{{domen}}</i></strong>");
+		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>. {{clientType}} Domain: <strong><i>{{domen}}</i></strong>");
 		MailBody.Append("<br />");
 		MailBody.Append("<br /><i>Best regards</i>");
 		MailBody.Append("<br /><i>Vaulter</i>");
@@ -155,9 +155,12 @@ try
 		if(PNewSubUser)then
 		(
 			MailBody := MailBody.Replace("{{accountType}}", "sub account");
+			MailBody := MailBody.Replace("{{clientType}}", "");
 		)
 		else
 		(
+			newClientType := POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetEnumByUrlPathName(PlocationPathName);
+			MailBody := MailBody.Replace("{{clientType}}", "Client type: <strong>" + newClientType.ToString() + "</strong>.");
 			MailBody := MailBody.Replace("{{accountType}}", "account");
 		);
 		
