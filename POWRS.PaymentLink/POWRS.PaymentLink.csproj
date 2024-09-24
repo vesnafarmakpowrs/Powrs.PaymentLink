@@ -537,6 +537,9 @@
 	  <None Update="Root\Payout\Fonts\RTDromo-Medium.woff2">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\ApprovedLegalIdentity.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\EN\ContactUs.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -558,6 +561,9 @@
 	  <None Update="Root\Payout\HtmlTemplates\EN\VerifyEmail.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\RS\ApprovedLegalIdentity.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\ContactUs.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -577,6 +583,12 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\VerifyEmail.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\PaylinkLegalIdentities.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\PaylinkLegalIdentities.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\ViewOnboarding.js">
@@ -676,6 +688,9 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\GetContracts.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Mail\NotifyIdentityStateChanged.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\AllowEdit.ws">
