@@ -436,7 +436,14 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 	if(brokerAccClientType = null) then
 	(
 		orgClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = generalInfo.ShortName;
-		clientTypeStr := orgClientType.OrgClientType.ToString();
+		if(orgClientType != null) then
+		(
+			clientTypeStr := orgClientType.OrgClientType.ToString();
+		)
+		else
+		(
+			clientTypeStr := POWRS.PaymentLink.ClientType.Enums.ClientType.Small.ToString();
+		);
 	)
 	else
 	(
