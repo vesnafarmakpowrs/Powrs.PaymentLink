@@ -57,6 +57,7 @@ if(exists(firstName) and exists(lastName) and exists(agentName) and exists(email
     html:= System.IO.File.ReadAllText(path);        
 	html:= html.Replace("{FIRST}", firstName);
 	html:= html.Replace("{LAST}", firstName);
+	html:= html.Replace("{YEAR}", Str(Year(Now)));
 
 	ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
 	Config := ConfigClass.Instance;
