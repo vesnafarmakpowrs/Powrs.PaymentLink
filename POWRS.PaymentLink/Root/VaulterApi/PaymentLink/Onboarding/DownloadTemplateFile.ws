@@ -89,7 +89,12 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		Error("GeneralCompanyInformation must be populated");
 	);
 	companyStructure:= select top 1 * from POWRS.PaymentLink.Onboarding.CompanyStructure where UserName = SessionUser.username;
-	if(companyStructure == null or companyStructure.Owners == null or companyStructure.Owners.Length == 0)then
+	if(companyStructure == null or 
+		(companyStructure.OwnerStructure != POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.Person 
+			and 
+			(companyStructure.Owners == null or companyStructure.Owners.Length == 0)
+		)
+	)then
 	(
 		Error("CompanyStructure and owners must be populated");
 	);
@@ -424,19 +429,8 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 		Error("File does not exist");
 	);
 	htmlContent := System.IO.File.ReadAllText(htmlTemplatePath);
-	
-	clientTypeStr := "";
-	
-	brokerAccClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP where UserName = SessionUser.username;
-	if(brokerAccClientType = null) then
-	(
-		orgClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = generalInfo.ShortName;
-		clientTypeStr := orgClientType.OrgClientType.ToString();
-	)
-	else
-	(
-		clientTypeStr := brokerAccClientType.OrgClientType.ToString();
-	);
+		
+	clientTypeStr := POWRS.PaymentLink.ClientType.OrgClientType.GetClientTypeByUserName(SessionUser.username).ToString();
 	
 	fileAttachment1Path := fileRootPath + "\\Attachment1\\" + clientTypeStr + "\\Attachment1.html";
 	if (!System.IO.File.Exists(fileAttachment1Path)) then

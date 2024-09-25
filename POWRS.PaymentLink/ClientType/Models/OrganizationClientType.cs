@@ -5,7 +5,7 @@ namespace POWRS.PaymentLink.ClientType.Models
 {
     [CollectionName(nameof(OrganizationClientType) + "s")]
     [TypeName(TypeNameSerialization.None)]
-    [Index("OrgName")]
+    [Index("OrganizationName")]
     public class OrganizationClientType
     {
         private string objectId;

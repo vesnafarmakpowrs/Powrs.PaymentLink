@@ -10,7 +10,7 @@ namespace POWRS.PaymentLink.Onboarding
     [Index("UserName")]
     public class CompanyStructure : BaseOnboardingModel<CompanyStructure>
     {
-        public CompanyStructure() 
+        public CompanyStructure()
         {
             countriesOfBusiness = new string[0];
             nameOfTheForeignExchangeAndIDNumber = "";
@@ -63,35 +63,47 @@ namespace POWRS.PaymentLink.Onboarding
 
         public override bool IsCompleted()
         {
-            bool isStructureValid = 
-                CountriesOfBusiness != null && 
+            bool isStructureValid =
+                CountriesOfBusiness != null &&
                 CountriesOfBusiness.Length > 0 &&
                 PercentageOfForeignUsers >= 0 &&
-                Owners != null && 
-                Owners.Length > 0;
+                (
+                    OwnerStructure == OwnerStructure.Person && (Owners == null || Owners.Length == 0)
+                    ||
+                    (OwnerStructure != OwnerStructure.Person && Owners != null && Owners.Length > 0)
+                );
+
 
             if (!isStructureValid)
             {
                 return isStructureValid;
             }
 
-            bool incompleteOwnerFormsExists = Owners.Any(m => string.IsNullOrWhiteSpace(m.FullName) ||
-                string.IsNullOrWhiteSpace(m.PersonalNumber) ||
-                (m.DateOfBirth == null || m.DateOfBirth == DateTime.MinValue) ||
-                string.IsNullOrWhiteSpace(m.PlaceOfBirth) ||
-                string.IsNullOrWhiteSpace(m.AddressOfResidence) ||
-                string.IsNullOrWhiteSpace(m.CityOfResidence) ||
-                string.IsNullOrWhiteSpace(m.StatementOfOfficialDocument) ||
-                m.OwningPercentage < 25 ||
-                string.IsNullOrWhiteSpace(m.Role) ||
-                string.IsNullOrWhiteSpace(m.DocumentNumber) ||
-                (m.IssueDate == null && m.IssueDate == DateTime.MinValue) ||
-                string.IsNullOrWhiteSpace(m.IssuerName) ||
-                string.IsNullOrWhiteSpace(m.DocumentIssuancePlace) ||
-                string.IsNullOrWhiteSpace(m.Citizenship) ||
-                string.IsNullOrWhiteSpace(m.IdCard));
+            if (Owners == null || Owners.Length == 0)
+            {
+                return true;
+            }
+            else
+            {
 
-            return !incompleteOwnerFormsExists;
+                bool incompleteOwnerFormsExists = Owners.Any(m => string.IsNullOrWhiteSpace(m.FullName) ||
+                    string.IsNullOrWhiteSpace(m.PersonalNumber) ||
+                    (m.DateOfBirth == null || m.DateOfBirth == DateTime.MinValue) ||
+                    string.IsNullOrWhiteSpace(m.PlaceOfBirth) ||
+                    string.IsNullOrWhiteSpace(m.AddressOfResidence) ||
+                    string.IsNullOrWhiteSpace(m.CityOfResidence) ||
+                    string.IsNullOrWhiteSpace(m.StatementOfOfficialDocument) ||
+                    m.OwningPercentage < 25 ||
+                    string.IsNullOrWhiteSpace(m.Role) ||
+                    string.IsNullOrWhiteSpace(m.DocumentNumber) ||
+                    (m.IssueDate == null && m.IssueDate == DateTime.MinValue) ||
+                    string.IsNullOrWhiteSpace(m.IssuerName) ||
+                    string.IsNullOrWhiteSpace(m.DocumentIssuancePlace) ||
+                    string.IsNullOrWhiteSpace(m.Citizenship) ||
+                    string.IsNullOrWhiteSpace(m.IdCard));
+
+                return !incompleteOwnerFormsExists;
+            }
         }
     }
 }

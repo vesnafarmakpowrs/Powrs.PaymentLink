@@ -56,26 +56,49 @@ ApplyForLeglalID(onBoardingData):=(
 		
 	firstName := "";
 	lastName := "";
-		
-	fullNameArray := Split(onBoardingData.CompanyStructure.Owners[0].FullName, " ");
-	if(fullNameArray.Length == 1)then
+	personalNumber := "";
+	
+	if(onBoardingData.CompanyStructure.OwnerStructure == POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.Person)then
 	(
-		firstName := onBoardingData.CompanyStructure.Owners[0].FullName;
-		lastName := " ";
-	)
-	else 
-	(
-		firstName := Str(fullNameArray[0]);
-		FOR i := 1 TO fullNameArray.Length - 1 STEP 1 DO
+		personalNumber := onBoardingData.GeneralCompanyInformation.LegalRepresentatives[0].PersonalNumber;
+		fullNameArray := Split(onBoardingData.GeneralCompanyInformation.LegalRepresentatives[0].FullName, " ");
+		if(fullNameArray.Length == 1)then
 		(
-			lastName += fullNameArray[i] + ( i != fullNameArray.Length - 1 ? " " : "");
+			firstName := onBoardingData.GeneralCompanyInformation.LegalRepresentatives[0].FullName;
+			lastName := " ";
+		)
+		else 
+		(
+			firstName := Str(fullNameArray[0]);
+			FOR i := 1 TO fullNameArray.Length - 1 STEP 1 DO
+			(
+				lastName += fullNameArray[i] + ( i != fullNameArray.Length - 1 ? " " : "");
+			);
+		);		
+	)
+	else
+	(
+		personalNumber := onBoardingData.CompanyStructure.Owners[0].PersonalNumber;
+		fullNameArray := Split(onBoardingData.CompanyStructure.Owners[0].FullName, " ");
+		if(fullNameArray.Length == 1)then
+		(
+			firstName := onBoardingData.CompanyStructure.Owners[0].FullName;
+			lastName := " ";
+		)
+		else 
+		(
+			firstName := Str(fullNameArray[0]);
+			FOR i := 1 TO fullNameArray.Length - 1 STEP 1 DO
+			(
+				lastName += fullNameArray[i] + ( i != fullNameArray.Length - 1 ? " " : "");
+			);
 		);
 	);
 		
 	dictionary:= {};
 	dictionary["FIRST"]:= firstName;
 	dictionary["LAST"]:= lastName;
-	dictionary["PNR"]:= onBoardingData.CompanyStructure.Owners[0].PersonalNumber;
+	dictionary["PNR"]:= personalNumber;
 	dictionary["COUNTRY"]:= "RS";
 	dictionary["ORGNAME"]:= onBoardingData.GeneralCompanyInformation.ShortName;
 	dictionary["ORGNR"]:= onBoardingData.GeneralCompanyInformation.OrganizationNumber;
@@ -197,7 +220,7 @@ SetOrganizationClientTyle(onBoardingData) := (
 	(
 		organizationClientType := Create(POWRS.PaymentLink.ClientType.Models.OrganizationClientType);
 		organizationClientType.OrganizationName := onBoardingData.GeneralCompanyInformation.ShortName;
-		organizationClientType.OrgClientType := brokerAccClientType != null ? brokerAccClientType.OrgClientType : POWRS.PaymentLink.ClientType.Enums.ClientType.Medium;
+		organizationClientType.OrgClientType := brokerAccClientType != null ? brokerAccClientType.OrgClientType : POWRS.PaymentLink.ClientType.Enums.ClientType.Small;
 		
 		Waher.Persistence.Database.Insert(organizationClientType);
 	);
