@@ -2,15 +2,16 @@ Title: Organization clients type
 Description: Displays organization client types
 Date: 2024-09-25
 Author: Mirko Kruscic
+JavaScript: OrganizationClientType.js
 Master: /Master.md
 Cache-Control: max-age=0, no-cache, no-store
-Javascript: OrganizationClientType.js
+Privilege: Admin.Notarius.Identities
 UserVariable: User
 Login: ../Login.md
 
 ================================================================
 
-Organization clinet type
+Organization client type
 ========================================
 
 <br />
@@ -23,8 +24,8 @@ organizationClientType := Select * from POWRS.PaymentLink.ClientType.Models.Orga
 
 foreach item in organizationClientType ?? [] do
 (
-]]|((item.OrganizationName))|<select data-id="((item.ObjectId))" data-prev="((State:=item.OrgClientType.ToString()))" onchange="StateChanged(this)"><option value="Small"((State=Small?" selected":""))>Small</option><option value="Medium"((State=Medium?" selected":""))>Medium</option><option value="Large"((State=Large?" selected":""))>Large</option></select>|
+]]|((item.OrganizationName))| <select data-name="((MarkdownEncode(item.OrganizationName) ))" data-id="((item.ObjectId))" data-prev="((State:=item.OrgClientType.ToString() ))" onchange="ChangeClientType(this)"><option value="Small"((State="Small"?" selected":""))>Small</option><option value="Medium"((State="Medium"?" selected":""))>Medium</option><option value="Large"((State="Large"?" selected":""))>Large</option></select> |
 [[;
-)
+);
 
 }}
