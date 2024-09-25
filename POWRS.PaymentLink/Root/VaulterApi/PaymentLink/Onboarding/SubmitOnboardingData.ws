@@ -220,7 +220,7 @@ SetOrganizationClientTyle(onBoardingData) := (
 	(
 		organizationClientType := Create(POWRS.PaymentLink.ClientType.Models.OrganizationClientType);
 		organizationClientType.OrganizationName := onBoardingData.GeneralCompanyInformation.ShortName;
-		organizationClientType.OrgClientType := brokerAccClientType != null ? brokerAccClientType.OrgClientType : POWRS.PaymentLink.ClientType.Enums.ClientType.Medium;
+		organizationClientType.OrgClientType := brokerAccClientType != null ? brokerAccClientType.OrgClientType : POWRS.PaymentLink.ClientType.Enums.ClientType.Small;
 		
 		Waher.Persistence.Database.Insert(organizationClientType);
 	);
