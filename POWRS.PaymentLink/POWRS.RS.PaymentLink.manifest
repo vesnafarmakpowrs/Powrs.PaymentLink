@@ -191,6 +191,8 @@
 			
 		</Folder>
 		<Folder name="Payout">
+			<Content fileName="OrganizationClientType.js"/>
+			<Content fileName="OrganizationClientType.md"/>
 			<Content fileName="Settings.md"/>
 			<Content fileName="ShowAllOnboardings.js"/>
 			<Content fileName="ShowAllOnboardings.md"/>

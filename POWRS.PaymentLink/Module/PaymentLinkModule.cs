@@ -11,7 +11,8 @@ namespace POWRS.PaymentLink.Module
             {
                 new ConfigurablePage("PaymentLink", "/Payout/Settings.md", "Admin.Payments.Powrs.PaymentLink"),
                 new ConfigurablePage("ShowAllOnboardings", "/Payout/ShowAllOnboardings.md", "Admin.Onboarding.Modify"),
-                new ConfigurablePage("Paylink Legal Identities", "/Payout/PaylinkLegalIdentities.md", "Admin.Notarius.Identities")
+                new ConfigurablePage("Paylink Legal Identities", "/Payout/PaylinkLegalIdentities.md", "Admin.Notarius.Identities"),
+                new ConfigurablePage("Organization Client Type", "/Payout/OrganizationClientType.md", "dmin.Payments.Powrs.PaymentLink"),
             });
         }
 
