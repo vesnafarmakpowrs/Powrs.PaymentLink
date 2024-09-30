@@ -82,6 +82,7 @@
 				</Folder>
 				<Folder name="Onboarding">
 					<Content fileName="AllowEdit.ws"/>
+					<Content fileName="ChangeBrokerAccountClientType.ws"/>
 					<Content fileName="ChangeOrganizationClientType.ws"/>
 					<Content fileName="DownloadFile.ws"/>
 					<Content fileName="DownloadTemplateFile.ws"/>

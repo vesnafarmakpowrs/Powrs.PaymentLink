@@ -11,6 +11,27 @@ Login: ../Login.md
 
 ================================================================
 
+BrokerAccount client type TMP
+========================================
+
+<br />
+
+| UserName | Client type |
+|:---------|:------------|
+{{
+
+brokerAccClientType := Select * from POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP;
+
+foreach item in brokerAccClientType ?? [] do
+(
+]]|((item.UserName))| <select data-name="((MarkdownEncode(item.UserName) ))" data-id="((item.ObjectId))" data-prev="((State:=item.OrgClientType.ToString() ))" onchange="ChangeClientTypeBrokerAccount(this)"><option value="Small"((State="Small"?" selected":""))>Small</option><option value="Medium"((State="Medium"?" selected":""))>Medium</option><option value="Large"((State="Large"?" selected":""))>Large</option></select> |
+[[;
+);
+
+}}
+
+
+
 Organization client type
 ========================================
 
