@@ -206,6 +206,7 @@ if Token.HasStateMachine then
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(74) ))" id="PaymentFailed"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(75) ))" id="PaymentCompletedWaitingRedirection"/>
+<input type="hidden" value="((LanguageNamespace.GetStringAsync(76) ))" id="PaymentFailedWaitingRedirection"/>
 
 <input type="hidden" value="((Request.RemoteEndPoint))" id="currentIp"/>
 <input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>

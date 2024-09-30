@@ -55,6 +55,7 @@ function GenerateTranslations() {
     Translations.SessionTokenExpiredMessage = document.getElementById("SessionTokenExpired").value;
     Translations.PaymentFailed = document.getElementById("PaymentFailed").value;
     Translations.PaymentCompletedWaitingRedirection = document.getElementById("PaymentCompletedWaitingRedirection").value;
+    Translations.PaymentFailedWaitingRedirection = document.getElementById("PaymentCompletedWaitingRedirection").value;
 }
 
 function GenerateLanguageDropdown() {
@@ -172,14 +173,8 @@ function GenerateIPSForm() {
 }
 
 function PaymentCompleted(Result) {
-    if (Result != null && Result.successUrl != undefined && Result.successUrl.trim() != '') {
-        var div = document.getElementById('ctn-payment-method-rs');
-        div.innerHTML = '';
-        var boldText = document.createElement('strong');
-        boldText.textContent = Translations.PaymentCompletedWaitingRedirection;
-        boldText.style.color = 'green';
-        div.appendChild(boldText);
-
+    if (Result != null && Result.successUrl != undefined && Result.successUrl.trim() != '') {        
+        DisplayMessage(Translations.PaymentCompletedWaitingRedirection, 'green');
         setTimeout(function () {
             window.open(Result.successUrl, "_self");
         }, 3000);
@@ -191,21 +186,27 @@ function PaymentCompleted(Result) {
 }
 
 function PaySpotPaymentStatus(Result) {
-
     if (Result == null || Result.StatusCode == null || Result.StatusCode == "00") {
         return;
     }
 
     if (Result.ErrorUrl !== undefined && Result.ErrorUrl.trim() != '') {
-        window.open(Result.ErrorUrl, "_self");
+        DisplayMessage(Translations.PaymentFailedWaitingRedirection, 'green');
+        setTimeout(function () {
+            window.open(Result.ErrorUrl, "_self");
+        }, 3000);
         return;
     }
 
+    DisplayMessage(Translations.PaymentFailed, 'red');
+}
+
+function DisplayMessage(message, color) {
     var div = document.getElementById('ctn-payment-method-rs');
     div.innerHTML = '';
     var boldText = document.createElement('strong');
-    boldText.textContent = Translations.PaymentFailed;
-    boldText.style.color = 'red';
+    boldText.textContent = message;
+    boldText.style.color = color;
     div.appendChild(boldText);
 }
 
