@@ -54,6 +54,7 @@ function GenerateTranslations() {
     Translations.OpenLinkOnPhoneMessage = document.getElementById("OpenLinkOnPhoneMessage").value;
     Translations.SessionTokenExpiredMessage = document.getElementById("SessionTokenExpired").value;
     Translations.PaymentFailed = document.getElementById("PaymentFailed").value;
+    Translations.PaymentCompletedWaitingRedirection = document.getElementById("PaymentCompletedWaitingRedirection").value;
 }
 
 function GenerateLanguageDropdown() {
@@ -171,19 +172,41 @@ function GenerateIPSForm() {
 }
 
 function PaymentCompleted(Result) {
+    if (Result != null && Result.successUrl != undefined && Result.successUrl.trim() != '') {
+        var div = document.getElementById('ctn-payment-method-rs');
+        div.innerHTML = '';
+        var boldText = document.createElement('strong');
+        boldText.textContent = Translations.PaymentCompletedWaitingRedirection;
+        boldText.style.color = 'green';
+        div.appendChild(boldText);
+
+        setTimeout(function () {
+            window.open(Result.successUrl, "_self");
+        }, 3000);
+
+        return;
+    }
+
     location.reload();
 }
 
 function PaySpotPaymentStatus(Result) {
 
-    if (Result != null && Result.StatusCode != null && Result.StatusCode != "00") {
-        var div = document.getElementById('ctn-payment-method-rs');
-        div.innerHTML = '';
-        var boldText = document.createElement('strong');
-        boldText.textContent = Translations.PaymentFailed;
-        boldText.style.color = 'red';
-        div.appendChild(boldText);
+    if (Result == null || Result.StatusCode == null || Result.StatusCode == "00") {
+        return;
     }
+
+    if (Result.ErrorUrl !== undefined && Result.ErrorUrl.trim() != '') {
+        window.open(Result.ErrorUrl, "_self");
+        return;
+    }
+
+    var div = document.getElementById('ctn-payment-method-rs');
+    div.innerHTML = '';
+    var boldText = document.createElement('strong');
+    boldText.textContent = Translations.PaymentFailed;
+    boldText.style.color = 'red';
+    div.appendChild(boldText);
 }
 
 function ShowPayspotPage(Data) {

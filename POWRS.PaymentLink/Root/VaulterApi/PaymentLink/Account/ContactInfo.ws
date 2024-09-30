@@ -16,27 +16,6 @@ logObject := ValidatedUser.username;
 logEventID := "ContactInfo.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
-ValidateUrl(url):= 
-(
-    isSuccess:= true;
-    try 
-    (
-        if(url not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$") then 
-        (
-           Error("");
-        );
-
-        urlResponse:= HEAD(url);
-        isSuccess:= urlResponse.StatusCode != 404;
-    )
-    catch 
-    (
-       isSuccess:= false;
-    );
-
-    isSuccess;
-);
-
 IsValidBase64(base64String):= 
 (
     isSuccess:= true;

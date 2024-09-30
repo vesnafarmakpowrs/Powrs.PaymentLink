@@ -134,13 +134,19 @@
 				<Variable id="RemoteId">
 					<TagReference tag="RemoteId" />
 				</Variable>
+				<Variable id="ErrorUrl">
+					<TagReference tag="ErrorUrl" />
+				</Variable>
+				<Variable id="SuccessUrl">
+					<TagReference tag="SuccessUrl" />
+				</Variable>
 				<Variable id="CanCancel">
 					<Boolean>false</Boolean>
 				</Variable>
 				<Variable id="RefundedAmount">
 					<Number>0</Number>
 				</Variable>
-				<State id="AwaitingForPayment">					
+				<State id="AwaitingForPayment">
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -284,7 +290,9 @@
 									"CallBackUrl": CallBackUrl,
 									"TokenId": TokenId,
 									"SendEmail" : BuyerEmail,
-									"CountryCode" : Country
+									"CountryCode" : Country,
+									"SuccessUrl": SuccessUrl,
+									"ErrorUrl": ErrorUrl
 									};
 									if(exists(PayspotOrderId)) then
 									(
@@ -331,7 +339,7 @@
 						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentType');
 						PaymentStatusCode := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusCode');
 						PaymentStatusDescr := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusDescr');
-						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr})")
+						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr, 'ErrorUrl': ErrorUrl})")
 					</Script>
 					<Try>
 						<PersistVariable name="PaySpotStatusCode" value="{PaymentStatusCode}" />
@@ -491,7 +499,7 @@
 		</Tag>
 		<Tag name="BuyerCity">
 			<ParameterReference parameter="BuyerCity" />
-		</Tag>		
+		</Tag>
 		<Tag name="CallBackUrl">
 			<ParameterReference parameter="CallBackUrl" />
 		</Tag>
@@ -557,6 +565,12 @@
 		</Tag>
 		<Tag name="RemoteId">
 			<ParameterReference parameter="RemoteId" />
+		</Tag>
+		<Tag name="SuccessUrl">
+			<ParameterReference parameter="SuccessUrl" />
+		</Tag>
+		<Tag name="ErrorUrl">
+			<ParameterReference parameter="ErrorUrl" />
 		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
@@ -802,6 +816,20 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Payment methods which are supported for this contract (Card, BankTransfer)</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SuccessUrl" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Url to transfer when payment is completed.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="ErrorUrl" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Url to transfer when payment is not completed and has errors..</text>
 				</paragraph>
 			</description>
 		</stringParameter>

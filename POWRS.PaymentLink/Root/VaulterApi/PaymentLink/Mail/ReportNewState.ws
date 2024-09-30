@@ -40,7 +40,9 @@ try
         (
             if(exists(tabId:= Global.PayspotRequests[r.ContractId]) and !System.String.IsNullOrWhiteSpace(tabId)) then 
             (
-                ClientEvents.PushEvent([tabId], r.Status, JSON.Encode({"success": true}, false), true);
+                successUrl:= r.SuccessUrl ?? "";
+                errorUrl:= r.ErrorUrl ?? "";
+                ClientEvents.PushEvent([tabId], r.Status, JSON.Encode({"success": true, "successUrl":successUrl, "errorUrl":errorUrl  }, false), true);
                 Global.PayspotRequests.Remove(r.ContractId);
             );
         )
