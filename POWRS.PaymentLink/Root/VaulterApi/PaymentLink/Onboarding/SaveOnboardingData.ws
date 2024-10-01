@@ -59,7 +59,7 @@ ValidatePostedData(Posted) := (
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.TaxNumber))then(
 		errors.Add("GeneralCompanyInformation.TaxNumber");
-	)else if (!System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.TaxNumber) and Posted.GeneralCompanyInformation.TaxNumber not like "^\\d{9}$")then(
+	)else if (!System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.TaxNumber) and Posted.GeneralCompanyInformation.TaxNumber not like "^\\d{9}$" and Posted.GeneralCompanyInformation.TaxNumber not like "^\\d{12}$")then(
 		errors.Add("GeneralCompanyInformation.TaxNumber");
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.ActivityNumber))then(

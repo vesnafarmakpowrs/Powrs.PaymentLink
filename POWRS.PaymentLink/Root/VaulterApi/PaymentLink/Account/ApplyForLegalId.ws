@@ -115,7 +115,7 @@ try
 		errors.Add("ORGACTIVITYNUM");
 	);
 
-	if(POrgTaxNumber not like "\\d{8,10}$") then
+	if(POrgTaxNumber not like "\\d{9}$" and POrgTaxNumber not like "\\d{12}$") then
 	(
 		errors.Add("ORGTAXNUM");
 	);
