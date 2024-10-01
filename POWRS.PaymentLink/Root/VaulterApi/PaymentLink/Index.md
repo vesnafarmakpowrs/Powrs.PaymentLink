@@ -268,7 +268,9 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber),
     "callbackUrl":Optional(String(PCallbackUrl)),
-    "webPageUrl":Optional(String(PWebPageUrl))
+    "webPageUrl":Optional(String(PWebPageUrl)),
+    "successUrl":Optional(String(PSuccessUrl)),
+    "errorUrl":Optional(String(PErrorUrl))
 }
 ````
 
@@ -292,6 +294,8 @@ Description of properties:
 | `buyerCountryCode`| Buyer country code. |
 | `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
 | `webPageUrl` | Web page of selling item|
+| `successUrl` | Optional Web page where user will be redirected when payment is successfull. Must be valid public accessable web page. |
+| `errorUrl` |  Optional Web page where user will be redirected when payment failed. Must be valid public accessable web page.|
 
 **Response**
 

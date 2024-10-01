@@ -77,6 +77,7 @@
 			<String id="74">Payment failed! Check that you have enough funds in your account and that you have entered the correct information, then try again.</String>
 			<String id="75">Payment completed. You will be transfered to seller page shortly...</String>
 			<String id="76">Payment Failed. You will be transfered to seller page shortly...</String>
+			<String id="77">You will be redirected to seller page shortly...</String>
 		</Namespace>
 	</Language>
 </Translation>

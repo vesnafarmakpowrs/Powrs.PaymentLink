@@ -178,6 +178,7 @@
 			<Folder name="js">
 				<Content fileName="Events.js"/>
 				<Content fileName="PaymentLink.js"/>
+				<Content fileName="Status.js"/>
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="expand.svg"/>

@@ -75,8 +75,9 @@
 			<String id="72">ODUSTANI</String>
 			<String id="73">Plati</String>
 			<String id="74">Plaćanje nije uspešno. Proverite da li imate dovoljno sredstava na računu i da ste uneli ispravne informacije, zatim pokušajte ponovo.</String>
-			<String id="75">Plaćanje uspešno. Uskoro ćete biti preusmereni na stranicu prodavca...</String>
+			<String id="75">Plaćanje uspešno. Uskoro ćete biti preusmereni na stranicu prodavca...</String>			
 			<String id="76">Plaćanje nije uspešno. Uskoro ćete biti preusmereni na stranicu prodavca...</String>
+			<String id="77">Uskoro ćete biti preusmereni na stranicu prodavca...</String>
 		</Namespace>
 	</Language>
 </Translation>
