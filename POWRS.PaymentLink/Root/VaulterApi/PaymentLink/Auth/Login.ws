@@ -17,7 +17,7 @@ try
     validInSeconds:= 1800;
     Resp:= null;
 
-    Resp := POST("https://" +  Waher.IoTGateway.Gateway.Domain + "/Agent/Account/Login",
+    Resp := POST("https://" +  Request.Header.Host.Value + "/Agent/Account/Login",
                  {
                     "userName": PUserName,
                     "nonce": PNonce,
