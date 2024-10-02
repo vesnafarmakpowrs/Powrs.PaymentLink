@@ -91,6 +91,7 @@
 		<None Remove="Root\pay.vaulter.rs\css\Payout.cssx" />
 		<None Remove="Root\pay.vaulter.rs\js\Events.js" />
 		<None Remove="Root\pay.vaulter.rs\js\PaymentLink.js" />
+		<None Remove="Root\pay.vaulter.rs\js\Status.js" />
 		<None Remove="Root\pay.vaulter.rs\Payout.md" />
 		<None Remove="Root\pay.vaulter.rs\resources\spinner.gif" />
 		<None Remove="Root\pay.vaulter.rs\resources\vaulterlogo.svg" />
@@ -139,6 +140,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\pay.vaulter.rs\js\Events.js">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\pay.vaulter.rs\js\Status.js">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\pay.vaulter.rs\js\PaymentLink.js">
@@ -768,6 +772,9 @@
 	  <None Update="Scripts\StartupScripts\ValidateAgentApiToken.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Scripts\StartupScripts\ValidateUrl.config">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Scripts\StartupScripts\ValidatePayoutJWT.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
@@ -783,10 +790,10 @@
 		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
 	</PropertyGroup>
 	
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	<!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Install.exe&quot; -p &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot; -k 5d98ddf8138a851f6822be199ee9324e -m &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.Lab.PaymentLink.manifest&quot;" />
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Sign.exe&quot; -c ed448 -priv &quot;qGe+NyQy0hjvuNPK61LfvHmkJZxD0SHdo7UozOsWpGPj3GmSxAa8X4Ch7gJv23tRfUm4+IJIJCo=&quot; -o &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.signature&quot; -s &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot;" />
-	</Target>
+	</Target>-->
 	
 
 	<!-- Build PRODUCTION Serbian package 

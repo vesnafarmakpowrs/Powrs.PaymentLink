@@ -11,6 +11,7 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetAgentSuccessfullTransactions.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUserHierarchy.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateItem.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateUrl.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="FeeCalculator">
@@ -172,6 +173,7 @@
 			<Folder name="js">
 				<Content fileName="Events.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="PaymentLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="Status.js" altFolder="..\..\pay.vaulter.rs\js"/>
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="credit-card-payment.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
