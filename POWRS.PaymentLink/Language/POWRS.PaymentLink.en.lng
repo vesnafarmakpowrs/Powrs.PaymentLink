@@ -78,6 +78,7 @@
 			<String id="75">Payment completed. You will be transfered to seller page shortly...</String>
 			<String id="76">Payment Failed. You will be transfered to seller page shortly...</String>
 			<String id="77">You will be redirected to seller page shortly...</String>
+			<String id="78">Retry Payment</String>
 		</Namespace>
 	</Language>
 </Translation>

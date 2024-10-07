@@ -78,6 +78,7 @@
 			<String id="75">Plaćanje uspešno. Uskoro ćete biti preusmereni na stranicu prodavca...</String>			
 			<String id="76">Plaćanje nije uspešno. Uskoro ćete biti preusmereni na stranicu prodavca...</String>
 			<String id="77">Uskoro ćete biti preusmereni na stranicu prodavca...</String>
+			<String id="78">Pokušajte ponovo</String>
 		</Namespace>
 	</Language>
 </Translation>
