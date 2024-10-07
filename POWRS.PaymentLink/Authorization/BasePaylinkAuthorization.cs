@@ -19,6 +19,22 @@ namespace POWRS.PaymentLink.Authorization
 
         public override bool UserSessions => false;
 
+        protected async Task<Dictionary<string, object>> GetRequestBody(HttpRequest Request)
+        {
+
+            if (!Request.HasData)
+            {
+                throw new BadRequestException("Request body is missing");
+            }
+
+            if (await Request.DecodeDataAsync() is not Dictionary<string, object> requestBody)
+            {
+                throw new BadRequestException("Expected JSON object.");
+            }
+
+            return requestBody;
+        }
+
         protected async Task<Account> GetAccountFromJwtToken(HttpRequest Request)
         {
             string authorizationHeaderValue = Request.Header?.Authorization?.Value;

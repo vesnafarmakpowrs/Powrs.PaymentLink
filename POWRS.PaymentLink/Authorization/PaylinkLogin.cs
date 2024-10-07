@@ -29,15 +29,7 @@ namespace POWRS.PaymentLink.Authorization
                 throw new TooManyRequestsException($"Login is blocked for: {Request.RemoteEndPoint}. Next login attempt could be made: {loginOpportunity}");
             }
 
-            if (!Request.HasData)
-            {
-                throw new BadRequestException("Request body is missing");
-            }
-
-            if (await Request.DecodeDataAsync() is not Dictionary<string, object> requestBody)
-            {
-                throw new BadRequestException("Expected JSON object.");
-            }
+            Dictionary<string, object> requestBody = await GetRequestBody(Request);
 
             string apikey = string.Empty;
             string apiSecret = string.Empty;

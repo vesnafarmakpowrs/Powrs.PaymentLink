@@ -108,8 +108,15 @@ Request
 
 :	```json
 :	{
+        "CanBeOverriden": Optional(CanBeOverriden) (Default: true)
 :	}
 :	```
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `CanBeOverriden`        | Optional bool which tells if user can manually revoke or regenerate api key without contacting support. |
 
 Response (if successful)
 

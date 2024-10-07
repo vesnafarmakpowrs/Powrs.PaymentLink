@@ -3,10 +3,8 @@ using System.Threading.Tasks;
 using Waher.Networking.HTTP;
 using Waher.Persistence.Filters;
 using Waher.Persistence;
-using Waher.Security.JWT;
 using Waher.Security;
 using System.Text;
-using Waher.Content;
 using System.Collections.Generic;
 
 namespace POWRS.PaymentLink.Authorization
@@ -21,8 +19,9 @@ namespace POWRS.PaymentLink.Authorization
         public async Task POST(HttpRequest Request, HttpResponse Response)
         {
             Account BrokerAccount = await GetAccountFromJwtToken(Request);
-            AgentApiKey agentApiKey = await Database.FindFirstDeleteRest<AgentApiKey>(new FilterFieldEqualTo("UserName", BrokerAccount.UserName));
+            Dictionary<string, object> requestBody = await GetRequestBody(Request);
 
+            AgentApiKey agentApiKey = await Database.FindFirstDeleteRest<AgentApiKey>(new FilterFieldEqualTo("UserName", BrokerAccount.UserName));
             if (agentApiKey != null)
             {
                 if (!agentApiKey.CanBeOverriden)
@@ -33,6 +32,13 @@ namespace POWRS.PaymentLink.Authorization
                 await Database.Delete(agentApiKey);
             }
 
+            bool canBeOverriden = true;
+            if (requestBody.TryGetValue("CanBeOverriden", out object canBeOverridenObj)
+                && canBeOverridenObj is bool canBeOverridenValue)
+            {
+                canBeOverriden = canBeOverridenValue;
+            }
+
             var apiKey = GenerateRandomString(64);
             var apiSecret = GenerateRandomString(128);
 
@@ -41,6 +47,7 @@ namespace POWRS.PaymentLink.Authorization
                 Created = DateTime.UtcNow,
                 UserName = BrokerAccount.UserName,
                 ApiKey = apiKey,
+                CanBeOverriden = canBeOverriden,
                 Signature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Encoding.UTF8.GetBytes(apiKey), Encoding.UTF8.GetBytes(apiSecret)))
             };
 
