@@ -266,7 +266,7 @@ if ContractState == "AwaitingForPayment" then
 <div class="spaceItem"></div>
 <div id="retry-payment" style="display:none">
    <div class="retry-div" >
-    <button id="payspot-submit" class="retry-button" onclick="RetryPayment()">((LanguageNamespace.GetStringAsync(75) ))</button> 
+    <button id="payspot-submit" class="retry-ips-button" onclick="RetryPayment()">((LanguageNamespace.GetStringAsync(78) ))</button> 
   </div>
 </div>
 <div id="payment-msg-div"  style="display:none">
