@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using POWRS.PaymentLink.Authorization;
+using System.Threading.Tasks;
 using Waher.IoTGateway;
 
 namespace POWRS.PaymentLink.Module
@@ -16,13 +17,22 @@ namespace POWRS.PaymentLink.Module
             });
         }
 
+        private readonly static PaylinkLogin paylinkLogin = new();
+        private readonly static GenerateAgentApiKey generateAgentApiKey = new();
+        private readonly static GetAgentApiKey getAgentApiKey = new();
         public Task Start()
         {
+            Gateway.HttpServer.Register(paylinkLogin);
+            Gateway.HttpServer.Register(generateAgentApiKey);
+            Gateway.HttpServer.Register(getAgentApiKey);
             return Task.CompletedTask;
         }
 
         public Task Stop()
         {
+            Gateway.HttpServer.Unregister(paylinkLogin);
+            Gateway.HttpServer.Unregister(generateAgentApiKey);
+            Gateway.HttpServer.Unregister(getAgentApiKey);
             return Task.CompletedTask;
         }
     }

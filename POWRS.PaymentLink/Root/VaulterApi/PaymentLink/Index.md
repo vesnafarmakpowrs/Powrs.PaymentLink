@@ -65,6 +65,111 @@ Accept: application/json
 Authorization: Bearer ...
 ````
 
+### Agent Api Key Login
+
+This login is meant to be used in approved external systems for integration with Vaulter api. Api key and secret can be generated using Paylink portal or with api.
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Paylink/Login")}}`
+Method:  POST
+
+JSON
+-------
+
+Request
+
+:	```json
+:	{
+:		"ApiKey":Required(Str(ApiKey)),
+:		"ApiSecret":Required(Str(ApiSecret)),
+:		"Duration":Optional(Str(ApiSecret)),
+:	}
+:	```
+
+Response (if successful)
+
+:	```json
+:	{
+.		"jwt":Required(Str(PJwt)),
+.		"expires":Required(DateTime(PExpires))
+:	}
+:   ```
+
+### Generate Agent api key
+
+Api to generate Api key and secret, that could be used to gain access to resources.
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Paylink/GenerateApiKey")}}`
+Method:  POST
+
+JSON
+-------
+
+Request
+
+:	```json
+:	{
+:	}
+:	```
+
+Response (if successful)
+
+:	```json
+:	{
+.		"ApiKey":Required(Str(ApiKey)),
+.		"ApiSecret":Required(DateTime(ApiSecret)),
+.		"Created":Required(DateTime(Created)),
+.		"CanBeOverriden":Required(DateTime(CanBeOverriden)),
+.		"IsBlocked":Required(DateTime(IsBlocked)),
+:	}
+:   ```
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `ApiKey`        | Generated api key for account. |
+| `ApiSecret`        | ApiSecret for given ApiKey. Store safely, could not be recovered if lost. Api key must be regenerated. |
+| `CanBeOverriden`        | If api key could be regenerated. |
+| `IsBlocked`        | Is api key blocked. |
+
+### Get Generated Api Key
+
+Retrieves generated agent api key for the account.
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Paylink/GetApiKey")}}`
+Method:  POST
+
+JSON
+-------
+
+Request
+
+:	```json
+:	{
+:	}
+:	```
+
+Response (if successful)
+
+:	```json
+:	{
+.		"ApiKey":Required(Str(ApiKey)),
+.		"ApiSecret":Required(DateTime(ApiSecret)),
+.		"Created":Required(DateTime(Created)),
+.		"CanBeOverriden":Required(DateTime(CanBeOverriden)),
+.		"IsBlocked":Required(DateTime(IsBlocked)),
+:	}
+:   ```
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `ApiKey`        | Generated api key for account. |
+| `ApiSecret`        | ApiSecret for given ApiKey. Store safely, could not be recovered if lost. Api key must be regenerated. |
+| `CanBeOverriden`        | If api key could be regenerated. |
+| `IsBlocked`        | Is api key blocked. |
+
 ### Login (Test purposes) do not use in production
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Account/Login")}}`
