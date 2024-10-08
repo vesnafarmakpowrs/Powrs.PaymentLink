@@ -71,7 +71,7 @@ DownloadTemplateContractWithVaulter(PIsEmptyFile) := (
 		);
 	
 		htmlContent := htmlContent.Replace("{{CompanyFullName}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-		htmlContent := htmlContent.Replace("{{CompanyAddress}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.CompanyAddress + " " + generalInfo.CompanyCity + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlContent := htmlContent.Replace("{{CompanyAddress}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.CompanyAddress + ", " + generalInfo.CompanyCity + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyOrganizationNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.OrganizationNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyTaxNumber}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.TaxNumber + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlContent := htmlContent.Replace("{{CompanyRepresenter}}", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + generalInfo.LegalRepresentatives[0].FullName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -203,7 +203,7 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 	(
 		htmlContent := htmlContent.Replace("{{CompanyFullName}}", generalInfo.FullName);
 		htmlContent := htmlContent.Replace("{{CompanyShortName}}", generalInfo.ShortName);
-		htmlContent := htmlContent.Replace("{{CompanyAddress}}", generalInfo.CompanyAddress);
+		htmlContent := htmlContent.Replace("{{CompanyAddress}}", + generalInfo.CompanyCity + ", " + generalInfo.CompanyAddress );
 		htmlContent := htmlContent.Replace("{{CompanyOrganizationNumber}}", generalInfo.OrganizationNumber);
 		htmlContent := htmlContent.Replace("{{CompanyTaxNumber}}", generalInfo.TaxNumber);
 		htmlContent := htmlContent.Replace("{{ActivityNumber}}", generalInfo.ActivityNumber);
