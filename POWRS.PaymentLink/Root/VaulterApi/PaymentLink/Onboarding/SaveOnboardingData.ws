@@ -59,7 +59,7 @@ ValidatePostedData(Posted) := (
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.TaxNumber))then(
 		errors.Add("GeneralCompanyInformation.TaxNumber");
-	)else if (!System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.TaxNumber) and Posted.GeneralCompanyInformation.TaxNumber not like "^\\d{9}$")then(
+	)else if (!System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.TaxNumber) and Posted.GeneralCompanyInformation.TaxNumber not like "^\\d{9}$" and Posted.GeneralCompanyInformation.TaxNumber not like "^\\d{12}$")then(
 		errors.Add("GeneralCompanyInformation.TaxNumber");
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.ActivityNumber))then(
@@ -566,7 +566,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			representative.PersonalNumber:= item.PersonalNumber;
 			
 			if(item.StatementOfOfficialDocumentIsNewUpload)then(
-				fileName := "LegalRepresentative_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
+				fileName := SessionUser.username + "_LegalRepresentative_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
 				SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
 				
 				representative.StatementOfOfficialDocument:= fileName;
@@ -579,7 +579,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			);
 			
 			if(item.IdCardIsNewUpload)then(
-				fileName := "LegalRepresentative_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
+				fileName := SessionUser.username + "_LegalRepresentative_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
 				SaveFile(fileRootPath, fileName, item.IdCard);
 				
 				representative.IdCard:= fileName;
@@ -664,7 +664,7 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 			owner.Citizenship:= item.Citizenship;
 			
 			if(item.StatementOfOfficialDocumentIsNewUpload)then(
-				fileName := "Owner_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
+				fileName := SessionUser.username + "_Owner_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
 				SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
 				
 				owner.StatementOfOfficialDocument:= fileName;
@@ -677,7 +677,7 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 			);
 			
 			if(item.IdCardIsNewUpload)then(
-				fileName := "Owner_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
+				fileName := SessionUser.username + "_Owner_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
 				SaveFile(fileRootPath, fileName, item.IdCard);
 				
 				owner.IdCard:= fileName;
@@ -776,7 +776,7 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 
 	if(LegalDocuments.ContractWithEMIIsNewUpload) then
 	(
-		fileName := "ContractWithEMI" + ".pdf";
+		fileName := SessionUser.username + "_ContractWithEMI" + ".pdf";
 		SaveFile(fileRootPath, fileName, LegalDocuments.ContractWithEMI);
 		documents.ContractWithEMI:=  fileName;
 	)else (
@@ -789,7 +789,7 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 	
 	if(LegalDocuments.ContractWithVaulterIsNewUpload) then
 	(
-		fileName := "ContractWithVaulter" + ".pdf";
+		fileName := SessionUser.username + "_ContractWithVaulter" + ".pdf";
 		SaveFile(fileRootPath, fileName, LegalDocuments.ContractWithVaulter);
 		documents.ContractWithVaulter:= fileName;
 	)else (
@@ -802,7 +802,7 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 	
 	if(LegalDocuments.PromissoryNoteIsNewUpload) then
 	(
-		fileName := "PromissoryNote" + ".pdf";
+		fileName := SessionUser.username + "_PromissoryNote" + ".pdf";
 		SaveFile(fileRootPath, fileName, LegalDocuments.PromissoryNote);
 		documents.PromissoryNote:= fileName;
 	)else (
@@ -815,7 +815,7 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 	
 	if(LegalDocuments.BusinessCooperationRequestIsNewUpload) then
 	(
-		fileName := "BusinessCooperationRequest" + ".pdf";
+		fileName := SessionUser.username + "_BusinessCooperationRequest" + ".pdf";
 		SaveFile(fileRootPath, fileName, LegalDocuments.BusinessCooperationRequest);
 		documents.BusinessCooperationRequest:= fileName;
 	)else (
@@ -828,7 +828,7 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 	
 	if(LegalDocuments.RequestForPromissoryNotesRegistrationIsNewUpload) then
 	(
-		fileName := "RequestForPromissoryNotesRegistration" + ".pdf";
+		fileName := SessionUser.username + "_RequestForPromissoryNotesRegistration" + ".pdf";
 		SaveFile(fileRootPath, fileName, LegalDocuments.RequestForPromissoryNotesRegistration);
 		documents.RequestForPromissoryNotesRegistration:= fileName;
 	)else (
@@ -841,7 +841,7 @@ SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
 	
 	if(LegalDocuments.CardOfDepositedSignaturesIsNewUpload) then
 	(
-		fileName := "CardOfDepositedSignatures" + ".pdf";
+		fileName := SessionUser.username + "_CardOfDepositedSignatures" + ".pdf";
 		SaveFile(fileRootPath, fileName, LegalDocuments.CardOfDepositedSignatures);
 		documents.CardOfDepositedSignatures:= fileName;
 	)else (

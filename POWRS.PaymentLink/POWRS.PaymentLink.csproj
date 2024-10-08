@@ -91,6 +91,7 @@
 		<None Remove="Root\pay.vaulter.rs\css\Payout.cssx" />
 		<None Remove="Root\pay.vaulter.rs\js\Events.js" />
 		<None Remove="Root\pay.vaulter.rs\js\PaymentLink.js" />
+		<None Remove="Root\pay.vaulter.rs\js\Status.js" />
 		<None Remove="Root\pay.vaulter.rs\Payout.md" />
 		<None Remove="Root\pay.vaulter.rs\resources\spinner.gif" />
 		<None Remove="Root\pay.vaulter.rs\resources\vaulterlogo.svg" />
@@ -139,6 +140,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\pay.vaulter.rs\js\Events.js">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\pay.vaulter.rs\js\Status.js">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\pay.vaulter.rs\js\PaymentLink.js">
@@ -265,6 +269,15 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Onboarding\TemplateFiles\PaySpot\Attachment1.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\Attachment1\Large\Attachment1.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\Attachment1\Medium\Attachment1.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Onboarding\TemplateFiles\PaySpot\Attachment1\Small\Attachment1.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Onboarding\TemplateFiles\PaySpot\BusinessCooperationRequest.html">
@@ -528,6 +541,9 @@
 	  <None Update="Root\Payout\Fonts\RTDromo-Medium.woff2">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\ApprovedLegalIdentity.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\EN\ContactUs.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -549,6 +565,9 @@
 	  <None Update="Root\Payout\HtmlTemplates\EN\VerifyEmail.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\RS\ApprovedLegalIdentity.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\ContactUs.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -568,6 +587,18 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\VerifyEmail.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\OrganizationClientType.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\OrganizationClientType.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\PaylinkLegalIdentities.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\PaylinkLegalIdentities.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\ViewOnboarding.js">
@@ -669,7 +700,16 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\GetContracts.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Mail\NotifyIdentityStateChanged.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\AllowEdit.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\ChangeBrokerAccountClientType.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\ChangeOrganizationClientType.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\GetOnboardingData.ws">
@@ -732,6 +772,9 @@
 	  <None Update="Scripts\StartupScripts\ValidateAgentApiToken.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Scripts\StartupScripts\ValidateUrl.config">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Scripts\StartupScripts\ValidatePayoutJWT.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
@@ -747,10 +790,10 @@
 		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
 	</PropertyGroup>
 	
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	<!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Install.exe&quot; -p &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot; -k 5d98ddf8138a851f6822be199ee9324e -m &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.Lab.PaymentLink.manifest&quot;" />
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Sign.exe&quot; -c ed448 -priv &quot;qGe+NyQy0hjvuNPK61LfvHmkJZxD0SHdo7UozOsWpGPj3GmSxAa8X4Ch7gJv23tRfUm4+IJIJCo=&quot; -o &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.signature&quot; -s &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot;" />
-	</Target>
+	</Target>-->
 	
 
 	<!-- Build PRODUCTION Serbian package 

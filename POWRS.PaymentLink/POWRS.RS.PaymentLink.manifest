@@ -11,6 +11,7 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetAgentSuccessfullTransactions.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUserHierarchy.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateItem.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateUrl.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="FeeCalculator">
@@ -77,12 +78,15 @@
 					<Content fileName="InvalidateContract.ws"/>
 				</Folder>
 				<Folder name="Mail">
+					<Content fileName="NotifyIdentityStateChanged.ws"/>
 					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="SendContactUsEmail.ws"/>
 					<Content fileName="SendPaylinkViaEmail.ws"/>
 				</Folder>
 				<Folder name="Onboarding">
 					<Content fileName="AllowEdit.ws"/>
+					<Content fileName="ChangeBrokerAccountClientType.ws"/>
+					<Content fileName="ChangeOrganizationClientType.ws"/>
 					<Content fileName="DownloadFile.ws"/>
 					<Content fileName="DownloadTemplateFile.ws"/>
 					<Content fileName="GetFileMaxSize.ws"/>
@@ -92,7 +96,6 @@
 					<Folder name="Template">
 						<Content altFolder="..\..\..\..\..\Onboarding\TemplateFiles" fileName="PromissoryNoteInstruction.pdf"/>
 						<Folder name="PaySpot">
-							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="Attachment1.html"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest.html"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="BusinessCooperationRequest_Css.css"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="ContractPaySpot.html"/>
@@ -104,6 +107,17 @@
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocument_Css.css"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="StatementOfOfficialDocumentLine.png"/>
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot" fileName="PaySpotAttachment3.png"/>
+							<Folder name="Attachment1">
+								<Folder name="Small">
+									<Content altFolder="..\..\..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot\Attachment1\Small" fileName="Attachment1.html"/>
+								</Folder>
+								<Folder name="Medium">
+									<Content altFolder="..\..\..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot\Attachment1\Medium" fileName="Attachment1.html"/>
+								</Folder>
+								<Folder name="Large">
+									<Content altFolder="..\..\..\..\..\..\..\..\Onboarding\TemplateFiles\PaySpot\Attachment1\Large" fileName="Attachment1.html"/>
+								</Folder>
+							</Folder>
 						</Folder>
 						<Folder name="Powrs">
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="Powrs_Logo.png"/>
@@ -143,7 +157,7 @@
 			<Content fileName="Payout.md"/>
 			<Content fileName="TermsAndCondition.html"/>
 			<Content fileName="PrivacyPolicy.html"/>
-			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>			
+			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>
 			<Folder name="Redirect">
 				<Content fileName="Success.md"/>
 				<Content fileName="Cancel.md"/>
@@ -180,6 +194,7 @@
 			<Folder name="js">
 				<Content fileName="Events.js"/>
 				<Content fileName="PaymentLink.js"/>
+				<Content fileName="Status.js"/>
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="expand.svg"/>
@@ -215,11 +230,15 @@
 			</Folder>
 		</Folder>
 		<Folder name="Payout">
+			<Content fileName="OrganizationClientType.js"/>
+			<Content fileName="OrganizationClientType.md"/>
 			<Content fileName="Settings.md"/>
 			<Content fileName="ShowAllOnboardings.js"/>
 			<Content fileName="ShowAllOnboardings.md"/>
 			<Content fileName="ViewOnboarding.js"/>
 			<Content fileName="ViewOnboarding.md"/>
+			<Content fileName="PaylinkLegalIdentities.js"/>
+			<Content fileName="PaylinkLegalIdentities.md"/>
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
@@ -238,6 +257,7 @@
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
+					<Content fileName="ApprovedLegalIdentity.html"></Content>
 				</Folder>
 				<Folder name="RS">
 					<Content fileName="ContactUs.html"></Content>
@@ -246,6 +266,7 @@
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
+					<Content fileName="ApprovedLegalIdentity.html"></Content>
 				</Folder>
 			</Folder>
 

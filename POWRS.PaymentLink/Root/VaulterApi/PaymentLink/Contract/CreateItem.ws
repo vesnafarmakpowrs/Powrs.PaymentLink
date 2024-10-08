@@ -18,7 +18,9 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerCity": Optional(Str(PBuyerCity)) ,
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "callbackUrl":Optional(String(PCallBackUrl)),
-    "webPageUrl":Optional(String(PWebPageUrl))
+    "webPageUrl":Optional(String(PWebPageUrl)),
+    "successUrl":Optional(String(PSuccessUrl)),
+    "errorUrl":Optional(String(PErrorUrl))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 SessionUser:= Global.ValidateAgentApiToken(true, true);
@@ -37,8 +39,7 @@ try
                 PDescription, PPaymentDeadline, 
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,
 			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
-			    PBuyerPhoneNumber ?? "" , 
-			    PCallBackUrl ?? "", 
+			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
 			    logActor);
 			
     PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");

@@ -89,7 +89,12 @@ DownloadTemplateBusinessCooperationRequest(PIsEmptyFile) := (
 		Error("GeneralCompanyInformation must be populated");
 	);
 	companyStructure:= select top 1 * from POWRS.PaymentLink.Onboarding.CompanyStructure where UserName = SessionUser.username;
-	if(companyStructure == null or companyStructure.Owners == null or companyStructure.Owners.Length == 0)then
+	if(companyStructure == null or 
+		(companyStructure.OwnerStructure != POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.Person 
+			and 
+			(companyStructure.Owners == null or companyStructure.Owners.Length == 0)
+		)
+	)then
 	(
 		Error("CompanyStructure and owners must be populated");
 	);
@@ -424,8 +429,10 @@ DownloadTemplateContractWithEMI(PIsEmptyFile) := (
 		Error("File does not exist");
 	);
 	htmlContent := System.IO.File.ReadAllText(htmlTemplatePath);
+		
+	clientTypeStr := POWRS.PaymentLink.ClientType.OrgClientType.GetClientTypeByUserName(SessionUser.username).ToString();
 	
-	fileAttachment1Path := fileRootPath + "\\Attachment1.html";
+	fileAttachment1Path := fileRootPath + "\\Attachment1\\" + clientTypeStr + "\\Attachment1.html";
 	if (!System.IO.File.Exists(fileAttachment1Path)) then
 	(
 		Error("File Attachment1 does not exist");

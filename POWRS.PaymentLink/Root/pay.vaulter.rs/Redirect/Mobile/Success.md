@@ -6,6 +6,7 @@ Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
 CSS: ../../css/Payout.cssx
 CSS: ../../css/Status.css
+JavaScript: ../../js/Status.js
 viewport : Width=device-width, initial-scale=1
 Parameter: ORDERID
 Parameter: lng
@@ -15,22 +16,6 @@ Parameter: lng
 <div class="container-status">
 <div class="content">
 {{
-  Language:= null;
-if(exists(lng)) then 
-(
-  Language:= Translator.GetLanguageAsync(lng);
-);
-if(Language == null) then 
-(
- lng:= "rs";
- Language:= Translator.GetLanguageAsync("rs");
-);
-LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
-if(LanguageNamespace == null) then 
-(
- ]]<b>Page is not available at the moment</b>[[;
- Return("");
-);
 
 Order := select top 1 OrderId, ContractId, TokenId from PayspotPayments where OrderId = ORDERID;
 TokenID := Order.TokenId[0];
@@ -73,6 +58,7 @@ if Token.HasStateMachine then
 
     FileName:= SellerId + Token.ShortId;
 
+    SuccessUrl:= "";
     foreach Variable in (CurrentState.VariableValues ?? []) do 
       (
         Variable.Name like "Title" ?   Title := Variable.Value;
@@ -86,7 +72,36 @@ if Token.HasStateMachine then
         Variable.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Variable.Value;
         Variable.Name like "EscrowFee" ?   EscrowFee := Variable.Value.ToString("N2");
         Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString("N2");
+        Variable.Name like "SuccessUrl" ? SuccessUrl:= Variable.Value.ToString();
       );
+
+      if(!exists(Country)) then 
+     (
+        Country := 'RS';
+     );
+
+      Language:= null;
+      if(exists(lng) and lng != "") then
+      (
+        Language:= Translator.GetLanguageAsync(lng);
+      )
+      else 
+      (
+        Language:= Translator.GetLanguageAsync(Country.ToLowerInvariant());
+      );
+
+      if(Language == null) then
+      (
+        Language:= Translator.GetLanguageAsync("rs");
+      );
+      
+      LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
+      if(LanguageNamespace == null) then 
+      (
+       ]]<b>Page is not available at the moment</b>[[;
+       Return("");
+      );
+
      BuyerFirstName := Before(BuyerFullName," ");
       ]]  <table style="width:100%">
          <tr class="welcomeLbl">   
@@ -105,6 +120,7 @@ if Token.HasStateMachine then
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
 <input type="hidden" value="((Country ))" id="country"/>
+<input type="hidden" value="((SuccessUrl ))" id="RedirectUrl"/>
 <div class="payment-details">
   <table style="width:100%">
     <tr id="tr_header" class="table-row">
@@ -157,8 +173,14 @@ if Token.HasStateMachine then
             </div>
             <div class="textBody">
                 <span>((LanguageNamespace.GetStringAsync(51) ))</span>
-            </div>
-        </div>
+            </div>[[;
+            if(!System.String.IsNullOrEmpty(SuccessUrl)) then 
+            (
+             ]]<div class="textBody">
+                <h3 style="color: green;">((LanguageNamespace.GetStringAsync(77) ))</h3>
+             </div>[[;
+            );         
+        ]]</div>
     </div>[[;
 }}
 </div>

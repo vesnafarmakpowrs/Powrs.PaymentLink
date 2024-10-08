@@ -53,7 +53,7 @@ try
     html:= System.IO.File.ReadAllText(htmlTemplatePath);
     
     html := Replace(html,"{{Code}}",VerificationCode);
-    html := Replace(html,"{{Portal}}",portal);
+    html := Replace(html,"{{Year}}", Str(Year(Now)));
     
     Log.Informational("Sending email for verification email:" + PEmail,null);
     ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;

@@ -56,26 +56,49 @@ ApplyForLeglalID(onBoardingData):=(
 		
 	firstName := "";
 	lastName := "";
-		
-	fullNameArray := Split(onBoardingData.CompanyStructure.Owners[0].FullName, " ");
-	if(fullNameArray.Length == 1)then
+	personalNumber := "";
+	
+	if(onBoardingData.CompanyStructure.OwnerStructure == POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.Person)then
 	(
-		firstName := onBoardingData.CompanyStructure.Owners[0].FullName;
-		lastName := " ";
-	)
-	else 
-	(
-		firstName := Str(fullNameArray[0]);
-		FOR i := 1 TO fullNameArray.Length - 1 STEP 1 DO
+		personalNumber := onBoardingData.GeneralCompanyInformation.LegalRepresentatives[0].PersonalNumber;
+		fullNameArray := Split(onBoardingData.GeneralCompanyInformation.LegalRepresentatives[0].FullName, " ");
+		if(fullNameArray.Length == 1)then
 		(
-			lastName += fullNameArray[i] + ( i != fullNameArray.Length - 1 ? " " : "");
+			firstName := onBoardingData.GeneralCompanyInformation.LegalRepresentatives[0].FullName;
+			lastName := " ";
+		)
+		else 
+		(
+			firstName := Str(fullNameArray[0]);
+			FOR i := 1 TO fullNameArray.Length - 1 STEP 1 DO
+			(
+				lastName += fullNameArray[i] + ( i != fullNameArray.Length - 1 ? " " : "");
+			);
+		);		
+	)
+	else
+	(
+		personalNumber := onBoardingData.CompanyStructure.Owners[0].PersonalNumber;
+		fullNameArray := Split(onBoardingData.CompanyStructure.Owners[0].FullName, " ");
+		if(fullNameArray.Length == 1)then
+		(
+			firstName := onBoardingData.CompanyStructure.Owners[0].FullName;
+			lastName := " ";
+		)
+		else 
+		(
+			firstName := Str(fullNameArray[0]);
+			FOR i := 1 TO fullNameArray.Length - 1 STEP 1 DO
+			(
+				lastName += fullNameArray[i] + ( i != fullNameArray.Length - 1 ? " " : "");
+			);
 		);
 	);
 		
 	dictionary:= {};
 	dictionary["FIRST"]:= firstName;
 	dictionary["LAST"]:= lastName;
-	dictionary["PNR"]:= onBoardingData.CompanyStructure.Owners[0].PersonalNumber;
+	dictionary["PNR"]:= personalNumber;
 	dictionary["COUNTRY"]:= "RS";
 	dictionary["ORGNAME"]:= onBoardingData.GeneralCompanyInformation.ShortName;
 	dictionary["ORGNR"]:= onBoardingData.GeneralCompanyInformation.OrganizationNumber;
@@ -173,7 +196,7 @@ SendEmailToUser():= (
 	MailBody.Append("<br />Dokumentacija koju ste dodali na naš sistem potrebno je da bude proverena od strane platne institucije, nakon čega će Vas kontaktirati Vaulter tim. Proces verifikacije traje do 5 radnih dana.");
 	MailBody.Append("<br />Za sva pitanja možete nas kontaktirati na email adresu queries@vaulter.se ili pozivom na broj 0800 40 40 44.");
 	MailBody.Append("<br />");
-	MailBody.Append("<br />Srdačan pozdrav");
+	MailBody.Append("<br />Srdačan pozdrav,");
 	MailBody.Append("<br />Vaulter");
 	
 	MailBody := Replace(MailBody, "{{user}}", SessionUser.username);
@@ -187,6 +210,25 @@ SendEmailToUser():= (
 	destroy(MailBody);
 	destroy(uploadedDocuments);
 	return(1);
+);
+
+SetOrganizationClientTyle(onBoardingData) := (
+	organizationClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = onBoardingData.GeneralCompanyInformation.ShortName;
+	brokerAccClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP where UserName = SessionUser.username;
+	
+	if(organizationClientType = null)then
+	(
+		organizationClientType := Create(POWRS.PaymentLink.ClientType.Models.OrganizationClientType);
+		organizationClientType.OrganizationName := onBoardingData.GeneralCompanyInformation.ShortName;
+		organizationClientType.OrgClientType := brokerAccClientType != null ? brokerAccClientType.OrgClientType : POWRS.PaymentLink.ClientType.Enums.ClientType.Small;
+		
+		Waher.Persistence.Database.Insert(organizationClientType);
+	);
+
+	if(brokerAccClientType != null) then
+	(
+		Waher.Persistence.Database.Delete(brokerAccClientType);
+	);
 );
 
 try
@@ -206,10 +248,34 @@ try
 	
     currentMethod := "ApplyForLeglalID";
 	ApplyForLeglalID(onBoardingData);
-    currentMethod := "SendEmailToVaulter";
-	SendEmailToVaulter(onBoardingData);
-    currentMethod := "SendEmailToUser";
-	SendEmailToUser();
+	
+	try
+	(
+		currentMethod := "SendEmailToVaulter";
+		SendEmailToVaulter(onBoardingData);
+	)
+	catch
+	(
+		Log.Error("Unable to send email to Powrs onboarding: " + Exception.Message + ", \ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+	);
+	try
+	(
+		currentMethod := "SendEmailToUser";
+		SendEmailToUser();
+	)
+	catch
+	(
+		Log.Error("Unable to send email to user: " + Exception.Message + ", \ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+	);
+	try
+	(
+		currentMethod := "UpdateClientType";
+		SetOrganizationClientTyle(onBoardingData);
+	)
+	catch
+	(
+		Log.Error("Unable to set org client type: " + Exception.Message + ", \ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+	);
 	
 	Log.Informational("Succeffully submited onboarding for user: " + SessionUser.username, logObject, logActor, logEventID, null);
 	{

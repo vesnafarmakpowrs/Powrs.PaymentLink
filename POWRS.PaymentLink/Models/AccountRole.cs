@@ -9,7 +9,6 @@ namespace POWRS.PaymentLink.Models
     /// GroupAdmin      -> Yuta (Can see and get details from all children. CAN'T create new user (legal id)
     /// ClientAdmin     -> Org admins. Can see and get details from all children. CAN Create user with same or lower role
     /// User            -> user from Org. Can see only his transactions. CAN'T create new user (legal id)
-    /// Client          -> Stara rola... dok se ne uradi update u bazi
     /// </summary>
     public enum AccountRole
     {

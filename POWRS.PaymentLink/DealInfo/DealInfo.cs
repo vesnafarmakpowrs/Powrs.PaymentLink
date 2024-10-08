@@ -29,6 +29,7 @@ namespace POWRS.PaymentLink.RS
 
                 string InvoiceNo = GetInvoiceNo(IdentityProperties, ShortId.ToString());
                 stringBuilder = stringBuilder.Replace("{{InvoiceNo}}", InvoiceNo);
+                stringBuilder = stringBuilder.Replace("{{YEAR}}", DateTime.Now.Year.ToString());
 
                 ReplaceDictionaryValues(ContractParameters, stringBuilder, Html);
                 ReplaceDictionaryValues(IdentityProperties, stringBuilder, Html);
