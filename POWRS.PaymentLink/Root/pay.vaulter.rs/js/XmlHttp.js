@@ -13,13 +13,8 @@ function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     if (!jwt.trim() === "") {
         alert("Session token not found, refresh the page and try again");
     }
-	
-   SendXmlHttpRequest(resource, requestBody, onSuccess, onError, jwt);
-}
-
-function SendXmlHttpRequest(resource, requestBody, onSuccess, onError, jwt) {
-   
-   
+    console.log(jwt);
+    console.log(requestBody);
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", resource, true);
     xhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");

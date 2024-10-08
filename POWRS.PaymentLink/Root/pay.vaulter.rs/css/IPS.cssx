@@ -165,6 +165,18 @@ font-style: normal;
     font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
 }
 
+.retry-btn{
+    padding: 5px 25px;
+    text-align: center;
+    border-radius: 12px;
+    font-style: normal;
+    font-size: 1rem;
+    line-height: normal;
+    box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+    transition: all 0.2s ease;
+    font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+}
+
 .retry-div
 {
   display: flex;

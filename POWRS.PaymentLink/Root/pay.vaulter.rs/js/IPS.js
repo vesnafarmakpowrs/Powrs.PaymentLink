@@ -2,14 +2,15 @@
 var Translations = {};
 const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
 
-document.addEventListener("DOMContentLoaded", () => {
-    GenerateLanguageDropdown();
-    GenerateTranslations();
-});
+window.addEventListener("load", afterLoaded,false);
+function afterLoaded(){
+  GenerateTranslations();
+ LoadIPS();
+}
 
 function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     let jwt = document.getElementById("jwt");
-    if (jwt == null && !jwt.value.trim() == "") {
+    if (!jwt.value.trim() === "") {
         alert("Session token not found, refresh the page and try again");
     }
 
@@ -54,8 +55,6 @@ function GenerateTranslations() {
     Translations.OpenLinkOnPhoneMessage = document.getElementById("OpenLinkOnPhoneMessage").value;
     Translations.SessionTokenExpiredMessage = document.getElementById("SessionTokenExpired").value;
     Translations.PaymentFailed = document.getElementById("PaymentFailed").value;
-    Translations.PaymentCompletedWaitingRedirection = document.getElementById("PaymentCompletedWaitingRedirection").value;
-    Translations.PaymentFailedWaitingRedirection = document.getElementById("PaymentCompletedWaitingRedirection").value;
 }
 
 function GenerateLanguageDropdown() {
@@ -71,12 +70,10 @@ function GenerateLanguageDropdown() {
             if (response != null && response.length > 0) {
                 const languageDropdown = document.getElementById("languageDropdown");
                 response.forEach(language => {
-                    if (language.Code != 'sv') {
-                        let option = document.createElement("option");
-                        option.value = language.Code;
-                        option.textContent = language.Name;
-                        languageDropdown.appendChild(option);
-                    }
+                    let option = document.createElement("option");
+                    option.value = language.Code;
+                    option.textContent = language.Name;
+                    languageDropdown.appendChild(option);
                 });
 
                 languageDropdown.value = prefferedLanguage.value;
@@ -98,7 +95,7 @@ function TransactionFailed(Result) {
         IsSuccess: false,
         Message: Translations.TransactionFailed
     };
-
+    document.getElementById("ctn-payment-method-rs").style.display = "block";
     DisplayTransactionResult(res);
 }
 
@@ -117,12 +114,31 @@ function UserAgree() {
 
     if (document.getElementById("termsAndCondition").checked
         && document.getElementById("termsAndConditionAgency").checked) {
-        document.getElementById("payspot-submit").removeAttribute("disabled");
+        if (document.getElementById("payspot-submit") != null) document.getElementById("payspot-submit").removeAttribute("disabled");
         document.getElementById("ctn-payment-method-rs").style.display = "block";
+        LoadIPS();
     }
     else {
-        document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
+        if (document.getElementById("payspot-submit") != null) document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
         document.getElementById("ctn-payment-method-rs").style.display = "none";
+    }
+}
+
+
+function LoadIPS() {
+    console.log('loadIPS');
+    document.getElementById("ips-iframe").src = "";
+    let jwt = document.getElementById("jwt");
+    console.log(jwt.value);
+    console.log(document.getElementById("ips-iframe"));
+    if (isMobileDevice)
+        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSPayoutMethod.md?JWT=" + jwt.value;
+    else {
+        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md?JWT=" + jwt.value + "&TabID=" + TabID;
+        document.getElementById("ips-iframe").classList.remove("pay-iframe");
+        document.getElementById("ips-iframe").classList.add("pay-iframe-web");
+		 console.log('desktop');
+		  console.log(document.getElementById("ips-iframe"));
     }
 }
 
@@ -143,7 +159,7 @@ function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUs
         }));
 }
 
-function InitiatePaymentForm(onSuccess) {
+function InitiatePaymentForm(ipsOnly, onSuccess) {
     document.getElementById("payspot-submit").style.display = "none";
     document.getElementById("tr_spinner").style.display = null;
     CollapseDetails();
@@ -165,49 +181,42 @@ function InitiatePaymentForm(onSuccess) {
         })
 }
 function StartPayment() {
-    InitiatePaymentForm(ShowPayspotPage);
+    InitiatePaymentForm(false, ShowPayspotPage);
 }
 
 function GenerateIPSForm() {
-    InitiatePaymentForm(FillAndSubmitPayspotIPSForm);
+    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
 }
 
 function PaymentCompleted(Result) {
-    if (Result != null && Result.successUrl != undefined && Result.successUrl.trim() != '') {        
-        DisplayMessage(Translations.PaymentCompletedWaitingRedirection, 'green');
-        setTimeout(function () {
-            window.open(Result.successUrl, "_self");
-        }, 3000);
-
-        return;
-    }
-
     location.reload();
 }
-
 function PaySpotPaymentStatus(Result) {
-    if (Result == null || Result.StatusCode == null || Result.StatusCode == "00") {
-        return;
-    }
+    console.log(Result);
 
-    if (Result.ErrorUrl !== undefined && Result.ErrorUrl.trim() != '') {
-        DisplayMessage(Translations.PaymentFailedWaitingRedirection, 'green');
-        setTimeout(function () {
-            window.open(Result.ErrorUrl, "_self");
-        }, 3000);
-        return;
+    if (Result != null && Result.StatusCode != null && Result.StatusCode != "00") {
+        document.getElementById('ctn-payment-method-rs').style.display = "none";
+        var div = document.getElementById('payment-msg-div'); 
+        div.style.display = "block";
+		var div = document.getElementById('payment-msg'); 
+		div.innerHTML = '';
+        var boldText = document.createElement('strong');
+        boldText.textContent = Translations.PaymentFailed;;
+        boldText.style.color = 'red';
+		boldText.style.width = '70%';
+		boldText.style.textAlign  = 'center';
+        div.appendChild(boldText);
+        document.getElementById('retry-payment').style.display = "block";
     }
-
-    DisplayMessage(Translations.PaymentFailed, 'red');
 }
 
-function DisplayMessage(message, color) {
-    var div = document.getElementById('ctn-payment-method-rs');
+function RetryPayment() {
+    document.getElementById('retry-payment').style.display = "none";
+    var div = document.getElementById('payment-msg');
     div.innerHTML = '';
-    var boldText = document.createElement('strong');
-    boldText.textContent = message;
-    boldText.style.color = color;
-    div.appendChild(boldText);
+	document.getElementById('payment-msg-div').style.display = "none";
+	document.getElementById("ips-iframe").src = "";
+    UserAgree();
 }
 
 function ShowPayspotPage(Data) {
