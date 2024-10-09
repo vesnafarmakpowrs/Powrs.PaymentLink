@@ -10,7 +10,7 @@
 			<RoleReference role="Creator" />
 		</Owner>
 		<TrustProvider>
-			<RoleReference role="TrustProvider" /> 
+			<RoleReference role="TrustProvider" />
 		</TrustProvider>
 		<Value>
 			<ParameterReference parameter="Value" />
@@ -133,6 +133,12 @@
 				</Variable>
 				<Variable id="RemoteId">
 					<TagReference tag="RemoteId" />
+				</Variable>
+				<Variable id="ErrorUrl">
+					<TagReference tag="ErrorUrl" />
+				</Variable>
+				<Variable id="SuccessUrl">
+					<TagReference tag="SuccessUrl" />
 				</Variable>
 				<Variable id="CanCancel">
 					<Boolean>false</Boolean>
@@ -284,7 +290,9 @@
 									"CallBackUrl": CallBackUrl,
 									"TokenId": TokenId,
 									"SendEmail" : BuyerEmail,
-									"CountryCode" : Country
+									"CountryCode" : Country,
+									"SuccessUrl": SuccessUrl,
+									"ErrorUrl": ErrorUrl
 									};
 									if(exists(PayspotOrderId)) then
 									(
@@ -331,12 +339,12 @@
 						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentType');
 						PaymentStatusCode := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusCode');
 						PaymentStatusDescr := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusDescr');
-						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr})")
+						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr, 'ErrorUrl': ErrorUrl})")
 					</Script>
 					<Try>
 						<PersistVariable name="PaySpotStatusCode" value="{PaymentStatusCode}" />
 						<PersistVariable name="PaySpotStatusMsg" value="{PaymentStatusDescr}" />
-						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessPayspotPaymentStatus, paymentStatus: ' + PaymentStatus }" object="{Buyer}" type="Informational" />
+						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessPayspotPaymentStatus, paymentStatus: ' + PaymentStatusDescr }" object="{Buyer}" type="Informational" />
 						<Catch exceptionVariable="ex">
 							<LogEvent type="Error" eventId="ProcessPayspotPaymentStatus" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>
@@ -491,7 +499,7 @@
 		</Tag>
 		<Tag name="BuyerCity">
 			<ParameterReference parameter="BuyerCity" />
-		</Tag>		
+		</Tag>
 		<Tag name="CallBackUrl">
 			<ParameterReference parameter="CallBackUrl" />
 		</Tag>
@@ -558,6 +566,12 @@
 		<Tag name="RemoteId">
 			<ParameterReference parameter="RemoteId" />
 		</Tag>
+		<Tag name="SuccessUrl">
+			<ParameterReference parameter="SuccessUrl" />
+		</Tag>
+		<Tag name="ErrorUrl">
+			<ParameterReference parameter="ErrorUrl" />
+		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
 		</FriendlyName>
@@ -623,7 +637,6 @@
 				</paragraph>
 			</description>
 		</numericalParameter>
-		
 		<stringParameter name="Currency" value="RSD" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
 			<description xml:lang="en">
 				<paragraph>
@@ -727,7 +740,7 @@
 					<text>PaySpot status message of paymentr</text>
 				</paragraph>
 			</description>
-		</stringParameter>		
+		</stringParameter>
 		<stringParameter name="BuyerFullName" value="" minLength="2">
 			<description xml:lang="en">
 				<paragraph>
@@ -802,6 +815,20 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Payment methods which are supported for this contract (Card, BankTransfer)</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SuccessUrl" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Url to transfer when payment is completed.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="ErrorUrl" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Url to transfer when payment is not completed and has errors..</text>
 				</paragraph>
 			</description>
 		</stringParameter>
