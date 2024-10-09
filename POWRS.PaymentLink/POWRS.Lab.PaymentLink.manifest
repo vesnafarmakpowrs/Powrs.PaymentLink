@@ -177,7 +177,12 @@
 				<Content fileName="PaymentLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="Status.js" altFolder="..\..\pay.vaulter.rs\js"/>
 			</Folder>
-			<Folder name="EC">
+			<Folder name="EC">				
+				<Content fileName="favicon.ico" altFolder="..\..\pay.vaulter.rs\ES\"/>
+				<Content fileName="IPSBank.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
+				<Content fileName="IPSQR.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
+				<Content fileName="IPSType.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
+				<Content fileName="Payout.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
 				<Folder name="js">
 					<Content fileName="BankList.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
 					<Content fileName="IPS.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
@@ -185,11 +190,6 @@
 					<Content fileName="PayForm.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
 					<Content fileName="QRIPS.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
 				</Folder>
-				<Content fileName="favicon.ico" altFolder="..\..\pay.vaulter.rs\ES\"/>
-				<Content fileName="IPSBank.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
-				<Content fileName="IPSQR.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
-				<Content fileName="IPSType.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
-				<Content fileName="Payout.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="credit-card-payment.svg" altFolder="..\..\pay.vaulter.rs\resources"/>

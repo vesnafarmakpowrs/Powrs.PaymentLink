@@ -472,6 +472,39 @@
 	  <None Update="Root\pay.vaulter.rs\css\Stripe.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.vaulter.rs\EC\favicon.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\EC\IPSBank.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\EC\IPSQR.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\EC\IPSType.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\EC\js\BankList.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\EC\js\IPS.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\EC\js\IPSType.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\EC\js\PayForm.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\EC\js\QRIPS.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\EC\Payout.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\favicon.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.vaulter.rs\Index.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -515,6 +548,108 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\resources\expand.svg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\addiko.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\adriatic.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\aik.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\alta.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\ERSTE.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\eurobank.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\halk.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\intesa.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\mobi.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\nlb.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\otp.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\pbs.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\RAIFFEISEN.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\rba.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\unicredit.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal\unit.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\addiko.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\adriatic.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\aik.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\alta.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\erste.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\EUROBANK-DIREKTNA.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\halkbank.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\intesa.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\mobi.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\nlb.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\otp.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\pbs.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\RAIFFEISEN.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\rba.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\srpska.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\unicredit.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\unit.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\resources\personal_round\Yettel.jpg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\resources\spin.svg">
@@ -691,6 +826,12 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Auth\VerifyToken.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Contract\CreateItemEComm.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Contract\CreateItemIPS.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\InvalidateContract.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -783,20 +924,7 @@
 	<ItemGroup>
 	  <Folder Include="FeeCalculator\TemplateFiles\FeeCalculatorForm\" />
 	</ItemGroup>
-
-	<!-- Build Lab Serbian package -->
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
-	</PropertyGroup>
 	
-	<!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Install.exe&quot; -p &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot; -k 5d98ddf8138a851f6822be199ee9324e -m &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.Lab.PaymentLink.manifest&quot;" />
-		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Sign.exe&quot; -c ed448 -priv &quot;qGe+NyQy0hjvuNPK61LfvHmkJZxD0SHdo7UozOsWpGPj3GmSxAa8X4Ch7gJv23tRfUm4+IJIJCo=&quot; -o &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.signature&quot; -s &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot;" />
-	</Target>-->
-	
-
-	<!-- Build PRODUCTION Serbian package 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ApplicationManifest>POWRS.RS.PaymentLink.manifest</ApplicationManifest>
@@ -806,5 +934,5 @@
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Install.exe&quot; -p &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot; -k 5d98ddf8138a851f6822be199ee9324e -m &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.RS.PaymentLink.manifest&quot;" />
 		<Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Sign.exe&quot; -c ed448 -priv &quot;qGe+NyQy0hjvuNPK61LfvHmkJZxD0SHdo7UozOsWpGPj3GmSxAa8X4Ch7gJv23tRfUm4+IJIJCo=&quot; -o &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.signature&quot; -s &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot;" />
 	</Target>
-	-->
+	
 </Project>
