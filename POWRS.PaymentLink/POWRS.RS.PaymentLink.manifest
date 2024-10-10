@@ -155,6 +155,9 @@
 		<Folder name="pay.vaulter.rs">
 			<Content fileName="Index.html"/>
 			<Content fileName="Payout.md"/>
+			<Content fileName="PayoutIPS.md"/>
+			<Content fileName="IPSPayoutMethod.md"/>
+			<Content fileName="IPSBank.md"/>
 			<Content fileName="TermsAndCondition.html"/>
 			<Content fileName="PrivacyPolicy.html"/>
 			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>

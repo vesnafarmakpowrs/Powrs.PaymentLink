@@ -85,10 +85,10 @@ function LoadIPS()
    console.log('loadIPS');
    document.getElementById("ips-iframe").src = "";
    if (isMobileDevice)
-     document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSPayoutMethod.md";
+     document.getElementById("ips-iframe").src = "IPSPayoutMethod.md";
    else
    {
-     document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md";
+     document.getElementById("ips-iframe").src = "IPSDesktop.md";
      document.getElementById("ips-iframe").classList.remove("pay-iframe");
      document.getElementById("ips-iframe").classList.add("pay-iframe-web");
    }
