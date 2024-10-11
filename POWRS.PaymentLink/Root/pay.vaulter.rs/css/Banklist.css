@@ -1,0 +1,197 @@
+
+@font-face {
+    font-family: 'Goanda Bold';
+    src: url('../Fonts/Coanda-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RTDromo';
+    src: url('../Fonts/RTDromo-Book.woff2') format('woff2'), url('fonts/RTDromo-Book.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RTDromo Book Oblique';
+    src: url('../Fonts/RTDromo-BookOblique.woff2') format('woff2'), url('fonts/RTDromo-BookOblique.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RTDromo Light';
+    src: url('../Fonts/RTDromo-Light.woff2') format('woff2'), url('fonts/RTDromo-Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'RTDromo Light Oblique';
+    src: url('../Fonts/RTDromo-LightOblique.woff2') format('woff2'), url('fonts/RTDromo-LightOblique.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'RTDromo Medium';
+    src: url('../Fonts/RTDromo-Medium.woff2') format('woff2'), url('fonts/RTDromo-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RTDromo Medium Oblique';
+    src: url('../Fonts/RTDromo-MediumOblique.woff2') format('woff2'), url('fonts/RTDromo-MediumOblique.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+.dropdown {
+    width: 100%;
+    border: 1px solid #F5F5FB;
+}
+
+.dropdown-item:active {
+    color: #ff00eb !important;
+    vertical-align: top !important;
+    padding: 8px 13px 6px !important;
+    border: solid #565466 !important;
+}
+
+.dropdown .options {
+    display: none;
+}
+
+    .dropdown .options div {
+        position: relative;
+        height: 30px;
+        padding: 5px 5px 5px 50px;
+        cursor: pointer;
+        line-height: 30px;
+    }
+
+        .dropdown .options div:nth-of-type(2n+1) {
+            background-color: #efefef;
+        }
+
+        .dropdown .options div:before {
+            content: "";
+            width: 32px;
+            height: 24px;
+            background-image: ..\resources\personal\addiko.png;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: 5px;
+            top: 8px;
+        }
+
+}
+
+.dropdown div.select-bank {
+    position: relative;
+    height: 30px;
+    padding: 5px 50px 5px 5px;
+    cursor: pointer;
+    line-height: 30px;
+    border: 1px solid #e2e2e2;
+}
+
+    .dropdown div.select-bank:before {
+        content: "";
+        width: 32px;
+        height: 24px;
+        background-image: "..\resources\personal\addiko.png";
+        background-repeat: no-repeat;
+        background-position: 0 -191px;
+        position: absolute;
+        right: 5px;
+        top: 8px;
+    }
+
+
+.dropdown ul li.active {
+    background-color: #4CAF50;
+    color: red !important;
+}
+
+
+
+.dropdown ul li:hover:not(.active) {
+    background-color: #4CAF50;
+    color: red !important;
+}
+
+
+
+
+body {
+    overflow: scroll; /* Show scrollbars */
+}
+
+
+
+.dropdown-item {
+    display: block !important;
+    width: 90% !important;
+    padding: .15rem 0.25rem !important;
+    clear: both !important;
+    font-weight: 300 !important;
+    color: #212529;
+    background-color: white !important;
+    border: 0;
+    margin: 10px;
+    border-radius: 25px;
+}
+
+.bank-item {
+    dispaly: inline-block;
+}
+
+.bank-item {
+    background-color: white;
+    border-radius: 25px;
+    /* padding-left: 20px; */
+    margin: 10px;
+}
+
+.content-bank {
+    background-color: #F5F5FB;
+    font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+}
+
+.select-bank-lbl {
+    font-size: x-large;
+    padding-top: 0.8rem;
+    padding-left: 1.5rem;
+    margin-bottom: 0px;
+}
+
+.bank-img {
+    padding-left: 0.25rem;
+    width: 40px;
+    height: 100%
+}
+
+.bank-list-ul {
+    padding-inline-start: 0px !important;
+}
+
+.bank-name-lbl {
+    padding-left: 0.4rem;
+    font-size: 1rem;
+    font-style: normal;
+    font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+}
+
+.search-bank-box {
+    width: 100%;
+    border: 1px;
+    border: 2px solid #D7D7D7;
+    font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+}
