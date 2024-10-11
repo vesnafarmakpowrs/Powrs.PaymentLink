@@ -270,7 +270,7 @@ if ContractState == "AwaitingForPayment" then
     <button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="LoadIPS()">((LanguageNamespace.GetStringAsync(73) ))</button> 
   </div>
   <div>
-    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(79) ))</label>
+    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(79) ))  ((OrgName )).</label>
   </div>
 </div>
 <div id="payment-msg-div"  style="display:none">
