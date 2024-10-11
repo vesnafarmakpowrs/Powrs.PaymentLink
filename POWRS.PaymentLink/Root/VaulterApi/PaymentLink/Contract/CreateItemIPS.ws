@@ -18,6 +18,8 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "callbackUrl":Optional(String(PCallBackUrl)),
     "webPageUrl":Optional(String(PWebPageUrl)),
+	"successUrl":Optional(String(PSuccessUrl)),
+    "errorUrl":Optional(String(PErrorUrl)),
 	"isMobile":Required(Bool(PIsMobile)),
 	"isCompany":Optional(Bool(PIsCompany))
 }:=Posted) ??? BadRequest(Exception.Message);
@@ -36,8 +38,7 @@ try
                 PDescription, PPaymentDeadline, 
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,
 			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
-			    PBuyerPhoneNumber ?? "" , 
-			    PCallBackUrl ?? "", 
+			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
 			    logActor);
    
 	PayoutPage := "EC/IPSQR.md";  

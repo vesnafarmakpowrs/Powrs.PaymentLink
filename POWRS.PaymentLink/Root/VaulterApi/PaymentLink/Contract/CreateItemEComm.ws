@@ -17,7 +17,9 @@ if !exists(Posted) then BadRequest("No payload.");
     "buyerCity": Optional(Str(PBuyerCity)) ,
     "buyerCountryCode":Required(String(PBuyerCountryCode)),
     "callbackUrl":Optional(String(PCallBackUrl)),
-    "webPageUrl":Optional(String(PWebPageUrl))
+    "webPageUrl":Optional(String(PWebPageUrl)),
+    "successUrl":Optional(String(PSuccessUrl)),
+    "errorUrl":Optional(String(PErrorUrl))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 SessionUser:= Global.ValidateAgentApiToken(true, true);
@@ -28,14 +30,13 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
-	ContractInfo := Global.CreateItem(SessionUser, PRemoteId, 
-					PTitle, PPrice, PCurrency, 
-					PDescription, PPaymentDeadline, 
-					PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,
-					PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
-					PBuyerPhoneNumber ?? "" , 
-					PCallBackUrl ?? "", 
-					logActor);
+	    ContractInfo := Global.CreateItem(SessionUser, PRemoteId, 
+                PTitle, PPrice, PCurrency, 
+                PDescription, PPaymentDeadline, 
+			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,
+			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
+			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
+			    logActor);
 
 	PayoutPage := "EC/Payout.md";  
 	PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
