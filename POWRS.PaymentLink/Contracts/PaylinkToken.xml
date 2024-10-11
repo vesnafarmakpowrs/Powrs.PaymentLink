@@ -1,4 +1,4 @@
-<contract archiveOpt="P1Y" archiveReq="P1Y" canActAsTemplate="true" duration="P1Y" id="PaylinkToken" visibility="Public" xmlns="urn:ieee:iot:leg:sc:1.0">
+<contract archiveOpt="P1Y" archiveReq="P1Y" canActAsTemplate="true" duration="P99Y" id="PaylinkToken" visibility="Public" xmlns="urn:ieee:iot:leg:sc:1.0">
 	<Create xmlns="https://paiwise.tagroot.io/Schema/NeuroFeatures.xsd">
 		<TokenID shortIdAlphabet="0123456789" shortIdLength="10">
 			<Random />
@@ -10,7 +10,7 @@
 			<RoleReference role="Creator" />
 		</Owner>
 		<TrustProvider>
-			<RoleReference role="TrustProvider" /> 
+			<RoleReference role="TrustProvider" />
 		</TrustProvider>
 		<Value>
 			<ParameterReference parameter="Value" />
@@ -40,9 +40,6 @@
 				</Variable>
 				<Variable id="AmountToPay">
 					<TagReference tag="AmountToPay" />
-				</Variable>
-				<Variable id="EscrowFeeJid">
-					<Calc><![CDATA['fees@' + Gateway.Domain]]></Calc>
 				</Variable>
 				<Variable id="Price">
 					<TagReference tag="Value" />
@@ -80,20 +77,8 @@
 				<Variable id="SellerName">
 					<TagReference tag="SellerName" />
 				</Variable>
-				<Variable id="SellerServiceProviderId">
-					<TagReference tag="SellerServiceProviderId" />
-				</Variable>
-				<Variable id="SellerServiceProviderType">
-					<TagReference tag="SellerServiceProviderType" />
-				</Variable>
 				<Variable id="SellerBankAccount">
 					<TagReference tag="SellerBankAccount" />
-				</Variable>
-				<Variable id="BuyerServiceProviderId">
-					<TagReference tag="BuyerServiceProviderId" />
-				</Variable>
-				<Variable id="BuyerServiceProviderType">
-					<TagReference tag="BuyerServiceProviderType" />
 				</Variable>
 				<Variable id="BuyerBankAccount">
 					<TagReference tag="BuyerBankAccount" />
@@ -134,6 +119,12 @@
 				<Variable id="RemoteId">
 					<TagReference tag="RemoteId" />
 				</Variable>
+				<Variable id="ErrorUrl">
+					<TagReference tag="ErrorUrl" />
+				</Variable>
+				<Variable id="SuccessUrl">
+					<TagReference tag="SuccessUrl" />
+				</Variable>
 				<Variable id="CanCancel">
 					<Boolean>false</Boolean>
 				</Variable>
@@ -141,6 +132,7 @@
 					<Number>0</Number>
 				</Variable>
 				<State id="AwaitingForPayment">
+					<OnEnter actionRef="SetServiceProvider"/>
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -191,6 +183,22 @@
 				<State id="Done">
 					<OnEnter actionRef="MarkAsDone"/>
 				</State>
+				<Action id="SetServiceProvider">
+					<If condition="!exists(serviceProviderId) or serviceProviderId == ''">
+						<Then>
+							<Script>
+								config:= Evaluate("POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent()");
+								isProduction:= config.IsProduction ?? false;
+								serviceMode:= isProduction ? ".Live" : ".Test";
+
+								serviceProviderId:= "POWRS.Payment.PaySpot.PayspotService" + serviceMode;
+								serviceProviderType:= "POWRS.Payment.PaySpot.PayspotServiceProvider";
+							</Script>
+							<PersistVariable name="ServiceProviderId" value="{serviceProviderId}"/>
+							<PersistVariable name="ServiceProviderType" value="{serviceProviderType}"/>
+						</Then>
+					</If>
+				</Action>
 				<Action id="EmailToBuyerSent">
 					<Script>
 						newEmail:= SelectXmlStr(Note,'/default:EmailToBuyerSent/@email');
@@ -252,8 +260,6 @@
 									AmountToSell:= AmountToPay;
 									BankAccountToSell:= "";
 									SellEdalerFrom:= Seller;
-									ServiceProviderId:= SellerServiceProviderId;
-									ServiceProviderType:= SellerServiceProviderType;
 									AccountName:= SellerName;
 									MessageOnError:= 'CancelPayment error';
 									Mode:= 'Refund';
@@ -284,7 +290,10 @@
 									"CallBackUrl": CallBackUrl,
 									"TokenId": TokenId,
 									"SendEmail" : BuyerEmail,
-									"CountryCode" : Country
+									"CountryCode" : Country,
+									"SuccessUrl": SuccessUrl,
+									"ErrorUrl": ErrorUrl,
+									"RemoteId": RemoteId
 									};
 									if(exists(PayspotOrderId)) then
 									(
@@ -293,32 +302,25 @@
 									if(exists(OrderId)) then
 									(
 									Json.OrderId:= OrderId;
+									Json.FallbackMobileSuccessUrl:= Evaluate("POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent().GetFullSuccessUrl(true, Country, OrderId) ??? ''");
+									Json.FallbackMobileErrorUrl:= Evaluate("POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent().GetFullErrorUrl(true, Country, OrderId) ??? ''");
 									);
 									if (exists(PaymentType)) then
 									(
 									Json.PaymentType:= PaymentType;
 									);
-								</Script>
-								<HttpPost responseVariable="Response" resource="{endpoint}" content="{Json}">
-									<Header key="Accept" value="application/json"/>
-								</HttpPost>
-								<Script>
-									if(exists(Response.State) and exists(Response.Success)) then
-									(
-									success:= Boolean(Response.Success);
-									Notifications[NewStatus]:= success;
-									)
-									else
-									(
-									Notifications[NewStatus]:= false;
-									);
+
+									response:= Evaluate("Post(Gateway.GetUrl(':8088/VaulterApi/PaymentLink/Mail/ReportNewState.ws'), Json, {Accept: 'application/json'}, Gateway.Certificate)");
 								</Script>
 								<Catch exceptionVariable="ex">
-									<Script>
-										Notifications[NewStatus]:= false;
-									</Script>
 									<LogEvent actor="{Seller}" eventId="ReportNewState" level="Medium" message="{'Error while notifying client about state changed: ' + ex.Message}" module="ReportNewState" object="" type="Error" />
 								</Catch>
+								<Finally>
+									<Script>
+										Notifications[NewStatus]:= true;
+									</Script>
+									<PersistVariable name="Notifications" value="{Notifications}" />
+								</Finally>
 							</Try>
 							<PersistVariable name="Notifications" value="{Notifications}"/>
 						</Then>
@@ -331,12 +333,12 @@
 						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentType');
 						PaymentStatusCode := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusCode');
 						PaymentStatusDescr := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusDescr');
-						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr})")
+						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr, 'ErrorUrl': ErrorUrl})")
 					</Script>
 					<Try>
 						<PersistVariable name="PaySpotStatusCode" value="{PaymentStatusCode}" />
 						<PersistVariable name="PaySpotStatusMsg" value="{PaymentStatusDescr}" />
-						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessPayspotPaymentStatus, paymentStatus: ' + PaymentStatus }" object="{Buyer}" type="Informational" />
+						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessPayspotPaymentStatus, paymentStatus: ' + PaymentStatusDescr }" object="{Buyer}" type="Informational" />
 						<Catch exceptionVariable="ex">
 							<LogEvent type="Error" eventId="ProcessPayspotPaymentStatus" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>
@@ -348,8 +350,6 @@
 						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
 						PayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@payspotOrderId');
 						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentType');
-						BuyerEdalerServiceProviderId:= "POWRS.Payment.PaySpot.PayspotService.Live";
-						BuyerEdalerServiceProviderType:= "POWRS.Payment.PaySpot.PayspotServiceProvider";
 					</Script>
 					<Try>
 						<BuyEDaler to="{Seller}"
@@ -357,25 +357,20 @@
 							   currency="{Currency}"
 							   reference="{'nfeat: ' + TokenId}"
 							   contract="{TokenContract}"
-							   serviceId="{BuyerEdalerServiceProviderId}"
-							   serviceProvider="{BuyerEdalerServiceProviderType}">
+							   serviceId="{ServiceProviderId}"
+							   serviceProvider="{ServiceProviderType}">
 							<Parameter key="TotalAmountToPay" value="{AmountToPay}"></Parameter>
 							<Parameter key="Currency" value="{Currency}"></Parameter>
 							<Parameter key="OrderId" value="{OrderId}"></Parameter>
 							<Parameter key="PayspotOrderId" value="{PayspotOrderId}" />
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
 						</BuyEDaler>
-						<PersistVariable name="BuyerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
-						<PersistVariable name="BuyerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
-						<PersistVariable name="SellerServiceProviderType" value="{BuyerEdalerServiceProviderType}" />
-						<PersistVariable name="SellerServiceProviderId" value="{BuyerEdalerServiceProviderId}" />
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
 						<PersistVariable name="DeliveryDate" value="{Utc(DateTime(NowUtc.Year, NowUtc.Month, NowUtc.Day, 23, 30, 00))}" />
 						<PersistVariable name="OrderId" value="{OrderId}" />
 						<PersistVariable name="PayspotOrderId" value="{PayspotOrderId}" />
 						<PersistVariable name="PaymentType" value="{PaymentType}" />
-						<CallAction actionRef="TransferFee" />
 
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
 						<Catch exceptionVariable="ex">
@@ -396,8 +391,6 @@
 									AmountToSell:= AmountToPay;
 									BankAccountToSell:= "";
 									SellEdalerFrom:= Seller;
-									ServiceProviderId:= SellerServiceProviderId;
-									ServiceProviderType:= SellerServiceProviderType;
 									AccountName:= SellerName;
 									MessageOnError:= 'ReleaseFundsToSeller error';
 									Mode:= 'Confirm';
@@ -411,22 +404,6 @@
 								</Catch>
 							</Try>
 						</Else>
-					</If>
-				</Action>
-
-				<Action id="TransferFee">
-					<If condition="EscrowFee > 0">
-						<Then>
-							<Try>
-								<Payment amount="{EscrowFee}" contract="{TokenContract}" currency="{Currency}" from="{Seller}" reference="{Reference:='nfeat:'+ TokenId}" to="{EscrowFeeJid}" validDays="3" />
-								<PersistVariable name="FeesTransfered" value="true" />
-								<TextNote content="{'Escrow fee of' + ' ' + EscrowFee + ' ' + Currency + ' of eDaler transferred.'}" />
-								<Catch exceptionVariable="ex">
-									<LogEvent actor="{Seller}" eventId="Transfer fee" level="Medium" message="Error when transferring fee" module="TransferFee" object="" type="Error" />
-									<Error reason="{ex.Message}" />
-								</Catch>
-							</Try>
-						</Then>
 					</If>
 				</Action>
 				<Action id="TrySellEdaler">
@@ -491,7 +468,7 @@
 		</Tag>
 		<Tag name="BuyerCity">
 			<ParameterReference parameter="BuyerCity" />
-		</Tag>		
+		</Tag>
 		<Tag name="CallBackUrl">
 			<ParameterReference parameter="CallBackUrl" />
 		</Tag>
@@ -519,20 +496,8 @@
 		<Tag name="SellerName">
 			<ParameterReference parameter="SellerName" />
 		</Tag>
-		<Tag name="SellerServiceProviderId">
-			<ParameterReference parameter="SellerServiceProviderId" />
-		</Tag>
-		<Tag name="SellerServiceProviderType">
-			<ParameterReference parameter="SellerServiceProviderType" />
-		</Tag>
 		<Tag name="SellerBankAccount">
 			<ParameterReference parameter="SellerBankAccount" />
-		</Tag>
-		<Tag name="BuyerServiceProviderId">
-			<ParameterReference parameter="BuyerServiceProviderId" />
-		</Tag>
-		<Tag name="BuyerServiceProviderType">
-			<ParameterReference parameter="BuyerServiceProviderType" />
 		</Tag>
 		<Tag name="BuyerBankAccount">
 			<ParameterReference parameter="BuyerBankAccount" />
@@ -557,6 +522,12 @@
 		</Tag>
 		<Tag name="RemoteId">
 			<ParameterReference parameter="RemoteId" />
+		</Tag>
+		<Tag name="SuccessUrl">
+			<ParameterReference parameter="SuccessUrl" />
+		</Tag>
+		<Tag name="ErrorUrl">
+			<ParameterReference parameter="ErrorUrl" />
 		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
@@ -623,7 +594,7 @@
 				</paragraph>
 			</description>
 		</numericalParameter>
-		
+
 		<stringParameter name="Currency" value="RSD" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
 			<description xml:lang="en">
 				<paragraph>
@@ -673,44 +644,12 @@
 				</paragraph>
 			</description>
 		</stringParameter>
-		<stringParameter name="SellerServiceProviderId" value="">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Seller Provider id used to sellEdaler</text>
-				</paragraph>
-			</description>
-		</stringParameter>
-		<stringParameter name="SellerServiceProviderType" value="">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Seller Provider type used to sellEdaler</text>
-				</paragraph>
-			</description>
-		</stringParameter>
 		<stringParameter name="BuyerBankAccount" value="" guide="Buyer's bank account number">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Buyer</text>
 					<text>’</text>
 					<text>s bank account number</text>
-				</paragraph>
-			</description>
-		</stringParameter>
-		<stringParameter name="BuyerServiceProviderId" value="">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Buyer</text>
-					<text>’</text>
-					<text>s provider id used to buyEdaler</text>
-				</paragraph>
-			</description>
-		</stringParameter>
-		<stringParameter name="BuyerServiceProviderType" value="">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Buyer</text>
-					<text>’</text>
-					<text>s Provider type used to buyEdaler</text>
 				</paragraph>
 			</description>
 		</stringParameter>
@@ -727,7 +666,7 @@
 					<text>PaySpot status message of paymentr</text>
 				</paragraph>
 			</description>
-		</stringParameter>		
+		</stringParameter>
 		<stringParameter name="BuyerFullName" value="" minLength="2">
 			<description xml:lang="en">
 				<paragraph>
@@ -802,6 +741,20 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Payment methods which are supported for this contract (Card, BankTransfer)</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SuccessUrl" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Url to transfer when payment is completed.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="ErrorUrl" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Url to transfer when payment is not completed and has errors..</text>
 				</paragraph>
 			</description>
 		</stringParameter>

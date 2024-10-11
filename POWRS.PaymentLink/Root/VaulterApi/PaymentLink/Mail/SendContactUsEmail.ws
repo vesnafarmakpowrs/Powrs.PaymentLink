@@ -1,6 +1,7 @@
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
 ({
+   "nameAndSurname": Optional(String(PNameAndSurname)),
    "userEmail":Required(String(PUserEmail)),
    "body":Required(String(PBody))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
@@ -17,6 +18,7 @@ try
         Error("Contact us email already sent. Three email per hour is allowed.");
      );
  );
+ PNameAndSurname := PNameAndSurname ?? PUserEmail;
 
  ContactEmail := GetSetting("POWRS.PaymentLink.ContactEmail","");  
  htmlTemplatePath:= Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\EN\\ContactUs.html";
@@ -25,9 +27,9 @@ try
     Error("Template path does not exist");
 
  html:= System.IO.File.ReadAllText(htmlTemplatePath);
- html := html.Replace("{UserName}",PUserEmail);
- html := html.Replace("{UserEmail}", PUserEmail);
- html := html.Replace("{Comment}", PBody);
+ html := html.Replace("{{UserName}}", PNameAndSurname);
+ html := html.Replace("{{UserEmail}}", PUserEmail);
+ html := html.Replace("{{Comment}}", PBody);
 
  ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
  Config := ConfigClass.Instance;
