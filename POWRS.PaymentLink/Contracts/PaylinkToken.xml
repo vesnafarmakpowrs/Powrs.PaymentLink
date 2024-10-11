@@ -302,8 +302,8 @@
 									if(exists(OrderId)) then
 									(
 									Json.OrderId:= OrderId;
-									Json.FallbackMobileSuccessUrl:= Evaluate("POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent().GetFullSuccessUrl(true, Country, OrderId)");
-									Json.FallbackMobileErrorUrl:= Evaluate("POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent().GetFullErrorUrl(true, Country, OrderId)");
+									Json.FallbackMobileSuccessUrl:= Evaluate("POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent().GetFullSuccessUrl(true, Country, OrderId) ??? ''");
+									Json.FallbackMobileErrorUrl:= Evaluate("POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent().GetFullErrorUrl(true, Country, OrderId) ??? ''");
 									);
 									if (exists(PaymentType)) then
 									(
