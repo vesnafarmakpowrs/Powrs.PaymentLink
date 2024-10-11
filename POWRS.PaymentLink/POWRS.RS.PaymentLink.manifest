@@ -175,8 +175,8 @@
 				<Content fileName="Payout.cssx"/>
 				<Content fileName="Status.css"/>
 				<Content fileName="Banklist.css"/>
-				<Content fileName="Info.css"/>
-				<Content fileName="IPS.css"/>
+				<Content fileName="Info.cssx"/>
+				<Content fileName="IPS.cssx"/>
 				<Content fileName="Status.css"/>
 				<Folder name="fonts">
 					<Content fileName="Coanda-Bold.ttf"/>

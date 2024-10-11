@@ -172,8 +172,8 @@
 				<Content fileName="Payout.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
 				<Content fileName="Status.css" altFolder="..\..\pay.vaulter.rs\css"/>
 				<Content fileName="Banklist.css" altFolder="..\..\pay.vaulter.rs\css"/>
-				<Content fileName="Info.css" altFolder="..\..\pay.vaulter.rs\css"/>
-				<Content fileName="IPS.css" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Content fileName="Info.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Content fileName="IPS.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
 				<Content fileName="Status.css" altFolder="..\..\pay.vaulter.rs\css"/>
 			</Folder>
 			<Folder name="js">
