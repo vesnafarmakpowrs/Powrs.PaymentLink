@@ -123,17 +123,25 @@ function UserAgree() {
     }
 }
 
+function HideSubmitPaymentDiv() {
+    if (document.getElementById("submit-payment") != null)
+        document.getElementById("submit-payment").style.display = "none";
+}
+
 
 function LoadIPS() {
     console.log('loadIPS');
+    HideSubmitPaymentDiv();
+    document.getElementById("ctn-payment-method-rs").style.display = "block";
     document.getElementById("ips-iframe").src = "";
+
     let jwt = document.getElementById("jwt");
     console.log(jwt);
 
     if (isMobileDevice)
-        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSPayoutMethod.md?JWT=" + jwt.value;
+        document.getElementById("ips-iframe").src = "IPSPayoutMethod.md?JWT=" + jwt.value;
     else {
-        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md?JWT=" + jwt.value + "&TabID=" + TabID;
+        document.getElementById("ips-iframe").src = "IPSDesktop.md?JWT=" + jwt.value + "&TabID=" + TabID;
         document.getElementById("ips-iframe").classList.remove("pay-iframe");
         document.getElementById("ips-iframe").classList.add("pay-iframe-web");
     }

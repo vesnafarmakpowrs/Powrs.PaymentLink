@@ -249,17 +249,12 @@ if ContractState == "AwaitingForPayment" then
 <table style="width:100%">
  <tr>
   <td colspan="3">
-     <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();"> 
-     <label for="termsAndCondition"> 
-        <img class="logo_small" for="termsAndCondition" src="./resources/vaulter_txt.svg" alt="Vaulter"/> 
-        <a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
- </td>
+          <label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a> vaulter</label>    
+   </td>
  </tr>
  <tr >
    <td colspan="3">
-     <input type="checkbox" id="termsAndConditionAgency" name="termsAndCondition" onclick="UserAgree();"> 
-     <label for="termsAndConditionAgency"> 
-       <a onclick="OpenTermsAndConditions(event, this);" urlhref="((CompanyInfo.TermsAndConditions ))">**((OrgName )) ((LanguageNamespace.GetStringAsync(19) ))**</a></label>
+      <label for="termsAndConditionAgency"><a onclick="OpenTermsAndConditions(event, this);" urlhref="((CompanyInfo.TermsAndConditions ))">**((LanguageNamespace.GetStringAsync(19) ))**</a> ((OrgName ))</label>
     </td>
  </tr>
  </table>
@@ -268,6 +263,14 @@ if ContractState == "AwaitingForPayment" then
 <div id="retry-payment" style="display:none">
    <div class="retry-div" >
     <button id="payspot-submit" class="retry-btn btn-black btn-show" onclick="RetryPayment()">((LanguageNamespace.GetStringAsync(78) ))</button> 
+  </div>
+</div>
+<div id="submit-payment" >
+   <div class="retry-div" >
+    <button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="LoadIPS()">((LanguageNamespace.GetStringAsync(73) ))</button> 
+  </div>
+  <div>
+    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(79) ))</label>
   </div>
 </div>
 <div id="payment-msg-div"  style="display:none">

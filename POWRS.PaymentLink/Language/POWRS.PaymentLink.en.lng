@@ -79,6 +79,7 @@
 			<String id="76">Payment Failed. You will be transfered to seller page shortly...</String>
 			<String id="77">You will be redirected to seller page shortly...</String>
 			<String id="78">Retry Payment</String>
+			<String id="79">By clicking 'Pay Now' you acknowledge that you have read and agree to the Terms & Conditions of Powrs and Vaulter. You may review these terms before proceeding.</String>
 		</Namespace>
 	</Language>
 </Translation>
