@@ -691,13 +691,15 @@ Call this resource to send contact us email.
 
 ````
 {
-  "userEmail":Required(String(PUserEmail)),
-  "body":Required(String(PBody))
+    "nameAndSurname": Optional(String(PNameAndSurname)),
+    "userEmail":Required(String(PUserEmail)),
+    "body":Required(String(PBody))
 }
 ````
 
 | Name              | Description |
 |:------------------|:------------|
+| `nameAndSurname`  | Name and surname from the user who wants to contact us  |
 | `userEmail`       | Email from the user which should be used when Powers want to contact. |
 | `body`            | Email body that should be send to Powrs info email. |
 
