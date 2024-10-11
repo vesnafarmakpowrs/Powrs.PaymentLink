@@ -33,9 +33,17 @@ try
         (
             if(exists(tabId:= Global.PayspotRequests[r.ContractId]) and !System.String.IsNullOrWhiteSpace(tabId)) then 
             (
-                successUrl:= r.SuccessUrl ?? "";
-                errorUrl:= r.ErrorUrl ?? "";
-                ClientEvents.PushEvent([tabId], r.Status, JSON.Encode({"success": true, "successUrl":successUrl, "errorUrl":errorUrl  }, false), true);
+                jsonEvent:= 
+                {
+                    "success": true,
+                    "successUrl": r.SuccessUrl ?? "",
+                    "errorUrl": r.ErrorUrl ?? "",
+                    "fallbackSuccessUrl": r.FallbackMobileSuccessUrl ?? "",
+                    "fallbackErrorUrl": r.FallbackMobileErrorUrl ?? ""
+                };
+
+                Log.Informational("PushEvent: " + Str(jsonEvent), null);
+                ClientEvents.PushEvent([tabId], r.Status, JSON.Encode(jsonEvent, false), true);
                 Global.PayspotRequests.Remove(r.ContractId);
             );
         )
@@ -49,22 +57,20 @@ try
         callbackSuccess:= false;
         if(!System.String.IsNullOrEmpty(r.CallBackUrl) && (r.Status in SendCallBackOnStatusList)) then
         (
-          try
+            TrySendCallbackRequest(CallBackUrl, jsonBody):= 
             (
- 	            POST(r.CallBackUrl,
-                             {
-	                       "status": r.Status
-                              },
-		              {
-	                       "Accept" : "application/json"
-                              });
+                try
+                (                
+                    POST(CallBackUrl,jsonBody, { "Accept" : "application/json" });
+                    callbackSuccess:= true;
+                )
+                 catch 
+                (
+                  Log.Informational("Failed sending state update request to: " + CallBackUrl + ". " + Exception.Message ,null);
+                );
+            ); 
 
- 	            callbackSuccess:= true;
-            )
-            catch 
-            (
-                  Log.Informational("Failed sending state update request to: " + r.CallBackUrl,null);
-            );  
+            Background(TrySendCallbackRequest(r.CallBackUrl, { "status": r.Status, "referenceNumber": r.RemoteId }));
         );
 
         CountryCode := "RS";
