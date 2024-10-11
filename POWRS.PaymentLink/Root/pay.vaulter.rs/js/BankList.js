@@ -1,15 +1,21 @@
 
-function OpenDeepLink(bankId)
-{
-  var type = parent.document.getElementById('type').value;
-    let isCompany = false;
-     console.log("type: " + type); 
-    if (type.toLowerCase().trim() == "le")
-      isCompany = true;
-   InitiateIPSPayment(bankId, isCompany, GetDeepLinkSuccess);
+function OpenDeepLink(bankId) {
+    var type = parent.document.getElementById('type').value;
+    let isCompany = type.toLowerCase().trim() == "le";
+    InitiateIPSPayment(bankId, isCompany, GetDeepLinkSuccess);
 }
 
-function InitiateIPSPayment(bankId,  isCompany, onSuccess) {
+function PaymentCompleted(Result) {
+    if (Result != null && Result.successUrl != undefined && Result.successUrl.trim() != '') {
+        setTimeout(function () {
+            window.open(Result.successUrl, "_self");
+        }, 1000);
+
+        return;
+    }
+}
+
+function InitiateIPSPayment(bankId, isCompany, onSuccess) {
 
     SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
         {
@@ -52,15 +58,20 @@ function DisplayTransactionResult(Result) {
 }
 
 function GetDeepLinkSuccess(ResponseData) {
-   console.log(ResponseData.Response);
-   console.log(ResponseData.Response.DeepLink);
-   window.open(ResponseData.Response.DeepLink, '_PARENT');
+
+    var isIos = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    var mode = "_blank";
+    if (isIos) {
+        mode = "_selft";
+    }
+
+    window.open(ResponseData.Response.DeepLink, mode);
 }
 
 function GetQRCodeLinkSuccess(ResponseData) {
 
-   console.log(ResponseData.Response);
-   console.log(ResponseData.Response.QrCode);
-   document.getElementById("QRCode").src = ResponseData.Response.QrCode;
-    
+    console.log(ResponseData.Response);
+    console.log(ResponseData.Response.QrCode);
+    document.getElementById("QRCode").src = ResponseData.Response.QrCode;
+
 }
