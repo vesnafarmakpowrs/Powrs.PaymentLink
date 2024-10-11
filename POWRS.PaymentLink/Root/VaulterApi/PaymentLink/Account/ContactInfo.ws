@@ -10,7 +10,7 @@ if(ValidatedUser.role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin.ToStri
     "WebAddress": Required(Str(POrgWebAddress)),
     "Email": Required(Str(POrgEmailAddress)),
     "TermsAndConditions": Required(Str(POrgTermsAndConditions))
-}:=Posted) ??? BadRequest(Exception.Message);
+}:=Posted) ??? BadRequest(Exception.Message); 
 
 logObject := ValidatedUser.username;
 logEventID := "ContactInfo.ws";
