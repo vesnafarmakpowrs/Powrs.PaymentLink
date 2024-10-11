@@ -1,14 +1,7 @@
-remoteEndpoint:= Split(Request.RemoteEndPoint, ":")[0];
-blocked:= select Blocked from RemoteEndpoints where Endpoint = remoteEndpoint;
-logContractID := "";
+AuthenticateMutualTls(Request,Waher.Security.Users.Users.Source,128);
+
 try
 (
-        if(blocked != null && blocked == true) then 
-        (
-         Sleep(30000);
-         NotFound("");
-        );
-
         if !exists(Posted) then BadRequest("No payload.");
         r:= Request.DecodeData();
 
