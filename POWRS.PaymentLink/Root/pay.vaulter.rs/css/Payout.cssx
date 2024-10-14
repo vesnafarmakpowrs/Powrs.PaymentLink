@@ -877,6 +877,17 @@ flex: 1 1 auto;
  title="description;
 }
 
+.lbl-payment-notice
+{
+    font-style: italic;
+    font-size: small;
+    font-family: "RTDromo Light";
+}
+
+.div-payment-notice
+{
+    text-align: center;
+}
 
 .payment-method
 {
