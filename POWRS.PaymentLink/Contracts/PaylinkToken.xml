@@ -279,7 +279,7 @@
 					</If>
 				</Action>
 				<Action id="ReportNewState">
-					<If condition="!exists(Notifications[NewStatus])">
+					<If condition="NewStatus == 'PaymentFailed' or (NewStatus != 'PaymentFailed' and !exists(Notifications[NewStatus]))">
 						<Then>
 							<Try>
 								<Script>
@@ -339,6 +339,7 @@
 						<PersistVariable name="PaySpotStatusCode" value="{PaymentStatusCode}" />
 						<PersistVariable name="PaySpotStatusMsg" value="{PaymentStatusDescr}" />
 						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessPayspotPaymentStatus, paymentStatus: ' + PaymentStatusDescr }" object="{Buyer}" type="Informational" />
+						<CallAction actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentFailed'" />
 						<Catch exceptionVariable="ex">
 							<LogEvent type="Error" eventId="ProcessPayspotPaymentStatus" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>

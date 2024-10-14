@@ -52,7 +52,7 @@ try
             notificationSent:= false;
         );
 
-        SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted"};
+        SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted", "PaymentFailed"};
 
         callbackSuccess:= false;
         if(!System.String.IsNullOrEmpty(r.CallBackUrl) && (r.Status in SendCallBackOnStatusList)) then
@@ -68,9 +68,14 @@ try
                 (
                   Log.Informational("Failed sending state update request to: " + CallBackUrl + ". " + Exception.Message ,null);
                 );
-            ); 
+            );
 
             Background(TrySendCallbackRequest(r.CallBackUrl, { "status": r.Status, "referenceNumber": r.RemoteId }));
+        );
+
+        if(r.Status == "PaymentFailed") then 
+        (
+            Return("");
         );
 
         CountryCode := "RS";
@@ -178,11 +183,7 @@ try
              POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, NotificationList, "Plaćanje uspešno završeno", FormatedHtml, Base64Attachment, FileName);
         
         );
-
-        {    	
-            "Status" : r.Status,
-            "Success": callbackSuccess
-        }
+        "";
 )
 catch
 (
