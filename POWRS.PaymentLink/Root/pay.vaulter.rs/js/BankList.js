@@ -1,7 +1,11 @@
 
 function OpenDeepLink(bankId) {
+    DiasableItems(true);
     var type = parent.document.getElementById('type').value;
     let isCompany = type.toLowerCase().trim() == "le";
+    console.log("type: " + type);
+    if (type.toLowerCase().trim() == "le")
+        isCompany = true;
     InitiateIPSPayment(bankId, isCompany, GetDeepLinkSuccess);
 }
 
@@ -10,8 +14,18 @@ function PaymentCompleted(Result) {
         setTimeout(function () {
             window.open(Result.successUrl, "_self");
         }, 1000);
+    }
+}
+function DiasableItems(disable) {
+    banklist = document.getElementById("bankList");
+    const items = banklist.getElementsByClassName("dropdown-item");
 
-        return;
+    for (item of items) {
+        console.log(item);
+        if (disable)
+            item.classList.add("disabled");
+        else
+            item.classList.remove("disabled");
     }
 }
 
@@ -66,6 +80,7 @@ function GetDeepLinkSuccess(ResponseData) {
     }
 
     window.open(ResponseData.Response.DeepLink, mode);
+    DiasableItems(false);
 }
 
 function GetQRCodeLinkSuccess(ResponseData) {

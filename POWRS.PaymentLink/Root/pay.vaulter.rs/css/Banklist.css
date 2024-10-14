@@ -195,3 +195,9 @@ body {
     border: 2px solid #D7D7D7;
     font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
 }
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+    //This grays it out to look disabled
+}
