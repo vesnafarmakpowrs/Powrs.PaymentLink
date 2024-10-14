@@ -188,7 +188,6 @@
 				<Content fileName="IPSType.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
 				<Content fileName="Payout.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
 				<Folder name="js">
-					<Content fileName="BankList.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
 					<Content fileName="IPS.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
 					<Content fileName="IPSType.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
 					<Content fileName="PayForm.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>

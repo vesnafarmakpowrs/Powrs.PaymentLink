@@ -493,9 +493,6 @@
 	  <None Update="Root\pay.vaulter.rs\EC\IPSType.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.vaulter.rs\EC\js\BankList.js">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Root\pay.vaulter.rs\EC\js\IPS.js">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

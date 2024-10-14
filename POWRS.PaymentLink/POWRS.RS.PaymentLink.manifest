@@ -191,7 +191,6 @@
 				<Content fileName="IPSType.md"/>
 				<Content fileName="Payout.md" />
 				<Folder name="js">
-					<Content fileName="BankList.js" />
 					<Content fileName="IPS.js" />
 					<Content fileName="IPSType.js" />
 					<Content fileName="PayForm.js"/>

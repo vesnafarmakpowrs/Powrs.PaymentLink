@@ -12,7 +12,7 @@ viewport : Width=device-width, initial-scale=1
 Parameter: TYPE
 Parameter: ID
 JavaScript: ../js/Events.js
-JavaScript: js/BankList.js
+JavaScript: ../js/BankList.js
 JavaScript: ../js/XmlHttp.js
 
 <main class="main page-padding content-bank">
