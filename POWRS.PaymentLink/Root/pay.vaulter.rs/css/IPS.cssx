@@ -199,6 +199,11 @@ font-style: normal;
     font-family: "RTDromo Light";
 }
 
+.div-payment-notice
+{
+    text-align: center;
+}
+
 .retry-button
 {
   background: black;
