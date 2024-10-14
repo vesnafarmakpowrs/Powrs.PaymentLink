@@ -79,6 +79,7 @@
 			<String id="76">Payment Failed. You will be transfered to seller page shortly...</String>
 			<String id="77">You will be redirected to seller page shortly...</String>
 			<String id="78">Retry Payment</String>
+			<String id="79">Klikom na 'Plati' potvrđujete da ste pročitali i da se slažete sa Odredbama i uslovima za Povrs i Vaulter. Možete pregledati ove uslove pre nego što nastavite.</String>
 		</Namespace>
 	</Language>
 </Translation>

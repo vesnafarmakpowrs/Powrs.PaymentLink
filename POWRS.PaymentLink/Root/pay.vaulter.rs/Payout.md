@@ -7,6 +7,7 @@ Cache-Control: max-age=0, no-cache, no-store
 Pragma: no-cache
 Expires: 0
 CSS: css/Payout.cssx
+CSS: css/IPS.cssx
 Icon: favicon.ico
 viewport : Width=device-width, initial-scale=1
 Parameter: ID
@@ -278,24 +279,18 @@ if ContractState == "AwaitingForPayment" then
 <table style="width:100%">
  <tr>
   <td colspan="3">
-     <input type="checkbox" id="termsAndCondition" name="termsAndCondition" onclick="UserAgree();"> 
-     <label for="termsAndCondition"> 
-        <img class="logo_small" for="termsAndCondition" src="./resources/vaulter_txt.svg" alt="Vaulter"/> 
-        <a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a></label>    
+      <label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a> vaulter</label>    
  </td>
  </tr>
  <tr >
    <td colspan="3">
-     <input type="checkbox" id="termsAndConditionAgency" name="termsAndCondition" onclick="UserAgree();"> 
-     <label for="termsAndConditionAgency"> 
-       <a onclick="OpenTermsAndConditions(event, this);" urlhref="((CompanyInfo.TermsAndConditions ))">**((OrgName )) ((LanguageNamespace.GetStringAsync(19) ))**</a></label>
+       <label for="termsAndConditionAgency"><a onclick="OpenTermsAndConditions(event, this);" urlhref="((CompanyInfo.TermsAndConditions ))">**((LanguageNamespace.GetStringAsync(19) ))**</a> ((OrgName ))</label>
     </td>
  </tr>
  </table>
 </div>
 <div class="spaceItem"></div>
-
-<div class="payment-method-rs"  id="ctn-payment-method-rs" style="display:none">
+<div class="payment-method-rs"  id="ctn-payment-method-rs">
   <table style="width:100%; text-align:center">
     <tr>
 <td>
@@ -317,13 +312,28 @@ if(IpsOnly) then
 <input type="hidden" name="rnd" value='' />
 <input type="hidden" name="currentDate" value='' />
 </form>
-<button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="GenerateIPSForm()">((LanguageNamespace.GetStringAsync(73) ))</button> 
+<div id="submit-payment" >
+   <div class="retry-div" >
+    <button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="GenerateIPSForm()">((LanguageNamespace.GetStringAsync(73) ))</button> 
+  </div>
+  <div class="div-payment-notice">
+    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(79) ))</label>
+  </div>
+</div>
 [[;
 )
 else 
 (
 ]]
-<button id="payspot-submit" class="stripe-button" disabled="disabled" onclick="StartPayment()">((LanguageNamespace.GetStringAsync(73) ))</button> 
+ 
+<div id="submit-payment" >
+   <div>
+    <button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="StartPayment()">((LanguageNamespace.GetStringAsync(73) ))</button> 
+  </div>
+  <div class="div-payment-notice">
+    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(79) ))</label>
+  </div>
+</div>
 [[;
 );
 ]]
@@ -355,11 +365,7 @@ else
 (
 ]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
 )
-
-
-
 }}
-
 </div>
 </main>
 

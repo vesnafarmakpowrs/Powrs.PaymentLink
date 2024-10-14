@@ -113,19 +113,6 @@ function DisplayTransactionResult(Result) {
     }
 }
 
-function UserAgree() {
-
-    if (document.getElementById("termsAndCondition").checked
-        && document.getElementById("termsAndConditionAgency").checked) {
-        document.getElementById("payspot-submit").removeAttribute("disabled");
-        document.getElementById("ctn-payment-method-rs").style.display = "block";
-    }
-    else {
-        document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
-        document.getElementById("ctn-payment-method-rs").style.display = "none";
-    }
-}
-
 var updateTimer = null;
 
 function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUsed) {
@@ -164,11 +151,18 @@ function InitiatePaymentForm(onSuccess) {
             TransactionFailed(null);
         })
 }
+
+function HideSubmitPaymentDiv() {
+    if (document.getElementById("submit-payment") != null)
+        document.getElementById("submit-payment").style.display = "none";
+}
 function StartPayment() {
+    HideSubmitPaymentDiv();
     InitiatePaymentForm(ShowPayspotPage);
 }
 
 function GenerateIPSForm() {
+    HideSubmitPaymentDiv();
     InitiatePaymentForm(FillAndSubmitPayspotIPSForm);
 }
 
