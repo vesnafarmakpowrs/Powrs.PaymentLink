@@ -180,18 +180,23 @@
 				<Content fileName="Events.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="PaymentLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="Status.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="PaymentLinkIPS.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="QRIPS.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="BankList.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="IPSPayment.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="XmlHttp.js" altFolder="..\..\pay.vaulter.rs\js"/>
 			</Folder>
 			<Folder name="EC">				
-				<Content fileName="favicon.ico" altFolder="..\..\pay.vaulter.rs\ES\"/>
-				<Content fileName="IPSBank.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
-				<Content fileName="IPSQR.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
-				<Content fileName="IPSType.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
-				<Content fileName="Payout.md" altFolder="..\..\pay.vaulter.rs\ES\"/>
+				<Content fileName="favicon.ico" altFolder="..\..\pay.vaulter.rs\EC\"/>
+				<Content fileName="IPSBank.md" altFolder="..\..\pay.vaulter.rs\EC\"/>
+				<Content fileName="IPSQR.md" altFolder="..\..\pay.vaulter.rs\EC\"/>
+				<Content fileName="IPSType.md" altFolder="..\..\pay.vaulter.rs\EC\"/>
+				<Content fileName="Payout.md" altFolder="..\..\pay.vaulter.rs\EC\"/>
 				<Folder name="js">
-					<Content fileName="IPS.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
-					<Content fileName="IPSType.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
-					<Content fileName="PayForm.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
-					<Content fileName="QRIPS.js" altFolder="..\..\pay.vaulter.rs\ES\js"/>
+					<Content fileName="IPS.js" altFolder="..\..\pay.vaulter.rs\EC\js"/>
+					<Content fileName="IPSType.js" altFolder="..\..\pay.vaulter.rs\EC\js"/>
+					<Content fileName="PayForm.js" altFolder="..\..\pay.vaulter.rs\EC\js"/>
+					<Content fileName="QRIPS.js" altFolder="..\..\pay.vaulter.rs\EC\js"/>
 				</Folder>
 			</Folder>
 			<Folder name="resources">
@@ -240,6 +245,7 @@
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
+				<Content fileName="InitiateIPSPayment.ws"/>
 				<Content fileName="GetAvailableLanguages.ws"/>
 			</Folder>
 			<Folder name="Fonts">

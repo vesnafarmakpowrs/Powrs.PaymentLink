@@ -201,6 +201,11 @@
 				<Content fileName="Events.js"/>
 				<Content fileName="PaymentLink.js"/>
 				<Content fileName="Status.js"/>
+				<Content fileName="PaymentLinkIPS.js"/>
+				<Content fileName="QRIPS.js"/>
+				<Content fileName="BankList.js"/>
+				<Content fileName="IPSPayment.js"/>
+				<Content fileName="XmlHttp.js"/>
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="expand.svg"/>
@@ -248,6 +253,7 @@
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
+				<Content fileName="InitiateIPSPayment.ws"/>
 				<Content fileName="GetAvailableLanguages.ws"/>
 			</Folder>
 			<Folder name="Fonts">
