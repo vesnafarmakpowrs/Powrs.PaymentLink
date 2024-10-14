@@ -36,7 +36,7 @@ JavaScript: js/XmlHttp.js
            (
              bankList := POWRS.Payment.PaySpot.PayspotService.GetLegalBankList();
            );
-           ]]<div class="dropdown"> 
+           ]]<div class="dropdown" id="select-bank"> 
               <label class="select-bank-lbl">Izaberi banka</label>
               <ul id="bankList" class="bank-list-ul"> [[;
                   foreach bank in bankList do 
