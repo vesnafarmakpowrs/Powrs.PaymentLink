@@ -177,6 +177,34 @@ Description of properties:
 | `CanBeOverriden`        | If api key could be regenerated. |
 | `IsBlocked`        | Is api key blocked. |
 
+
+### Remove AgentApiKey
+
+Removes generated api key
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Paylink/RemoveAgentApiKey")}}`
+Method:  POST
+
+JSON
+-------
+
+Request
+
+:	```json
+:	{
+:	}
+:	```
+
+Response (if successful)
+
+:	```json
+:	{
+.		"Success":true,
+:	},
+    401 Unauthorized,
+    403 Forbidden
+:   ```
+
 ### Login (Test purposes) do not use in production
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Account/Login")}}`
