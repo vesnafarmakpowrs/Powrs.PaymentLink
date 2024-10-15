@@ -21,6 +21,9 @@ JavaScript: js/IPSPayment.js
    LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
     ]]<div class="container">
                    <div >
+                          <div class="div-logo-ips-mob">
+                            <img src="./resources/ipslogo.png" alt="ipsLogoScan"/>
+                        </div>  
                           <div class="pay-div pay-div-header" >
                              <label>((LanguageNamespace.GetStringAsync(67) ))</label>
 			     <img src="resources\info.png" class="img-info" onclick="infoPopup()"/> 

@@ -330,6 +330,11 @@ font-style: normal;
      height: fit-content;
 }
 
+.div-logo-ips-mob img {
+     max-width: 35%; 
+     height: fit-content;
+}
+
 .bank-name-lbl
 {
   padding-left: 0.4rem;
