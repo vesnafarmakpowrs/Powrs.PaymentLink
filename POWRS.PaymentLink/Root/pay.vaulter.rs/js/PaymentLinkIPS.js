@@ -131,10 +131,14 @@ function HideSubmitPaymentDiv() {
 
 function LoadIPS() {
     console.log('loadIPS');
-    HideSubmitPaymentDiv();
-    document.getElementById("ctn-payment-method-rs").style.display = "block";
-    document.getElementById("ips-iframe").src = "";
+	HideSubmitPaymentDiv();
+    LoadIPSIiframe();
+}
 
+function LoadIPSIiframe()
+{
+	document.getElementById("ips-iframe").src = "";
+	 document.getElementById("ctn-payment-method-rs").style.display = "block";
     let jwt = document.getElementById("jwt");
     console.log(jwt);
 
@@ -217,14 +221,18 @@ function PaySpotPaymentStatus(Result) {
     }
 }
 
+function PaymentFailed(){
+	
+}	
+
 function RetryPayment() {
+	
     document.getElementById('retry-payment').style.display = "none";
     var div = document.getElementById('payment-msg');
     div.innerHTML = '';
 	document.getElementById('payment-msg-div').style.display = "none";
     document.getElementById('payment-msg-div').style.display = "none";
-    document.getElementById("ips-iframe").src = "";
-    UserAgree();
+    LoadIPSIiframe();
 }
 
 function ShowPayspotPage(Data) {
