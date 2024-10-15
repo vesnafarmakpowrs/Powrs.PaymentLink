@@ -179,6 +179,21 @@
 				<Content fileName="Info.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
 				<Content fileName="IPS.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
 				<Content fileName="Status.css" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Folder name="fonts">
+					<Content fileName="Coanda-Bold.ttf"  altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Book.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Book.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-BookOblique.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-BookOblique.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Light.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Light.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-LightOblique.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-LightOblique.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Medium.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Medium.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-MediumOblique.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-MediumOblique.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+				</Folder>
 			</Folder>
 			<Folder name="js">
 				<Content fileName="Events.js" altFolder="..\..\pay.vaulter.rs\js"/>
@@ -207,6 +222,8 @@
 				<Content fileName="credit-card-payment.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="direct_payment.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="expand.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="expand-down.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="expand-up.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="spin.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="spinner.gif"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="vaulter_logo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
@@ -214,26 +231,26 @@
 				<Content fileName="vaulterlogo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="error_red.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="success_green.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
-			</Folder>
-		    <Folder name="personal_round">
-				<Content fileName="addiko.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="adriatic.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="aik.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="alta.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="erste.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="EUROBANK-DIREKTNA.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="halkbank.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="intesa.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="mobi.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="nlb.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="otp.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="pbs.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="RAIFFEISEN.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="rba.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="srpska.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="unicredit.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="unit.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
-			    <Content fileName="yettel.jpg" altFolder="..\..\pay.vaulter.rs\resources\personal_round"/>
+				<Folder name="personal_round">
+					<Content fileName="addiko.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="adriatic.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="aik.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="alta.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="erste.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="EUROBANK-DIREKTNA.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="halkbank.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="intesa.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="mobi.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="nlb.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="otp.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="pbs.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="RAIFFEISEN.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="rba.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="srpska.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="unicredit.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="unit.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="yettel.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+				</Folder>
 			</Folder>
 		</Folder>
 		<Folder name="Payout">

@@ -181,8 +181,18 @@
 				<Content fileName="Status.css"/>
 				<Folder name="fonts">
 					<Content fileName="Coanda-Bold.ttf"/>
-					<Content fileName="RTDromo-Medium.woff2"/>
+					<Content fileName="RTDromo-Book.woff"/>
+					<Content fileName="RTDromo-Book.woff2"/>
+					<Content fileName="RTDromo-BookOblique.woff"/>
+					<Content fileName="RTDromo-BookOblique.woff2"/>
+					<Content fileName="RTDromo-Light.woff"/>
+					<Content fileName="RTDromo-Light.woff2"/>
+					<Content fileName="RTDromo-LightOblique.woff"/>
+					<Content fileName="RTDromo-LightOblique.woff2"/>
 					<Content fileName="RTDromo-Medium.woff"/>
+					<Content fileName="RTDromo-Medium.woff2"/>
+					<Content fileName="RTDromo-MediumOblique.woff"/>
+					<Content fileName="RTDromo-MediumOblique.woff2"/>
 				</Folder>
 			</Folder>
 			<Folder name="EC">
