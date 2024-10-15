@@ -2,14 +2,14 @@
 
 @font-face {
 font-family: 'Goanda Bold';
-src: url('../Fonts/Coanda-Bold.ttf') format('truetype');
+src: url('../css/Fonts/Coanda-Bold.ttf') format('truetype');
 font-weight: bold;
 font-style: normal;
 }
 
 @font-face {
 font-family: 'RTDromo';
-src: url('../Fonts/RTDromo-Book.woff2') format('woff2'),
+src: url('../css/Fonts/RTDromo-Book.woff2') format('woff2'),
 url('fonts/RTDromo-Book.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -17,7 +17,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Book Oblique';
-src: url('../Fonts/RTDromo-BookOblique.woff2') format('woff2'),
+src: url('../css/Fonts/RTDromo-BookOblique.woff2') format('woff2'),
 url('fonts/RTDromo-BookOblique.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -25,7 +25,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Light';
-src: url('../Fonts/RTDromo-Light.woff2') format('woff2'),
+src: url('../css/Fonts/RTDromo-Light.woff2') format('woff2'),
 url('fonts/RTDromo-Light.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -34,7 +34,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Light Oblique';
-src: url('../Fonts/RTDromo-LightOblique.woff2') format('woff2'),
+src: url('../css/Fonts/RTDromo-LightOblique.woff2') format('woff2'),
 url('fonts/RTDromo-LightOblique.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -43,7 +43,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Medium';
-src: url('../Fonts/RTDromo-Medium.woff2') format('woff2'),
+src: url('../css/Fonts/RTDromo-Medium.woff2') format('woff2'),
 url('fonts/RTDromo-Medium.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -51,7 +51,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Medium Oblique';
-src: url('../Fonts/RTDromo-MediumOblique.woff2') format('woff2'),
+src: url('../css/Fonts/RTDromo-MediumOblique.woff2') format('woff2'),
 url('fonts/RTDromo-MediumOblique.woff') format('woff');
 font-weight: normal;
 font-style: normal;
