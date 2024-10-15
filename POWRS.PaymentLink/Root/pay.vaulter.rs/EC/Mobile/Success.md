@@ -185,7 +185,7 @@ if (ContractState == "ServiceDelivered" || ContractState == "PaymentCompleted" |
 )
 else if ContractState == "PaymentCanceled" then 
 (
-]]**((LanguageNamespace.GetStringAsync(14) ))**ed[[;
+]]**((LanguageNamespace.GetStringAsync(14) ))**[[;
 )
 }}
 

@@ -15,7 +15,7 @@
 			<String id="11">Seller </String>
 			<String id="12">Sold by </String>
 			<String id="13">Awaiting For Payment </String>
-			<String id="14">Cancel </String>
+			<String id="14">Payment canceled </String>
 			<String id="15">Done </String>
 			<String id="16">Payment Completed </String>
 			<String id="17">Payment Not Performed </String>
@@ -80,6 +80,7 @@
 			<String id="77">You will be redirected to seller page shortly...</String>
 			<String id="78">Retry Payment</String>
 			<String id="79">By clicking 'Pay Now' you acknowledge that you have read and agree to the Terms and Conditions Vaulter and</String>
+			<String id="80">Refunded </String>
 		</Namespace>
 	</Language>
 </Translation>
