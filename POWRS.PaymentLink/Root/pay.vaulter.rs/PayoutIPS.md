@@ -313,7 +313,9 @@ else
 
 <div class="footer-parent">
   <div class="footer">
-   Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - 2024 POWRS
+     <div class="div-logo-ips-footer">
+        <img src="./resources/ipslogo.png" alt="ipsLogoScan">
+     </div>Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - 2024 POWRS
   </div>
 </div>
 </div>
