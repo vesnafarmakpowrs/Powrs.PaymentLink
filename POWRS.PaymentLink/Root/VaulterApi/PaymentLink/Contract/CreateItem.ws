@@ -34,10 +34,10 @@ try
     PayoutPage := "Payout.md";
     IpsOnly := false;
 
-    ContractInfo := Global.CreateItem(SessionUser, PRemoteId, 
+    ContractInfo := Global.CreateItem(SessionUser, PRemoteId,
                 PTitle, PPrice, PCurrency, 
                 PDescription, PPaymentDeadline, 
-			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,
+			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber ??? "",
 			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
 			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
 			    logActor);
