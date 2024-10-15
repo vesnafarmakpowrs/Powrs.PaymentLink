@@ -20,11 +20,13 @@ namespace POWRS.PaymentLink.Module
         private readonly static PaylinkLogin paylinkLogin = new();
         private readonly static GenerateAgentApiKey generateAgentApiKey = new();
         private readonly static GetAgentApiKey getAgentApiKey = new();
+        private readonly static RemoveApiKey removeApiKey = new();
         public Task Start()
         {
             Gateway.HttpServer.Register(paylinkLogin);
             Gateway.HttpServer.Register(generateAgentApiKey);
             Gateway.HttpServer.Register(getAgentApiKey);
+            Gateway.HttpServer.Register(removeApiKey);
             return Task.CompletedTask;
         }
 
@@ -33,6 +35,7 @@ namespace POWRS.PaymentLink.Module
             Gateway.HttpServer.Unregister(paylinkLogin);
             Gateway.HttpServer.Unregister(generateAgentApiKey);
             Gateway.HttpServer.Unregister(getAgentApiKey);
+            Gateway.HttpServer.Unregister(removeApiKey);
             return Task.CompletedTask;
         }
     }
