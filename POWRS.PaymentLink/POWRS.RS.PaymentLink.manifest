@@ -153,13 +153,14 @@
 			</Folder>
 		</Folder>
 		<Folder name="pay.vaulter.rs">
-			<Content fileName="Index.html"/>
+			<Content fileName="IPSBank.md"/>
+			<Content fileName="IPSDesktop.md"/>
+			<Content fileName="IPSPayoutMethod.md"/>
 			<Content fileName="Payout.md"/>
 			<Content fileName="PayoutIPS.md"/>
-			<Content fileName="IPSPayoutMethod.md"/>
-			<Content fileName="IPSBank.md"/>
-			<Content fileName="TermsAndCondition.html"/>
-			<Content fileName="PrivacyPolicy.html"/>
+			<Content fileName="Index.html"/>
+			<Content fileName="TermsAndCondition.html" />
+			<Content fileName="PrivacyPolicy.html" />
 			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>
 			<Folder name="Redirect">
 				<Content fileName="Success.md"/>

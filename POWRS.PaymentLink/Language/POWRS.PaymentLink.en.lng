@@ -9,7 +9,7 @@
 			<String id="5">Payment link has expired. Please contact the seller to receive a new one. </String>
 			<String id="6">Protect your money with smart payments </String>
 			<String id="7">Purchase Agreement </String>
-			<String id="8">Scan the following QR- code with your BANK-ID app, or click on it if your Bank-ID is installed on your computer </String>
+			<String id="8">Scan the following IPS QR- code with your BANK-ID app, or click on it if your Bank-ID is installed on your computer </String>
 			<String id="9">Please select bank</String>
 			<String id="10">Selected account is: {0}. Are you sure? </String>
 			<String id="11">Seller </String>
@@ -26,7 +26,7 @@
 			<String id="22">Welcome to Vaulter checkout </String>
 			<String id="23">Payment link has expired. Please contact the seller to receive a new one. </String>
 			<String id="24">Unable to select bank account. Balance is not sufficient.</String>
-			<String id="25">Scan the following QR-code with your Bank-ID app.</String>
+			<String id="25">Scan the following IPS QR-code with your Bank-ID app.</String>
 			<String id="26">Bank-ID Authorization</String>
 			<String id="27">Payment successful. Thank you for using vaulter!</String>
 			<String id="28">Payment could not be completed. Please try again or use different bank account.</String>
@@ -70,8 +70,8 @@
 			<String id="67">Pay with your mbanking app</String>
 			<String id="68">With the mbanking application installed on your mobile device, scan the displayed one-time IPS QR code and make the payment in the environment of your bank. Information about the outcome of the payment will be shown to you immediately after the processing is completed, but it will also be delivered to your e-mail address along with the purchase confirmation.</String>
 			<String id="69">Time's up</String>
-			<String id="70">Regenerate the QR CODE</String>
-			<String id="71">GENERATE QR</String>
+			<String id="70">Regenerate the IPS QR CODE</String>
+			<String id="71">GENERATE IPS QR</String>
 			<String id="72">Cancel</String>
 			<String id="73">Pay Now</String>
 			<String id="74">Payment failed.</String>

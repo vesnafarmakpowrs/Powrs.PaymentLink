@@ -153,7 +153,11 @@
 			</Folder>
 		</Folder>
 		<Folder name="pay.lab.vaulter.rs">
+			<Content fileName="IPSBank.md" altFolder="..\pay.vaulter.rs"/>
+			<Content fileName="IPSDesktop.md" altFolder="..\pay.vaulter.rs"/>
+			<Content fileName="IPSPayoutMethod.md" altFolder="..\pay.vaulter.rs"/>
 			<Content fileName="Payout.md" altFolder="..\pay.vaulter.rs"/>
+			<Content fileName="PayoutIPS.md" altFolder="..\pay.vaulter.rs"/>			
 			<Content fileName="Index.html" altFolder="..\pay.vaulter.rs"/>
 			<Content fileName="TermsAndCondition.html" altFolder="..\pay.vaulter.rs"/>
 			<Content fileName="PrivacyPolicy.html" altFolder="..\pay.vaulter.rs"/>
