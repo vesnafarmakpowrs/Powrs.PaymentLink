@@ -327,7 +327,7 @@ else
 ]]
  
 <div id="submit-payment" >
-   <div>
+   <div class="retry-div">
     <button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="StartPayment()">((LanguageNamespace.GetStringAsync(73) ))</button> 
   </div>
   <div class="div-payment-notice">
