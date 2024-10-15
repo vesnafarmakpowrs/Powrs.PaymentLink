@@ -193,10 +193,10 @@
 				<Content fileName="IPSType.md" altFolder="..\..\pay.vaulter.rs\EC\"/>
 				<Content fileName="Payout.md" altFolder="..\..\pay.vaulter.rs\EC\"/>
 				<Folder name="js">
-					<Content fileName="IPS.js" altFolder="..\..\pay.vaulter.rs\EC\js"/>
-					<Content fileName="IPSType.js" altFolder="..\..\pay.vaulter.rs\EC\js"/>
-					<Content fileName="PayForm.js" altFolder="..\..\pay.vaulter.rs\EC\js"/>
-					<Content fileName="QRIPS.js" altFolder="..\..\pay.vaulter.rs\EC\js"/>
+					<Content fileName="IPS.js" altFolder="..\..\..\pay.vaulter.rs\EC\js"/>
+					<Content fileName="IPSType.js" altFolder="..\..\..\pay.vaulter.rs\EC\js"/>
+					<Content fileName="PayForm.js" altFolder="..\..\..\pay.vaulter.rs\EC\js"/>
+					<Content fileName="QRIPS.js" altFolder="..\..\..\pay.vaulter.rs\EC\js"/>
 				</Folder>
 			</Folder>
 			<Folder name="resources">
