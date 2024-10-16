@@ -349,7 +349,15 @@ var EventCheckingEnabled = true;
 
 window.onload = function () {
     try {
-        TabID = CreateGUID();
+        var _tabid = sessionStorage.getItem("vaulterTabId");
+
+        if (_tabid != null) {
+            TabID = _tabid;
+        }
+        else {
+            TabID = CreateGUID();
+            sessionStorage.setItem("vaulterTabId", TabID);
+        }
     }
     catch (e) {
         console.log(e);

@@ -68,6 +68,9 @@ function GenerateLanguageDropdown() {
         }, (response) => {
             if (response != null && response.length > 0) {
                 const languageDropdown = document.getElementById("languageDropdown");
+                if (languageDropdown == null) {
+                    return;
+                }
                 response.forEach(language => {
                     let option = document.createElement("option");
                     option.value = language.Code;

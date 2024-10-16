@@ -21,15 +21,15 @@ function PaymentCompleted(Result) {
     location.reload();
 }
 
-function getbanksIE(){
-  var url = 'IPSBank.md?TYPE=IE';
-  openBankListURL(url);
+function getbanksIE() {
+    var url = 'IPSBank.md?TYPE=IE';
+    openBankListURL(url);
 }
 
-function getbanksLE(){
-  
- var url = 'IPSBank.md?TYPE=LE';
- openBankListURL(url);
+function getbanksLE() {
+
+    var url = 'IPSBank.md?TYPE=LE';
+    openBankListURL(url);
 }
 
 function openBankListURL(url) {
@@ -41,7 +41,9 @@ function openBankListURL(url) {
     }
 
     url = url + "&JWT=" + jwt.trim();
-    window.open(url, '_PARENT');
+    window.parent.location.href = window.parent.location.href + '&TYPE=IE';
+    console.log(window.parent.location.href);
+    // window.open(url, '_PARENT');
 }
 
 function GenerateIPSPayment(bankID) {
