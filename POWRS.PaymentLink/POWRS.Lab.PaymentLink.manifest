@@ -229,6 +229,7 @@
 				<Content fileName="vaulter_logo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="vaulter_txt.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="vaulterlogo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulter_logo.webp"  altFolder="..\..\pay.vaulter.rs\resources"/>				
 				<Content fileName="error_red.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="success_green.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Folder name="personal_round">
