@@ -317,7 +317,7 @@ if(IpsOnly) then
     <button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="GenerateIPSForm()">((LanguageNamespace.GetStringAsync(73) ))</button> 
   </div>
   <div class="div-payment-notice">
-    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(79) ))</label>
+    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(81) )) ((OrgName ))</label>
   </div>
 </div>
 [[;
@@ -331,7 +331,7 @@ else
     <button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="StartPayment()">((LanguageNamespace.GetStringAsync(73) ))</button> 
   </div>
   <div class="div-payment-notice">
-    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(79) ))</label>
+    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(81) )) ((OrgName ))</label>
   </div>
 </div>
 [[;

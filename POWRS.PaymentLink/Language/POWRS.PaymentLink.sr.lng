@@ -81,6 +81,7 @@
 			<String id="78">Pokušajte ponovo</String>
 			<String id="79">Klikom na 'Plati' i nastavkom ka metodi plaćanja IPS skeniraj, potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i </String>
 			<String id="80">Refundirano </String>
+			<String id="81">Klikom na 'Plati' potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i </String>
 		</Namespace>
 	</Language>
 </Translation>
