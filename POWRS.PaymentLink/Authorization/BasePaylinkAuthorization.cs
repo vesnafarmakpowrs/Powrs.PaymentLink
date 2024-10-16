@@ -19,6 +19,11 @@ namespace POWRS.PaymentLink.Authorization
 
         public override bool UserSessions => false;
 
+        protected void ConfigureResponse(HttpResponse Response)
+        {
+            Response.SetHeader("Access-Control-Allow-Origin", "*");
+        }
+
         protected async Task<Dictionary<string, object>> GetRequestBody(HttpRequest Request)
         {
 

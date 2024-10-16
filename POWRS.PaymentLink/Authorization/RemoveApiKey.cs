@@ -15,6 +15,8 @@ namespace POWRS.PaymentLink.Authorization
 
         public async Task POST(HttpRequest Request, HttpResponse Response)
         {
+            ConfigureResponse(Response);
+
             Account BrokerAccount = await GetAccountFromJwtToken(Request);
             AgentApiKey agentApiKey = await Database.FindFirstDeleteRest<AgentApiKey>(new FilterFieldEqualTo("UserName", BrokerAccount.UserName));
 

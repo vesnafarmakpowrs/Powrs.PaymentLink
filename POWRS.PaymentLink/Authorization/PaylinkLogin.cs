@@ -23,6 +23,8 @@ namespace POWRS.PaymentLink.Authorization
 
         public async Task POST(HttpRequest Request, HttpResponse Response)
         {
+            ConfigureResponse(Response);
+
             DateTime? loginOpportunity = await Gateway.LoginAuditor.GetEarliestLoginOpportunity(Request.RemoteEndPoint, "HTTPS");
             if (loginOpportunity > DateTime.UtcNow)
             {
