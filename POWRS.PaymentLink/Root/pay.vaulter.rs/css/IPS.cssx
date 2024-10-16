@@ -335,11 +335,6 @@ font-style: normal;
      height: fit-content;
 }
 
-.div-logo-ips-footer img {
-     max-width: 20%; 
-     height: fit-content;
-}
-
 .bank-name-lbl
 {
   padding-left: 0.4rem;
@@ -360,4 +355,17 @@ font-style: normal;
 .bank-list-ul
 {
   padding-inline-start : 0px !important;
+}
+
+.div-logo-ips-footer img {
+     max-width: 50px; 
+     height: fit-content;
+}
+
+@media only screen and (max-width: 1025px) {
+.div-logo-ips-footer img {
+     max-width: 10%; 
+     height: fit-content;
+}
+
 }
