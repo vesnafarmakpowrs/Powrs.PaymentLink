@@ -10,7 +10,7 @@ viewport : Width=device-width, initial-scale=1
 Parameter: ID
 JavaScript: ../js/Events.js
 JavaScript: ../js/XmlHttp.js
-JavaScript: js/QRIPS.js
+JavaScript: ../js/QRIPS.js
 
 
 <main class="main page-padding ips">

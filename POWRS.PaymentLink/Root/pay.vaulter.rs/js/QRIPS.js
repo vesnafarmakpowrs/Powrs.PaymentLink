@@ -44,8 +44,7 @@ function getQRCode()
 
 
 function InitiateIPSPayment(onSuccess) {
- var TabID = document.getElementById("TabID").value;	
-  console.log(TabID);
+
     SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
         {
             "isFromMobile": false,

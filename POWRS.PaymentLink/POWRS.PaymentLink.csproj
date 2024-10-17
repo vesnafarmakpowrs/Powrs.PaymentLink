@@ -512,13 +512,7 @@
 	  <None Update="Root\pay.vaulter.rs\EC\js\IPS.js">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.vaulter.rs\EC\js\IPSType.js">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Root\pay.vaulter.rs\EC\js\PayForm.js">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.vaulter.rs\EC\js\QRIPS.js">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\EC\Payout.md">

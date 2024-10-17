@@ -10,7 +10,7 @@ Icon: favicon.ico
 viewport : Width=device-width, initial-scale=1
 Parameter: ID
 Parameter: lng
-JavaScript: js/IPSType.js
+JavaScript: ../js/IPSPayment.js
 
 <main class="main page-padding content-ips-method">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
