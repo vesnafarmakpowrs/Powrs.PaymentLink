@@ -56,7 +56,7 @@ else if (TYPE == 'LE') then
 if (TYPE != "") then
 (
      ]]<div class="dropdown" id="select-bank"> 
-        <label class="select-bank-lbl">Izaberi banka</label>
+        <label class="select-bank-lbl">((LanguageNamespace.GetStringAsync(82) ))</label>
             <ul id="bankList" class="bank-list-ul"> [[;
                 foreach bank in bankList do 
                ( 
