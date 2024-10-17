@@ -132,9 +132,9 @@ function LoadIPS() {
     console.log(jwt.value);
     console.log(document.getElementById("ips-iframe"));
     if (isMobileDevice)
-        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSPayoutMethod.md?JWT=" + jwt.value;
+        document.getElementById("ips-iframe").src = "IPSPayoutMethod.md?JWT=" + jwt.value;
     else {
-        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/IPSDesktop.md?JWT=" + jwt.value + "&TabID=" + TabID;
+        document.getElementById("ips-iframe").src = "IPSDesktop.md?JWT=" + jwt.value + "&TabID=" + TabID;
         document.getElementById("ips-iframe").classList.remove("pay-iframe");
         document.getElementById("ips-iframe").classList.add("pay-iframe-web");
 		 console.log('desktop');
@@ -143,21 +143,6 @@ function LoadIPS() {
 }
 
 var updateTimer = null;
-
-function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUsed) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "../Payout/API/RegisterUpdates.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
-        {
-            "tabId": TabID,
-            "sessionId": SessionId,
-            "requestFromMobilePhone": RequestFromMobilePhone,
-            "qrCodeUsed": QrCodeUsed,
-            "functionName": "SessionUpdated"
-        }));
-}
 
 function InitiatePaymentForm(ipsOnly, onSuccess) {
     document.getElementById("payspot-submit").style.display = "none";

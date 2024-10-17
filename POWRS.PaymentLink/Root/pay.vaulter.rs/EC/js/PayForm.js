@@ -96,21 +96,6 @@ function LoadIPS()
 
 var updateTimer = null;
 
-function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUsed) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "../Payout/API/RegisterUpdates.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
-        {
-            "tabId": TabID,
-            "sessionId": SessionId,
-            "requestFromMobilePhone": RequestFromMobilePhone,
-            "qrCodeUsed": QrCodeUsed,
-            "functionName": "SessionUpdated"
-        }));
-}
-
 function InitiatePaymentForm(onSuccess) {
  
     document.getElementById("tr_spinner").style.display = null;

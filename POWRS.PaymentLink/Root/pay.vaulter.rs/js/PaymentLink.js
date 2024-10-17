@@ -115,21 +115,6 @@ function DisplayTransactionResult(Result) {
 
 var updateTimer = null;
 
-function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUsed) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "../Payout/API/RegisterUpdates.ws", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.send(JSON.stringify(
-        {
-            "tabId": TabID,
-            "sessionId": SessionId,
-            "requestFromMobilePhone": RequestFromMobilePhone,
-            "qrCodeUsed": QrCodeUsed,
-            "functionName": "SessionUpdated"
-        }));
-}
-
 function InitiatePaymentForm(onSuccess) {
     document.getElementById("payspot-submit").style.display = "none";
     document.getElementById("tr_spinner").style.display = null;
@@ -167,7 +152,7 @@ function GenerateIPSForm() {
 }
 
 function PaymentCompleted(Result) {
-    if (Result != null && Result.successUrl != undefined && Result.successUrl.trim() != '') {        
+    if (Result != null && Result.successUrl != undefined && Result.successUrl.trim() != '') {
         DisplayMessage(Translations.PaymentCompletedWaitingRedirection, 'green');
         setTimeout(function () {
             window.open(Result.successUrl, "_self");
@@ -185,7 +170,7 @@ function PaySpotPaymentStatus(Result) {
     }
 
     if (Result.ErrorUrl !== undefined && Result.ErrorUrl.trim() != '') {
-        DisplayMessage(Translations.PaymentFailedWaitingRedirection, 'green');
+        DisplayMessage(Translations.PaymentFailedWaitingRedirection, 'red');
         setTimeout(function () {
             window.open(Result.ErrorUrl, "_self");
         }, 3000);
