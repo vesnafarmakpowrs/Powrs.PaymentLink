@@ -157,6 +157,7 @@
 			<Content fileName="IPSPayoutMethod.md"/>
 			<Content fileName="Payout.md"/>
 			<Content fileName="PayoutIPS.md"/>
+			<Content fileName="DeepLink.md"/>
 			<Content fileName="Index.html"/>
 			<Content fileName="TermsAndCondition.html" />
 			<Content fileName="PrivacyPolicy.html" />
@@ -216,6 +217,7 @@
 				<Content fileName="BankList.js"/>
 				<Content fileName="IPSPayment.js"/>
 				<Content fileName="XmlHttp.js"/>
+				<Content fileName="DeepLink.js"/>
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="expand.svg"/>

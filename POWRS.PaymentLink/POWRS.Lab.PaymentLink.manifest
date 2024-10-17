@@ -157,6 +157,7 @@
 			<Content fileName="IPSPayoutMethod.md" altFolder="..\pay.vaulter.rs"/>
 			<Content fileName="Payout.md" altFolder="..\pay.vaulter.rs"/>
 			<Content fileName="PayoutIPS.md" altFolder="..\pay.vaulter.rs"/>			
+			<Content fileName="DeepLink.md" altFolder="..\pay.vaulter.rs"/>			
 			<Content fileName="Index.html" altFolder="..\pay.vaulter.rs"/>
 			<Content fileName="TermsAndCondition.html" altFolder="..\pay.vaulter.rs"/>
 			<Content fileName="PrivacyPolicy.html" altFolder="..\pay.vaulter.rs"/>
@@ -203,6 +204,7 @@
 				<Content fileName="BankList.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="IPSPayment.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="XmlHttp.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="DeepLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
 			</Folder>
 			<Folder name="EC">				
 				<Content fileName="favicon.ico" altFolder="..\..\pay.vaulter.rs\EC\"/>

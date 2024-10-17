@@ -66,12 +66,15 @@ function DisplayTransactionResult(Result) {
 
 function GetDeepLinkSuccess(ResponseData) {
     var isIos = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    var mode = "_blank";
+    let url = ResponseData.Response.DeepLink;
     if (isIos) {
-        mode = "_self";
+        url = `${window.location.protocol}//${window.location.host}/DeepLink.md`;
+        const params = new URLSearchParams(url.search);
+        params.set('link', ResponseData.Response.DeepLink);
+        url += "?" + params.toString();
     }
 
-    window.open(ResponseData.Response.DeepLink, mode);
+    window.open(url, "_blank");
     DiasableItems(false);
 }
 
