@@ -56,7 +56,7 @@ else if (TYPE == 'LE') then
 if (TYPE != "") then
 (
      ]]<div class="dropdown" id="select-bank"> 
-        <label class="select-bank-lbl">((LanguageNamespace.GetStringAsync(82) ))"</label>
+        <label class="select-bank-lbl">Izaberi banka</label>
             <ul id="bankList" class="bank-list-ul"> [[;
                 foreach bank in bankList do 
                ( 
@@ -68,11 +68,11 @@ if (TYPE != "") then
                     bankName := TrimEnd(bankName);
                     bankName := TrimStart(bankName);
                     imgSrc := "..\\resources\\personal_round\\"+ imageName + ".jpg";
-                    ]]<li class="dropdown-item" onClick="OpenDeepLink( ((bank.ID )) )"> <img src="(( imgSrc))" class="bank-img" />((bankName ))</li> [[;
+                    ]]<li class="dropdown-item" onClick="OpenDeepLink( ((bank.ID )) )"> <img src="(( imgSrc))" class="bank-img" /><label>((bankName ))</label></li> [[;
                 );     
             ]]</ul>            
         </div>
-		<div class="spaceItem"></div>
+        <div class="spaceItem"></div>
         <div class="spaceItem"></div>[[
 )
 else

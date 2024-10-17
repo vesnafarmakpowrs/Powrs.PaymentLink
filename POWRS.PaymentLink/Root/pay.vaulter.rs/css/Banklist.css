@@ -137,16 +137,17 @@ body {
 
 
 .dropdown-item {
-    display: block !important;
+    display: flex;
     width: 90% !important;
-    padding: .15rem 0.25rem !important;
+    padding: .05rem 0.1rem !important;
     clear: both !important;
     font-weight: 300 !important;
     color: #212529;
     background-color: white !important;
     border: 0;
-    margin: 10px;
+    margin: 2px;
     border-radius: 25px;
+    line-height: 40px;
 }
 
 .bank-item {
@@ -168,7 +169,7 @@ body {
 .select-bank-lbl {
     font-size: x-large;
     padding-top: 0.8rem;
-    padding-left: 1.5rem;
+    padding-left: 1rem;
     margin-bottom: 0px;
 }
 
