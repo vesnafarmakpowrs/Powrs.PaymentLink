@@ -71,11 +71,10 @@ function DisplayTransactionResult(Result) {
 }
 
 function GetDeepLinkSuccess(ResponseData) {
-
     var isIos = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     var mode = "_blank";
     if (isIos) {
-        mode = "_selft";
+        mode = "_self";
     }
 
     window.open(ResponseData.Response.DeepLink, mode);
