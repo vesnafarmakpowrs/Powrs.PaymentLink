@@ -9,12 +9,6 @@ function OpenDeepLink(bankId) {
     InitiateIPSPayment(bankId, isCompany, GetDeepLinkSuccess);
 }
 
-function PaymentCompleted(Result) {
-    if (Result != null && Result.fallbackSuccessUrl != undefined && Result.fallbackSuccessUrl.trim() != '') {
-        window.open(Result.fallbackSuccessUrl, "_self");
-    }
-}
-
 function DiasableItems(disable) {
     banklist = document.getElementById("bankList");
     const items = banklist.getElementsByClassName("dropdown-item");

@@ -37,9 +37,7 @@ try
                 {
                     "success": true,
                     "successUrl": r.SuccessUrl ?? "",
-                    "errorUrl": r.ErrorUrl ?? "",
-                    "fallbackSuccessUrl": r.FallbackMobileSuccessUrl ?? "",
-                    "fallbackErrorUrl": r.FallbackMobileErrorUrl ?? ""
+                    "errorUrl": r.ErrorUrl ?? ""
                 };
 
                 Log.Informational("PushEvent: " + Str(jsonEvent), null);

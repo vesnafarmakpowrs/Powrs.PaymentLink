@@ -201,7 +201,9 @@ function GenerateIPSForm() {
 }
 
 function PaymentCompleted(Result) {
-    location.reload();
+    const url = new URL(window.location.href);
+    url.searchParams.delete("TYPE");
+    window.location.href = url.toString();
 }
 
 function PaySpotPaymentStatus(Result) {
