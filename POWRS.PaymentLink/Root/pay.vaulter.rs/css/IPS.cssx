@@ -362,10 +362,38 @@ font-style: normal;
      height: fit-content;
 }
 
+.ips-footer  {
+    display: flex;
+    flex-direction: row;
+	justify-content: center;
+    align-items: center;
+}
+
 @media only screen and (max-width: 1025px) {
 .div-logo-ips-footer img {
      max-width: 10%; 
      height: fit-content;
 }
 
+.ips-footer#child {
+    margin: 0 auto;
+}
+
+}
+
+@supports (-webkit-touch-callout: none) {
+  .div-logo-ips-footer img {
+     max-width: 50px; 
+	 height:auto;
+}
+
+.ips-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.ips-footer#child {
+    margin: 0 auto;
+}
 }

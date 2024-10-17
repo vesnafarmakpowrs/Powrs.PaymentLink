@@ -514,9 +514,6 @@
 	  <None Update="Root\pay.vaulter.rs\Index.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.vaulter.rs\IPSBank.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Root\pay.vaulter.rs\IPSDesktop.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
