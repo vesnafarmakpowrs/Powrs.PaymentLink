@@ -100,6 +100,7 @@
 		<None Remove="Root\pay.vaulter.rs\resources\vaulterlogo.svg" />
 		<None Remove="Root\pay.vaulter.rs\resources\vaulter_logo.svg" />
 		<None Remove="Root\Payout\API\GetAvailableLanguages.ws" />
+		<None Remove="Root\Payout\API\Demo\InitiateIPSPayment.ws" />
 		<None Remove="Root\Payout\DealInfo.ws" />
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
@@ -173,6 +174,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\API\GetAvailableLanguages.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\Payout\API\Demo\InitiateIPSPayment.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\HtmlTemplates\EN\SendLinkViaEmail.html">

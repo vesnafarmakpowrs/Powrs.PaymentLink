@@ -268,7 +268,7 @@
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
-				<Content fileName="InitiateIPSPayment.ws"/>
+				<Content fileName="InitiateIPSPayment.ws" altFolder="./Demo"/>
 				<Content fileName="GetAvailableLanguages.ws"/>
 			</Folder>
 			<Folder name="Fonts">
