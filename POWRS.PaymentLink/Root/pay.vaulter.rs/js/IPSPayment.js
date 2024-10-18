@@ -22,26 +22,26 @@ function PaymentCompleted(Result) {
 }
 
 function getbanksIE() {
-    var url = 'IPSBank.md?TYPE=IE';
-    openBankListURL(url);
+    var url = 'IPSBank.md';
+    openBankListURL(url, "&TYPE=IE");
 }
 
 function getbanksLE() {
 
-    var url = 'IPSBank.md?TYPE=LE';
-    openBankListURL(url);
+    var url = 'IPSBank.md';
+    openBankListURL(url, "&TYPE=LE");
 }
 
-function openBankListURL(url) {
+function openBankListURL(url, parameter) {
     var jwt = parent.document.getElementById('jwt').value;
-    
+
     console.log(jwt);
     if (jwt == "") {
         alert("Session token not found, refresh the page and try again");
     }
 
     url = url + "&JWT=" + jwt.trim();
-    window.parent.location.href = window.parent.location.href + '&TYPE=IE';
+    window.parent.location.href = window.parent.location.href + parameter;
     console.log(window.parent.location.href);
     // window.open(url, '_PARENT');
 }
