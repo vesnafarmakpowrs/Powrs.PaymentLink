@@ -54,6 +54,8 @@ function GenerateTranslations() {
     Translations.OpenLinkOnPhoneMessage = document.getElementById("OpenLinkOnPhoneMessage").value;
     Translations.SessionTokenExpiredMessage = document.getElementById("SessionTokenExpired").value;
     Translations.PaymentFailed = document.getElementById("PaymentFailed").value;
+    Translations.TransactionCompleted = document.getElementById("TransactionCompleted").value;
+    Translations.TransactionInProgress = document.getElementById("TransactionInProgress").value;
 }
 
 function GenerateLanguageDropdown() {
@@ -135,23 +137,19 @@ function HideSubmitPaymentDiv() {
 function LoadIPS() {
     console.log('loadIPS');
 	HideSubmitPaymentDiv();
-    LoadIPSIiframe();
+	LoadIPSIiframe();
 }
 
 function LoadIPSIiframe()
 {
-	document.getElementById("ips-iframe").src = "";
-	 document.getElementById("ctn-payment-method-rs").style.display = "block";
-    let jwt = document.getElementById("jwt");
-    console.log(jwt);
-
     if (isMobileDevice)
-        document.getElementById("ips-iframe").src = "IPSPayoutMethod.md?JWT=" + jwt.value;
-    else {
-        document.getElementById("ips-iframe").src = "IPSDesktop.md?JWT=" + jwt.value + "&TabID=" + TabID;
-        document.getElementById("ips-iframe").classList.remove("pay-iframe");
-        document.getElementById("ips-iframe").classList.add("pay-iframe-web");
+        document.getElementById("ips-method").style.display = "block";
+    else 
+	{
+		document.getElementById("IPSScan").style.display = "block";
+	    getQRCode();
     }
+    
 }
 
 var updateTimer = null;

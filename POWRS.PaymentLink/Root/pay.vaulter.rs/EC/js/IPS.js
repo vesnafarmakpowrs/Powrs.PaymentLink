@@ -125,14 +125,15 @@ function UserAgree() {
 }
 
 
-function LoadIPS() {   
+function LoadIPS() {
+   
     document.getElementById("ips-iframe").src = "";
     let jwt = document.getElementById("jwt");
     console.log(jwt.value);
     if (isMobileDevice)
-        document.getElementById("ips-iframe").src = "EC/IPSPayoutMethod.md?JWT=" + jwt.value;
+        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/EC/IPSPayoutMethod.md?JWT=" + jwt.value;
     else {
-        document.getElementById("ips-iframe").src = "EC/IPSDesktop.md?JWT=" + jwt.value + "&TabID=" + TabID;
+        document.getElementById("ips-iframe").src = "https://pay.lab.vaulter.rs/EC/IPSDesktop.md?JWT=" + jwt.value + "&TabID=" + TabID;
         document.getElementById("ips-iframe").classList.remove("pay-iframe");
         document.getElementById("ips-iframe").classList.add("pay-iframe-web");
     }

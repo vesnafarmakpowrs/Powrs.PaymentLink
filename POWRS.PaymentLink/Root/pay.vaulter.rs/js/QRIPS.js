@@ -1,9 +1,4 @@
 
-var Translations = {};
-document.addEventListener("DOMContentLoaded", () => {
-   getQRCode();
-   GenerateQRTranslations();
-});
 
 var timeoutHandle;
 
@@ -29,14 +24,6 @@ function countdown(minutes, seconds) {
     tick();
 }
 
-
-function GenerateQRTranslations() {
-  
-    Translations.TransactionCompleted = document.getElementById("TransactionCompleted").value;
-    Translations.TransactionFailed = document.getElementById("TransactionFailed").value;
-    Translations.TransactionInProgress = document.getElementById("TransactionInProgress").value;
-}
-
 function getQRCode()
 {
   InitiateIPSPayment(GetQRCodeLinkSuccess);
@@ -44,7 +31,6 @@ function getQRCode()
 
 
 function InitiateIPSPayment(onSuccess) {
-
     SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
         {
             "isFromMobile": false,

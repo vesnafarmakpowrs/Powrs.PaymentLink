@@ -89,7 +89,6 @@ body
 
 
 form {
-  width: 30vw;
   align-self: center;
 }
 

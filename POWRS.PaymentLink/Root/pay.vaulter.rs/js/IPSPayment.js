@@ -1,6 +1,5 @@
 
 var Translations = {};
-const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
 
 document.addEventListener("DOMContentLoaded", () => {
     GenerateTranslations();
@@ -14,8 +13,6 @@ function GenerateTranslations() {
 
     Translations.SessionTokenExpiredMessage = document.getElementById("SessionTokenExpired").value;
 }
-
-
 
 function PaymentCompleted(Result) {
     location.reload();
@@ -75,10 +72,10 @@ function InitiatePaymentForm(ipsOnly, onSuccess) {
 }
 
 
-  function infoPopup() { 
-            const overlay = document.getElementById('popupOverlay'); 
-            overlay.classList.toggle('show'); 
-        } 
+function infoPopup() {
+    const overlay = document.getElementById('popupOverlay');
+    overlay.classList.toggle('show');
+}
 
 function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     let jwt = document.getElementById("jwt");
