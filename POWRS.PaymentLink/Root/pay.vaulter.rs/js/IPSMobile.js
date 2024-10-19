@@ -33,7 +33,4 @@ function infoPopup()
     overlay.classList.toggle('show');
 }
 
-function GenerateIPSPayment(bankID)
-{
-    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
-}
+

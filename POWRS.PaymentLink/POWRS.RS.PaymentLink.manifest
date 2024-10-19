@@ -211,6 +211,7 @@
 				<Content fileName="PaymentLink.js"/>
 				<Content fileName="Status.js"/>
 				<Content fileName="PaymentLinkIPS.js"/>
+				<Content fileName="PayoutDetails.js"/>
 				<Content fileName="QRIPS.js"/>
 				<Content fileName="BankList.js"/>
 				<Content fileName="IPSPayment.js"/>

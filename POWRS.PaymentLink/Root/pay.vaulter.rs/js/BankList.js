@@ -6,7 +6,7 @@ function OpenDeepLink(bankId) {
     console.log("type: " + type);
     if (type.toLowerCase().trim() == "le")
         isCompany = true;
-    InitiateIPSPayment(bankId, isCompany, GetDeepLinkSuccess);
+    InitiateIPSPayment(bankId, true, isCompany, GetDeepLinkSuccess);
 }
 
 function DiasableItems(disable) {
@@ -21,7 +21,6 @@ function DiasableItems(disable) {
             item.classList.remove("disabled");
     }
 }
-
 
 function TransactionFailed(Result) {
     let res = {
@@ -55,12 +54,4 @@ function GetDeepLinkSuccess(ResponseData) {
 
     window.open(url, "_blank");
     DiasableItems(false);
-}
-
-function GetQRCodeLinkSuccess(ResponseData) {
-
-    console.log(ResponseData.Response);
-    console.log(ResponseData.Response.QrCode);
-    document.getElementById("QRCode").src = ResponseData.Response.QrCode;
-
 }

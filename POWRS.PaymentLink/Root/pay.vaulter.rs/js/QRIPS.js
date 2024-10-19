@@ -1,5 +1,3 @@
-
-
 var timeoutHandle;
 
 function countdown(minutes, seconds) {
@@ -26,32 +24,13 @@ function countdown(minutes, seconds) {
 
 function getQRCode()
 {
-  InitiateIPSPayment(GetQRCodeLinkSuccess);
+  InitiateQRIPSPayment(GetQRCodeLinkSuccess);
 }
 
+function InitiateQRIPSPayment(onSuccess) {
 
-function InitiateIPSPayment(onSuccess) {
-    SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
-        {
-            "isFromMobile": false,
-            "tabId": TabID,
-            "ipsOnly": true,
-            "bankId": 0,
-            "isCompany": false
-        },
-        (response) => {
-            onSuccess(response);
-        },
-        (error) => {
-            if (error.status === 408) {
-                return;
-            }
-            alert(error);
-            TransactionFailed(null);
-        })
+    InitiateIPSPayment(0, false, false, onSuccess);
 }
-
-
 function TransactionFailed(Result) {
     let res = {
         IsCompleted: true,

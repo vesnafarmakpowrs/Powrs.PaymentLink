@@ -198,6 +198,7 @@
 				<Content fileName="PaymentLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="Status.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="PaymentLinkIPS.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="PayoutDetails.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="QRIPS.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="BankList.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="IPSPayment.js" altFolder="..\..\pay.vaulter.rs\js"/>

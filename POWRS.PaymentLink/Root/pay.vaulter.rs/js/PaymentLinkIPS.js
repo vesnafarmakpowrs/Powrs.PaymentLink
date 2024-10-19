@@ -7,6 +7,28 @@ document.addEventListener("DOMContentLoaded", () => {
     GenerateTranslations();
 });
 
+function InitiateIPSPayment(bankId, isFromMobile, isCompany, onSuccess) {
+    SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
+        {
+            "isFromMobile": isFromMobile,
+            "tabId": TabID,
+            "ipsOnly": true,
+            "bankId": bankId,
+            "isCompany": isCompany
+        },
+        (response) => {
+            onSuccess(response);
+        },
+        (error) => {
+            if (error.status === 408) {
+                return;
+            }
+            alert(error);
+            TransactionFailed(null);
+        })
+}
+
+
 function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
     let jwt = document.getElementById("jwt");
     if (!jwt.value.trim() === "") {
@@ -114,20 +136,6 @@ function DisplayTransactionResult(Result) {
     }
 }
 
-function UserAgree() {
-
-    if (document.getElementById("termsAndCondition").checked
-        && document.getElementById("termsAndConditionAgency").checked) {
-        if (document.getElementById("payspot-submit") != null) document.getElementById("payspot-submit").removeAttribute("disabled");
-        document.getElementById("ctn-payment-method-rs").style.display = "block";
-        LoadIPS();
-    }
-    else {
-        if (document.getElementById("payspot-submit") != null) document.getElementById("payspot-submit").setAttribute("disabled", "disabled");
-        document.getElementById("ctn-payment-method-rs").style.display = "none";
-    }
-}
-
 function HideSubmitPaymentDiv() {
     if (document.getElementById("submit-payment") != null)
         document.getElementById("submit-payment").style.display = "none";
@@ -149,39 +157,9 @@ function LoadIPSIiframe()
 		document.getElementById("IPSScan").style.display = "block";
 	    getQRCode();
     }
-    
 }
 
 var updateTimer = null;
-
-function InitiatePaymentForm(ipsOnly, onSuccess) {
-    document.getElementById("payspot-submit").style.display = "none";
-    document.getElementById("tr_spinner").style.display = null;
-    CollapseDetails();
-
-    SendXmlHttpRequest("../Payout/API/InitiatePayment.ws",
-        {
-            "isFromMobile": isMobileDevice,
-            "tabId": TabID
-        },
-        (response) => {
-            onSuccess(response);
-        },
-        (error) => {
-            if (error.status === 408) {
-                return;
-            }
-            alert(error);
-            TransactionFailed(null);
-        })
-}
-function StartPayment() {
-    InitiatePaymentForm(false, ShowPayspotPage);
-}
-
-function GenerateIPSForm() {
-    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
-}
 
 function PaymentCompleted(Result) {
     const url = new URL(window.location.href);
@@ -223,140 +201,3 @@ function RetryPayment() {
     LoadIPSIiframe();
 }
 
-function ShowPayspotPage(Data) {
-    if (Data == null) {
-        console.log("data is empty");
-        alert("Unrecognized response");
-        return;
-    }
-
-    if (!Data.Success) {
-        alert("Unrecognized response");
-        console.log(Data);
-    }
-
-    if (isMobileDevice) {
-        window.open(Data.Response, '_self').focus();
-    }
-    else {
-        document.getElementById("tr_spinner").style.display = "none";
-        document.getElementById("payspot_iframe").src = Data.Response;
-        document.getElementById("payspot_iframe").style.display = null;
-    }
-}
-
-function CollapseDetails() {
-    document.getElementById("tr_header").style.display = "none";
-    document.getElementById("tr_header_title").style.display = "none";
-    document.getElementById("tr_summary").addEventListener("click", ExpandDetails);
-}
-
-function ExpandDetails() {
-    document.getElementById("tr_header").style.display = null;
-    document.getElementById("tr_header_title").style.display = null;
-    document.getElementById("tr_summary").style.display = null;
-    document.getElementById("tr_header").addEventListener("click", CollapseDetails);
-    document.getElementById("tr_header_title").addEventListener("click", CollapseDetails);
-}
-
-function ExpandSellerDetails() {
-    document.getElementById("tr_seller_dtl").style.display = null;
-    expand_img = document.getElementById("expand_img");
-    expand_img.src = "../resources/expand-up.svg";
-    expand_img.removeEventListener('click', ExpandSellerDetails);
-    expand_img.addEventListener("click", CollapseSellerDetails);
-}
-
-function CollapseSellerDetails() {
-    document.getElementById("tr_seller_dtl").style.display = "none";
-    expand_img = document.getElementById("expand_img");
-    expand_img.src = "../resources/expand-down.svg";
-    expand_img.removeEventListener('click', CollapseSellerDetails);
-    expand_img.addEventListener("click", ExpandSellerDetails);
-}
-
-function OpenTermsAndConditions(event, element) {
-    event.preventDefault();
-
-    var href = element.getAttribute('urlhref');
-    if (href == null) {
-        return;
-    }
-    if (href.startsWith('http://') || href.startsWith('https://')) {
-        openWebURL(href);
-    }
-    else {
-        openBase64String(href);
-    }
-}
-
-function openWebURL(url) {
-    window.open(url, '_blank');
-}
-
-function openBase64String(base64String) {
-    var binaryString = window.atob(base64String);
-    var bytes = new Uint8Array(binaryString.length);
-    for (var i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    // Create a Blob from the Uint8Array
-    var blob = new Blob([bytes], { type: 'application/pdf' });
-
-    // Create a temporary URL for the Blob
-    var blobURL = URL.createObjectURL(blob);
-
-    // Open a new window with the Blob URL
-    var newWindow = window.open(blobURL);
-}
-
-function FillAndSubmitPayspotIPSForm(ResponseData) {
-    if (ResponseData == null) {
-        return;
-    }
-    if (ResponseData.Success) {
-        let data = ResponseData.Response;
-        // Fill the form fields with data from the API response
-        document.querySelector('input[name="companyId"]').value = data.CompanyId;
-        document.querySelector('input[name="merchantOrderID"]').value = data.MerchantOrderId;
-        document.querySelector('input[name="merchantOrderAmount"]').value = data.MerchantOrderAmount;
-        document.querySelector('input[name="merchantCurrencyCode"]').value = data.MerchantCurrencyCode;
-        document.querySelector('input[name="language"]').value = data.Language;
-        document.querySelector('input[name="callbackURL"]').value = data.CallbackURL;
-        document.querySelector('input[name="successURL"]').value = data.SuccessURL;
-        document.querySelector('input[name="cancelURL"]').value = data.CancelURL;
-        document.querySelector('input[name="errorURL"]').value = data.ErrorURL;
-        document.querySelector('input[name="hash"]').value = data.Hash;
-        document.querySelector('input[name="rnd"]').value = data.Rnd;
-        document.querySelector('input[name="currentDate"]').value = data.CurrentDate;
-
-        var payspotForm = document.getElementById('payspotForm');
-
-        payspotForm.action = data.SubmitAddress;
-        payspotForm.submit();
-    }
-
-    function InitiateIPSPayment(bankId, isCompany, onSuccess) {
-
-        SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
-            {
-                "isFromMobile": true,
-                "tabId": TabID,
-                "ipsOnly": true,
-                "bankId": bankId,
-                "isCompany": isCompany
-            },
-            (response) => {
-                onSuccess(response);
-            },
-            (error) => {
-                if (error.status === 408) {
-                    return;
-                }
-                alert(error);
-                TransactionFailed(null);
-            })
-    }
-
-}

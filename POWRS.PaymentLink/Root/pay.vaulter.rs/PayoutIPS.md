@@ -16,11 +16,13 @@ Parameter: ID
 Parameter: TYPE
 Parameter: lng
 JavaScript: js/Events.js
-JavaScript: js/PaymentLinkIPS.js
-JavaScript: js/BankList.js
 JavaScript: js/XmlHttp.js
+JavaScript: js/PaymentLinkIPS.js
 JavaScript: js/QRIPS.js
+JavaScript: js/BankList.js
 JavaScript: js/IPSMobile.js
+JavaScript: js/PayoutDetails.js
+
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />

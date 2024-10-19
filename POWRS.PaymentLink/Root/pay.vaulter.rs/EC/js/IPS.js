@@ -141,14 +141,6 @@ function LoadIPS() {
 
 var updateTimer = null;
 
-function StartPayment() {
-    InitiatePaymentForm(false, ShowPayspotPage);
-}
-
-function GenerateIPSForm() {
-    InitiatePaymentForm(true, FillAndSubmitPayspotIPSForm);
-}
-
 function PaymentCompleted(Result) {
     location.reload();
 }
@@ -177,7 +169,7 @@ function RetryPayment() {
     div.innerHTML = '';
 	document.getElementById('payment-msg-div').style.display = "none";
 	document.getElementById("ips-iframe").src = "";
-    UserAgree();
+    
 }
 
 function ShowPayspotPage(Data) {
