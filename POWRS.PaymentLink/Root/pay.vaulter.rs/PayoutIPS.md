@@ -20,7 +20,7 @@ JavaScript: js/PaymentLinkIPS.js
 JavaScript: js/BankList.js
 JavaScript: js/XmlHttp.js
 JavaScript: js/QRIPS.js
-JavaScript: js/IPSPayment.js
+JavaScript: js/IPSMobile.js
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />

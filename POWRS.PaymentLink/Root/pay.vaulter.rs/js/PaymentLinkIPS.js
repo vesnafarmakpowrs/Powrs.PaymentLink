@@ -336,4 +336,27 @@ function FillAndSubmitPayspotIPSForm(ResponseData) {
         payspotForm.action = data.SubmitAddress;
         payspotForm.submit();
     }
+
+    function InitiateIPSPayment(bankId, isCompany, onSuccess) {
+
+        SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
+            {
+                "isFromMobile": true,
+                "tabId": TabID,
+                "ipsOnly": true,
+                "bankId": bankId,
+                "isCompany": isCompany
+            },
+            (response) => {
+                onSuccess(response);
+            },
+            (error) => {
+                if (error.status === 408) {
+                    return;
+                }
+                alert(error);
+                TransactionFailed(null);
+            })
+    }
+
 }
