@@ -131,6 +131,9 @@
 				<Variable id="RefundedAmount">
 					<Number>0</Number>
 				</Variable>
+				<Variable id="isEcommerce">
+					<Boolean>false</Boolean>
+				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="SetServiceProvider"/>
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
@@ -528,6 +531,9 @@
 		<Tag name="ErrorUrl">
 			<ParameterReference parameter="ErrorUrl" />
 		</Tag>
+		<Tag name="isEcommerce">
+			<ParameterReference parameter="isEcommerce" />
+		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
 		</FriendlyName>
@@ -757,6 +763,13 @@
 				</paragraph>
 			</description>
 		</stringParameter>
+		<booleanParameter name="isEcommerce" value="false">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Is Ecommerce payment</text>
+				</paragraph>
+			</description>
+		</booleanParameter>
 	</parameters>
 	<humanReadableText xml:lang="en">
 		<section>
