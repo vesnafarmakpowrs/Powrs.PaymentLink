@@ -13,6 +13,7 @@ viewport : Width=device-width, initial-scale=1
 Parameter: ID
 Parameter: lng
 JavaScript: js/Events.js
+JavaScript: js/XmlHttp.js
 JavaScript: js/PaymentLink.js
 JavaScript: js/PayoutDetails.js
 

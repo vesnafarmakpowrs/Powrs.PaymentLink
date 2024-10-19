@@ -28,38 +28,6 @@ function InitiateIPSPayment(bankId, isFromMobile, isCompany, onSuccess) {
         })
 }
 
-
-function SendXmlHttpRequest(resource, requestBody, onSuccess, onError) {
-    let jwt = document.getElementById("jwt");
-    if (!jwt.value.trim() === "") {
-        alert("Session token not found, refresh the page and try again");
-    }
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", resource, true);
-    xhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-    xhttp.setRequestHeader("Accept", "application/json");
-    xhttp.setRequestHeader("Authorization", "Bearer " + jwt.value);
-    xhttp.send(JSON.stringify(requestBody));
-
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4) {
-            if (xhttp.status == 200 && onSuccess != null) {
-                let response = JSON.parse(xhttp.responseText);
-                onSuccess(response);
-            }
-            else {
-                if (xhttp.status == 403) {
-                    alert(Translations.SessionTokenExpiredMessage);
-                }
-                else if (onError != null) {
-                    onError(xhttp);
-                }
-            }
-        };
-    };
-}
-
 function GenerateTranslations() {
     var element = document.getElementById("SelectedAccountOk");
     if (element == null) {
