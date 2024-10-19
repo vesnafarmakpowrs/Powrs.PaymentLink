@@ -34,7 +34,7 @@ function OpenDeepLink(bankId) {
     console.log("type: " + type);
     if (type.toLowerCase().trim() == "le")
         isCompany = true;
-    InitiateIPSPayment(bankId, true, isCompany, GetDeepLinkSuccess);
+    InitiateIPSPayment(bankId, true, isCompany, GetDeepLinkSuccess, IPSTransactionFailed);
 }
 
 function DiasableItems(disable) {
@@ -50,7 +50,7 @@ function DiasableItems(disable) {
     }
 }
 
-function TransactionFailed(Result) {
+function IPSTransactionFailed(Result) {
     let res = {
         IsCompleted: true,
         IsSuccess: false,

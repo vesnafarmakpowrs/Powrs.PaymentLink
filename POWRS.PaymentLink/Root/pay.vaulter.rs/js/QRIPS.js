@@ -29,14 +29,16 @@ function getQRCode()
 
 function InitiateQRIPSPayment(onSuccess) {
 
-    InitiateIPSPayment(0, false, false, onSuccess);
+    InitiateIPSPayment(0, false, false, onSuccess, QRTransactionFailed);
 }
-function TransactionFailed(Result) {
+
+function QRTransactionFailed(Result) {
     let res = {
         IsCompleted: true,
         IsSuccess: false,
         Message: Translations.TransactionFailed
     };
+    document.getElementById("ctn-payment-method-rs").style.display = "block";
     DisplayTransactionResult(res);
 }
 
@@ -99,9 +101,6 @@ function ShowBtn(show, btn)
    }
 }
 
-function PaymentCompleted(Result) {
-    parent.location.reload();
-}
 
 function cancelTransaction()
 {

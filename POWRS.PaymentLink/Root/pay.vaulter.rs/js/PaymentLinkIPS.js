@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     GenerateTranslations();
 });
 
-function InitiateIPSPayment(bankId, isFromMobile, isCompany, onSuccess) {
+function InitiateIPSPayment(bankId, isFromMobile, isCompany, onSuccess, onFailed) {
     SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
         {
             "isFromMobile": isFromMobile,
@@ -24,7 +24,7 @@ function InitiateIPSPayment(bankId, isFromMobile, isCompany, onSuccess) {
                 return;
             }
             alert(error);
-            TransactionFailed(null);
+            onFailed(null);
         })
 }
 
@@ -83,26 +83,6 @@ function GenerateLanguageDropdown() {
         });
 }
 
-function TransactionFailed(Result) {
-    let res = {
-        IsCompleted: true,
-        IsSuccess: false,
-        Message: Translations.TransactionFailed
-    };
-    document.getElementById("ctn-payment-method-rs").style.display = "block";
-    DisplayTransactionResult(res);
-}
-
-function DisplayTransactionResult(Result) {
-
-    if (Result.IsCompleted) {
-        if (Result.IsSuccess) {
-            setTimeout(function () {
-                location.reload();
-            }, 4000);
-        }
-    }
-}
 
 function HideSubmitPaymentDiv() {
     if (document.getElementById("submit-payment") != null)
