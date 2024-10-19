@@ -200,7 +200,7 @@
 				<Content fileName="PaymentLinkIPS.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="PayoutDetails.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="QRIPS.js" altFolder="..\..\pay.vaulter.rs\js"/>
-				<Content fileName="BankList.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="IPSMobile.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="IPSPayment.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="XmlHttp.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="DeepLink.js" altFolder="..\..\pay.vaulter.rs\js"/>

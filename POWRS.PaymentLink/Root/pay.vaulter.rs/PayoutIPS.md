@@ -17,11 +17,10 @@ Parameter: TYPE
 Parameter: lng
 JavaScript: js/Events.js
 JavaScript: js/XmlHttp.js
+JavaScript: js/PayoutDetails.js
 JavaScript: js/PaymentLinkIPS.js
 JavaScript: js/QRIPS.js
-JavaScript: js/BankList.js
 JavaScript: js/IPSMobile.js
-JavaScript: js/PayoutDetails.js
 
 
 <main class="border-radius">

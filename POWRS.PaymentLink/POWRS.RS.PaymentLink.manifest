@@ -213,7 +213,7 @@
 				<Content fileName="PaymentLinkIPS.js"/>
 				<Content fileName="PayoutDetails.js"/>
 				<Content fileName="QRIPS.js"/>
-				<Content fileName="BankList.js"/>
+				<Content fileName="IPSMobile.js"/>
 				<Content fileName="IPSPayment.js"/>
 				<Content fileName="XmlHttp.js"/>
 				<Content fileName="DeepLink.js"/>
