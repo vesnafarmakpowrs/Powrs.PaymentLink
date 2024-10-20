@@ -131,7 +131,7 @@
 				<Variable id="RefundedAmount">
 					<Number>0</Number>
 				</Variable>
-				<Variable id="isEcommerce">
+				<Variable id="IsEcommerce">
 					<Boolean>false</Boolean>
 				</Variable>
 				<State id="AwaitingForPayment">
@@ -531,8 +531,8 @@
 		<Tag name="ErrorUrl">
 			<ParameterReference parameter="ErrorUrl" />
 		</Tag>
-		<Tag name="isEcommerce">
-			<ParameterReference parameter="isEcommerce" />
+		<Tag name="IsEcommerce">
+			<ParameterReference parameter="IsEcommerce" />
 		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
@@ -763,7 +763,7 @@
 				</paragraph>
 			</description>
 		</stringParameter>
-		<booleanParameter name="isEcommerce" value="false">
+		<booleanParameter name="IsEcommerce" value="false">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Is Ecommerce payment</text>

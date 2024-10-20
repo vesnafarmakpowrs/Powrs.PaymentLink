@@ -33,8 +33,8 @@ try
 (
     PayoutPage := "Payout.md";
     IpsOnly := false;
-
-    ContractInfo := Global.CreateItem(SessionUser, PRemoteId,
+    IsEcommerce := false;
+    ContractInfo := Global.CreateItem(SessionUser, PRemoteId, IsEcommerce,
                 PTitle, PPrice, PCurrency, 
                 PDescription, PPaymentDeadline, 
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber ??? "",

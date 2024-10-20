@@ -30,7 +30,8 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
-	    ContractInfo := Global.CreateItem(SessionUser, PRemoteId, 
+        IsEcommerce := true;
+	    ContractInfo := Global.CreateItem(SessionUser, PRemoteId,  IsEcommerce, 
                 PTitle, PPrice, PCurrency, 
                 PDescription, PPaymentDeadline, 
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,

@@ -201,9 +201,7 @@
 				<Content fileName="Payout.md" />
 				<Folder name="js">
 					<Content fileName="IPS.js" />
-					<Content fileName="IPSType.js" />
 					<Content fileName="PayForm.js"/>
-					<Content fileName="QRIPS.js"/>
 				</Folder>
 			</Folder>
 			<Folder name="js">
