@@ -205,16 +205,15 @@
 				</Folder>
 			</Folder>
 			<Folder name="js">
+				<Content fileName="DeepLink.js"/>
 				<Content fileName="Events.js"/>
+				<Content fileName="IPSMobile.js"/>
 				<Content fileName="PaymentLink.js"/>
-				<Content fileName="Status.js"/>
 				<Content fileName="PaymentLinkIPS.js"/>
 				<Content fileName="PayoutDetails.js"/>
 				<Content fileName="QRIPS.js"/>
-				<Content fileName="IPSMobile.js"/>
-				<Content fileName="IPSPayment.js"/>
+				<Content fileName="Status.js"/>
 				<Content fileName="XmlHttp.js"/>
-				<Content fileName="DeepLink.js"/>
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="expand.svg"/>
