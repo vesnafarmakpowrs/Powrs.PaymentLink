@@ -30,6 +30,7 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
+    Log.Informational("Posted data: \n" + Str(Posted), logObject, logActor, logEventID, null);
     PayoutPage := "Payout.md";
     IpsOnly := false;
 
