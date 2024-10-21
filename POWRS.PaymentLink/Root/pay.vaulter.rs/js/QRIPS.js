@@ -104,5 +104,5 @@ function ShowBtn(show, btn)
 
 function cancelTransaction()
 {
-     window.open("Redirect/Cancel.md", '_self');
+    location.reload();
 }

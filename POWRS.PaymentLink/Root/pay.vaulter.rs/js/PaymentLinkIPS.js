@@ -5,6 +5,12 @@ const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi")
 document.addEventListener("DOMContentLoaded", () => {
     GenerateLanguageDropdown();
     GenerateTranslations();
+
+    var params = new URLSearchParams(window.location.search);
+
+    if (params.has('Retry') && params.get("Retry") === "true") {
+        showRetrydiv();
+    }
 });
 
 function InitiateIPSPayment(bankId, isFromMobile, isCompany, onSuccess, onFailed) {
@@ -110,41 +116,68 @@ function LoadIPSIiframe()
 var updateTimer = null;
 
 function PaymentCompleted(Result) {
+    DeleteUrlParam("TYPE");
+    DeleteUrlParam("Retry");
+}
+
+function DeleteUrlParam(ParamName) {
     const url = new URL(window.location.href);
-    url.searchParams.delete("TYPE");
+    url.searchParams.delete(ParamName);
     window.location.href = url.toString();
 }
 
+function BankListRedirect() {
+    const url = new URL(window.location.href);
+    const urlParams = new URLSearchParams(url.search);
+    if (urlParams.has('TYPE')) {
+        console.log('bank list');
+        url.searchParams.delete("TYPE");
+        window.location.href = url.toString() + "&Retry=true";
+    }
+
+}
+
 function PaySpotPaymentStatus(Result) {
+
+    BankListRedirect();
     if (Result != null && Result.StatusCode != null && Result.StatusCode == "82") {
         console.log(Result.Msg);
     }
     else if (Result != null && Result.StatusCode != null && (Result.StatusCode == "05" || Result.StatusCode == "-1")) {
-        document.getElementById('ctn-payment-method-rs').style.display = "none";
-        var div = document.getElementById('payment-msg-div');
-        div.style.display = "block";
-        var div = document.getElementById('payment-msg');
-        div.innerHTML = '';
-        var boldText = document.createElement('strong');
-        boldText.textContent = Translations.PaymentFailed;;
-        boldText.style.color = 'red';
-        boldText.style.width = '70%';
-        boldText.style.textAlign = 'center';
-        div.appendChild(boldText);
-        document.getElementById('retry-payment').style.display = "block";
+        var element = document.getElementById('IPSScan');
+        if (typeof (element) != 'undefined' && element != null) {
+            document.getElementById('IPSScan').style.display = "none";
+        }
+            
+        showRetrydiv();
     }
 }
 
-function PaymentFailed(){
-	
-}	
+function showRetrydiv() {
+    document.getElementById('submit-payment').style.display = "none";
+    var div = document.getElementById('payment-msg-div');
+    div.style.display = "block";
+    var div = document.getElementById('payment-msg');
+    div.innerHTML = '';
+    var boldText = document.createElement('strong');
+    boldText.textContent = Translations.PaymentFailed;;
+    boldText.style.color = 'red';
+    boldText.style.width = '70%';
+    boldText.style.textAlign = 'center';
+    div.appendChild(boldText);
+    document.getElementById('retry-payment').style.display = "block";
+}
+
+function PaymentFailed() {
+
+}
 
 function RetryPayment() {
 	
     document.getElementById('retry-payment').style.display = "none";
     var div = document.getElementById('payment-msg');
     div.innerHTML = '';
-	document.getElementById('payment-msg-div').style.display = "none";
+    document.getElementById('payment-msg-div').style.display = "none";
     document.getElementById('payment-msg-div').style.display = "none";
     LoadIPSIiframe();
 }

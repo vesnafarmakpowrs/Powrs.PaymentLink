@@ -67,11 +67,11 @@ if (TYPE != "") then
                     imageName :=  Before(bank.Name," ") != null ? Before(bank.Name," ") : bank.Name;
                     Contains(bank.Name,"INTESA") ? imageName := "intesa";
                     Contains(bank.Name,"POŠTANSKA") ? imageName := "pbs";
-                    Contains(bank.Name,"BANKA") ? bankName := Replace(bank.Name,"BANKA","");
                     bankName := TrimEnd(bankName);
                     bankName := TrimStart(bankName);
                     imgSrc := "..\\resources\\personal_round\\"+ imageName + ".jpg";
-                    ]]<li class="dropdown-item" onClick="OpenDeepLink( ((bank.ID )) )"> <img src="(( imgSrc))" class="bank-img" /><label>((bankName ))</label></li> [[;
+                    if (bank.ID != 5) then
+                      ]]<li class="dropdown-item" onClick="OpenDeepLink( ((bank.ID )) )"> <img src="(( imgSrc))" class="bank-img" /><label>((bankName ))</label></li> [[;
                 );     
             ]]</ul>            
         </div>
