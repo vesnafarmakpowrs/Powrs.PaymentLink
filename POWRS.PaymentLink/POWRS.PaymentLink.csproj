@@ -90,7 +90,6 @@
 	<ItemGroup>
 		<None Remove="Root\pay.vaulter.rs\css\Payout.cssx" />
 		<None Remove="Root\pay.vaulter.rs\DeepLink.md" />
-		<None Remove="Root\pay.vaulter.rs\js\BankList.js" />
 		<None Remove="Root\pay.vaulter.rs\js\DeepLink.js" />
 		<None Remove="Root\pay.vaulter.rs\js\Events.js" />
 		<None Remove="Root\pay.vaulter.rs\js\IPSMobile.js" />
@@ -140,16 +139,11 @@
 		<None Remove="Scripts\StartupScripts\GetAgentSuccessfullTransactions.config" />
 		<None Remove="Scripts\StartupScripts\GetUserHierarchy.config" />
 	</ItemGroup>
-
-	
-	<ItemGroup>
-	  <Compile Include="Root\pay.vaulter.rs\js\IPSMobile.js" />
-	</ItemGroup>
 	<ItemGroup>		
 		<Content Include="Root\pay.vaulter.rs\css\Payout.cssx">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
-		<Content Include="Root\pay.vaulter.rs\js\BankList.js">
+		<Content Include="Root\pay.vaulter.rs\js\IPSMobile.js">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
 		<Content Include="Root\pay.vaulter.rs\js\DeepLink.js">
@@ -539,6 +533,9 @@
 	  <None Update="Root\pay.vaulter.rs\js\PaymentLinkIPS.js">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.vaulter.rs\js\PayoutDetails.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.vaulter.rs\js\QRIPS.js">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -731,6 +728,9 @@
 	  <None Update="Root\Payout\HtmlTemplates\EN\ContactUs.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\PaymentFailedIPS.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\EN\PaymentCompletedIPS.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -753,6 +753,9 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\ContactUs.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\RS\PaymentFailedIPS.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\PaymentCompletedIPS.html">

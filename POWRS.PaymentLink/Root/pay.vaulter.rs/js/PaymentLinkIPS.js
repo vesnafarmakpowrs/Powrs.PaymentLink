@@ -148,7 +148,7 @@ function PaySpotPaymentStatus(Result) {
         if (typeof (element) != 'undefined' && element != null) {
             document.getElementById('IPSScan').style.display = "none";
         }
-            
+        stopTimer();
         showRetrydiv();
     }
 }

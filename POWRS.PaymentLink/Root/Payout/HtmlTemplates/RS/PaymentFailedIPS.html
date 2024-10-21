@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation</title>
+    <style>
+        .footer {
+            color: #596273;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            font-style: italic;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .footer-text {
+            display: block;
+            text-align: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .transaction-status p {
+            margin: 0px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .details {
+            margin-top: 20px;
+        }
+
+            .details h2 {
+                color: limegreen;
+                border-bottom: 2px solid;
+                padding-bottom: 5px;
+            }
+
+        .info {
+            margin-top: 10px;
+        }
+
+            .info p {
+                margin: 5px 0;
+            }
+
+            .info h2 {
+                color: black;
+                border-bottom: 2px solid black;
+            }
+
+        .product {
+            margin-top: 20px;
+        }
+
+            .product table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .product th, .product td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            .product th {
+                background-color: #f2f2f2;
+            }
+
+        .total {
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://xsjxcz.stripocdn.email/content/guids/CABINET_8b0d8363dad9cf7da11a7b5c5b952fafce23ca1bf4eace9f0d0d772593b69917/images/vaulter_logotype_black_28.png" />
+        </div>
+        <div class="details">
+            <div class="transaction-status">
+                <h2>Plaćanje nije izvršeno!</h2>
+                <p><strong>ID porudzbine:</strong> {{RemoteId}}</p>
+                <p><strong>Datum plaćanja:</strong> {{PaymentDateTime}}</p>
+            </div>
+
+            <div class="info">
+                <h2>Informacije o prodavcu</h2>
+                <p><strong>Naziv:</strong> {{ORGNAME}}</p>
+                <p><strong>Matični broj:</strong> {{ORGNR}}</p>
+                <p><strong>PIB:</strong> {{ORGTAXNUM}}</p>
+                <p><strong>Adresa:</strong> {{ORGADDR}}</p>
+                <p><strong>E-adresa:</strong> {{SellerContactEmail}}</p>
+                <p><strong>Broj telefona:</strong> {{SellerContactPhoneNumber}}</p>
+                <p><strong>Web-sajt:</strong> {{SellerContactWebAddress}}</p>
+            </div>
+
+            <div class="info">
+                <h2>Informacije o kupcu</h2>
+                <p><strong>Ime i prezime:</strong> {{Buyer}}</p>
+                <p><strong>E-adresa:</strong> {{BuyerEmail}}</p>
+                <p><strong>Adresa:</strong> {{BuyerAddress}}</p>
+            </div>
+
+            <div class="info">
+                <h2>Detalji o transakciji</h2>
+                <p><strong>Referentni broj:</strong> {{PayspotOrderId}}</p>
+                <p><strong>Status plaćanja:</strong> Plaćanje nije izvršeno</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <h2>Detalji kupovine</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Naziv</th>
+                        <th>Opis</th>
+                        <th>Cena sa PDV-om</th>
+                        <!--<th>Vaulter naknada</th>-->
+                        <th>Ukupno</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{Title}}</td>
+                        <td>{{Description}}</td>
+                        <td>{{Price}} {{Currency}}</td>
+                        <!--<td>{{EscrowFee}} {{Currency}}</td>-->
+                        <td>{{AmountToPay}} {{Currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="total">
+            <p><strong>Ukupno uplaćeno sa PDV-om:</strong> {{AmountToPay}} {{Currency}}</p>
+        </div>
+        <div class="footer">
+            <span class="footer-text"> POWRS D.O.O. BEOGRAD, Srbija</span>
+            <span class="footer-text">©2021 - {{YEAR}} POWRS</span>
+            <span></span>
+            <span style="text-align:left; margin-top:10px;" class="footer-text"> Saglasno odredbi člana 27. Zakona o zaštiti potrošača, možete popuniti <a href="https://pay.vaulter.rs/Obrazac-za-odustanak-od-ugovora.pdf ">obrazac za odustanak od ugovora</a></span>
+        </div>
+    </div>
+</body>
+</html>

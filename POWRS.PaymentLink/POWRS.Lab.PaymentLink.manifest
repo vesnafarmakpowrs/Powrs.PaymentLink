@@ -277,6 +277,7 @@
 					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
 					<Content fileName="PaymentCompletedIPS.html"></Content>
+					<Content fileName="PaymentFailedIPS.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
@@ -286,6 +287,7 @@
 					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
 					<Content fileName="PaymentCompletedIPS.html"></Content>
+					<Content fileName="PaymentFailedIPS.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>

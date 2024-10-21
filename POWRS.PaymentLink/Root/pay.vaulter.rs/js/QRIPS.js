@@ -3,28 +3,35 @@ var timeoutHandle;
 function countdown(minutes, seconds) {
     function tick() {
         var counter = document.getElementById("timer");
-        counter.innerHTML =
-            minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+        counter.innerHTML = minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
         seconds--;
         if (seconds >= 0) {
             timeoutHandle = setTimeout(tick, 1000);
         } else {
             if (minutes >= 1) {
-                setTimeout(function () {
+                timeoutHandle = setTimeout(function () {
                     countdown(minutes - 1, 59);
                 }, 1000);
-            }
-           else {
-            QRCodeExpire();
+            } else {
+                QRCodeExpire();
             }
         }
     }
     tick();
 }
 
-function getQRCode()
-{
-  InitiateQRIPSPayment(GetQRCodeLinkSuccess);
+function stopTimer() {
+    if (typeof timeoutHandle !== 'undefined') {
+        clearTimeout(timeoutHandle); // Stops the countdown
+        console.log("Timer stopped.");
+    } else {
+        console.log("No timer to stop.");
+    }
+
+}
+
+function getQRCode() {
+    InitiateQRIPSPayment(GetQRCodeLinkSuccess);
 }
 
 function InitiateQRIPSPayment(onSuccess) {
@@ -38,7 +45,6 @@ function QRTransactionFailed(Result) {
         IsSuccess: false,
         Message: Translations.TransactionFailed
     };
-    document.getElementById("ctn-payment-method-rs").style.display = "block";
     DisplayTransactionResult(res);
 }
 
