@@ -32,7 +32,8 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
-   IsEcommerce := true;
+    Log.Informational("Posted data: \n" + Str(Posted), logObject, logActor, logEventID, null);
+    IsEcommerce := true;
     ContractInfo := Global.CreateItem(SessionUser, PRemoteId, IsEcommerce,
                 PTitle, PPrice, PCurrency, 
                 PDescription, PPaymentDeadline, 
@@ -41,27 +42,12 @@ try
 			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
 			    logActor);
    
-	PayoutPage := "EC/IPSQR.md";  
+	PayoutPage := "PayoutIPS.md";  
 	Parameter := "";
-	if (PIsMobile) then 
-	(
-	   if (exists(PIsCompany))  then
+	if (exists(PIsCompany) && PIsMobile)  then
 	   (
-		  PayoutPage := "EC/IPSBank.md";
-		  if (PIsCompany) then
-		  (
-			Parameter := "&TYPE=LE";
-		  )
-		  else 
-		  (
-			Parameter := "&TYPE=IE";
-		  )
-	   )
-	   else
-	   (
-		  PayoutPage := "EC/IPSType.md";
-	   )
-	); 
+		  PIsCompany ? Parameter := "&TYPE=LE" : Parameter := "&TYPE=IE";
+	   );
 	
 	PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 	{
