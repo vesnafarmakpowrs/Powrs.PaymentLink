@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Confirmation</title>
+    <title>Payment Failed</title>
     <style>
         .footer {
             color: #596273;
@@ -48,7 +48,7 @@
         }
 
             .details h2 {
-                color: limegreen;
+                color: red;
                 border-bottom: 2px solid;
                 padding-bottom: 5px;
             }
@@ -98,7 +98,7 @@
         </div>
         <div class="details">
             <div class="transaction-status">
-                <h2>Plaćanje nije izvršeno!</h2>
+                <h2>Plaćanje nije izvršeno</h2>
                 <p><strong>ID porudzbine:</strong> {{RemoteId}}</p>
                 <p><strong>Datum plaćanja:</strong> {{PaymentDateTime}}</p>
             </div>
@@ -153,7 +153,7 @@
         </div>
 
         <div class="total">
-            <p><strong>Ukupno uplaćeno sa PDV-om:</strong> {{AmountToPay}} {{Currency}}</p>
+            <p><strong>Ukupno sa PDV-om:</strong> {{AmountToPay}} {{Currency}}</p>
         </div>
         <div class="footer">
             <span class="footer-text"> POWRS D.O.O. BEOGRAD, Srbija</span>

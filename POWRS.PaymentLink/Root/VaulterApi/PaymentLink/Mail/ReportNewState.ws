@@ -1,5 +1,10 @@
 AuthenticateMutualTls(Request,Waher.Security.Users.Users.Source,128);
 
+logObject := "ReportNewState";
+logEventID := "ReportNewState.ws";
+logActor := Request.RemoteEndPoint;
+
+
 try
 (
         if !exists(Posted) then BadRequest("No payload.");
@@ -40,7 +45,7 @@ try
                     "errorUrl": r.ErrorUrl ?? ""
                 };
 
-                Log.Informational("PushEvent: " + Str(jsonEvent), null);
+				Log.Informational("PushEvent: " + Str(jsonEvent), logObject, logActor, logEventID, null);
                 ClientEvents.PushEvent([tabId], r.Status, JSON.Encode(jsonEvent, false), true);
                 Global.PayspotRequests.Remove(r.ContractId);
             );
@@ -64,18 +69,18 @@ try
                 )
                  catch 
                 (
-                  Log.Informational("Failed sending state update request to: " + CallBackUrl + ". " + Exception.Message ,null);
+			      Log.Informational("Failed sending state update request to: " + CallBackUrl + ". " + Exception.Message, logObject, logActor, logEventID, null);
                 );
             );
 
             Background(TrySendCallbackRequest(r.CallBackUrl, { "status": r.Status, "referenceNumber": r.RemoteId }));
         );
 
-        if(r.Status == "PaymentFailed") then 
+		if((!exists(r.PaymentType) or r.PaymentType != "IPSPayment") and r.Status == "PaymentFailed") then 
         (
             Return("");
         );
-
+		
         CountryCode := "RS";
         if (exists(r.CountryCode) and  !System.String.IsNullOrEmpty(r.CountryCode)) then
         (
@@ -152,7 +157,16 @@ try
            
            if (exists(r.PaymentType) and r.PaymentType == "IPSPayment") then 
            (
-                htmlTemplatePath := Replace(htmlTemplatePath,"PaymentCompleted","PaymentCompletedIPS"); 
+				if(exists(r.StatusCode) and (r.StatusCode == "05" or r.StatusCode == "-1")
+					or r.Status == "PaymentFailed"
+				)then
+				(
+					htmlTemplatePath := Replace(htmlTemplatePath,"PaymentFailed","PaymentFailedIPS");
+				)
+				else
+				(
+					htmlTemplatePath := Replace(htmlTemplatePath,"PaymentCompleted","PaymentCompletedIPS");
+				);
            );
 
            if (!File.Exists(htmlTemplatePath)) then 
@@ -171,20 +185,20 @@ try
            Base64Attachment := null;
            FileName := null;
           
-           Log.Informational("Sending email for " + r.Status  ,null);
+		   Log.Informational("Sending email for " + r.Status, logObject, logActor, logEventID, null);
            ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
            Config := ConfigClass.Instance;
            POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, Parameters["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
 
            NotificationList := GetSetting("POWRS.PaymentLink.NotificationList","");
            if (!System.String.IsNullOrWhiteSpace(NotificationList)) then
-             POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, NotificationList, "Plaćanje uspešno završeno", FormatedHtml, Base64Attachment, FileName);
+				POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, NotificationList, r.Status, FormatedHtml, Base64Attachment, FileName);
         
         );
         "";
 )
 catch
 (
-	Log.Error(Exception.Message, logContractID, "ReportNewState", null);
+    Log.Error(Exception.Message, logContractID, logActor, logEventID, null);
     BadRequest(Exception.Message);
 );
