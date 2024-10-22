@@ -158,10 +158,14 @@ else
 		
 		RemoteId :=  '';
 		IsEcommerce := False;
+		SuccessUrl := '';
+		ErrorUrl := '';
 		foreach Parameter in (Contract.Parameters ?? []) do 
 		(
 			  if Parameter.Name == 'RemoteId' then RemoteId := MarkdownEncode(Parameter.Value);
 			  if Parameter.Name == 'IsEcommerce' then IsEcommerce := Bool(Parameter.Value.ToString());
+			  if Parameter.Name == 'SuccessUrl' then SuccessUrl := Parameter.Value.ToString();
+			  if Parameter.Name == 'ErrorUrl' then ErrorUrl := Parameter.Value.ToString();
 		);
 
 		foreach Variable in (CurrentState.VariableValues ?? []) do 
@@ -348,11 +352,13 @@ else
 	)
 	else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" )then 
 	(
-	]]<div class="payment-completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>[[;
+	]]<div class="payment-completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>
+	  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
 	)
 	else if ContractState == "PaymentCanceled" then 
 	(
-	  ]]**((LanguageNamespace.GetStringAsync(14) ))**[[;
+	  ]]**((LanguageNamespace.GetStringAsync(14) ))**
+	   <input type="hidden" id="cancelURL" value='((ErrorUrl ))' />[[;
 	)
 	else 
 	(

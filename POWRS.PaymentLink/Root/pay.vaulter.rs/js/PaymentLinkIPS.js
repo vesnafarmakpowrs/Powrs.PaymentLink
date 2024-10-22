@@ -117,11 +117,19 @@ function LoadIPS(seconds) {
 }
 
 function LoadIPSIiframe() {
-    if (isMobileDevice)
-        document.getElementById("ips-method").style.display = "block";
+    if (isMobileDevice) {
+        if (document.getElementById("ips-method") != null) {
+            document.getElementById("ips-method").style.display = "block";
+        }
+    }
     else {
-        document.getElementById("IPSScan").style.display = "block";
-        getQRCode();
+
+        if (document.getElementById("IPSScan") != null) {
+
+            document.getElementById("IPSScan").style.display = "block";
+            getQRCode();
+        }
+
     }
 }
 
