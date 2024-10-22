@@ -157,10 +157,11 @@ else
 		FileName:= SellerId + Token.ShortId;
 		
 		RemoteId :=  '';
-		IsEcommerce := false;
+		IsEcommerce := False;
 		foreach Parameter in (Contract.Parameters ?? []) do 
 		(
 			  if Parameter.Name == 'RemoteId' then RemoteId := MarkdownEncode(Parameter.Value);
+			  if Parameter.Name == 'IsEcommerce' then IsEcommerce := Bool(Parameter.Value.ToString());
 		);
 
 		foreach Variable in (CurrentState.VariableValues ?? []) do 
@@ -174,9 +175,7 @@ else
 			Variable.Name like "Buyer" ?   BuyerFullName := MarkdownEncode(Variable.Value);
 			Variable.Name like "BuyerEmail" ?  BuyerEmail := MarkdownEncode(Variable.Value);
 			Variable.Name like "EscrowFee" ?   EscrowFee := MarkdownEncode(Variable.Value.ToString("N2"));
-			Variable.Name like "AmountToPay" ?   AmountToPay := MarkdownEncode(Variable.Value.ToString("N2"));
-			
-			Variable.Name like "IsEcommerce" ?  IsEcommerce := Bool(Variable.Value.ToString());
+			Variable.Name like "AmountToPay" ?   AmountToPay := MarkdownEncode(Variable.Value.ToString("N2"));	
 		  );
 
 		 Country := 'RS';
@@ -291,7 +290,7 @@ else
 			</div>
 			<div id="submit-payment" >
 			   <div class="retry-div" >
-				<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="LoadIPS()">((LanguageNamespace.GetStringAsync(73) ))</button> 
+				<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="LoadIPS(0)">((LanguageNamespace.GetStringAsync(73) ))</button> 
 			  </div>
 			  <div class="div-payment-notice">
 				<label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(79) )) ((OrgName )).</label>
@@ -381,6 +380,7 @@ else
 	<input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 	<input type="hidden" value="((FileName))" id="fileName"/>
 	<input type="hidden" value="((Country ))" id="country"/>
+	<input type="hidden" value="((IsEcommerce ))" id="IsEcommerce"/>
 </main>[[;
 }}
 <div class="footer-parent">

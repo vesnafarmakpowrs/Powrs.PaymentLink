@@ -11,7 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (params.has('Retry') && params.get("Retry") === "true") {
         showRetrydiv();
     }
+    OnlyECommerce();
 });
+
+
+function OnlyECommerce() {
+    var isEcommerce = (String(document.getElementById("IsEcommerce").value).toLowerCase() === 'true');
+
+    console.log(isEcommerce);
+    if (isEcommerce)
+        LoadIPS(1000);
+}
 
 function InitiateIPSPayment(bankId, isFromMobile, isCompany, onSuccess, onFailed) {
     SendXmlHttpRequest("../Payout/API/InitiateIPSPayment.ws",
@@ -96,20 +106,22 @@ function HideSubmitPaymentDiv() {
 }
 
 
-function LoadIPS() {
+function LoadIPS(seconds) {
     console.log('loadIPS');
-	HideSubmitPaymentDiv();
-	LoadIPSIiframe();
+    HideSubmitPaymentDiv();
+
+    setTimeout(function () {
+        LoadIPSIiframe();
+    }, seconds)
+
 }
 
-function LoadIPSIiframe()
-{
+function LoadIPSIiframe() {
     if (isMobileDevice)
         document.getElementById("ips-method").style.display = "block";
-    else 
-	{
-		document.getElementById("IPSScan").style.display = "block";
-	    getQRCode();
+    else {
+        document.getElementById("IPSScan").style.display = "block";
+        getQRCode();
     }
 }
 
