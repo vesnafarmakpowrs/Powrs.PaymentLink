@@ -75,7 +75,7 @@ try
 
             Background(TrySendCallbackRequest(r.CallBackUrl, { "status": r.Status, "referenceNumber": r.RemoteId }));
         );
-
+		
 		if((!exists(r.PaymentType) or r.PaymentType != "IPSPayment") and r.Status == "PaymentFailed") then 
         (
             Return("");
@@ -157,11 +157,15 @@ try
            
            if (exists(r.PaymentType) and r.PaymentType == "IPSPayment") then 
            (
-				if(exists(r.StatusCode) and (r.StatusCode == "05" or r.StatusCode == "-1")
-					or r.Status == "PaymentFailed"
-				)then
-				(
-					htmlTemplatePath := Replace(htmlTemplatePath,"PaymentFailed","PaymentFailedIPS");
+				if(r.Status == "PaymentFailed")then
+				(				
+					if(exists(r.StatusCode) and (r.StatusCode == "05" or r.StatusCode == "-1"))then
+					(
+						htmlTemplatePath := Replace(htmlTemplatePath,"PaymentFailed","PaymentFailedIPS");
+					)else
+					(
+						Return("");
+					);
 				)
 				else
 				(
