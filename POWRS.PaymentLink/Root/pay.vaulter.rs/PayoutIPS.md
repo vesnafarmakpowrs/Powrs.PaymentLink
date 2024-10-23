@@ -168,18 +168,16 @@ if(LanguageNamespace == null) then
 		});
 	bankList := Create(System.Collections.Generic.List, POWRS.Networking.PaySpot.Models.GetBanks.Bank);
 	
-    if ContractState == "AwaitingForPayment" then 
-	(  
-		if ( TYPE == 'IE') then 
+		if (TYPE != "" && ContractState == "AwaitingForPayment") then
 		(
-			bankList := POWRS.Payment.PaySpot.PayspotService.GetIndividualBankList();
-		)
-		else if (TYPE == 'LE') then
-		(
-			bankList := POWRS.Payment.PaySpot.PayspotService.GetLegalBankList();
-		);
-		if (TYPE != "") then
-		(
+		    if ( TYPE == 'IE') then 
+			(
+				bankList := POWRS.Payment.PaySpot.PayspotService.GetIndividualBankList();
+			)
+			else if (TYPE == 'LE') then
+			(
+				bankList := POWRS.Payment.PaySpot.PayspotService.GetLegalBankList();
+			);
 			 ]]<div class="dropdown" id="select-bank"> 
 				<label class="select-bank-lbl">((LanguageNamespace.GetStringAsync(82) ))</label>
 					<ul id="bankList" class="bank-list-ul"> [[;
@@ -196,80 +194,81 @@ if(LanguageNamespace == null) then
 							  ]]<li class="dropdown-item" onClick="OpenDeepLink( ((bank.ID )) )"> <img src="(( imgSrc))" class="bank-img" /><label>((bankName ))</label></li> [[;
 						);     
 					]]</ul>            
-				</div>
-				<div class="spaceItem"></div>
-				<div class="spaceItem"></div>[[
-		);
-	);
-		if (!IsEcommerce ) then
-		 (
-			]]  <table style="width:100%">
-					 <tr class="welcomeLbl">   
-						<td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
-						<td coolspan="2"><select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
-					</tr>
-					<tr>
-						<td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
-						<td style="text-align:right">**ID: ((RemoteId ))**</td>
-					</tr>
-				</table>
-				<div class="payment-details">
-				   <table style="width:100%">
-					  <tr id="tr_summary">
-						 <td class="item border-radius">
-							<table style="vertical-align:middle; width:100%;">
-							   <tr id="tr_seller_info">
-								  <td style="width:50%">((LanguageNamespace.GetStringAsync(11) )): ((OrgName ))</td>
-								  <td style="width:40%"></td>
-								  <td style="width:10%;text-align:right"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/></td>
-							   </tr>
-								<tr id="tr_seller_dtl" style="display:none"  class="agent-info">
-								 <td>
-									<div class="agent-contact-info">
-							<p>((OrgAddr ))test</p>
-								<p>((MarkdownEncode(CompanyInfo.PhoneNumber) ))</p>
-										<p>((MarkdownEncode(CompanyInfo.Email) ))</p>
-										<p>((MarkdownEncode(CompanyInfo.WebAddress) ))</p>
-									</div>
-								  </td>
-						  <td colspan="2" > 
-									<div style="float: right;" align="right" class="agent-detail">
-							<p>((LanguageNamespace.GetStringAsync(58) )): ((OrgNr ))</p>
-								<p>((LanguageNamespace.GetStringAsync(60) )): (( OrgActivity))</p>
-										<p>((LanguageNamespace.GetStringAsync(61) )): (( OrgActivityNumber))</p>
-										<p>((LanguageNamespace.GetStringAsync(56) )): (( OrgTaxNum))</p>
-									</div>
-								  </td>
-							   </tr>
-							</table>
-						 </td>
-					  </tr>
-				   </table>
-					<table style="width:100%">
-						<tr id="tr_header" class="table-row">
-							<td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
-							<td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) )) ((LanguageNamespace.GetStringAsync(54) ))<strong></td>
+				</div>[[
+		)
+		else  
+	    (
+			if (!IsEcommerce ) then
+			 (
+				]]  <table style="width:100%">
+						 <tr class="welcomeLbl">   
+							<td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
+							<td coolspan="2"><select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
 						</tr>
-						<tr id="tr_header_title">
-							<td colspan="2" class="item border-radius">
-								<table style="vertical-align:middle; width:100%;">
-									<tr>
-										<td style="width:80%;"> ((Title))</td>
-										<td class="itemPrice" rowspan="2">((ContractValue))</td>
-										<td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-									</tr>
-									<tr>
-										<td style="width:70%"> ((Description))</td>
-									</tr>
-								</table>
-							</td>
+						<tr>
+							<td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
+							<td style="text-align:right">**ID: ((RemoteId ))**</td>
 						</tr>
 					</table>
-				</div>
-				<div class="spaceItem"></div>
-				[[;
-			);	
-			if ContractState == "AwaitingForPayment" then 
+					<div class="payment-details">
+					   <table style="width:100%">
+						  <tr id="tr_summary">
+							 <td class="item border-radius">
+								<table style="vertical-align:middle; width:100%;">
+								   <tr id="tr_seller_info">
+									  <td style="width:50%">((LanguageNamespace.GetStringAsync(11) )): ((OrgName ))</td>
+									  <td style="width:40%"></td>
+									  <td style="width:10%;text-align:right"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/></td>
+								   </tr>
+									<tr id="tr_seller_dtl" style="display:none"  class="agent-info">
+									 <td>
+										<div class="agent-contact-info">
+								<p>((OrgAddr ))test</p>
+									<p>((MarkdownEncode(CompanyInfo.PhoneNumber) ))</p>
+											<p>((MarkdownEncode(CompanyInfo.Email) ))</p>
+											<p>((MarkdownEncode(CompanyInfo.WebAddress) ))</p>
+										</div>
+									  </td>
+							  <td colspan="2" > 
+										<div style="float: right;" align="right" class="agent-detail">
+								<p>((LanguageNamespace.GetStringAsync(58) )): ((OrgNr ))</p>
+									<p>((LanguageNamespace.GetStringAsync(60) )): (( OrgActivity))</p>
+											<p>((LanguageNamespace.GetStringAsync(61) )): (( OrgActivityNumber))</p>
+											<p>((LanguageNamespace.GetStringAsync(56) )): (( OrgTaxNum))</p>
+										</div>
+									  </td>
+								   </tr>
+								</table>
+							 </td>
+						  </tr>
+					   </table>
+						<table style="width:100%">
+							<tr id="tr_header" class="table-row">
+								<td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
+								<td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) )) ((LanguageNamespace.GetStringAsync(54) ))<strong></td>
+							</tr>
+							<tr id="tr_header_title">
+								<td colspan="2" class="item border-radius">
+									<table style="vertical-align:middle; width:100%;">
+										<tr>
+											<td style="width:80%;"> ((Title))</td>
+											<td class="itemPrice" rowspan="2">((ContractValue))</td>
+											<td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
+										</tr>
+										<tr>
+											<td style="width:70%"> ((Description))</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="spaceItem"></div>
+					[[;
+				);	
+			);
+				
+			if (ContractState == "AwaitingForPayment" and TYPE=="") then 
 			( 
 			   
 				if (!IsEcommerce ) then
@@ -360,10 +359,10 @@ if(LanguageNamespace == null) then
 			)
 			else if ContractState == "PaymentCanceled" then 
 			(
-			  ]]**((LanguageNamespace.GetStringAsync(14) ))**
+			  ]]**((LanguageNamespace.GetStringAsync(80) ))**
 			   <input type="hidden" id="cancelURL" value='((ErrorUrl ))' />[[;
 			)
-			else 
+			else if (TYPE == "") then
 			(
 			  ]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
 			);
