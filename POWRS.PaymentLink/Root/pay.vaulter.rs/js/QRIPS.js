@@ -13,7 +13,7 @@ function countdown(minutes, seconds) {
                     countdown(minutes - 1, 59);
                 }, 1000);
             } else {
-                QRCodeExpire();
+                QRCodeExpire(true);
             }
         }
     }
@@ -23,7 +23,7 @@ function countdown(minutes, seconds) {
 function stopTimer() {
     if (typeof timeoutHandle !== 'undefined') {
         clearTimeout(timeoutHandle); // Stops the countdown
-        console.log("Timer stopped.");
+        QRCodeExpire(false);
     } else {
         console.log("No timer to stop.");
     }
@@ -64,15 +64,15 @@ function GetQRCodeLinkSuccess(ResponseData) {
      SetQRCode(ResponseData.Response.QrCode);    
 }
 
-function QRCodeExpire()
-{
+function QRCodeExpire(showTimeExpireTxt) {
+    document.getElementById("QRCode").style.filter = "blur(3px)";
+    document.getElementById("timer").innerHTML = "";
+    if (showTimeExpireTxt == true) {
+        document.getElementById("msg-time-expire").style.display = "block";
+        document.getElementById("msg-generate-qrcode").style.display = "block";
+    }
 
-  document.getElementById("QRCode").style.filter = "blur(3px)";
-  document.getElementById("timer").innerHTML = "";
-  document.getElementById("msg-time-expire").style.display = "block";
-  document.getElementById("msg-generate-qrcode").style.display = "block";
-  
-  ShowBtn(true, document.getElementById("btnGenerateQR"));
+    ShowBtn(true, document.getElementById("btnGenerateQR"));
 }
 
 function SetQRCode(QRCode)
