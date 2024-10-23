@@ -3,12 +3,12 @@ AuthenticateMutualTls(Request,Waher.Security.Users.Users.Source,128);
 logObject := "ReportNewState";
 logEventID := "ReportNewState.ws";
 logActor := Request.RemoteEndPoint;
-
-
 try
 (
         if !exists(Posted) then BadRequest("No payload.");
         r:= Request.DecodeData();
+        Log.Debug(Str(Posted), logObject, logActor, logEventID, null);
+
 
         if(!exists(r.Status) or !exists(r.ContractId) or !exists(r.CallBackUrl) or !exists(r.TokenId)) then
         (
@@ -75,10 +75,10 @@ try
 
             Background(TrySendCallbackRequest(r.CallBackUrl, { "status": r.Status, "referenceNumber": r.RemoteId }));
         );
-		
+		NotifyClient := true;	
 		if((!exists(r.PaymentType) or r.PaymentType != "IPSPayment") and r.Status == "PaymentFailed") then 
         (
-            Return("");
+            NotifyClient := false;
         );
 		
         CountryCode := "RS";
@@ -102,107 +102,119 @@ try
            (
                 Error("Unable to find payment with an OrderId: " + r.PayspotOrderId);
            );
-
-           properties:= properties(payspotPayment);
-           foreach prop in properties.Values do 
-           (
-             Parameters[prop[0]]:= prop[1];
-           );      
-                 
-           variables:= NeuroFeatureToken.GetCurrentStateVariables();
-
-           foreach variable in variables.VariableValues DO
-           (
-                Parameters[variable.Name]:= variable.Value;
-           );
-   
-           Parameters["Created"]:= contract.Created.ToShortDateString();
-           Parameters["ShortId"]:= NeuroFeatureToken.ShortId;
-           Parameters["ContractId"]:= r.ContractId.ToString();
            
-           foreach Parameter in contract.Parameters do 
+           if (payspotPayment != null) then 
            (
-                Parameter.ObjectValue != null && !exists(Parameters[Parameter.Name]) ? Parameters[Parameter.Name]:=  Parameter.ObjectValue;
-           );
-			
-			brokerAccRole := Select top 1 * from POWRS.PaymentLink.Models.BrokerAccountRole where UserName = contract.Account;
-			if(brokerAccRole == null) then (
-				Error("Broker Account Role not populated");
-			);
-			
-			sellerContactInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = brokerAccRole.OrgName;    
-			if(sellerContactInfo == null or !sellerContactInfo.IsValid()) then (
-				Error("Contact informations are not existent or not properly populated");
-			);
-			sellerContactInfoPropertyValues:= properties(sellerContactInfo).Values;
+			   properties:= properties(payspotPayment);
+			   foreach prop in properties.Values do 
+			   (
+				 Parameters[prop[0]]:= prop[1];
+			   );      
+					 
+			   variables:= NeuroFeatureToken.GetCurrentStateVariables();
 
-           foreach property in sellerContactInfoPropertyValues do 
-           (
-                Parameters["SellerContact" + property[0]]:= property[1];
-           );
-
-           Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
-           IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString, System.Object);
-           
-           foreach prop in Identity.Properties do 
-           (
-                IdentityProperties[prop.Name]:= prop.Value;
-           );
-
-           IdentityProperties.Add("AgentName", Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
-           IdentityProperties.Add("CountryCode", CountryCode);
-           IdentityProperties.Add("Domain", Gateway.Domain);
-           PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
-           htmlTemplatePath := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + CountryCode + "\\" + r.Status + ".html";
-           
-           if (exists(r.PaymentType) and r.PaymentType == "IPSPayment") then 
-           (
-				if(r.Status == "PaymentFailed")then
-				(				
-					if(exists(r.StatusCode) and (r.StatusCode == "05" or r.StatusCode == "-1"))then
-					(
-						htmlTemplatePath := Replace(htmlTemplatePath,"PaymentFailed","PaymentFailedIPS");
-					)else
-					(
-						Return("");
-					);
-				)
-				else
-				(
-					htmlTemplatePath := Replace(htmlTemplatePath,"PaymentCompleted","PaymentCompletedIPS");
+			   foreach variable in variables.VariableValues DO
+			   (
+					Parameters[variable.Name]:= variable.Value;
+			   );
+			   Parameters["Created"]:= contract.Created.ToShortDateString();
+			   Parameters["ShortId"]:= NeuroFeatureToken.ShortId;
+			   Parameters["ContractId"]:= r.ContractId.ToString();
+			   
+			   foreach Parameter in contract.Parameters do 
+			   (
+					Parameter.ObjectValue != null && !exists(Parameters[Parameter.Name]) ? Parameters[Parameter.Name]:=  Parameter.ObjectValue;
+			   );
+				brokerAccRole := Select top 1 * from POWRS.PaymentLink.Models.BrokerAccountRole where UserName = contract.Account;
+				if(brokerAccRole == null) then (
+					Error("Broker Account Role not populated");
 				);
-           );
+				sellerContactInfo:= select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = brokerAccRole.OrgName;    
+				if(sellerContactInfo == null or !sellerContactInfo.IsValid()) then (
+					Error("Contact informations are not existent or not properly populated");
+				);
+				sellerContactInfoPropertyValues:= properties(sellerContactInfo).Values;
 
-           if (!File.Exists(htmlTemplatePath)) then 
-           (
-             htmlTemplatePath := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + "EN" + "\\" + r.Status + ".html";
-             if(!File.Exists(htmlTemplatePath)) then 
-             (
-                Error("Template path does not exist   " + htmlTemplatePath);
-             );             
-           );
+			   foreach property in sellerContactInfoPropertyValues do 
+			   (
+					Parameters["SellerContact" + property[0]]:= property[1];
+			   );
+			   Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = contract.Account And State = 'Approved';
+			   IdentityProperties:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString, System.Object);
+			   foreach prop in Identity.Properties do 
+			   (
+					IdentityProperties[prop.Name]:= prop.Value;
+			   );
+			   IdentityProperties.Add("AgentName", Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
+			   IdentityProperties.Add("CountryCode", CountryCode);
+			   IdentityProperties.Add("Domain", Gateway.Domain);
+			   PaylinkDomain := GetSetting("POWRS.PaymentLink.PayDomain","");
+			   htmlTemplatePath := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + CountryCode + "\\" + r.Status + ".html";
+              		  
+			  if (exists(r.PaymentType) and r.PaymentType == "IPSPayment") then 
+			   (
+					if(r.Status == "PaymentFailed")then
+					(				
+						if(exists(r.StatusCode) and (r.StatusCode == "05" or r.StatusCode == "-1"))then
+						(
+							htmlTemplatePath := Replace(htmlTemplatePath,"PaymentFailed","PaymentFailedIPS");
+						)else
+						(
+						   NotifyClient := false;
+						);
+					)
+					else
+					(
+						htmlTemplatePath := Replace(htmlTemplatePath,"PaymentCompleted","PaymentCompletedIPS");
+					);
+			   );
+     
+	 
+	        if (NotifyClient) then 
+			(
+			   if (!File.Exists(htmlTemplatePath)) then 
+			   (
+				 htmlTemplatePath := Waher.IoTGateway.Gateway.RootFolder + "Payout\\HtmlTemplates\\" + "EN" + "\\" + r.Status + ".html";
+				 if(!File.Exists(htmlTemplatePath)) then 
+				 (
+					Error("Template path does not exist   " + htmlTemplatePath);
+				 );             
+			   );
 
-           html:= System.IO.File.ReadAllText(htmlTemplatePath);
-  
-           FormatedHtml := POWRS.PaymentLink.RS.DealInfo.GetHtmlDealInfo(Parameters, IdentityProperties,html);
-   
-           Base64Attachment := null;
-           FileName := null;
-          
-		   Log.Informational("Sending email for " + r.Status, logObject, logActor, logEventID, null);
-           ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
-           Config := ConfigClass.Instance;
-           POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, Parameters["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
+			   html:= System.IO.File.ReadAllText(htmlTemplatePath);
+	  
+			   FormatedHtml := POWRS.PaymentLink.RS.DealInfo.GetHtmlDealInfo(Parameters, IdentityProperties,html);
+	   
+			   Base64Attachment := null;
+			   FileName := null;
+			  
+			   Log.Informational("Sending email for " + r.Status, logObject, logActor, logEventID, null);
+			   ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
+			   Config := ConfigClass.Instance;
+			   POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, Parameters["BuyerEmail"].ToString(), "Vaulter", FormatedHtml, Base64Attachment, FileName);
 
-           NotificationList := GetSetting("POWRS.PaymentLink.NotificationList","");
-           if (!System.String.IsNullOrWhiteSpace(NotificationList)) then
-				POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, NotificationList, r.Status, FormatedHtml, Base64Attachment, FileName);
-        
-        );
-        "";
+			   NotificationList := GetSetting("POWRS.PaymentLink.NotificationList","");
+			   if (!System.String.IsNullOrWhiteSpace(NotificationList)) then
+					POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, NotificationList, r.Status, FormatedHtml, Base64Attachment, FileName);
+			  )
+			)
+			else
+			(
+			 if(exists(r.PayspotOrderId) and !System.String.IsNullOrWhiteSpace(r.PayspotOrderId)) then
+			   (
+					 Log.Debug("No Payspot Payment with PayspotOrderId = " + r.PayspotOrderId, logContractID, logActor, logEventID, null);
+			   )
+			   else if(exists(r.OrderId) and !System.String.IsNullOrWhiteSpace(r.OrderId)) then
+			   (
+					 Log.Debug("No Payspot Payment with OrderId = " + r.OrderId, logContractID, logActor, logEventID, null);
+			   );
+			);
+		);
+		"";
 )
-catch
+catch 
 (
-    Log.Error(Exception.Message, logContractID, logActor, logEventID, null);
+    Log.Error(Exception.Message + (exists(logContractID) ? logContractID : ""), logObject, logActor, logEventID, null);
     BadRequest(Exception.Message);
 );
+
