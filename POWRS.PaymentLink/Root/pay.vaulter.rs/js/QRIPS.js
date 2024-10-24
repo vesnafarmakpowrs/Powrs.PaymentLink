@@ -1,28 +1,37 @@
 var timeoutHandle;
+let start;
 
 function countdown(minutes, seconds) {
-    function tick() {
+    const totalTime = minutes * 60 + seconds;
+    let elapsed = 0;
+    function tick(timestamp) {
+        if (!start) start = timestamp;
+        elapsed = Math.floor((timestamp - start) / 1000);
+
         var counter = document.getElementById("timer");
-        counter.innerHTML = minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
-        seconds--;
-        if (seconds >= 0) {
-            timeoutHandle = setTimeout(tick, 1000);
-        } else {
-            if (minutes >= 1) {
-                timeoutHandle = setTimeout(function () {
-                    countdown(minutes - 1, 59);
-                }, 1000);
-            } else {
-                QRCodeExpire(true);
-            }
+        let remainingTime = totalTime - elapsed;
+
+        if (remainingTime >= 0) {
+            let minutesRemaining = Math.floor(remainingTime / 60);
+            let secondsRemaining = remainingTime % 60;
+            // Update the timer display
+            var counter = document.getElementById("timer");
+            counter.innerHTML = minutesRemaining.toString() + ":" + (secondsRemaining < 10 ? "0" : "") + secondsRemaining.toString();
+
+            // Continue the countdown using requestAnimationFrame
+            timeoutHandle = requestAnimationFrame(tick);
+        }
+        else {
+            QRCodeExpire(true);
         }
     }
-    tick();
+    requestAnimationFrame(tick);
 }
+
 
 function stopTimer() {
     if (typeof timeoutHandle !== 'undefined') {
-        clearTimeout(timeoutHandle); // Stops the countdown
+        cancelAnimationFrame(timeoutHandle); // Stops the countdown
         QRCodeExpire(false);
     } else {
         console.log("No timer to stop.");
@@ -31,6 +40,7 @@ function stopTimer() {
 }
 
 function getQRCode() {
+    QRCodeExpire(false);
     InitiateQRIPSPayment(GetQRCodeLinkSuccess);
 }
 
@@ -71,8 +81,12 @@ function QRCodeExpire(showTimeExpireTxt) {
         document.getElementById("msg-time-expire").style.display = "block";
         document.getElementById("msg-generate-qrcode").style.display = "block";
     }
+    else {
+        document.getElementById("msg-time-expire").style.display = "none";
+        document.getElementById("msg-generate-qrcode").style.display = "none";
+    }
 
-    ShowBtn(true, document.getElementById("btnGenerateQR"));
+    ShowBtn(showTimeExpireTxt, document.getElementById("btnGenerateQR"));
 }
 
 function SetQRCode(QRCode)
