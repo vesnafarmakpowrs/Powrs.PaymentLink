@@ -510,19 +510,9 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	else if(generalInfo.OrganizationNumber != GeneralCompanyInfo.OrganizationNumber) then
 	(
 		Error("GeneralCompanyInfo: you can't change organization number");
-	)
-	else if(generalInfo.ShortName != newShortName) then
-	(
-		oldCompanySubDirPath := "\\" + generalInfo.ShortName;
-		oldFileRootPath := allCompaniesRootPath + oldCompanySubDirPath;
-				
-		if(System.IO.Directory.Exists(oldFileRootPath)) then
-		(
-			System.IO.Directory.Move(oldFileRootPath, allCompaniesRootPath + "\\" + newShortName);
-		);		
 	);
 	
-	companySubDirPath := "\\" + newShortName;
+	companySubDirPath := "\\" + GeneralCompanyInfo.OrganizationNumber;
 	fileRootPath := allCompaniesRootPath + companySubDirPath;
 
 	generalInfo.Updated := Now;
@@ -618,7 +608,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 	Return(0);
 );
 
-SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
+SaveCompanyStructure(CompanyStructure, UserName, organizationNumber):=
 (
 	companyStructure:= select top 1 * from POWRS.PaymentLink.Onboarding.CompanyStructure where UserName = UserName;
 	alreadyExists:= companyStructure != null;
@@ -640,7 +630,7 @@ SaveCompanyStructure(CompanyStructure, UserName, companyShortName):=
 
 	if(CompanyStructure.Owners != null and CompanyStructure.Owners.Length > 0) then 
 	(
-		companySubDirPath := "\\" + companyShortName;
+		companySubDirPath := "\\" + organizationNumber;
 		fileRootPath := allCompaniesRootPath + companySubDirPath;
 		
 		itemNo := 0;
@@ -760,9 +750,9 @@ SaveBusinessData(BusinessData, UserName):=
 	Return(0);
 );
 
-SaveLegalDocuments(LegalDocuments, UserName, companyShortName):=
+SaveLegalDocuments(LegalDocuments, UserName, organizationNumber):=
 (
-	companySubDirPath := "\\" + companyShortName;
+	companySubDirPath := "\\" + organizationNumber;
 	fileRootPath := allCompaniesRootPath + companySubDirPath;
 	
 
@@ -887,13 +877,13 @@ try
 	SaveGeneralCompanyInfo(Posted.GeneralCompanyInformation, SessionUser.username);
 	
 	currentMethod := "SaveCompanyStructure"; 
-	SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username, Trim(Posted.GeneralCompanyInformation.ShortName));
+	SaveCompanyStructure(Posted.CompanyStructure, SessionUser.username, Posted.GeneralCompanyInformation.OrganizationNumber);
 	
 	currentMethod := "SaveBusinessData"; 
 	SaveBusinessData(Posted.BusinessData, SessionUser.username);
 	
 	currentMethod := "SaveLegalDocuments"; 
-	SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username, Trim(Posted.GeneralCompanyInformation.ShortName));
+	SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username, Posted.GeneralCompanyInformation.OrganizationNumber);
 	
 	Log.Informational("Succeffully saved OnBoarding data.", logObject, logActor, logEventID, null);
 	{
