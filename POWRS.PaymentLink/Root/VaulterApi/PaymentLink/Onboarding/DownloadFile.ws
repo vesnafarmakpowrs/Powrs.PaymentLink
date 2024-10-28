@@ -19,7 +19,7 @@ try
 	);
 	
 	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = SessionUser.username;
-	companySubDirPath := "\\" + generalInfo.ShortName;
+	companySubDirPath := "\\" + generalInfo.OrganizationNumber;
 	
 	filePath := allCompaniesRootPath + companySubDirPath + "\\" + PFileName; 
 	if (!File.Exists(filePath)) then
