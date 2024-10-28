@@ -85,7 +85,7 @@ ShowUploadedFileDownloadLink(orgShortName, fileName):=
 foreach item in onBoardingData.GeneralCompanyInformation.LegalRepresentatives ?? [] do
 (
 ]]<div>
-<strong>Full name: </strong> ((MarkdownEncode(item.FullName) )), <br />((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, item.StatementOfOfficialDocument) )), <br />((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, item.IdCard) )) 
+<strong>Full name: </strong> ((MarkdownEncode(item.FullName) )), <br />((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.OrganizationNumber, item.StatementOfOfficialDocument) )), <br />((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.OrganizationNumber, item.IdCard) )) 
 </div>
 <br />
 
@@ -102,7 +102,7 @@ foreach item in onBoardingData.GeneralCompanyInformation.LegalRepresentatives ??
 foreach item in onBoardingData.CompanyStructure.Owners ?? [] do
 (
 ]]<div>
-<strong>Full name: </strong> ((MarkdownEncode(item.FullName) )), <br />((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, item.StatementOfOfficialDocument) )), <br />((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, item.IdCard) )) 
+<strong>Full name: </strong> ((MarkdownEncode(item.FullName) )), <br />((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.OrganizationNumber, item.StatementOfOfficialDocument) )), <br />((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.OrganizationNumber, item.IdCard) )) 
 </div>
 <br />
 
@@ -116,17 +116,17 @@ foreach item in onBoardingData.CompanyStructure.Owners ?? [] do
 <br />
 <strong>Uploaded documents:</strong>
 <br />
-Business Cooperation Request EMI: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.BusinessCooperationRequest) ))
+Business Cooperation Request EMI: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.OrganizationNumber, onBoardingData.LegalDocuments.BusinessCooperationRequest) ))
 <br />
-Contract With EMI: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.ContractWithEMI) ))
+Contract With EMI: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.OrganizationNumber, onBoardingData.LegalDocuments.ContractWithEMI) ))
 <br />
-Contract With Vaulter: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.ContractWithVaulter) ))
+Contract With Vaulter: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.OrganizationNumber, onBoardingData.LegalDocuments.ContractWithVaulter) ))
 <br />
-Promissory Note: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.PromissoryNote) ))
+Promissory Note: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.OrganizationNumber, onBoardingData.LegalDocuments.PromissoryNote) ))
 <br />
-Request For Promissory Notes Registration: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.RequestForPromissoryNotesRegistration) ))
+Request For Promissory Notes Registration: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.OrganizationNumber, onBoardingData.LegalDocuments.RequestForPromissoryNotesRegistration) ))
 <br />
-Card Of Deposited Signatures: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.ShortName, onBoardingData.LegalDocuments.CardOfDepositedSignatures) ))
+Card Of Deposited Signatures: ((ShowUploadedFileDownloadLink(onBoardingData.GeneralCompanyInformation.OrganizationNumber, onBoardingData.LegalDocuments.CardOfDepositedSignatures) ))
 
 <br /><br />
 ((ShowBtnAllowEdit(onBoardingData.GeneralCompanyInformation) ))

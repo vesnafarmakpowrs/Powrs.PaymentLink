@@ -147,7 +147,7 @@ SendEmailToVaulter(onBoardingData):= (
 	MailBody := Replace(MailBody, "{{organizationTaxNumber}}", onBoardingData.GeneralCompanyInformation.TaxNumber);
 	
     neuronDomain:= "https://" + Gateway.Domain;
-	companyLink := neuronDomain + "/VaulterApi/PaymentLink/Onboarding/UploadedFiles/" + onBoardingData.GeneralCompanyInformation.ShortName + "/";
+	companyLink := neuronDomain + "/VaulterApi/PaymentLink/Onboarding/UploadedFiles/" + onBoardingData.GeneralCompanyInformation.OrganizationNumber + "/";
 	uploadedDocuments := Create(System.Text.StringBuilder);
 	foreach (item in onBoardingData.GeneralCompanyInformation.LegalRepresentatives) do(
 		uploadedDocuments.Append("<br /><a href=\"" + companyLink + item.IdCard +"\">" + item.IdCard + "</a>");
@@ -212,7 +212,7 @@ SendEmailToUser():= (
 	return(1);
 );
 
-SetOrganizationClientTyle(onBoardingData) := (
+SetOrganizationClientType(onBoardingData) := (
 	organizationClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = onBoardingData.GeneralCompanyInformation.ShortName;
 	brokerAccClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP where UserName = SessionUser.username;
 	
@@ -270,7 +270,7 @@ try
 	try
 	(
 		currentMethod := "UpdateClientType";
-		SetOrganizationClientTyle(onBoardingData);
+		SetOrganizationClientType(onBoardingData);
 	)
 	catch
 	(
