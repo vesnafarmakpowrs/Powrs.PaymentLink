@@ -19,14 +19,14 @@ p {
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
-    font-size: 19.5pt;
+    font-size: 14.5pt;
     margin: 0pt;
     margin-top: 18pt;
 }
 
 li {
     font-family: Calibri, sans-serif;
-    font-size: 19.5pt;
+    font-size: 14.5pt;
 }
 
 table,
@@ -53,11 +53,21 @@ tbody {
     padding-inline: 15px;
     float: right;
 }
+
 .headerInfo {
     display: inline-block;
     padding-inline: 15px;
     float: right;
 }
+
+.pageFooter {
+    text-align: center;
+}
+
+    .pageFooter p {
+        font-size: 13pt;
+    }
+
 
 .divContainer {
     overflow: auto;
@@ -74,17 +84,9 @@ tbody {
 }
 
 .pageContainer {
-    width: 840pt;
+    width: 600pt;
     margin-left: auto;
     margin-right: auto;
-}
-
-@media (max-width: 1400px) {
-    .pageContainer {
-        width: 840pt;
-        margin-left: auto;
-        margin-right: auto;
-    }
 }
 
 .tbl1 {
@@ -94,7 +96,7 @@ tbody {
     text-align: center;
     margin-top: 35pt;
     font-family: Calibri, sans-serif;
-    font-size: 19.5pt;
+    font-size: 14.5pt;
 }
 
 .tbl1TD_UnderLine {
