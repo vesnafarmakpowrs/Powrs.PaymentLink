@@ -21,6 +21,23 @@ namespace POWRS.PaymentLink
                 return false;
             }
         }
+
+        public static string PrepareStringForFileName(string fileName)
+        {
+            return fileName.Replace("Č", "C")
+                .Replace("č", "c")
+                .Replace("Ć", "C")
+                .Replace("ć", "c")
+                .Replace("Š", "S")
+                .Replace("š", "s")
+                .Replace("Đ", "Dj")
+                .Replace("đ", "dj")
+                .Replace("Ž", "Z")
+                .Replace("ž", "z")
+                .Replace(" ", "")
+                .Replace("'", "")
+                .Replace("\"", "");
+        }
     }
 
 

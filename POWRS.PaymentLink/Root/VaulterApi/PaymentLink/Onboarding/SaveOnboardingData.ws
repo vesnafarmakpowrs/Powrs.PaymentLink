@@ -556,7 +556,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			representative.PersonalNumber:= item.PersonalNumber;
 			
 			if(item.StatementOfOfficialDocumentIsNewUpload)then(
-				fileName := SessionUser.username + "_LegalRepresentative_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
+				fileName := SessionUser.username + "_LegalRepresentative_" + Str(itemNo) + "_Politicall_" + POWRS.PaymentLink.Utils.PrepareStringForFileName(item.FullName) + ".pdf";
 				SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
 				
 				representative.StatementOfOfficialDocument:= fileName;
@@ -569,7 +569,7 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			);
 			
 			if(item.IdCardIsNewUpload)then(
-				fileName := SessionUser.username + "_LegalRepresentative_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
+				fileName := SessionUser.username + "_LegalRepresentative_" + Str(itemNo) + "_IdCard_" + POWRS.PaymentLink.Utils.PrepareStringForFileName(item.FullName) + ".pdf";
 				SaveFile(fileRootPath, fileName, item.IdCard);
 				
 				representative.IdCard:= fileName;
@@ -654,7 +654,7 @@ SaveCompanyStructure(CompanyStructure, UserName, organizationNumber):=
 			owner.Citizenship:= item.Citizenship;
 			
 			if(item.StatementOfOfficialDocumentIsNewUpload)then(
-				fileName := SessionUser.username + "_Owner_" + Str(itemNo) + "_Politicall_" + item.FullName + ".pdf";
+				fileName := SessionUser.username + "_Owner_" + Str(itemNo) + "_Politicall_" + POWRS.PaymentLink.Utils.PrepareStringForFileName(item.FullName) + ".pdf";
 				SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
 				
 				owner.StatementOfOfficialDocument:= fileName;
@@ -667,7 +667,7 @@ SaveCompanyStructure(CompanyStructure, UserName, organizationNumber):=
 			);
 			
 			if(item.IdCardIsNewUpload)then(
-				fileName := SessionUser.username + "_Owner_" + Str(itemNo) + "_IdCard_" + item.FullName + ".pdf";
+				fileName := SessionUser.username + "_Owner_" + Str(itemNo) + "_IdCard_" + POWRS.PaymentLink.Utils.PrepareStringForFileName(item.FullName) + ".pdf";
 				SaveFile(fileRootPath, fileName, item.IdCard);
 				
 				owner.IdCard:= fileName;
