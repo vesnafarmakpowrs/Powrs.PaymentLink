@@ -48,7 +48,7 @@ div {
     border-top-style: solid;
     border-top-width: 1pt;
     border-top-color: black;
-    margin-top: 57pt !important;
+    margin-top: 36pt !important;
 }
 
 
@@ -210,7 +210,7 @@ div {
 .date1{
     /* width: 50%; */
     display: inline-block;
-    padding-top:36pt
+    padding-top:16pt
 }
 
 /****************     END       *************/
