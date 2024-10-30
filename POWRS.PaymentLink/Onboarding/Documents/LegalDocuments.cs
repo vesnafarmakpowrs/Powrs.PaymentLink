@@ -36,8 +36,8 @@ namespace POWRS.PaymentLink.Onboarding
         public override bool IsCompleted()
         {
             return !string.IsNullOrEmpty(this.BusinessCooperationRequest) &&
-                    !string.IsNullOrEmpty(this.ContractWithVaulter) &&
-                    !string.IsNullOrEmpty(this.ContractWithEMI);
+                    !string.IsNullOrEmpty(this.ContractWithVaulter);
+                    //!string.IsNullOrEmpty(this.ContractWithEMI);
         }
     }
 }
