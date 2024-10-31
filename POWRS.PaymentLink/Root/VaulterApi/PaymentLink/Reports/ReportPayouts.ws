@@ -22,12 +22,18 @@ Try
 	currentCurrency := "";
 	totalAmount := 0;
 	totalFee := 0;
-	isFirstFinished := false;
+	recodProccessed := true;
 	transactionsCount := 0;
+
+	if(filteredData != null and filteredData.Count > 0) then 
+	(
+		currentDay := filteredData[0].PayoutDate;
+		currentCurrency := filteredData[0].Currency;
+	);
 
 	foreach payment In filteredData Do
 	(
-		If ((currentDay!= payment.PayoutDate Or currentCurrency!= payment.Currency) And isFirstFinished) Then
+		If ((currentDay!= payment.PayoutDate Or currentCurrency!= payment.Currency)) Then
 		(
 			resultList.Add({
 				"PayoutDate": currentDay,
@@ -41,9 +47,10 @@ Try
 			totalAmount := 0;
 			totalFee := 0;
 			transactionsCount := 0;
+			recodProccessed := true;
 		);
 		
-		isFirstFinished := true;
+		recodProccessed := false;
 		currentDay := payment.PayoutDate;
 		currentCurrency := payment.Currency;
 		totalAmount += payment.Amount;
@@ -51,7 +58,7 @@ Try
 		transactionsCount ++;
 	);
 	
-	If (isFirstFinished) Then
+	If (!recodProccessed) Then
 	(
 		resultList.Add({
 			"PayoutDate": currentDay,
