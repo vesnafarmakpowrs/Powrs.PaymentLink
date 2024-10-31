@@ -22,7 +22,7 @@ Try
 	currentCurrency := "";
 	totalAmount := 0;
 	totalFee := 0;
-	recodProccessed := true;
+	recordProccessed := true;
 	transactionsCount := 0;
 
 	if(filteredData != null and filteredData.Count > 0) then 
@@ -47,10 +47,10 @@ Try
 			totalAmount := 0;
 			totalFee := 0;
 			transactionsCount := 0;
-			recodProccessed := true;
+			recordProccessed := true;
 		);
 		
-		recodProccessed := false;
+		recordProccessed := false;
 		currentDay := payment.PayoutDate;
 		currentCurrency := payment.Currency;
 		totalAmount += payment.Amount;
@@ -58,7 +58,7 @@ Try
 		transactionsCount ++;
 	);
 	
-	If (!recodProccessed) Then
+	If (!recordProccessed) Then
 	(
 		resultList.Add({
 			"PayoutDate": currentDay,
