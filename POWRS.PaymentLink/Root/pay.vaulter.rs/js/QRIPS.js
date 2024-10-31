@@ -94,6 +94,8 @@ function SetQRCode(QRCode)
   document.getElementById("QRCode").src = QRCode;
   document.getElementById("QRCode").style.removeProperty("filter");
   
+  timeoutHandle = null;
+  start = null;
   countdown(2, 00);
   if (document.getElementById("msg-time-expire").getAttribute("style") != null )
        document.getElementById("msg-time-expire").removeAttribute("style");
