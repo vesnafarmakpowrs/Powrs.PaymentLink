@@ -12,7 +12,9 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try 
 (
-    if(System.String.IsNullOrWhiteSpace(PUserName) or System.String.IsNullOrWhiteSpace(PSignature) or System.String.IsNullOrWhiteSpace(PNonce)) then 
+    Log.Informational("Called method LoginSmartAdmin for userName :" + PUserName, PUserName ,logActor, logEventID, null);
+ 
+	if(System.String.IsNullOrWhiteSpace(PUserName) or System.String.IsNullOrWhiteSpace(PSignature) or System.String.IsNullOrWhiteSpace(PNonce)) then 
     (
 		BadRequest("Username, Nonce and Signature could not be empty");
     );
@@ -20,6 +22,11 @@ try
 	allowedUsersList_RoleSuperAdmin := Create(System.Collections.Generic.List, System.String);
 	allowedUsersList_RoleSuperAdmin.Add("PowrsAgent");
 	allowedUsersList_RoleSuperAdmin.Add("IvanaPowrs");
+	superAdminList := Select top 1000 * from POWRS.PaymentLink.Models.BrokerAccountRole where Role = POWRS.PaymentLink.Models.AccountRole.SuperAdmin;
+	foreach adminUser in superAdminList do
+	(
+		allowedUsersList_RoleSuperAdmin.Add(adminUser.UserName);
+	);
 	
 	allowedUsersList_RoleUsers := Create(System.Collections.Generic.List, System.String);
 	allowedUsersList_RoleUsers.Add("VaulterInvestor");
@@ -29,7 +36,6 @@ try
 		Forbidden("Invalid user name or password.");
 	);
 
-    Log.Informational("Called method LoginSmartAdmin for userName :" + PUserName, PUserName ,logActor, logEventID, null);
 
     validInSeconds:= 1800;
     Resp:= null;
