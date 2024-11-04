@@ -42,11 +42,9 @@ try
 	PayoutPage := "EC/Payout.md";  
 	PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 
-
 	{
 		"Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),
 		"TokenId" : ContractInfo.TokenId,
-		"EscrowFee": ContractInfo.EscrowFee,
 		"BuyerEmail": ContractInfo.BuyerEmail,
 		"BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,
 		"Currency": ContractInfo.Currency

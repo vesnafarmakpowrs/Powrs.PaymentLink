@@ -37,7 +37,7 @@ try
 	contractParameters:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, System.Object);
 	contractParameters["Message"]:= "Vaulter";
 
-	foreach var in currentState.VariableValues do 
+	foreach var in currentState.VariableValues do
 	(
 	 contractParameters[var.Name]:= var.Value;
 	);

@@ -74,6 +74,7 @@
 					<Content fileName="GetContracts.ws"/>
 					<Content fileName="CreateItem.ws"/>
 					<Content fileName="CreateItemIPS.ws"/>
+					<Content fileName="CreateItemOrder.ws"/>
 					<Content fileName="CreateItemEComm.ws"/>
 					<Content fileName="InvalidateContract.ws"/>
 				</Folder>

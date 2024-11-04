@@ -41,6 +41,24 @@ try
 			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
 			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
 			    logActor);
+
+        contractParameters:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, System.Object);
+        legalIdentityProperties:= select top 1 Properties from LegalIdentities where Id = SessionUser.legalId;
+        identityProperties:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, Waher.Persistence.CaseInsensitiveString);
+
+        foreach prop in legalIdentityProperties do  
+	    (
+	       identityProperties[prop.Name]:= prop.Value;
+	    );
+
+        variables:= select top 1 VariableValues from StateMachineCurrentStates where StateMachineId = ContractInfo.TokenId;
+        contractParameters["Message"]:= "Vaulter";
+        foreach var in  variables do
+	    (
+	        contractParameters[var.Name]:= var.Value;
+	    );
+
+    MerchantOrderId:= POWRS.Payment.PaySpot.PayspotService.GenerateOrder(contractParameters, identityProperties);
 			
     PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 
@@ -55,6 +73,7 @@ try
     {
         "Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),	
         "TokenId" : ContractInfo.TokenId,
+        "OrderId": MerchantOrderId,
         "BuyerEmail": ContractInfo.BuyerEmail,
         "BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,
         "Currency": ContractInfo.Currency

@@ -32,7 +32,6 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
-    Log.Informational("Posted data: \n" + Str(Posted), logObject, logActor, logEventID, null);
     IsEcommerce := true;
     ContractInfo := Global.CreateItem(SessionUser, PRemoteId, IsEcommerce,
                 PTitle, PPrice, PCurrency, 
@@ -53,7 +52,6 @@ try
 	{
 		"Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId)+ Parameter,	
 		"TokenId" : ContractInfo.TokenId,
-		"EscrowFee": ContractInfo.EscrowFee,
 		"BuyerEmail": ContractInfo.BuyerEmail,
 		"BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,
 		"Currency": ContractInfo.Currency
