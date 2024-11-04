@@ -73,6 +73,9 @@
 					<Content fileName="InitiateRefund.ws"/>
 					<Content fileName="GetContracts.ws"/>
 					<Content fileName="CreateItem.ws"/>
+					<Content fileName="CalculateHash.ws"/>
+					<Content fileName="CalculateMAC.ws"/>
+					<Content fileName="CalculatePaySpotCallback.ws"/>
 					<Content fileName="CreateItemIPS.ws"/>
 					<Content fileName="CreateItemOrder.ws"/>
 					<Content fileName="CreateItemEComm.ws"/>
