@@ -4,7 +4,7 @@ if !exists(Posted) then BadRequest("No payload.");
 
 ({
     "CompanyID":Required(String(PCompanyID)),
-    "TransactionId":Required(String(PTransactionId)),
+    "TransactionID":Required(String(PTransactionId)),
     "SecretKey":Required(String(PSecretKey))
   
 }:=Posted) ??? BadRequest(Exception.Message);
