@@ -134,6 +134,9 @@
 						</Folder>
 					</Folder>
 				</Folder>
+				<Folder name="Organization">
+					<Content fileName="GetOrganizations.ws"/>
+				</Folder>
 				<Folder name="Reports">
 					<Content fileName="AdminPortalDashboard.ws"/>
 					<Content fileName="AgentList.ws"/>
