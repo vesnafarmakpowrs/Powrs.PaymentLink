@@ -21,61 +21,68 @@ try
 	filterByCreators := POrganizationList != "";
 	filterByOrderID := PId != "";
 	
-	sqlQuery := "Select TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, ExpectedPayoutDate, PayoutDate, Amount, SenderFee ";
-	sqlQuery += "from PayspotPayments ";
+	sqlQueryBuilder := Create(System.Text.StringBuilder);
+	
+	sqlQueryBuilder.Append("Select TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, ExpectedPayoutDate, PayoutDate, Amount, SenderFee, RefundedAmount from PayspotPayments ");
 	if(filterByCreators) then
 	(
-		sqlQuery += " pp";
-		sqlQuery += "join NeuroFeatureTokens t on t.TokenId = pp.TokenId ";
+		sqlQueryBuilder.Append(" pp");
+		sqlQueryBuilder.Append("join NeuroFeatureTokens t on t.TokenId = pp.TokenId ");
 	);
-	sqlQuery += "where DateCreated >= DTDateFrom and DateCreated < DTDateTo and Result='00' and (RefundedAmount = null or RefundedAmount = 0) ";
 	
 	if(filterByOrderID) then
 	(
-		sqlQuery += "and TokenId = '" + PId + + "' or PayspotOrderId = '" + PId + "' or BankTransactionId = '" + PId + "') ";
+		sqlQueryBuilder.Append("where (TokenId = PId or OrderId = PId or PayspotOrderId = PId or BankTransactionId = PId) ");
+	)
+	else
+	(
+		sqlQueryBuilder.Append("where DateCreated >= DTDateFrom and DateCreated < DTDateTo and Result='00' " );
 	);
 	
 	if(filterByCreators) then
 	(
 		Creators:= Global.GetUsersForOrganization(POrganizationList);
-		sqlQuery += "and t.CreatorJid IN Creators ";
+		sqlQueryBuilder.Append("and t.CreatorJid IN Creators ");
 	);
 	
-	Log.Debug("Query: " + sqlQuery, null);
+	Log.Debug("Query: " + Str(sqlQueryBuilder), null);
 
-	OrderList := Evaluate(sqlQuery);
+	OrderList := Evaluate(Str(sqlQueryBuilder));
+	destroy(sqlQueryBuilder);
 
 	ReponseDict := Create(System.Collections.Generic.List, System.Object);
-	foreach order in OrderList do (
-		Token:= select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId = order[0];	
-		Variables:= Token.GetCurrentStateVariables().VariableValues ??? null;
+	foreach order in OrderList do (	
+		if(order[9] = null or order[9] = 0) then (
+			Token:= select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId = order[0];	
+			Variables:= Token.GetCurrentStateVariables().VariableValues ??? null;
 
-		if(Token != null and Variables != null) then 
-		(
-			SellerAccount :=  Split(Token.CreatorJid, "@")[0];
-			RemoteId:= select top 1 Value from Variables where Name = "RemoteId";
-			SmsCounter:= select top 1 Value from Variables where Name = "SMSCounter";
-			EmailCounter:= select top 1 Value from Variables where Name = "EmailCounter";
-			fee := order[8] == null ? 0 : Double(order[8]);
-			amount:= order[7] == null ? 0 : order[7];
+			if(Token != null and Variables != null) then 
+			(
+				SellerAccount :=  Split(Token.CreatorJid, "@")[0];
+				RemoteId:= select top 1 Value from Variables where Name = "RemoteId";
+				SmsCounter:= select top 1 Value from Variables where Name = "SMSCounter";
+				EmailCounter:= select top 1 Value from Variables where Name = "EmailCounter";
+				fee := order[8] == null ? 0 : Double(order[8]);
+				amount:= order[7] == null ? 0 : order[7];
 
-			ReponseDict.Add({
-				"TokenId": order[0],
-				"OrderId": order[1],
-				"OrderReference": order[2],
-				"PayspotTransactionId": order[3],
-				"DateCreated": order[4],
-				"ExpectedPayoutDate": order[5],
-				"PayoutDate" :  order[6],
-				"Amount": amount,
-				"SenderFee": fee,
-				"SellerRecivedAmount" : Dbl(amount)-fee,
-				"Seller" :  SellerAccount,
-				"RemoteId": RemoteId,
-				"SMSCounter": SmsCounter, 
-				"EmailCounter": EmailCounter
-			});
-		);	   
+				ReponseDict.Add({
+					"TokenId": order[0],
+					"OrderId": order[1],
+					"OrderReference": order[2],
+					"PayspotTransactionId": order[3],
+					"DateCreated": order[4],
+					"ExpectedPayoutDate": order[5],
+					"PayoutDate" :  order[6],
+					"Amount": amount,
+					"SenderFee": fee,
+					"SellerRecivedAmount" : Dbl(amount)-fee,
+					"Seller" :  SellerAccount,
+					"RemoteId": RemoteId,
+					"SMSCounter": SmsCounter, 
+					"EmailCounter": EmailCounter
+				});
+			);	   
+		);
 	);
 )
 catch
