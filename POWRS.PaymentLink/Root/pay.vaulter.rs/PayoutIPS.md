@@ -108,7 +108,7 @@ if(LanguageNamespace == null) then
 	   OrgActivityNumber:= MarkdownEncode(Identity.ORGACTIVITYNUM);
 	);
 		 
-	CompanyInfo := select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = OrgName;
+	CompanyInfo := select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = Identity.ORGNAME;
 	if(CompanyInfo == null) then 
 	(
 		Return("Not available");
