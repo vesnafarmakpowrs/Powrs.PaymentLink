@@ -501,27 +501,6 @@
 	  <None Update="Root\pay.vaulter.rs\css\Stripe.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\pay.vaulter.rs\EC\favicon.ico">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.vaulter.rs\EC\IPSBank.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.vaulter.rs\EC\IPSQR.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.vaulter.rs\EC\IPSType.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.vaulter.rs\EC\js\IPS.js">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.vaulter.rs\EC\js\PayForm.js">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Root\pay.vaulter.rs\EC\Payout.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Root\pay.vaulter.rs\favicon.ico">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

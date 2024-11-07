@@ -27,8 +27,8 @@ try
 		OrderId := InnerText(GetElement(Authorization,"OrderId"));
 		Amount := GetElement(AuthorizationRequest,"Amount");
 		Currency := GetElement(AuthorizationRequest,"Currency");
-		TransactionId := GetElement(Authorization,"TransactionID");
-		AuthorizationNumber := GetElement(Authorization,"AuthorizationNumber");
+		TransactionId := InnerText(GetElement(Authorization,"TransactionID"));
+		AuthorizationNumber := InnerText(GetElement(Authorization,"AuthorizationNumber"));
 		TransactionStatus := GetElement(Authorization, "TransactionStatus");
 		TransactionResult := GetElement(Authorization, "TransactionResult");
 		RefundedAmount := GetElement(Authorization, "RefundedAmount");
@@ -36,7 +36,7 @@ try
 		CompanyId:= GetSetting("POWRS.Payment.PaySpot.CompanyId","");
 		PSecretKey := GetSetting("POWRS.Payment.PaySpot.SecretKey","");
 		RandomNum := Base64Encode(RandomBytes(32));
-		PlainText := RandomNum + "|" + CompanyId + "|" + InnerText(TransactionId) + "|" + PSecretKey;
+		PlainText := RandomNum + "|" + CompanyId + "|" + TransactionId + "|" + PSecretKey;
 		Hash := Sha2_512(PlainText);
 		
 		CallBackRequestData := {
@@ -45,7 +45,7 @@ try
 			"hash": Hash,
 			"authorization": 
 				{
-				   "TransactionID" : InnerText(TransactionId),
+				   "TransactionID" : TransactionId,
 				   "ShopId": InnerText(ShopId),
 				   "OrderId": OrderId,
 				   "transactionStatus": InnerText(TransactionStatus) ,
@@ -55,7 +55,7 @@ try
 				   "accountedAmount": InnerText(Amount),
 				   "refundedAmount": InnerText(RefundedAmount),
 				   "currency": InnerText(Currency),
-				   "authorizationNumber": InnerText(AuthorizationNumber),
+				   "authorizationNumber": AuthorizationNumber,
 				   "transactionDate":null,
 				   "result": Result,
 				   "resultDescription":null
@@ -64,7 +64,8 @@ try
 		
 			domain:= "https://" + Gateway.Domain;
 			namespace:= domain + "/Downloads/EscrowPaylinkRS.xsd";
-			xmlText := "<PayspotPaymentCompleted xmlns=\"" + namespace + "\" payspotOrderId=\"\"  orderId=\"" + OrderId + "\" paymentType=\"PaymentCard\"/>";
+			xmlText := "<PayspotPaymentCompleted xmlns=\"" + namespace + "\" payspotOrderId=\"\"  orderId=\"" + OrderId + "\" paymentType=\"PaymentCard\"" + " TransactionId=\"" + TransactionId +  "\" AuthNumber=\"" + AuthorizationNumber + " \" />";
+			 Log.Debug(xmlText, logObject, logActor, logEventID, null);
 			xmlNote := Xml(xmlText);
 			
 			TokenId := select top 1 TokenId from PayspotPayments where OrderId = OrderId;
@@ -83,11 +84,10 @@ try
         paySpotCallBackURL := isProduction ? "https://www.nsgway.rs:50010/api/ecommerce/AuthorizationCallback"  : "https://test.nsgway.rs:50009/api/ecommerce/AuthorizationCallback";
 		
 	    PaySpotCallbackResponse := Post(paySpotCallBackURL, CallBackRequestData, {"Accept" : "application/json"});
-	
-		
+			
 		{
-		   "Ok" 
-	   }
+		   "Ok"
+	    }
 		
 	)
 	else
