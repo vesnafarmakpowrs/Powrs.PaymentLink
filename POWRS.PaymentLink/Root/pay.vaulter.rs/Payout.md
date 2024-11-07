@@ -100,9 +100,15 @@ if Token.HasStateMachine then
     FileName:= SellerId + Token.ShortId;
     
     RemoteId :=  '';
+	IsEcommerce := False;
+	SuccessUrl := '';
+	ErrorUrl := '';
     foreach Parameter in (Contract.Parameters ?? []) do 
     (
           if Parameter.Name == 'RemoteId' then RemoteId := MarkdownEncode(Parameter.Value);
+		  if Parameter.Name == 'IsEcommerce' then IsEcommerce := Bool(Parameter.Value.ToString());
+		  if Parameter.Name == 'SuccessUrl' then SuccessUrl := Parameter.Value.ToString();
+		  if Parameter.Name == 'ErrorUrl' then ErrorUrl := Parameter.Value.ToString();
     );
 
     foreach Variable in (CurrentState.VariableValues ?? []) do 
@@ -122,31 +128,31 @@ if Token.HasStateMachine then
      if(!exists(Country)) then 
      (
         Country := 'RS';
-     );
-
-      Language:= null;
-      if(exists(lng) and lng != "") then
-      (
+    );
+    
+    Language:= null;
+    if(exists(lng) and lng != "") then
+    (
         Language:= Translator.GetLanguageAsync(lng);
       )
       else 
       (
         Language:= Translator.GetLanguageAsync(Country.ToLowerInvariant());
-      );
+    );
 
-      if(Language == null) then
-      (
-        Language:= Translator.GetLanguageAsync("rs");
-      );
-      
-      LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
-      if(LanguageNamespace == null) then 
-      (
-       ]]<b>Page is not available at the moment</b>[[;
-       Return("");
-      );
-
-      if(ContractState == "AwaitingForPayment" and Country != Language.Code.ToUpper()) then
+    if(Language == null) then
+    (
+		Language:= Translator.GetLanguageAsync("rs");
+    );
+   
+    LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
+    if(LanguageNamespace == null) then 
+    (
+		]]<b>Page is not available at the moment</b>[[;
+		Return("");
+    );
+ 
+    if(ContractState == "AwaitingForPayment" and Country != Language.Code.ToUpper()) then
       (
         SendLangaugeNote(tokenId, languageCode):= 
         (
@@ -181,23 +187,142 @@ if Token.HasStateMachine then
                 "ipsOnly": IpsOnly,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
-
-     ]]  <table style="width:100%">
-         <tr class="welcomeLbl">   
-         <td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
-    <td coolspan="2">
-       <select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
-  </tr>
-   <tr>
-     <td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
-      <td style="text-align:right">**ID: ((RemoteId ))**</td>
-</tr>
-</table>
-
+  
+	if (!IsEcommerce ) then
+		(
+			]]<table style="width:100%">
+				<tr class="welcomeLbl">   
+					<td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
+					<td coolspan="2"><select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
+				</tr>
+				<tr>
+					<td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
+					<td style="text-align:right">**ID: ((RemoteId ))**</td>
+				</tr>
+			</table>
+			<div class="payment-details">
+			   <table style="width:100%">
+				  <tr id="tr_summary">
+					 <td class="item border-radius">
+						<table style="vertical-align:middle; width:100%;">
+						   <tr id="tr_seller_info">
+								<td style="width:50%">((LanguageNamespace.GetStringAsync(11) )): ((OrgName ))</td>
+								<td style="width:40%"></td>
+								<td style="width:10%;text-align:right"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/></td>
+						    </tr>
+							<tr id="tr_seller_dtl" style="display:none"  class="agent-info">
+								<td>
+									<div class="agent-contact-info">
+										<p>((OrgAddr ))test</p>
+										<p>((MarkdownEncode(CompanyInfo.PhoneNumber) ))</p>
+										<p>((MarkdownEncode(CompanyInfo.Email) ))</p>
+										<p>((MarkdownEncode(CompanyInfo.WebAddress) ))</p>
+									</div>
+							    </td>
+								<td colspan="2" > 
+									<div style="float: right;" align="right" class="agent-detail">
+										<p>((LanguageNamespace.GetStringAsync(58) )): ((OrgNr ))</p>
+										<p>((LanguageNamespace.GetStringAsync(60) )): (( OrgActivity))</p>
+										<p>((LanguageNamespace.GetStringAsync(61) )): (( OrgActivityNumber))</p>
+										<p>((LanguageNamespace.GetStringAsync(56) )): (( OrgTaxNum))</p>
+									</div>
+								</td>
+						   </tr>
+						</table>
+					 </td>
+				  </tr>
+			   </table>
+			   <table style="width:100%">
+					<tr id="tr_header" class="table-row">
+						<td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
+						<td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) )) ((LanguageNamespace.GetStringAsync(54) ))<strong></td>
+					</tr>
+				    <tr id="tr_header_title">
+						<td colspan="2" class="item border-radius">
+							<table style="vertical-align:middle; width:100%;">
+								<tr>
+									<td style="width:80%;"> ((Title))</td>
+									<td class="itemPrice" rowspan="2">((ContractValue))</td>
+									<td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
+								</tr>
+								<tr>
+									<td style="width:70%"> ((Description))</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+			   </table>
+			</div>
+			<div class="spaceItem"></div>[[;
+		);
+	if ContractState == "AwaitingForPayment" then 
+	(
+			if (!IsEcommerce ) then 
+				(
+					]]<div class="vaulter-details">
+						<table style="width:100%">
+							<tr>
+								<td colspan="3">
+									<label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a> vaulter</label>    
+								</td>
+							</tr>
+							<tr >
+								<td colspan="3">
+									<label for="termsAndConditionAgency"><a onclick="OpenTermsAndConditions(event, this);" urlhref="((CompanyInfo.TermsAndConditions ))">**((LanguageNamespace.GetStringAsync(19) ))**</a> ((OrgName ))</label>
+								</td>
+							</tr>
+						</table>
+					</div>[[;
+				);
+				]]<div class="spaceItem"></div>
+				<div class="payment-method-rs"  id="ctn-payment-method-rs">
+					<table style="width:100%; text-align:center">[[;
+					if (!IsEcommerce ) then 
+					(
+						]]<tr>
+							<td>
+									<div id="submit-payment">
+										<div class="retry-div">
+											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="StartPayment()">((LanguageNamespace.GetStringAsync(73) ))</button> 
+										</div>
+										<div class="div-payment-notice">
+											<label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(81) )) ((OrgName ))</label>
+										</div>
+									</div>
+							</td>
+						</tr>[[;
+					);	
+						]]<tr id="tr_spinner" style="display: none;">
+							<td>
+								<img src="../resources/spin.svg" alt="loadingSpinner">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<iframe id="payspot_iframe" class="payspot_iframe" style="display:none"></iframe>
+							</td>
+						</tr>
+					</table>
+				</div>[[;
+	)
+	else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" || ContractState == "ReleaseFundsToSellerFailed" )then 
+	(
+		]]<div class="payment-completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>
+		  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
+    )
+	else if ContractState == "PaymentCanceled" then 
+	(
+		]]**((LanguageNamespace.GetStringAsync(14) ))**
+		<input type="hidden" id="cancelURL" value='((ErrorUrl ))' />[[;
+	)
+	else 
+	(
+		]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
+	);
+]]</div>
 <input type="hidden" value="((Language.Code ))" id="prefferedLanguage"/>
 <input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
-
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(10) ))" id="SelectedAccountOk"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(24) ))" id="SelectedAccountNotOk"/>
 <input type="hidden" value="((LanguageNamespace.GetStringAsync(25) ))" id="QrCodeScanMessage"/>
@@ -216,161 +341,10 @@ if Token.HasStateMachine then
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
 <input type="hidden" value="((Country ))" id="country"/>
-
-<div class="payment-details">
-   <table style="width:100%">
-      <tr id="tr_summary">
-         <td class="item border-radius">
-            <table style="vertical-align:middle; width:100%;">
-               <tr id="tr_seller_info">
-                  <td style="width:50%">((LanguageNamespace.GetStringAsync(11) )): ((OrgName ))</td>
-                  <td style="width:40%"></td>
-                  <td style="width:10%;text-align:right"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/></td>
-               </tr>
-                <tr id="tr_seller_dtl" style="display:none"  class="agent-info">
-                 <td>
-                    <div class="agent-contact-info">
-			<p>((OrgAddr ))test</p>
-		        <p>((MarkdownEncode(CompanyInfo.PhoneNumber) ))</p>
-                        <p>((MarkdownEncode(CompanyInfo.Email) ))</p>
-                        <p>((MarkdownEncode(CompanyInfo.WebAddress) ))</p>
-                    </div>
-                  </td>
- 		  <td colspan="2" > 
-                    <div style="float: right;" align="right" class="agent-detail">
-			<p>((LanguageNamespace.GetStringAsync(58) )): ((OrgNr ))</p>
-		        <p>((LanguageNamespace.GetStringAsync(60) )): (( OrgActivity))</p>
-                        <p>((LanguageNamespace.GetStringAsync(61) )): (( OrgActivityNumber))</p>
-                        <p>((LanguageNamespace.GetStringAsync(56) )): (( OrgTaxNum))</p>
-                    </div>
-                  </td>
-               </tr>
-            </table>
-         </td>
-      </tr>
-   </table>
-
-   <table style="width:100%">
-      <tr id="tr_header" class="table-row">
-         <td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
-         <td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) )) ((LanguageNamespace.GetStringAsync(54) ))<strong></td>
-      </tr>
-      <tr id="tr_header_title">
-         <td colspan="2" class="item border-radius">
-            <table style="vertical-align:middle; width:100%;">
-               <tr>
-                  <td style="width:80%;"> ((Title))</td>
-                  <td class="itemPrice" rowspan="2">((ContractValue))
-                  <td>
-                  <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-               </tr>
-               <tr>
-                  <td style="width:70%"> ((Description))</td>
-               </tr>
-            </table>
-         </td>
-      </tr>
-   </table>
-</div>
-<div class="spaceItem"></div>
-[[;
-if ContractState == "AwaitingForPayment" then 
-(
-]] 
-<div class="vaulter-details">
-<table style="width:100%">
- <tr>
-  <td colspan="3">
-      <label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a> vaulter</label>    
- </td>
- </tr>
- <tr >
-   <td colspan="3">
-       <label for="termsAndConditionAgency"><a onclick="OpenTermsAndConditions(event, this);" urlhref="((CompanyInfo.TermsAndConditions ))">**((LanguageNamespace.GetStringAsync(19) ))**</a> ((OrgName ))</label>
-    </td>
- </tr>
- </table>
-</div>
-<div class="spaceItem"></div>
-<div class="payment-method-rs"  id="ctn-payment-method-rs">
-  <table style="width:100%; text-align:center">
-    <tr>
-<td>
-[[;
-if(IpsOnly) then 
-(
-]]
-<form method="post" id="payspotForm" name="payspotForm" action='' target="payspot_iframe">
-<input type="hidden" name="companyId" value='' />
-<input type="hidden" name="merchantOrderID" value='' />
-<input type="hidden" name="merchantOrderAmount" value='' />
-<input type="hidden" name="merchantCurrencyCode" value='' />
-<input type="hidden" name="language" value='' />
-<input type="hidden" name="callbackURL" value='' />
-<input type="hidden" name="successURL" value='' />
-<input type="hidden" name="cancelURL" value='' />
-<input type="hidden" name="errorURL" value='' />
-<input type="hidden" name="hash" value='' />
-<input type="hidden" name="rnd" value='' />
-<input type="hidden" name="currentDate" value='' />
-</form>
-<div id="submit-payment" >
-   <div class="retry-div" >
-    <button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="GenerateIPSForm()">((LanguageNamespace.GetStringAsync(73) ))</button> 
-  </div>
-  <div class="div-payment-notice">
-    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(81) )) ((OrgName ))</label>
-  </div>
-</div>
-[[;
-)
-else 
-(
-]]
- 
-<div id="submit-payment" >
-   <div class="retry-div">
-    <button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="StartPayment()">((LanguageNamespace.GetStringAsync(73) ))</button> 
-  </div>
-  <div class="div-payment-notice">
-    <label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(81) )) ((OrgName ))</label>
-  </div>
-</div>
-[[;
-);
-]]
-</td>
-</tr>
-<tr id="tr_spinner" style="display: none;">
-<td>
-<img src="../resources/spin.svg" alt="loadingSpinner">
-</td>
-</tr>
-<tr>
-<td>
-<iframe id="payspot_iframe" class="payspot_iframe" style="display:none"></iframe>
-</td>
-</tr>
-</table>
-</div>
-   [[;
-)
-else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" || ContractState == "ReleaseFundsToSellerFailed" )then 
-(
-]]<div class="payment-completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>[[;
-)
-else if ContractState == "PaymentCanceled" then 
-(
-]]**((LanguageNamespace.GetStringAsync(14) ))**[[;
-)
-else 
-(
-]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
-)
+<input type="hidden" value="((IsEcommerce ))" id="IsEcommerce"/>
+<input type="hidden" value="((CurrentState ))" id="ContractState"/>
+</main>[[;
 }}
-</div>
-</main>
-
 <div class="footer-parent">
   <div class="footer">
    Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - 2024 POWRS

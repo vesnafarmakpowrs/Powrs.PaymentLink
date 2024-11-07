@@ -1,19 +1,30 @@
-﻿function CollapseDetails() {
-    document.getElementById("tr_header").style.display = "none";
-    document.getElementById("tr_header_title").style.display = "none";
-    document.getElementById("tr_summary").addEventListener("click", ExpandDetails);
+﻿
+function ShowHideElement(id, display) {
+    if (document.getElementById(id) != null)
+        document.getElementById(id).style.display = display;
+}
+
+function AddEventListener(elementId, eventName, Event) {
+    if (document.getElementById(elementId) != null)
+        document.getElementById(elementId).addEventListener(eventName, Event);
+}
+
+function CollapseDetails() {
+    ShowHideElement("tr_header", "none");
+    ShowHideElement("tr_header_title", "none");
+    ShowHideElement("tr_summary", "click", ExpandDetails);
 }
 
 function ExpandDetails() {
-    document.getElementById("tr_header").style.display = null;
-    document.getElementById("tr_header_title").style.display = null;
-    document.getElementById("tr_summary").style.display = null;
-    document.getElementById("tr_header").addEventListener("click", CollapseDetails);
-    document.getElementById("tr_header_title").addEventListener("click", CollapseDetails);
+    ShowHideElement("tr_header", null);
+    ShowHideElement("tr_header_title", null);
+    ShowHideElement("tr_summary", null);
+    AddEventListener("tr_header", "click", CollapseDetails);
+    AddEventListener("tr_header_title", "click", CollapseDetails);
 }
 
 function ExpandSellerDetails() {
-    document.getElementById("tr_seller_dtl").style.display = null;
+    ShowHideElement("tr_seller_dtl", null);
     expand_img = document.getElementById("expand_img");
     expand_img.src = "../resources/expand-up.svg";
     expand_img.removeEventListener('click', ExpandSellerDetails);
@@ -21,7 +32,7 @@ function ExpandSellerDetails() {
 }
 
 function CollapseSellerDetails() {
-    document.getElementById("tr_seller_dtl").style.display = "none";
+    ShowHideElement("tr_seller_dtl", "none");
     expand_img = document.getElementById("expand_img");
     expand_img.src = "../resources/expand-down.svg";
     expand_img.removeEventListener('click', CollapseSellerDetails);

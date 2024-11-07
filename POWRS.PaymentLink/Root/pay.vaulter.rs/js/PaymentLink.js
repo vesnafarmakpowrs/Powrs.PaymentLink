@@ -3,9 +3,26 @@ var Translations = {};
 const isMobileDevice = window.navigator.userAgent.toLowerCase().includes("mobi");
 
 document.addEventListener("DOMContentLoaded", () => {
-    GenerateLanguageDropdown();
-    GenerateTranslations();
+    setTimeout(function () {
+        GenerateLanguageDropdown();
+        GenerateTranslations();
+    }, 1000);
+
+    OnlyECommerce();
 });
+
+
+function OnlyECommerce() {
+
+    var isEcommerce = (String(document.getElementById("IsEcommerce").value).toLowerCase() === 'true');
+    var isAwaitingForPayment = (String(document.getElementById("ContractState").value).toLowerCase() === 'awaitingforpayment')
+
+    if (isAwaitingForPayment) {
+        setTimeout(function () {
+            InitiatePaymentForm(ShowPayspotPage);
+        }, 1000);
+    }
+}
 
 function GenerateTranslations() {
     var element = document.getElementById("SelectedAccountOk");
@@ -33,12 +50,17 @@ function GenerateLanguageDropdown() {
         return;
     }
 
+    const languageDropdown = document.getElementById("languageDropdown");
+    if (languageDropdown == null) {
+        return;
+    }
+
     SendXmlHttpRequest("../Payout/API/GetAvailableLanguages.ws",
         {
             "Namespace": document.getElementById("Namespace").value
         }, (response) => {
             if (response != null && response.length > 0) {
-                const languageDropdown = document.getElementById("languageDropdown");
+
                 response.forEach(language => {
                     if (language.Code != 'sv') {
                         let option = document.createElement("option");
@@ -60,6 +82,7 @@ function GenerateLanguageDropdown() {
             console.log(error.responseText);
         });
 }
+
 
 function TransactionFailed(Result) {
     let res = {
@@ -84,9 +107,25 @@ function DisplayTransactionResult(Result) {
 
 var updateTimer = null;
 
+function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUsed) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "../Payout/API/RegisterUpdates.ws", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.setRequestHeader("Accept", "application/json");
+    xhttp.send(JSON.stringify(
+        {
+            "tabId": TabID,
+            "sessionId": SessionId,
+            "requestFromMobilePhone": RequestFromMobilePhone,
+            "qrCodeUsed": QrCodeUsed,
+            "functionName": "SessionUpdated"
+        }));
+}
+
 function InitiatePaymentForm(onSuccess) {
-    document.getElementById("payspot-submit").style.display = "none";
-    document.getElementById("tr_spinner").style.display = null;
+
+    ShowHideElement("payspot-submit", "none");
+    ShowHideElement("tr_spinner", null);
     CollapseDetails();
 
     SendXmlHttpRequest("../Payout/API/InitiatePayment.ws",
@@ -106,6 +145,16 @@ function InitiatePaymentForm(onSuccess) {
         })
 }
 
+function ShowHideElement(id, display) {
+    if (document.getElementById(id) != null)
+        document.getElementById(id).style.display = display;
+}
+
+function AddEventListener(elementId, eventName, Event) {
+    if (document.getElementById(elementId) != null)
+        document.getElementById(elementId).addEventListener(eventName, Event);
+}
+
 function HideSubmitPaymentDiv() {
     if (document.getElementById("submit-payment") != null)
         document.getElementById("submit-payment").style.display = "none";
@@ -113,11 +162,6 @@ function HideSubmitPaymentDiv() {
 function StartPayment() {
     HideSubmitPaymentDiv();
     InitiatePaymentForm(ShowPayspotPage);
-}
-
-function GenerateIPSForm() {
-    HideSubmitPaymentDiv();
-    InitiatePaymentForm(FillAndSubmitPayspotIPSForm);
 }
 
 function PaymentCompleted(Result) {
@@ -139,7 +183,7 @@ function PaySpotPaymentStatus(Result) {
     }
 
     if (Result.ErrorUrl !== undefined && Result.ErrorUrl.trim() != '') {
-        DisplayMessage(Translations.PaymentFailedWaitingRedirection, 'red');
+        DisplayMessage(Translations.PaymentFailedWaitingRedirection, 'green');
         setTimeout(function () {
             window.open(Result.ErrorUrl, "_self");
         }, 3000);
@@ -174,35 +218,9 @@ function ShowPayspotPage(Data) {
         window.open(Data.Response, '_self').focus();
     }
     else {
-        document.getElementById("tr_spinner").style.display = "none";
-        document.getElementById("payspot_iframe").src = Data.Response;
-        document.getElementById("payspot_iframe").style.display = null;
-    }
-}
-
-function FillAndSubmitPayspotIPSForm(ResponseData) {
-    if (ResponseData == null) {
-        return;
-    }
-    if (ResponseData.Success) {
-        let data = ResponseData.Response;
-        // Fill the form fields with data from the API response
-        document.querySelector('input[name="companyId"]').value = data.CompanyId;
-        document.querySelector('input[name="merchantOrderID"]').value = data.MerchantOrderId;
-        document.querySelector('input[name="merchantOrderAmount"]').value = data.MerchantOrderAmount;
-        document.querySelector('input[name="merchantCurrencyCode"]').value = data.MerchantCurrencyCode;
-        document.querySelector('input[name="language"]').value = data.Language;
-        document.querySelector('input[name="callbackURL"]').value = data.CallbackURL;
-        document.querySelector('input[name="successURL"]').value = data.SuccessURL;
-        document.querySelector('input[name="cancelURL"]').value = data.CancelURL;
-        document.querySelector('input[name="errorURL"]').value = data.ErrorURL;
-        document.querySelector('input[name="hash"]').value = data.Hash;
-        document.querySelector('input[name="rnd"]').value = data.Rnd;
-        document.querySelector('input[name="currentDate"]').value = data.CurrentDate;
-
-        var payspotForm = document.getElementById('payspotForm');
-
-        payspotForm.action = data.SubmitAddress;
-        payspotForm.submit();
+        ShowHideElement("tr_spinner", "none");
+        if (document.getElementById("payspot_iframe") != null)
+            document.getElementById("payspot_iframe").src = Data.Response;
+        ShowHideElement("payspot_iframe", null);
     }
 }
