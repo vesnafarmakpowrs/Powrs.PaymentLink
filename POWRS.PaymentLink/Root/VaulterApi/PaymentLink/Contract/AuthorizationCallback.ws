@@ -64,13 +64,13 @@ try
 		
 			domain:= "https://" + Gateway.Domain;
 			namespace:= domain + "/Downloads/EscrowPaylinkRS.xsd";
-			xmlText := "<PayspotPaymentCompleted xmlns=\"" + namespace + "\" payspotOrderId=\"\"  orderId=\"" + OrderId + "\" paymentType=\"PaymentCard\"" + " TransactionId=\"" + TransactionId +  "\" AuthNumber=\"" + AuthorizationNumber + " \" />";
+			xmlText := "<PayspotPaymentCompleted xmlns=\"" + namespace + "\" payspotOrderId=\"\"  orderId=\"" + OrderId + "\" paymentType=\"PaymentCard\"" + " TransactionId=\"" + TransactionId +  "\" AuthNumber=\"" + AuthorizationNumber + "\" />";
 			 Log.Debug(xmlText, logObject, logActor, logEventID, null);
 			xmlNote := Xml(xmlText);
 			
 			TokenId := select top 1 TokenId from PayspotPayments where OrderId = OrderId;
 			
-			Update PayspotPayments set Result='00' where OrderId=OrderId;
+			Update PayspotPayments set Result='00',  AuthNumber=AuthorizationNumber, TransactionId=TransactionId   where OrderId=OrderId;
 			
 			if (TokenId != null) then
 			(
