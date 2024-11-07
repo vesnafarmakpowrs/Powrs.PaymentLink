@@ -34,6 +34,9 @@ try
 	config:= POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent();
     isProduction:= config.IsProduction ?? false;
     paySpotCallBackURL := isProduction ? "https://www.nsgway.rs:50010/api/ecommerce/AuthorizationCallback"  : "https://test.nsgway.rs:50009/api/ecommerce/AuthorizationCallback";
+	
+	siaPaymentResult := CreateType(POWRS.Networking.PaySpot.Consants.BasePaymentResult, POWRS.Networking.PaySpot.Consants.SiaPaymentResult);
+	resultDescription := siaPaymentResult.GetPropertyName(Result);
 			
 	if (Result == "00") then
 	(
@@ -68,14 +71,14 @@ try
 				   "authorizationNumber": AuthorizationNumber,
 				   "transactionDate":null,
 				   "result": Result,
-				   "resultDescription":null
+				   "resultDescription": resultDescription
 			   }
 		};
 			
 			xmlText := "<PayspotPaymentCompleted xmlns=\"" + namespace + "\" payspotOrderId=\"\"  orderId=\"" + OrderId + "\" paymentType=\"PaymentCard\"" + " TransactionId=\"" + TransactionId +  "\" AuthNumber=\"" + AuthorizationNumber + "\" />";
 			xmlNote := Xml(xmlText);
 		
-			Update PayspotPayments set Result='00',  AuthNumber=AuthorizationNumber, TransactionId=TransactionId   where OrderId=OrderId;
+			Update PayspotPayments set Result='00',  AuthNumber = AuthorizationNumber, BankTransactionId = TransactionId, ResultDescription = resultDescription  where OrderId=OrderId;
 			
 			if (TokenId != null) then
 			(
@@ -92,12 +95,10 @@ try
 	else
 	(
 		Res := Result.ToString();
-	    Update PayspotPayments set Result = Res  where OrderId=OrderId and  Result !='00';
+	    Update PayspotPayments set Result = Res, ResultDescription = resultDescription   where OrderId=OrderId and  Result != '00';
 		
-		xmlText := "<PayspotPaymentStatus xmlns=\"" + namespace + "\" payspotOrderId=\"\"  orderId=\"" + OrderId + "\" paymentType=\"PaymentCard\"" + " paymentStatusCode=\"" + Res +  "\" paymentStatusDescr=\"\" />";
+		xmlText := "<PayspotPaymentStatus xmlns=\"" + namespace + "\" payspotOrderId=\"\"  orderId=\"" + OrderId + "\" paymentType=\"PaymentCard\"" + " paymentStatusCode=\"" + Res +  "\" paymentStatusDescr=\"" + resultDescription + "\" />";
 		xmlNote := Xml(xmlText);
-		Log.Debug(xmlText, logObject, logActor, logEventID, null);
-		Log.Debug(TokenId, logObject, logActor, logEventID, null);
 		if (TokenId != null) then
 		(
 			xmlNoteResponse := POST(domain + ":8088/AddNote/" + TokenId, xmlNote, {}, Waher.IoTGateway.Gateway.Certificate);
