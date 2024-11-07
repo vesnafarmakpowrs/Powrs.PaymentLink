@@ -15,18 +15,28 @@ try
 	Result := InnerText(GetElement(Posted,"Result"));
 	MAC := GetElement(Posted,"MAC");
 	Data := GetElement(Posted,"Data");
-
+	
+	Authorization := GetElement(Data,"Authorization");
+	AuthorizationRequest := GetElement(Data,"AuthorizationRequest");
+	Header := GetElement(AuthorizationRequest,"Header");
+	ShopId :=  GetElement(Header,"ShopID");
+	OrderId := InnerText(GetElement(AuthorizationRequest,"OrderID"));
+	
+	
+    Amount := GetElement(AuthorizationRequest,"Amount");
+	Currency := GetElement(AuthorizationRequest,"Currency");
+	
+	domain:= "https://" + Gateway.Domain;
+	namespace:= domain + "/Downloads/EscrowPaylinkRS.xsd";
+	
+	TokenId := select top 1 TokenId from PayspotPayments where OrderId = OrderId;
+		
+	config:= POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent();
+    isProduction:= config.IsProduction ?? false;
+    paySpotCallBackURL := isProduction ? "https://www.nsgway.rs:50010/api/ecommerce/AuthorizationCallback"  : "https://test.nsgway.rs:50009/api/ecommerce/AuthorizationCallback";
+			
 	if (Result == "00") then
 	(
-		AuthorizationRequest := GetElement(Data,"AuthorizationRequest");
-		Authorization := GetElement(Data,"Authorization");
-		Header := GetElement(AuthorizationRequest,"Header");
-
-		ShopId :=  GetElement(Header,"ShopID");
-
-		OrderId := InnerText(GetElement(Authorization,"OrderId"));
-		Amount := GetElement(AuthorizationRequest,"Amount");
-		Currency := GetElement(AuthorizationRequest,"Currency");
 		TransactionId := InnerText(GetElement(Authorization,"TransactionID"));
 		AuthorizationNumber := InnerText(GetElement(Authorization,"AuthorizationNumber"));
 		TransactionStatus := GetElement(Authorization, "TransactionStatus");
@@ -61,27 +71,16 @@ try
 				   "resultDescription":null
 			   }
 		};
-		
-			domain:= "https://" + Gateway.Domain;
-			namespace:= domain + "/Downloads/EscrowPaylinkRS.xsd";
+			
 			xmlText := "<PayspotPaymentCompleted xmlns=\"" + namespace + "\" payspotOrderId=\"\"  orderId=\"" + OrderId + "\" paymentType=\"PaymentCard\"" + " TransactionId=\"" + TransactionId +  "\" AuthNumber=\"" + AuthorizationNumber + "\" />";
-			 Log.Debug(xmlText, logObject, logActor, logEventID, null);
 			xmlNote := Xml(xmlText);
-			
-			TokenId := select top 1 TokenId from PayspotPayments where OrderId = OrderId;
-			
+		
 			Update PayspotPayments set Result='00',  AuthNumber=AuthorizationNumber, TransactionId=TransactionId   where OrderId=OrderId;
 			
 			if (TokenId != null) then
 			(
-			    Log.Debug(SessionUser.jwt, logObject, logActor, logEventID, null);
-				 Log.Debug("TokenId:"+  TokenId, logObject, logActor, logEventID, null);
 				xmlNoteResponse := POST(domain + ":8088/AddNote/" + TokenId, xmlNote, {}, Waher.IoTGateway.Gateway.Certificate);
 			);
-		
-		config:= POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent();
-        isProduction:= config.IsProduction ?? false;
-        paySpotCallBackURL := isProduction ? "https://www.nsgway.rs:50010/api/ecommerce/AuthorizationCallback"  : "https://test.nsgway.rs:50009/api/ecommerce/AuthorizationCallback";
 		
 	    PaySpotCallbackResponse := Post(paySpotCallBackURL, CallBackRequestData, {"Accept" : "application/json"});
 			
@@ -92,8 +91,20 @@ try
 	)
 	else
 	(
+		Res := Result.ToString();
+	    Update PayspotPayments set Result = Res  where OrderId=OrderId and  Result !='00';
+		
+		xmlText := "<PayspotPaymentStatus xmlns=\"" + namespace + "\" payspotOrderId=\"\"  orderId=\"" + OrderId + "\" paymentType=\"PaymentCard\"" + " paymentStatusCode=\"" + Res +  "\" paymentStatusDescr=\"\" />";
+		xmlNote := Xml(xmlText);
+		Log.Debug(xmlText, logObject, logActor, logEventID, null);
+		Log.Debug(TokenId, logObject, logActor, logEventID, null);
+		if (TokenId != null) then
+		(
+			xmlNoteResponse := POST(domain + ":8088/AddNote/" + TokenId, xmlNote, {}, Waher.IoTGateway.Gateway.Certificate);
+		);
+		
 	    {
-		   "transactionResult": InnerText(Result),
+		   "transactionResult": Result,
 		   "Invalid request" : "Invalid request"
 		}
 	);
