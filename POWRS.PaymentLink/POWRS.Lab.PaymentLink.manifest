@@ -208,17 +208,6 @@
 				<Content fileName="XmlHttp.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="DeepLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
 			</Folder>
-			<Folder name="EC">				
-				<Content fileName="favicon.ico" altFolder="..\..\pay.vaulter.rs\EC\"/>
-				<Content fileName="IPSBank.md" altFolder="..\..\pay.vaulter.rs\EC\"/>
-				<Content fileName="IPSQR.md" altFolder="..\..\pay.vaulter.rs\EC\"/>
-				<Content fileName="IPSType.md" altFolder="..\..\pay.vaulter.rs\EC\"/>
-				<Content fileName="Payout.md" altFolder="..\..\pay.vaulter.rs\EC\"/>
-				<Folder name="js">
-					<Content fileName="IPS.js" altFolder="..\..\..\pay.vaulter.rs\EC\js"/>
-					<Content fileName="PayForm.js" altFolder="..\..\..\pay.vaulter.rs\EC\js"/>
-				</Folder>
-			</Folder>
 			<Folder name="resources">
 				<Content fileName="credit-card-payment.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="direct_payment.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>

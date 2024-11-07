@@ -194,17 +194,6 @@
 					<Content fileName="RTDromo-MediumOblique.woff2"/>
 				</Folder>
 			</Folder>
-			<Folder name="EC">
-				<Content fileName="favicon.ico" />
-				<Content fileName="IPSBank.md"/>
-				<Content fileName="IPSQR.md" />
-				<Content fileName="IPSType.md"/>
-				<Content fileName="Payout.md" />
-				<Folder name="js">
-					<Content fileName="IPS.js" />
-					<Content fileName="PayForm.js"/>
-				</Folder>
-			</Folder>
 			<Folder name="js">
 				<Content fileName="DeepLink.js"/>
 				<Content fileName="Events.js"/>

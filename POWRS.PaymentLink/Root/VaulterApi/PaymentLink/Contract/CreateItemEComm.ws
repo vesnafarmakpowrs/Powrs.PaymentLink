@@ -39,7 +39,7 @@ try
 			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
 			    logActor);
 
-	PayoutPage := "EC/Payout.md";  
+	PayoutPage := "Payout.md";  
 	PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 
 	{
