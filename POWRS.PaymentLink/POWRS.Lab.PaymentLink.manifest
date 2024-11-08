@@ -75,7 +75,6 @@
 					<Content fileName="CreateItem.ws"/>
 					<Content fileName="CalculateHash.ws"/>
 					<Content fileName="CalculateMAC.ws"/>
-					<Content fileName="AuthorizationCallback.ws"/>
 					<Content fileName="CreateItemIPS.ws"/>
 					<Content fileName="CreateItemOrder.ws"/>
 					<Content fileName="CreateItemEComm.ws"/>
