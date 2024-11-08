@@ -952,9 +952,11 @@ padding: 10px;
 .payment-completed
 {
   display:flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
   color:green;
+  padding-left: 15px;
 }
 
 @media only screen and (min-width: 1025px) {
