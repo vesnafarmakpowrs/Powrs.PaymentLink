@@ -356,7 +356,7 @@ if(LanguageNamespace == null) then
 			(
 			   DateCompleted :=  select top 1 DateCompleted from PayspotPayments where TokenId= Token.TokenId;
 			]]<div class="payment-completed"><p>**((LanguageNamespace.GetStringAsync(16) ))**</p>
-			 <p>**Datum plaćanja: ((DateCompleted ))**</p></div>
+			 <p>**Datum plaćanja: ((DateCompleted.ToLocalTime() ))**</p></div>
 			  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
 			)
 			else if ContractState == "PaymentCanceled" then 
