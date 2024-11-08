@@ -45,8 +45,6 @@ try
 		sqlQueryBuilder.Append("and t.CreatorJid IN Creators ");
 	);
 	
-	Log.Debug("Query: " + Str(sqlQueryBuilder), null);
-
 	OrderList := Evaluate(Str(sqlQueryBuilder));
 	destroy(sqlQueryBuilder);
 

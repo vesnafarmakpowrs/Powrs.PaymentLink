@@ -133,7 +133,7 @@
 		<None Remove="Root\VaulterApi\PaymentLink\Reports\ReportTransactions.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
 		<None Remove="Scripts\StartupScripts\GetAgentSuccessfullTransactions.config" />
-		<None Remove="Scripts\StartupScripts\GetUserHierarchy.config" />
+		<None Remove="Scripts\StartupScripts\GetUserForMyCompany.config" />
 		<None Remove="Scripts\StartupScripts\GetUsersForOrganization.config" />
 	</ItemGroup>
 	<ItemGroup>		
@@ -242,7 +242,7 @@
 		<Content Include="Scripts\StartupScripts\GetUsersForOrganization.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Scripts\StartupScripts\GetUserHierarchy.config">
+		<Content Include="Scripts\StartupScripts\GetUserForMyCompany.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
