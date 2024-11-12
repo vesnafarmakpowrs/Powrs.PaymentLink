@@ -80,41 +80,42 @@ try
 	currentStep := "DB Insert-Update";
 	newId := "";
 	
-	newUserTMP := 
+	newUserRegistrationDetails := 
 		select top 1 * 
-		from POWRS.PaymentLink.Models.NewUserTMP 
+		from POWRS.PaymentLink.Models.NewUserRegistrationDetails 
 		where ParentOrgName = PParentOrgName and
 			NewOrgName = PNewOrgName and
 			NewOrgClientType = PNewOrgName and
 			NewUserRole = newUserRole;
 			
-	if(newUserTMP != null)then
+	if(newUserRegistrationDetails != null)then
 	(
-		newId := newUserTMP.ObjectId;
+		newId := newUserRegistrationDetails.ObjectId;
 	)
 	else
 	(
-		newUserTMP := Create(POWRS.PaymentLink.Models.NewUserTMP);
-		newUserTMP.ParentOrgName := PParentOrgName;
-		newUserTMP.NewOrgName := PNewOrgName;
-		newUserTMP.NewOrgClientType := newOrgClientType;
-		newUserTMP.NewUserRole := newUserRole;
-		newUserTMP.CreatorUserName := SessionUser.username;
-		newUserTMP.Created := Now;
+		newUserRegistrationDetails := Create(POWRS.PaymentLink.Models.NewUserRegistrationDetails);
+		newUserRegistrationDetails.ParentOrgName := PParentOrgName;
+		newUserRegistrationDetails.NewOrgName := PNewOrgName;
+		newUserRegistrationDetails.NewOrgClientType := newOrgClientType;
+		newUserRegistrationDetails.NewUserRole := newUserRole;
+		newUserRegistrationDetails.CreatorUserName := SessionUser.username;
+		newUserRegistrationDetails.Created := Now;
 		
-		Waher.Persistence.Database.Insert(newUserTMP);
-		newId := select top 1 ObjectId from POWRS.PaymentLink.Models.NewUserTMP order by ObjectId desc;
+		Waher.Persistence.Database.Insert(newUserRegistrationDetails);
+		newId := select top 1 ObjectId from POWRS.PaymentLink.Models.NewUserRegistrationDetails order by ObjectId desc;
 	);
 	
 	currentStep := "CreateUrl";
-	siteUrl := "https://paylink.vaulter.rs/index.html#/"; 
-	siteUrl += POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetPathNameByEnum(newOrgClientType);
-	siteUrl += "?id=" + newId;
+	siteUrl := Create(System.Text.StringBuilder);
+	siteUrl.Append("https://paylink.vaulter.rs/index.html#/");
+	siteUrl.Append(POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetPathNameByEnum(newOrgClientType));
+	siteUrl.Append("?id=" + newId);
 	
-	Log.Informational("Succeffully generated registration URL: " + siteUrl, logObject, logActor, logEventID, null);
+	Log.Informational("Succeffully generated registration URL: " + Str(siteUrl), logObject, logActor, logEventID, null);
 	
 	{
-		registrationUrl: siteUrl
+		"registrationUrl": Str(siteUrl)
 	}
 )
 catch
@@ -128,5 +129,9 @@ catch
 	(
 		BadRequest(Exception.Message);
 	);
+)
+finally
+(
+    Destroy(siteUrl);
 );
 

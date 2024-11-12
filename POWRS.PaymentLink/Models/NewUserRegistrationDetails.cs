@@ -3,11 +3,11 @@ using Waher.Persistence.Attributes;
 
 namespace POWRS.PaymentLink.Models
 {
-    [CollectionName(nameof(NewUserTMP) + "s")]
+    [CollectionName(nameof(NewUserRegistrationDetails) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("ObjectId")]
 
-    public class NewUserTMP
+    public class NewUserRegistrationDetails
     {
         private string objectId;
         private string parentOrgName;
