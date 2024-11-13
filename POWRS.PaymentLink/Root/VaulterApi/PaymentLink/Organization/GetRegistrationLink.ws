@@ -24,7 +24,7 @@ ValidatePostedData(PParentOrgName, PNewOrgName, PNewOrgClientType, PNewUserRole)
 	(
 		errors.Add("parentOrgName;PermissionToAccessOrgName");
 	);
-	if(!POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PNewUserRole))then
+	if(!System.Enum.IsDefined(POWRS.PaymentLink.Models.AccountRole, PNewUserRole))then
 	(
 		errors.Add("newUserRole")
 	)
@@ -38,7 +38,7 @@ ValidatePostedData(PParentOrgName, PNewOrgName, PNewOrgClientType, PNewUserRole)
 				errors.Add("newOrgName")
 			);
 			
-			if(!POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.ClientType.Enums.ClientType, PNewOrgClientType))then
+			if(!System.Enum.IsDefined(POWRS.PaymentLink.ClientType.Enums.ClientType, PNewOrgClientType))then
 			(
 				errors.Add("newOrgClientType")
 			);
