@@ -11,12 +11,12 @@ logObject := SessionUser.username;
 logEventID := "GetRegistrationLink.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 currentStep := "";
+errors:= Create(System.Collections.Generic.List, System.String);
 
-ValidatePostedData(PParentOrgName, PNewOrgName, PNewOrgClientType, PNewUserRole) := (
-	permissionToAccessOrg := false;
+ValidatePostedData(parentOrgName, newOrgName, newOrgClientType, newUserRole) := (
+	permissionToAccessOrg := true;
 
-	errors:= Create(System.Collections.Generic.List, System.String);
-	if(System.String.IsNullOrWhiteSpace(PParentOrgName))then
+	if(System.String.IsNullOrWhiteSpace(parentOrgName))then
 	(
 		errors.Add("parentOrgName");
 	);
@@ -24,21 +24,21 @@ ValidatePostedData(PParentOrgName, PNewOrgName, PNewOrgClientType, PNewUserRole)
 	(
 		errors.Add("parentOrgName;PermissionToAccessOrgName");
 	);
-	if(!System.Enum.IsDefined(POWRS.PaymentLink.Models.AccountRole, PNewUserRole))then
+	if(!System.Enum.IsDefined(POWRS.PaymentLink.Models.AccountRole, newUserRole))then
 	(
 		errors.Add("newUserRole")
 	)
 	else
 	(
-		newUserRole := System.Enum.Parse(POWRS.PaymentLink.Models.AccountRole, PNewUserRole);
+		newUserRole := System.Enum.Parse(POWRS.PaymentLink.Models.AccountRole, newUserRole);
 		if(newUserRole = POWRS.PaymentLink.Models.AccountRole.GroupAdmin)then
 		(
-			if(System.String.IsNullOrWhiteSpace(PNewOrgName))then
+			if(System.String.IsNullOrWhiteSpace(newOrgName))then
 			(
 				errors.Add("newOrgName")
 			);
 			
-			if(!System.Enum.IsDefined(POWRS.PaymentLink.ClientType.Enums.ClientType, PNewOrgClientType))then
+			if(!System.Enum.IsDefined(POWRS.PaymentLink.ClientType.Enums.ClientType, newOrgClientType))then
 			(
 				errors.Add("newOrgClientType")
 			);
@@ -99,8 +99,6 @@ try
 		newUserRegistrationDetails.NewOrgName := PNewOrgName;
 		newUserRegistrationDetails.NewOrgClientType := newOrgClientType;
 		newUserRegistrationDetails.NewUserRole := newUserRole;
-		newUserRegistrationDetails.CreatorUserName := SessionUser.username;
-		newUserRegistrationDetails.Created := Now;
 		
 		Waher.Persistence.Database.Insert(newUserRegistrationDetails);
 		newId := select top 1 ObjectId from POWRS.PaymentLink.Models.NewUserRegistrationDetails order by ObjectId desc;

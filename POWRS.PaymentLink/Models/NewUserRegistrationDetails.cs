@@ -15,6 +15,7 @@ namespace POWRS.PaymentLink.Models
         private ClientType.Enums.ClientType newOrgClientType;
         private AccountRole newUserRole;
 
+        [ObjectId]
         public string ObjectId { get => objectId; set => objectId = value; }
         public string ParentOrgName { get => parentOrgName; set => parentOrgName = value; }
         public string NewOrgName { get => newOrgName; set => newOrgName = value; }
