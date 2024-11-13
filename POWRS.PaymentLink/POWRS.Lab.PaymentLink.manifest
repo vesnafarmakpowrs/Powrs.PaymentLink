@@ -136,6 +136,7 @@
 				</Folder>
 				<Folder name="Organization">
 					<Content fileName="GetOrganizations.ws"/>
+					<Content fileName="GetRegistrationLink.ws"/>
 				</Folder>
 				<Folder name="Reports">
 					<Content fileName="AdminPortalDashboard.ws"/>
