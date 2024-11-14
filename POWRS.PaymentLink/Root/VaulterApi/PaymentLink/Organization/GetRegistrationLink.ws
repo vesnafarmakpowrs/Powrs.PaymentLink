@@ -14,7 +14,8 @@ currentStep := "";
 errors:= Create(System.Collections.Generic.List, System.String);
 
 ValidatePostedData(parentOrgName, newOrgName, newOrgClientType, newUserRole) := (
-	permissionToAccessOrg := true;
+	myOrganizations := POWRS.PaymentLink.Utils.GetAllChildOrganizations(SessionUser.orgName);
+	permissionToAccessOrg := myOrganizations.Contains(parentOrgName);
 
 	if(System.String.IsNullOrWhiteSpace(parentOrgName))then
 	(
