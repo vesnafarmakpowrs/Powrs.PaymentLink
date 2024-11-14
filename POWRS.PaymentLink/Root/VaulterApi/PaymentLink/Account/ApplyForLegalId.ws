@@ -189,8 +189,7 @@ try
 	
 	if(accountRole != null) then (
 		accountRole.OrgName:= POrgName;
-		accountRole.ParentOrgName:= "Powrs";
-		
+		accountRole.ParentOrgName:= System.String.IsNullOrWhiteSpace(accountRole.ParentOrgName) ? "Powrs" : accountRole.ParentOrgName;
 		Waher.Persistence.Database.Update(accountRole);
 		
 		if(accountRole.UserName != accountRole.CreatorUserName) then (

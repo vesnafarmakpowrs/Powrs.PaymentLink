@@ -49,18 +49,19 @@ namespace POWRS.PaymentLink
             var brokerAccounrRoleList = await Database.Find<BrokerAccountRole>();
             int generation = 1;
             var resultList = GetAllChildren(brokerAccounrRoleList, parentOrgName, generation).Distinct().ToList();
+            resultList.Insert(0, parentOrgName);
 
             return resultList;
         }
 
-        internal static List<string> GetAllChildren(IEnumerable<BrokerAccountRole> brokerAccRoleList, string parentOrgName, int generation)
+        private static List<string> GetAllChildren(IEnumerable<BrokerAccountRole> brokerAccRoleList, string parentOrgName, int generation)
         {
             var resultList = new List<string>();
             var directChildren = brokerAccRoleList.Where(x => x.ParentOrgName == parentOrgName).ToList();
 
             foreach (var item in directChildren)
             {
-                if (!resultList.Contains(item.OrgName))
+                if (!resultList.Contains(item.OrgName) && item.OrgName != "")
                 {
                     resultList.Add(item.OrgName);
                     if (generation < 100)

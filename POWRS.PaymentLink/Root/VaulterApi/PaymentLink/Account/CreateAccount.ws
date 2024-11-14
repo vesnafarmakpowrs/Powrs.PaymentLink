@@ -61,7 +61,7 @@ try
 		newUserRegistrationDetails := 
 			select top 1 * 
 			from POWRS.PaymentLink.Models.NewUserRegistrationDetails 
-			where ObjectId = PRegistrationId;
+			where Str(ObjectId) = Str(PRegistrationId);
 			
 		if(newUserRegistrationDetails = null)then
 		(
