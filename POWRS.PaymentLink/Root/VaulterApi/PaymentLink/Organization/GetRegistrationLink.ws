@@ -55,11 +55,8 @@ ValidatePostedData(parentOrgName, newOrgName, newOrgClientType, newUserRole) := 
 
 try
 (
-	Log.Debug("Posted data: \n" + Str(Posted), logObject, logActor, logEventID, null);
-	
 	currentStep := "ValidatePostedData";
 	ValidatePostedData(PParentOrgName, PNewOrgName, PNewOrgClientType, PNewUserRole);
-	Log.Debug("Finished Validation method", logObject, logActor, logEventID, null);
 	
 	currentStep := "CollectingData";
 	newUserRole := System.Enum.Parse(POWRS.PaymentLink.Models.AccountRole, PNewUserRole);
@@ -85,7 +82,7 @@ try
 		from POWRS.PaymentLink.Models.NewUserRegistrationDetails 
 		where ParentOrgName = PParentOrgName and
 			NewOrgName = PNewOrgName and
-			NewOrgClientType = PNewOrgName and
+			NewOrgClientType = newOrgClientType and
 			NewUserRole = newUserRole;
 			
 	if(newUserRegistrationDetails != null)then
@@ -132,4 +129,3 @@ finally
 (
     Destroy(siteUrl);
 );
-

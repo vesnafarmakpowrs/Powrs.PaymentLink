@@ -192,13 +192,12 @@ try
 		Log.Error("Unable to send email notification to Powrs support team" + Exception.Message, logObject, logActor, logEventID, null);
 	);
 	
+	creatorUserName := "";
+	orgName := "";
+	parentOrgName := "";
+	enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.User;
 	try
 	(
-		creatorUserName := "";
-		orgName := "";
-		parentOrgName := "";
-		enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.User;
-
 		if(newUserRegistrationDetails != null)then
 		(
 			creatorUserName := PUserName;
@@ -289,6 +288,27 @@ try
 	catch
 	(
 		Log.Error("Unable to insert client type: " + Exception.Message, logObject, logActor, logEventID, null);
+	);
+	
+	try
+	(
+		if(enumNewUserRole = POWRS.PaymentLink.Models.AccountRole.GroupAdmin and newUserRegistrationDetails != null)then
+		(
+			organizationClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = newUserRegistrationDetails.NewOrgName;
+			if(organizationClientType = null)then
+			(
+				organizationClientType := Create(POWRS.PaymentLink.ClientType.Models.OrganizationClientType);
+				organizationClientType.OrganizationName := newUserRegistrationDetails.NewOrgName;
+				organizationClientType.OrgClientType := newUserRegistrationDetails.NewOrgClientType;
+				
+				Waher.Persistence.Database.Insert(organizationClientType);
+			);
+		);
+		Log.Informational("Inserted record in collection -> broker acc onboarding client type successfully inserted for user name: " + PUserName, logObject, logActor, logEventID, null);
+	)
+	catch
+	(
+		Log.Error("Unable to insert organization name for GourpAdminUser: " + Exception.Message, logObject, logActor, logEventID, null);
 	);
 		
 	{
