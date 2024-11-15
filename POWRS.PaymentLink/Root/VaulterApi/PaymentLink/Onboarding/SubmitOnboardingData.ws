@@ -46,7 +46,7 @@ ApplyForLeglalID(onBoardingData):=(
 		where UserName = SessionUser.username;
 
 	accountRole.OrgName:= onBoardingData.GeneralCompanyInformation.ShortName;
-	accountRole.ParentOrgName:= "Powrs";
+	accountRole.ParentOrgName:= System.String.IsNullOrWhiteSpace(accountRole.ParentOrgName) ? "Powrs" : accountRole.ParentOrgName;
 	Waher.Persistence.Database.Update(accountRole);
 
 	Password := 
