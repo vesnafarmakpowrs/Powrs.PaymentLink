@@ -10,19 +10,19 @@ namespace POWRS.PaymentLink.ClientType.Enums
 
     public static class EnumHelper
     {
-        private const string pathClientType_Small = "registerclient";
-        private const string pathClientType_Medium = "registration";
-        private const string pathClientType_Large = "registerorganization";
+        private const string SmallClientTypePath = "registerclient";
+        private const string MediumClientTypePath = "registration";
+        private const string LargeClientTypePath = "registerorganization";
 
         public static ClientType GetEnumByUrlPathName(string pathName)
         {
             switch (pathName)
             {
-                case pathClientType_Small:
+                case SmallClientTypePath:
                     return ClientType.Small;
-                case pathClientType_Medium:
+                case MediumClientTypePath:
                     return ClientType.Medium;
-                case pathClientType_Large:
+                case LargeClientTypePath:
                     return ClientType.Large;
                 default:
                     return ClientType.Small;
@@ -34,11 +34,11 @@ namespace POWRS.PaymentLink.ClientType.Enums
             switch (clientType)
             {
                 case ClientType.Small:
-                    return pathClientType_Small;
+                    return SmallClientTypePath;
                 case ClientType.Medium:
-                    return pathClientType_Medium;
+                    return MediumClientTypePath;
                 case ClientType.Large:
-                    return pathClientType_Large;
+                    return LargeClientTypePath;
                 default:
                     return "";
             }

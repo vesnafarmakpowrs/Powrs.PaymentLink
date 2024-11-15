@@ -44,36 +44,7 @@ namespace POWRS.PaymentLink
                 .Replace("'", "")
                 .Replace("\"", "");
         }
-
-        public static async Task<List<string>> GetAllOrganizationChildren(string parentOrgName)
-        {
-            var orgNameFilter = new FilterFieldNotEqualTo("OrgName", "");
-            var brokerAccounrRoleList = await Database.Find<BrokerAccountRole>(orgNameFilter);
-
-            int generation = 1; //control counter to avoid infinit loop
-            var resultList = GetAllChildren(brokerAccounrRoleList, parentOrgName, generation);
-            resultList.Add(parentOrgName);
-
-            return resultList.Distinct().OrderBy(x => x).ToList();
-        }
-        private static List<string> GetAllChildren(IEnumerable<BrokerAccountRole> brokerAccRoleList, string parentOrgName, int generation)
-        {
-            var resultList = new List<string>();
-            var directChildren = brokerAccRoleList.Where(x => x.ParentOrgName == parentOrgName).ToList();
-
-            foreach (var item in directChildren)
-            {
-                if (!resultList.Contains(item.OrgName))
-                {
-                    resultList.Add(item.OrgName);
-                    if (generation < 100)
-                        resultList.AddRange(GetAllChildren(brokerAccRoleList, item.OrgName, generation + 1));
-                }
-            }
-
-            return resultList;
-        }
-       
+     
 
     }
 }
