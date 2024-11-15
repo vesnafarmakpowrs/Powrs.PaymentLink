@@ -50,11 +50,9 @@ namespace POWRS.PaymentLink
             var orgNameFilter = new FilterFieldNotEqualTo("OrgName", "");
             var brokerAccounrRoleList = await Database.Find<BrokerAccountRole>(orgNameFilter);
 
-            var startTs = DateTime.Now; 
-            int generation = 1;
+            int generation = 1; //control counter to avoid infinit loop
             var resultList = GetAllChildren(brokerAccounrRoleList, parentOrgName, generation);
             resultList.Add(parentOrgName);
-            resultList.Add("zzz -> execution ms: " + (DateTime.Now - startTs).TotalMilliseconds);
 
             return resultList.Distinct().OrderBy(x => x).ToList();
         }
@@ -75,44 +73,7 @@ namespace POWRS.PaymentLink
 
             return resultList;
         }
-
-        /* *** YIELD *** */
-        public static async Task<List<string>> GetAllOrganizationChildrenYield(string parentOrgName)
-        {
-            var orgNameFilter = new FilterFieldNotEqualTo("OrgName", "");
-            var brokerAccounrRoleList = await Database.Find<BrokerAccountRole>(orgNameFilter);
-
-            var startTs = DateTime.Now; 
-            int generation = 1;
-            var resultList = GetAllChildrenYield(brokerAccounrRoleList, parentOrgName, generation).ToList();
-            resultList.Add(parentOrgName);
-            resultList.Add("zzz -> execution ms: " + (DateTime.Now - startTs).TotalMilliseconds);
-
-
-            return resultList.Distinct().OrderBy(x => x).ToList();
-        }
-
-        private static IEnumerable<string> GetAllChildrenYield(IEnumerable<BrokerAccountRole> brokerAccRoleList, string parentOrgName, int generation)
-        {
-            var directChildren = brokerAccRoleList.Where(x => x.ParentOrgName == parentOrgName).OrderBy(x => x);
-            string currentOrgName = "";
-
-            foreach (var child in directChildren)
-            {
-                if (currentOrgName != child.OrgName)
-                {
-                    yield return child.OrgName;
-
-                    if (generation < 100)
-                    {
-                        foreach (var gradnChild in GetAllChildrenYield(brokerAccRoleList, child.OrgName, generation + 1))
-                        {
-                            yield return gradnChild;
-                        }
-                    }
-                }
-            }
-        }
+       
 
     }
 }
