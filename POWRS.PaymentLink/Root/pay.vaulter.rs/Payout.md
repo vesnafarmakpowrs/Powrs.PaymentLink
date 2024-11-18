@@ -342,7 +342,7 @@ if Token.HasStateMachine then
 <input type="hidden" value="((FileName))" id="fileName"/>
 <input type="hidden" value="((Country ))" id="country"/>
 <input type="hidden" value="((IsEcommerce ))" id="IsEcommerce"/>
-<input type="hidden" value="((CurrentState ))" id="ContractState"/>
+<input type="hidden" value="((ContractState ))" id="ContractState"/>
 </main>[[;
 }}
 <div class="footer-parent">
