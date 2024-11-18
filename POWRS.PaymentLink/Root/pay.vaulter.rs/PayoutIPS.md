@@ -59,7 +59,7 @@ if(LanguageNamespace == null) then
 
 	Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
 
-	PaymentResult : = select Top 1 Result from PayspotPayments where TokenId = Token.TokenId;
+	PaymentResult := select Top 1 Result from PayspotPayments where TokenId = Token.TokenId;
 
 	if !exists(Token) then
 	(
