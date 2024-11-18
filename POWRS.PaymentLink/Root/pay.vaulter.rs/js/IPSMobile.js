@@ -72,14 +72,16 @@ function DisplayTransactionResult(Result) {
 
 function GetDeepLinkSuccess(ResponseData) {
     var isIos = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    let url = ResponseData.Response.DeepLink;
+    let url = `${window.location.protocol}//${window.location.host}/DeepLink.md`;
+    const params = new URLSearchParams(url.search);
+    params.set('link', ResponseData.Response.DeepLink);
+    url += "?" + params.toString();
+    let mode = "_self";
+
     if (isIos) {
-        url = `${window.location.protocol}//${window.location.host}/DeepLink.md`;
-        const params = new URLSearchParams(url.search);
-        params.set('link', ResponseData.Response.DeepLink);
-        url += "?" + params.toString();
+        mode = "_blank";      
     }
 
-    window.open(url, "_blank");
+    window.open(url, mode);
     DiasableItems(false);
 }
