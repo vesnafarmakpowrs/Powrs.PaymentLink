@@ -9,7 +9,7 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateNeuroFeatureCreatorIndex.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateStateMachineCurrentStateIndex.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetAgentSuccessfullTransactions.config" />
-	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUserHierarchy.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUsersForMyCompany.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateItem.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateUrl.config" />
 	<Folder name="Root">
@@ -138,6 +138,10 @@
 							<Content altFolder="..\..\..\..\..\..\Onboarding\TemplateFiles\Powrs" fileName="PowrsAttachment2_Page01.png"/>
 						</Folder>
 					</Folder>
+				</Folder>
+				<Folder name="Organization">
+					<Content fileName="GetOrganizations.ws"/>
+					<Content fileName="GetRegistrationLink.ws"/>
 				</Folder>
 				<Folder name="Reports">
 					<Content fileName="AdminPortalDashboard.ws"/>

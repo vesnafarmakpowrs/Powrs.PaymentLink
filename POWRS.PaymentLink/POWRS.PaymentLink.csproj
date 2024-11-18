@@ -138,7 +138,8 @@
 		<None Remove="Root\VaulterApi\PaymentLink\Reports\ReportTransactions.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
 		<None Remove="Scripts\StartupScripts\GetAgentSuccessfullTransactions.config" />
-		<None Remove="Scripts\StartupScripts\GetUserHierarchy.config" />
+		<None Remove="Scripts\StartupScripts\GetUsersForMyCompany.config" />
+		<None Remove="Scripts\StartupScripts\GetUsersForOrganization.config" />
 	</ItemGroup>
 	<ItemGroup>		
 		<Content Include="Root\pay.vaulter.rs\css\Payout.cssx">
@@ -258,7 +259,10 @@
 		<Content Include="Scripts\StartupScripts\GetAgentSuccessfullTransactions.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Scripts\StartupScripts\GetUserHierarchy.config">
+		<Content Include="Scripts\StartupScripts\GetUsersForOrganization.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Scripts\StartupScripts\GetUsersForMyCompany.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
@@ -921,6 +925,15 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Onboarding\DownloadTemplateFile.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Organization\GetOrganizations.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Organization\GetRegistrationLink.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Organization\GetSubOrganizationRegistrationLink.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\QR\Generate.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -967,6 +980,7 @@
 
 	<ItemGroup>
 	  <Folder Include="FeeCalculator\TemplateFiles\FeeCalculatorForm\" />
+	  <Folder Include="Root\VaulterApi\PaymentLink\Organization\" />
 	</ItemGroup>
 	
 	<!-- Build Lab Serbian package -->
