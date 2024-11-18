@@ -1183,6 +1183,26 @@ Retrieves Successful Transactions information.
 | `PaymentType`     | Payment Type (Card or IPS) |
 | `CardBrand`       | Brand of card ( VISA,MASTERCARD,DINA, MAESTRO) |
 
+### Get Organizations
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Organization/GetOrganizations.ws")}}`
+Method: `POST`
+
+Retrieves Organization List for filter dropdown.
+
+**Request**
+
+````
+{
+}
+````
+
+**Response**
+
+| Name              | Description |
+|:------------------|:------------|
+| `ObjectId`        | Id          |
+| `OrganizationName`| Organization Name|
 
 OnBoarding
 ---------------------

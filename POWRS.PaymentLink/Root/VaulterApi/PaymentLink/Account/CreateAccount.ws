@@ -7,7 +7,8 @@
     "email" : Required(Str(PEmail)),
 	"newSubUser": Optional(Boolean(PNewSubUser)),
     "role": Optional(Int(PUserRole)),
-	"locationPathName": Optional(Str(PlocationPathName))
+	"locationPathName": Optional(Str(PlocationPathName)),
+	"registrationId": Optional(Str(PRegistrationId))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 logObject := "";
@@ -19,6 +20,7 @@ try
 	PNewSubUser := PNewSubUser ?? false;
 	PUserRole := PUserRole ?? -1;
 	PlocationPathName := PlocationPathName ?? "";
+	PRegistrationId := PRegistrationId ?? "";
 
     if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
     (
@@ -54,6 +56,19 @@ try
 	if(PUserRole >= 0 && !POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PUserRole)) then (
         Error("Role doesn't exists.");
 	);
+	if(!System.String.IsNullOrWhiteSpace(PRegistrationId))then
+	(
+		newUserRegistrationDetails := 
+			select top 1 * 
+			from POWRS.PaymentLink.Models.NewUserRegistrationDetails 
+			where Str(ObjectId) = Str(PRegistrationId);
+			
+		if(newUserRegistrationDetails = null)then
+		(
+			Error("RegistrationId doesn't exists.");
+		);
+	);
+		
 
 	logObject := PUserName;	
 
@@ -144,13 +159,13 @@ try
 		MailBody := Create(System.Text.StringBuilder);
 		MailBody.Append("Hello,");
 		MailBody.Append("<br />");
-		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>. {{clientType}} Domain: <strong><i>{{domen}}</i></strong>");
+		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>. {{clientType}} Domain: <strong><i>{{domain}}</i></strong>");
 		MailBody.Append("<br />");
 		MailBody.Append("<br /><i>Best regards</i>");
 		MailBody.Append("<br /><i>Vaulter</i>");
 		
 		MailBody := MailBody.Replace("{{userName}}", PUserName);
-		MailBody := MailBody.Replace("{{domen}}", Gateway.Domain);
+		MailBody := MailBody.Replace("{{domain}}", Gateway.Domain);
 		
 		if(PNewSubUser)then
 		(
@@ -169,69 +184,77 @@ try
 		mailRecipients := GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","");
 		
 		POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailRecipients, "Powrs Vaulter Create Acc", Str(MailBody), "", "");
-					
-		destroy(MailBody);
+			
+		Destroy(MailBody);
 	)
 	catch
 	(
 		Log.Error("Unable to send email notification to Powrs support team" + Exception.Message, logObject, logActor, logEventID, null);
 	);
 	
+	creatorUserName := "";
+	orgName := "";
+	parentOrgName := "";
+	enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.User;
 	try
 	(
-		creatorUserName := "";
-		orgName := "";
-		parentOrgName := "";
-		
-		enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.User;
-		
-		if(PUserRole >= 0 && PNewSubUser) then (
-			enumNewUserRole := POWRS.PaymentLink.Models.EnumHelper.GetEnumByIndex(PUserRole);
-		);
-		
-		try
-		(	
-			if(PNewSubUser) then (
-				SessionUser:= Global.ValidateAgentApiToken(true, false);
-				
-				creatorUserName := SessionUser.username;
-				creatorBrokerAccRole := 
-					Select top 1 *
-					from POWRS.PaymentLink.Models.BrokerAccountRole
-					where UserName = creatorUserName;
-				
-				if(creatorBrokerAccRole != null) then (					
-					if (creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.SuperAdmin &&
-						creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin
-					) then (
-						Error("Unable to create user. Logged user don't have appropriate role.");
-					);
+		if(newUserRegistrationDetails != null)then
+		(
+			creatorUserName := PUserName;
+			orgName := newUserRegistrationDetails.NewOrgName;
+			parentOrgName := newUserRegistrationDetails.ParentOrgName;
+			enumNewUserRole := newUserRegistrationDetails.NewUserRole;
+		)
+		else
+		(
+			if(PUserRole >= 0 && PNewSubUser) then (
+				enumNewUserRole := POWRS.PaymentLink.Models.EnumHelper.GetEnumByIndex(PUserRole);
+			);
+			
+			try
+			(	
+				if(PNewSubUser) then (
+					SessionUser:= Global.ValidateAgentApiToken(true, false);
 					
-					if(enumNewUserRole < creatorBrokerAccRole.Role) then (
-						Error("Unable to create user with higher privileges");
-					);
+					creatorUserName := SessionUser.username;
+					creatorBrokerAccRole := 
+						Select top 1 *
+						from POWRS.PaymentLink.Models.BrokerAccountRole
+						where UserName = creatorUserName;
 					
-					orgName := creatorBrokerAccRole.OrgName;
-					parentOrgName := creatorBrokerAccRole.ParentOrgName;
+					if(creatorBrokerAccRole != null) then (					
+						if (creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.SuperAdmin &&
+							creatorBrokerAccRole.Role != POWRS.PaymentLink.Models.AccountRole.ClientAdmin
+						) then (
+							Error("Unable to create user. Logged user don't have appropriate role.");
+						);
+						
+						if(enumNewUserRole < creatorBrokerAccRole.Role) then (
+							Error("Unable to create user with higher privileges");
+						);
+						
+						orgName := creatorBrokerAccRole.OrgName;
+						parentOrgName := creatorBrokerAccRole.ParentOrgName;
+					);			
+				) else (
+					enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.ClientAdmin;
+					creatorUserName := PUserName;
+					orgName := ""; 
+					parentOrgName := "Powrs";
 				);			
-			) else (
+			)
+			catch
+			(
+				if(PNewSubUser) then(
+					Error("Unable to create new sub user... " + Exception.Message);
+				);
+				
 				enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.ClientAdmin;
 				creatorUserName := PUserName;
 				orgName := ""; 
 				parentOrgName := "Powrs";
-			);			
-		)
-		catch
-		(
-			if(PNewSubUser) then(
-				Error("Unable to create new sub user... " + Exception.Message);
 			);
-			
-			enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.ClientAdmin;
-			creatorUserName := PUserName;
-			orgName := ""; 
-			parentOrgName := "Powrs";
-		);			
+		);
 
 		accountRole:= Create(POWRS.PaymentLink.Models.BrokerAccountRole);
 		accountRole.UserName:= PUserName;
@@ -265,6 +288,27 @@ try
 	catch
 	(
 		Log.Error("Unable to insert client type: " + Exception.Message, logObject, logActor, logEventID, null);
+	);
+	
+	try
+	(
+		if(enumNewUserRole = POWRS.PaymentLink.Models.AccountRole.GroupAdmin and newUserRegistrationDetails != null)then
+		(
+			organizationClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = newUserRegistrationDetails.NewOrgName;
+			if(organizationClientType = null)then
+			(
+				organizationClientType := Create(POWRS.PaymentLink.ClientType.Models.OrganizationClientType);
+				organizationClientType.OrganizationName := newUserRegistrationDetails.NewOrgName;
+				organizationClientType.OrgClientType := newUserRegistrationDetails.NewOrgClientType;
+				
+				Waher.Persistence.Database.Insert(organizationClientType);
+			);
+		);
+		Log.Informational("Inserted record in collection -> broker acc onboarding client type successfully inserted for user name: " + PUserName, logObject, logActor, logEventID, null);
+	)
+	catch
+	(
+		Log.Error("Unable to insert organization name for GourpAdminUser: " + Exception.Message, logObject, logActor, logEventID, null);
 	);
 		
 	{
