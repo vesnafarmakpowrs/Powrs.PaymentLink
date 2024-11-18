@@ -359,6 +359,26 @@ window.onload = function () {
     if (TabID != "") {
         CheckEvents(TabID);
     }
+    CheckRedirect();
+};
+
+function CheckRedirect() {
+    var redirectElement = null;
+    console.log('CheckRedirect');
+    if (document.getElementById('successURL')) {
+        redirectElement = document.getElementById('successURL');
+    }
+
+    if (document.getElementById('cancelURL')) {
+        redirectElement = document.getElementById('cancelURL');
+    }
+    console.log(redirectElement);
+    if (redirectElement) {
+        var url = redirectElement.value;
+        setTimeout(function () {
+            window.open(url, "_self");
+        }, 3000);
+    }
 };
 
 

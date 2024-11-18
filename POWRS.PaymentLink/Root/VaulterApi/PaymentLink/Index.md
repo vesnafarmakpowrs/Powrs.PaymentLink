@@ -190,7 +190,7 @@ JSON
 
 Request
 
-:	```json
+:	```json 
 :	{
 :	}
 :	```
@@ -447,6 +447,135 @@ Description of properties:
 }
 ````
 
+### Create Item IPS
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/CreateItemIPS.ws")}}`  
+Method: `POST`
+
+
+Call this resource to register a new Item in Vaulter for IPS ecommerce payments. JSON in the following format is expected in the call.
+
+**Request**
+
+````
+{
+   "orderNum":Required(String(PRemoteId)),
+    "title":Required(String(PTitle)),
+    "price":Required(Double(PPrice) >= 0.1),
+    "currency":Required(String(PCurrency)),
+    "description":Required(String(PDescription)),
+    "paymentDeadline": Required(String(PPaymentDeadline)),
+    "buyerFirstName":Required(String(PBuyerFirstName)),
+    "buyerLastName":Required(String(PBuyerLastName)),
+    "buyerEmail":Required(String(PBuyerEmail)),
+    "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber)),
+    "buyerAddress": Required(Str(PBuyerAddress)) ,
+    "buyerCity": Optional(Str(PBuyerCity)) ,
+    "buyerCountryCode":Required(String(PBuyerCountryCode)),
+    "callbackUrl":Optional(String(PCallBackUrl)),
+    "webPageUrl":Optional(String(PWebPageUrl)),
+	"isMobile":Required(Bool(PIsMobile)),
+	"isCompany":Optional(Bool(PIsCompany))
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `orderNum`        | ID of item in the caller's system. |
+| `title`           | Displayable name of item. |
+| `price`           | Price of the item. |
+| `currency`        | Currency used by the price. Must be a 3-upper-case-letter currency symbol. |
+| `description`     | Displayable description of item. |
+| `paymentDeadline`    | Payment deadline of item. dd/MM/YYYY. Untill link is valid. |
+| `buyerFirstName`  | Buyer First name. |
+| `buyerLastName`   | Buyer Last name. |
+| `buyerEmail`      | Buyer email. |
+| `buyerPhoneNumber`| Buyer phone number to send notification. |
+| `buyerAddress`    | Buyer billing address. |
+| `buyerCity`       | Buyer Billing city. |
+| `buyerCountryCode`| Buyer country code. |
+| `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
+| `webPageUrl`      | Web page of selling item|
+| `isMobile`        | If request is coming from mobile or web|
+| `isCompany`       | Client is company or person |
+
+**Response**
+
+````
+{
+	 "Link": "Represents payment link generated for the created item.",
+     "TokenId" : "Represents token of the created contract",
+	 "EscrowFee": "Calculated fee that will be added on the item price.",
+     "BuyerEmail": "Represents Buyer Email",
+	 "BuyerPhoneNumber": "Represents Buyer Phone Number",
+	 "Currency": "Represents currency which will be used by buyer to pay"	
+}
+````
+
+### Create Item e-commerce
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/CreateItemEComm.ws")}}`  
+Method: `POST`
+
+
+Call this resource to register a new Item in Vaulter for IPS/Cards ecommerce payments. JSON in the following format is expected in the call.
+
+**Request**
+
+````
+{
+    "orderNum":Required(String(PRemoteId)),
+    "title":Required(String(PTitle)),
+    "price":Required(Double(PPrice) >= 0.1),
+    "currency":Required(String(PCurrency)),
+    "description":Required(String(PDescription)),
+    "paymentDeadline": Required(String(PPaymentDeadline)),
+    "buyerFirstName":Required(String(PBuyerFirstName)),
+    "buyerLastName":Required(String(PBuyerLastName)),
+    "buyerEmail":Required(String(PBuyerEmail)),
+    "buyerPhoneNumber":Optional(String(PBuyerPhoneNumber)),
+    "buyerAddress": Required(Str(PBuyerAddress)) ,
+    "buyerCity": Optional(Str(PBuyerCity)) ,
+    "buyerCountryCode":Required(String(PBuyerCountryCode)),
+    "callbackUrl":Optional(String(PCallBackUrl)),
+    "webPageUrl":Optional(String(PWebPageUrl))
+}
+````
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `orderNum`        | ID of item in the caller's system. |
+| `title`           | Displayable name of item. |
+| `price`           | Price of the item. |
+| `currency`        | Currency used by the price. Must be a 3-upper-case-letter currency symbol. |
+| `description`     | Displayable description of item. |
+| `paymentDeadline`    | Payment deadline of item. dd/MM/YYYY. Untill link is valid. |
+| `buyerFirstName`  | Buyer First name. |
+| `buyerLastName`   | Buyer Last name. |
+| `buyerEmail`      | Buyer email. |
+| `buyerPhoneNumber`| Buyer phone number to send notification. |
+| `buyerAddress`    | Buyer billing address. |
+| `buyerCity`       | Buyer Billing city. |
+| `buyerCountryCode`| Buyer country code. |
+| `callbackUrl`     | URL in caller's system, which Vaulter can call when updates about the item is available. |
+| `webPageUrl`      | Web page of selling item|
+
+**Response**
+
+````
+{
+	 "Link": "Represents payment link generated for the created item.",
+     "TokenId" : "Represents token of the created contract",
+	 "EscrowFee": "Calculated fee that will be added on the item price.",
+     "BuyerEmail": "Represents Buyer Email",
+	 "BuyerPhoneNumber": "Represents Buyer Phone Number",
+	 "Currency": "Represents currency which will be used by buyer to pay"	
+}
+````
 
 ### Initiate Refund
 

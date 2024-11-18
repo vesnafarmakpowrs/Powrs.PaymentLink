@@ -1,3 +1,4 @@
+
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
 if !exists(Posted) then BadRequest("No payload.");
@@ -30,11 +31,10 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
-    Log.Informational("Posted data: \n" + Str(Posted), logObject, logActor, logEventID, null);
     PayoutPage := "Payout.md";
     IpsOnly := false;
-
-    ContractInfo := Global.CreateItem(SessionUser, PRemoteId,
+    IsEcommerce := false;
+    ContractInfo := Global.CreateItem(SessionUser, PRemoteId, IsEcommerce,
                 PTitle, PPrice, PCurrency, 
                 PDescription, PPaymentDeadline, 
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber ??? "",
@@ -51,13 +51,10 @@ try
     );
 
     if IpsOnly then PayoutPage := "PayoutIPS.md";
-    Log.Informational("ipsOnly: " + IpsOnly + ",\nPayoutPage: " + PayoutPage, logObject, logActor, logEventID, null);
-    Log.Informational("Succeffully crated item.", logObject, logActor, logEventID, null);
     
     {
         "Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),	
         "TokenId" : ContractInfo.TokenId,
-        "EscrowFee": ContractInfo.EscrowFee,
         "BuyerEmail": ContractInfo.BuyerEmail,
         "BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,
         "Currency": ContractInfo.Currency

@@ -27,7 +27,7 @@ try
 		filterByToken := true;
 		filterTokenID := Str(Posted.TokenId);
 	);
-	 
+
 	PayoutPage := "Payout.md";
     IpsOnly := false;
 
@@ -82,6 +82,12 @@ try
 		
 		foreach token in tokens do (
 			tokenVariables := token.GetCurrentStateVariables();
+                         TokenState := tokenVariables.State;
+                        if (TokenState == null OR TokenState == "") then
+                         (
+                           PaymentStatus := select top 1 Result from PayspotPayments where TokenId= token.TokenId;
+                           PaymentStatus == "00" ? TokenState := "PaymentCompleted";
+			 );
 			ResultList.Add({
 				"Creator": item.UserName,
 				"TokenId": token.TokenId,
@@ -89,8 +95,8 @@ try
 				"IsActive": !exists(doneStates[tokenVariables.State]),
 				"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
 				"Created": token.Created.ToString("s"),
-				"State": tokenVariables.State,
-				"Variables": tokenVariables.VariableValues
+				"State": TokenState ,
+				"Variables": (tokenVariables.VariableValues.Length > 0 ? tokenVariables.VariableValues : token.Tags)
 			});
 		);
 	);

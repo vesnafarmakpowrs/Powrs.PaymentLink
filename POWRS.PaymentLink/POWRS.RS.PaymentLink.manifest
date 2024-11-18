@@ -73,6 +73,9 @@
 					<Content fileName="InitiateRefund.ws"/>
 					<Content fileName="GetContracts.ws"/>
 					<Content fileName="CreateItem.ws"/>
+					<Content fileName="CreateItemIPS.ws"/>
+					<Content fileName="CreateItemOrder.ws"/>
+					<Content fileName="CreateItemEComm.ws"/>
 					<Content fileName="InvalidateContract.ws"/>
 				</Folder>
 				<Folder name="Mail">
@@ -155,10 +158,12 @@
 			</Folder>
 		</Folder>
 		<Folder name="pay.vaulter.rs">
-			<Content fileName="Index.html"/>
 			<Content fileName="Payout.md"/>
-			<Content fileName="TermsAndCondition.html"/>
-			<Content fileName="PrivacyPolicy.html"/>
+			<Content fileName="PayoutIPS.md"/>
+			<Content fileName="DeepLink.md"/>
+			<Content fileName="Index.html"/>
+			<Content fileName="TermsAndCondition.html" />
+			<Content fileName="PrivacyPolicy.html" />
 			<Content fileName="Obrazac-za-odustanak-od-ugovora.pdf"/>
 			<Folder name="Redirect">
 				<Content fileName="Success.md"/>
@@ -173,16 +178,36 @@
 			<Folder name="css">
 				<Content fileName="Payout.cssx"/>
 				<Content fileName="Status.css"/>
+				<Content fileName="Banklist.css"/>
+				<Content fileName="Info.cssx"/>
+				<Content fileName="IPS.cssx"/>
+				<Content fileName="Status.css"/>
 				<Folder name="fonts">
 					<Content fileName="Coanda-Bold.ttf"/>
-					<Content fileName="RTDromo-Medium.woff2"/>
+					<Content fileName="RTDromo-Book.woff"/>
+					<Content fileName="RTDromo-Book.woff2"/>
+					<Content fileName="RTDromo-BookOblique.woff"/>
+					<Content fileName="RTDromo-BookOblique.woff2"/>
+					<Content fileName="RTDromo-Light.woff"/>
+					<Content fileName="RTDromo-Light.woff2"/>
+					<Content fileName="RTDromo-LightOblique.woff"/>
+					<Content fileName="RTDromo-LightOblique.woff2"/>
 					<Content fileName="RTDromo-Medium.woff"/>
+					<Content fileName="RTDromo-Medium.woff2"/>
+					<Content fileName="RTDromo-MediumOblique.woff"/>
+					<Content fileName="RTDromo-MediumOblique.woff2"/>
 				</Folder>
 			</Folder>
 			<Folder name="js">
+				<Content fileName="DeepLink.js"/>
 				<Content fileName="Events.js"/>
+				<Content fileName="IPSMobile.js"/>
 				<Content fileName="PaymentLink.js"/>
+				<Content fileName="PaymentLinkIPS.js"/>
+				<Content fileName="PayoutDetails.js"/>
+				<Content fileName="QRIPS.js"/>
 				<Content fileName="Status.js"/>
+				<Content fileName="XmlHttp.js"/>
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="expand.svg"/>
@@ -193,10 +218,30 @@
 				<Content fileName="vaulter_logo.svg"/>
 				<Content fileName="vaulter_txt.svg"/>
 				<Content fileName="vaulterlogo.svg"/>
+				<Content fileName="vaulter_logo.webp"/>
 				<Content fileName="error_red.png"/>
 				<Content fileName="success_green.png"/>
+				<Folder name="personal_round">
+					<Content fileName="addiko.jpg" />
+					<Content fileName="adriatic.jpg" />
+					<Content fileName="aik.jpg" />
+					<Content fileName="alta.jpg" />
+					<Content fileName="erste.jpg" />
+					<Content fileName="EUROBANK-DIREKTNA.jpg" />
+					<Content fileName="halkbank.jpg" />
+					<Content fileName="intesa.jpg" />
+					<Content fileName="mobi.jpg" />
+					<Content fileName="nlb.jpg"/>
+					<Content fileName="otp.jpg" />
+					<Content fileName="pbs.jpg" />
+					<Content fileName="RAIFFEISEN.jpg" />
+					<Content fileName="rba.jpg"/>
+					<Content fileName="srpska.jpg"/>
+					<Content fileName="unicredit.jpg"/>
+					<Content fileName="unit.jpg"/>
+					<Content fileName="yettel.jpg"/>
+				</Folder>
 			</Folder>
-			
 		</Folder>
 		<Folder name="Payout">
 			<Content fileName="OrganizationClientType.js"/>
@@ -211,6 +256,7 @@
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
+				<Content fileName="InitiateIPSPayment.ws"/>
 				<Content fileName="GetAvailableLanguages.ws"/>
 			</Folder>
 			<Folder name="Fonts">
@@ -223,6 +269,7 @@
 					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
 					<Content fileName="PaymentCompletedIPS.html"></Content>
+					<Content fileName="PaymentFailedIPS.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
@@ -232,6 +279,7 @@
 					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
 					<Content fileName="PaymentCompletedIPS.html"></Content>
+					<Content fileName="PaymentFailedIPS.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
