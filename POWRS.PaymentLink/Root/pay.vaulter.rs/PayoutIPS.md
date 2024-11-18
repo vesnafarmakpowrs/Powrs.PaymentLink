@@ -58,6 +58,9 @@ if(LanguageNamespace == null) then
 	);
 
 	Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
+
+	PaymentResult : = select Top 1 Result from PayspotPayments where TokenId = Token.TokenId;
+
 	if !exists(Token) then
 	(
 	  ]]<b>Payment link is not valid</b>[[;
@@ -391,6 +394,7 @@ if(LanguageNamespace == null) then
 	<input type="hidden" value="((FileName))" id="fileName"/>
 	<input type="hidden" value="((Country ))" id="country"/>
 	<input type="hidden" value="((IsEcommerce ))" id="IsEcommerce"/>
+	<input type="hidden" value="((PaymentResult ))" id="PaymentResult"/>
 </main>[[;
 }}
 <div class="footer-parent">

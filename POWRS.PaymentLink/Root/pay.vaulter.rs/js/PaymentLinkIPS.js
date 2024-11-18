@@ -7,8 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
     GenerateTranslations();
 
     var params = new URLSearchParams(window.location.search);
-
-    if (params.has('Retry') && params.get("Retry") === "true") {
+    var paymentResult = document.getElementById("PaymentResult").value.trim();
+    
+    if ((params.has('Retry') && params.get("Retry") === "true") || (paymentResult != "00" && paymentResult != "82")) {
         showRetrydiv();
     }
     OnlyECommerce();
@@ -18,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function OnlyECommerce() {
     var isEcommerce = (String(document.getElementById("IsEcommerce").value).toLowerCase() === 'true');
 
-    console.log(isEcommerce);
     if (isEcommerce)
         LoadIPS(1000);
 }
