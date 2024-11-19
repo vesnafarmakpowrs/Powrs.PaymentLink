@@ -35,7 +35,7 @@ namespace POWRS.PaymentLink.Models
             var orgNameFilter = new FilterFieldNotEqualTo("OrgName", "");
             var brokerAccounrRoleList = await Database.Find<BrokerAccountRole>(orgNameFilter);
 
-            int generation = 1; //control counter to avoid infinit loop
+            int generation = 1; //control counter to avoid infinite loop
             var resultList = GetAllChildren(brokerAccounrRoleList, parentOrgName, generation);
             resultList.Add(parentOrgName);
 

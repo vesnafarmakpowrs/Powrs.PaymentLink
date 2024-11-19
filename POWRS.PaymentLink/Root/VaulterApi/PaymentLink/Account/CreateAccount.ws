@@ -154,51 +154,13 @@ try
 		Destroy(KeySignature);
 	);
 	
-	try
-	(
-		MailBody := Create(System.Text.StringBuilder);
-		MailBody.Append("Hello,");
-		MailBody.Append("<br />");
-		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>. {{clientType}} Domain: <strong><i>{{domain}}</i></strong>");
-		MailBody.Append("<br />");
-		MailBody.Append("<br /><i>Best regards</i>");
-		MailBody.Append("<br /><i>Vaulter</i>");
-		
-		MailBody := MailBody.Replace("{{userName}}", PUserName);
-		MailBody := MailBody.Replace("{{domain}}", Gateway.Domain);
-		
-		if(PNewSubUser)then
-		(
-			MailBody := MailBody.Replace("{{accountType}}", "sub account");
-			MailBody := MailBody.Replace("{{clientType}}", "");
-		)
-		else
-		(
-			newClientType := POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetEnumByUrlPathName(PlocationPathName);
-			MailBody := MailBody.Replace("{{clientType}}", "Client type: <strong>" + newClientType.ToString() + "</strong>.");
-			MailBody := MailBody.Replace("{{accountType}}", "account");
-		);
-		
-		ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
-		Config := ConfigClass.Instance;
-		mailRecipients := GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","");
-		
-		POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailRecipients, "Powrs Vaulter Create Acc", Str(MailBody), "", "");
-			
-		Destroy(MailBody);
-	)
-	catch
-	(
-		Log.Error("Unable to send email notification to Powrs support team" + Exception.Message, logObject, logActor, logEventID, null);
-	);
-	
 	creatorUserName := "";
 	orgName := "";
 	parentOrgName := "";
 	enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.User;
 	try
 	(
-		if(newUserRegistrationDetails != null)then
+		if(exists(newUserRegistrationDetails) and newUserRegistrationDetails != null)then
 		(
 			creatorUserName := PUserName;
 			orgName := newUserRegistrationDetails.NewOrgName;
@@ -311,6 +273,44 @@ try
 		Log.Error("Unable to insert organization name for GourpAdminUser: " + Exception.Message, logObject, logActor, logEventID, null);
 	);
 		
+	try
+	(
+		MailBody := Create(System.Text.StringBuilder);
+		MailBody.Append("Hello,");
+		MailBody.Append("<br />");
+		MailBody.Append("<br />New {{accountType}} created for PLG SRB. User name: <strong>{{userName}}</strong>. {{clientType}} Domain: <strong><i>{{domain}}</i></strong>");
+		MailBody.Append("<br />");
+		MailBody.Append("<br /><i>Best regards</i>");
+		MailBody.Append("<br /><i>Vaulter</i>");
+		
+		MailBody := MailBody.Replace("{{userName}}", PUserName);
+		MailBody := MailBody.Replace("{{domain}}", Gateway.Domain);
+		
+		if(PNewSubUser)then
+		(
+			MailBody := MailBody.Replace("{{accountType}}", "sub account");
+			MailBody := MailBody.Replace("{{clientType}}", "");
+		)
+		else
+		(
+			newClientType := POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetEnumByUrlPathName(PlocationPathName);
+			MailBody := MailBody.Replace("{{clientType}}", "Client type: <strong>" + newClientType.ToString() + "</strong>.");
+			MailBody := MailBody.Replace("{{accountType}}", "account");
+		);
+		
+		ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
+		Config := ConfigClass.Instance;
+		mailRecipients := GetSetting("POWRS.PaymentLink.OnBoardingSubmitMailList","");
+		
+		POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, mailRecipients, "Powrs Vaulter Create Acc", Str(MailBody), "", "");
+			
+		Destroy(MailBody);
+	)
+	catch
+	(
+		Log.Error("Unable to send email notification to Powrs support team" + Exception.Message, logObject, logActor, logEventID, null);
+	);
+	
 	{
 		"userName": PUserName,
 		"jwt": NewAccount.jwt,
@@ -324,6 +324,7 @@ catch
 		try 
 		(
 			delete from BrokerAccounts where UserName = PUserName;
+			delete from BrokerAccountRoles where UserName = PUserName;
 		)
 		catch
 		(
