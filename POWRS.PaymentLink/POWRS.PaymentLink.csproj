@@ -409,36 +409,6 @@
 	  <None Update="Onboarding\TemplateFiles\Powrs\ContractPowrs_Css.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page01.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page02.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page03.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page04.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page05.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page06.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page07.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page08.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment1_Page09.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Onboarding\TemplateFiles\Powrs\PowrsAttachment2_Page01.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Onboarding\TemplateFiles\Powrs\Powrs_Logo.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
