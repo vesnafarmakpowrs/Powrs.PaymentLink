@@ -26,7 +26,7 @@
 			<String id="22">Dobrodošli na Vaulter naplatu </String>
 			<String id="23">Link za plaćanje je istekao. Kontaktiraj prodavca za dobijanje novog </String>
 			<String id="24">Nije moguće izabrati ovaj račun. Nemate dovoljno sredstava.</String>
-			<String id="25">Skenirajte QR kod pomoću Bank-ID aplikacije.</String>
+			<String id="25">Skenirajte IPS QR kod pomoću Bank-ID aplikacije.</String>
 			<String id="26">Bank-ID Autorizacija</String>
 			<String id="27">Plaćanje je uspešno. Hvala što koristite Vaulter!</String>
 			<String id="28">Plaćanje nije moguće. Izaberite drugi račun i pokušajte ponovo!</String>
@@ -70,16 +70,19 @@
 			<String id="67">Platite mbanking aplikacijom svoje banke</String>
 			<String id="68">Mbanking aplikacijom koju imate instaliranu na svom mobilnom uređaju skenirajte prikazani jednokratan IPS QR kod i izvršite plaćanje u okruženju Vaše banke. Informacija o ishodu plaćanja biće Vam prikazana odmah po završetku obrade ali će Vam biti dostavljena i na e-mail adresu uz potvrdu o kupovini.</String>
 			<String id="69">Vreme je isteklo</String>
-			<String id="70">Ponovo generišite QR CODE</String>
-			<String id="71">GENERIŠI QR</String>
+			<String id="70">Ponovo generišite IPS QR CODE</String>
+			<String id="71">GENERIŠI IPS QR</String>
 			<String id="72">ODUSTANI</String>
 			<String id="73">Plati</String>
-			<String id="74">Plaćanje nije uspešno. Proverite da li imate dovoljno sredstava na računu i da ste uneli ispravne informacije, zatim pokušajte ponovo.</String>
-			<String id="75">Plaćanje uspešno. Uskoro ćete biti preusmereni na stranicu prodavca...</String>			
+			<String id="74">Plaćanje nije uspešno.</String>
+			<String id="75">Plaćanje uspešno. Uskoro ćete biti preusmereni na stranicu prodavca...</String>
 			<String id="76">Plaćanje nije uspešno. Uskoro ćete biti preusmereni na stranicu prodavca...</String>
 			<String id="77">Uskoro ćete biti preusmereni na stranicu prodavca...</String>
 			<String id="78">Pokušajte ponovo</String>
-			<String id="79">Klikom na 'Plati' potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter i </String>
+			<String id="79">Klikom na 'Plati' i nastavkom ka metodi plaćanja IPS skeniraj, potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i </String>
+			<String id="80">Refundirano </String>
+			<String id="81">Klikom na 'Plati' potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i </String>
+			<String id="82">Izaberi banku</String>
 		</Namespace>
 	</Language>
 </Translation>

@@ -9,7 +9,7 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateNeuroFeatureCreatorIndex.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateStateMachineCurrentStateIndex.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetAgentSuccessfullTransactions.config" />
-	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUserHierarchy.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUsersForMyCompany.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateItem.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateUrl.config" />
 	<Folder name="Root">
@@ -73,6 +73,11 @@
 					<Content fileName="InitiateRefund.ws"/>
 					<Content fileName="GetContracts.ws"/>
 					<Content fileName="CreateItem.ws"/>
+					<Content fileName="CalculateHash.ws"/>
+					<Content fileName="CalculateMAC.ws"/>
+					<Content fileName="CreateItemIPS.ws"/>
+					<Content fileName="CreateItemOrder.ws"/>
+					<Content fileName="CreateItemEComm.ws"/>
 					<Content fileName="InvalidateContract.ws"/>
 				</Folder>
 				<Folder name="Mail">
@@ -124,6 +129,10 @@
 						</Folder>
 					</Folder>
 				</Folder>
+				<Folder name="Organization">
+					<Content fileName="GetOrganizations.ws"/>
+					<Content fileName="GetRegistrationLink.ws"/>
+				</Folder>
 				<Folder name="Reports">
 					<Content fileName="AdminPortalDashboard.ws"/>
 					<Content fileName="AgentList.ws"/>
@@ -142,6 +151,8 @@
 		</Folder>
 		<Folder name="pay.lab.vaulter.rs">
 			<Content fileName="Payout.md" altFolder="..\pay.vaulter.rs"/>
+			<Content fileName="PayoutIPS.md" altFolder="..\pay.vaulter.rs"/>			
+			<Content fileName="DeepLink.md" altFolder="..\pay.vaulter.rs"/>			
 			<Content fileName="Index.html" altFolder="..\pay.vaulter.rs"/>
 			<Content fileName="TermsAndCondition.html" altFolder="..\pay.vaulter.rs"/>
 			<Content fileName="PrivacyPolicy.html" altFolder="..\pay.vaulter.rs"/>
@@ -159,23 +170,71 @@
 			<Folder name="css" >
 				<Content fileName="Payout.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
 				<Content fileName="Status.css" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Content fileName="Banklist.css" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Content fileName="Info.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Content fileName="IPS.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Content fileName="Status.css" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Folder name="fonts">
+					<Content fileName="Coanda-Bold.ttf"  altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Book.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Book.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-BookOblique.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-BookOblique.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Light.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Light.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-LightOblique.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-LightOblique.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Medium.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-Medium.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-MediumOblique.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+					<Content fileName="RTDromo-MediumOblique.woff2" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
+				</Folder>
 			</Folder>
 			<Folder name="js">
 				<Content fileName="Events.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="PaymentLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="Status.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="PaymentLinkIPS.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="PayoutDetails.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="QRIPS.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="IPSMobile.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="XmlHttp.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="DeepLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
 			</Folder>
 			<Folder name="resources">
 				<Content fileName="credit-card-payment.svg" altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="direct_payment.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="expand.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="expand-down.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="expand-up.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="spin.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="spinner.gif"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="vaulter_logo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="vaulter_txt.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="vaulterlogo.svg"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Content fileName="vaulter_logo.webp"  altFolder="..\..\pay.vaulter.rs\resources"/>				
 				<Content fileName="error_red.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
 				<Content fileName="success_green.png"  altFolder="..\..\pay.vaulter.rs\resources"/>
+				<Folder name="personal_round">
+					<Content fileName="addiko.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="adriatic.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="aik.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="alta.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="erste.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="EUROBANK-DIREKTNA.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="halkbank.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="intesa.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="mobi.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="nlb.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="otp.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="pbs.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="RAIFFEISEN.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="rba.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="srpska.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="unicredit.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="unit.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+					<Content fileName="yettel.jpg" altFolder="..\..\..\pay.vaulter.rs\resources\personal_round"/>
+				</Folder>
 			</Folder>
 		</Folder>
 		<Folder name="Payout">
@@ -191,6 +250,7 @@
 			<Folder name="API">
 				<Content fileName="DealInfo.ws"/>
 				<Content fileName="InitiatePayment.ws"/>
+				<Content fileName="InitiateIPSPayment.ws" altFolder="./Demo"/>
 				<Content fileName="GetAvailableLanguages.ws"/>
 			</Folder>
 			<Folder name="Fonts">
@@ -203,6 +263,7 @@
 					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
 					<Content fileName="PaymentCompletedIPS.html"></Content>
+					<Content fileName="PaymentFailedIPS.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
@@ -212,6 +273,7 @@
 					<Content fileName="ContactUs.html"></Content>
 					<Content fileName="PaymentCompleted.html"></Content>
 					<Content fileName="PaymentCompletedIPS.html"></Content>
+					<Content fileName="PaymentFailedIPS.html"></Content>
 					<Content fileName="purchase_agreement.html"></Content>
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>

@@ -3,14 +3,14 @@
 
 @font-face {
 font-family: 'Goanda Bold';
-src: url('../Fonts/Coanda-Bold.ttf') format('truetype');
+src: url('fonts/Coanda-Bold.ttf') format('truetype');
 font-weight: bold;
 font-style: normal;
 }
 
 @font-face {
 font-family: 'RTDromo';
-src: url('../Fonts/RTDromo-Book.woff2') format('woff2'),
+src: url('fonts/RTDromo-Book.woff2') format('woff2'),
 url('fonts/RTDromo-Book.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -18,7 +18,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Book Oblique';
-src: url('../Fonts/RTDromo-BookOblique.woff2') format('woff2'),
+src: url('fonts/RTDromo-BookOblique.woff2') format('woff2'),
 url('fonts/RTDromo-BookOblique.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -26,7 +26,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Light';
-src: url('../Fonts/RTDromo-Light.woff2') format('woff2'),
+src: url('fonts/RTDromo-Light.woff2') format('woff2'),
 url('fonts/RTDromo-Light.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -35,7 +35,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Light Oblique';
-src: url('../Fonts/RTDromo-LightOblique.woff2') format('woff2'),
+src: url('fonts/RTDromo-LightOblique.woff2') format('woff2'),
 url('fonts/RTDromo-LightOblique.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -44,7 +44,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Medium';
-src: url('../Fonts/RTDromo-Medium.woff2') format('woff2'),
+src: url('fonts/RTDromo-Medium.woff2') format('woff2'),
 url('fonts/RTDromo-Medium.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -52,7 +52,7 @@ font-style: normal;
 
 @font-face {
 font-family: 'RTDromo Medium Oblique';
-src: url('../Fonts/RTDromo-MediumOblique.woff2') format('woff2'),
+src: url('fonts/RTDromo-MediumOblique.woff2') format('woff2'),
 url('fonts/RTDromo-MediumOblique.woff') format('woff');
 font-weight: normal;
 font-style: normal;
@@ -89,7 +89,6 @@ body
 
 
 form {
-  width: 30vw;
   align-self: center;
 }
 
@@ -190,7 +189,6 @@ form {
 .pay-ips-div
 {
  width:100%;
- height:30vh;
  border:0px;
 }
 
@@ -954,9 +952,11 @@ padding: 10px;
 .payment-completed
 {
   display:flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
   color:green;
+  padding-left: 15px;
 }
 
 @media only screen and (min-width: 1025px) {
