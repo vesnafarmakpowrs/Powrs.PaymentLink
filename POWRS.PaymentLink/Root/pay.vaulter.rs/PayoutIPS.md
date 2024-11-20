@@ -150,6 +150,7 @@ if(LanguageNamespace == null) then
 		Variable.Name like "BuyerEmail" ?  BuyerEmail := MarkdownEncode(Variable.Value);
 		Variable.Name like "EscrowFee" ?   EscrowFee := MarkdownEncode(Variable.Value.ToString("N2"));
 		Variable.Name like "AmountToPay" ?   AmountToPay := MarkdownEncode(Variable.Value.ToString("N2"));	
+		Variable.Name like 'SuccessUrl' ? SuccessUrl := Variable.Value;
 	);
 
 	Country := 'RS';
