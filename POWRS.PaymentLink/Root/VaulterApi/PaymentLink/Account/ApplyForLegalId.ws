@@ -37,11 +37,11 @@ try
 
 	POrgAddress2 := POrgAddress2 ?? "";
 
-	if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
+	if(Global.RegexValidation(PFirstName, "PersonFirstLastName", "") == false) then 
 	(
 		errors.Add("FIRST");    
 	);
-	if(PLastName not like "[\\p{L}\\s]{2,30}") then 
+	if(Global.RegexValidation(PLastName, "PersonFirstLastName", "") == false) then 
 	(
 		errors.Add("LAST");
 	);
@@ -52,70 +52,67 @@ try
 		errors.Add("IPSONLY");
 	);
 
-	NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
-	isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
-
-	if(PPersonalNumber not like "^\\d{13}$" or isPersonalNumberValid != true) then 
+	if(Global.RegexValidation(PPersonalNumber, "PersonalNumber", PCountryCode) == false) then 
 	(
 		errors.Add("PNR");
 	);
-	if(PCountryCode not like "[A-Z]{2}") then 
+	if(Global.RegexValidation(PCountryCode, "CountryCode", "") == false) then 
 	(
 		errors.Add("COUNTRY");
 	);
-	if(POrgName not like "^[\\p{L}][\\p{L}\\s.\&,?]*[\\p{L}?]{2,100}$") then 
+	if(Global.RegexValidation(POrgName, "OrgName", "") == false) then 
 	(
 		errors.Add("ORGNAME");
 	);
-	if(POrgNumber not like "\\d{8,10}$") then 
+	if(Global.RegexValidation(POrgNumber, "OrgNumber", "") == false) then 
 	(
 		errors.Add("ORGNR");
 	);
-	if(POrgCity not like "[\\p{L}\\s]{2,50}$") then 
+	if(Global.RegexValidation(POrgCity, "City", "") == false) then 
 	(
 		errors.Add("ORGCITY");
 	);
-	if(POrgCountry not like "[\\p{L}\\s]{2,50}$") then 
+	if(Global.RegexValidation(POrgCountry, "Country", "") == false) then 
 	(
 		errors.Add("ORGCOUNTRY");
 	);
-	if(POrgAddress not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
+	if(Global.RegexValidation(POrgAddress, "Address", "") == false) then 
 	(
 		errors.Add("ORGADDR");
 	);
 
 
-	if(POrgAddress2 != "" && POrgAddress2 not like "^[\\p{L}\\p{N}\\s]{3,100}$") then 
+	if(POrgAddress2 != "" and Global.RegexValidation(POrgAddress2, "Address", "") == false) then 
 	(
 		errors.Add("ORGADDR2");
 	);
 
-	if(POrgBankNum not like "^(?!.*--)[\\d-]{1,25}$") then 
+	if(Global.RegexValidation(POrgBankNum, "BankNumber", "") == false) then 
 	(
 		errors.Add("ORGBANKNUM");
 	);
 
-	if(POrgDept not like "^[\\p{L}][\\p{L}\\s,?]*[\\p{L}?]{1,100}$") then 
+	if(Global.RegexValidation(POrgDept, "OrgDepartment", "") == false) then 
 	(
 		errors.Add("ORGDEPT");
 	);
 
-	if(POrgRole not like "^[\\p{L}][\\p{L}\\s,?]*[\\p{L}?]{2,50}$") then 
+	if(Global.RegexValidation(POrgRole, "OrgRole", "") == false) then 
 	(
 		errors.Add("ORGROLE");
 	);
 
-	if(POrgActivity not like "^[\\p{L}\\s]{1,100}$") then 
+	if(Global.RegexValidation(POrgActivity, "OrgActivity", "") == false) then 
 	(
 		errors.Add("ORGACTIVITY");
 	);
 
-	if(POrgActivityNumber not like "\\d{4,5}$") then 
+	if(Global.RegexValidation(POrgActivityNumber, "OrgActivityNumber", "") == false) then 
 	(
 		errors.Add("ORGACTIVITYNUM");
 	);
 
-	if(POrgTaxNumber not like "\\d{9}$" and POrgTaxNumber not like "\\d{12}$") then
+	if(Global.RegexValidation(POrgTaxNumber, "OrgTaxNumber", "") == false) then
 	(
 		errors.Add("ORGTAXNUM");
 	);
