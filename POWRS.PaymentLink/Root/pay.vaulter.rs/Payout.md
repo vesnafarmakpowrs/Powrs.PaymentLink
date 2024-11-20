@@ -123,6 +123,7 @@ if Token.HasStateMachine then
         Variable.Name like "BuyerEmail" ?  BuyerEmail := MarkdownEncode(Variable.Value);
         Variable.Name like "EscrowFee" ?   EscrowFee := MarkdownEncode(Variable.Value.ToString("N2"));
         Variable.Name like "AmountToPay" ?   AmountToPay := MarkdownEncode(Variable.Value.ToString("N2"));
+        Variable.Name like 'SuccessUrl' ? SuccessUrl := Variable.Value.ToString();
       );
 
      if(!exists(Country)) then 
