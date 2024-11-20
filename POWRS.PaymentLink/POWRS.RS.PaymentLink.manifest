@@ -77,6 +77,7 @@
 					<Content fileName="CreateItemOrder.ws"/>
 					<Content fileName="CreateItemEComm.ws"/>
 					<Content fileName="InvalidateContract.ws"/>
+					<Content fileName="UpdateSuccessUrl.ws"/>
 				</Folder>
 				<Folder name="Mail">
 					<Content fileName="NotifyIdentityStateChanged.ws"/>

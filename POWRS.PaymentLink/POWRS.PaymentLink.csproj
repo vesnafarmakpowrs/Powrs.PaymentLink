@@ -124,6 +124,7 @@
 		<None Remove="Root\VaulterApi\PaymentLink\Account\Scheduler\GetPayoutSchedule.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Account\Scheduler\SavePayoutSchedule.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Contract\CreateItemOrder.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\Contract\UpdateSuccessUrl.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CreateItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetAccountInfo.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Mail\SendPaylinkViaEmail.ws" />
@@ -206,6 +207,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
 		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateItem.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
+		<Content Include="Root\VaulterApi\PaymentLink\Contract\UpdateSuccessUrl.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
 		<Content Include="Root\VaulterApi\PaymentLink\SMS\SendPaylinkViaSMS.ws">
