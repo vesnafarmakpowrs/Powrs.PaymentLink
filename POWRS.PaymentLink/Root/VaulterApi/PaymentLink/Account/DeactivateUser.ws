@@ -8,7 +8,7 @@ logEventID := "DeactivateUser.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try(
-	if(PSubUserName not like "^[\\p{L}\\p{N}]{8,20}$") then 
+	if(Global.RegexValidation(PSubUserName, "UserName", "") == false) then 
     (
 		Error("subUsername could only contain letters and numbers.");
     );
