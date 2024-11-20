@@ -157,6 +157,9 @@
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
+						<OnEvent actionRef="SetCallBackUrl" >
+							<OnExternalXmlNote localName="CallBackUrlUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+						</OnEvent>
 				</State>
 				<State id="PaymentNotPerformed">
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentNotPerformed'" />
@@ -174,6 +177,10 @@
 					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
+					<OnEvent actionRef="SetCallBackUrl" >
+						<OnExternalXmlNote localName="CallBackUrlUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					
 				</State>
 				<State id="ReleaseFundsToSellerFailed">
 					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
@@ -228,8 +235,14 @@
 					<Script>
 						newPayoutDate:= SelectXmlStr(Note,'/default:PayoutDateUpdated/@expectedPayoutDate');
 					</Script>
-
 					<PersistVariable name="ExpectedPayoutDate" value="{DateTimeUtc(newPayoutDate)}" />
+				</Action>
+				
+				<Action id="SetCallBackUrl">
+					<Script>
+						successUrl:= SelectXmlStr(Note,'/default:CallBackUrlUpdated/@successUrl');
+					</Script>
+					<PersistVariable name="SuccessUrl" value="{successUrl}" />
 				</Action>
 				<Action id="ChangeBuyerLanguage">
 					<Script>
