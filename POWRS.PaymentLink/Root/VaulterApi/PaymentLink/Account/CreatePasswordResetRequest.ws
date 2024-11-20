@@ -1,11 +1,16 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin","*");
 
 ({
-    "userName":Required(String(PUserName) like "^[\\p{L}\\p{N}]{8,20}$")
+    "userName":Required(String(PUserName))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 try
 (	
+	if(Global.RegexValidation(PUserName, "UserName", "") == false) then
+	(
+		Error("Payload does not conform to specification.");
+	);
+
 	user:= select top 1 * from BrokerAccounts where UserName = PUserName;
 	if(user == null) then 
 	(

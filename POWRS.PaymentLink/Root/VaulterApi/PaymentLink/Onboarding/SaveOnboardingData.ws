@@ -41,7 +41,7 @@ ValidatePostedData(Posted) := (
 	(
 		errors.Add("GeneralCompanyInformation.OrganizationNumber");
 	)
-	else if(Posted.GeneralCompanyInformation.OrganizationNumber not like "^\\d{8}$") then
+	else if(Global.RegexValidation(Posted.GeneralCompanyInformation.OrganizationNumber, "OrgNumber", "") == false) then
 	(
 		errors.Add("GeneralCompanyInformation.OrganizationNumber");
 	);
@@ -59,12 +59,12 @@ ValidatePostedData(Posted) := (
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.TaxNumber))then(
 		errors.Add("GeneralCompanyInformation.TaxNumber");
-	)else if (!System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.TaxNumber) and Posted.GeneralCompanyInformation.TaxNumber not like "^\\d{9}$" and Posted.GeneralCompanyInformation.TaxNumber not like "^\\d{12}$")then(
+	)else if (!System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.TaxNumber) and Global.RegexValidation(Posted.GeneralCompanyInformation.TaxNumber, "OrgTaxNumber", "") == false)then(
 		errors.Add("GeneralCompanyInformation.TaxNumber");
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.ActivityNumber))then(
 		errors.Add("GeneralCompanyInformation.ActivityNumber");
-	)else if (!System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.ActivityNumber) and Posted.GeneralCompanyInformation.ActivityNumber not like "^\\d{4}$")then(
+	)else if (!System.String.IsNullOrWhiteSpace(Posted.GeneralCompanyInformation.ActivityNumber) and Global.RegexValidation(Posted.GeneralCompanyInformation.ActivityNumber, "OrgActivityNumber", "") == false)then(
 		errors.Add("GeneralCompanyInformation.ActivityNumber");
 	);	
 	if(!exists(Posted.GeneralCompanyInformation.OtherCompanyActivities))then(
@@ -98,7 +98,7 @@ ValidatePostedData(Posted) := (
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".FullName");
 			);
 			if(!exists(item.DateOfBirth) or
-				(!System.String.IsNullOrWhiteSpace(item.DateOfBirth) and item.DateOfBirth not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"))then
+				(!System.String.IsNullOrWhiteSpace(item.DateOfBirth) and Global.RegexValidation(item.DateOfBirth, "DateDDMMYYYY", "") == false))then
 			(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DateOfBirth");
 			);
@@ -151,7 +151,7 @@ ValidatePostedData(Posted) := (
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".PlaceOfIssue");
 			);
 			if(!exists(item.DateOfIssue) or 
-				(!System.String.IsNullOrWhiteSpace(item.DateOfIssue) and item.DateOfIssue not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"))then
+				(!System.String.IsNullOrWhiteSpace(item.DateOfIssue) and Global.RegexValidation(item.DateOfIssue, "DateDDMMYYYY", "") == false))then
 			(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DateOfIssue");
 			);
@@ -174,15 +174,9 @@ ValidatePostedData(Posted) := (
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".PersonalNumber");
 			)else
 			(
-				if(!System.String.IsNullOrWhiteSpace(item.PersonalNumber))then
+				if(!System.String.IsNullOrWhiteSpace(item.PersonalNumber) and Global.RegexValidation(item.PersonalNumber, "PersonalNumber", "RS") == false)then
 				(
-					NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize("RS", item.PersonalNumber);
-					isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid("RS", NormalizedPersonalNumber);
-
-					if(item.PersonalNumber not like "^\\d{13}$" or isPersonalNumberValid != true) then 
-					(
-						errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".PersonalNumber");
-					);
+					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".PersonalNumber");
 				);
 			);
 			
@@ -226,19 +220,13 @@ ValidatePostedData(Posted) := (
 			)
 			else
 			(
-				if(!System.String.IsNullOrWhiteSpace(item.PersonalNumber))then
+				if(!System.String.IsNullOrWhiteSpace(item.PersonalNumber) and Global.RegexValidation(item.PersonalNumber, "PersonalNumber", "RS") == false)then
 				(
-					NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize("RS", item.PersonalNumber);
-					isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid("RS", NormalizedPersonalNumber);
-
-					if(item.PersonalNumber not like "^\\d{13}$" or isPersonalNumberValid != true) then 
-					(
-						errors.Add("CompanyStructure.Owners;" + itemIndex + ".PersonalNumber");
-					);
+					errors.Add("CompanyStructure.Owners;" + itemIndex + ".PersonalNumber");
 				);
 			);
 			if(!exists(item.DateOfBirth) or 
-				(!System.String.IsNullOrWhiteSpace(item.DateOfBirth) and item.DateOfBirth not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"))then
+				(!System.String.IsNullOrWhiteSpace(item.DateOfBirth) and Global.RegexValidation(item.DateOfBirth, "DateDDMMYYYY", "") == false))then
 			(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DateOfBirth");
 			);
@@ -283,7 +271,7 @@ ValidatePostedData(Posted) := (
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".DocumentNumber");
 			);
 			if(!exists(item.IssueDate) or 
-				(!System.String.IsNullOrWhiteSpace(item.IssueDate) and item.IssueDate not like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"))then
+				(!System.String.IsNullOrWhiteSpace(item.IssueDate) and Global.RegexValidation(item.IssueDate, "DateDDMMYYYY", "") == false))then
 			(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IssueDate");
 			);
