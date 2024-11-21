@@ -1,12 +1,19 @@
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
 ({
-    "email":Required(String(PEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
-    "countryCode":Required(String(PCountryCode)  like "[A-Z]{2}")    
+    "email":Required(String(PEmail)),
+    "countryCode":Required(String(PCountryCode))    
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 try
 (
+    if( Global.RegexValidation(PEmail, "Email", "") == false or
+		Global.RegexValidation(PCountryCode, "CountryCode", "") == false
+	) then
+	(
+		Error("Payload does not conform to specification.");
+	);
+
     portal := "paylink." + After(domain,"neuron.");
     remoteEndpoint:= Split(Request.RemoteEndPoint, ":")[0];
 
@@ -66,6 +73,6 @@ try
 )
 catch
 (
- Log.Error(Exception, null);
- BadRequest(Exception.Message);
+     Log.Error(Exception, null);
+     BadRequest(Exception.Message);
 );

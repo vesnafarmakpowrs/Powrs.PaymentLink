@@ -14,16 +14,18 @@ currentStep := "";
 errors:= Create(System.Collections.Generic.List, System.String);
 
 ValidatePostedData(parentOrgName, newOrgName, newOrgClientType, newUserRole) := (
-	myOrganizations := POWRS.PaymentLink.Models.BrokerAccountRole.GetAllOrganizationChildren(SessionUser.orgName);
-	permissionToAccessOrg := myOrganizations.Contains(parentOrgName);
-
-	if(System.String.IsNullOrWhiteSpace(parentOrgName))then
+	if(System.String.IsNullOrWhiteSpace(parentOrgName) or Global.RegexValidation(parentOrgName, "OrgName", "") == false)then
 	(
 		errors.Add("parentOrgName");
-	);
-	if(!permissionToAccessOrg)then
+	)else
 	(
-		errors.Add("parentOrgName;PermissionToAccessOrgName");
+		myOrganizations := POWRS.PaymentLink.Models.BrokerAccountRole.GetAllOrganizationChildren(SessionUser.orgName);
+		permissionToAccessOrg := myOrganizations.Contains(parentOrgName);
+		
+		if(!permissionToAccessOrg)then
+		(
+			errors.Add("parentOrgName;PermissionToAccessOrgName");
+		);
 	);
 	if(!System.Enum.IsDefined(POWRS.PaymentLink.Models.AccountRole, newUserRole))then
 	(
@@ -34,7 +36,7 @@ ValidatePostedData(parentOrgName, newOrgName, newOrgClientType, newUserRole) := 
 		newUserRole := System.Enum.Parse(POWRS.PaymentLink.Models.AccountRole, newUserRole);
 		if(newUserRole = POWRS.PaymentLink.Models.AccountRole.GroupAdmin)then
 		(
-			if(System.String.IsNullOrWhiteSpace(newOrgName))then
+			if(System.String.IsNullOrWhiteSpace(newOrgName) or Global.RegexValidation(newOrgName, "OrgName", "") == false)then
 			(
 				errors.Add("newOrgName")
 			);

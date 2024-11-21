@@ -22,7 +22,7 @@ try
 	PlocationPathName := PlocationPathName ?? "";
 	PRegistrationId := PRegistrationId ?? "";
 
-    if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
+    if(Global.RegexValidation(PEmail, "Email", "") == false) then 
     (
 		Error("Email in not valid format.")
     );
@@ -33,7 +33,7 @@ try
 		Error("Email must be verified in order to create account");
     );
 
-    if(PUserName not like "^[\\p{L}\\p{N}]{8,20}$") then 
+    if(Global.RegexValidation(PUserName, "UserName", "") == false) then 
     (
 		Error("Username could only contain letters and numbers.");
     );
@@ -42,7 +42,7 @@ try
         Error("Passwords does not match.");
     );
 
-    if(PPassword not like "^(?=.*[\\p{Ll}])(?=.*[\\p{Lu}])(?=.*[\\p{N}])(?=.*[^\\p{L}\\p{N}])[^\\s]{8,}$") then 
+    if(Global.RegexValidation(PPassword, "Password", "") == false) then 
     (
         Error("Password must contain at least one uppercase, lowercase, special char and number, and must be at least 8 characters long.")
     );

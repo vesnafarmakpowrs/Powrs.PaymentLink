@@ -25,23 +25,19 @@ try
 
 	errors:= Create(System.Collections.Generic.List, System.String);
 
-	if(PFirstName not like "[\\p{L}\\s]{2,30}") then 
+	if(Global.RegexValidation(PFirstName, "PersonFirstLastName", "") == false) then 
 	(
 		errors.Add("FIRST");    
 	);
-	if(PLastName not like "[\\p{L}\\s]{2,30}") then 
+	if(Global.RegexValidation(PLastName, "PersonFirstLastName", "") == false) then 
 	(
 		errors.Add("LAST");
 	);
-
-	NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode,PPersonalNumber);
-	isPersonalNumberValid:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.IsValid(PCountryCode,NormalizedPersonalNumber);
-
-	if(PPersonalNumber not like "^\\d{13}$" or isPersonalNumberValid != true) then 
+	if(Global.RegexValidation(PPersonalNumber, "PersonalNumber", PCountryCode) == false) then 
 	(
 		errors.Add("PNR");
 	);
-	if(PCountryCode not like "[A-Z]{2}") then 
+	if(Global.RegexValidation(PCountryCode, "CountryCode", "") == false) then 
 	(
 		errors.Add("COUNTRY");
 	);

@@ -36,7 +36,7 @@ try
 
 	if(exists(PEmail)) then 
 	(
-		if(PEmail not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
+		if(Global.RegexValidation(PEmail, "Email", "") == false) then 
 		(
 			Error("Email not valid");
 		);

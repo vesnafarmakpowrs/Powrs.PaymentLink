@@ -1,12 +1,19 @@
 Response.SetHeader("Access-Control-Allow-Origin","*");
 
 ({
-    "email":Optional(String(PEmail) like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}"),
-    "code":Required(Int(PCode)  >= 100000)
+    "email":Optional(String(PEmail)),
+    "code":Required(Int(PCode))
 }:=Posted) ??? BadRequest("Payload does not conform to specification.");
 
 try
 (
+    if(Global.RegexValidation(PEmail, "Email", "") == false or
+        PCode < 100000
+    ) then
+	(
+		Error("Payload does not conform to specification.");
+	);
+
     remoteEndpoint:= Split(Request.RemoteEndPoint, ":")[0];
     
     if !exists(Global.VerifyingEmailIP) then 

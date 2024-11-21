@@ -36,7 +36,7 @@ try
 
 	if(exists(PPhoneNumber)) then 
 	(
-		if(PPhoneNumber not like "^[+]?[0-9]{6,15}$") then 
+		if(Global.RegexValidation(PPhoneNumber, "PhoneNumber", "") == false) then 
 		(
 			Error("Phone number invalid");
 		);

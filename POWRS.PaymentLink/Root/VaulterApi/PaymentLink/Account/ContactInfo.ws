@@ -45,21 +45,22 @@ errors:= Create(System.Collections.Generic.List, System.String);
 
 try
 (
-	if(POrgPhoneNumber not like "^[+]?[0-9]{6,15}$") then
+	if(Global.RegexValidation(POrgPhoneNumber, "PhoneNumber", "") == false) then
 	(
 		errors.Add("PhoneNumber");
 	);
-	if(POrgWebAddress not like "^(https?:\\/\\/)(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+(\\/[^\\s]*)?$" or ValidateUrl(POrgWebAddress) == false) then 
+	if(ValidateUrl(POrgWebAddress) == false) then 
 	(
 		errors.Add("WebAddress");
 	);
-	if(POrgEmailAddress not like "[\\p{L}\\d._%+-]+@[\\p{L}\\d.-]+\\.[\\p{L}]{2,}") then 
+	if(Global.RegexValidation(POrgEmailAddress, "Email", "") == false) then 
 	(
 		errors.Add("Email");
 	);
 
 	if(System.String.IsNullOrEmpty(POrgTermsAndConditions) or 
-	(!ValidateUrl(POrgTermsAndConditions) and !IsValidBase64(POrgTermsAndConditions))) then 
+		(!ValidateUrl(POrgTermsAndConditions) and !IsValidBase64(POrgTermsAndConditions))
+	) then 
 	(
 		errors.Add("TermsAndConditions");
 	);
