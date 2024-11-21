@@ -72,7 +72,7 @@ try
 	(
 		errors.Add("ORGCITY");
 	);
-	if(Global.RegexValidation(POrgCountry, "Country", "") == false) then 
+	if(Global.RegexValidation(POrgCountry, "CountryCode", "") == false) then 
 	(
 		errors.Add("ORGCOUNTRY");
 	);
