@@ -121,6 +121,8 @@ try
 	(
 		Error(errors);
 	);
+
+	NormalizedPersonalNumber:= Waher.Service.IoTBroker.Legal.Identity.PersonalNumberSchemes.Normalize(PCountryCode, PPersonalNumber);
     neuronDomain:= "https://" + Gateway.Domain;
 
     PropertiesVector:= [
