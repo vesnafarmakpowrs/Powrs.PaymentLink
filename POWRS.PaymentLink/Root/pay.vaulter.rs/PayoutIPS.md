@@ -387,7 +387,7 @@ if(LanguageNamespace == null) then
 	<input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
 	<input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
 	<input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>
-	<input type="hidden" value="((LanguageNamespace.GetStringAsync(74) ))" id="PaymentFailed"/
+	<input type="hidden" value="((LanguageNamespace.GetStringAsync(74) ))" id="PaymentFailed"/>
 	<input type="hidden" value="true" id="IpsOnly"/>
 	<input type="hidden" value="((Request.RemoteEndPoint))" id="currentIp"/>
 	<input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>

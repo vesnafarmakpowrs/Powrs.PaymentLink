@@ -134,6 +134,9 @@
 				<Variable id="IsEcommerce">
 					<Boolean>false</Boolean>
 				</Variable>
+				<Variable id="BuyerTimeZoneDifferenceInMinutes">
+					<Number>0</Number>
+				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="SetServiceProvider"/>
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
@@ -144,6 +147,9 @@
 					</OnEvent>
 					<OnEvent actionRef="ChangeBuyerLanguage">
 						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="SetBuyerTimeZoneDifference">
+						<OnExternalXmlNote localName="BuyerTimeZoneDifference" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent actionRef="SMSToBuyerSent">
 						<OnExternalXmlNote localName="SMSToBuyerSent" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
@@ -193,6 +199,12 @@
 				<State id="Done">
 					<OnEnter actionRef="MarkAsDone"/>
 				</State>
+				<Action id="SetBuyerTimeZoneDifference">
+					<Script>
+						difference:= Num(SelectXmlStr(Note,'/default:BuyerTimeZoneDifference/@differenceInMinutes'));
+					</Script>
+					<PersistVariable name="BuyerTimeZoneDifferenceInMinutes" value="difference" />
+				</Action>
 				<Action id="SetServiceProvider">
 					<If condition="!exists(serviceProviderId) or serviceProviderId == ''">
 						<Then>
@@ -383,6 +395,7 @@
 						</BuyEDaler>
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
+						<PersistVariable name="PaymentDateTimeInBuyerLocalTime" value="{Evaluate('Now.AddMinutes(BuyerTimeZoneDifferenceInMinutes)')}" />
 						<PersistVariable name="DeliveryDate" value="{Utc(DateTime(NowUtc.Year, NowUtc.Month, NowUtc.Day, 23, 30, 00))}" />
 						<PersistVariable name="OrderId" value="{OrderId}" />
 						<PersistVariable name="PayspotOrderId" value="{PayspotOrderId}" />

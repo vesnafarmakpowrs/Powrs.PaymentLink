@@ -30,7 +30,8 @@ function InitiateIPSPayment(bankId, isFromMobile, isCompany, onSuccess, onFailed
             "tabId": TabID,
             "ipsOnly": true,
             "bankId": bankId,
-            "isCompany": isCompany
+            "isCompany": isCompany,
+            "localDateTime": Date.now()
         },
         (response) => {
             onSuccess(response);
