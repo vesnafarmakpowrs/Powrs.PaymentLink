@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using Waher.Persistence;
 using Waher.Persistence.Filters;

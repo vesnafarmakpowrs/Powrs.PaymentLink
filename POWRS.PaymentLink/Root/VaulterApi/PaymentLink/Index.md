@@ -1310,7 +1310,7 @@ Retrieves Successful Transactions information.
 | `Amount`          | Amount |
 | `Currency`        | Currency brand |
 | `PaymentType`     | Payment Type (Card or IPS) |
-| `CardBrand`       | Brand of card ( VISA,MASTERCARD,DINA, MAESTRO) |
+| `CardBrand`       | Brand of card (VISA, MASTERCARD, DINA, MAESTRO) |
 
 ### Get Organizations
 
@@ -1330,7 +1330,6 @@ Retrieves Organization List for filter dropdown.
 
 | Name              | Description |
 |:------------------|:------------|
-| `ObjectId`        | Id          |
 | `OrganizationName`| Organization Name|
 
 OnBoarding
