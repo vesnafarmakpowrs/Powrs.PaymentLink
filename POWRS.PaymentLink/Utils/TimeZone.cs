@@ -8,17 +8,9 @@ namespace POWRS.PaymentLink
 {
     public class TimeZone
     {
-        private static double GetTimeDifferenceInMinutes(long timestamp)
+        public static async Task NotifyTimeZoneDifference(int timeZoneOffset, string stateCity, string tokenId)
         {
-            DateTime inputDateTime = DateTimeOffset.FromUnixTimeMilliseconds(timestamp).DateTime;
-            double minutesDifference = (inputDateTime - DateTime.Now).TotalMinutes;
-            return Math.Floor(minutesDifference);
-        }
-
-        public static async Task NotifyTimeZoneDifference(long timestamp, string stateCity, string tokenId)
-        {
-            var differenceInMinutes = GetTimeDifferenceInMinutes(timestamp);
-            var xmlNote = $"<BuyerTimeZoneDifference xmlns={Gateway.GetUrl("/Downloads/EscrowPaylinkRS.xsd")} differenceInMinutes={differenceInMinutes} state={stateCity} />";
+            var xmlNote = $"<BuyerTimeZoneDifference xmlns='https://{Gateway.Domain}/Downloads/EscrowPaylinkRS.xsd' timeZoneOffset='{timeZoneOffset}' state='{stateCity}' />";
             
             XmlDocument xmlDocument = new();
             xmlDocument.LoadXml(xmlNote);

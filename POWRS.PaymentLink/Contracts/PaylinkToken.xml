@@ -134,7 +134,7 @@
 				<Variable id="IsEcommerce">
 					<Boolean>false</Boolean>
 				</Variable>
-				<Variable id="BuyerTimeZoneDifferenceInMinutes">
+				<Variable id="TimeZoneOffset">
 					<Number>0</Number>
 				</Variable>
 				<State id="AwaitingForPayment">
@@ -201,9 +201,9 @@
 				</State>
 				<Action id="SetBuyerTimeZoneDifference">
 					<Script>
-						difference:= Num(SelectXmlStr(Note,'/default:BuyerTimeZoneDifference/@differenceInMinutes'));
+						offset:= Num(SelectXmlStr(Note,'/default:BuyerTimeZoneDifference/@timeZoneOffset'));
 					</Script>
-					<PersistVariable name="BuyerTimeZoneDifferenceInMinutes" value="difference" />
+					<PersistVariable name="TimeZoneOffset" value="{offset}" />
 				</Action>
 				<Action id="SetServiceProvider">
 					<If condition="!exists(serviceProviderId) or serviceProviderId == ''">
@@ -395,7 +395,7 @@
 						</BuyEDaler>
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
-						<PersistVariable name="PaymentDateTimeInBuyerLocalTime" value="{Evaluate('Now.AddMinutes(BuyerTimeZoneDifferenceInMinutes)')}" />
+						<PersistVariable name="PaymentDateTimeInBuyerLocalTime" value="{Evaluate('NowUtc.AddMinutes(-TimeZoneOffset)')}" />
 						<PersistVariable name="DeliveryDate" value="{Utc(DateTime(NowUtc.Year, NowUtc.Month, NowUtc.Day, 23, 30, 00))}" />
 						<PersistVariable name="OrderId" value="{OrderId}" />
 						<PersistVariable name="PayspotOrderId" value="{PayspotOrderId}" />

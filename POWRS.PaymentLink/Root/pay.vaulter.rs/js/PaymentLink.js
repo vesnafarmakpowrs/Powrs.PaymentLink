@@ -132,7 +132,7 @@ function InitiatePaymentForm(onSuccess) {
         {
             "isFromMobile": isMobileDevice,
             "tabId": TabID,
-            "localDateTime": Date.now()
+            "timeZoneOffset": new Date().getTimezoneOffset()
         },
         (response) => {
             onSuccess(response);

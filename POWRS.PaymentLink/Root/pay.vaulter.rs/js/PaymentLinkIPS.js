@@ -31,7 +31,7 @@ function InitiateIPSPayment(bankId, isFromMobile, isCompany, onSuccess, onFailed
             "ipsOnly": true,
             "bankId": bankId,
             "isCompany": isCompany,
-            "localDateTime": Date.now()
+            "timeZoneOffset": new Date().getTimezoneOffset()
         },
         (response) => {
             onSuccess(response);
