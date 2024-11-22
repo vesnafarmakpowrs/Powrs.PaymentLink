@@ -5,7 +5,8 @@ SessionToken:=  Global.ValidatePayoutJWT();
 	"tabId": Required(Str(PTabId)),
 	"ipsOnly": Required(Bool(PIpsOnly)),
 	"bankId": Required(Int(PBankId)),
-        "isCompany" : Required(Bool(PIsCompany))
+    "isCompany" : Required(Bool(PIsCompany)),
+	"timeZoneOffset": Required(Num(PTimeZoneOffset))
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
@@ -66,6 +67,8 @@ try
 	(
 		responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(contractParameters, identityProperties);
 	);
+
+	Background(SendBuyerTimeZoneToToken(Request.RemoteEndPoint, PLocalDateTime, TokenId));
 	
 )
 catch

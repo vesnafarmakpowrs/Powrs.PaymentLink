@@ -5,12 +5,13 @@ SessionToken:=  Global.ValidatePayoutJWT();
 	"tabId": Required(Str(PTabId)),
 	"ipsOnly": Required(Bool(PIpsOnly)),
 	"bankId": Required(Int(PBankId)),
-    "isCompany" : Required(Bool(PIsCompany))
+    "isCompany" : Required(Bool(PIsCompany)),
+	"timeZoneOffset": Required(Num(PTimeZoneOffset))
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
     responseObject:= {"Success": true, "Response": null, "Message": System.String.Empty};
-	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then 
+	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then
 	(
 		Error("Not configured");
 	);
@@ -97,7 +98,8 @@ try
             );
    );
 
-   Background(SendIPSPaymentCompleted(payspotPayment));
+	Background(SendBuyerTimeZoneToToken(Request.RemoteEndPoint, PTimeZoneOffset, TokenId));
+	Background(SendIPSPaymentCompleted(payspotPayment));
 )
 catch
 (

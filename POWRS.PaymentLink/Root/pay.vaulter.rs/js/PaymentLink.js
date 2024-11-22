@@ -131,7 +131,8 @@ function InitiatePaymentForm(onSuccess) {
     SendXmlHttpRequest("../Payout/API/InitiatePayment.ws",
         {
             "isFromMobile": isMobileDevice,
-            "tabId": TabID
+            "tabId": TabID,
+            "timeZoneOffset": new Date().getTimezoneOffset()
         },
         (response) => {
             onSuccess(response);
