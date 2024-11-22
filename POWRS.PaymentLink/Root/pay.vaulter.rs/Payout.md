@@ -1,5 +1,5 @@
 ﻿Title: Payment Link
-Description: Displays information about a contract.
+Description: Payment Link.
 Date: 2023-08-04
 Author: POWRS
 Width: device-width

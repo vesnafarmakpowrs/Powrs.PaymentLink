@@ -17,7 +17,7 @@ function OnlyECommerce() {
     var isEcommerce = (String(document.getElementById("IsEcommerce").value).toLowerCase() === 'true');
     var isAwaitingForPayment = (String(document.getElementById("ContractState").value).toLowerCase() === 'awaitingforpayment')
 
-    if (isAwaitingForPayment) {
+    if (isAwaitingForPayment && isEcommerce) {
         setTimeout(function () {
             InitiatePaymentForm(ShowPayspotPage);
         }, 1000);
