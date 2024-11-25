@@ -68,7 +68,7 @@ try
 		responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(contractParameters, identityProperties);
 	);
 
-	Background(SendBuyerTimeZoneToToken(Request.RemoteEndPoint, PLocalDateTime, TokenId));
+	Background(SendBuyerTimeZoneToToken(Request.RemoteEndPoint, PTimeZoneOffset, TokenId));
 	
 )
 catch
