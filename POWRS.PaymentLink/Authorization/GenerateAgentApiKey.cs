@@ -67,7 +67,7 @@ namespace POWRS.PaymentLink.Authorization
 
         private string GenerateRandomString(int length)
         {
-            string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:',.<>?/";
+            string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:,.<>?";
             Random random = new();
             char[] randomString = new char[length];
 
