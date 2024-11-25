@@ -2,7 +2,8 @@
 
 ({
     "isFromMobile":Required(Bool(PIsFromMobile)),
-	"tabId": Required(Str(PTabId))
+	"tabId": Required(Str(PTabId)),
+	"timeZoneOffset": Required(Num(PTimeZoneOffset))
 }:=Posted) ??? BadRequest(Exception.Message);
 try
 (
@@ -23,7 +24,7 @@ try
 	TokenId:= SessionToken.Claims.tokenId;
 	
 	token:= select top 1 * from IoTBroker.NeuroFeatures.Token t where t.TokenId = TokenId;
-	if(token == null) then 
+	if(token == null) then
 	(
 		BadRequest("Token does not exists");
 	);
@@ -59,7 +60,7 @@ try
 
 	Global.PayspotRequests[ContractId]:= PTabId;
 
-	if(IpsOnly) then 
+	if(IpsOnly) then
 	(
 		GeneratedIPSForm:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSForm(contractParameters, identityProperties);
 		responseObject.Response:= GeneratedIPSForm.ToDictionary();
@@ -68,6 +69,8 @@ try
 	(
 		responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(contractParameters, identityProperties);
 	);
+
+	Background(SendBuyerTimeZoneToToken(Request.RemoteEndPoint, PTimeZoneOffset, TokenId));
 )
 catch
 (

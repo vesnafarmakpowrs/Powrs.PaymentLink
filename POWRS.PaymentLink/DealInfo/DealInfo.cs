@@ -68,7 +68,7 @@ namespace POWRS.PaymentLink.RS
                 }
                 else if (keyValuePair.Value is DateTime dateTimeValue)
                 {
-                    valueToReplacePattern = dateTimeValue.ToLocalTime().ToString("dd-MM-yyyy HH:mm");
+                    valueToReplacePattern = dateTimeValue.ToString("dd-MM-yyyy HH:mm");
                 }
 
                 if (!string.IsNullOrEmpty(valueToReplacePattern))

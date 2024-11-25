@@ -358,10 +358,20 @@ if(LanguageNamespace == null) then
 			)
 			else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" )then 
 			(
-			   DateCompleted :=  select top 1 DateCompleted from PayspotPayments where TokenId= Token.TokenId;
-			]]<div class="payment-completed"><p>**((LanguageNamespace.GetStringAsync(16) ))**</p>
-			 <p>**Datum plaćanja: ((DateCompleted.ToLocalTime() ))**</p></div>
+			]]<div class="payment-completed"><p>**((LanguageNamespace.GetStringAsync(16) ))**</p> [[;
+
+			   DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTimeInBuyerLocalTime";
+			   if(DateCompleted != null) then
+			   (
+			]]<p>**Datum plaćanja: ((DateCompleted.ToString("dd-MM-yyyy HH:mm") ))**</p></div>
 			  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
+			   )
+			   else 
+			   (
+				DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTime";
+				]]<p>**Datum plaćanja: ((DateCompleted.ToLocalTime().ToString("dd-MM-yyyy HH:mm") ))**</p></div>
+			  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
+			   );
 			)
 			else if ContractState == "PaymentCanceled" then 
 			(
@@ -387,7 +397,7 @@ if(LanguageNamespace == null) then
 	<input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
 	<input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
 	<input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>
-	<input type="hidden" value="((LanguageNamespace.GetStringAsync(74) ))" id="PaymentFailed"/
+	<input type="hidden" value="((LanguageNamespace.GetStringAsync(74) ))" id="PaymentFailed"/>
 	<input type="hidden" value="true" id="IpsOnly"/>
 	<input type="hidden" value="((Request.RemoteEndPoint))" id="currentIp"/>
 	<input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
