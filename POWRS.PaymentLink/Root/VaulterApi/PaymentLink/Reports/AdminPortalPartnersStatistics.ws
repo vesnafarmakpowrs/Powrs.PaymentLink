@@ -4,19 +4,77 @@ if !exists(Posted) then BadRequest("No payload.");
 
 ({
 	"from":Required(String(PDateFrom)),
-    "to":Required(String(PDateTo))
+    "to":Required(String(PDateTo)),
+	"organizationList": Required(String(POrganizationList)),
+	"topicFilterType": Required(String(PTopicFilterType)),
+	"topicFilterCondition": Required(String(PTopicFilterCondition)),
+	"topicFilterNumber": Required(Int(PTopicFilterNumber))	
 }:=Posted) ??? BadRequest(Exception.Message);
 
 logObject := SessionUser.username;
 logEventID := "AdminPortalDashboard.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
+currentMethod := "";
+errors:= Create(System.Collections.Generic.List, System.String);
+
+ValidatePostedData(Posted) := (
+	if(!Global.RegexValidation(Posted.from, "DateDDMMYYYY", "")) then
+	(
+		errors.Add("from");
+	);
+	if(!Global.RegexValidation(Posted.to, "DateDDMMYYYY", "")) then
+	(
+		errors.Add("to");
+	);
+	if(!System.String.IsNullOrWhiteSpace(Posted.organizationList))then
+	(
+		myOrganizations := POWRS.PaymentLink.Models.BrokerAccountRole.GetAllOrganizationChildren(SessionUser.orgName);
+		organizationArray := Split(Posted.organizationList, ",");
+		foreach item in organizationArray do
+		(
+			if(myOrganizations.Contains(item) == false) then
+			(
+				errors.Add("organizationName:" + item);
+			);
+		);
+	);
+	
+	if(!Enum.IsDefined(typeof(POWRS.PaymentLink.Utils.Enums.Reports.TopicFilter), Posted.topicFilterType))then
+	(
+		errors.Add("topicFilterType");
+	);
+	if(!Enum.IsDefined(typeof(POWRS.PaymentLink.Utils.Enums.Reports.TopicFilterCondition), Posted.topicFilterCondition))then
+	(
+		errors.Add("topicFilterCondition");
+	);
+	
+	if(errors.Count > 0)then
+	(
+		Error(errors);
+	);
+	
+	return (1); 
+);
+
 try
 (
-	if(Global.RegexValidation(PDateFrom, "DateDDMMYYYY", "") == false or Global.RegexValidation(PDateTo, "DateDDMMYYYY", "") == false) then
-	(
-		BadRequest("Date format must be dd/MM/yyyy");
-	);
+	' PaylinksCount
+	' AveragePaylinkValue
+	' LastPaylink DateTime
+	' PaylinkFrequency -> prosecan broj dana izmedju linkova
+	
+	' Onboarding Started Date
+	' Onboarding Last Activity (ako je zavrseno onboarding onda ide 0)
+	' Onboarding completed DateTime (datum odobravanja LegalId)
+
+
+
+	Log.Debug("Posted: " + Str(Posted), logObject, logActor, logEventID, null);
+	
+	currentMethod := "ValidatePostedData";
+	ValidatePostedData(Posted);
+	
 	
 	dateFormat := "dd/MM/yyyy";
 	DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
@@ -122,8 +180,15 @@ try
 )
 catch
 (
-	Log.Error(Exception.Message, logObject, logActor, logEventID, null);
-	BadRequest(Exception.Message);
+	Log.Error("Unable to save onboarding data: " + Exception.Message + "\ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+    if(errors.Count > 0) then 
+    (
+		NotAcceptable(errors);
+    )
+    else 
+    (
+        BadRequest(Exception.Message);
+    );
 );
 
 return (ReponseDict);
