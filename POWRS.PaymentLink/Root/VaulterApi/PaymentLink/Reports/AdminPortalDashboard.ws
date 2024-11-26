@@ -1,77 +1,130 @@
-﻿ValidatedUser := Global.ValidateAgentApiToken(false, false);
+﻿SessionUser := Global.ValidateAgentApiToken(false, false);
 
 if !exists(Posted) then BadRequest("No payload.");
 
 ({
-	"DaysToCalculate":Required(Integer(PDaysToCalculate))
+	"from":Required(String(PDateFrom)),
+    "to":Required(String(PDateTo))
 }:=Posted) ??? BadRequest(Exception.Message);
 
-try(
-	
-	TotalFeeEarned:= 0;
-	
-	LimitDate := System.DateTime.Now.Date.AddDays(PDaysToCalculate == 1 ? 0 : -PDaysToCalculate);
+logObject := SessionUser.username;
+logEventID := "AdminPortalDashboard.ws";
+logActor := Split(Request.RemoteEndPoint, ":")[0];
 
+try
+(
+	Log.Debug("Posted: " + Str(Posted), logObject, logActor, logEventID, null);
+	
+	if(Global.RegexValidation(PDateFrom, "DateDDMMYYYY", "") == false or Global.RegexValidation(PDateTo, "DateDDMMYYYY", "") == false) then
+	(
+		BadRequest("Date format must be dd/MM/yyyy");
+	);
+	
+	dateFormat := "dd/MM/yyyy";
+	DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+	DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
+	DTDateTo := DTDateTo.AddDays(1);
+	
 	CardPayment :=  "PaymentCard";
-        IPSPayment :=  "IPSPayment";
+	IPSPayment :=  "IPSPayment";
+		
 	CompletedPayspotPayments := 
-		Select distinct TokenId, PaymentType
+		Select distinct TokenId, PaymentType, RefundedAmount, SenderFee
 		from PayspotPayments
 		where Result = "00"
-		   and DateCompleted >= LimitDate;
+			and DateCompleted >= DTDateFrom
+			and DateCompleted < DTDateTo;
 		
-	PayspotPaymentDictionary := Create(System.Collections.Generic.Dictionary,System.String,System.String);
-	foreach p in CompletedPayspotPayments do 
-	    PayspotPaymentDictionary.Add(p[0],p[1]);
-	
-
-	NeuroFeatureTokenList  := 
-		select  *  from IoTBroker.NeuroFeatures.Token
-		where Created >= LimitDate;
-			
-	TokenId := "";
-	MachineId := "";
-	
-	trn_SuccessCnt := 0;
-	trn_SuccessValue := 0;
-	trn_Currency := "";
-	trn_FailedCnt := 0;
-	ipsSuccessValue := 0;
-        cardSuccessValue := 0;
-
-	foreach token in NeuroFeatureTokenList do (
+	PayspotPaymentDictionary := Create(System.Collections.Generic.Dictionary, System.String, System.Object);
+	foreach payment in CompletedPayspotPayments do
+	(
+		if(payment[2] == null or payment[2] == 0) then
+		(
+			obj := {
+				TokenId: payment[0],
+				PaymentType: payment[1],
+				RefundedAmount: payment[2],
+				SenderFee: payment[3]
+			};
 		
-		   if (PayspotPaymentDictionary.ContainsKey(token.TokenId)) then (
-		    escrowFeeVariable := Select top 1 Value from token.GetCurrentStateVariables().VariableValues where Name="EscrowFee";
-		
-			if(escrowFeeVariable != null) then 
-				TotalFeeEarned += escrowFeeVariable;
-			
-			trn_SuccessCnt ++;
-			trn_SuccessValue += token.Value;
-			trn_Currency := token.Currency ;
-			
-			PaymentType := PayspotPaymentDictionary[token.TokenId];
-                        PaymentType == CardPayment  ? cardSuccessValue += token.Value;
-                        PaymentType == IPSPayment  ? ipsSuccessValue +=  token.Value;
-		)  else (
-                       trn_FailedCnt ++;
-                );
+			PayspotPaymentDictionary.Add(payment[0], obj);
+		);
 	);
-
-	cardMarkUp_Fee := cardSuccessValue * 0.002;
-	IPS_Fee := ipsSuccessValue * 0.002;
 	
-        ReponseDict := Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,CaseInsensitiveString);
-	ReponseDict.Add("trn_TotalValue:" + trn_Currency, String(trn_SuccessValue));
-	ReponseDict.Add("trn_TotalSuccess" , String(trn_SuccessCnt));
-	ReponseDict.Add("trn_TotalFailed", String(trn_FailedCnt));
-	ReponseDict.Add("trn_TotalFee", String(TotalFeeEarned));
-	ReponseDict.Add("cardMarkUp_Fee", String(cardMarkUp_Fee));
-	ReponseDict.Add("IPS_Fee", String(IPS_Fee));
+	Destroy(CompletedPayspotPayments);
+				
+	successfulTransactionsCount := 0;
+	successfulTransactionsValue := 0;
+	failedlTransactionsCount := 0;
+	ipsSuccessCount := 0;
+	ipsSuccessValue := 0;
+	IPSFee := 0;	
+	cardSuccessCount := 0;
+	cardSuccessValue := 0;
+	cardMarkUpFee := 0;
+	
+	NeuroFeatureTokenList  := 
+		select * 
+		from IoTBroker.NeuroFeatures.Token
+		where Created >= DTDateFrom
+			and Created < DTDateTo;
+			
+	foreach token in NeuroFeatureTokenList do 
+	(
+	    if (PayspotPaymentDictionary.ContainsKey(token.TokenId)) then 
+		(			
+			successfulTransactionsCount ++;
+			successfulTransactionsValue += token.Value;
+			
+			obj := PayspotPaymentDictionary[token.TokenId];
+			if(obj.PaymentType == CardPayment) then 
+			(
+				cardSuccessCount ++;
+				cardSuccessValue += token.Value;
+				cardMarkUpFee += obj.SenderFee ?? 0;
+			)
+			else if(obj.PaymentType == IPSPayment)then 
+			(
+				ipsSuccessCount ++;
+				ipsSuccessValue +=  token.Value;
+				IPSFee += obj.SenderFee ?? 0;
+			);
+		)
+		else
+		(
+			failedlTransactionsCount ++;
+        );
+	);
+	Destroy(NeuroFeatureTokenList);
+	Destroy(PayspotPaymentDictionary);
+	
+	newPartners := 
+		select count(*) 
+		from LegalIdentities 
+		where State = "Approved" 
+			and Created >= DTDateFrom
+			and Created < DTDateTo;	
+	
+	ReponseDict := Create(System.Collections.Generic.Dictionary, CaseInsensitiveString, System.Object);
+	ReponseDict.Add("successfulTransactionsValue", successfulTransactionsValue);
+	ReponseDict.Add("successfulTransactionsCount", successfulTransactionsCount);
+	ReponseDict.Add("failedlTransactionsCount", failedlTransactionsCount);
+	ReponseDict.Add("successfulTransactionsAverageValue", successfulTransactionsValue/successfulTransactionsCount);
+	ReponseDict.Add("newPartners", newPartners);
+	ReponseDict.Add("cardMarkUpFee", cardMarkUpFee);
+	ReponseDict.Add("IPSFee", IPSFee);
+	ReponseDict.Add("holdFee", 0);
+	
+	ReponseDict.Add("shareOfCompleted", Int(successfulTransactionsCount / (successfulTransactionsCount + failedlTransactionsCount) * 100));
+	ReponseDict.Add("shareOfCard", Int(cardSuccessCount / successfulTransactionsCount * 100));
+	ReponseDict.Add("shareOfIPS", Int(ipsSuccessCount / successfulTransactionsCount * 100));
+	ReponseDict.Add("shareOfHold", 0);
+	
+	Destroy(newPartners);
 )
-catch(
-	Log.Error(Exception, null);
+catch
+(
+	Log.Error(Exception.Message, logObject, logActor, logEventID, null);
 	BadRequest(Exception.Message);
 );
 
