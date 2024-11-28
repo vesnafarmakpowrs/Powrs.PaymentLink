@@ -88,6 +88,7 @@
 
 	
 	<ItemGroup>
+		<None Remove="Root\pay.vaulter.rs\Authorize.md" />
 		<None Remove="Root\pay.vaulter.rs\css\Payout.cssx" />
 		<None Remove="Root\pay.vaulter.rs\DeepLink.md" />
 		<None Remove="Root\pay.vaulter.rs\js\DeepLink.js" />
@@ -162,6 +163,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\pay.vaulter.rs\DeepLink.md">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\pay.vaulter.rs\Authorize.md">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\pay.vaulter.rs\Payout.md">
@@ -676,6 +680,9 @@
 	  </None>
 	  <None Update="Root\Payout\API\InitiateIPSPayment.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\API\InitiateCardAuthorization.ws">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\API\InitiatePayment.ws">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
