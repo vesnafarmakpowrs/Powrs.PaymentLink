@@ -33,7 +33,7 @@ try
 			and DateCompleted >= DTDateFrom
 			and DateCompleted < DTDateTo;
 		
-	PayspotPaymentDictionary := Create(System.Collections.Generic.Dictionary, System.String, System.Object);
+	payspotPaymentDictionary := Create(System.Collections.Generic.Dictionary, System.String, System.Object);
 	foreach payment in CompletedPayspotPayments do
 	(
 		if(payment[2] == null or payment[2] == 0) then
@@ -45,7 +45,7 @@ try
 				SenderFee: payment[3]
 			};
 		
-			PayspotPaymentDictionary.Add(payment[0], obj);
+			payspotPaymentDictionary.Add(payment[0], obj);
 		);
 	);
 	
@@ -61,20 +61,20 @@ try
 	cardSuccessValue := 0;
 	cardMarkUpFee := 0;
 	
-	NeuroFeatureTokenList  := 
+	neuroFeatureTokenList := 
 		select * 
 		from IoTBroker.NeuroFeatures.Token
 		where Created >= DTDateFrom
 			and Created < DTDateTo;
 			
-	foreach token in NeuroFeatureTokenList do 
+	foreach token in neuroFeatureTokenList do 
 	(
-	    if (PayspotPaymentDictionary.ContainsKey(token.TokenId)) then 
+	    if (payspotPaymentDictionary.ContainsKey(token.TokenId)) then 
 		(			
 			successfulTransactionsCount ++;
 			successfulTransactionsValue += token.Value;
 			
-			obj := PayspotPaymentDictionary[token.TokenId];
+			obj := payspotPaymentDictionary[token.TokenId];
 			if(obj.PaymentType == CardPayment) then 
 			(
 				cardSuccessCount ++;
@@ -93,8 +93,8 @@ try
 			failedlTransactionsCount ++;
         );
 	);
-	Destroy(NeuroFeatureTokenList);
-	Destroy(PayspotPaymentDictionary);
+	Destroy(neuroFeatureTokenList);
+	Destroy(payspotPaymentDictionary);
 	
 	newPartners := 
 		select count(*) 
