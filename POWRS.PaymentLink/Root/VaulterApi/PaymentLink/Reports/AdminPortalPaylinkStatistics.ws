@@ -94,6 +94,8 @@ try
 		);		
 	);
 	
+	Log.Debug("creatorsJIDDict: " + Str(creatorsJIDDict), logObject, logActor, logEventID, null);
+	
 	neuroFeatureTokenList := 
 		select * 
 		from IoTBroker.NeuroFeatures.Token
@@ -166,7 +168,7 @@ try
 )
 catch
 (
-	Log.Error("Unable to save onboarding data: " + Exception.Message + "\ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
+	Log.Error("Error: " + Exception.Message + "\ncurrentMethod: " + currentMethod, logObject, logActor, logEventID, null);
     if(errors.Count > 0) then 
     (
 		NotAcceptable(errors);
