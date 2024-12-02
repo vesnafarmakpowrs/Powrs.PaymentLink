@@ -164,7 +164,16 @@ function PaySpotPaymentStatus(Result) {
     if (Result != null && Result.StatusCode != null && Result.StatusCode == "82") {
         console.log(Result.Msg);
     }
-    else if (Result != null && Result.StatusCode != null && (Result.StatusCode == "05" || Result.StatusCode == "-1")) {
+    else if (Result != null && Result.StatusCode != null && (Result.StatusCode == "05" || Result.StatusCode == "-1" || Result.StatusCode == "01")) {
+
+        if (Result.ErrorUrl !== undefined && Result.ErrorUrl.trim() != '') {
+            DisplayMessage(Translations.PaymentFailedWaitingRedirection, 'green');
+            setTimeout(function () {
+                window.open(Result.ErrorUrl, "_self");
+            }, 3000);
+            return;
+        }
+
         var element = document.getElementById('IPSScan');
         if (typeof (element) != 'undefined' && element != null) {
             document.getElementById('IPSScan').style.display = "none";
