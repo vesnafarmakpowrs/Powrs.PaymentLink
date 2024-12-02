@@ -6,11 +6,12 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
-	organizationsList := 
-		select ObjectId, OrganizationName 
-		from POWRS.PaymentLink.Models.OrganizationContactInformation 
-		where OrganizationName != ""
-		order by OrganizationName;	
+	if(SessionUser.orgName = "") then 
+	(
+		Error("Your Account don't have defined organization name");
+	);
+	
+	myOrganizations := POWRS.PaymentLink.Models.BrokerAccountRole.GetAllOrganizationChildren(SessionUser.orgName);
 )
 catch
 (

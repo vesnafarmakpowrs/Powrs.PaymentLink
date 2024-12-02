@@ -6,13 +6,19 @@ logEventID := "PaySpotTransactions.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 ({
-    "from":Required(String(PDateFrom) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
-    "to":Required(String(PDateTo) like "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{4}$"),
+    "from":Required(String(PDateFrom)),
+    "to":Required(String(PDateTo)),
 	"organizationList": Required(String(POrganizationList)),
 	"id": Required(String(PId))
 }:=Posted) ??? BadRequest(Exception.Message);
+
 try
 (
+	if(Global.RegexValidation(PDateFrom, "DateDDMMYYYY", "") == false or Global.RegexValidation(PDateTo, "DateDDMMYYYY", "") == false) then
+	(
+		BadRequest("Date format must be dd/MM/yyyy");
+	);
+
 	dateFormat := "dd/MM/yyyy";
 	DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);

@@ -1310,7 +1310,7 @@ Retrieves Successful Transactions information.
 | `Amount`          | Amount |
 | `Currency`        | Currency brand |
 | `PaymentType`     | Payment Type (Card or IPS) |
-| `CardBrand`       | Brand of card ( VISA,MASTERCARD,DINA, MAESTRO) |
+| `CardBrand`       | Brand of card (VISA, MASTERCARD, DINA, MAESTRO) |
 
 ### Get Organizations
 
@@ -1330,7 +1330,6 @@ Retrieves Organization List for filter dropdown.
 
 | Name              | Description |
 |:------------------|:------------|
-| `ObjectId`        | Id          |
 | `OrganizationName`| Organization Name|
 
 OnBoarding
@@ -1722,6 +1721,119 @@ Call this resource to download upload file max size.
 | Name              | Description |
 |:------------------|:------------|
 |`fileMaxSize`|  File max size in MB. Type: int. |
+
+Smart Admin
+---------------------
+
+### Admin Portal Dashboard
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Reports/AdminPortalDashboard.ws")}}`  
+Method: `POST`
+
+**Request**
+
+````
+{
+    "from": "01/09/2024",
+    "to": "30/09/2024"
+}
+````
+
+Description of properties:
+
+| Name      | Description |
+|:----------|:------------|
+|`from`     | DateTime from transactions are collected. Required parameter. DateTime formated to string, format: dd/MM/yyyy |
+|`to`       | DateTime to transactions are collected. Required parameter. DateTime formated to string, format: dd/MM/yyyy. All transaction at this date will be calculated. |
+
+**Response**
+
+````
+{
+    "successfulTransactionsValue": 2368276.44,
+    "successfulTransactionsCount": 522,
+    "failedlTransactionsCount": 1849,
+    "successfulTransactionsAverageValue": 4536.928045977012,
+    "newPartners": 273,
+    "cardMarkUpFee": 0,
+    "IPSFee": 0,
+    "holdFee": 0,
+    "shareOfCompleted": 22,
+    "shareOfCard": 58,
+    "shareOfIPS": 17,
+    "shareOfHold": 0
+}
+````
+
+### Payspot Transactions
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Reports/PayspotTransactions.ws")}}`  
+Method: `POST`
+
+**Request**
+
+````
+{
+    "from": "01/11/2024",
+    "to": "30/11/2024",
+    "organizationList" : "",
+    "id": "04fe7764-fc92-4288-8e3c-a62002d90eb1@edaler.lab.neuron.vaulter.nu"
+}
+````
+
+Description of properties:
+
+| Name      | Description |
+|:----------|:------------|
+|`from`     | DateTime from transactions are collected. Required parameter. DateTime formated to string, format: dd/MM/yyyy |
+|`to`       | DateTime to transactions are collected. Required parameter. DateTime formated to string, format: dd/MM/yyyy. All transaction at this date will be calculated. |
+|`organizationList`     | List of organizations for filter. For multiple organizations use `,` as separator. E.g. "Powrs,Vaulter"|
+|`id`     | Token Id. Send this parameter to get exact transaction by: TokenId or OrderId or PayspotOrderId or BankTransactionId . This parameter overrides all other parameters |
+
+**Response**
+
+````
+[
+    {
+        "TokenId": "04fe7764-fc92-4288-8e3c-a62002d90eb1@edaler.lab.neuron.vaulter.nu",
+        "OrderId": "8fef9113-cba5-46f1-a5c7-a51f3b57c869",
+        "OrderReference": "77b609e0-dd77-4c0c-a6c5-be8ed0ccb84f",
+        "PayspotTransactionId": "183398",
+        "DateCreated": 1730714188,
+        "ExpectedPayoutDate": 1730932202,
+        "PayoutDate": -62135596800,
+        "Amount": 500,
+        "SenderFee": 0,
+        "SellerRecivedAmount": 500,
+        "Seller": "AgentPLG",
+        "RemoteId": "3578189787",
+        "SMSCounter": 0,
+        "EmailCounter": 0
+    }
+]
+````
+
+### Get Organizations
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Organization/GetOrganizations.ws")}}`  
+Method: `POST`
+
+**Request**
+
+````
+{
+}
+````
+
+**Response**
+
+````
+[
+    "10012143",
+    "Powrs",
+    "AgentPLG_X",
+    "blagojevic djordje test",
+    "ČELIK",
+    "DC Powrs"
+]
+````
 
 
 Fee Calculator
