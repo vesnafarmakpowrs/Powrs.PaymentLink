@@ -5,10 +5,7 @@ if !exists(Posted) then BadRequest("No payload.");
 ({
 	"from":Required(String(PDateFrom)),
     "to":Required(String(PDateTo)),
-	"organizationList": Required(String(POrganizationList)),
-	"topicFilterType": Required(String(PTopicFilterType)),
-	"topicFilterCondition": Required(String(PTopicFilterCondition)),
-	"topicFilterNumber": Required(Int(PTopicFilterNumber))	
+	"organizationList": Required(String(POrganizationList))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 logObject := SessionUser.username;
@@ -40,17 +37,6 @@ ValidatePostedData(Posted) := (
 		);
 	);
 	
-	if(!System.Enum.IsDefined(POWRS.PaymentLink.Enums.Reports.TopicFilter, Posted.topicFilterType))then
-	(
-		errors.Add("topicFilterType");
-	);
-	if(!System.String.IsNullOrWhiteSpace(Posted.topicFilterType) and 
-		Posted.topicFilterType != "NoFilter" and
-		!System.Enum.IsDefined(POWRS.PaymentLink.Enums.Reports.TopicFilterCondition, Posted.topicFilterCondition))then
-	(
-		errors.Add("topicFilterCondition");
-	);
-	
 	if(errors.Count > 0)then
 	(
 		Error(errors);
@@ -66,89 +52,68 @@ try
 	currentMethod := "ValidatePostedData";
 	ValidatePostedData(Posted);
 	
+	filterByCreators := POrganizationList != "";
+	
 	currentMethod := "Collecting data";
 	dateFormat := "dd/MM/yyyy";
 	DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	DTDateTo := DTDateTo.AddDays(1);
-
-	responsePartnerDict := Create(System.Collections.Generic.Dictionary, System.String, System.Object);				
-	creatorsJIDDict := Create(System.Collections.Generic.Dictionary, System.String, System.String);				
-	
-	filterByOrgName := false;
-	if(POrganizationList != "")then
+		
+	sqlQueryBuilder := Create(System.Text.StringBuilder);
+	sqlQueryBuilder.AppendLine("select CreatorJid, TokenId, Created ");
+	sqlQueryBuilder.AppendLine("from NeuroFeatureTokens ");
+	sqlQueryBuilder.AppendLine("where Created >= DTDateFrom and Created < DTDateTo ");
+	if(filterByCreators)then
 	(
-		filterByOrgName := true;
-		organizationArray := Split(POrganizationList, ",");
-		foreach item in organizationArray do
-		(
-			listBrokerAcc :=
-				Select *
-				from POWRS.PaymentLink.Models.BrokerAccountRole
-				where OrgName = item;
-				
-			foreach brokerAcc in listBrokerAcc do
-			(
-				creatorsJIDDict.Add(brokerAcc.UserName + "@" + Gateway.Domain, item);
-			);
-		);		
+		Creators:= Global.GetUsersForOrganization(POrganizationList);
+		sqlQueryBuilder.AppendLine("and CreatorJid IN Creators ");
 	);
 	
-	Log.Debug("creatorsJIDDict: " + Str(creatorsJIDDict), logObject, logActor, logEventID, null);
+	neuroFeatureTokenList := Evaluate(Str(sqlQueryBuilder));
+	destroy(sqlQueryBuilder);
 	
-	neuroFeatureTokenList := 
-		select * 
-		from IoTBroker.NeuroFeatures.Token
-		where Created >= DTDateFrom
-			and Created < DTDateTo;
-			
 	currentMethod := "prepering response dict";
+	responsePartnerDict := Create(System.Collections.Generic.Dictionary, System.String, System.Object);		
 	counter := 0;
 	foreach token in neuroFeatureTokenList do 
 	(
-		processRecord := true;
-		if(filterByOrgName)then
+		smVariableValues := select top 1 VariableValues
+			from StateMachineCurrentStates
+			where StateMachineId = token[1];
+	
+		if(smVariableValues != null and smVariableValues.Length > 0)then
 		(
-			if(!creatorsJIDDict.ContainsKey(token.CreatorJid))then
-			(
-				processRecord := false;
-			);
-		);
-		
-		if(processRecord)then
-		(
-			tokenVariables := token.GetCurrentStateVariables();			
-			sellerName := select top 1 Value from tokenVariables.VariableValues where Name = "SellerName";
-			if(sellerName != null)then
-			(
-				price := select top 1 Value from tokenVariables.VariableValues where Name = "Price";
+			sellerName := select top 1 Value from smVariableValues where Name = "SellerName";
+			price := select top 1 Value from smVariableValues where Name = "Price";
+			created := token[2];
 			
-				if(responsePartnerDict.ContainsKey(sellerName))then
-				(
-					obj := responsePartnerDict[sellerName];
-					obj.PaylinksCount ++;
-					obj.LatestPaylinkDate := token.Created;
-					obj.TotalPaylinkValue += price;				
-				)
-				else
-				(
-					obj := {
-						Partnername: sellerName,
-						PaylinksCount: 1,
-						TotalPaylinkValue: price,
-						AveragePaylinkValue: 0,
-						FirstPaylinkDate: token.Created,
-						LatestPaylinkDate: token.Created,
-						PaylinkFrequency: 0					
-					};
-					responsePartnerDict.Add(sellerName, obj);
-				);
+			sellerName := sellerName ?? "-";
+			price := price ?? 1;
+			
+			if(responsePartnerDict.ContainsKey(sellerName))then
+			(
+				obj := responsePartnerDict[sellerName];
+				obj.PaylinksCount ++;
+				obj.LatestPaylinkDate := created;
+				obj.TotalPaylinkValue += price;				
+			)
+			else
+			(
+				obj := {
+					Partnername: sellerName,
+					PaylinksCount: 1,
+					TotalPaylinkValue: price,
+					AveragePaylinkValue: 0,
+					FirstPaylinkDate: created,
+					LatestPaylinkDate: created,
+					PaylinkFrequency: 0					
+				};
+				responsePartnerDict.Add(sellerName, obj);
 			);
 		);
 	);
-	
 	Destroy(neuroFeatureTokenList);
-	Destroy(creatorsJIDDict);
 	
 	currentMethod := "aggregating data";
 	responseList := Create(System.Collections.Generic.List, System.Object);

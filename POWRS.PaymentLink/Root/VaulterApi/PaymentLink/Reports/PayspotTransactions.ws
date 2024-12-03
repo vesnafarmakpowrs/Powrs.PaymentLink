@@ -32,7 +32,7 @@ try
 	sqlQueryBuilder.Append("Select TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, ExpectedPayoutDate, PayoutDate, Amount, SenderFee, RefundedAmount from PayspotPayments ");
 	if(filterByCreators) then
 	(
-		sqlQueryBuilder.Append(" pp");
+		sqlQueryBuilder.Append(" pp ");
 		sqlQueryBuilder.Append("join NeuroFeatureTokens t on t.TokenId = pp.TokenId ");
 	);
 	
