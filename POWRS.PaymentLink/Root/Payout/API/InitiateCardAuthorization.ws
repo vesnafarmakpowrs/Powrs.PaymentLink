@@ -30,7 +30,7 @@ try
 	);
 
 	currentState:= token.GetCurrentStateVariables();
-	if(currentState.State != "AwaitingForPayment") then
+	if(currentState.State != "AwaitingForAuthorization") then
 	(
 		Error("Payment is not available for this contract");
 	);
@@ -38,19 +38,26 @@ try
 	contractParameters:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, System.Object);
 	contractParameters["Message"]:= "Vaulter";
 
-	foreach var in currentState.VariableValues do
+	cardRegistrationAmount:= select top 1 Value from currentState.VariableValues where Name = "CardRegistrationAmount";
+
+	if(cardRegistrationAmount == null || cardRegistrationAmount <= 0) then 
 	(
-	 contractParameters[var.Name]:= var.Value;
+		Error("Authorization amount not available in contract.");
 	);
 
+	foreach var in currentState.VariableValues do
+	(
+		contractParameters[var.Name]:= var.Value;
+	);
 	contractParameters["RequestFromMobilePhone"]:= PIsFromMobile;
+	contractParameters["AmountToPay"]:= cardRegistrationAmount;
 
 	legalIdentityProperties:= select top 1 Properties from LegalIdentities where Id = Token.Owner;
 	identityProperties:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, Waher.Persistence.CaseInsensitiveString);
 
 	foreach prop in legalIdentityProperties do  
 	(
-	 identityProperties[prop.Name]:= prop.Value;
+		identityProperties[prop.Name]:= prop.Value;
 	);
 
 	if(!exists(Global.PayspotRequests)) then

@@ -9,6 +9,10 @@
 			<xs:attribute name="payspotOrderId" type="xs:string" use="required" />
 			<xs:attribute name="orderId" type="xs:string" use="required" />
 			<xs:attribute name="paymentType" type="xs:string" use="required" />
+			<xs:attribute name="cardBrand" type="xs:string" use="required" />
+			<xs:attribute name="panAlias" type="xs:string" use="required" />
+			<xs:attribute name="expiryDate" type="xs:string" use="required" />
+			<xs:attribute name="maskedPan" type="xs:string" use="required" />
 			<xs:attribute name="TransactionId" type="xs:string" use="optional" />
 			<xs:attribute name="AuthNumber" type="xs:string" use="optional" />
 		</xs:complexType>
@@ -17,7 +21,7 @@
 		<xs:complexType>
 			<xs:attribute name="payspotOrderId" type="xs:string" use="required" />
 			<xs:attribute name="orderId" type="xs:string" use="required" />
-			<xs:attribute name="paymentType" type="xs:string" use="required" />
+			<xs:attribute name="paymentType" type="xs:string" use="required" />			
 			<xs:attribute name="paymentStatusCode" type="xs:string" use="required" />
 			<xs:attribute name="paymentStatusDescr" type="xs:string" use="required" />
 		</xs:complexType>
