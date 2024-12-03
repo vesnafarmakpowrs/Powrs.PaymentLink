@@ -1,0 +1,108 @@
+﻿	.saved-card {
+		margin: 0px;
+		padding: 15px;
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		background-color: #f9f9f9;
+	}
+	.card-details-div {
+		display: flex;
+		flex-direction: row;
+		flex-wrap:nowrap;
+	}
+	.card-details {
+		display: flex;
+		flex-direction: row;
+		gap: 5px;
+		align-items: center;
+		margin-bottom: 5px;
+		padding-right: 5px;
+	}	
+	.card-details-row {		
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		padding-top: 10px; 
+	}
+	 .card-details_2row {
+		display: flex;
+		flex-direction: row;
+		gap: 3px;
+		padding-top: 10px; 
+	}
+	.card-details-lbl {
+		font-size: medium;
+		white-space:nowrap;
+	}
+	
+	.saved-card-title {
+		 font-size: medium;
+	}
+	.card-details-title {
+		font-size: 16px;
+		font-weight: bold;
+		display: flex; 
+		align-items: center; 
+		gap: 5px; 
+		padding-bottom:8px;
+	}
+	.card-value{
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		background-color: #ffffff;
+		font-size: 16px;
+		color: #838282;
+		text-align: left;
+		padding: 5px 10px;
+		white-space:nowrap;
+	}
+	.add-new-card-btn
+	{
+		font-size: medium;
+		padding: 2px 10px; 
+		text-align: center; 
+		border-radius: 12px; 
+		font-style: normal; 
+		line-height: normal; 
+		box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07); 
+		transition: all 0.2s ease; 
+		font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+	}
+	
+	.add-new-card-btn:hover 
+	{
+		transform: scale(1.05); 
+	}
+
+
+@media (max-width: 1500px) {
+
+        .saved-card {
+            margin: 0px;
+            padding: 7px;
+		}
+		
+		.card-details-row
+		{
+			flex-wrap: wrap;
+			padding-top: 5px; 
+		}
+		
+		.card-details  
+		{
+			flex: 1; /* Each box takes equal space (1 row) */
+		}
+		
+		.card-details_2row {
+           flex: 1 1;
+		   gap: 3px;
+        }
+		
+		.card-details-div {
+			flex-wrap:wrap;
+		}
+		
+		.card-details {
+			padding-right: 0px;
+        }
+}
