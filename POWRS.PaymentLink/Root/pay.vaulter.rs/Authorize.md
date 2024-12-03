@@ -153,7 +153,7 @@ if Token.HasStateMachine then
 		Return("");
     );
  
-    if(ContractState == "AwaitingForPayment" and Country != Language.Code.ToUpper()) then
+    if(ContractState == "AwaitingForAuthorization" and Country != Language.Code.ToUpper()) then
       (
         SendLangaugeNote(tokenId, languageCode):= 
         (
@@ -256,7 +256,7 @@ if Token.HasStateMachine then
 			</div>
 			<div class="spaceItem"></div>[[;
 		);
-	if ContractState == "AwaitingForPayment" then 
+	if ContractState == "AwaitingForAuthorization" then
 	(
 			if (!IsEcommerce ) then 
 				(
