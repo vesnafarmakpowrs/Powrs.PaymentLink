@@ -1,5 +1,5 @@
 ﻿Title: Pay-by-Link Subscriptions
-Description: Powers
+Description: Powrs
 Date: 2024-08-04
 Author: POWRS
 Width: device-width
@@ -304,13 +304,13 @@ if Token.HasStateMachine then
 	( 
 	   ]]<div class="saved-card">
 			<div class="card-details-title">
-					<div class="saved-card-title">
-						<label>Saved Card</label>
-					</div>
-					<div>
-					   <button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Pay with new card</button> 
-					</div> 		
-			</div>	
+				<div class="saved-card-title">
+					<label>Saved Card</label>
+				</div>
+				<div>
+					<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Pay with new card</button>
+				</div>
+			</div>
 			<div class="card-details-div">
 				<div class="card-details-row">
 					<div class="card-details">
@@ -319,15 +319,33 @@ if Token.HasStateMachine then
 					</div>
 				</div>
 				<div class="card-details_2row">
-						<div class="card-details">
-							<div class="card-details-lbl">Expiration date:</div>
-							<div class="card-value">12/26</div>
-						</div>
-						<div class="card-details">
-							<div class="card-details-lbl">Card Brand:</div>
-							<div class="card-value">Visa</div>
-						</div>
-				<div>
+					<div class="card-details">
+						<div class="card-details-lbl">Expiration date:</div>
+						<div class="card-value">12/26</div>
+					</div>
+					<div class="card-details">
+						<div class="card-details-lbl">Card Brand:</div>
+						<div class="card-value">Visa</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="spaceItem"></div>
+		<div class="info">
+		    <div class="info-payment-date">
+				<div>Next payment date</div>
+				<div>12/12/2024</div>
+			</div>
+			<div class="info-payment-action">
+				<div>Action</div>
+				<div class="info-payment-action-btn">
+					<div>
+						<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Cancel</button> 
+					</div>
+					<div>
+						<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Renew now</button> 
+					</div>
+				</div>	
 			</div>
 		</div>[[;
 	)

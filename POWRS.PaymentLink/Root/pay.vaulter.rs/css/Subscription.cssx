@@ -4,6 +4,7 @@
 		border: 1px solid #ccc;
 		border-radius: 8px;
 		background-color: #f9f9f9;
+		box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.25);
 	}
 	.card-details-div {
 		display: flex;
@@ -64,7 +65,7 @@
 		border-radius: 12px; 
 		font-style: normal; 
 		line-height: normal; 
-		box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07); 
+		box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.1); 
 		transition: all 0.2s ease; 
 		font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
 	}
@@ -73,15 +74,53 @@
 	{
 		transform: scale(1.05); 
 	}
+	
+	.info
+	{
+	  display: flex;
+	  flex-direction: column;
+	  margin: 0px;
+	  padding: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 8px;
+	  background-color: #f9f9f9;
+	  box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.25);
+	}
+	.info-payment-date
+	{		
+		display: flex; 
+		align-items: center; 
+		gap: 5px; 
+		padding-bottom:8px;
+	}
+	.info-payment-action
+	{		
+		display: flex; 
+		flex-direction: row;
+		align-items: center; 
+		gap: 10px; 
+	}
+	.info-payment-action-btn
+	{		
+		display: flex; 
+		flex-direction: row;
+		align-items: center; 
+		gap: 5px; 
+		padding-bottom:8px;
+	}
 
 
 @media (max-width: 1500px) {
 
         .saved-card {
             margin: 0px;
-            padding: 7px;
+            padding: 8px;
 		}
 		
+		.info
+		{
+			padding: 8px;
+		}	
 		.card-details-row
 		{
 			flex-wrap: wrap;
