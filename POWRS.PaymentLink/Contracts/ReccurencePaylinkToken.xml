@@ -180,15 +180,22 @@
 							   contract="{TokenContract}"
 							   serviceId="{ServiceProviderId}"
 							   serviceProvider="{ServiceProviderType}">
-						<Parameter key="TotalAmountToPay" value="{AmountToPay}"></Parameter>
+						<Parameter key="AmountToPay" value="{AmountToPay}"></Parameter>
 						<Parameter key="Currency" value="{Currency}"></Parameter>
 						<Parameter key="OrderId" value="{OrderId}"></Parameter>
-						<Parameter key="OrderId" value="{OrderId}"></Parameter>
+						<Parameter key="Country" value="{Country}"></Parameter>
+						<Parameter key="Mode" value="Authorize"></Parameter>
 						<Parameter key="PanAlias" value="{PanAlias}"></Parameter>
 						<Parameter key="ExpiryDate" value="{ExpiryDate}"></Parameter>
 						<Parameter key="MaskedPan" value="{MaskedPan}"></Parameter>
-						<Parameter key="CardBrand" value="{CardBrand}" />
-						<Parameter key="ContractId" value="{TokenContract}"></Parameter>
+						<Parameter key="Brand" value="{CardBrand}" />
+						<Parameter key="TokenContract" value="{TokenContract}"></Parameter>
+						<Parameter key="TokenId" value="{TokenId}"></Parameter>
+						<Parameter key="Message" value="Authorization"></Parameter>
+						<Parameter key="Buyer" value="{Buyer}"></Parameter>
+						<Parameter key="BuyerEmail" value="{BuyerEmail}"></Parameter>
+						<Parameter key="BuyerAddress" value="{BuyerAddress}"></Parameter>
+						<Parameter key="BuyerCity" value="{BuyerCity}"></Parameter>
 					</BuyEDaler>
 				</Action>
 
@@ -338,7 +345,7 @@
 							   contract="{TokenContract}"
 							   serviceId="{ServiceProviderId}"
 							   serviceProvider="{ServiceProviderType}">
-							<Parameter key="TotalAmountToPay" value="{CardRegistrationAmount}"></Parameter>
+							<Parameter key="AmountToPay" value="{CardRegistrationAmount}"></Parameter>
 							<Parameter key="Currency" value="{Currency}"></Parameter>
 							<Parameter key="OrderId" value="{OrderId}"></Parameter>
 							<Parameter key="PayspotOrderId" value="{PayspotOrderId}" />
