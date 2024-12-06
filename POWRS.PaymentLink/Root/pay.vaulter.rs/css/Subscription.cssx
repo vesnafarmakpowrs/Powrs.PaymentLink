@@ -106,9 +106,94 @@
 		flex-direction: row;
 		align-items: center; 
 		gap: 5px; 
-		padding-bottom:8px;
 	}
-
+	
+	.payment-history
+	{
+	  display: flex;
+	  flex-direction: column;
+	  margin: 0px;
+	  padding: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 8px;
+	  background-color: #f9f9f9;
+	  box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.25);
+	}
+	
+	.payment-history-div
+	{
+	  display: flex;
+	  flex-direction: row;
+	  margin: 0px;
+	  padding-left: 8px;
+	  padding-top: 8px;
+	  border: 0px ;
+	  border-radius: 8px;
+	  background-color: #ffffff;
+	  box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+	}
+	
+	.payment-history-amount
+	{
+	  font-size: large;
+	}
+	
+	.payment-history-date
+	{
+		font-size: small;
+		ont-weight: lighter;
+		padding: 5px;
+	}
+	.payment-table {
+        display: table;
+        width: 50%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+		margin-left:0;
+    }
+    .payment-row {
+        display: table-row;
+        }
+    .payment-cell {
+        display: table-cell;
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: center;
+		 background-color: #ffffff;
+    }
+    .payment-header {
+        font-weight: bold;
+        background-color: #f4f4f4;
+		display: table-cell;
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+	.payment-paid
+	{
+		font-size: medium;
+		padding: 2px 10px; 
+		text-align: center; 
+		border-radius: 12px; 
+		font-style: normal; 
+		line-height: normal; 
+		box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.1); 
+		transition: all 0.2s ease; 
+		font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+	}
+	.payment-failed
+	{
+		font-size: medium;
+		padding: 2px 10px; 
+		text-align: center; 
+		border-radius: 12px; 
+		font-style: normal; 
+		line-height: normal; 
+		box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.1); 
+		transition: all 0.2s ease; 
+		font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+	}
 
 @media (max-width: 1500px) {
 
@@ -121,6 +206,10 @@
 		{
 			padding: 8px;
 		}	
+		.payment-history
+		{
+			padding: 8px;
+		}
 		.card-details-row
 		{
 			flex-wrap: wrap;

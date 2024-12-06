@@ -1,6 +1,6 @@
-﻿Title: Pay-by-Link Subscriptions
-Description: Powrs
-Date: 2024-08-04
+﻿Title: Payment Link
+Description: Displays information about a contract.
+Date: 2023-08-04
 Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
@@ -337,17 +337,56 @@ if Token.HasStateMachine then
 				<div>12/12/2024</div>
 			</div>
 			<div class="info-payment-action">
-				<div>Action</div>
+				<div class="card-details-lbl">Action</div>
 				<div class="info-payment-action-btn">
-					<div>
+					<div >
 						<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Cancel</button> 
-					</div>
-					<div>
-						<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Renew now</button> 
 					</div>
 				</div>	
 			</div>
 		</div>[[;
+		paymentHistory := Create(System.Collections.Generic.List, System.Object);
+		paymentHistory.Add({"01/01/2024",3200.00,true});
+		paymentHistory.Add({"01/02/2024",3200.00,true});
+		paymentHistory.Add({"01/03/2024",3200.00,true});
+		paymentHistory.Add({"01/04/2024",3200.00,true});
+		paymentHistory.Add({"01/05/2024",3200.00,false});
+		]]<div class="spaceItem"></div>
+		<div class="payment-history">
+			<div>Payment History</div>
+			<div class="payment-table">
+				<div class="payment-row">
+					<div class="payment-header">Payment Date</div>
+					<div class="payment-header">Amount</div>
+				</div>[[;
+				foreach (payment in paymentHistory) do (
+				]]<div class="payment-row">
+					<div class="payment-cell">((payment[0] ))</div>
+					<div class="payment-cell">((payment[1] ))</div>
+				</div>[[;
+				);
+			]]</div>
+		</div>
+		<div class="spaceItem"></div>
+		<div class="payment-history">[[;
+				foreach (payment in paymentHistory) do (
+					]]<div class="payment-history-div">
+					    <div>
+							<div class="payment-history-amount">((payment[1] )) RSD</div>
+							<div class="payment-history-date">((payment[0] ))</div>
+						</div>
+						[[;
+						if (payment[2]) then (
+							]]<div class="payment-paid">paid</div>[[;
+						)else(
+						    ]]<div class="payment-failed">failed</div>[[;
+						);
+						]]
+					  </div>
+				  <div class="spaceItem"></div>[[;
+					);]]
+		</div>
+		[[;
 	)
 	else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" || ContractState == "ReleaseFundsToSellerFailed" )then 
 	(
