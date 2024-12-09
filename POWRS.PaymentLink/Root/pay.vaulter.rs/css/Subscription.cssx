@@ -222,20 +222,29 @@
 	  flex: 1; 
 	  display: flex; 
 	  justify-content: space-between; 
-	  align-items: center;
-	  padding-right: 60px;
+	  align-items: end;/*center*/
+	  padding-left: 10px;
 	}
 	
 	.payment-history-retry-note
 	{
 		font-weight: lighter;
 	    font-style: italic;
+		color: red;
 		font-size: small;
+		padding-bottom: 8px;
 	}
 
-   .payment-history-btn {
-	  margin-left: auto; /* Push the button to the far right */
+   .payment-history-retry-btn {
+	 /* margin-left: auto;Push the button to the far right */
 	  cursor: pointer;
+	  margin-bottom: 8px;
+    }
+	
+	.payment-history-cancel-btn {
+	 /* margin-left: auto;Push the button to the far right */
+	  cursor: pointer;
+	    margin-bottom: 8px;
     }
 	
 	.paid {
