@@ -308,7 +308,7 @@ if Token.HasStateMachine then
 					<label>Saved Card</label>
 				</div>
 				<div>
-					<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Pay with new card</button>
+					<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Register new card</button>
 				</div>
 			</div>
 			<div class="card-details-div">
@@ -331,62 +331,51 @@ if Token.HasStateMachine then
 			</div>
 		</div>
 		<div class="spaceItem"></div>
-		<div class="info">
-		    <div class="info-payment-date">
-				<div>Next payment date</div>
-				<div>12/12/2024</div>
-			</div>
-			<div class="info-payment-action">
-				<div class="card-details-lbl">Action</div>
-				<div class="info-payment-action-btn">
-					<div >
-						<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Cancel</button> 
-					</div>
-				</div>	
-			</div>
-		</div>[[;
+		[[;
 		paymentHistory := Create(System.Collections.Generic.List, System.Object);
-		paymentHistory.Add({"01/01/2024",3200.00,true});
-		paymentHistory.Add({"01/02/2024",3200.00,true});
-		paymentHistory.Add({"01/03/2024",3200.00,true});
-		paymentHistory.Add({"01/04/2024",3200.00,true});
-		paymentHistory.Add({"01/05/2024",3200.00,false});
+		paymentHistory.Add({DateTime(2024,7, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
+		paymentHistory.Add({DateTime(2024,8, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
+		paymentHistory.Add({DateTime(2024,9, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
+		paymentHistory.Add({DateTime(2024,10, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
+		paymentHistory.Add({DateTime(2024,11, 13).ToString('MMM dd,yyyy'),3200.00,'failed'});
+		paymentHistory.Add({DateTime(2025,01, 13).ToString('MMM dd,yyyy'),3200.00,'pending'});
 		]]<div class="spaceItem"></div>
 		<div class="payment-history">
 			<div>Payment History</div>
-			<div class="payment-table">
-				<div class="payment-row">
-					<div class="payment-header">Payment Date</div>
-					<div class="payment-header">Amount</div>
-				</div>[[;
+			 <div class="spaceItem"></div>[[;
 				foreach (payment in paymentHistory) do (
-				]]<div class="payment-row">
-					<div class="payment-cell">((payment[0] ))</div>
-					<div class="payment-cell">((payment[1] ))</div>
-				</div>[[;
-				);
-			]]</div>
-		</div>
-		<div class="spaceItem"></div>
-		<div class="payment-history">[[;
-				foreach (payment in paymentHistory) do (
-					]]<div class="payment-history-div">
+					]]
+					<div class="payment-container">
+					  <div class="payment-history-div">
 					    <div>
 							<div class="payment-history-amount">((payment[1] )) RSD</div>
-							<div class="payment-history-date">((payment[0] ))</div>
-						</div>
-						[[;
-						if (payment[2]) then (
-							]]<div class="payment-paid">paid</div>[[;
-						)else(
-						    ]]<div class="payment-failed">failed</div>[[;
+							<div class="payment-history-date">((payment[0] ))</div>	[[;	
+                           
+						]]</div>[[;
+						if (payment[2] == 'failed') then (
+							]]<div class="payment-history-retry"><button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn payment-history-btn">Retry</button></div>[[;
+						)else if (payment[2] == 'pending') then(
+						    ]]<div class="payment-history-retry"><button id="cancel-btn" class="btn-black btn-show add-new-card-btn payment-history-btn">Cancel</button> </div>[[;
 						);
-						]]
-					  </div>
-				  <div class="spaceItem"></div>[[;
-					);]]
+						]]</div>[[;
+						if (payment[2] == 'paid') then (
+							]]<div class="payment-sticker paid">paid</div>[[;
+						)else if (payment[2] == 'failed')then (
+						    ]]<div class="payment-sticker failed">failed</div>[[;
+						)else if (payment[2] == 'pending') then(
+						   ]]<div class="payment-sticker pending">pending</div>[[;
+						);
+						]]</div>					   
+				     <div class="payment-history-space"></div>[[;
+					);
+			]]</div>
+		 <div class="spaceItem"></div>
+		 <div class="spaceItem"></div>
+		 <div class="spaceItem"></div>
+		 <div class="spaceItem"></div>
 		</div>
-		[[;
+		</div>
+		</div>[[;
 	)
 	else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" || ContractState == "ReleaseFundsToSellerFailed" )then 
 	(
