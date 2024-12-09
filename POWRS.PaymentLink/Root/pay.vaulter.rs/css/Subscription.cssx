@@ -10,6 +10,12 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap:nowrap;
+		border: 0px;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+		padding-left: 8px;
+
 	}
 	.card-details {
 		display: flex;
@@ -50,7 +56,7 @@
 	.card-value{
 		border: 1px solid #ccc;
 		border-radius: 8px;
-		background-color: #ffffff;
+		background-color: #f1f1f1;
 		font-size: 16px;
 		color: #838282;
 		text-align: left;
@@ -61,6 +67,7 @@
 	{
 		font-size: medium;
 		padding: 2px 10px; 
+		margin-left:8px;
 		text-align: center; 
 		border-radius: 12px; 
 		font-style: normal; 
@@ -68,44 +75,12 @@
 		box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.1); 
 		transition: all 0.2s ease; 
 		font-family: "RTDromo Medium", "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans", Arial, sans-serif;
+		cursor: pointer;
 	}
 	
 	.add-new-card-btn:hover 
 	{
 		transform: scale(1.05); 
-	}
-	
-	.info
-	{
-	  display: flex;
-	  flex-direction: column;
-	  margin: 0px;
-	  padding: 15px;
-	  border: 1px solid #ccc;
-	  border-radius: 8px;
-	  background-color: #f9f9f9;
-	  box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.25);
-	}
-	.info-payment-date
-	{		
-		display: flex; 
-		align-items: center; 
-		gap: 5px; 
-		padding-bottom:8px;
-	}
-	.info-payment-action
-	{		
-		display: flex; 
-		flex-direction: row;
-		align-items: center; 
-		gap: 10px; 
-	}
-	.info-payment-action-btn
-	{		
-		display: flex; 
-		flex-direction: row;
-		align-items: center; 
-		gap: 5px; 
 	}
 	
 	.payment-history
