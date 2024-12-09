@@ -30,7 +30,7 @@ try
 	);
 
 	currentState:= token.GetCurrentStateVariables();
-	if(currentState.State != "AwaitingForAuthorization") then
+	if(currentState.State != "AwaitingCardRegistration") then
 	(
 		Error("Payment is not available for this contract");
 	);
