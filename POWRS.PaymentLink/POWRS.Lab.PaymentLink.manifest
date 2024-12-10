@@ -272,6 +272,8 @@
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
 					<Content fileName="ApprovedLegalIdentity.html"></Content>
+					<Content fileName="SubscriptionPaymentFailed.html"></Content>
+					<Content fileName="SubscriptionCanceled.html"></Content>					
 				</Folder>
 				<Folder name="RS">
 					<Content fileName="ContactUs.html"></Content>
@@ -282,6 +284,8 @@
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
 					<Content fileName="ApprovedLegalIdentity.html"></Content>
+					<Content fileName="SubscriptionPaymentFailed.html"></Content>
+					<Content fileName="SubscriptionCanceled.html"></Content>
 				</Folder>
 			</Folder>
 

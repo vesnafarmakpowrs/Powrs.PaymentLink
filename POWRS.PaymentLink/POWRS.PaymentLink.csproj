@@ -707,6 +707,12 @@
 	  <None Update="Root\Payout\HtmlTemplates\EN\purchase_agreement.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\SubscriptionCanceled.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\SubscriptionPaymentFailed.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\EN\TermsAndCondition.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -717,6 +723,12 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\ContactUs.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\RS\SubscriptionCanceled.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\RS\SubscriptionPaymentFailed.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\PaymentFailedIPS.html">
