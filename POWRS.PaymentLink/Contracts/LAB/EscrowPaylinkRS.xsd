@@ -25,10 +25,14 @@
 	<xs:element name="PayspotPaymentStatus">
 		<xs:complexType>
 			<xs:attribute name="payspotOrderId" type="xs:string" use="required" />
-			<xs:attribute name="orderId" type="xs:string" use="required" />
+			<xs:attribute name="orderId" type="xs:string" use="required" />			
 			<xs:attribute name="paymentType" type="xs:string" use="required" />
 			<xs:attribute name="paymentStatusCode" type="xs:string" use="required" />
 			<xs:attribute name="paymentStatusDescr" type="xs:string" use="required" />
+			<xs:attribute name="maskedPan" type="xs:string" use="optional" />
+			<xs:attribute name="expiryDate" type="xs:string" use="optional" />
+			<xs:attribute name="cardBrand" type="xs:string" use="optional" />
+			<xs:attribute name="amount" type="xs:string" use="optional" />
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="CallBackUrlUpdated">
