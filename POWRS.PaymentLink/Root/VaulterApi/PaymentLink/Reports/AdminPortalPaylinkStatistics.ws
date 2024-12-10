@@ -66,7 +66,7 @@ try
 	sqlQueryBuilder.AppendLine("where Created >= DTDateFrom and Created < DTDateTo ");
 	if(filterByCreators)then
 	(
-		Creators:= Global.GetUsersForOrganization(POrganizationList);
+		Creators:= Global.GetUsersForOrganization(POrganizationList, true);
 		sqlQueryBuilder.AppendLine("and CreatorJid IN Creators ");
 	);
 	
