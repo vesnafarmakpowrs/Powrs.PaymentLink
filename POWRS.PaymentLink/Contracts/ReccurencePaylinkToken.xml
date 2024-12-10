@@ -80,9 +80,6 @@
 				<Variable id="SellerBankAccount">
 					<TagReference tag="SellerBankAccount" />
 				</Variable>
-				<Variable id="BuyerBankAccount">
-					<TagReference tag="BuyerBankAccount" />
-				</Variable>
 				<Variable id="PaymentDeadline">
 					<TagReference tag="PaymentDeadline" />
 				</Variable>
@@ -119,9 +116,6 @@
 				<Variable id="SuccessUrl">
 					<TagReference tag="SuccessUrl" />
 				</Variable>
-				<Variable id="IsEcommerce">
-					<TagReference tag="IsEcommerce" />
-				</Variable>
 				<Variable id="CanCancel">
 					<Boolean>false</Boolean>
 				</Variable>
@@ -146,9 +140,12 @@
 				<Variable id="DeliveryDate">
 					<TagReference tag="DeliveryDate" />
 				</Variable>
+				<Variable id="TransactionHistory">
+					<Calc>{}</Calc>
+				</Variable>
 				<State id="AwaitingCardRegistration">
 					<OnEnter actionRef="SetServiceProvider"/>
-					<OnEvent actionRef="EnsureRegistrationPaymentCompleted" newState="RegistrationRefundInProgress" failureState="AwaitingCardRegistration">
+					<OnEvent actionRef="RegisterCard" newState="AwaitingForPayment" failureState="AwaitingCardRegistration">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent actionRef="ProcessPayspotPaymentStatus" newState="AwaitingCardRegistration" failureState="AwaitingCardRegistration">
@@ -166,11 +163,8 @@
 					<OnEvent actionRef="SetBuyerTimeZoneDifference">
 						<OnExternalXmlNote localName="BuyerTimeZoneDifference" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
-				</State>
-
-				<State id="RegistrationRefundInProgress">
-					<OnEvent actionRef="RefundRegistrationAmount" newState="AwaitingForPayment" failureState="AwaitingForPayment">
-						<OnDuration>PT1S</OnDuration>
+					<OnEvent actionRef="UpdateBuyerInformations">
+						<OnExternalXmlNote localName="UpdateBuyerInformations" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 				</State>
 
@@ -178,8 +172,17 @@
 					<OnEvent actionRef="TryToAuthorizeFunds" newState="Done" failureState="PaymentFailed">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
-					<OnEvent newState="PaymentCanceled" failureState="AwaitingForPayment">
+					<OnEvent newState="PaymentCanceled" failureState="PaymentCanceled">
 						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent newState="PaymentCanceled" failureState="PaymentCanceled">
+						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="UpdateBuyerInformations">
+						<OnExternalXmlNote localName="UpdateBuyerInformations" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="RegisterCard" newState="AwaitingForPayment" failureState="AwaitingForPayment">
+						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 				</State>
 
@@ -213,15 +216,66 @@
 				<State id="Done">
 					<OnEnter actionRef="MarkAsDone"/>
 				</State>
+
+				<Action id="InsertTransactionIntoHistory">
+					<Script>
+						TransactionHistory[NowUtc]:=
+						{
+						Success:  transactionSucceeded,
+						CardBrand: cardBrand,
+						MaskedPan: maskedPan,
+						ExpiryDate: expiryDate,
+						Amount: amount
+						};
+					</Script>
+					<PersistVariable name="TransactionHistory" value="{TransactionHistory}"/>
+				</Action>
+				<Action id="UpdateBuyerInformations">
+					<Script>
+						fullName:= SelectXmlStr(Note,'/default:UpdateBuyerInformations/@buyerFullName');
+						city:= SelectXmlStr(Note,'/default:UpdateBuyerInformations/@city');
+						phoneNumber:= SelectXmlStr(Note,'/default:UpdateBuyerInformations/@phoneNumber');
+						email:= SelectXmlStr(Note,'/default:UpdateBuyerInformations/@email');
+						address:= SelectXmlStr(Note,'/default:UpdateBuyerInformations/@address');
+					</Script>
+					<If condition="!Evaluate('System.String.IsNullOrWhiteSpace(fullName)')">
+						<Then>
+							<PersistVariable name="Buyer" value="{fullName}" />
+						</Then>
+					</If>
+					<If condition="!Evaluate('System.String.IsNullOrWhiteSpace(phoneNumber)')">
+						<Then>
+							<PersistVariable name="BuyerPhoneNumber" value="{phoneNumber}" />
+						</Then>
+					</If>
+					<If condition="!Evaluate('System.String.IsNullOrWhiteSpace(email)')">
+						<Then>
+							<PersistVariable name="BuyerEmail" value="{email}" />
+						</Then>
+					</If>
+					<If condition="!Evaluate('System.String.IsNullOrWhiteSpace(address)')">
+						<Then>
+							<PersistVariable name="BuyerAddress" value="{address}" />
+						</Then>
+					</If>
+					<If condition="!Evaluate('System.String.IsNullOrWhiteSpace(city)')">
+						<Then>
+							<PersistVariable name="BuyerCity" value="{city}" />
+						</Then>
+					</If>
+				</Action>
+
 				<Action id="IncrementFailedAttemptsCounter">
 					<PersistVariable name="FailedPaymentAttempts" value="{FailedPaymentAttempts + 1}"></PersistVariable>
 				</Action>
+
 				<Action id="CalculateNextAuthorizationAttempt">
 					<Script>
 						nextDeliveryDate:= Evaluate('NowUtc.AddMinutes(1)');
 					</Script>
 					<PersistVariable name="DeliveryDate" value="{nextDeliveryDate}"></PersistVariable>
 				</Action>
+
 				<Action id="TryToAuthorizeFunds">
 					<Script>
 						Evaluate("Error('Testing for failed attempts.')");
@@ -323,12 +377,17 @@
 				</Action>
 				<Action id="ProcessPayspotPaymentStatus">
 					<Script>
-						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@orderId');
+						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@orderId');						
 						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentType');
 						PaymentStatusCode := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusCode');
 						PaymentStatusDescr := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusDescr');
-						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr, 'ErrorUrl': ErrorUrl})")
+						maskedPan:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@maskedPan');
+						expiryDate:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@expiryDate');
+						cardBrand:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@cardBrand');
+						cardBrand:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@amount');
+						transactionSucceeded:= false;
 					</Script>
+					<CallAction actionRef="InsertTransactionIntoHistory" />
 					<Try>
 						<PersistVariable name="PaySpotStatusCode" value="{PaymentStatusCode}" />
 						<PersistVariable name="PaySpotStatusMsg" value="{PaymentStatusDescr}" />
@@ -346,14 +405,12 @@
 							<TextNote content="CardRegistration not performed." />
 						</Then>
 						<Else>
-							<PersistVariable name="RefundPaymentMessage" value="" />
 							<Script>
 								<![CDATA[
 									AmountToSell:= ActiveCardDetails.RegistrationAmount;
-									BankAccountToSell:= "";
 									SellEdalerFrom:= Seller;
 									AccountName:= SellerName;
-									MessageOnError:= 'CancelPayment error';
+									MessageOnError:= 'Regitration refund error';
 									Mode:= 'Refund';
 									Message:= "Povrat novca.";
 									SellEdalerOrderId:= ActiveCardDetails.RegistrationOrderId;
@@ -361,19 +418,18 @@
 							</Script>
 							<Try>
 								<CallAction actionRef="TrySellEdaler" />
-								<PersistVariable name="RefundPaymentMessage" value="ok" />
+								ActiveCardDetails.RefundMessage:= "";
 								<Catch exceptionVariable="ex">
 									<Script>
 										ActiveCardDetails.RefundMessage:= ex.Message;
-									</Script>								
-									<PersistVariable name="ActiveCardDetails" value="{ActiveCardDetails}" />
-									<Error reason="{ex.Message}"></Error>
+									</Script>
 								</Catch>
 							</Try>
+							<PersistVariable name="ActiveCardDetails" value="{ActiveCardDetails}" />
 						</Else>
 					</If>
 				</Action>
-				<Action id="EnsureRegistrationPaymentCompleted">
+				<Action id="RegisterCard">
 					<Script>
 						Amount:= Num(SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@amount'));
 						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
@@ -391,6 +447,9 @@
 						ActiveCardDetails.RegistrationOrderId:= OrderId;
 						ActiveCardDetails.RegistrationAmount:= Amount;
 						ActiveCardDetails.CardRegistrationDateTime:= NowUtc;
+
+						transactionSucceeded:= true;
+						errorMessage:= "";
 					</Script>
 					<Try>
 						<BuyEDaler to="{Seller}"
@@ -405,28 +464,35 @@
 							<Parameter key="OrderId" value="{ActiveCardDetails.RegistrationOrderId}"></Parameter>
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
 						</BuyEDaler>
-						
+
+						<CallAction actionRef="RefundRegistrationAmount" />
+
 						<If condition="!Evaluate('POWRS.PaymentLink.CardHelper.IsCardExpired(DeliveryDate, ActiveCardDetails.ExpiryDate)')">
-							<Then>							
+							<Then>
 								<PersistVariable name="PaymentType" value="{PaymentType}" />
 								<PersistVariable name="ActiveCardDetails" value="{ActiveCardDetails}" />
 							</Then>
 							<Else>
 								<Error reason="Payment completed but card is not valid long enough."></Error>
 							</Else>
-						</If>						
-						
+						</If>
+
 						<Catch exceptionVariable="ex">
-							<LogEvent type="Error" eventId="EnsureRegistrationPaymentCompleted" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Script>
+								transactionSucceeded:= false;
+								errorMessage:= ex.Message;
+							</Script>
+							<LogEvent type="Error" eventId="RegisterCard" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>
 						</Catch>
 					</Try>
+
+					<CallAction actionRef="InsertTransactionIntoHistory" />
 				</Action>
 				<Action id="ReleaseFunds">
 					<Script>
 						<![CDATA[					
 									AmountToSell:= AmountToPay;
-									BankAccountToSell:= "";
 									SellEdalerFrom:= Seller;
 									AccountName:= SellerName;
 									MessageOnError:= 'ReleaseFundsToSeller error';
@@ -446,7 +512,7 @@
 						<LogEvent actor="{SellEdalerFrom}"
 									eventId="TrySellEdaler"
 									level="Medium"
-									message="{'TrySellEdaler started - ' + ' Amount: ' + AmountToSell + ' Contract: ' + TokenContract + ' Currency: ' + Currency + ' From: ' + SellEdalerFrom + ' TokenId: ' + TokenId + ' ServiceProviderId: ' + ServiceProviderId + ' ServiceProviderType: ' + ServiceProviderType + ' BankAccount: ' + BankAccountToSell + ' AccountName: ' + AccountName }"
+									message="{'TrySellEdaler started - ' + ' Amount: ' + AmountToSell + ' Contract: ' + TokenContract + ' Currency: ' + Currency + ' From: ' + SellEdalerFrom + ' TokenId: ' + TokenId + ' ServiceProviderId: ' + ServiceProviderId + ' ServiceProviderType: ' + ServiceProviderType + ' AccountName: ' + AccountName }"
 									module="SellEDaler"
 									object=""
 									type="Informational" />
@@ -459,7 +525,6 @@
 									serviceProvider="{ServiceProviderType}">
 							<Parameter key="Amount" value="{AmountToSell}" />
 							<Parameter key="Currency" value="{Currency}" />
-							<Parameter key="Account" value="{BankAccountToSell}" />
 							<Parameter key="AccountName" value="{AccountName}" />
 							<Parameter key="ContractId" value="{TokenContract}" />
 							<Parameter key="TokenId" value="{TokenId}" />
@@ -467,7 +532,7 @@
 							<Parameter key="OrderId" value="{SellEdalerOrderId}" />
 							<Parameter key="Mode" value="{Mode}" />
 						</SellEDaler>
-						<TextNote content="{'Amount of edaler: ' + AmountToSell + ' ' + Currency + ' sold. From: ' + SellEdalerFrom + ' to BankAccount: ' + BankAccountToSell}" />
+						<TextNote content="{'Amount of edaler: ' + AmountToSell + ' ' + Currency + ' sold. From: ' + SellEdalerFrom}" />
 						<Catch exceptionVariable="ex">
 							<LogEvent actor="{SellEdalerFrom}" eventId="SellEDaler" level="Medium" message="{MessageOnError + ' - ' + ex.Message }" module="SellEDaler" object="" type="Error" />
 							<Error reason="{ex.Message}" />
@@ -477,7 +542,7 @@
 				<Action id="End">
 					<End />
 				</Action>
-				
+
 				<ReportPresent>
 					| Variable | Value |
 					|---------------------|-------------------------|
@@ -531,9 +596,6 @@
 		<Tag name="SellerBankAccount">
 			<ParameterReference parameter="SellerBankAccount" />
 		</Tag>
-		<Tag name="BuyerBankAccount">
-			<ParameterReference parameter="BuyerBankAccount" />
-		</Tag>
 		<Tag name="AmountToPay">
 			<ParameterReference parameter="AmountToPay" />
 		</Tag>
@@ -551,9 +613,6 @@
 		</Tag>
 		<Tag name="ErrorUrl">
 			<ParameterReference parameter="ErrorUrl" />
-		</Tag>
-		<Tag name="IsEcommerce">
-			<ParameterReference parameter="IsEcommerce" />
 		</Tag>
 		<Tag name="DeliveryDate">
 			<ParameterReference parameter="DeliveryDate" />
@@ -684,22 +743,6 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Seller Name used to sellEdaler</text>
-				</paragraph>
-			</description>
-		</stringParameter>
-		<stringParameter name="IsEcommerce" value="false">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Seller Name used to sellEdaler</text>
-				</paragraph>
-			</description>
-		</stringParameter>
-		<stringParameter name="BuyerBankAccount" value="" guide="Buyer's bank account number">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Buyer</text>
-					<text>’</text>
-					<text>s bank account number</text>
 				</paragraph>
 			</description>
 		</stringParameter>
