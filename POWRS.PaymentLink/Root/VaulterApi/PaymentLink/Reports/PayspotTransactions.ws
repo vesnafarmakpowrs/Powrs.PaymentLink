@@ -47,7 +47,7 @@ try
 	
 	if(filterByCreators) then
 	(
-		Creators:= Global.GetUsersForOrganization(POrganizationList, true);
+		Creators:= Global.GetUsersForOrganization(POrganizationList);
 		sqlQueryBuilder.Append("and t.CreatorJid IN Creators ");
 	);
 	
