@@ -10,6 +10,7 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateStateMachineCurrentStateIndex.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetAgentSuccessfullTransactions.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUsersForMyCompany.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./GetUsersForOrganization.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateItem.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./RegexValidation.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateUrl.config" />

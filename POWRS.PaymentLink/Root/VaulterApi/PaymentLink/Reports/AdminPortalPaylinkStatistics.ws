@@ -14,6 +14,7 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 currentMethod := "";
 errors:= Create(System.Collections.Generic.List, System.String);
+responsePartnerDict := {}; comment:= "We are creating a dictionary because it is the fastest way to iterate through the data, plus List functions don't work";
 
 ValidatePostedData(Posted) := (
 	if(!Global.RegexValidation(Posted.from, "DateDDMMYYYY", "")) then
@@ -45,8 +46,42 @@ ValidatePostedData(Posted) := (
 	return (1); 
 );
 
+SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, creator) := (
+	PayLinks:= Evaluate(Str(paylinksBuilder));
+	Statistics:= Evaluate(Str(statisticsBuilder));
+	foreach statistic in Statistics do 
+	(
+		ProcessSellerDataIntoDict(statistic[0], statistic[1], statistic[2], statistic[3], statistic[4]);
+	);
+);
+
+ProcessSellerDataIntoDict(sellerName, nrPaylinks, firstPaylink, latestPaylink, totalPrice) := (
+	if(responsePartnerDict.ContainsKey(sellerName))then
+	(
+		obj := responsePartnerDict[sellerName];
+		obj.PaylinksCount += nrPaylinks;
+		obj.LatestPaylinkDate := latestPaylink;
+		obj.TotalPaylinkValue += totalPrice;				
+	)
+	else
+	(
+		obj := {
+			PartnerName: sellerName,
+			PaylinksCount: nrPaylinks,
+			TotalPaylinkValue: totalPrice,
+			AveragePaylinkValue: 0,
+			FirstPaylinkDate: firstPaylink,
+			LatestPaylinkDate: latestPaylink,
+			PaylinkFrequency: 0,
+			LatestPaylinkDays: 0,
+			OnboardingCompleted: DateTime(0001,01,01)
+		};
+		responsePartnerDict.Add(sellerName, obj);
+	);
+);
+
 try
-(	
+(
 	Log.Debug("Posted: " + Str(Posted), logObject, logActor, logEventID, null);
 	
 	currentMethod := "ValidatePostedData";
@@ -54,69 +89,50 @@ try
 	
 	filterByCreators := POrganizationList != "";
 	
-	currentMethod := "Collecting data";
+	currentMethod := "Collecting filter criteria";
 	dateFormat := "dd/MM/yyyy";
 	DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	DTDateTo := DTDateTo.AddDays(1);
 		
-	sqlQueryBuilder := Create(System.Text.StringBuilder);
-	sqlQueryBuilder.AppendLine("select CreatorJid, TokenId, Created ");
-	sqlQueryBuilder.AppendLine("from NeuroFeatureTokens ");
-	sqlQueryBuilder.AppendLine("where Created >= DTDateFrom and Created < DTDateTo ");
+	currentMethod := "prepering response dict";
+	paylinksBuilder := Create(System.Text.StringBuilder);
+	paylinksBuilder.AppendLine("select TokenId,Updated,");
+	paylinksBuilder.AppendLine("((select top 1 Value from 'StateMachineSamples' where StateMachineId=TokenId and Variable='SellerName' order by Timestamp desc) ?? '-') as SellerName,");
+	paylinksBuilder.AppendLine("((select top 1 Value from 'StateMachineSamples' where StateMachineId=TokenId and Variable='Price' order by Timestamp desc) ?? 1) as Price ");
+	paylinksBuilder.AppendLine("from NeuroFeatureReferences");
+	paylinksBuilder.AppendLine("where Updated >= DTDateFrom and Updated < DTDateTo");
+	
+	statisticsBuilder := Create(System.Text.StringBuilder);
+	statisticsBuilder.AppendLine("select SellerName, count(*) NrPaylinks, Min(Updated) First, Max(Updated) Latest, sum(Price) TotalPrice");
+	statisticsBuilder.AppendLine("from PayLinks");
+	statisticsBuilder.AppendLine("from group by SellerName");
+	
 	if(filterByCreators)then
 	(
-		Creators:= Global.GetUsersForOrganization(POrganizationList, true);
-		sqlQueryBuilder.AppendLine("and CreatorJid IN Creators ");
-	);
-	
-	neuroFeatureTokenList := Evaluate(Str(sqlQueryBuilder));
-	destroy(sqlQueryBuilder);
-	
-	currentMethod := "prepering response dict";
-	responsePartnerDict := Create(System.Collections.Generic.Dictionary, System.String, System.Object);		
-	counter := 0;
-	foreach token in neuroFeatureTokenList do 
-	(
-		smVariableValues := select top 1 VariableValues
-			from StateMachineCurrentStates
-			where StateMachineId = token[1];
-	
-		if(smVariableValues != null and smVariableValues.Length > 0)then
+		paylinksBuilder.AppendLine("and OwnerJid = creator");
+		paylinksBuilder.AppendLine("order by SellerName");
+		creators:= Global.GetUsersForOrganization(POrganizationList, true);
+		
+		foreach creator in creators do 
 		(
-			sellerName := select top 1 Value from smVariableValues where Name = "SellerName";
-			price := select top 1 Value from smVariableValues where Name = "Price";
-			created := token[2];
-			
-			sellerName := sellerName ?? "-";
-			price := price ?? 1;
-			
-			if(responsePartnerDict.ContainsKey(sellerName))then
-			(
-				obj := responsePartnerDict[sellerName];
-				obj.PaylinksCount ++;
-				obj.LatestPaylinkDate := created;
-				obj.TotalPaylinkValue += price;				
-			)
-			else
-			(
-				obj := {
-					Partnername: sellerName,
-					PaylinksCount: 1,
-					TotalPaylinkValue: price,
-					AveragePaylinkValue: 0,
-					FirstPaylinkDate: created,
-					LatestPaylinkDate: created,
-					PaylinkFrequency: 0					
-				};
-				responsePartnerDict.Add(sellerName, obj);
-			);
+			SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, creator);
 		);
+	)
+	else
+	(
+		paylinksBuilder.AppendLine("order by SellerName");
+		SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, "");
 	);
-	Destroy(neuroFeatureTokenList);
+	
+	destroy(paylinksBuilder);
+	destroy(statisticsBuilder);
+	destroy(PayLinks);
+	destroy(Statistics);
 	
 	currentMethod := "aggregating data";
 	responseList := Create(System.Collections.Generic.List, System.Object);
+	
 	foreach item in responsePartnerDict do
 	(
 		obj := item.Value;
@@ -125,6 +141,11 @@ try
 		(
 			obj.PaylinkFrequency := Days(obj.LatestPaylinkDate - obj.FirstPaylinkDate) / (obj.PaylinksCount - 1);
 		);
+		
+		obj.LatestPaylinkDays := Days(Now.Date - obj.LatestPaylinkDate.Date);
+		
+		generalInfoDateApproved := select top 1 DateApproved from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where ShortName = obj.PartnerName;
+		obj.OnboardingCompleted := generalInfoDateApproved ?? DateTime(1,1,1);
 		
 		responseList.Add(obj);
 	);
