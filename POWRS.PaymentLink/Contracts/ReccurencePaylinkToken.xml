@@ -256,7 +256,6 @@
 
 				<Action id="TryToAuthorizeFunds">
 					<Script>
-						Evaluate("Error('Testing for failed attempts.')");
 						newOrderId:= Evaluate('NewGuid()');
 					</Script>
 					<BuyEDaler to="{Seller}"
@@ -386,6 +385,7 @@
 						ActiveCardDetails.RegistrationOrderId:= OrderId;
 						ActiveCardDetails.RegistrationAmount:= Amount;
 						ActiveCardDetails.CardRegistrationDateTime:= NowUtc;
+						ActiveCardDetails.IsValid:= false;
 					</Script>
 					<Try>
 						<BuyEDaler to="{Seller}"
@@ -405,6 +405,9 @@
 
 						<If condition="!Evaluate('POWRS.PaymentLink.CardHelper.IsCardExpired(DeliveryDate, ActiveCardDetails.ExpiryDate)')">
 							<Then>
+								<Script>
+									ActiveCardDetails.IsValid:= true;
+								</Script>
 								<PersistVariable name="PaymentType" value="{PaymentType}" />
 								<PersistVariable name="ActiveCardDetails" value="{ActiveCardDetails}" />
 							</Then>
