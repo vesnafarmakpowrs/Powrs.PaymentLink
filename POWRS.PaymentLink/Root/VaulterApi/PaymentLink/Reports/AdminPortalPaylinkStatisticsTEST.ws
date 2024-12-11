@@ -46,6 +46,15 @@ ValidatePostedData(Posted) := (
 	return (1); 
 );
 
+SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, creator) := (
+	PayLinks:= Evaluate(Str(paylinksBuilder));
+	Statistics:= Evaluate(Str(statisticsBuilder));
+	foreach statistic in Statistics do 
+	(
+		ProcessSellerDataIntoDict(statistic[0], statistic[1], statistic[2], statistic[3], statistic[4]);
+	);
+);
+
 ProcessSellerDataIntoDict(sellerName, nrPaylinks, firstPaylink, latestPaylink, totalPrice) := (
 	if(responsePartnerDict.ContainsKey(sellerName))then
 	(
@@ -101,28 +110,18 @@ try
 	if(filterByCreators)then
 	(
 		paylinksBuilder.AppendLine("and OwnerJid = creator");
+		paylinksBuilder.AppendLine("order by SellerName");
 		creators:= Global.GetUsersForOrganization(POrganizationList, true);
 		
 		foreach creator in creators do 
 		(
-			PayLinks:= Evaluate(Str(paylinksBuilder));
-			Statistics:= Evaluate(Str(statisticsBuilder));
-			foreach statistic in Statistics do 
-			(
-				currentMethod := "ProcessSellerDataIntoDict";
-				ProcessSellerDataIntoDict(statistic[0], statistic[1], statistic[2], statistic[3], statistic[4]);
-			);
+			SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, creator);
 		);
 	)
 	else
 	(
-		PayLinks:= Evaluate(Str(paylinksBuilder));
-		Statistics:= Evaluate(Str(statisticsBuilder));
-		foreach statistic in Statistics do 
-		(
-			currentMethod := "ProcessSellerDataIntoDict";
-			ProcessSellerDataIntoDict(statistic[0], statistic[1], statistic[2], statistic[3], statistic[4]);
-		);
+		paylinksBuilder.AppendLine("order by SellerName");
+		SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, "");
 	);
 	
 	destroy(paylinksBuilder);

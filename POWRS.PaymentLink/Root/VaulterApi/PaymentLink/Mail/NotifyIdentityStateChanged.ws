@@ -45,7 +45,7 @@ if(exists(firstName) and exists(lastName) and exists(agentName) and exists(email
  if(agentName.Contains("VaulterApi/PaymentLink/Account/CreateAccount.ws")) then
 (
 	generalInfo:= select top 1 * from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where UserName = identity.Account;
-	if(generalInfo != null and generalInfo.DateApproved = null)then
+	if(generalInfo != null and (generalInfo.DateApproved = null or Year(generalInfo.DateApproved) = 1))then
 	(
 		generalInfo.DateApproved := Now;
 		Waher.Persistence.Database.Update(generalInfo);
