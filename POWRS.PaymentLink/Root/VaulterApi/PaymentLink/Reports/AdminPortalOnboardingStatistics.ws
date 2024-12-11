@@ -9,7 +9,7 @@ if !exists(Posted) then BadRequest("No payload.");
 }:=Posted) ??? BadRequest(Exception.Message);
 
 logObject := SessionUser.username;
-logEventID := "AdminPortalPaylinkStatistics.ws";
+logEventID := "AdminPortalOnboardingStatistics.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 currentMethod := "";
@@ -46,42 +46,10 @@ ValidatePostedData(Posted) := (
 	return (1); 
 );
 
-SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, creator) := (
-	PayLinks:= Evaluate(Str(paylinksBuilder));
-	Statistics:= Evaluate(Str(statisticsBuilder));
-	foreach statistic in Statistics do 
-	(
-		ProcessSellerDataIntoDict(statistic[0], statistic[1], statistic[2], statistic[3], statistic[4]);
-	);
-);
-
-ProcessSellerDataIntoDict(sellerName, nrPaylinks, firstPaylink, latestPaylink, totalPrice) := (
-	if(responsePartnerDict.ContainsKey(sellerName))then
-	(
-		obj := responsePartnerDict[sellerName];
-		obj.PaylinksCount += nrPaylinks;
-		obj.LatestPaylinkDate := latestPaylink;
-		obj.TotalPaylinkValue += totalPrice;				
-	)
-	else
-	(
-		obj := {
-			PartnerName: sellerName,
-			PaylinksCount: nrPaylinks,
-			TotalPaylinkValue: totalPrice,
-			AveragePaylinkValue: 0,
-			FirstPaylinkDate: firstPaylink,
-			LatestPaylinkDate: latestPaylink,
-			PaylinkFrequency: 0,
-			LatestPaylinkDays: 0,
-			OnboardingCompleted: DateTime(0001,01,01)
-		};
-		responsePartnerDict.Add(sellerName, obj);
-	);
-);
-
 try
 (
+	Log.Debug("Posted: " + Str(Posted), logObject, logActor, logEventID, null);
+	
 	currentMethod := "ValidatePostedData";
 	ValidatePostedData(Posted);
 	
@@ -147,7 +115,7 @@ try
 		
 		responseList.Add(obj);
 	);
-		
+	
 	Destroy(responsePartnerDict);
 )
 catch

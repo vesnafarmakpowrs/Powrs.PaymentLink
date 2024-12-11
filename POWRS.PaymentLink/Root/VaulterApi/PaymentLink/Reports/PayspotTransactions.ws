@@ -54,7 +54,7 @@ try
 	OrderList := Evaluate(Str(sqlQueryBuilder));
 	destroy(sqlQueryBuilder);
 
-	ReponseDict := Create(System.Collections.Generic.List, System.Object);
+	responseList := Create(System.Collections.Generic.List, System.Object);
 	foreach order in OrderList do (	
 		if(order[9] = null or order[9] = 0) then (
 			Token:= select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId = order[0];	
@@ -62,14 +62,14 @@ try
 
 			if(Token != null and Variables != null) then 
 			(
-				SellerAccount :=  Split(Token.CreatorJid, "@")[0];
+				SellerName := select top 1 Value from Variables where Name = "SellerName";
 				RemoteId:= select top 1 Value from Variables where Name = "RemoteId";
 				SmsCounter:= select top 1 Value from Variables where Name = "SMSCounter";
 				EmailCounter:= select top 1 Value from Variables where Name = "EmailCounter";
 				fee := order[8] == null ? 0 : Double(order[8]);
 				amount:= order[7] == null ? 0 : order[7];
 
-				ReponseDict.Add({
+				responseList.Add({
 					"TokenId": order[0],
 					"OrderId": order[1],
 					"OrderReference": order[2],
@@ -80,7 +80,7 @@ try
 					"Amount": amount,
 					"SenderFee": fee,
 					"SellerRecivedAmount" : Dbl(amount)-fee,
-					"Seller" :  SellerAccount,
+					"SellerName" :  SellerName,
 					"RemoteId": RemoteId,
 					"SMSCounter": SmsCounter, 
 					"EmailCounter": EmailCounter
@@ -95,4 +95,4 @@ catch
 	BadRequest(Exception.Message);
 );
 
-return (ReponseDict);
+return (responseList);
