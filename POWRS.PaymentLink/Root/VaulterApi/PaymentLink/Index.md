@@ -1764,6 +1764,46 @@ Description of properties:
 }
 ````
 
+### Admin Portal Paylink Statistics
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Reports/AdminPortalPaylinkStatistics.ws")}}`  
+Method: `POST`
+
+**Request**
+
+````
+{
+    "from": "01/12/2024",
+    "to": "31/12/2024",
+    "organizationList": ""
+}
+````
+
+Description of properties:
+
+| Name      | Description |
+|:----------|:------------|
+|`from`     | DateTime from transactions are collected. Required parameter. DateTime formated to string, format: dd/MM/yyyy |
+|`to`       | DateTime to transactions are collected. Required parameter. DateTime formated to string, format: dd/MM/yyyy. All transaction at this date will be calculated. |
+|`organizationList`     | List of organizations for filter. For multiple organizations use `,` as separator. E.g. "Powrs,Vaulter"|
+
+**Response**
+
+````
+[
+    {
+        "PartnerName": "MirkoIT doo",
+        "PaylinksCount": 1,
+        "TotalPaylinkValue": 1,
+        "AveragePaylinkValue": 1,
+        "FirstPaylinkDate": 1711697865,
+        "LatestPaylinkDate": 1711697865,
+        "PaylinkFrequency": 0,
+        "LatestPaylinkDays": 257,
+        "OnboardingCompleted": -62135596800
+    }
+]
+````
+
 ### Payspot Transactions
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Reports/PayspotTransactions.ws")}}`  
 Method: `POST`

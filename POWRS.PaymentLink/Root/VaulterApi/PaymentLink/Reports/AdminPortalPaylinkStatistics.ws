@@ -5,10 +5,7 @@ if !exists(Posted) then BadRequest("No payload.");
 ({
 	"from":Required(String(PDateFrom)),
     "to":Required(String(PDateTo)),
-	"organizationList": Required(String(POrganizationList)),
-	"topicFilterType": Required(String(PTopicFilterType)),
-	"topicFilterCondition": Required(String(PTopicFilterCondition)),
-	"topicFilterNumber": Required(Int(PTopicFilterNumber))	
+	"organizationList": Required(String(POrganizationList))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 logObject := SessionUser.username;
@@ -17,6 +14,7 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 currentMethod := "";
 errors:= Create(System.Collections.Generic.List, System.String);
+responsePartnerDict := {}; comment:= "We are creating a dictionary because it is the fastest way to iterate through the data, plus List functions don't work";
 
 ValidatePostedData(Posted) := (
 	if(!Global.RegexValidation(Posted.from, "DateDDMMYYYY", "")) then
@@ -40,17 +38,6 @@ ValidatePostedData(Posted) := (
 		);
 	);
 	
-	if(!System.Enum.IsDefined(POWRS.PaymentLink.Enums.Reports.TopicFilter, Posted.topicFilterType))then
-	(
-		errors.Add("topicFilterType");
-	);
-	if(!System.String.IsNullOrWhiteSpace(Posted.topicFilterType) and 
-		Posted.topicFilterType != "NoFilter" and
-		!System.Enum.IsDefined(POWRS.PaymentLink.Enums.Reports.TopicFilterCondition, Posted.topicFilterCondition))then
-	(
-		errors.Add("topicFilterCondition");
-	);
-	
 	if(errors.Count > 0)then
 	(
 		Error(errors);
@@ -59,99 +46,93 @@ ValidatePostedData(Posted) := (
 	return (1); 
 );
 
+SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, creator) := (
+	PayLinks:= Evaluate(Str(paylinksBuilder));
+	Statistics:= Evaluate(Str(statisticsBuilder));
+	foreach statistic in Statistics do 
+	(
+		ProcessSellerDataIntoDict(statistic[0], statistic[1], statistic[2], statistic[3], statistic[4]);
+	);
+);
+
+ProcessSellerDataIntoDict(sellerName, nrPaylinks, firstPaylink, latestPaylink, totalPrice) := (
+	if(responsePartnerDict.ContainsKey(sellerName))then
+	(
+		obj := responsePartnerDict[sellerName];
+		obj.PaylinksCount += nrPaylinks;
+		obj.LatestPaylinkDate := latestPaylink;
+		obj.TotalPaylinkValue += totalPrice;				
+	)
+	else
+	(
+		obj := {
+			PartnerName: sellerName,
+			PaylinksCount: nrPaylinks,
+			TotalPaylinkValue: totalPrice,
+			AveragePaylinkValue: 0,
+			FirstPaylinkDate: firstPaylink,
+			LatestPaylinkDate: latestPaylink,
+			PaylinkFrequency: 0,
+			LatestPaylinkDays: 0,
+			OnboardingCompleted: DateTime(0001,01,01)
+		};
+		responsePartnerDict.Add(sellerName, obj);
+	);
+);
+
 try
-(	
+(
 	Log.Debug("Posted: " + Str(Posted), logObject, logActor, logEventID, null);
 	
 	currentMethod := "ValidatePostedData";
 	ValidatePostedData(Posted);
 	
-	currentMethod := "Collecting data";
+	filterByCreators := POrganizationList != "";
+	
+	currentMethod := "Collecting filter criteria";
 	dateFormat := "dd/MM/yyyy";
 	DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	DTDateTo := DTDateTo.AddDays(1);
-
-	responsePartnerDict := Create(System.Collections.Generic.Dictionary, System.String, System.Object);				
-	creatorsJIDDict := Create(System.Collections.Generic.Dictionary, System.String, System.String);				
-	
-	filterByOrgName := false;
-	if(POrganizationList != "")then
-	(
-		filterByOrgName := true;
-		organizationArray := Split(POrganizationList, ",");
-		foreach item in organizationArray do
-		(
-			listBrokerAcc :=
-				Select *
-				from POWRS.PaymentLink.Models.BrokerAccountRole
-				where OrgName = item;
-				
-			foreach brokerAcc in listBrokerAcc do
-			(
-				creatorsJIDDict.Add(brokerAcc.UserName + "@" + Gateway.Domain, item);
-			);
-		);		
-	);
-	
-	Log.Debug("creatorsJIDDict: " + Str(creatorsJIDDict), logObject, logActor, logEventID, null);
-	
-	neuroFeatureTokenList := 
-		select * 
-		from IoTBroker.NeuroFeatures.Token
-		where Created >= DTDateFrom
-			and Created < DTDateTo;
-			
-	currentMethod := "prepering response dict";
-	counter := 0;
-	foreach token in neuroFeatureTokenList do 
-	(
-		processRecord := true;
-		if(filterByOrgName)then
-		(
-			if(!creatorsJIDDict.ContainsKey(token.CreatorJid))then
-			(
-				processRecord := false;
-			);
-		);
 		
-		if(processRecord)then
+	currentMethod := "prepering response dict";
+	paylinksBuilder := Create(System.Text.StringBuilder);
+	paylinksBuilder.AppendLine("select TokenId,Updated,");
+	paylinksBuilder.AppendLine("((select top 1 Value from 'StateMachineSamples' where StateMachineId=TokenId and Variable='SellerName' order by Timestamp desc) ?? '-') as SellerName,");
+	paylinksBuilder.AppendLine("((select top 1 Value from 'StateMachineSamples' where StateMachineId=TokenId and Variable='Price' order by Timestamp desc) ?? 1) as Price ");
+	paylinksBuilder.AppendLine("from NeuroFeatureReferences");
+	paylinksBuilder.AppendLine("where Updated >= DTDateFrom and Updated < DTDateTo");
+	
+	statisticsBuilder := Create(System.Text.StringBuilder);
+	statisticsBuilder.AppendLine("select SellerName, count(*) NrPaylinks, Min(Updated) First, Max(Updated) Latest, sum(Price) TotalPrice");
+	statisticsBuilder.AppendLine("from PayLinks");
+	statisticsBuilder.AppendLine("from group by SellerName");
+	
+	if(filterByCreators)then
+	(
+		paylinksBuilder.AppendLine("and OwnerJid = creator");
+		paylinksBuilder.AppendLine("order by SellerName");
+		creators:= Global.GetUsersForOrganization(POrganizationList);
+		
+		foreach creator in creators do 
 		(
-			tokenVariables := token.GetCurrentStateVariables();			
-			sellerName := select top 1 Value from tokenVariables.VariableValues where Name = "SellerName";
-			if(sellerName != null)then
-			(
-				price := select top 1 Value from tokenVariables.VariableValues where Name = "Price";
-			
-				if(responsePartnerDict.ContainsKey(sellerName))then
-				(
-					obj := responsePartnerDict[sellerName];
-					obj.PaylinksCount ++;
-					obj.LatestPaylinkDate := token.Created;
-					obj.TotalPaylinkValue += price;				
-				)
-				else
-				(
-					obj := {
-						Partnername: sellerName,
-						PaylinksCount: 1,
-						TotalPaylinkValue: price,
-						AveragePaylinkValue: 0,
-						FirstPaylinkDate: token.Created,
-						LatestPaylinkDate: token.Created,
-						PaylinkFrequency: 0					
-					};
-					responsePartnerDict.Add(sellerName, obj);
-				);
-			);
+			SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, creator);
 		);
+	)
+	else
+	(
+		paylinksBuilder.AppendLine("order by SellerName");
+		SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, "");
 	);
 	
-	Destroy(neuroFeatureTokenList);
-	Destroy(creatorsJIDDict);
+	destroy(paylinksBuilder);
+	destroy(statisticsBuilder);
+	destroy(PayLinks);
+	destroy(Statistics);
 	
 	currentMethod := "aggregating data";
 	responseList := Create(System.Collections.Generic.List, System.Object);
+	
 	foreach item in responsePartnerDict do
 	(
 		obj := item.Value;
@@ -160,6 +141,11 @@ try
 		(
 			obj.PaylinkFrequency := Days(obj.LatestPaylinkDate - obj.FirstPaylinkDate) / (obj.PaylinksCount - 1);
 		);
+		
+		obj.LatestPaylinkDays := Days(Now.Date - obj.LatestPaylinkDate.Date);
+		
+		generalInfoDateApproved := select top 1 DateApproved from POWRS.PaymentLink.Onboarding.GeneralCompanyInformation where ShortName = obj.PartnerName;
+		obj.OnboardingCompleted := generalInfoDateApproved ?? DateTime(1,1,1);
 		
 		responseList.Add(obj);
 	);

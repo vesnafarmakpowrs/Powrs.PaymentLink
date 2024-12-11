@@ -32,7 +32,7 @@ try
 	sqlQueryBuilder.Append("Select TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, ExpectedPayoutDate, PayoutDate, Amount, SenderFee, RefundedAmount from PayspotPayments ");
 	if(filterByCreators) then
 	(
-		sqlQueryBuilder.Append(" pp");
+		sqlQueryBuilder.Append(" pp ");
 		sqlQueryBuilder.Append("join NeuroFeatureTokens t on t.TokenId = pp.TokenId ");
 	);
 	
@@ -47,7 +47,7 @@ try
 	
 	if(filterByCreators) then
 	(
-		Creators:= Global.GetUsersForOrganization(POrganizationList);
+		Creators:= Global.GetUsersForOrganization(POrganizationList, true);
 		sqlQueryBuilder.Append("and t.CreatorJid IN Creators ");
 	);
 	

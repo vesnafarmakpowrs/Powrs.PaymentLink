@@ -8,6 +8,7 @@ namespace POWRS.PaymentLink.Onboarding
     [CollectionName(nameof(GeneralCompanyInformation) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("UserName")]
+    [Index("ShortName")]
     public class GeneralCompanyInformation : BaseOnboardingModel<GeneralCompanyInformation>
     {
         public GeneralCompanyInformation()
@@ -53,6 +54,7 @@ namespace POWRS.PaymentLink.Onboarding
         private DateTime created;
         private DateTime updated;
         private bool canEdit;
+        private DateTime dateApproved;
 
         public string FullName { get => fullName; set => fullName = value; }
         public string ShortName { get => shortName; set => shortName = value; }
@@ -74,6 +76,7 @@ namespace POWRS.PaymentLink.Onboarding
         public DateTime Created { get => created; set => created = value; }
         public DateTime Updated { get => updated; set => updated = value; }
         public bool CanEdit { get => canEdit; set => canEdit = value; }
+        public DateTime DateApproved { get => dateApproved; set => dateApproved = value; }
 
         public override bool IsCompleted()
         {
