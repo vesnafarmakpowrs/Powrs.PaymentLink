@@ -1772,8 +1772,8 @@ Method: `POST`
 
 ````
 {
-    "from": "01/11/2024",
-    "to": "30/11/2024",
+    "from": "01/12/2024",
+    "to": "31/12/2024",
     "organizationList": ""
 }
 ````
@@ -1791,13 +1791,15 @@ Description of properties:
 ````
 [
     {
-        "Partnername": "Vaulter",
-        "PaylinksCount": 227,
-        "TotalPaylinkValue": 93523.03,
-        "AveragePaylinkValue": 411.99572687224673,
-        "FirstPaylinkDate": 1730461723,
-        "LatestPaylinkDate": 1732889342,
-        "PaylinkFrequency": 0.12432494520466651
+        "PartnerName": "MirkoIT doo",
+        "PaylinksCount": 1,
+        "TotalPaylinkValue": 1,
+        "AveragePaylinkValue": 1,
+        "FirstPaylinkDate": 1711697865,
+        "LatestPaylinkDate": 1711697865,
+        "PaylinkFrequency": 0,
+        "LatestPaylinkDays": 257,
+        "OnboardingCompleted": -62135596800
     }
 ]
 ````

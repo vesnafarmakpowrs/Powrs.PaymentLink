@@ -112,7 +112,7 @@ try
 	(
 		paylinksBuilder.AppendLine("and OwnerJid = creator");
 		paylinksBuilder.AppendLine("order by SellerName");
-		creators:= Global.GetUsersForOrganization(POrganizationList, true);
+		creators:= Global.GetUsersForOrganization(POrganizationList);
 		
 		foreach creator in creators do 
 		(
