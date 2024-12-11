@@ -113,9 +113,6 @@
 				<Variable id="CanCancel">
 					<Boolean>false</Boolean>
 				</Variable>
-				<Variable id="RefundedAmount">
-					<Number>0</Number>
-				</Variable>
 				<Variable id="TimeZoneOffset">
 					<Number>0</Number>
 				</Variable>
