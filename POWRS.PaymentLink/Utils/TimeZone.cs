@@ -6,7 +6,7 @@ using Waher.IoTGateway;
 
 namespace POWRS.PaymentLink
 {
-    public class TimeZone
+    public class TimeZone 
     {
         public static async Task NotifyTimeZoneDifference(int timeZoneOffset, string stateCity, string tokenId)
         {
