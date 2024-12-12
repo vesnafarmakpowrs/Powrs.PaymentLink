@@ -15,6 +15,8 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./RegexValidation.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateUrl.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./SendBuyerTimeZoneToToken.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./GetIdentityProperties.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./GetTokenVariables.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="FeeCalculator">
