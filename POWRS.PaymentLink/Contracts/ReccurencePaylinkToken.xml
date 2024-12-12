@@ -142,7 +142,7 @@
 				</Variable>
 				<State id="AwaitingCardRegistration">
 					<OnEnter actionRef="SetServiceProvider"/>
-					<OnEvent actionRef="RegisterCard" newState="AwaitingForPayment" failureState="AwaitingCardRegistration">
+					<OnEvent actionRef="RegisterCard" newState="AwaitingNextPayment" failureState="AwaitingCardRegistration">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent actionRef="ProcessPayspotPaymentStatus" newState="AwaitingCardRegistration" failureState="AwaitingCardRegistration">
@@ -165,7 +165,7 @@
 					</OnEvent>
 				</State>
 
-				<State id="AwaitingForPayment">
+				<State id="AwaitingNextPayment">
 					<OnEvent actionRef="TryToAuthorizeFunds" newState="PaymentCompleted" failureState="PaymentFailed">
 						<OnDateTime>{NowUtc}</OnDateTime>
 					</OnEvent>
@@ -178,14 +178,14 @@
 					<OnEvent actionRef="UpdateBuyerInformations">
 						<OnExternalXmlNote localName="UpdateBuyerInformations" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
-					<OnEvent actionRef="RegisterCard" newState="AwaitingForPayment" failureState="AwaitingForPayment">
+					<OnEvent actionRef="RegisterCard" newState="AwaitingNextPayment" failureState="AwaitingNextPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 				</State>
 
 				<State id="PaymentCompleted">
 					<OnEnter actionRef="IncrementTotalCompletedPayments"/>
-					<OnEvent actionRef="CalculateNextDeliveryDate" newState="AwaitingForPayment">
+					<OnEvent actionRef="CalculateNextDeliveryDate" newState="AwaitingNextPayment">
 						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
 					<OnEvent newState="Done">
@@ -202,7 +202,7 @@
 
 				<State id="PaymentFailed">
 					<OnEnter actionRef="IncrementFailedAttemptsCounter"/>
-					<OnEvent actionRef="CalculateNextAuthorizationRetryAttempt" newState="AwaitingForPayment">
+					<OnEvent actionRef="CalculateNextAuthorizationRetryAttempt" newState="AwaitingNextPayment">
 						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
 					<OnEvent newState="PaymentCanceled">

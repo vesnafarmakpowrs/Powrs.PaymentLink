@@ -23,7 +23,7 @@ try
 	ContractId:= SessionToken.Claims.contractId;
 	TokenId:= SessionToken.Claims.tokenId;
 	
-	tokenVariablesResponse:=  Global.GetTokenVariables(TokenId, "AwaitingForPayment", PIsFromMobile);
+	tokenVariablesResponse:=  Global.GetTokenVariables(TokenId, ["AwaitingForPayment"], PIsFromMobile);
 	identityProperties:= Global.GetIdentityProperties(tokenVariablesResponse.Owner);
 
 	if(!exists(Global.PayspotRequests)) then
