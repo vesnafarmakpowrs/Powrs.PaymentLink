@@ -32,8 +32,8 @@ namespace POWRS.PaymentLink.Models
 
         public static async Task<List<string>> GetAllOrganizationChildren(string parentOrgName)
         {
-            var orgNameFilter = new FilterFieldNotEqualTo("OrgName", "");
-            var brokerAccounrRoleList = await Database.Find<BrokerAccountRole>(orgNameFilter);
+            var brokerAccounrRoleList = await Database.Find<BrokerAccountRole>();
+            brokerAccounrRoleList = brokerAccounrRoleList.Where(x => x.OrgName != "");
 
             int generation = 1; //control counter to avoid infinite loop
             var resultList = GetAllChildren(brokerAccounrRoleList, parentOrgName, generation);
