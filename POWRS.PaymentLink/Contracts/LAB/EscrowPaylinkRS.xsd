@@ -3,11 +3,8 @@
 	<xs:element name="RetryReleaseFundsToSeller" type="Empty"/>
 	<xs:element name="SMSCounterUpdate" type="Empty"/>
 	<xs:element name="EmailSentCounterUpdate" type="Empty"/>
-	<xs:element name="CancelPayment">
-		<xs:complexType>
-			<xs:attribute name="pin" type="xs:string" use="optional" />
-		</xs:complexType>
-	</xs:element>
+	<xs:element name="CancelPayment"  type="Empty" />
+	
 	<xs:element name="PayspotPaymentCompleted">
 		<xs:complexType>
 			<xs:attribute name="payspotOrderId" type="xs:string" use="required" />
@@ -33,6 +30,15 @@
 			<xs:attribute name="expiryDate" type="xs:string" use="optional" />
 			<xs:attribute name="cardBrand" type="xs:string" use="optional" />
 			<xs:attribute name="amount" type="xs:string" use="optional" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UpdateBuyerInformations">
+		<xs:complexType>
+			<xs:attribute name="buyerFullName" type="xs:string" use="required" />
+			<xs:attribute name="city" type="xs:string" use="required" />
+			<xs:attribute name="phoneNumber" type="xs:string" use="required" />
+			<xs:attribute name="email" type="xs:string" use="required" />
+			<xs:attribute name="address" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="CallBackUrlUpdated">

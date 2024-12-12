@@ -261,6 +261,7 @@
 				<Content fileName="InitiatePayment.ws"/>
 				<Content fileName="InitiateIPSPayment.ws" altFolder="./Demo"/>
 				<Content fileName="GetAvailableLanguages.ws"/>
+				<Content fileName="UpdateBuyerInformations.ws"/>
 			</Folder>
 			<Folder name="Fonts">
 				<Content fileName="Coanda-Bold.ttf"/>

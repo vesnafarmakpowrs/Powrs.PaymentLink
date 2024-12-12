@@ -678,6 +678,9 @@
 	  <None Update="Root\pay.vaulter.rs\TermsAndCondition.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\API\UpdateBuyerInformations.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\API\InitiateIPSPayment.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
