@@ -61,12 +61,12 @@
 	</xs:element>	
 	<xs:element name="SetUpRefund">
 		<xs:complexType>
-			<xs:attribute type="xs:decimal" use="required" name="refundAmount" />
+			<xs:attribute type="xs:string" use="required" name="refundAmount" />
 		</xs:complexType>
 	</xs:element>	
 	<xs:element name="RefundBuyer">
 		<xs:complexType>
-			<xs:attribute type="xs:decimal" use="required" name="refundAmount" />
+			<xs:attribute type="xs:string" use="required" name="refundAmount" />
 		</xs:complexType>
 	</xs:element>
 </xs:schema>

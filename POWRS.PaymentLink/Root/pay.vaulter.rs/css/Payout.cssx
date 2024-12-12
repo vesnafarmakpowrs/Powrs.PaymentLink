@@ -201,7 +201,7 @@ form {
 {
   font-size: 0.8rem !important;
   padding-left: 10px !important;
-  font-family: 'RTDromo Light';
+  font-family: 'RTDromo';
 }
 
 .agent-contact-info

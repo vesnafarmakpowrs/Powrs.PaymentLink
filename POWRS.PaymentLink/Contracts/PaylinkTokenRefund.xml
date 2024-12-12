@@ -192,7 +192,7 @@
 				</State>
 				<State id="ReleasedFundsToSeller">
 					<OnEvent actionRef="SetUpRefund" failureState="ReleasedFundsToSeller" newState="AwaitingforRefundPayment">
-						<OnExternalXmlNote localName="SetUpRefund" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+						<OnXmlNote localName="SetUpRefund" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
 					<OnEvent newState="Done">
 						<OnDateTime>1Y</OnDateTime>
@@ -339,7 +339,7 @@
 				<Action id="SetUpRefund">
 					<Try>
 						<Script>
-							amountToBeRefunded:= Num(SelectXmlStr(Note,'/default:RefundBuyer/@refundAmount'));
+							amountToBeRefunded:= Double(SelectXmlStr(Note,'/default:SetUpRefund/@refundAmount'));
 						</Script>
 						<PersistVariable name="AmountToPay" value="{amountToBeRefunded}" />
 						<Catch exceptionVariable="ex">
@@ -465,7 +465,7 @@
 							   contract="{TokenContract}"
 							   serviceId="{ServiceProviderId}"
 							   serviceProvider="{ServiceProviderType}">
-							<Parameter key="TotalAmountToPay" value="{AmountToPay}"></Parameter>
+							<Parameter key="AmountToPay" value="{AmountToPay}"></Parameter>
 							<Parameter key="Currency" value="{Currency}"></Parameter>
 							<Parameter key="OrderId" value="{OrderId}"></Parameter>
 							<Parameter key="PayspotOrderId" value="{PayspotOrderId}" />
@@ -474,7 +474,7 @@
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
 						<PersistVariable name="PaymentDateTimeInBuyerLocalTime" value="{Evaluate('NowUtc.AddMinutes(-TimeZoneOffset)')}" />
-						<PersistVariable name="DeliveryDate" value="{Utc(DateTime(NowUtc.Year, NowUtc.Month, NowUtc.Day, 23, 30, 00))}" />
+						<PersistVariable name="DeliveryDate" value="{Utc(DateTime(NowUtc.Year, NowUtc.Month, NowUtc.Day, NowUtc.Hour, NowUtc.Minute + 5, 00))}" />
 						<PersistVariable name="OrderId" value="{OrderId}" />
 						<PersistVariable name="PayspotOrderId" value="{PayspotOrderId}" />
 						<PersistVariable name="PaymentType" value="{PaymentType}" />

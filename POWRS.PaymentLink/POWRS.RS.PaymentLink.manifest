@@ -78,6 +78,7 @@
 					<Content fileName="CreateItemIPS.ws"/>
 					<Content fileName="CreateItemOrder.ws"/>
 					<Content fileName="CreateItemEComm.ws"/>
+					<Content fileName="CreateRefundLink.ws"/>
 					<Content fileName="InvalidateContract.ws"/>
 					<Content fileName="UpdateSuccessUrl.ws"/>
 				</Folder>

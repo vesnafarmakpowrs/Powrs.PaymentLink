@@ -178,6 +178,11 @@ if(LanguageNamespace == null) then
 			"exp": NowUtc.AddMinutes(tokenDurationInMinutes)
 		});
 	bankList := Create(System.Collections.Generic.List, POWRS.Networking.PaySpot.Models.GetBanks.Bank);
+	DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTimeInBuyerLocalTime";
+	if (DateCompleted != null) then
+	(
+		DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTime";
+	);
 	
 		if (TYPE != "" && ContractState == "AwaitingForPayment") then
 		(
@@ -213,20 +218,16 @@ if(LanguageNamespace == null) then
 						 <tr class="welcomeLbl">   
 							<td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
 							<td coolspan="2"><select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
-						</tr>
-						<tr>
-							<td></td>
-							<td style="text-align:right">**ID: ((RemoteId ))**</td>
-						</tr>
+						</tr>						
 					</table>					
 					<div class="refund-details">
 					   <div class="payment-history">
-						    <div class="refund-container product-container">
+						    <div class="refund-container buyer-container">
 								<div class="refund-history-div">
 									<div class="refund-lbl">((BuyerFullName ))</div>
 									<div class="refund-price"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandBuyerDetails()"/></div>
 								</div>
-								<div id="buyerInfo" class="refund-history-div buyer-info-div">
+								<div id="buyerInfo" class="refund-history-div buyer-info-div" style="display:none" >
 									<div class="buyer-info-child">
 										<div class="buyer-info-left">((BuyerPhoneNumber ))</div>
 										<div class="buyer-info-right">((BuyerAddress ))</div>
@@ -241,48 +242,46 @@ if(LanguageNamespace == null) then
 							<div class="refund-container product-container">
 								<div class="refund-history-div">
 									<div class="refund-lbl">((Title))</br>((Description))</div>
-									<div class="refund-price">((ContractValue.ToString("N2") ))</div>
-									<div class="refund-currency">((Currency ))</div>
+									<div class="refund-price">((ContractValue.ToString("N2") )) ((Currency ))</div>
 								</div>
-								<div class="refund-sticker product">product info</div>
+								<div class="refund-sticker product">product: ((RemoteId ))</div>
 							</div>
-							<div class="refund-container">
+							<div class="refund-container product-container">
+								<div class="refund-history-div">
+									<div class="refund-lbl">Datum plaćanja: ((DateCompleted.ToString('MMM dd,yyyy') ))</div>
+								</div>
+								<div class="refund-sticker payment">payment info</div>
+							</div>
+							<div class="refund-container refund-info">
 								<div class="refund-history-div">
 									<div class="refund-lbl">Iznos koji se vraća kupcu</div>
-									<div class="refund-price">((ContractValue.ToString("N2") ))</div>
-									<div class="refund-currency">((Currency ))</div>
+									<div class="refund-price">((ContractValue.ToString("N2") )) ((Currency ))</div>
 								</div>
 								<div class="refund-history-div">
 									<div class="refund-lbl">Naknada za povraćaj uplate</div>
-									<div class="refund-price">((IPSFee.ToString("N2") ))</div>
-									<div class="refund-currency">((Currency ))</div>
+									<div class="refund-price">((IPSFee.ToString("N2") )) ((Currency ))</div>
 								</div>
 								<div class="refund-line"> </div>
 								<div class="refund-history-div">
 									<div class="refund-lbl">Ukupno za uplata</div>
-									<div class="refund-price">(((TotalAmount).ToString("N2") ))</div>
-									<div class="refund-currency">((Currency ))</div>
+									<div class="refund-price">(((TotalAmount).ToString("N2") )) ((Currency ))</div>
 								</div>
 								<div class="refund-sticker refund">refund info</div>
-							</div>	 
-						</div>
+							</div>[[;
+						if (ContractState == "AwaitingforRefundPayment" and TYPE=="") then 
+						( 
+							]]<div class="refund-container termsAndCondition-container">
+							   <div class="refund-lbl"><label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a> vaulter</label></div>
+							</div>[[;
+						);
+					]]</div>
 					</div>
-					<div class="spaceItem"></div>
-					[[;
+					<div class="spaceItem"></div>[[;
 			);
 				
 			if (ContractState == "AwaitingforRefundPayment" and TYPE=="") then 
 			( 
-			   	]]<div class="vaulter-details">
-						<table style="width:100%">
-							<tr>
-								<td colspan="3">
-									<label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a> vaulter</label>    
-								</td>
-							</tr>
-						</table>
-					</div>
-				<div class="spaceItem"></div>
+			  ]]<div class="spaceItem"></div>
 				<div id="retry-payment" style="display:none">
 				   <div class="retry-div" >
 					<button id="payspot-submit" class="retry-btn btn-black btn-show" onclick="RetryPayment()">((LanguageNamespace.GetStringAsync(78) ))</button> 
@@ -344,7 +343,8 @@ if(LanguageNamespace == null) then
 						  </div> 
 					  </div>
 					</div>  
-				[[;
+				</div>[[;
+				
 			)
 			else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" )then 
 			(
