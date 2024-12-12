@@ -8,7 +8,7 @@
 try
 (
     responseObject:= {"Success": true, "Response": null, "Message": System.String.Empty};
-	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then 
+	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then
 	(
 		Error("Not configured");
 	);
@@ -16,7 +16,7 @@ try
 	ContractId:= SessionToken.Claims.contractId;
 	TokenId:= SessionToken.Claims.tokenId;
 
-	tokenVariablesResponse:= Global.GetTokenVariables(TokenId, "AwaitingCardRegistration", PIsFromMobile);
+	tokenVariablesResponse:= Global.GetTokenVariables(TokenId, ["AwaitingCardRegistration", "AwaitingNextPayment"], PIsFromMobile);
 	identityProperties:= Global.GetIdentityProperties(tokenVariablesResponse.Owner);
 
 	contractParameters:= tokenVariablesResponse.Variables;
