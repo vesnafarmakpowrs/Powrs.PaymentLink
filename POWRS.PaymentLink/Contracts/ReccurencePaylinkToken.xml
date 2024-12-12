@@ -140,6 +140,9 @@
 				<Variable id="DeliveryDate">
 					<TagReference tag="DeliveryDate" />
 				</Variable>
+				<Variable id="CreatorJid">
+					<TokenProperty>CreatorJid</TokenProperty>
+				</Variable>
 				<State id="AwaitingCardRegistration">
 					<OnEnter actionRef="SetServiceProvider"/>
 					<OnEvent actionRef="RegisterCard" newState="AwaitingNextPayment" failureState="AwaitingCardRegistration">
