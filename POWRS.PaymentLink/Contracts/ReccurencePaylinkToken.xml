@@ -170,7 +170,7 @@
 
 				<State id="AwaitingNextPayment">
 					<OnEvent actionRef="TryToAuthorizeFunds" newState="PaymentCompleted" failureState="PaymentFailed">
-						<OnDateTime>{NowUtc}</OnDateTime>
+						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
 					<OnEvent newState="PaymentCanceled" failureState="PaymentCanceled">
 						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
