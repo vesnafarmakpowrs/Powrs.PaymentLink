@@ -20,7 +20,7 @@ try
 	TokenId:= SessionToken.Claims.tokenId;			
 
 	tokenVariablesResponse:= Global.GetTokenVariables(TokenId, "AwaitingForPayment", PIsFromMobile);
-	identityProperties:= GetIdentityProperties(tokenVariablesResponse.Owner);
+	identityProperties:= Global.GetIdentityProperties(tokenVariablesResponse.Owner);
 
 	if(!exists(Global.PayspotRequests)) then
 	(
