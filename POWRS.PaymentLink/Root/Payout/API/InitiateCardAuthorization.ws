@@ -13,52 +13,21 @@ try
 		Error("Not configured");
 	);
 
-	IpsOnly:= false;
-
-	if(exists(SessionToken.Claims.ipsOnly)) then 
-	(
-		IpsOnly:=  SessionToken.Claims.ipsOnly
-	);
-
 	ContractId:= SessionToken.Claims.contractId;
 	TokenId:= SessionToken.Claims.tokenId;
-	
-	token:= select top 1 * from IoTBroker.NeuroFeatures.Token t where t.TokenId = TokenId;
-	if(token == null) then
-	(
-		BadRequest("Token does not exists");
-	);
 
-	currentState:= token.GetCurrentStateVariables();
-	if(currentState.State != "AwaitingCardRegistration") then
-	(
-		Error("Payment is not available for this contract");
-	);
+	tokenVariablesResponse:= Global.GetTokenVariables(TokenId, "AwaitingCardRegistration", PIsFromMobile);
+	identityProperties:= Global.GetIdentityProperties(tokenVariablesResponse.Owner);
 
-	contractParameters:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, System.Object);
-	contractParameters["Message"]:= "Vaulter";
-
-	cardRegistrationAmount:= select top 1 Value from currentState.VariableValues where Name = "CardRegistrationAmount";
+	contractParameters:= tokenVariablesResponse.Variables;
+	cardRegistrationAmount:= contractParameters["CardRegistrationAmount"] ?? 0;
 
 	if(cardRegistrationAmount == null || cardRegistrationAmount <= 0) then 
 	(
-		Error("Authorization amount not available in contract.");
+		Error("Card registration amount not available in contract.");
 	);
 
-	foreach var in currentState.VariableValues do
-	(
-		contractParameters[var.Name]:= var.Value;
-	);
-	contractParameters["RequestFromMobilePhone"]:= PIsFromMobile;
 	contractParameters["AmountToPay"]:= cardRegistrationAmount;
-
-	legalIdentityProperties:= select top 1 Properties from LegalIdentities where Id = Token.Owner;
-	identityProperties:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, Waher.Persistence.CaseInsensitiveString);
-
-	foreach prop in legalIdentityProperties do  
-	(
-		identityProperties[prop.Name]:= prop.Value;
-	);
 
 	if(!exists(Global.PayspotRequests)) then
 	(
