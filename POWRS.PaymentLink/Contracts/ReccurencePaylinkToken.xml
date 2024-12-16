@@ -128,11 +128,11 @@
 				<Variable id="TotalCompletedPayments">
 					<Number>0</Number>
 				</Variable>
-				<Variable id="TotalPaymentsNeeded">
-					<Number>1</Number>
+				<Variable id="TotalNumberOfPayments">
+					<TagReference tag="TotalNumberOfPayments" />
 				</Variable>
 				<Variable id="DayOfMonth">
-					<Number>1</Number>
+					<TagReference tag="DayOfMonth" />
 				</Variable>
 				<Variable id="ActiveCardDetails">
 					<Calc>{}</Calc>
@@ -192,7 +192,7 @@
 						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
 					<OnEvent newState="Done">
-						<OnCondition>TotalCompletedPayments &gt;= TotalPaymentsNeeded</OnCondition>
+						<OnCondition>TotalCompletedPayments &gt;= TotalNumberOfPayments</OnCondition>
 					</OnEvent>
 				</State>
 
@@ -565,6 +565,12 @@
 		<Tag name="DeliveryDate">
 			<ParameterReference parameter="DeliveryDate" />
 		</Tag>
+		<Tag name="TotalNumberOfPayments">
+			<ParameterReference parameter="TotalNumberOfPayments" />
+		</Tag>
+		<Tag name="DayOfMonth">
+			<ParameterReference parameter="DayOfMonth" />
+		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
 		</FriendlyName>
@@ -764,6 +770,20 @@
 				</paragraph>
 			</description>
 		</dateTimeParameter>
+		<numericalParameter name="TotalNumberOfPayments" value="1" min="1" minIncluded="true" max="36" maxIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Total number of montly payments.</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+		<numericalParameter name="DayOfMonth" value="1" min="1" minIncluded="true" max="31" maxIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Day of month, when card authorization will be initiated.</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
 	</parameters>
 	<humanReadableText xml:lang="en">
 		<section>

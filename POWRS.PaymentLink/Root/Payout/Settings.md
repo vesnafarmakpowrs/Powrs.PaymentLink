@@ -27,6 +27,7 @@ if exists(Posted) then
 	SetSetting("POWRS.PaymentLink.PayDomain",Posted.PayDomain);
 	SetSetting("POWRS.PaymentLink.ContactEmail",Posted.ContactEmail);
 	SetSetting("POWRS.PaymentLink.TemplateId",Posted.TemplateId);
+	SetSetting("POWRS.PaymentLink.RecurrenceTemplateId",Posted.RecurrenceTemplateId);
 	SetSetting("POWRS.PaymentLink.ApiKey",Posted.ApiKey);
 	SetSetting("POWRS.PaymentLink.ApiKeySecret",Posted.ApiKeySecret);
 	SetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", Str(Posted.PayoutPageTokenDuration));
@@ -56,6 +57,11 @@ if exists(Posted) then
 <p>
 <label for="TemplateId">Template ID:</label>  
 <input type="text" id="TemplateId" name="TemplateId" value='{{GetSetting("POWRS.PaymentLink.TemplateId","")}}' autofocus required title="TemplateId used for creating contracts. "/>
+</p>
+
+<p>
+<label for="RecurrenceTemplateId">Recurrence TemplateId:</label>  
+<input type="text" id="RecurrenceTemplateId" name="RecurrenceTemplateId" value='{{GetSetting("POWRS.PaymentLink.RecurrenceTemplateId","")}}' autofocus required title="RecurrenceTemplateId used for creating contracts. "/>
 </p>
 
 <p>
