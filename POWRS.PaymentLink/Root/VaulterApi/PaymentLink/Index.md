@@ -1764,6 +1764,43 @@ Description of properties:
 }
 ````
 
+### Admin Portal Onboarding Statistics
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Reports/AdminPortalOnboardingStatistics.ws")}}`  
+Method: `POST`
+
+**Request**
+
+````
+{
+    "from": "01/12/2024",
+    "to": "31/12/2024",
+    "organizationList": ""
+}
+````
+
+Description of properties:
+
+| Name      | Description |
+|:----------|:------------|
+|`from`     | DateTime from transactions are collected. Required parameter. DateTime formated to string, format: dd/MM/yyyy |
+|`to`       | DateTime to transactions are collected. Required parameter. DateTime formated to string, format: dd/MM/yyyy. All transaction at this date will be calculated. |
+|`organizationList`     | List of organizations for filter. For multiple organizations use `,` as separator. E.g. "Powrs,Vaulter"|
+
+**Response**
+
+````
+[
+    {
+        "PartnerName": "MirkoIT doo",
+        "RegistrationDate": 1711697865,
+        "RegistrationInactivity": 1,
+        "OnboardingStarted": 1711697865,
+        "OnboardingLastActivity": 2,
+        "OnboardingCompleted": 1711697865
+    }
+]
+````
+
 ### Admin Portal Paylink Statistics
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Reports/AdminPortalPaylinkStatistics.ws")}}`  
 Method: `POST`
