@@ -188,8 +188,11 @@
 
 				<State id="PaymentCompleted">
 					<OnEnter actionRef="IncrementTotalCompletedPayments"/>
-					<OnEvent actionRef="CalculateNextDeliveryDate" newState="AwaitingNextPayment">
+					<OnEvent actionRef="ResetFailedAttemptsCounter">
 						<OnDuration>PT1S</OnDuration>
+					</OnEvent>
+					<OnEvent actionRef="CalculateNextDeliveryDate" newState="AwaitingNextPayment">
+						<OnDuration>PT2S</OnDuration>
 					</OnEvent>
 					<OnEvent newState="Done">
 						<OnCondition>TotalCompletedPayments &gt;= TotalNumberOfPayments</OnCondition>
@@ -320,8 +323,7 @@
 						<Parameter key="BuyerCity" value="{BuyerCity}"></Parameter>
 					</BuyEDaler>
 
-					<CallAction actionRef="ConfirmPayment" beforeActionScript="SellEdalerOrderId:= newOrderId;" />
-					<CallAction actionRef="ResetFailedAttemptsCounter" />
+					<CallAction actionRef="ConfirmPayment" beforeActionScript="SellEdalerOrderId:= newOrderId;" />				
 				</Action>
 				<Action id="RefundRegistrationAmount">
 					<Try>
