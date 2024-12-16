@@ -10,7 +10,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "currency":Required(String(PCurrency)),
     "description":Required(String(PDescription)),
     "paymentDeadline": Required(String(PPaymentDeadline)),
-	"deliveryDate": Required(Str(PDeliverAddress)),
+	"deliveryDate": Required(Str(PDeliveryDate)),
 	"totalNumberOfPayments": Required(Num(PNumberOfPayments)),
     "buyerFirstName":Required(String(PBuyerFirstName)),
     "buyerLastName":Required(String(PBuyerLastName)),
@@ -30,12 +30,12 @@ logObject := SessionUser.username;
 logEventID := "CreateRecurringItem.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
-Global.["CreateRecurringItem"]:= (CreateRecurringItem(ValidatedUser, OrderNum, 
+CreateRecurringItem(ValidatedUser, OrderNum, 
                                     Title, Price, Currency, 
 									Description, PaymentDeadline, DeliveryDate, TotalNumberOfPayments,
                                     BuyerFirstName, BuyerLastName, BuyerEmail, BuyerPhoneNumber,
 									BuyerAddress , BuyerCity, BuyerCountryCode, 
-									CallBackUrl, SuccessUrl, ErrorUrl, LogActor)):=
+									CallBackUrl, SuccessUrl, ErrorUrl, LogActor):=
 (
    try
 	(				 
@@ -142,7 +142,7 @@ Global.["CreateRecurringItem"]:= (CreateRecurringItem(ValidatedUser, OrderNum,
 
 		DeliveryDate += " 23:59:59";
 		ParsedDeliveryDate:= System.DateTime.ParseExact(DeliveryDate, dateTemplate, System.Globalization.CultureInfo.CurrentUICulture).ToUniversalTime();
-		if(ParsedDeliveryDate < PaymentDeadline) then
+		if(ParsedDeliveryDate < ParsedDeadlineDate) then
 		(
 			errors.Add("DeliveryDate");
 		);
@@ -286,9 +286,9 @@ Global.["CreateRecurringItem"]:= (CreateRecurringItem(ValidatedUser, OrderNum,
 
 try
 (
-    ContractInfo := Global.CreateRecurringItem(SessionUser, PRemoteId,
+    ContractInfo := CreateRecurringItem(SessionUser, PRemoteId,
                 PTitle, PPrice, PCurrency, 
-                PDescription, PPaymentDeadline, PNumberOfPayments,
+                PDescription, PPaymentDeadline, PDeliveryDate, PNumberOfPayments,
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber ??? "",
 			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
 			    PCallBackUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
@@ -297,7 +297,7 @@ try
     PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
     
     {
-        "Link" : PaymentLinkAddress + "/"Authorize.md"" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),	
+        "Link" : PaymentLinkAddress + "/Authorize.md" + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),	
         "TokenId" : ContractInfo.TokenId,
         "BuyerEmail": ContractInfo.BuyerEmail,
         "BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,
