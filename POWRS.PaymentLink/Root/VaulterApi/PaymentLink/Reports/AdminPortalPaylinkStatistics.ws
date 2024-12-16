@@ -82,8 +82,6 @@ ProcessSellerDataIntoDict(sellerName, nrPaylinks, firstPaylink, latestPaylink, t
 
 try
 (
-	Log.Debug("Posted: " + Str(Posted), logObject, logActor, logEventID, null);
-	
 	currentMethod := "ValidatePostedData";
 	ValidatePostedData(Posted);
 	
@@ -149,7 +147,7 @@ try
 		
 		responseList.Add(obj);
 	);
-	
+		
 	Destroy(responsePartnerDict);
 )
 catch

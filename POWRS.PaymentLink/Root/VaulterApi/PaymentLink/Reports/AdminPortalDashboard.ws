@@ -34,18 +34,23 @@ try
 			and DateCompleted < DTDateTo;
 		
 	payspotPaymentDictionary := Create(System.Collections.Generic.Dictionary, System.String, System.Object);
+	Log.Debug("Start populating payspotPaymentDictionary", logObject, logActor, logEventID, null);
 	foreach payment in CompletedPayspotPayments do
 	(
 		if(payment[2] == null or payment[2] == 0) then
 		(
-			obj := {
-				TokenId: payment[0],
-				PaymentType: payment[1],
-				RefundedAmount: payment[2],
-				SenderFee: payment[3]
-			};
-		
-			payspotPaymentDictionary.Add(payment[0], obj);
+			if(!payspotPaymentDictionary.ContainsKey(payment[0]))then
+			(
+				obj := {
+					TokenId: payment[0],
+					PaymentType: payment[1],
+					RefundedAmount: payment[2],
+					SenderFee: payment[3]
+				};
+			
+				payspotPaymentDictionary.Add(payment[0], obj);
+			
+			);
 		);
 	);
 	
