@@ -34,7 +34,6 @@ try
 			and DateCompleted < DTDateTo;
 		
 	payspotPaymentDictionary := Create(System.Collections.Generic.Dictionary, System.String, System.Object);
-	Log.Debug("Start populating payspotPaymentDictionary", logObject, logActor, logEventID, null);
 	foreach payment in CompletedPayspotPayments do
 	(
 		if(payment[2] == null or payment[2] == 0) then
