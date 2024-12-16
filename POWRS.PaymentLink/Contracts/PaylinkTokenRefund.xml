@@ -198,9 +198,12 @@
 						<OnDateTime>1Y</OnDateTime>
 					</OnEvent>
 				</State>
-				<State id="AwaitingforRefundPayment">					
-					<OnEvent actionRef="ProcessCompletedRefundPayment" newState="ReleaseFundsToBuyer" failureState="AwaitingForPayment">
-						<OnExternalXmlNote localName="ProcessCompletedRefundPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+				<State id="AwaitingforRefundPayment">
+					<OnEvent actionRef="SetUpRefund" failureState="AwaitingforRefundPayment" newState="AwaitingforRefundPayment">
+						<OnXmlNote localName="SetUpRefund" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+					</OnEvent>
+					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="RefundBuyer" failureState="RefundBuyerFailed">
+						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent actionRef="SetSellerTimeZoneDifference">
 						<OnExternalXmlNote localName="SellerTimeZoneDifference" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
@@ -209,8 +212,15 @@
 						<OnDateTime>1Y</OnDateTime>
 					</OnEvent>
 				</State>
-				<State id="ReleaseFundsToBuyer">
-					
+				<State id="RefundBuyer">
+					<OnEvent actionRef="CancelPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
+						<OnExternalXmlNote localName="RetryRefundBuyer" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+				</State>
+				<State id="RefundBuyerFailed">
+					<OnEvent actionRef="CancelPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
+						<OnExternalXmlNote localName="RetryRefundBuyer" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
 				</State>
 				<State id="ReleaseFundsToSellerFailed">
 					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
@@ -347,43 +357,6 @@
 						</Catch>
 					</Try>
 			    </Action>
-				<Action id="ProcessCompletedRefundPayment">
-					<PersistVariable name="MarkedAsDone" value="true"/>
-				</Action>
-				<Action id="RefundBuyer">
-					<Script>
-						amountToBeRefunded:= Num(SelectXmlStr(Note,'/default:RefundBuyer/@refundAmount'));
-					</Script>
-					<PersistVariable name="AmountToPay" value="{amountToBeRefunded}" />
-					<If condition="TotalAmountPaid &lt; AmountToPay">
-						<Then>
-							<TextNote content="The amount paid is not sufficient" />
-						</Then>
-						<Else>
-							<PersistVariable name="RefundPaymentMessage" value="" />
-							<Script>
-								<![CDATA[
-									AmountToSell:= AmountToPay;
-									BankAccountToSell:= "";
-									SellEdalerFrom:= Seller;
-									AccountName:= SellerName;
-									MessageOnError:= 'Refund Payment error';
-									Mode:= 'Refund';
-									Message:= "Povrat novca."
-								]]>
-							</Script>
-							<Try>
-								<CallAction actionRef="TrySellEdaler" />
-								<PersistVariable name="RefundPaymentMessage" value="ok" />
-								<Catch exceptionVariable="ex">
-									<PersistVariable name="RefundPaymentMessage" value="ex.Message" />
-									<Error reason="ex.Message"></Error>
-								</Catch>
-							</Try>
-							<PersistVariable name="RefundedAmount" value="{AmountToPay}" />
-						</Else>
-					</If>
-				</Action>
 				<Action id="ReportNewState">
 					<If condition="NewStatus == 'PaymentFailed' or (NewStatus != 'PaymentFailed' and !exists(Notifications[NewStatus]))">
 						<Then>
