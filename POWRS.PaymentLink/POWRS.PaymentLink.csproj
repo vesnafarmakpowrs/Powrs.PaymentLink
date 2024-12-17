@@ -989,6 +989,8 @@
 
 	<ItemGroup>
 	  <Folder Include="FeeCalculator\TemplateFiles\FeeCalculatorForm\" />
+	  <Folder Include="Root\Payout\DynamicTemplates\ReccurrencePayments\Done\" />
+	  <Folder Include="Root\Payout\DynamicTemplates\ReccurrencePayments\PaymentNotPeformed\" />
 	  <Folder Include="Root\VaulterApi\PaymentLink\Organization\" />
 	</ItemGroup>
 	
