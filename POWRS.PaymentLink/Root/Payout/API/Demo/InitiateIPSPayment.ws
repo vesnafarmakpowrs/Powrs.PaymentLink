@@ -26,7 +26,7 @@ try
 	);
 	
 	currentState:= token.GetCurrentStateVariables();
-	if(currentState.State != "AwaitingForPayment" || currentState.State != "AwaitingforRefundPayment") then
+	if(currentState.State != "AwaitingForPayment" && currentState.State != "AwaitingforRefundPayment") then
 	(
 		Error("Payment is not available for this contract");
 	);
