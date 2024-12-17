@@ -68,7 +68,7 @@ try
 		responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(contractParameters, identityProperties);
 	);
 
-	payspotPayment:= select top 1 * from PayspotPayments where TokenId = TokenId;
+	payspotPayment:= select top 1 * from PayspotPayments where TokenId = TokenId order by DateCreated desc;
 	if(payspotPayment == null) then
 	(
 		InternalServerError();
