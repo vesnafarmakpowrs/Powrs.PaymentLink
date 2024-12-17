@@ -2,8 +2,6 @@
 using POWRS.PaymentLink.Onboarding;
 using System;
 using System.Threading.Tasks;
-using Waher.Events;
-using Waher.Networking.XMPP.Contracts;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
 

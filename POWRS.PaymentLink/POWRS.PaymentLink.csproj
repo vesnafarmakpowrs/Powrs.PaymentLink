@@ -212,6 +212,9 @@
 		<Content Include="Root\VaulterApi\PaymentLink\Contract\UpdateSuccessUrl.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
+		<Content Include="Root\VaulterApi\PaymentLink\Reports\AdminPortalOnboardingStatistics.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>		
 		<Content Include="Root\VaulterApi\PaymentLink\Reports\AdminPortalPaylinkStatistics.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
