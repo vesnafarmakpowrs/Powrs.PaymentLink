@@ -61,7 +61,7 @@ try
 	DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	DTDateTo := DTDateTo.AddDays(1);
 		
-	currentMethod := "getting data from boker accounts and onboardings";
+	currentMethod := "getting data from broker accounts and onboardings";
 	brokerAccounts := 
 		Select UserName, EMail, Created, Enabled
 		from BrokerAccounts
