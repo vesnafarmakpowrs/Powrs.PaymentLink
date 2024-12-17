@@ -127,6 +127,9 @@
 				</Variable>
 				<Variable id="CanCancel">
 					<Boolean>false</Boolean>
+				</Variable>				
+				<Variable id="AmountToBeRefunded">
+					<Number>0</Number>
 				</Variable>
 				<Variable id="RefundedAmount">
 					<Number>0</Number>
@@ -138,6 +141,9 @@
 					<Number>0</Number>
 				</Variable>
 				<Variable id="SellerTimeZoneOffset">
+					<Number>0</Number>
+				</Variable>
+				<Variable id="IPSFee">
 					<Number>0</Number>
 				</Variable>				
 				<State id="AwaitingForPayment">
@@ -350,8 +356,12 @@
 					<Try>
 						<Script>
 							amountToBeRefunded:= Double(SelectXmlStr(Note,'/default:SetUpRefund/@refundAmount'));
+							IPSFee := Evaluate("POWRS.PaymentLink.ClientType.OrgClientType.GetBrokerJidIPSFee('CreatorJid')");							
+							amountToPay:= amountToBeRefunded  + (amountToBeRefunded * (IPSFee / 100));
 						</Script>
-						<PersistVariable name="AmountToPay" value="{amountToBeRefunded}" />
+						<PersistVariable name="AmountToBeRefunded" value="{amountToBeRefunded}" />						
+						<PersistVariable name="IPSFee" value="{IPSFee}" />
+						<PersistVariable name="AmountToPay" value="{amountToPay}" />
 						<Catch exceptionVariable="ex">
 							<LogEvent actor="{Seller}" eventId="SetUpRefund" level="Medium" message="{'Error while set up refund for buyer: ' + ex.Message}" module="SetUpRefund" object="{Buyer}" type="Error" />
 						</Catch>

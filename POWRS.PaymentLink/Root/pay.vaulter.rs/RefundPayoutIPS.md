@@ -155,11 +155,15 @@ if(LanguageNamespace == null) then
 		Variable.Name like "EscrowFee" ?   EscrowFee := MarkdownEncode(Variable.Value.ToString("N2"));
 		Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString();	
 		Variable.Name like 'SuccessUrl' ? SuccessUrl := Variable.Value;
+		Variable.Name like "IPSFee" ?   IPSFeePercent := Variable.Value;
+		Variable.Name like "AmountToBeRefunded" ?   AmountToBeRefunded := Variable.Value;
+		
+		
 	);
 
-    IPSFee := Double(AmountToPay)*0.01;	
+    IPSFee := Double(AmountToBeRefunded) * (Double(IPSFeePercent)/100);	
 	IPSFee < 20 ? IPSFee := 20;
-	TotalAmount := IPSFee + Double(ContractValue);
+	TotalAmount := Double(AmountToBeRefunded) + IPSFee;
 	Country := 'RS';
 	BuyerFirstName := Before(BuyerFullName," ");
 	PayspotId := Before(ID,"@");
@@ -255,7 +259,7 @@ if(LanguageNamespace == null) then
 							<div class="refund-container refund-info">
 								<div class="refund-history-div">
 									<div class="refund-lbl">Iznos koji se vraća kupcu</div>
-									<div class="refund-price">((ContractValue.ToString("N2") )) ((Currency ))</div>
+									<div class="refund-price">((AmountToBeRefunded.ToString("N2") )) ((Currency ))</div>
 								</div>
 								<div class="refund-history-div">
 									<div class="refund-lbl">Naknada za povraćaj uplate</div>
