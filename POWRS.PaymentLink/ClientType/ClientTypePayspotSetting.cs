@@ -3,11 +3,11 @@ using Waher.Persistence.Attributes;
 
 namespace POWRS.PaymentLink.ClientType
 {
-    [CollectionName(nameof(ClientTypePayspotSettings) + "s")]
+    [CollectionName(nameof(ClientTypePayspotSetting) + "s")]
     [TypeName(TypeNameSerialization.None)]
     [Index("ObjectId")]
     [Index("Type")]
-    public class ClientTypePayspotSettings
+    public class ClientTypePayspotSetting
     {
         private string objectId;
         private Enums.ClientType type;
