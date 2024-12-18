@@ -935,13 +935,7 @@
 	  <None Update="Scripts\StartupScripts\CreateItem.config">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Scripts\StartupScripts\CreateLanguageIndex.config">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Scripts\StartupScripts\CreateNeuroFeatureCreatorIndex.config">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Scripts\StartupScripts\CreateStateMachineCurrentStateIndex.config">
+	  <None Update="Scripts\StartupScripts\CreateIndices.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Scripts\StartupScripts\EncodeContractId.config">
