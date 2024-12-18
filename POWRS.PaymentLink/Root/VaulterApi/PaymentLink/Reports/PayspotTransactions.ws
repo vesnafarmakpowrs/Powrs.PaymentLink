@@ -116,10 +116,8 @@ try
 		SelectPaylinksAndProcessRecords(sqlQueryBuilder, "");
 	);	
 	destroy(sqlQueryBuilder);
-
 	
 	timeFinish := Now;
-	Log.Debug("Execution time in ms: " + Seconds(timeFinish - timeStart), logObject, logActor, logEventID, null);
 )
 catch
 (
