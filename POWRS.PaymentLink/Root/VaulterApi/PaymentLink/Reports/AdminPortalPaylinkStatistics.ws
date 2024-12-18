@@ -53,6 +53,7 @@ SelectPaylinksAndProcessStatistics(paylinksBuilder, statisticsBuilder, creator) 
 	(
 		ProcessSellerDataIntoDict(statistic[0], statistic[1], statistic[2], statistic[3], statistic[4]);
 	);
+	return (1); 
 );
 
 ProcessSellerDataIntoDict(sellerName, nrPaylinks, firstPaylink, latestPaylink, totalPrice) := (
@@ -78,6 +79,7 @@ ProcessSellerDataIntoDict(sellerName, nrPaylinks, firstPaylink, latestPaylink, t
 		};
 		responsePartnerDict.Add(sellerName, obj);
 	);
+	return (1); 
 );
 
 try
@@ -110,7 +112,7 @@ try
 	(
 		paylinksBuilder.AppendLine("and OwnerJid = creator");
 		paylinksBuilder.AppendLine("order by SellerName");
-		creators:= Global.GetUsersForOrganization(POrganizationList);
+		creators:= Global.GetUsersForOrganization(POrganizationList, true);
 		
 		foreach creator in creators do 
 		(

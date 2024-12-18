@@ -14,7 +14,8 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 currentMethod := "";
 errors:= Create(System.Collections.Generic.List, System.String);
-responsePartnerDict := {}; comment:= "We are creating a dictionary because it is the fastest way to iterate through the data, plus List functions don't work";
+brokerAccDict := {}; comment:= "We are creating a dictionary because it is the fastest way to iterate through the data, plus List functions don't work";
+onboardingDict := {}; 
 
 ValidatePostedData(Posted) := (
 	if(!Global.RegexValidation(Posted.from, "DateDDMMYYYY", "")) then
@@ -46,10 +47,94 @@ ValidatePostedData(Posted) := (
 	return (1); 
 );
 
+GetBrokerAccounts(POrganizationList) := (
+	brokerAccBuilder := Create(System.Text.StringBuilder);
+	brokerAccBuilder.AppendLine("Select UserName, EMail, Created, Enabled");
+	brokerAccBuilder.AppendLine("from BrokerAccounts");
+	brokerAccBuilder.AppendLine("where Created >= DTDateFrom and Created < DTDateTo");
+	if(POrganizationList != "")then
+	(
+		brokerAccBuilder.AppendLine("and UserName = myUser");
+		brokerAccBuilder.AppendLine("order by UserName");
+		users := Global.GetUsersForOrganization(POrganizationList, false);
+		
+		foreach myUser in users do 
+		(
+			SelectBrokerAccounts(brokerAccBuilder, myUser);
+		);
+	)
+	else
+	(
+		brokerAccBuilder.AppendLine("order by UserName");
+		SelectBrokerAccounts(brokerAccBuilder, "");
+	);
+	return (1); 
+);
+SelectBrokerAccounts(brokerAccBuilder, myUser) := (
+	brokerAccs:= Evaluate(Str(brokerAccBuilder));
+	foreach acc in brokerAccs do 
+	(
+		if(!brokerAccDict.ContainsKey(acc[0]))then
+		(
+			obj := {
+				UserName: acc[0],
+				EMail: acc[1],
+				Created: acc[2],
+				Enabled: acc[3]
+			};
+			brokerAccDict.Add(acc[0], obj);
+		);
+	);
+	return (1); 
+);
+
+GetOnbordingsInfo(POrganizationList) := (
+	onboardingsBuilder := Create(System.Text.StringBuilder);
+	onboardingsBuilder.AppendLine("select UserName, ShortName, Created, Updated, DateApproved");
+	onboardingsBuilder.AppendLine("from GeneralCompanyInformations");
+	onboardingsBuilder.AppendLine("where Created >= DTDateFrom and Created < DTDateTo");
+
+	start := Now;
+	if(POrganizationList != "")then
+	(
+		onboardingsBuilder.AppendLine("and ShortName = orgName");
+		onboardingsBuilder.AppendLine("order by ShortName");
+		orgArray := Split(POrganizationList, ",");
+		
+		foreach orgName in orgArray do 
+		(
+			SelectOnboardings(onboardingsBuilder, orgName);
+		);
+	)
+	else
+	(
+		onboardingsBuilder.AppendLine("order by ShortName");
+		SelectOnboardings(onboardingsBuilder, "");
+	);
+	finish := Now;
+	return (1); 
+);
+SelectOnboardings(onboardingsBuilder, orgName) := (
+	onboardings:= Evaluate(Str(onboardingsBuilder));
+	foreach item in onboardings do 
+	(
+		if(!onboardingDict.ContainsKey(item[1]))then
+		(
+			obj := {
+				UserName: item[0],
+				ShortName: item[1],
+				Created: item[2],
+				Updated: item[3],
+				DateApproved: item[4]
+			};
+			onboardingDict.Add(item[1], obj);
+		);
+	);
+	return (1); 
+);
+
 try
 (
-	Log.Debug("Posted: " + Str(Posted), logObject, logActor, logEventID, null);
-	
 	currentMethod := "ValidatePostedData";
 	ValidatePostedData(Posted);
 	
@@ -61,28 +146,29 @@ try
 	DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	DTDateTo := DTDateTo.AddDays(1);
 		
-	currentMethod := "getting data from boker accounts and onboardings";
-	brokerAccounts := 
-		Select UserName, EMail, Created, Enabled
-		from BrokerAccounts
-		where Created >= DTDateFrom and Created < DTDateTo
-		order by UserName;
-			
+	currentMethod := "getting data from broker accounts";
+	comment:="We need to iterate through broker accounts to identify users who don’t go through the onboarding process.";
+	GetBrokerAccounts(POrganizationList);
+	currentMethod := "getting data from broker accounts";
+	GetOnbordingsInfo(POrganizationList);
+	
 	responseList := Create(System.Collections.Generic.List, System.Object);
 	
-	Log.Debug("starting foreach account in brokerAccounts", logObject, logActor, logEventID, null);
-	foreach account in brokerAccounts do
+	foreach keyValuePair in brokerAccDict do
 	(
 		comment := "We need to check all record from onboarding, not just thos limited to filter properties";
-		if(not exists(select top 1 UserName from GeneralCompanyInformations where UserName = Str(account[0])))then
+		account := keyValuePair.Value;
+		if(not exists(select top 1 UserName from GeneralCompanyInformations where UserName = Str(account.UserName)))then
 		(	
 			partnerName := "";
-			onboardingCompleted := select top 1 Created.Date from IoTBroker.Legal.Identity.LegalIdentity where Account = account[0] and State = "Approved" order by Created desc;
-
+			onboardingCompleted := select top 1 Created.Date from IoTBroker.Legal.Identity.LegalIdentity where Account = account.UserName and State = "Approved" order by Created desc;
+			
+			comment:= "we show all users that have created an account before the onboarding functionality because, in production, all user records have one-to-one relationship";
+			
 			obj := {
-				PartnerName: account[0],
-				RegistrationDate: account[2],
-				RegistrationInactivity: Days(Now.Date - account[2].Date),
+				PartnerName: account.UserName,
+				RegistrationDate: account.Created,
+				RegistrationInactivity: Days(Now.Date - account.Created.Date),
 				OnboardingStarted: null,
 				OnboardingLastActivity: null,
 				OnboardingCompleted: onboardingCompleted
@@ -91,23 +177,16 @@ try
 		);
 	);
 	
-	onboardings := 
-		select UserName, ShortName, Created, Updated, DateApproved
-		from GeneralCompanyInformations
-		where Created >= DTDateFrom and Created < DTDateTo
-		order by ShortName;
-	
-	Log.Debug("starting foreach onboarding in onboardings", logObject, logActor, logEventID, null);
-	foreach onboarding in onboardings do 
+	foreach keyValuePair in onboardingDict do 
 	(
-		
+		onboarding := keyValuePair.Value;
 		obj := {
-			PartnerName: onboarding[1],
-			RegistrationDate: (select top 1 Created.Date from BrokerAccounts where UserName = Trim(onboarding[0])),
+			PartnerName: onboarding.ShortName,
+			RegistrationDate: (select top 1 Created.Date from BrokerAccounts where UserName = Trim(onboarding.UserName)),
 			RegistrationInactivity: null,
-			OnboardingStarted: onboarding[2],
-			OnboardingLastActivity: Days(Now.Date - (onboarding[3] ?? onboarding[2]).Date),
-			OnboardingCompleted: onboarding[4]
+			OnboardingStarted: onboarding.Created,
+			OnboardingLastActivity: abs(Days(Now.Date - (onboarding.Updated ?? onboarding.Created).Date)),
+			OnboardingCompleted: onboarding.DateApproved
 		};
 		responseList.Add(obj);
 	);	
