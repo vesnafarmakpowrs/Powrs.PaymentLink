@@ -56,7 +56,7 @@ GetBrokerAccounts(POrganizationList) := (
 	(
 		brokerAccBuilder.AppendLine("and UserName = myUser");
 		brokerAccBuilder.AppendLine("order by UserName");
-		users := Global.GetUsersForOrganization(POrganizationList, true);
+		users := Global.GetUsersForOrganization(POrganizationList, false);
 		
 		foreach myUser in users do 
 		(
@@ -93,6 +93,8 @@ GetOnbordingsInfo(POrganizationList) := (
 	onboardingsBuilder.AppendLine("select UserName, ShortName, Created, Updated, DateApproved");
 	onboardingsBuilder.AppendLine("from GeneralCompanyInformations");
 	onboardingsBuilder.AppendLine("where Created >= DTDateFrom and Created < DTDateTo");
+
+	start := Now;
 	if(POrganizationList != "")then
 	(
 		onboardingsBuilder.AppendLine("and ShortName = orgName");
@@ -109,6 +111,7 @@ GetOnbordingsInfo(POrganizationList) := (
 		onboardingsBuilder.AppendLine("order by ShortName");
 		SelectOnboardings(onboardingsBuilder, "");
 	);
+	finish := Now;
 	return (1); 
 );
 SelectOnboardings(onboardingsBuilder, orgName) := (
@@ -132,8 +135,6 @@ SelectOnboardings(onboardingsBuilder, orgName) := (
 
 try
 (
-	Log.Debug("Posted: " + Str(Posted), logObject, logActor, logEventID, null);
-	
 	currentMethod := "ValidatePostedData";
 	ValidatePostedData(Posted);
 	
@@ -153,7 +154,6 @@ try
 	
 	responseList := Create(System.Collections.Generic.List, System.Object);
 	
-	Log.Debug("starting foreach account in brokerAccDict", logObject, logActor, logEventID, null);
 	foreach keyValuePair in brokerAccDict do
 	(
 		comment := "We need to check all record from onboarding, not just thos limited to filter properties";
@@ -162,7 +162,9 @@ try
 		(	
 			partnerName := "";
 			onboardingCompleted := select top 1 Created.Date from IoTBroker.Legal.Identity.LegalIdentity where Account = account.UserName and State = "Approved" order by Created desc;
-
+			
+			comment:= "we show all users that have created an account before the onboarding functionality because, in production, all user records have one-to-one relationship";
+			
 			obj := {
 				PartnerName: account.UserName,
 				RegistrationDate: account.Created,
@@ -175,7 +177,6 @@ try
 		);
 	);
 	
-	Log.Debug("starting foreach onboarding in onboardings", logObject, logActor, logEventID, null);
 	foreach keyValuePair in onboardingDict do 
 	(
 		onboarding := keyValuePair.Value;
