@@ -6,7 +6,7 @@
 			<String id="2">Autorizacija primaoca </String>
 			<String id="3">Adresa E-pošte </String>
 			<String id="4">Ime </String>
-			<String id="5">Link za plaćanje je istekao. Kontaktiraj prodavca za dobijanje novog </String>
+			<String id="5">Link za plaćanje je istekao. Kontaktiraj prodavca za dobijanje novog </String> 
 			<String id="6">Zaštiti svoj novac uz pomoć Vaultera </String>
 			<String id="7">Kupoprodajni ugovor </String>
 			<String id="8">Skenirajte QR kod pomoću BANK-ID aplikacije ili kliknite na njega ako je vaš Bank-ID instaliran na vašem računaru </String>
