@@ -143,6 +143,12 @@
 				<Variable id="CreatorJid">
 					<TokenProperty>CreatorJid</TokenProperty>
 				</Variable>
+				<Variable id="Link">
+					<Calc>
+						domain:= "https://" + Evaluate("GetSetting('POWRS.PaymentLink.PayDomain','')");
+						link:= domain + "/Authorize.md?ID=" + Evaluate("Global.EncodeContractId(TokenContract)");
+					</Calc>
+				</Variable>
 				<State id="AwaitingCardRegistration">
 					<OnEnter actionRef="AwaitingCardRegistrationOnEnter"/>					
 					<OnEvent actionRef="RegisterCard" newState="AwaitingNextPayment" failureState="AwaitingCardRegistration">
@@ -459,7 +465,7 @@
 								serviceMode:= isProduction ? ".Live" : ".Test";
 
 								serviceProviderId:= "POWRS.Payment.PaySpot.PayspotService" + serviceMode;
-								serviceProviderType:= "POWRS.Payment.PaySpot.PayspotServiceProvider";
+								serviceProviderType:= "POWRS.Payment.PaySpot.PayspotServiceProvider";							
 							</Script>
 							<PersistVariable name="ServiceProviderId" value="{serviceProviderId}"/>
 							<PersistVariable name="ServiceProviderType" value="{serviceProviderType}"/>
