@@ -47,7 +47,7 @@ try
                 PDescription, PPaymentDeadline, PDeliveryDate ?? null, PNumberOfPayments ?? null, 
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber ??? "",
 			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
-			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
+			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "", 
 			    logActor);
 			
     PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
