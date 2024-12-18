@@ -1,7 +1,7 @@
 AuthenticateMutualTls(Request,Waher.Security.Users.Users.Source,128);
 
 logObject := "ReportNewState";
-logEventID := "ReportNewState.ws";
+logEventID := "RegularTokenStateChanged.ws";
 logActor := Request.RemoteEndPoint;
 try
 (
