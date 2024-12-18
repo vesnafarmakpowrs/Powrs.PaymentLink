@@ -375,7 +375,7 @@
 									<Error reason="ex.Message"></Error>
 								</Catch>
 							</Try>
-							<PersistVariable name="RefundedAmount" value="{AmountToPay}" />
+							<PersistVariable name="RefundedAmount" value="{AmountToBeRefunded}" />
 						</Else>
 					</If>
 				</Action>
