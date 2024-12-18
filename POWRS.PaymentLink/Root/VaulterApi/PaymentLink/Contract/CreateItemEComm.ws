@@ -33,17 +33,16 @@ try
         IsEcommerce := true;
 	    ContractInfo := Global.CreateItem(SessionUser, PRemoteId,  IsEcommerce, 
                 PTitle, PPrice, PCurrency, 
-                PDescription, PPaymentDeadline, 
+                PDescription, PPaymentDeadline, null,null,
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,
 			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
 			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
 			    logActor);
 
-	PayoutPage := "Payout.md";  
 	PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 
 	{
-		"Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),
+		"Link" : PaymentLinkAddress + "/" + ContractInfo.PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),
 		"TokenId" : ContractInfo.TokenId,
 		"BuyerEmail": ContractInfo.BuyerEmail,
 		"BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,

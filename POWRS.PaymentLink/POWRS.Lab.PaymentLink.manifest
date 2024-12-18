@@ -88,9 +88,12 @@
 				</Folder>
 				<Folder name="Mail">
 					<Content fileName="NotifyIdentityStateChanged.ws"/>
-					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="SendContactUsEmail.ws"/>
 					<Content fileName="SendPaylinkViaEmail.ws"/>
+				</Folder>
+				<Folder name="StateChange">
+					<Content fileName="RecurrenceTokenStateChanged.ws"/>
+					<Content fileName="RegularTokenStateChanged.ws"/>
 				</Folder>
 				<Folder name="Onboarding">
 					<Content fileName="AllowEdit.ws"/>
