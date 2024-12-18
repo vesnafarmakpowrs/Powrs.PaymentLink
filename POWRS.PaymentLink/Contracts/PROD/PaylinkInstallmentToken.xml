@@ -178,28 +178,28 @@
 						<Then>
 							<Try>
 								<Script>
-								endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/Mail/ReportNewState.ws";
-								Json:= {
-								"Status":  NewStatus,
-								"ContractId": TokenContract,
-								"CallBackUrl": CallBackUrl,
-								"TokenId": TokenId,
-								"SendEmail" : BuyerEmail,
-								"CountryCode" : Country
-								};
-								if(exists(PayspotOrderId)) then
-								(
-								Json.PayspotOrderId:= PayspotOrderId;
-								);
-								if(exists(OrderId)) then
-								(
-								Json.OrderId:= OrderId;
-								);
-								if (exists(PaymentType)) then
-								(
-								Json.PaymentType:= PaymentType;
-								);
-							</Script>
+									endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/StateChange/RegularTokenStateChanged.ws";
+									Json:= {
+									"Status":  NewStatus,
+									"ContractId": TokenContract,
+									"CallBackUrl": CallBackUrl,
+									"TokenId": TokenId,
+									"SendEmail" : BuyerEmail,
+									"CountryCode" : Country
+									};
+									if(exists(PayspotOrderId)) then
+									(
+									Json.PayspotOrderId:= PayspotOrderId;
+									);
+									if(exists(OrderId)) then
+									(
+									Json.OrderId:= OrderId;
+									);
+									if (exists(PaymentType)) then
+									(
+									Json.PaymentType:= PaymentType;
+									);
+								</Script>
 								<HttpPost content="{Json}" resource="{endpoint}" responseVariable="Response">
 									<Header key="Accept" value="application/json" />
 								</HttpPost>
