@@ -308,7 +308,7 @@
 						<Then>
 							<Try>
 								<Script>
-									endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/Mail/ReportNewState.ws";
+									endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/StateChange/RegularTokenStateChanged.ws";
 									Json:= {
 									"Status":  NewStatus,
 									"ContractId": TokenContract,
@@ -334,7 +334,7 @@
 									Json.PaymentType:= PaymentType;
 									);
 
-									response:= Evaluate("Post(Gateway.GetUrl(':8088/VaulterApi/PaymentLink/Mail/ReportNewState.ws'), Json, {Accept: 'application/json'}, Gateway.Certificate)");
+									response:= Evaluate("Post(Gateway.GetUrl(':8088/VaulterApi/PaymentLink/StateChange/RegularTokenStateChanged.ws'), Json, {Accept: 'application/json'}, Gateway.Certificate)");
 								</Script>
 								<Catch exceptionVariable="ex">
 									<LogEvent actor="{Seller}" eventId="ReportNewState" level="Medium" message="{'Error while notifying client about state changed: ' + ex.Message}" module="ReportNewState" object="" type="Error" />

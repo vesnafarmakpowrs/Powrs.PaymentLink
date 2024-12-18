@@ -43,9 +43,9 @@ sellerEmail:= "nenad.aleksic@powrs.se";
 			<p></p> 
 			<p class="line"></p> 
         </div>
-		 <div class="footer">
-            <span class="footer-text"> POWRS D.O.O. BEOGRAD, Srbija</span>
-            <span class="footer-text">©2021 - ((Now.Year )) POWRS</span>
+		 <div class="footer" style="color: #596273;font-family: Arial, Helvetica, sans-serif;font-size: 11px;font-style: italic;font-weight: 700;text-align: center;">
+            <span class="footer-text" style="display: block;text-align: center;"> POWRS D.O.O. BEOGRAD, Srbija</span>
+            <span class="footer-text" style="display: block;text-align: center;">©2021 - ((Now.Year )) POWRS</span>
             <span></span>
             <span style="text-align:left; margin-top:10px;" class="footer-text"> Saglasno odredbi člana 27. Zakona o zaštiti potrošača, možete popuniti <a href="https://pay.vaulter.rs/Obrazac-za-odustanak-od-ugovora.pdf ">obrazac za odustanak od ugovora</a></span>
         </div>
