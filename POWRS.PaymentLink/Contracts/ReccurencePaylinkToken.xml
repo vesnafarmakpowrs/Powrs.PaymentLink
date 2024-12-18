@@ -144,7 +144,7 @@
 					<TokenProperty>CreatorJid</TokenProperty>
 				</Variable>
 				<State id="AwaitingCardRegistration">
-					<OnEnter actionRef="SetServiceProvider"/>
+					<OnEnter actionRef="AwaitingCardRegistrationOnEnter"/>					
 					<OnEvent actionRef="RegisterCard" newState="AwaitingNextPayment" failureState="AwaitingCardRegistration">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -187,10 +187,7 @@
 				</State>
 
 				<State id="PaymentCompleted">
-					<OnEnter actionRef="IncrementTotalCompletedPayments"/>
-					<OnEvent actionRef="ResetFailedAttemptsCounter">
-						<OnDuration>PT1S</OnDuration>
-					</OnEvent>
+					<OnEnter actionRef="PaymentCompletedOnEnter"/>
 					<OnEvent actionRef="CalculateNextDeliveryDate" newState="AwaitingNextPayment">
 						<OnDuration>PT2S</OnDuration>
 					</OnEvent>
@@ -220,6 +217,39 @@
 					<OnEnter actionRef="MarkAsDone"/>
 				</State>
 
+				<Action id="AwaitingCardRegistrationOnEnter">
+					<CallAction actionRef="SetServiceProvider"/>
+					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'AwaitingCardRegistration'"/>
+				</Action>
+				
+				<Action id="PaymentCompletedOnEnter">
+					<CallAction actionRef="IncrementTotalCompletedPayments"/>
+					<CallAction actionRef="ResetFailedAttemptsCounter"/>
+					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'PaymentCompleted'"/>
+				</Action>
+				
+				<Action id="NotifyNewState">
+					<If condition="exists(StateToNotify)">
+						<Then>
+							<Script>
+								try
+								(
+								templateUrl:= Evaluate("Gateway.GetUrl('/Payout/DynamicTemplates/ReccurrencePayments/' + StateToNotify + '/index.md?TokenId=' + TokenId )");
+								html:= Evaluate("Get(templateUrl, {'Accept': 'text/html'})");
+								ConfigClass:= Evaluate("Waher.Service.IoTBroker.Setup.RelayConfiguration");
+								Config:= Evaluate("ConfigClass.Instance");
+								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title + ' - ' + StateToNotify, html.HtmlText, null, null))");
+								)
+								catch
+								(
+								x:= Exception.Message;
+								);
+							</Script>
+						</Then>
+					</If>
+					<Script>
+					</Script>
+				</Action>
 				<Action id="RegisterCard">
 					<Script>
 						Amount:= Num(SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@amount'));
@@ -323,7 +353,7 @@
 						<Parameter key="BuyerCity" value="{BuyerCity}"></Parameter>
 					</BuyEDaler>
 
-					<CallAction actionRef="ConfirmPayment" beforeActionScript="SellEdalerOrderId:= newOrderId;" />				
+					<CallAction actionRef="ConfirmPayment" beforeActionScript="SellEdalerOrderId:= newOrderId;" />
 				</Action>
 				<Action id="RefundRegistrationAmount">
 					<Try>
