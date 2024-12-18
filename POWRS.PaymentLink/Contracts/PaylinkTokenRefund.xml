@@ -113,9 +113,6 @@
 				<Variable id="BuyerPhoneNumber">
 					<TagReference tag="BuyerPhoneNumber" />
 				</Variable>
-				<Variable id="SupportedPaymentMethods">
-					<TagReference tag="SupportedPaymentMethods" />
-				</Variable>
 				<Variable id="RemoteId">
 					<TagReference tag="RemoteId" />
 				</Variable>
@@ -183,7 +180,7 @@
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
 					<OnEnter actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= true;" />
 					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>
-					<OnEvent actionRef="CancelPayment" newState="PaymentCanceled" failureState="PaymentCompleted">
+					<OnEvent actionRef="VoidPayment" newState="PaymentCanceled" failureState="PaymentCompleted">
 						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
 					<OnEvent actionRef="PayoutDateUpdated">
@@ -208,7 +205,7 @@
 					<OnEvent actionRef="SetUpRefund" failureState="AwaitingforRefundPayment" newState="AwaitingforRefundPayment">
 						<OnXmlNote localName="SetUpRefund" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
-					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="RefundBuyer" failureState="RefundBuyerFailed">
+					<OnEvent actionRef="ProcessCompletedRefundPayment" newState="RefundBuyer" failureState="RefundBuyerFailed">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent actionRef="SetSellerTimeZoneDifference">
@@ -219,13 +216,13 @@
 					</OnEvent>
 				</State>
 				<State id="RefundBuyer">
-					<OnEvent actionRef="CancelPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
-						<OnExternalXmlNote localName="RetryRefundBuyer" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					<OnEvent actionRef="RefundPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
+						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
 				</State>
 				<State id="RefundBuyerFailed">
-					<OnEvent actionRef="CancelPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
-						<OnExternalXmlNote localName="RetryRefundBuyer" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					<OnEvent actionRef="RefundPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
+						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 				</State>
 				<State id="ReleaseFundsToSellerFailed">
@@ -322,7 +319,37 @@
 						</Then>
 					</If>
 				</Action>
-				<Action id="CancelPayment">
+				<Action id="VoidPayment">
+					<If condition="TotalAmountPaid &lt; AmountToPay">
+						<Then>
+							<TextNote content="The amount paid is not sufficient" />
+						</Then>
+						<Else>
+							<PersistVariable name="VoidPaymentMessage" value="" />
+							<Script>
+								<![CDATA[
+									AmountToSell:= AmountToPay;
+									BankAccountToSell:= "";
+									SellEdalerFrom:= Seller;
+									AccountName:= SellerName;
+									MessageOnError:= 'VoidPayment error';
+									Mode:= 'Void';
+									Message:= "Povrat novca."
+								]]>
+							</Script>
+							<Try>
+								<CallAction actionRef="TrySellEdaler" />
+								<PersistVariable name="VoidPaymentMessage" value="ok" />
+								<Catch exceptionVariable="ex">
+									<PersistVariable name="VoidPaymentMessage" value="ex.Message" />
+									<Error reason="ex.Message"></Error>
+								</Catch>
+							</Try>
+							<PersistVariable name="RefundedAmount" value="{AmountToPay}" />
+						</Else>
+					</If>
+				</Action>
+				<Action id="RefundPayment">
 					<If condition="TotalAmountPaid &lt; AmountToPay">
 						<Then>
 							<TextNote content="The amount paid is not sufficient" />
@@ -331,11 +358,11 @@
 							<PersistVariable name="RefundPaymentMessage" value="" />
 							<Script>
 								<![CDATA[
-									AmountToSell:= AmountToPay;
+									AmountToSell:= AmountToBeRefunded;
 									BankAccountToSell:= "";
 									SellEdalerFrom:= Seller;
 									AccountName:= SellerName;
-									MessageOnError:= 'CancelPayment error';
+									MessageOnError:= 'Refund Payment error';
 									Mode:= 'Refund';
 									Message:= "Povrat novca."
 								]]>
@@ -351,7 +378,7 @@
 							<PersistVariable name="RefundedAmount" value="{AmountToPay}" />
 						</Else>
 					</If>
-				</Action>				
+				</Action>
 				<Action id="SetUpRefund">
 					<Try>
 						<Script>
@@ -469,7 +496,41 @@
 						</Catch>
 					</Try>
 				</Action>
+				<Action id="ProcessCompletedRefundPayment">
+					<Script>
+						RefundOrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
+						RefundPayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@payspotOrderId');
+						RefundPaymentType := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentType');
+					</Script>
+					<Try>
+						<BuyEDaler to="{Seller}"
+							   amount="{AmountToPay}"
+							   currency="{Currency}"
+							   reference="{'nfeat: ' + TokenId}"
+							   contract="{TokenContract}"
+							   serviceId="{ServiceProviderId}"
+							   serviceProvider="{ServiceProviderType}">
+							<Parameter key="AmountToPay" value="{AmountToPay}"></Parameter>
+							<Parameter key="Currency" value="{Currency}"></Parameter>
+							<Parameter key="OrderId" value="{RefundOrderId}"></Parameter>
+							<Parameter key="PayspotOrderId" value="{RefundPayspotOrderId}" />
+							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
+						</BuyEDaler>
+						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
+						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
+						<PersistVariable name="PaymentDateTimeInBuyerLocalTime" value="{Evaluate('NowUtc.AddMinutes(-TimeZoneOffset)')}" />
+						<PersistVariable name="DeliveryDate" value="{Evaluate('NowUtc.AddMinutes(1)')}" />
+						<PersistVariable name="RefundOrderId" value="{RefundOrderId}" />
+						<PersistVariable name="RefundPayspotOrderId" value="{RefundPayspotOrderId}" />
+						<PersistVariable name="RefundPaymentType" value="{RefundPaymentType}" />
 
+						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
+				</Action>
 				<Action id="ReleaseFunds">
 					<If condition="TotalAmountPaid &lt; AmountToPay">
 						<Then>
@@ -606,9 +667,6 @@
 		</Tag>
 		<Tag name="PaySpotStatusMsg">
 			<ParameterReference parameter="PaySpotStatusMsg" />
-		</Tag>
-		<Tag name="SupportedPaymentMethods">
-			<ParameterReference parameter="SupportedPaymentMethods" />
 		</Tag>
 		<Tag name="RemoteId">
 			<ParameterReference parameter="RemoteId" />
@@ -827,13 +885,6 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Web page of selling product.</text>
-				</paragraph>
-			</description>
-		</stringParameter>
-		<stringParameter name="SupportedPaymentMethods" value="">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Payment methods which are supported for this contract (Card, BankTransfer)</text>
 				</paragraph>
 			</description>
 		</stringParameter>
