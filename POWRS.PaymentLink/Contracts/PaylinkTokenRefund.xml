@@ -227,7 +227,7 @@
 				</State>
 				<State id="ReleaseFundsToSellerFailed">
 					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
-						<OnExternalXmlNote localName="RetryReleaseFundsToSeller" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+						<OnXmlNote localName="RetryReleaseFundsToSeller" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
 				</State>
 				<State id="PaymentCanceled">
