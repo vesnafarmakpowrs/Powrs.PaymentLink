@@ -141,6 +141,11 @@ function PaymentCompleted(Result) {
     DeleteUrlParam("Retry");
 }
 
+function RefundPaymentCompleted(Result) {
+    DeleteUrlParam("TYPE");
+    DeleteUrlParam("Retry");
+}
+
 function DeleteUrlParam(ParamName) {
     const url = new URL(window.location.href);
     url.searchParams.delete(ParamName);

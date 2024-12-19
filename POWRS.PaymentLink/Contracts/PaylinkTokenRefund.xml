@@ -208,6 +208,9 @@
 					<OnEvent actionRef="ProcessCompletedRefundPayment" newState="RefundBuyer" failureState="RefundBuyerFailed">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+					<OnEvent actionRef="ProcessRefundPayspotPaymentStatus" newState="AwaitingforRefundPayment" failureState="AwaitingforRefundPayment">
+						<OnExternalXmlNote localName="PayspotPaymentStatus" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
 					<OnEvent actionRef="SetSellerTimeZoneDifference">
 						<OnExternalXmlNote localName="TimeZoneDifference" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -216,6 +219,7 @@
 					</OnEvent>
 				</State>
 				<State id="RefundBuyer">
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='RefundPaymentCompleted'" />
 					<OnEvent actionRef="RefundPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
 						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
@@ -457,6 +461,26 @@
 						<CallAction actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentFailed'" />
 						<Catch exceptionVariable="ex">
 							<LogEvent type="Error" eventId="ProcessPayspotPaymentStatus" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="ProcessRefundPayspotPaymentStatus">
+					<Script>
+						RefundOrderId:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@orderId');
+						RefundPayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@payspotOrderId');
+						RefundPaymentType := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentType');
+						RefundPaymentStatusCode := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusCode');
+						RefundPaymentStatusDescr := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusDescr');
+						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': RefundPaymentStatusCode, 'Msg': RefundPaymentStatusDescr, 'ErrorUrl': ErrorUrl})")
+					</Script>
+					<Try>
+						<PersistVariable name="RefundPaymentStatusCode" value="{RefundPaymentStatusCode}" />
+						<PersistVariable name="RefundPaymentStatusDescr" value="{RefundPaymentStatusDescr}" />
+						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessRefundPayspotPaymentStatus, RefundPaymentStatus: ' + RefundPaymentStatusDescr, 'RefundPaySpotStatusCode: ' + RefundPaySpotStatusCode }" object="{Buyer}" type="Informational" />
+						<CallAction actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentFailed'" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="ProcessRefundPayspotPaymentStatus" actor="{Seller}" message="{ex.Message}"></LogEvent>
 							<Error reason="{ex.Message}"></Error>
 						</Catch>
 					</Try>
