@@ -10,12 +10,15 @@
 
 	<ItemGroup>
 	  <Compile Remove="Root\pay.lab.vaulter.rs\**" />
+	  <Compile Remove="Root\Payout\DynamicTemplates\**" />
 	  <Compile Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
 	  <Compile Remove="Root\VaulterApi\PaymentLink\Onboarding\Template\**" />
 	  <EmbeddedResource Remove="Root\pay.lab.vaulter.rs\**" />
+	  <EmbeddedResource Remove="Root\Payout\DynamicTemplates\**" />
 	  <EmbeddedResource Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
 	  <EmbeddedResource Remove="Root\VaulterApi\PaymentLink\Onboarding\Template\**" />
 	  <None Remove="Root\pay.lab.vaulter.rs\**" />
+	  <None Remove="Root\Payout\DynamicTemplates\**" />
 	  <None Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
 	  <None Remove="Root\VaulterApi\PaymentLink\Onboarding\Template\**" />
 	</ItemGroup>
@@ -304,6 +307,11 @@
 	<ItemGroup>
 	  <Compile Update="DealInfo\DealInfo.cs">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Compile>
+	  <Compile Update="Localization\Resources\HtmlTemplates\Resource.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resource.resx</DependentUpon>
 	  </Compile>
 	  <Compile Update="Localization\Resources\Payout\Resource.Designer.cs">
 	    <DesignTime>True</DesignTime>
@@ -999,12 +1007,14 @@
 	<ItemGroup>
 	  <Folder Include="FeeCalculator\TemplateFiles\FeeCalculatorForm\" />
 	  <Folder Include="Resources\" />
-	  <Folder Include="Root\Payout\DynamicTemplates\ReccurrencePayments\Done\" />
-	  <Folder Include="Root\Payout\DynamicTemplates\ReccurrencePayments\PaymentNotPeformed\" />
 	  <Folder Include="Root\VaulterApi\PaymentLink\Organization\" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Update="Localization\Resources\HtmlTemplates\Resource.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Localization\Resources\Payout\Resource.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>Resource.Designer.cs</LastGenOutput>
