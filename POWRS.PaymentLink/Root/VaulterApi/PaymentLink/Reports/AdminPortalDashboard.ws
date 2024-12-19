@@ -66,29 +66,29 @@ try
 	cardMarkUpFee := 0;
 	
 	neuroFeatureTokenList := 
-		select * 
-		from IoTBroker.NeuroFeatures.Token
-		where Created >= DTDateFrom
-			and Created < DTDateTo;
+		select TokenId, Value
+		from NeuroFeatureReferences
+		where Updated >= DTDateFrom
+			and Updated < DTDateTo;
 			
 	foreach token in neuroFeatureTokenList do 
 	(
-	    if (payspotPaymentDictionary.ContainsKey(token.TokenId)) then 
+	    if (payspotPaymentDictionary.ContainsKey(token[0])) then 
 		(			
 			successfulTransactionsCount ++;
-			successfulTransactionsValue += token.Value;
+			successfulTransactionsValue += token[1];
 			
-			obj := payspotPaymentDictionary[token.TokenId];
+			obj := payspotPaymentDictionary[token[0]];
 			if(obj.PaymentType == CardPayment) then 
 			(
 				cardSuccessCount ++;
-				cardSuccessValue += token.Value;
+				cardSuccessValue += token[1];
 				cardMarkUpFee += obj.SenderFee ?? 0;
 			)
 			else if(obj.PaymentType == IPSPayment)then 
 			(
 				ipsSuccessCount ++;
-				ipsSuccessValue +=  token.Value;
+				ipsSuccessValue +=  token[1];
 				IPSFee += obj.SenderFee ?? 0;
 			);
 		)
