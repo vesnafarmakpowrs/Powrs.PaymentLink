@@ -81,7 +81,7 @@
 			<String id="78">Retry Payment</String>
 			<String id="79">By clicking 'Pay Now' and proceeding to the IPS scan payment method, you confirm that you have read and agree to the Vaulter Terms and</String>
 			<String id="80">Refunded </String>
-			<String id="81">>By clicking 'Pay Now' you confirm that you have read and agree to the Vaulter Terms and</String>
+			<String id="81">By clicking 'Pay Now' you confirm that you have read and agree to the Vaulter Terms and</String>
 			<String id="82">Choose a bank</String>
 		</Namespace>
 	</Language>
