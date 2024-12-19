@@ -1009,7 +1009,6 @@
 
 	<ItemGroup>
 	  <Folder Include="FeeCalculator\TemplateFiles\FeeCalculatorForm\" />
-	  <Folder Include="Resources\" />
 	  <Folder Include="Root\VaulterApi\PaymentLink\Organization\" />
 	</ItemGroup>
 
