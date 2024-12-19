@@ -305,6 +305,11 @@
 	  <Compile Update="DealInfo\DealInfo.cs">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Compile>
+	  <Compile Update="Localization\Resources\Payout\Resource.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resource.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -993,9 +998,17 @@
 
 	<ItemGroup>
 	  <Folder Include="FeeCalculator\TemplateFiles\FeeCalculatorForm\" />
+	  <Folder Include="Resources\" />
 	  <Folder Include="Root\Payout\DynamicTemplates\ReccurrencePayments\Done\" />
 	  <Folder Include="Root\Payout\DynamicTemplates\ReccurrencePayments\PaymentNotPeformed\" />
 	  <Folder Include="Root\VaulterApi\PaymentLink\Organization\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Localization\Resources\Payout\Resource.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 	
 	<!-- Build Lab Serbian package -->
