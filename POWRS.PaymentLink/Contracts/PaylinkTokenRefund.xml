@@ -542,7 +542,7 @@
 						</BuyEDaler>
 						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
 						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
-						<PersistVariable name="PaymentDateTimeInBuyerLocalTime" value="{Evaluate('NowUtc.AddMinutes(-TimeZoneOffset)')}" />
+						<PersistVariable name="RefundPaymentDateTimeInBuyerLocalTime" value="{Evaluate('NowUtc.AddMinutes(-TimeZoneOffset)')}" />
 						<PersistVariable name="DeliveryDate" value="{Evaluate('NowUtc.AddMinutes(1)')}" />
 						<PersistVariable name="RefundOrderId" value="{RefundOrderId}" />
 						<PersistVariable name="RefundPayspotOrderId" value="{RefundPayspotOrderId}" />
