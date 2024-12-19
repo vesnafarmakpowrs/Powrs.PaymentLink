@@ -143,6 +143,9 @@
 				<Variable id="CreatorJid">
 					<TokenProperty>CreatorJid</TokenProperty>
 				</Variable>
+				<Variable id="Creator">
+					<TokenProperty>Creator</TokenProperty>
+				</Variable>
 				<Variable id="Link">
 					<Calc>
 						domain:= "https://" + Evaluate("GetSetting('POWRS.PaymentLink.PayDomain','')");
@@ -150,7 +153,7 @@
 					</Calc>
 				</Variable>
 				<State id="AwaitingCardRegistration">
-					<OnEnter actionRef="AwaitingCardRegistrationOnEnter"/>					
+					<OnEnter actionRef="AwaitingCardRegistrationOnEnter"/>
 					<OnEvent actionRef="RegisterCard" newState="AwaitingNextPayment" failureState="AwaitingCardRegistration">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
@@ -160,10 +163,10 @@
 					<OnEvent newState="PaymentNotPerformed">
 						<OnDateTime>{PaymentDeadline}</OnDateTime>
 					</OnEvent>
-					<OnEvent newState="PaymentNotPerformed">
+					<OnEvent actionRef="SetCancellationReason" beforeActionScript="reason:= 'Seller'" newState="PaymentNotPerformed">
 						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
-					<OnEvent newState="PaymentNotPerformed">
+					<OnEvent actionRef="SetCancellationReason" beforeActionScript="reason:= 'Buyer'" newState="PaymentNotPerformed">
 						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent actionRef="SetBuyerTimeZoneDifference">
@@ -178,10 +181,10 @@
 					<OnEvent actionRef="TryToAuthorizeFunds" newState="PaymentCompleted" failureState="PaymentFailed">
 						<OnDateTime>{DeliveryDate}</OnDateTime>
 					</OnEvent>
-					<OnEvent newState="PaymentCanceled" failureState="PaymentCanceled">
+					<OnEvent actionRef="SetCancellationReason" beforeActionScript="reason:= 'Buyer'" newState="PaymentCanceled" failureState="PaymentCanceled">
 						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
-					<OnEvent newState="PaymentCanceled" failureState="PaymentCanceled">
+					<OnEvent actionRef="SetCancellationReason" beforeActionScript="reason:= 'Seller'" newState="PaymentCanceled" failureState="PaymentCanceled">
 						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
 					<OnEvent actionRef="UpdateBuyerInformations">
@@ -219,6 +222,14 @@
 					</OnEvent>
 				</State>
 
+				<Action id="SetCancellationReason">
+					<If condition="exists(reason)">
+						<Then>
+							<PersistVariable name="CancellationReason" value="{reason}" />
+						</Then>
+					</If>
+				</Action>
+
 				<State id="PaymentNotPerformed">
 					<OnEnter actionRef="MarkAsDone"/>
 				</State>
@@ -227,13 +238,13 @@
 					<CallAction actionRef="SetServiceProvider"/>
 					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'AwaitingCardRegistration'"/>
 				</Action>
-				
+
 				<Action id="PaymentCompletedOnEnter">
 					<CallAction actionRef="IncrementTotalCompletedPayments"/>
 					<CallAction actionRef="ResetFailedAttemptsCounter"/>
 					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'PaymentCompleted'"/>
 				</Action>
-				
+
 				<Action id="NotifyNewState">
 					<If condition="exists(StateToNotify)">
 						<Then>
@@ -465,7 +476,7 @@
 								serviceMode:= isProduction ? ".Live" : ".Test";
 
 								serviceProviderId:= "POWRS.Payment.PaySpot.PayspotService" + serviceMode;
-								serviceProviderType:= "POWRS.Payment.PaySpot.PayspotServiceProvider";							
+								serviceProviderType:= "POWRS.Payment.PaySpot.PayspotServiceProvider";
 							</Script>
 							<PersistVariable name="ServiceProviderId" value="{serviceProviderId}"/>
 							<PersistVariable name="ServiceProviderType" value="{serviceProviderType}"/>

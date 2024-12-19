@@ -134,6 +134,9 @@
 				<Variable id="TimeZoneOffset">
 					<Number>0</Number>
 				</Variable>
+				<Variable id="Creator">
+					<TokenProperty>Creator</TokenProperty>
+				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="SetServiceProvider"/>
 					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
@@ -154,7 +157,7 @@
 					<OnEvent actionRef="EmailToBuyerSent">
 						<OnExternalXmlNote localName="EmailToBuyerSent" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
-					<OnEvent newState="PaymentNotPerformed">
+					<OnEvent actionRef="SetCancellationReason" beforeActionScript="" newState="PaymentNotPerformed">
 						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
 					<OnEvent newState="PaymentNotPerformed">
