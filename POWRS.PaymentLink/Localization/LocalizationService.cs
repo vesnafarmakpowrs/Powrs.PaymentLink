@@ -20,5 +20,35 @@ namespace POWRS.PaymentLink.Localization
         {
             return _resourceManager.GetString(key, _culture);
         }
+
+        public string GetFormat(string key, string param1)
+        {
+            return GetFormatted(key, param1);
+        }
+
+        public string GetFormat(string key, string param1, string param2)
+        {
+            return GetFormatted(key, param1, param2);
+        }
+
+        public string GetFormat(string key, string param1, string param2, string param3)
+        {
+            return GetFormatted(key, param1, param2, param3);
+        }
+
+        public string GetFormat(string key, string param1, string param2, string param3, string param4)
+        {
+            return GetFormatted(key, param1, param2, param3, param4);
+        }
+
+        public string GetFormat(string key, string param1, string param2, string param3, string param4, string param5)
+        {
+            return GetFormatted(key, param1, param2, param3, param4, param5);
+        }
+
+        private string GetFormatted(string key, params string[] args)
+        {
+            return string.Format(_resourceManager.GetString(key, _culture), args);
+        }
     }
 }
