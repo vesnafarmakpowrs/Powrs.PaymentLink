@@ -58,7 +58,7 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-	
+
 	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 		<xsd:element name="root" msdata:IsDataSet="true">
 			<xsd:complexType>
@@ -98,4 +98,133 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="PaymentFailedTitle" xml:space="preserve">
+    <value>Plaćanje nije uspelo.</value>
+  </data>
+	<data name="PaymentFailedMessage" xml:space="preserve">
+    <value>Zdravo ((BuyerName )), želimo da vas obavestimo da je plaćanje za proizvod ((Title )) korišćenjem registrovane kartice: ((ActiveCardDetails.MaskedPan )) koje je izvršila kompanija ((SellerName )) upravo neuspešno.</value>
+  </data>
+	<data name="RetryMessage" xml:space="preserve">
+    <value>Ne brinite, pokušaćemo ponovo nekoliko puta u narednim danima i obavestićemo vas o ishodu...</value>
+  </data>
+	<data name="MaxAttemptsNote" xml:space="preserve">
+    <value>Imajte na umu da je maksimalan broj pokušaja: ((MaxFailedAttempts )).</value>
+  </data>
+	<data name="CurrentAttempt" xml:space="preserve">
+    <value>Ovo je naš ((FailedPaymentAttempts )) pokušaj.</value>
+  </data>
+	<data name="ExceedAttemptsMessage" xml:space="preserve">
+    <value>Kada ovaj broj bude premašen, vaš proizvod će automatski biti otkazan, a da biste ga obnovili, moraćete da kontaktirate prodavca direktno.</value>
+  </data>
+	<data name="BuyerDetailsCaption" xml:space="preserve">
+    <value>Podaci o kupcu</value>
+  </data>
+	<data name="NameColumn" xml:space="preserve">
+    <value>Ime</value>
+  </data>
+	<data name="AddressColumn" xml:space="preserve">
+    <value>Adresa</value>
+  </data>
+	<data name="CityColumn" xml:space="preserve">
+    <value>Grad</value>
+  </data>
+	<data name="PhoneNumberColumn" xml:space="preserve">
+    <value>Broj telefona</value>
+  </data>
+	<data name="EmailColumn" xml:space="preserve">
+    <value>Email</value>
+  </data>
+	<data name="CardDetailsCaption" xml:space="preserve">
+    <value>Podaci o kartici</value>
+  </data>
+	<data name="MaskedPanColumn" xml:space="preserve">
+    <value>Maskirani Pan</value>
+  </data>
+	<data name="ExpirationDateColumn" xml:space="preserve">
+    <value>Datum isteka</value>
+  </data>
+	<data name="BrandColumn" xml:space="preserve">
+    <value>Brend</value>
+  </data>
+	<data name="AmountColumn" xml:space="preserve">
+    <value>Iznos</value>
+  </data>
+	<data name="CheckDetailsMessage" xml:space="preserve">
+    <value>Molimo vas da proverite podatke o kartici i fakturisanju iznad. Ako nešto nije u redu, možete izvršiti izmene na ovom ((Link )). Ukoliko je sve u redu, samo se opustite, proverite da imate dovoljno sredstava na bankovnom računu i mi ćemo učiniti ostalo.</value>
+  </data>
+	<data name="ContactSellerMessage" xml:space="preserve">
+    <value>Ako želite da saznate više detalja o ovoj poruci i samom ugovoru, molimo vas da kontaktirate prodavca direktno na broj telefona: ((CompanyInfo.PhoneNumber )) ili putem e-pošte: ((CompanyInfo.Email ))</value>
+  </data>
+	<data name="FooterCompany" xml:space="preserve">
+    <value>POWRS D.O.O. BEOGRAD, Srbija</value>
+  </data>
+	<data name="FooterCopyright" xml:space="preserve">
+    <value>©2021 - ((Now.Year )) POWRS</value>
+  </data>
+	<data name="FooterWithdrawalNote" xml:space="preserve">
+    <value>Saglasno odredbi člana 27. Zakona o zaštiti potrošača, možete popuniti obrazac za odustanak od ugovora</value>
+  </data>
+	<data name="PaymentCompletedTitle" xml:space="preserve">
+    <value>Završeno</value>
+  </data>
+	<data name="PaymentCompletedMessage" xml:space="preserve">
+    <value>Zdravo ((BuyerName )), sa zadovoljstvom vas obaveštavamo da su sva dospela plaćanja za ((Title )) koja je izvršila kompanija ((SellerName )) sada kompletirana.</value>
+  </data>
+	<data name="TransactionsInfoMessage" xml:space="preserve">
+    <value>Sve pojedinosti o završenim/neuspelim transakcijama biće vidljive u tabeli ispod. Ako imate bilo kakvo pitanje, molimo vas da direktno kontaktirate prodavca.</value>
+  </data>
+	<data name="AllTransactionsCaption" xml:space="preserve">
+    <value>Sve transakcije</value>
+  </data>
+	<data name="AuthColumn" xml:space="preserve">
+    <value>Aut.</value>
+  </data>
+	<data name="CodeColumn" xml:space="preserve">
+    <value>Kod</value>
+  </data>
+	<data name="DateColumn" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+	<data name="RefundedStatus" xml:space="preserve">
+    <value>Refundirano</value>
+  </data>
+	<data name="CompletedStatus" xml:space="preserve">
+    <value>Završeno</value>
+  </data>
+	<data name="FailedStatus" xml:space="preserve">
+    <value>Neuspelo</value>
+  </data>
+	<data name="GoodbyeMessage" xml:space="preserve">
+    <value>Žao nam je što se rastajemo, nadamo se da ste imali dobro iskustvo koristeći našu platformu.</value>
+  </data>
+	<data name="ThankYouMessage" xml:space="preserve">
+    <value>Hvala vam što koristite Vaulter.</value>
+  </data>
+	<data name="PaymentCanceledTitle" xml:space="preserve">
+    <value>Plaćanje je otkazano.</value>
+  </data>
+	<data name="PaymentCanceledMessage" xml:space="preserve">
+    <value>Zdravo ((BuyerName )), sa žaljenjem vas obaveštavamo da su automatska plaćanja za proizvod ((Title )) koju je izvršila kompanija ((SellerName )) otkazana.</value>
+  </data>
+	<data name="MaxRetriesNote" xml:space="preserve">
+    <value>Molimo vas da imate u vidu da maksimalan broj ponovnih pokušaja definiše prodavac.</value>
+  </data>
+	<data name="CancellationNotInitiatedInfo" xml:space="preserve">
+    <value>Ako otkazivanje nije inicirano od strane vas, a želite da saznate više detalja o samom ugovoru, molimo vas da kontaktirate prodavca direktno na broj telefona: ((CompanyInfo.PhoneNumber )) ili putem e-pošte: ((CompanyInfo.Email ))</value>
+  </data>
+	<data name="PaymentNotPerformedTitle" xml:space="preserve">
+    <value>Plaćanje nije izvršeno.</value>
+  </data>
+	<data name="PaymentNotPerformedMessage" xml:space="preserve">
+    <value>Zdravo ((BuyerName )), obaveštavamo vas da registracija kartice za proizvod ((Title )) koju je izvršila kompanija ((SellerName )) nije izvršena.</value>
+  </data>
+	<data name="CancellationBuyerMessage" xml:space="preserve">
+    <value>((BuyerName )) je inicirao otkazivanje. Ako je ovo greška, molimo vas da kontaktirate prodavca.</value>
+  </data>
+	<data name="CancellationSellerMessage" xml:space="preserve">
+    <value>((SellerName )) je inicirao otkazivanje. Za više detalja kontaktirajte prodavca direktno.</value>
+  </data>
+	<data name="CancellationDeadlineMessage" xml:space="preserve">
+    <value>Ovo se obično dešava kada istekne rok za plaćanje.</value>
+  </data>
 </root>
