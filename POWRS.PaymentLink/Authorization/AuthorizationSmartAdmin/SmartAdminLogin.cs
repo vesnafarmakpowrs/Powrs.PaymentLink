@@ -1,7 +1,6 @@
 ﻿using POWRS.PaymentLink.Models;
 using POWRS.PaymentLink.Module;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -75,19 +74,15 @@ namespace POWRS.PaymentLink.Authorization
                 Log.Error("Login Failed. Account not found.", userName, Request.RemoteEndPoint, "LoginFailure");
                 await Gateway.LoginAuditor.ProcessLoginFailure(Request.RemoteEndPoint, "HTTPS", DateTime.UtcNow, "Login Failed. Account not found.");
             });
-            Log.Debug($"Succeffuly get account details from db. Account: {account.UserName}, pw: {account.Password}", userName, "", "GenerateSignature");
 
             //validate signature
             string s = $"{userName}:{Gateway.Domain?.Value ?? string.Empty}:{nonce}";
-            Log.Debug($"Elements for signature: {s}", userName, "", "GenerateSignature");
             string controlSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Encoding.UTF8.GetBytes(account.Password), Encoding.UTF8.GetBytes(s)));
-            Log.Debug($"Header signature: {signature}, control signature: {controlSignature}", userName, "", "GenerateSignature");
 
             if (signature != controlSignature)
             {
                 await ThrowLoginFailure("Login Failed. Signature not valid.", userName ?? "", Request.RemoteEndPoint, HttpStatusCode.Unauthorized);
             }
-            Log.Debug($"Signature is valid", userName, "", "GenerateSignature");
 
             //validate users role
             var brokerAccountRole = await Database.FindFirstDeleteRest<BrokerAccountRole>(new FilterFieldEqualTo("UserName", userName));
@@ -97,9 +92,8 @@ namespace POWRS.PaymentLink.Authorization
             }
 
             //get users defined companies
-            var userOrganizations = await BrokerAccountRole.GetAllOrganizationChildren(userName);
-            PaymentLinkModule.InsertOrUpdateUsernameOrganizations(userName, userOrganizations);
-            Log.Debug($"Users organizations inserted into static dictionary. cnt of orgs: " + userOrganizations.Count.ToString(), userName, "", "GenerateSignature");
+            var userOrganizations = await BrokerAccountRole.GetAllOrganizationChildren(brokerAccountRole.OrgName);
+            PaymentLinkModule.SetUsernameOrganizations(userName, userOrganizations);
 
             if (requestBody.TryGetValue("Duration", out object durationObject) && int.TryParse(durationObject?.ToString(), out int parsedDuration))
             {
@@ -111,25 +105,16 @@ namespace POWRS.PaymentLink.Authorization
                 duration = parsedDuration;
             }
 
-            int IssuedAt = (int)Math.Round(DateTime.UtcNow.Subtract(JSON.UnixEpoch).TotalSeconds);
-            int Expires = IssuedAt + duration;
-
-            JwtFactory jwtFactory = GetJwtFactory();
-
-            string Token = jwtFactory.Create(
-                new KeyValuePair<string, object>("jti", Convert.ToBase64String(Gateway.NextBytes(32))),
-                new KeyValuePair<string, object>("iss", Gateway.Domain?.Value ?? string.Empty),
-                new KeyValuePair<string, object>("sub", userName + "@" + (Gateway.Domain?.Value ?? string.Empty)),
-                new KeyValuePair<string, object>("iat", IssuedAt),
-                new KeyValuePair<string, object>("exp", Expires));
+            JwtToken jwtToken = CreateJwtFactoryToken(userName, duration);
+            Log.Debug($"JwtToken generated. tokens str: {jwtToken.Token},\nexpiration date as datetime: {Convert.ToString(jwtToken.Expiration)},\nexpiration date as int: {(int)Math.Round(Convert.ToDateTime(jwtToken.Expiration).Subtract(JSON.UnixEpoch).TotalSeconds)},\nexpiration DateTime.UtcNow + duration: {(int)Math.Round(DateTime.UtcNow.Subtract(JSON.UnixEpoch).TotalSeconds) + duration}", userName, Request.RemoteEndPoint, "SmartAdminLogin");
 
             await Gateway.LoginAuditor.ProcessLoginSuccessful(Request.RemoteEndPoint, "HTTPS");
             Log.Notice("Login success", userName, Request.RemoteEndPoint, "LoginSuccess");
 
             await Response.Return(new Dictionary<string, object>
             {
-                { "jwt", Token },
-                { "expires", Expires },
+                { "jwt", jwtToken.Token },
+                { "expires", (int)Math.Round(Convert.ToDateTime(jwtToken.Expiration).Subtract(JSON.UnixEpoch).TotalSeconds) },
             });
         }
 

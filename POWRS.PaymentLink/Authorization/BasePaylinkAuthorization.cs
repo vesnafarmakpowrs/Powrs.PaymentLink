@@ -8,6 +8,8 @@ using Waher.Persistence.Serialization;
 using Waher.Persistence;
 using Waher.Security.JWT;
 using System.Collections.Concurrent;
+using Waher.IoTGateway;
+using Waher.Content;
 
 namespace POWRS.PaymentLink.Authorization
 {
@@ -95,6 +97,23 @@ namespace POWRS.PaymentLink.Authorization
             }
 
             return jwtFactory;
+        }
+        protected JwtToken CreateJwtFactoryToken(string userName, int duration)
+        {
+            int issuedAt = (int)Math.Round(DateTime.UtcNow.Subtract(JSON.UnixEpoch).TotalSeconds);
+            int expires = issuedAt + duration;
+
+            JwtFactory jwtFactory = GetJwtFactory();
+            string token = jwtFactory.Create(
+                new KeyValuePair<string, object>("jti", Convert.ToBase64String(Gateway.NextBytes(32))),
+                new KeyValuePair<string, object>("iss", Gateway.Domain?.Value ?? string.Empty),
+                new KeyValuePair<string, object>("sub", userName + "@" + (Gateway.Domain?.Value ?? string.Empty)),
+                new KeyValuePair<string, object>("iat", issuedAt),
+                new KeyValuePair<string, object>("exp", expires));
+
+            JwtToken jwtToken = new JwtToken(token);
+
+            return jwtToken;
         }
 
         protected async Task<Account> GetEnabledAccount(string UserName, Func<Task> OnNoAccountFound = null)

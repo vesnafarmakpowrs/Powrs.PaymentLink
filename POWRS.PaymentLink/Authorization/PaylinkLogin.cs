@@ -85,17 +85,7 @@ namespace POWRS.PaymentLink.Authorization
                 duration = parsedDuration;
             }
 
-            int IssuedAt = (int)Math.Round(DateTime.UtcNow.Subtract(JSON.UnixEpoch).TotalSeconds);
-            int Expires = IssuedAt + duration;
-
-            JwtFactory jwtFactory = GetJwtFactory();
-
-            string Token = jwtFactory.Create(
-                new KeyValuePair<string, object>("jti", Convert.ToBase64String(Gateway.NextBytes(32))),
-                new KeyValuePair<string, object>("iss", Gateway.Domain?.Value ?? string.Empty),
-                new KeyValuePair<string, object>("sub", agentApiKey.UserName + "@" + (Gateway.Domain?.Value ?? string.Empty)),
-                new KeyValuePair<string, object>("iat", IssuedAt),
-                new KeyValuePair<string, object>("exp", Expires));
+            JwtToken token = CreateJwtFactoryToken(agentApiKey.UserName, duration);
 
             agentApiKey.LastLogin = DateTime.UtcNow;
             await Database.Update(agentApiKey);
@@ -105,8 +95,8 @@ namespace POWRS.PaymentLink.Authorization
 
             await Response.Return(new Dictionary<string, object>
             {
-                { "jwt", Token },
-                { "expires", Expires },
+                { "jwt", token },
+                { "expires", (int)Math.Round(DateTime.UtcNow.Subtract(JSON.UnixEpoch).TotalSeconds) + duration },
             });
         }
 

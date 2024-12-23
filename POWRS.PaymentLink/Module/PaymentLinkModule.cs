@@ -1,14 +1,15 @@
 ﻿using POWRS.PaymentLink.Authorization;
-using System.Collections.Concurrent;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Waher.IoTGateway;
+using Waher.Runtime.Cache;
 
 namespace POWRS.PaymentLink.Module
 {
     public class PaymentLinkModule : IConfigurableModule
     {
-        private static ConcurrentDictionary<string, List<string>> userNameOrganizations = new ConcurrentDictionary<string, List<string>>();
+        private static Cache<string, List<string>> userNameOrganizations = new Cache<string, List<string>>(int.MaxValue, TimeSpan.FromSeconds(3600), TimeSpan.FromSeconds(3600));
 
         public Task<IConfigurablePage[]> GetConfigurablePages()
         {
@@ -46,20 +47,19 @@ namespace POWRS.PaymentLink.Module
             return Task.CompletedTask;
         }
 
-        public static void InsertOrUpdateUsernameOrganizations(string userName, List<string> organizations)
+        public static void SetUsernameOrganizations(string userName, List<string> organizations)
         {
-            userNameOrganizations.AddOrUpdate(userName, organizations, (key, oldValue) => { return organizations; });
+            if (userNameOrganizations.ContainsKey(userName))
+                userNameOrganizations[userName] = organizations;
+            else
+                userNameOrganizations.Add(userName, organizations);
         }
         public static List<string> GetUsernameOrganizations(string username)
         {
             if (userNameOrganizations.TryGetValue(username, out List<string> value))
-            {
                 return value;
-            }
             else
-            {
                 return new List<string>();
-            }
         }
     }
 }
