@@ -102,16 +102,16 @@
     <value>Plaćanje nije uspelo.</value>
   </data>
 	<data name="PaymentFailedMessage" xml:space="preserve">
-    <value>Zdravo ((BuyerName )), želimo da vas obavestimo da je plaćanje za proizvod ((Title )) korišćenjem registrovane kartice: ((ActiveCardDetails.MaskedPan )) koje je izvršila kompanija ((SellerName )) upravo neuspešno.</value>
+    <value>Zdravo {0}, želimo da vas obavestimo da je plaćanje za proizvod {1} neuspešno.</value>
   </data>
 	<data name="RetryMessage" xml:space="preserve">
     <value>Ne brinite, pokušaćemo ponovo nekoliko puta u narednim danima i obavestićemo vas o ishodu...</value>
   </data>
 	<data name="MaxAttemptsNote" xml:space="preserve">
-    <value>Imajte na umu da je maksimalan broj pokušaja: ((MaxFailedAttempts )).</value>
+    <value>Imajte na umu da je maksimalan broj pokušaja: {0}.</value>
   </data>
 	<data name="CurrentAttempt" xml:space="preserve">
-    <value>Ovo je naš ((FailedPaymentAttempts )) pokušaj.</value>
+    <value>Ovo je naš {0} pokušaj.</value>
   </data>
 	<data name="ExceedAttemptsMessage" xml:space="preserve">
     <value>Kada ovaj broj bude premašen, vaš proizvod će automatski biti otkazan, a da biste ga obnovili, moraćete da kontaktirate prodavca direktno.</value>
@@ -150,25 +150,25 @@
     <value>Iznos</value>
   </data>
 	<data name="CheckDetailsMessage" xml:space="preserve">
-    <value>Molimo vas da proverite podatke o kartici i fakturisanju iznad. Ako nešto nije u redu, možete izvršiti izmene na ovom ((Link )). Ukoliko je sve u redu, samo se opustite, proverite da imate dovoljno sredstava na bankovnom računu i mi ćemo učiniti ostalo.</value>
+    <value><![CDATA[ Molimo vas da proverite podatke o kartici iznad. Ako nešto nije u redu, možete izvršiti izmene na ovom <a href="{0}">linku</a>. Ukoliko je sve u redu, samo se opustite, proverite da imate dovoljno sredstava na bankovnom računu i mi ćemo učiniti ostalo.]]></value>
   </data>
 	<data name="ContactSellerMessage" xml:space="preserve">
-    <value>Ako želite da saznate više detalja o ovoj poruci i samom ugovoru, molimo vas da kontaktirate prodavca direktno na broj telefona: ((CompanyInfo.PhoneNumber )) ili putem e-pošte: ((CompanyInfo.Email ))</value>
+    <value><![CDATA[ Ako želite da saznate više detalja o ovoj poruci i samom ugovoru, molimo vas da kontaktirate prodavca direktno na broj telefona: <a href="tel:{0}">{0}</a> ili putem e-pošte: <a href="mailto:{1}">{1}</a>]]></value>
   </data>
 	<data name="FooterCompany" xml:space="preserve">
     <value>POWRS D.O.O. BEOGRAD, Srbija</value>
   </data>
 	<data name="FooterCopyright" xml:space="preserve">
-    <value>©2021 - ((Now.Year )) POWRS</value>
+    <value>©2021 - {0} POWRS</value>
   </data>
 	<data name="FooterWithdrawalNote" xml:space="preserve">
-    <value>Saglasno odredbi člana 27. Zakona o zaštiti potrošača, možete popuniti obrazac za odustanak od ugovora</value>
+    <value><![CDATA[Saglasno odredbi člana 27. Zakona o zaštiti potrošača, <a href="{0}">ovde</a> možete popuniti obrazac za odustanak od ugovora.]]></value>
   </data>
 	<data name="PaymentCompletedTitle" xml:space="preserve">
     <value>Završeno</value>
   </data>
 	<data name="PaymentCompletedMessage" xml:space="preserve">
-    <value>Zdravo ((BuyerName )), sa zadovoljstvom vas obaveštavamo da su sva dospela plaćanja za ((Title )) koja je izvršila kompanija ((SellerName )) sada kompletirana.</value>
+    <value>Zdravo {0}, sa zadovoljstvom vas obaveštavamo da su sva dospela plaćanja za {1} koja je izvršila kompanija {2} sada kompletirana.</value>
   </data>
 	<data name="TransactionsInfoMessage" xml:space="preserve">
     <value>Sve pojedinosti o završenim/neuspelim transakcijama biće vidljive u tabeli ispod. Ako imate bilo kakvo pitanje, molimo vas da direktno kontaktirate prodavca.</value>
@@ -204,27 +204,75 @@
     <value>Plaćanje je otkazano.</value>
   </data>
 	<data name="PaymentCanceledMessage" xml:space="preserve">
-    <value>Zdravo ((BuyerName )), sa žaljenjem vas obaveštavamo da su automatska plaćanja za proizvod ((Title )) koju je izvršila kompanija ((SellerName )) otkazana.</value>
+    <value>Zdravo {0}, sa žaljenjem vas obaveštavamo da su automatska plaćanja za proizvod {1} koju je izvršila kompanija {2} otkazana.</value>
   </data>
 	<data name="MaxRetriesNote" xml:space="preserve">
     <value>Molimo vas da imate u vidu da maksimalan broj ponovnih pokušaja definiše prodavac.</value>
   </data>
 	<data name="CancellationNotInitiatedInfo" xml:space="preserve">
-    <value>Ako otkazivanje nije inicirano od strane vas, a želite da saznate više detalja o samom ugovoru, molimo vas da kontaktirate prodavca direktno na broj telefona: ((CompanyInfo.PhoneNumber )) ili putem e-pošte: ((CompanyInfo.Email ))</value>
+    <value><![CDATA[Ako otkazivanje nije inicirano od strane vas, a želite da saznate više detalja o samom ugovoru, molimo vas da kontaktirate prodavca direktno na broj telefona: <a href='tel:{0}'>{0}</a> ili putem e-pošte:  <a href='tel:{1}'>{1}</a>. ]]></value>
   </data>
 	<data name="PaymentNotPerformedTitle" xml:space="preserve">
     <value>Plaćanje nije izvršeno.</value>
   </data>
 	<data name="PaymentNotPerformedMessage" xml:space="preserve">
-    <value>Zdravo ((BuyerName )), obaveštavamo vas da registracija kartice za proizvod ((Title )) koju je izvršila kompanija ((SellerName )) nije izvršena.</value>
+    <value>Zdravo {0}, obaveštavamo vas da registracija kartice za proizvod {1} koju je izvršila kompanija {2} nije izvršena.</value>
   </data>
 	<data name="CancellationBuyerMessage" xml:space="preserve">
-    <value>((BuyerName )) je inicirao otkazivanje. Ako je ovo greška, molimo vas da kontaktirate prodavca.</value>
+    <value>{0} je inicirao otkazivanje. Ako je ovo greška, molimo vas da kontaktirate prodavca.</value>
   </data>
 	<data name="CancellationSellerMessage" xml:space="preserve">
-    <value>((SellerName )) je inicirao otkazivanje. Za više detalja kontaktirajte prodavca direktno.</value>
+    <value>{0} je inicirao otkazivanje. Za više detalja kontaktirajte prodavca direktno.</value>
   </data>
 	<data name="CancellationDeadlineMessage" xml:space="preserve">
     <value>Ovo se obično dešava kada istekne rok za plaćanje.</value>
+  </data>
+	<data name="RemoteIdColumn" xml:space="preserve">
+    <value>Referentni broj</value>
+  </data>
+	<data name="PaymentDateColumn" xml:space="preserve">
+    <value>Datum uplate</value>
+  </data>
+	<data name="BuyerInformationsColumn" xml:space="preserve">
+    <value>Informacije o kupcu</value>
+  </data>
+	<data name="SellerInformationsColumn" xml:space="preserve">
+    <value>Informacije o prodavcu</value>
+  </data>
+	<data name="OrganizationNumberColumn" xml:space="preserve">
+    <value>Matični broj</value>
+  </data>
+	<data name="TaxNumberColumn" xml:space="preserve">
+    <value>PIB</value>
+  </data>
+	<data name="WebsiteColumn" xml:space="preserve">
+    <value>Web-sajt</value>
+  </data>
+	<data name="ApprovalCodeColumn" xml:space="preserve">
+    <value>Broj odobrenja</value>
+  </data>
+	<data name="PaymentReferenceColumn" xml:space="preserve">
+    <value>Referenca</value>
+  </data>
+	<data name="StatusCodeColumn" xml:space="preserve">
+    <value>Statusni broj</value>
+  </data>
+	<data name="StatusColumn" xml:space="preserve">
+    <value>Status</value>
+  </data>
+	<data name="DescriptionColumn" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+	<data name="PriceWithVatColumn" xml:space="preserve">
+    <value>Cena sa PDV-om </value>
+  </data>
+	<data name="TotalColumn" xml:space="preserve">
+    <value>Ukupno </value>
+  </data>
+	<data name="TransactionDetailsColumn" xml:space="preserve">
+    <value>Detalji transakcije </value>
+  </data>
+	<data name="ProductDetailsColumn" xml:space="preserve">
+    <value>Detalji proizvoda</value>
   </data>
 </root>
