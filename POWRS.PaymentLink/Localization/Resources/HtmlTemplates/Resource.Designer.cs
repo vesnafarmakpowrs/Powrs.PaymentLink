@@ -88,6 +88,15 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approval Code.
+        /// </summary>
+        internal static string ApprovalCodeColumn {
+            get {
+                return ResourceManager.GetString("ApprovalCodeColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auth...
         /// </summary>
         internal static string AuthColumn {
@@ -115,7 +124,16 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ((BuyerName )) initiated cancellation. If this is wrong please contact seller..
+        ///   Looks up a localized string similar to Buyer Informations.
+        /// </summary>
+        internal static string BuyerInformationsColumn {
+            get {
+                return ResourceManager.GetString("BuyerInformationsColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} initiated cancellation. If this is wrong please contact seller..
         /// </summary>
         internal static string CancellationBuyerMessage {
             get {
@@ -133,7 +151,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the cancellation was not initiated by you, and you want to know more details about the contract itself, please contact the seller directly at the phone number: ((CompanyInfo.PhoneNumber )) or mail: ((CompanyInfo.Email )).
+        ///   Looks up a localized string similar to If the cancellation was not initiated by you, and you want to know more details about the contract itself, please contact the seller directly at the phone number: &lt;a href=&apos;tel:{0}&apos;&gt;{0}&lt;/a&gt; or mail: &lt;a href=&apos;tel:{1}&apos;&gt;{1}&lt;/a&gt;  .
         /// </summary>
         internal static string CancellationNotInitiatedInfo {
             get {
@@ -142,7 +160,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ((SellerName )) initiated cancellation. For more details contact seller directly..
+        ///   Looks up a localized string similar to {0} initiated cancellation. For more details contact seller directly..
         /// </summary>
         internal static string CancellationSellerMessage {
             get {
@@ -160,7 +178,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please check card details and billing informations above, If something is not right, you can make changes on this ((Link )). If everything seems fine, just sit, relax, make sure that you have enough funds on the bank account and we will do the rest..
+        ///   Looks up a localized string similar to Please check card details and billing informations above, If something is not right, you can make changes &lt;a href=&quot;{0}&quot;&gt;here&lt;/a&gt; If everything seems fine, just sit, relax, make sure that you have enough funds on the bank account and we will do the rest..
         /// </summary>
         internal static string CheckDetailsMessage {
             get {
@@ -196,7 +214,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you want to know more details about this email and contract itself, please contact the seller directly at the phone number: ((CompanyInfo.PhoneNumber )) or mail: ((CompanyInfo.Email )).
+        ///   Looks up a localized string similar to If you want to know more details about this email and contract itself, please contact the seller directly at the phone number: &lt;a href=&quot;tel:{0}&quot;&gt;{0}&lt;/a&gt; or mail: &lt;a href=&quot;mailto:{1}&quot;&gt;{1}&lt;/a&gt; .
         /// </summary>
         internal static string ContactSellerMessage {
             get {
@@ -205,7 +223,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is our ((FailedPaymentAttempts )) attempt..
+        ///   Looks up a localized string similar to This is our {0} attempt..
         /// </summary>
         internal static string CurrentAttempt {
             get {
@@ -219,6 +237,15 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         internal static string DateColumn {
             get {
                 return ResourceManager.GetString("DateColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string DescriptionColumn {
+            get {
+                return ResourceManager.GetString("DescriptionColumn", resourceCulture);
             }
         }
         
@@ -268,7 +295,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ©2021 - ((Now.Year )) POWRS.
+        ///   Looks up a localized string similar to ©2021 - {0} POWRS.
         /// </summary>
         internal static string FooterCopyright {
             get {
@@ -277,7 +304,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In accordance with the provision of Article 27 of the Consumer Protection Act, you can fill out the withdrawal form from the contract.
+        ///   Looks up a localized string similar to In accordance with the provision of Article 27 of the Consumer Protection Act, you can fill out the withdrawal form from the contract &lt;a href=&quot;{0}&quot;&gt;here&lt;/a&gt; .
         /// </summary>
         internal static string FooterWithdrawalNote {
             get {
@@ -304,7 +331,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note that maximum number of attempts is: ((MaxFailedAttempts ))..
+        ///   Looks up a localized string similar to Note that maximum number of attempts is: {0}..
         /// </summary>
         internal static string MaxAttemptsNote {
             get {
@@ -331,7 +358,16 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello ((BuyerName )), we are sad to inform you that automatic payments for the product ((Title )) performed by the company ((SellerName )) is canceled..
+        ///   Looks up a localized string similar to Organization number.
+        /// </summary>
+        internal static string OrganizationNumberColumn {
+            get {
+                return ResourceManager.GetString("OrganizationNumberColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello {0}, we are sad to inform you that automatic payments for the product {1} performed by the {2} is canceled..
         /// </summary>
         internal static string PaymentCanceledMessage {
             get {
@@ -349,7 +385,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello ((BuyerName )), we are happy to inform you that all due payments for ((Title )) performed by the company ((SellerName )) are now completed..
+        ///   Looks up a localized string similar to Hello {0}, we are happy to inform you that all due payments for {1} performed by the {2} are now completed..
         /// </summary>
         internal static string PaymentCompletedMessage {
             get {
@@ -367,7 +403,16 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello ((BuyerName )), we are here to inform you that payment for the product ((Title )) performed by the company ((SellerName )) just failed..
+        ///   Looks up a localized string similar to Payment date.
+        /// </summary>
+        internal static string PaymentDateColumn {
+            get {
+                return ResourceManager.GetString("PaymentDateColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello {0}, we are here to inform you that payment for the product {1} failed..
         /// </summary>
         internal static string PaymentFailedMessage {
             get {
@@ -385,7 +430,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello ((BuyerName )), we are here to inform you that card registration for the product ((Title )) performed by the company ((SellerName )) is not performed..
+        ///   Looks up a localized string similar to Hello {0}, we are here to inform you that card registration for the {1} performed by the {1} is not performed..
         /// </summary>
         internal static string PaymentNotPerformedMessage {
             get {
@@ -403,11 +448,38 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reference.
+        /// </summary>
+        internal static string PaymentReferenceColumn {
+            get {
+                return ResourceManager.GetString("PaymentReferenceColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phone Number.
         /// </summary>
         internal static string PhoneNumberColumn {
             get {
                 return ResourceManager.GetString("PhoneNumberColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price (Vat included) .
+        /// </summary>
+        internal static string PriceWithVatColumn {
+            get {
+                return ResourceManager.GetString("PriceWithVatColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product details .
+        /// </summary>
+        internal static string ProductDetailsColumn {
+            get {
+                return ResourceManager.GetString("ProductDetailsColumn", resourceCulture);
             }
         }
         
@@ -421,11 +493,56 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reference number.
+        /// </summary>
+        internal static string RemoteIdColumn {
+            get {
+                return ResourceManager.GetString("RemoteIdColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Don&apos;t worry, we will try again few times in a next few days and will let you know how it went....
         /// </summary>
         internal static string RetryMessage {
             get {
                 return ResourceManager.GetString("RetryMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seller Informations.
+        /// </summary>
+        internal static string SellerInformationsColumn {
+            get {
+                return ResourceManager.GetString("SellerInformationsColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status code.
+        /// </summary>
+        internal static string StatusCodeColumn {
+            get {
+                return ResourceManager.GetString("StatusCodeColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string StatusColumn {
+            get {
+                return ResourceManager.GetString("StatusColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tax number.
+        /// </summary>
+        internal static string TaxNumberColumn {
+            get {
+                return ResourceManager.GetString("TaxNumberColumn", resourceCulture);
             }
         }
         
@@ -439,11 +556,38 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total .
+        /// </summary>
+        internal static string TotalColumn {
+            get {
+                return ResourceManager.GetString("TotalColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction details .
+        /// </summary>
+        internal static string TransactionDetailsColumn {
+            get {
+                return ResourceManager.GetString("TransactionDetailsColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All the details about completed/failed transactions will be visible in the table below. If you have any question please contact seller directly..
         /// </summary>
         internal static string TransactionsInfoMessage {
             get {
                 return ResourceManager.GetString("TransactionsInfoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Website.
+        /// </summary>
+        internal static string WebsiteColumn {
+            get {
+                return ResourceManager.GetString("WebsiteColumn", resourceCulture);
             }
         }
     }

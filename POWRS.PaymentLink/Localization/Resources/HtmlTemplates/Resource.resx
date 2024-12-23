@@ -102,16 +102,16 @@
     <value>Payment failed.</value>
   </data>
 	<data name="PaymentFailedMessage" xml:space="preserve">
-    <value>Hello ((BuyerName )), we are here to inform you that payment for the product ((Title )) performed by the company ((SellerName )) just failed.</value>
+    <value>Hello {0}, we are here to inform you that payment for the product {1} failed.</value>
   </data>
 	<data name="RetryMessage" xml:space="preserve">
     <value>Don't worry, we will try again few times in a next few days and will let you know how it went...</value>
   </data>
 	<data name="MaxAttemptsNote" xml:space="preserve">
-    <value>Note that maximum number of attempts is: ((MaxFailedAttempts )).</value>
+    <value>Note that maximum number of attempts is: {0}.</value>
   </data>
 	<data name="CurrentAttempt" xml:space="preserve">
-    <value>This is our ((FailedPaymentAttempts )) attempt.</value>
+    <value>This is our {0} attempt.</value>
   </data>
 	<data name="ExceedAttemptsMessage" xml:space="preserve">
     <value>Once this this number exceeds, your product will automatically be cancelled, and in order to renew, you will have to contact seller directly.</value>
@@ -150,25 +150,25 @@
     <value>Amount</value>
   </data>
 	<data name="CheckDetailsMessage" xml:space="preserve">
-    <value>Please check card details and billing informations above, If something is not right, you can make changes on this ((Link )). If everything seems fine, just sit, relax, make sure that you have enough funds on the bank account and we will do the rest.</value>
+    <value><![CDATA[Please check card details and billing informations above, If something is not right, you can make changes <a href="{0}">here</a> If everything seems fine, just sit, relax, make sure that you have enough funds on the bank account and we will do the rest.]]></value>
   </data>
 	<data name="ContactSellerMessage" xml:space="preserve">
-    <value>If you want to know more details about this email and contract itself, please contact the seller directly at the phone number: ((CompanyInfo.PhoneNumber )) or mail: ((CompanyInfo.Email ))</value>
+    <value><![CDATA[If you want to know more details about this email and contract itself, please contact the seller directly at the phone number: <a href="tel:{0}">{0}</a> or mail: <a href="mailto:{1}">{1}</a> ]]></value>
   </data>
 	<data name="FooterCompany" xml:space="preserve">
     <value>POWRS D.O.O. BEOGRAD, Srbija</value>
   </data>
 	<data name="FooterCopyright" xml:space="preserve">
-    <value>©2021 - ((Now.Year )) POWRS</value>
+    <value>©2021 - {0} POWRS</value>
   </data>
 	<data name="FooterWithdrawalNote" xml:space="preserve">
-    <value>In accordance with the provision of Article 27 of the Consumer Protection Act, you can fill out the withdrawal form from the contract</value>
+    <value><![CDATA[In accordance with the provision of Article 27 of the Consumer Protection Act, you can fill out the withdrawal form from the contract <a href="{0}">here</a> ]]></value>
   </data>
 	<data name="PaymentCompletedTitle" xml:space="preserve">
     <value>Completed</value>
   </data>
 	<data name="PaymentCompletedMessage" xml:space="preserve">
-    <value>Hello ((BuyerName )), we are happy to inform you that all due payments for ((Title )) performed by the company ((SellerName )) are now completed.</value>
+    <value>Hello {0}, we are happy to inform you that all due payments for {1} performed by the {2} are now completed.</value>
   </data>
 	<data name="TransactionsInfoMessage" xml:space="preserve">
     <value>All the details about completed/failed transactions will be visible in the table below. If you have any question please contact seller directly.</value>
@@ -204,27 +204,78 @@
     <value>Payment canceled.</value>
   </data>
 	<data name="PaymentCanceledMessage" xml:space="preserve">
-    <value>Hello ((BuyerName )), we are sad to inform you that automatic payments for the product ((Title )) performed by the company ((SellerName )) is canceled.</value>
+    <value>Hello {0}, we are sad to inform you that automatic payments for the product {1} performed by the {2} is canceled.</value>
   </data>
 	<data name="MaxRetriesNote" xml:space="preserve">
     <value>Please note that the maximum number of retries is defined by the seller.</value>
   </data>
 	<data name="CancellationNotInitiatedInfo" xml:space="preserve">
-    <value>If the cancellation was not initiated by you, and you want to know more details about the contract itself, please contact the seller directly at the phone number: ((CompanyInfo.PhoneNumber )) or mail: ((CompanyInfo.Email ))</value>
+    <value><![CDATA[If the cancellation was not initiated by you, and you want to know more details about the contract itself, please contact the seller directly at the phone number: <a href='tel:{0}'>{0}</a> or mail: <a href='tel:{1}'>{1}</a> ]]> </value>
   </data>
 	<data name="PaymentNotPerformedTitle" xml:space="preserve">
     <value>Payment not performed.</value>
   </data>
 	<data name="PaymentNotPerformedMessage" xml:space="preserve">
-    <value>Hello ((BuyerName )), we are here to inform you that card registration for the product ((Title )) performed by the company ((SellerName )) is not performed.</value>
+    <value>Hello {0}, we are here to inform you that card registration for the {1} performed by the {1} is not performed.</value>
   </data>
 	<data name="CancellationBuyerMessage" xml:space="preserve">
-    <value>((BuyerName )) initiated cancellation. If this is wrong please contact seller.</value>
+    <value>{0} initiated cancellation. If this is wrong please contact seller.</value>
   </data>
 	<data name="CancellationSellerMessage" xml:space="preserve">
-    <value>((SellerName )) initiated cancellation. For more details contact seller directly.</value>
+    <value>{0} initiated cancellation. For more details contact seller directly.</value>
   </data>
 	<data name="CancellationDeadlineMessage" xml:space="preserve">
     <value>This will usually happen when payment deadline expires.</value>
+  </data>
+	<data name="RemoteIdColumn" xml:space="preserve">
+    <value>Reference number</value>
+  </data>
+	<data name="PaymentDateColumn" xml:space="preserve">
+    <value>Payment date</value>
+  </data>
+	<data name="BuyerInformationsColumn" xml:space="preserve">
+    <value>Buyer Informations</value>
+  </data>
+	<data name="SellerInformationsColumn" xml:space="preserve">
+    <value>Seller Informations</value>
+  </data>
+	<data name="OrganizationNumberColumn" xml:space="preserve">
+    <value>Organization number</value>
+  </data>
+	<data name="TaxNumberColumn" xml:space="preserve">
+    <value>Tax number</value>
+  </data>
+	<data name="TaxNumberColumn" xml:space="preserve">
+    <value>Tax number</value>
+  </data>
+	<data name="WebsiteColumn" xml:space="preserve">
+    <value>Website</value>
+  </data>
+	<data name="ApprovalCodeColumn" xml:space="preserve">
+    <value>Approval Code</value>
+  </data>
+	<data name="PaymentReferenceColumn" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+	<data name="StatusCodeColumn" xml:space="preserve">
+    <value>Status code</value>
+  </data>
+	<data name="StatusColumn" xml:space="preserve">
+    <value>Status</value>
+  </data>
+	<data name="DescriptionColumn" xml:space="preserve">
+    <value>Description</value>
+  </data>
+	<data name="PriceWithVatColumn" xml:space="preserve">
+    <value>Price (Vat included) </value>
+  </data>
+	<data name="TotalColumn" xml:space="preserve">
+    <value>Total </value>
+  </data>
+	<data name="TransactionDetailsColumn" xml:space="preserve">
+    <value>Transaction details </value>
+  </data>
+	<data name="ProductDetailsColumn" xml:space="preserve">
+    <value>Product details </value>
   </data>
 </root>
