@@ -52,8 +52,6 @@ Title:= select top 1 Value from Variables where Name = "Title";
 SellerName:= select top 1 Value from Variables where Name = "SellerName";
 CancellationReason:= select top 1 Value from Variables where Name = "CancellationReason";
 Country:= select top 1 Value from Variables where Name = "Country";
-Currency:= select top 1 Value from Variables where Name = "Currency";
-Payments:= select * from PayspotPayments where TokenId = TokenId;
 localizationCountry:= Country == "RS" ? "sr" : "en";
 localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, localizationCountry), "HtmlTemplates");
 year:= Now.Year.ToString();
@@ -63,48 +61,33 @@ year:= Now.Year.ToString();
         </div>
         <div class="details">
             <div class="transaction-status">
-				<div id="status" style="color:green; border-bottom: green 2px solid; padding-bottom:0;">
-					 <h2 style="margin: 0.5em 0em;">Completed</h2>
+				<div id="status" style="color:	#ffcc00; border-bottom:	#ffcc00 2px solid; padding-bottom:0;">
+					 <h2 style="margin: 0.5em 0em;">((localization.Get("PaymentNotPerformedTitle") ))</h2>
 				</div>
 				<div id="description">
-					<p>((localization.GetFormat("PaymentCompletedMessage",BuyerName,Title,SellerName) ))</p>					
-					<p>((localization.Get("TransactionsInfoMessage") ))</p>	</p>
-				</div>
-								<div style="margin-bottom:20px;">
-					<table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; border: 1px solid #ddd;">
-					<caption style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">((localization.Get("AllTransactionsCaption") ))</caption>
-					<thead>
-						<tr>
-							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">((localization.Get("MaskedPanColumn") ))</th>
-							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">((localization.Get("BrandColumn") ))</th>
-							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">((localization.Get("AmountColumn") ))</th>
-							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">((localization.Get("AuthColumn") ))</th>
-							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">((localization.Get("CodeColumn") ))</th>
-							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">((localization.Get("DateColumn") ))</th>
-							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;"></th>
-						</tr>
-					</thead>
-					<tbody>[[;
-						foreach(item in Payments) do 
-						(
-							color:= item.RefundedAmount > 0 ? "orange" : (item.Result == "00" ? "green" : "red");
-						]]<tr>
-							<td style="padding: 8px; border: 1px solid #ddd;">((item.MaskedPan ))</td>
-							<td style="padding: 8px; border: 1px solid #ddd;">((item.CardBrand ))</td>
-							<td style="padding: 8px; border: 1px solid #ddd;">((item.Amount )) ((Currency ))</td>
-							<td style="padding: 8px; border: 1px solid #ddd;">((item.AuthNumber))</td>
-							<td style="padding: 8px; border: 1px solid #ddd;">((item.Result))</td>
-							<td style="padding: 8px; border: 1px solid #ddd;">((item.DateCompleted.ToString("dd-MM-yyyy") ))</td>
-							<td style="padding: 8px; border: 1px solid #ddd; color: ((color ))">((item.RefundedAmount > 0 ? localization.Get("RefundedStatus") : (item.Result == "00" ?  localization.Get("CompletedStatus") : localization.Get("FailedStatus")) ))</td>
-						</tr>[[;
-						);
-						]]</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
+					<p>((localization.GetFormat("PaymentNotPerformedMessage",BuyerName,Title, SellerName) ))</p>
+				</div></div>[[;
+			if(CancellationReason == 'Buyer') then
+			(
+				]]<div class="try-again">
+					<p><strong>((localization.GetFormat("CancellationBuyerMessage",BuyerName) )) </strong></p>
+				<div>[[;
+			)
+			else if(CancellationReason == 'Seller') then 
+			(
+				]]<div class="try-again">
+					<p><strong>((localization.GetFormat("CancellationSellerMessage",SellerName) ))</strong></p>
+				<div>[[;
+			)
+			else
+			(
+					]]<div class="try-again">
+					<p><strong>((localization.Get("CancellationDeadlineMessage") ))</strong></p>
+				<div>[[;
+			);	
+        ]]</div>
 		<div>
-			<p>((localization.GetFormat("ContactSellerMessage",CompanyInfo.PhoneNumber,CompanyInfo.Email) ))</p>			
+		<p>((localization.GetFormat("ContactSellerMessage", CompanyInfo.PhoneNumber, CompanyInfo.Email) ))</p>
 		</div>
 		<div style="text-align: center;">
 		<i><p style="color: gray; font-size: 0.8em">((localization.Get("GoodbyeMessage") ))</p>

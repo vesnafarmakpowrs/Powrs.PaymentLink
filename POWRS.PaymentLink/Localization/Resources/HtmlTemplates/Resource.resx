@@ -278,4 +278,13 @@
 	<data name="ProductDetailsColumn" xml:space="preserve">
     <value>Product details </value>
   </data>
+	<data name="CardRegistrationCompletedColumn" xml:space="preserve">
+    <value>Card registration completed </value>
+  </data>
+	<data name="CardRegistrationDescription" xml:space="preserve">
+    <value>Hello {0}, your card is now registered. All payments regarding {1} will be automatically initiated by {2}. You can cancel any time on this {3}.</value>
+  </data>
+	<data name="CardRegistrationRefundDescription" xml:space="preserve">
+    <value>{0} will be automatically be refunded to your bank account.</value>
+  </data>
 </root>
