@@ -113,9 +113,6 @@
 				<Variable id="BuyerPhoneNumber">
 					<TagReference tag="BuyerPhoneNumber" />
 				</Variable>
-				<Variable id="SupportedPaymentMethods">
-					<TagReference tag="SupportedPaymentMethods" />
-				</Variable>
 				<Variable id="RemoteId">
 					<TagReference tag="RemoteId" />
 				</Variable>
@@ -546,9 +543,6 @@
 		<Tag name="PaySpotStatusMsg">
 			<ParameterReference parameter="PaySpotStatusMsg" />
 		</Tag>
-		<Tag name="SupportedPaymentMethods">
-			<ParameterReference parameter="SupportedPaymentMethods" />
-		</Tag>
 		<Tag name="RemoteId">
 			<ParameterReference parameter="RemoteId" />
 		</Tag>
@@ -766,13 +760,6 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Web page of selling product.</text>
-				</paragraph>
-			</description>
-		</stringParameter>
-		<stringParameter name="SupportedPaymentMethods" value="">
-			<description xml:lang="en">
-				<paragraph>
-					<text>Payment methods which are supported for this contract (Card, BankTransfer)</text>
 				</paragraph>
 			</description>
 		</stringParameter>
