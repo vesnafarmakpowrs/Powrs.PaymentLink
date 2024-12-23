@@ -20,7 +20,8 @@ if !exists(Posted) then BadRequest("No payload.");
     "callbackUrl":Optional(String(PCallBackUrl)),
     "webPageUrl":Optional(String(PWebPageUrl)),
     "successUrl":Optional(String(PSuccessUrl)),
-    "errorUrl":Optional(String(PErrorUrl))
+    "errorUrl":Optional(String(PErrorUrl)),
+    "ipsOnly": Optional(Bool(PIpsOnly))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 SessionUser:= Global.ValidateAgentApiToken(true, true);
@@ -32,7 +33,11 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 try
 (
     PayoutPage := "Payout.md";
-    IpsOnly := false;
+    if(!exists(PIpsOnly)) then
+    (
+        PIpsOnly:= false;
+    );
+
     IsEcommerce := false;
     ContractInfo := Global.CreateItem(SessionUser, PRemoteId, IsEcommerce,
                 PTitle, PPrice, PCurrency, 
@@ -47,7 +52,7 @@ try
     businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
     if(businessData != null) then 
     (
-     IpsOnly := businessData.IPSOnly;
+     IpsOnly := (PIpsOnly or businessData.IPSOnly);
     );
 
     if IpsOnly then PayoutPage := "PayoutIPS.md";
