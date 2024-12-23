@@ -266,6 +266,17 @@
 				<Content fileName="RTDromo-Medium.woff2"/>
 				<Content fileName="RTDromo-Medium.woff"/>
 			</Folder>
+			<Folder name="EmailTemplates">
+				<Folder name="ReccurrencePayments">
+					<Content fileName="Done.md"></Content>
+					<Content fileName="PaymentCanceled.md"></Content>
+					<Content fileName="PaymentCompleted.md"></Content>
+					<Content fileName="PaymentFailed.html"></Content>
+					<Content fileName="PaymentNotPerformed.md"></Content>
+					<Content fileName="StateChanged.md"></Content>
+					<Content fileName="CardRegistrationCompleted.md"></Content>
+				</Folder>
+			</Folder>
 			<Folder name="HtmlTemplates">
 				<Folder name="EN">
 					<Content fileName="ContactUs.html"></Content>
