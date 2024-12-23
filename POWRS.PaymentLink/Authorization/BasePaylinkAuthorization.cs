@@ -7,11 +7,14 @@ using Waher.Persistence.Filters;
 using Waher.Persistence.Serialization;
 using Waher.Persistence;
 using Waher.Security.JWT;
+using System.Collections.Concurrent;
 
 namespace POWRS.PaymentLink.Authorization
 {
     public abstract class BasePaylinkAuthorization : HttpAsynchronousResource
     {
+        protected static ConcurrentDictionary<string, List<string>> userNameOrganizations = new ConcurrentDictionary<string, List<string>>();
+
         public BasePaylinkAuthorization(string ResourceName)
             : base(ResourceName) { }
 
