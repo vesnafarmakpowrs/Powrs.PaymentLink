@@ -1,6 +1,6 @@
 ﻿Title: Payment Link
 Description: Displays information about a contract.
-Date: 2023-08-04
+Date: 2024-12-23
 Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
@@ -73,6 +73,8 @@ if(LanguageNamespace == null) then
 		if exists(CurrentState) then
 			ContractState:= CurrentState.State;
 	);
+	
+	IsPaymentCompleted := POWRS.PaymentLink.Contracts.Enums.EnumHelper.IsPaymentCompleted(ContractState);
 
 	Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
 	   
@@ -356,29 +358,24 @@ if(LanguageNamespace == null) then
 					</div>  
 				[[;
 			)
-			else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" )then 
+			else if (IsPaymentCompleted) then 
 			(
 			]]<div class="payment-completed"><p>**((LanguageNamespace.GetStringAsync(16) ))**</p> [[;
 
 			   DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTimeInBuyerLocalTime";
-			   if(DateCompleted != null) then
-			   (
-			]]<p>**Datum plaćanja: ((DateCompleted.ToString("dd-MM-yyyy HH:mm") ))**</p></div>
-			  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
-			   )
-			   else 
+			   if(DateCompleted == null) then
 			   (
 				DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTime";
-				]]<p>**Datum plaćanja: ((DateCompleted.ToLocalTime().ToString("dd-MM-yyyy HH:mm") ))**</p></div>
-			  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
 			   );
+			   ]]<p>**Datum plaćanja: ((DateCompleted.ToLocalTime().ToString("dd-MM-yyyy HH:mm") ))**</p></div>
+			  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
 			)
 			else if ContractState == "PaymentCanceled" then 
 			(
 			  ]]**((LanguageNamespace.GetStringAsync(80) ))**
 			   <input type="hidden" id="cancelURL" value='((ErrorUrl ))' />[[;
 			)
-			else if (TYPE == "") then
+			else 
 			(
 			  ]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
 			);
