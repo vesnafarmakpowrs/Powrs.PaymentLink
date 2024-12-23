@@ -106,7 +106,6 @@ namespace POWRS.PaymentLink.Authorization
             }
 
             JwtToken jwtToken = CreateJwtFactoryToken(userName, duration);
-            Log.Debug($"JwtToken generated. tokens str: {jwtToken.Token},\nexpiration date as datetime: {Convert.ToString(jwtToken.Expiration)},\nexpiration date as int: {(int)Math.Round(Convert.ToDateTime(jwtToken.Expiration).Subtract(JSON.UnixEpoch).TotalSeconds)},\nexpiration DateTime.UtcNow + duration: {(int)Math.Round(DateTime.UtcNow.Subtract(JSON.UnixEpoch).TotalSeconds) + duration}", userName, Request.RemoteEndPoint, "SmartAdminLogin");
 
             await Gateway.LoginAuditor.ProcessLoginSuccessful(Request.RemoteEndPoint, "HTTPS");
             Log.Notice("Login success", userName, Request.RemoteEndPoint, "LoginSuccess");

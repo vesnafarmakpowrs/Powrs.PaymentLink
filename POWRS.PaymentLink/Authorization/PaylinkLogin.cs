@@ -85,7 +85,7 @@ namespace POWRS.PaymentLink.Authorization
                 duration = parsedDuration;
             }
 
-            JwtToken token = CreateJwtFactoryToken(agentApiKey.UserName, duration);
+            JwtToken jwtToken = CreateJwtFactoryToken(agentApiKey.UserName, duration);
 
             agentApiKey.LastLogin = DateTime.UtcNow;
             await Database.Update(agentApiKey);
@@ -95,8 +95,8 @@ namespace POWRS.PaymentLink.Authorization
 
             await Response.Return(new Dictionary<string, object>
             {
-                { "jwt", token },
-                { "expires", (int)Math.Round(DateTime.UtcNow.Subtract(JSON.UnixEpoch).TotalSeconds) + duration },
+                { "jwt", jwtToken.Token },
+                { "expires", (int)Math.Round(Convert.ToDateTime(jwtToken.Expiration).Subtract(JSON.UnixEpoch).TotalSeconds) },
             });
         }
 
