@@ -178,6 +178,33 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Card registration completed .
+        /// </summary>
+        internal static string CardRegistrationCompletedColumn {
+            get {
+                return ResourceManager.GetString("CardRegistrationCompletedColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello {0}, your card is now registered. All payments regarding {1} will be automatically initiated by {2}. You can cancel any time on this {3}..
+        /// </summary>
+        internal static string CardRegistrationDescription {
+            get {
+                return ResourceManager.GetString("CardRegistrationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} will be automatically be refunded to your bank account..
+        /// </summary>
+        internal static string CardRegistrationRefundDescription {
+            get {
+                return ResourceManager.GetString("CardRegistrationRefundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please check card details and billing informations above, If something is not right, you can make changes &lt;a href=&quot;{0}&quot;&gt;here&lt;/a&gt; If everything seems fine, just sit, relax, make sure that you have enough funds on the bank account and we will do the rest..
         /// </summary>
         internal static string CheckDetailsMessage {
