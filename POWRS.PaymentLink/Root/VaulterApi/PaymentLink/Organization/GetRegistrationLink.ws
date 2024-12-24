@@ -80,28 +80,28 @@ try
 	currentStep := "DB Insert-Update";
 	newId := "";
 	
-	newUserRegistrationDetails := 
+	NewUserRegistrationDetail := 
 		select top 1 * 
-		from POWRS.PaymentLink.Models.NewUserRegistrationDetails 
+		from POWRS.PaymentLink.Models.NewUserRegistrationDetail 
 		where ParentOrgName = PParentOrgName and
 			NewOrgName = PNewOrgName and
 			NewOrgClientType = newOrgClientType and
 			NewUserRole = newUserRole;
 			
-	if(newUserRegistrationDetails != null)then
+	if(NewUserRegistrationDetail != null)then
 	(
-		newId := newUserRegistrationDetails.ObjectId;
+		newId := NewUserRegistrationDetail.ObjectId;
 	)
 	else
 	(
-		newUserRegistrationDetails := Create(POWRS.PaymentLink.Models.NewUserRegistrationDetails);
-		newUserRegistrationDetails.ParentOrgName := PParentOrgName;
-		newUserRegistrationDetails.NewOrgName := PNewOrgName;
-		newUserRegistrationDetails.NewOrgClientType := newOrgClientType;
-		newUserRegistrationDetails.NewUserRole := newUserRole;
+		NewUserRegistrationDetail := Create(POWRS.PaymentLink.Models.NewUserRegistrationDetail);
+		NewUserRegistrationDetail.ParentOrgName := PParentOrgName;
+		NewUserRegistrationDetail.NewOrgName := PNewOrgName;
+		NewUserRegistrationDetail.NewOrgClientType := newOrgClientType;
+		NewUserRegistrationDetail.NewUserRole := newUserRole;
 		
-		Waher.Persistence.Database.Insert(newUserRegistrationDetails);
-		newId := select top 1 ObjectId from POWRS.PaymentLink.Models.NewUserRegistrationDetails order by ObjectId desc;
+		Waher.Persistence.Database.Insert(NewUserRegistrationDetail);
+		newId := select top 1 ObjectId from POWRS.PaymentLink.Models.NewUserRegistrationDetail order by ObjectId desc;
 	);
 	
 	currentStep := "CreateUrl";

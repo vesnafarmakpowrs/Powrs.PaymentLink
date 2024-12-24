@@ -58,12 +58,12 @@ try
 	);
 	if(!System.String.IsNullOrWhiteSpace(PRegistrationId))then
 	(
-		newUserRegistrationDetails := 
+		NewUserRegistrationDetail := 
 			select top 1 * 
-			from POWRS.PaymentLink.Models.NewUserRegistrationDetails 
+			from POWRS.PaymentLink.Models.NewUserRegistrationDetail 
 			where Str(ObjectId) = Str(PRegistrationId);
 			
-		if(newUserRegistrationDetails = null)then
+		if(NewUserRegistrationDetail = null)then
 		(
 			Error("RegistrationId doesn't exists.");
 		);
@@ -160,12 +160,12 @@ try
 	enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.User;
 	try
 	(
-		if(exists(newUserRegistrationDetails) and newUserRegistrationDetails != null)then
+		if(exists(NewUserRegistrationDetail) and NewUserRegistrationDetail != null)then
 		(
 			creatorUserName := PUserName;
-			orgName := newUserRegistrationDetails.NewOrgName;
-			parentOrgName := newUserRegistrationDetails.ParentOrgName;
-			enumNewUserRole := newUserRegistrationDetails.NewUserRole;
+			orgName := NewUserRegistrationDetail.NewOrgName;
+			parentOrgName := NewUserRegistrationDetail.ParentOrgName;
+			enumNewUserRole := NewUserRegistrationDetail.NewUserRole;
 		)
 		else
 		(
@@ -254,14 +254,14 @@ try
 	
 	try
 	(
-		if(enumNewUserRole = POWRS.PaymentLink.Models.AccountRole.GroupAdmin and newUserRegistrationDetails != null)then
+		if(enumNewUserRole = POWRS.PaymentLink.Models.AccountRole.GroupAdmin and NewUserRegistrationDetail != null)then
 		(
-			organizationClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = newUserRegistrationDetails.NewOrgName;
+			organizationClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = NewUserRegistrationDetail.NewOrgName;
 			if(organizationClientType = null)then
 			(
 				organizationClientType := Create(POWRS.PaymentLink.ClientType.Models.OrganizationClientType);
-				organizationClientType.OrganizationName := newUserRegistrationDetails.NewOrgName;
-				organizationClientType.OrgClientType := newUserRegistrationDetails.NewOrgClientType;
+				organizationClientType.OrganizationName := NewUserRegistrationDetail.NewOrgName;
+				organizationClientType.OrgClientType := NewUserRegistrationDetail.NewOrgClientType;
 				
 				Waher.Persistence.Database.Insert(organizationClientType);
 			);
