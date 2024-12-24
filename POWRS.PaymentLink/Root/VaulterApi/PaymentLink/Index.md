@@ -410,7 +410,8 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "callbackUrl":Optional(String(PCallbackUrl)),
     "webPageUrl":Optional(String(PWebPageUrl)),
     "successUrl":Optional(String(PSuccessUrl)),
-    "errorUrl":Optional(String(PErrorUrl))
+    "errorUrl":Optional(String(PErrorUrl)),
+    "ipsOnly":Optional(String(PIpsOnly))
 }
 ````
 
@@ -436,6 +437,7 @@ Description of properties:
 | `webPageUrl` | Web page of selling item|
 | `successUrl` | Optional Web page where user will be redirected when payment is successfull. Must be valid public accessable web page. |
 | `errorUrl` |  Optional Web page where user will be redirected when payment failed. Must be valid public accessable web page.|
+| `ipsOnly` |  If true, user will be able to pay with ips only. |
 
 **Response**
 
