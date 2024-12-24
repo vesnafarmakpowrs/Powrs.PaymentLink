@@ -263,6 +263,9 @@
 	<data name="DescriptionColumn" xml:space="preserve">
     <value>Opis</value>
   </data>
+	<data name="TotalPaymentsColumn" xml:space="preserve">
+    <value>Ukupno plaćanja</value>
+  </data>
 	<data name="PriceWithVatColumn" xml:space="preserve">
     <value>Cena sa PDV-om </value>
   </data>
@@ -274,5 +277,41 @@
   </data>
 	<data name="ProductDetailsColumn" xml:space="preserve">
     <value>Detalji proizvoda</value>
+  </data>
+	<data name="StateChangedLabel" xml:space="preserve">
+    <value>Desila se aktivnost</value>
+  </data>
+	<data name="PaymentCompleted" xml:space="preserve">
+    <value>Dogodilo se plaćanje.</value>
+  </data>
+	<data name="PaymentFailed" xml:space="preserve">
+    <value>Plaćanje nije uspelo.</value>
+  </data>
+	<data name="PaymentNotPerformed" xml:space="preserve">
+    <value>Plaćanje nije izvršeno.</value>
+  </data>
+	<data name="PaymentCanceled" xml:space="preserve">
+    <value>Plaćanje je otkayano.</value>
+  </data>
+	<data name="CardRegistrationCompleted" xml:space="preserve">
+    <value>Registracija kartice je uspešna!</value>
+  </data>
+	<data name="Done" xml:space="preserve">
+    <value>Završeno.</value>
+  </data>
+	<data name="StateChangedDescription" xml:space="preserve">
+    <value>Zdravo, zabeležena je promena na linku za plaćanje koji je napravljen za {0}.</value>
+  </data>
+	<data name="StateChangedAwaitingCardRegistrationDescription" xml:space="preserve">
+    <value>Link je napravljen za {0} i očekuje se registracija platne kartice od strane {1}.</value>
+  </data>
+	<data name="StateChangedAwaitingCardRegistrationRefundDescription" xml:space="preserve">
+    <value>Kupcu će biti zadužena kartica u iznosu od {0} {1} radi registracije kartice. Novac ce biti automatski vraćen, kartica će biti sačuvana radi naplate definisane u ugovoru.</value>
+  </data>
+	<data name="MaxPaymentAttemptsExceeded" xml:space="preserve">
+    <value>Broj neuspelih plaćanja je preveliki. Ugovor je automatski otkazan nakon {0} pokušaja.</value>
+  </data>
+	<data name="PaymentFailedNextRetryMessage" xml:space="preserve">
+    <value>Naredni pokušaj naplate će biti {0}.</value>
   </data>
 </root>

@@ -154,7 +154,7 @@
 				</Variable>
 				<State id="AwaitingCardRegistration">
 					<OnEnter actionRef="AwaitingCardRegistrationOnEnter"/>
-					<OnEvent actionRef="RegisterCard" newState="AwaitingNextPayment" failureState="AwaitingCardRegistration">
+					<OnEvent actionRef="RegisterCard" newState="CardRegistrationCompleted" failureState="AwaitingCardRegistration">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 					<OnEvent actionRef="ProcessPayspotPaymentStatus" newState="AwaitingCardRegistration" failureState="AwaitingCardRegistration">
@@ -192,6 +192,12 @@
 					</OnEvent>
 					<OnEvent actionRef="RegisterCard" newState="AwaitingNextPayment" failureState="AwaitingNextPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+				</State>
+
+				<State id="CardRegistrationCompleted">
+					<OnEvent actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'CardRegistrationCompleted'" newState="AwaitingNextPayment" failureState="AwaitingNextPayment">
+						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
 				</State>
 
@@ -251,11 +257,22 @@
 							<Script>
 								try
 								(
-								templateUrl:= Evaluate("Gateway.GetUrl('/Payout/DynamicTemplates/ReccurrencePayments/' + StateToNotify + '/index.md?TokenId=' + TokenId )");
+								templateUrl:= Evaluate("Gateway.GetUrl('/Payout/EmailTemplates/ReccurrencePayments/' + StateToNotify + '.md?TokenId=' + TokenId )");
 								html:= Evaluate("Get(templateUrl, {'Accept': 'text/html'})");
 								ConfigClass:= Evaluate("Waher.Service.IoTBroker.Setup.RelayConfiguration");
 								Config:= Evaluate("ConfigClass.Instance");
 								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title + ' - ' + StateToNotify, html.HtmlText, null, null))");
+
+								sellerOrganization:= Evaluate("select top 1 ORGNAME from IoTBroker.Legal.Identity.LegalIdentity where Id=Seller");
+								sellerEmail:= Evaluate("select top 1 Email from OrganizationContactInformations where OrganizationName = sellerOrganization");
+
+								if(!Evaluate("System.String.IsNullOrEmpty(sellerOrganization)") and !Evaluate("!System.String.IsNullOrEmpty(sellerEmail)")) then
+								(
+								sellerTemplateUrl:= Evaluate("Gateway.GetUrl('/Payout/EmailTemplates/ReccurrencePayments/StateChanged.md?TokenId=' + TokenId )");
+								sellerHtml:= html:= Evaluate("Get(sellerTemplateUrl, {'Accept': 'text/html'})");
+								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, sellerEmail, Title + ' - ' + StateToNotify, sellerHtml.HtmlText, null, null))");
+								);
+
 								)
 								catch
 								(
@@ -264,8 +281,8 @@
 							</Script>
 						</Then>
 					</If>
-					<Script>
-					</Script>
+
+					<CallAction actionRef="SaveOrderId" beforeActionScript="NewOrderId:= ''"/>
 				</Action>
 				<Action id="RegisterCard">
 					<Script>
@@ -310,6 +327,7 @@
 								</Script>
 								<PersistVariable name="PaymentType" value="{PaymentType}" />
 								<PersistVariable name="ActiveCardDetails" value="{ActiveCardDetails}" />
+								<CallAction actionRef="SaveOrderId" beforeActionScript="NewOrderId:= OrderId"/>
 							</Then>
 							<Else>
 								<Error reason="Payment completed but card is not valid long enough."></Error>
@@ -371,7 +389,17 @@
 					</BuyEDaler>
 
 					<CallAction actionRef="ConfirmPayment" beforeActionScript="SellEdalerOrderId:= newOrderId;" />
+					<CallAction actionRef="SaveOrderId" beforeActionScript="NewOrderId:= newOrderId"/>
 				</Action>
+
+				<Action id="SaveOrderId">
+					<If condition="exists(NewOrderId)">
+						<Then>
+							<PeristVariable name="LastOrderId" value="{NewOrderId}"></PeristVariable>
+						</Then>
+					</If>
+				</Action>
+				
 				<Action id="RefundRegistrationAmount">
 					<Try>
 						<If condition="!exists(ActiveCardDetails.CardRegistrationDateTime)">
@@ -732,6 +760,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Seller Name used to sellEdaler</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SellerEmail" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Seller email used for sending notifications</text>
 				</paragraph>
 			</description>
 		</stringParameter>
