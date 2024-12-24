@@ -59,7 +59,6 @@
 					<Content fileName="RoleForSubUser.ws"/>
 					<Content fileName="SendVerificationEmail.ws"/>
 					<Content fileName="VerifyEmail.ws"/>
-					<Content fileName="VerifySmartAdminToken.ws"/>
 					<Content fileName="CreatePasswordResetRequest.ws"/>
 					<Content fileName="ResetPassword.ws"/>
 					<Folder name="Scheduler">
@@ -69,8 +68,8 @@
 				</Folder>
 				<Folder name="Auth">
 					<Content fileName="Login.ws"/>
-					<Content fileName="LoginSmartAdmin.ws"/>
 					<Content fileName="VerifyToken.ws"/>
+					<Content fileName="VerifySmartAdminToken.ws"/>
 				</Folder>
 				<Folder name="Contract">
 					<Content fileName="InitiateRefund.ws"/>

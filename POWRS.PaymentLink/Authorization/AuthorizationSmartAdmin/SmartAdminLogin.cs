@@ -95,7 +95,7 @@ namespace POWRS.PaymentLink.Authorization
             var userOrganizations = await BrokerAccountRole.GetAllOrganizationChildren(brokerAccountRole.OrgName);
             PaymentLinkModule.SetUsernameOrganizations(userName, userOrganizations);
 
-            if (requestBody.TryGetValue("Duration", out object durationObject) && int.TryParse(durationObject?.ToString(), out int parsedDuration))
+            if (requestBody.TryGetValue("duration", out object durationObject) && int.TryParse(durationObject?.ToString(), out int parsedDuration))
             {
                 if (parsedDuration > duration || parsedDuration <= 0)
                 {
