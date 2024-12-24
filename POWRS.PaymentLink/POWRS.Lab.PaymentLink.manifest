@@ -59,6 +59,7 @@
 					<Content fileName="RoleForSubUser.ws"/>
 					<Content fileName="SendVerificationEmail.ws"/>
 					<Content fileName="VerifyEmail.ws"/>
+					<Content fileName="VerifySmartAdminToken.ws"/>
 					<Content fileName="CreatePasswordResetRequest.ws"/>
 					<Content fileName="ResetPassword.ws"/>
 					<Folder name="Scheduler">

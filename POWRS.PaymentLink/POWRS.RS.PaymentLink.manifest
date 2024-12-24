@@ -70,6 +70,7 @@
 					<Content fileName="Login.ws"/>
 					<Content fileName="LoginSmartAdmin.ws"/>
 					<Content fileName="VerifyToken.ws"/>
+					<Content fileName="VerifySmartAdminToken.ws"/>
 				</Folder>
 				<Folder name="Contract">
 					<Content fileName="InitiateRefund.ws"/>

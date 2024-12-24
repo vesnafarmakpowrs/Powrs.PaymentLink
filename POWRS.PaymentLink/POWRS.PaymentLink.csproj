@@ -842,6 +842,9 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Auth\Login.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Auth\VerifySmartAdminToken.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Auth\VerifyToken.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -939,6 +942,9 @@
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Scripts\StartupScripts\EncodeContractId.config">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Scripts\StartupScripts\ValidateSmartAgentApiToken.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Scripts\StartupScripts\ValidateAgentApiToken.config">
