@@ -178,6 +178,15 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Card registration completed!.
+        /// </summary>
+        internal static string CardRegistrationCompleted {
+            get {
+                return ResourceManager.GetString("CardRegistrationCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card registration completed .
         /// </summary>
         internal static string CardRegistrationCompletedColumn {
@@ -192,15 +201,6 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         internal static string CardRegistrationDescription {
             get {
                 return ResourceManager.GetString("CardRegistrationDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} will be automatically be refunded to your bank account..
-        /// </summary>
-        internal static string CardRegistrationRefundDescription {
-            get {
-                return ResourceManager.GetString("CardRegistrationRefundDescription", resourceCulture);
             }
         }
         
@@ -273,6 +273,15 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         internal static string DescriptionColumn {
             get {
                 return ResourceManager.GetString("DescriptionColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deal done..
+        /// </summary>
+        internal static string Done {
+            get {
+                return ResourceManager.GetString("Done", resourceCulture);
             }
         }
         
@@ -367,6 +376,15 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum failed attempts number exceeded. Contract is automatically canceled after {0} retries..
+        /// </summary>
+        internal static string MaxPaymentAttemptsExceeded {
+            get {
+                return ResourceManager.GetString("MaxPaymentAttemptsExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please note that the maximum number of retries is defined by the seller..
         /// </summary>
         internal static string MaxRetriesNote {
@@ -394,6 +412,15 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment canceled.
+        /// </summary>
+        internal static string PaymentCanceled {
+            get {
+                return ResourceManager.GetString("PaymentCanceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hello {0}, we are sad to inform you that automatic payments for the product {1} performed by the {2} is canceled..
         /// </summary>
         internal static string PaymentCanceledMessage {
@@ -408,6 +435,15 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         internal static string PaymentCanceledTitle {
             get {
                 return ResourceManager.GetString("PaymentCanceledTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment completed.
+        /// </summary>
+        internal static string PaymentCompleted {
+            get {
+                return ResourceManager.GetString("PaymentCompleted", resourceCulture);
             }
         }
         
@@ -439,6 +475,15 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment failed.
+        /// </summary>
+        internal static string PaymentFailed {
+            get {
+                return ResourceManager.GetString("PaymentFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hello {0}, we are here to inform you that payment for the product {1} failed..
         /// </summary>
         internal static string PaymentFailedMessage {
@@ -448,11 +493,29 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next retry will happend on {0}..
+        /// </summary>
+        internal static string PaymentFailedNextRetryMessage {
+            get {
+                return ResourceManager.GetString("PaymentFailedNextRetryMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment failed..
         /// </summary>
         internal static string PaymentFailedTitle {
             get {
                 return ResourceManager.GetString("PaymentFailedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment not performed.
+        /// </summary>
+        internal static string PaymentNotPerformed {
+            get {
+                return ResourceManager.GetString("PaymentNotPerformed", resourceCulture);
             }
         }
         
@@ -547,6 +610,42 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Link is generated for {0} to registar card for future payment for {1}..
+        /// </summary>
+        internal static string StateChangedAwaitingCardRegistrationDescription {
+            get {
+                return ResourceManager.GetString("StateChangedAwaitingCardRegistrationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buyer will be charged {0} {1} in order to register card. After card registration, funds will be automatically refunded, and card will be saved for future payments untill the end of the contract..
+        /// </summary>
+        internal static string StateChangedAwaitingCardRegistrationRefundDescription {
+            get {
+                return ResourceManager.GetString("StateChangedAwaitingCardRegistrationRefundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello, change happened for payment created for {0}..
+        /// </summary>
+        internal static string StateChangedDescription {
+            get {
+                return ResourceManager.GetString("StateChangedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State changed.
+        /// </summary>
+        internal static string StateChangedLabel {
+            get {
+                return ResourceManager.GetString("StateChangedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status code.
         /// </summary>
         internal static string StatusCodeColumn {
@@ -588,6 +687,15 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         internal static string TotalColumn {
             get {
                 return ResourceManager.GetString("TotalColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total payments.
+        /// </summary>
+        internal static string TotalPaymentsColumn {
+            get {
+                return ResourceManager.GetString("TotalPaymentsColumn", resourceCulture);
             }
         }
         
