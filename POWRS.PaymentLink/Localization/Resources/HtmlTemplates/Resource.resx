@@ -272,6 +272,9 @@
 	<data name="TotalColumn" xml:space="preserve">
     <value>Total </value>
   </data>
+	<data name="TotalPaymentsColumn" xml:space="preserve">
+    <value>Total payments</value>
+  </data>
 	<data name="TransactionDetailsColumn" xml:space="preserve">
     <value>Transaction details </value>
   </data>
@@ -284,7 +287,40 @@
 	<data name="CardRegistrationDescription" xml:space="preserve">
     <value>Hello {0}, your card is now registered. All payments regarding {1} will be automatically initiated by {2}. You can cancel any time on this {3}.</value>
   </data>
-	<data name="CardRegistrationRefundDescription" xml:space="preserve">
-    <value>{0} will be automatically be refunded to your bank account.</value>
+	<data name="StateChangedLabel" xml:space="preserve">
+    <value>State changed</value>
+  </data>
+	<data name="PaymentCompleted" xml:space="preserve">
+    <value>Payment completed</value>
+  </data>
+	<data name="PaymentFailed" xml:space="preserve">
+    <value>Payment failed</value>
+  </data>
+	<data name="PaymentNotPerformed" xml:space="preserve">
+    <value>Payment not performed</value>
+  </data>
+	<data name="PaymentCanceled" xml:space="preserve">
+    <value>Payment canceled</value>
+  </data>
+	<data name="CardRegistrationCompleted" xml:space="preserve">
+    <value>Card registration completed!</value>
+  </data>
+	<data name="Done" xml:space="preserve">
+    <value>Deal done.</value>
+  </data>
+	<data name="StateChangedDescription" xml:space="preserve">
+    <value>Hello, change happened for payment created for {0}.</value>
+  </data>
+	<data name="StateChangedAwaitingCardRegistrationDescription" xml:space="preserve">
+    <value>Link is generated for {0} to registar card for future payment for {1}.</value>
+  </data>
+	<data name="StateChangedAwaitingCardRegistrationRefundDescription" xml:space="preserve">
+    <value>Buyer will be charged {0} {1} in order to register card. After card registration, funds will be automatically refunded, and card will be saved for future payments untill the end of the contract.</value>
+  </data>
+	<data name="MaxPaymentAttemptsExceeded" xml:space="preserve">
+    <value>Maximum failed attempts number exceeded. Contract is automatically canceled after {0} retries.</value>
+  </data>
+  <data name="PaymentFailedNextRetryMessage" xml:space="preserve">
+    <value>Next retry will happend on {0}.</value>
   </data>
 </root>
