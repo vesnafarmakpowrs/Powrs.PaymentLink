@@ -1,4 +1,4 @@
-SessionUser := Global.ValidateAgentApiToken(false, false);
+SessionUser := Global.ValidateSmartAdminApiToken();
 
 ({
     "parentOrgName": Required(Str(PParentOrgName)),
