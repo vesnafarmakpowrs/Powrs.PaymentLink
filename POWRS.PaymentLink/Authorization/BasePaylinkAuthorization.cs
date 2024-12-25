@@ -68,7 +68,7 @@ namespace POWRS.PaymentLink.Authorization
             }
             catch
             {
-                throw new HttpException(401, "Jwt token not valid");
+                throw new HttpException(401, "Jwt token not valid"); 
             }
 
             if (!jwtFactory.IsValid(token, out Reason reason))
