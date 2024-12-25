@@ -106,6 +106,24 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Awaiting card registration..
+        /// </summary>
+        internal static string AwaitingCardRegistration {
+            get {
+                return ResourceManager.GetString("AwaitingCardRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello {0}, {1} created paylink for you. On this &lt;a href=&quot;{2}&quot;&gt;link&lt;/a&gt; you can register card for future payments, view all transactions related to this product and also cancel this contract any time..
+        /// </summary>
+        internal static string AwaitingCardRegistrationBuyerMessage {
+            get {
+                return ResourceManager.GetString("AwaitingCardRegistrationBuyerMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Brand.
         /// </summary>
         internal static string BrandColumn {

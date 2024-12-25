@@ -279,6 +279,7 @@
 					<Content fileName="PaymentNotPerformed.md"></Content>
 					<Content fileName="StateChanged.md"></Content>
 					<Content fileName="CardRegistrationCompleted.md"></Content>
+					<Content fileName="AwaitingCardRegistration.md"></Content>
 				</Folder>
 			</Folder>
 			<Folder name="HtmlTemplates">
