@@ -311,6 +311,9 @@
 	<data name="StateChangedDescription" xml:space="preserve">
     <value>Hello, change happened for payment created for {0}.</value>
   </data>
+	<data name="AwaitingCardRegistrationBuyerMessage" xml:space="preserve">
+    <value><![CDATA[Hello {0}, {1} created paylink for you. On this <a href="{2}">link</a> you can register card for future payments, view all transactions related to this product and also cancel this contract any time.]]></value>
+  </data>
 	<data name="StateChangedAwaitingCardRegistrationDescription" xml:space="preserve">
     <value>Link is generated for {0} to registar card for future payment for {1}.</value>
   </data>
@@ -320,7 +323,10 @@
 	<data name="MaxPaymentAttemptsExceeded" xml:space="preserve">
     <value>Maximum failed attempts number exceeded. Contract is automatically canceled after {0} retries.</value>
   </data>
-  <data name="PaymentFailedNextRetryMessage" xml:space="preserve">
+	<data name="PaymentFailedNextRetryMessage" xml:space="preserve">
     <value>Next retry will happend on {0}.</value>
+  </data>
+  <data name="AwaitingCardRegistration" xml:space="preserve">
+    <value>Awaiting card registration.</value>
   </data>
 </root>
