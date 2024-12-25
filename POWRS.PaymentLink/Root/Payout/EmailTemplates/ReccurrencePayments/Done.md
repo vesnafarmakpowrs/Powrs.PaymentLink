@@ -95,7 +95,7 @@ year:= Now.Year.ToString();
 							<td style="padding: 8px; border: 1px solid #ddd;">((item.AuthNumber))</td>
 							<td style="padding: 8px; border: 1px solid #ddd;">((item.Result))</td>
 							<td style="padding: 8px; border: 1px solid #ddd;">((item.DateCompleted.ToString("dd-MM-yyyy") ))</td>
-							<td style="padding: 8px; border: 1px solid #ddd; color: ((color ))">((item.RefundedAmount > 0 ? localization.Get("RefundedStatus") : (item.Result == "00" ?  localization.Get("CompletedStatus") : localization.Get("FailedStatus")) ))</td>
+							<td style="padding: 8px; border: 1px solid #ddd; color: ((color ))">((item.RefundedAmount > 0 ? localization.Get("RefundedStatus") : (item.Result == "00" ? localization.Get("PaymentCompleted") : localization.Get("PaymentFailed") ) ))</td>
 						</tr>[[;
 						);
 						]]</tbody>

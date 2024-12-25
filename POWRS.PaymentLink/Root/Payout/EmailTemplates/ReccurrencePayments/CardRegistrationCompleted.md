@@ -59,6 +59,7 @@ Title:= select top 1 Value from Variables where Name = "Title";
 SellerName:= select top 1 Value from Variables where Name = "SellerName";
 CancellationReason:= select top 1 Value from Variables where Name = "CancellationReason";
 Country:= select top 1 Value from Variables where Name = "Country";
+Currency:= select top 1 Value from Variables where Name = "Currency";
 Link:= select top 1 Value from Variables where Name = "Link";
 localizationCountry:= Country == "RS" ? "sr" : "en";
 localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, localizationCountry), "HtmlTemplates");
@@ -73,8 +74,7 @@ year:= Now.Year.ToString();
 					 <h2 style="margin: 0.5em 0em;">((localization.Get("CardRegistrationCompletedColumn") ))</h2>
 				</div>
 				<div id="description">
-					<p>((localization.GetFormat("CardRegistrationDescription",BuyerName,Title, SellerName, Link) ))</p>
-					<p>((localization.GetFormat("CardRegistrationRefundDescription", Payment.Amount.ToString("f2")) ))</p>
+					<p>((localization.GetFormat("CardRegistrationDescription",BuyerName,Title, SellerName, Link) ))</p>					
 					<table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; border: 1px solid #ddd;">
 					<caption style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">((localization.Get("CardDetailsCaption") ))</caption>
 					<thead>

@@ -296,6 +296,9 @@
 	<data name="CardRegistrationCompleted" xml:space="preserve">
     <value>Registracija kartice je uspešna!</value>
   </data>
+	<data name="CardRegistrationDescription" xml:space="preserve">
+    <value><![CDATA[Zdravo {0}, tvoja kartica je uspešno registrovana. Naplata za {1} će se u budućnosti odvijati automatski do isteka ugovora sa {2}. Možete otkazati u svakom trenutku na sledećem <a href='{3}'>linku</a>. ]]></value>
+  </data>
 	<data name="Done" xml:space="preserve">
     <value>Završeno.</value>
   </data>

@@ -11,7 +11,7 @@ Parameter: TokenId
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<div class="container" style="width:100%;max-width:600px;margin:0 auto; padding:20px; background-color: #ffffff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); font-family:arial;">
+<div class="container" style="width:100%;max-width:800px;margin:0 auto; padding:20px; background-color: #ffffff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); font-family:arial;">
 <div class="content">
 
 {{
@@ -64,9 +64,9 @@ WriteCancelationReason():=
 			else if(FailedPaymentAttempts >= MaxFailedPaymentAttempts) then 
 			(
 				]]<div class="try-again">
-					<p><strong>((localization.GetFormat("MaxPaymentAttemptsExceeded",MaxFailedPaymentAttempts) ))</strong></p>
+					<p><strong>((localization.GetFormat("MaxPaymentAttemptsExceeded",Str(MaxFailedPaymentAttempts) ) ))</strong></p>
 				<div>[[;
-			);
+			)
 			else
 			(
 				]]<div class="try-again">
@@ -78,6 +78,9 @@ WriteCancelationReason():=
 Variables:= CurrentState.VariableValues;
 State:= CurrentState.State;
 BuyerName:= select top 1 Value from Variables where Name = "Buyer";
+BuyerAddress:= select top 1 Value from Variables where Name = "BuyerAddress";
+BuyerEmail:= select top 1 Value from Variables where Name = "BuyerEmail";
+BuyerPhoneNumber:= select top 1 Value from Variables where Name = "BuyerPhoneNumber";
 SellerName:= select top 1 Value from Variables where Name = "SellerName";
 Title:= select top 1 Value from Variables where Name = "Title";
 RemoteId:= select top 1 Value from Variables where Name = "RemoteId";
@@ -107,7 +110,7 @@ Payments:= select * from PayspotPayments where TokenId = TokenId;
 				<div id="description">
 					<p>((localization.GetFormat("StateChangedDescription",BuyerName) ))</p>
 				</div>
-				<div>
+				<div style="margin-bottom:20px;">
 				<table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; border: 1px solid #ddd;">
 					<caption style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">((localization.Get("ProductDetailsColumn") ))</caption>
 					<thead>
@@ -127,6 +130,26 @@ Payments:= select * from PayspotPayments where TokenId = TokenId;
 							<td style="padding: 8px; border: 1px solid #ddd;">((TotalNumberOfPayments))</td>
 							<td style="padding: 8px; border: 1px solid #ddd;">((Price))</td>
 							<td style="padding: 8px; border: 1px solid #ddd;">((TotalToPay )) ((Currency ))</td>							
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<div style="margin-bottom:20px;">
+				<table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; border: 1px solid #ddd;">
+					<caption style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">((localization.Get("BuyerDetailsCaption") ))</caption>
+					<thead>
+						<tr>
+							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">((localization.Get("NameColumn") ))</th>
+							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">((localization.Get("AddressColumn") ))</th>
+							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">((localization.Get("EmailColumn") ))</th>
+							<th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">((localization.Get("PhoneNumberColumn") ))</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td style="padding: 8px; border: 1px solid #ddd;">((BuyerName ))</td>
+							<td style="padding: 8px; border: 1px solid #ddd;">((BuyerAddress ))</td>
+							<td style="padding: 8px; border: 1px solid #ddd;">((BuyerEmail ))</td>
+							<td style="padding: 8px; border: 1px solid #ddd;">((BuyerPhoneNumber))</td>						
 						</tr>
 						</tbody>
 					</table>
@@ -191,7 +214,7 @@ Payments:= select * from PayspotPayments where TokenId = TokenId;
 							<td style="padding: 8px; border: 1px solid #ddd;">((item.AuthNumber))</td>
 							<td style="padding: 8px; border: 1px solid #ddd;">((item.Result))</td>
 							<td style="padding: 8px; border: 1px solid #ddd;">((item.DateCompleted.ToString("dd-MM-yyyy") ))</td>
-							<td style="padding: 8px; border: 1px solid #ddd; color: ((color ))">((item.RefundedAmount > 0 ? localization.Get("RefundedStatus") : (item.Result == "00" ?  localization.Get("CompletedStatus") : localization.Get("FailedStatus")) ))</td>
+							<td style="padding: 8px; border: 1px solid #ddd; color: ((color ))">((item.RefundedAmount > 0 ? localization.Get("RefundedStatus") : (item.Result == "00" ?  localization.Get("CompletedStatus") : localization.Get("FailedStatus") ) ))</td>
 						</tr>[[;
 						);
 						]]</tbody>
