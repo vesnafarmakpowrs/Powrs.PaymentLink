@@ -257,7 +257,8 @@
 							<Script>
 								try
 								(
-								templateUrl:= Evaluate("Gateway.GetUrl('/Payout/EmailTemplates/ReccurrencePayments/' + StateToNotify + '.md?TokenId=' + TokenId )");
+								orderParamter:= exists(LastOrderId) and LastOrderId != '' ? "&amp;OrderId=" + LastOrderId : '';
+								templateUrl:= Evaluate("Gateway.GetUrl('/Payout/EmailTemplates/ReccurrencePayments/' + StateToNotify + '.md?TokenId=' + TokenId + orderParamter)");
 								html:= Evaluate("Get(templateUrl, {'Accept': 'text/html'})");
 								ConfigClass:= Evaluate("Waher.Service.IoTBroker.Setup.RelayConfiguration");
 								Config:= Evaluate("ConfigClass.Instance");
@@ -268,17 +269,17 @@
 
 								if(!Evaluate("System.String.IsNullOrEmpty(sellerOrganization)") and !Evaluate("!System.String.IsNullOrEmpty(sellerEmail)")) then
 								(
-								sellerTemplateUrl:= Evaluate("Gateway.GetUrl('/Payout/EmailTemplates/ReccurrencePayments/StateChanged.md?TokenId=' + TokenId )");
+								sellerTemplateUrl:= Evaluate("Gateway.GetUrl('/Payout/EmailTemplates/ReccurrencePayments/StateChanged.md?TokenId=' + TokenId + orderParamter)");
 								sellerHtml:= html:= Evaluate("Get(sellerTemplateUrl, {'Accept': 'text/html'})");
 								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, sellerEmail, Title + ' - ' + StateToNotify, sellerHtml.HtmlText, null, null))");
 								);
-
+								
 								)
 								catch
 								(
 								x:= Exception.Message;
 								);
-							</Script>
+							</Script>					
 						</Then>
 					</If>
 
