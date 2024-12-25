@@ -152,6 +152,7 @@
 						link:= domain + "/Authorize.md?ID=" + Evaluate("Global.EncodeContractId(TokenContract)");
 					</Calc>
 				</Variable>
+				
 				<State id="AwaitingCardRegistration">
 					<OnEnter actionRef="AwaitingCardRegistrationOnEnter"/>
 					<OnEvent actionRef="RegisterCard" newState="CardRegistrationCompleted" failureState="AwaitingCardRegistration">
@@ -228,6 +229,10 @@
 					</OnEvent>
 				</State>
 
+				<State id="PaymentNotPerformed">
+					<OnEnter actionRef="MarkAsDone"/>
+				</State>
+
 				<Action id="SetCancellationReason">
 					<If condition="exists(reason)">
 						<Then>
@@ -235,11 +240,7 @@
 						</Then>
 					</If>
 				</Action>
-
-				<State id="PaymentNotPerformed">
-					<OnEnter actionRef="MarkAsDone"/>
-				</State>
-
+				
 				<Action id="AwaitingCardRegistrationOnEnter">
 					<CallAction actionRef="SetServiceProvider"/>
 					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'AwaitingCardRegistration'"/>
@@ -396,7 +397,7 @@
 				<Action id="SaveOrderId">
 					<If condition="exists(NewOrderId)">
 						<Then>
-							<PeristVariable name="LastOrderId" value="{NewOrderId}"></PeristVariable>
+							<PersistVariable name="LastOrderId" value="{NewOrderId}"></PersistVariable>
 						</Then>
 					</If>
 				</Action>

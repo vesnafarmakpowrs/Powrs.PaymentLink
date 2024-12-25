@@ -22,8 +22,7 @@ if !exists(Posted) then BadRequest("No payload.");
     "successUrl":Optional(String(PSuccessUrl)),
     "errorUrl":Optional(String(PErrorUrl)),
     "deliveryDate": Optional(Str(PDeliveryDate)),
-	"totalNumberOfPayments": Optional(Num(PNumberOfPayments))
-    "errorUrl":Optional(String(PErrorUrl)),
+	"totalNumberOfPayments": Optional(Num(PNumberOfPayments)),
     "ipsOnly": Optional(Bool(PIpsOnly))
 }:=Posted) ??? BadRequest(Exception.Message);
 
