@@ -59,7 +59,10 @@ BuyerName:= select top 1 Value from Variables where Name = "Buyer";
 BuyerEmail:= select top 1 Value from Variables where Name = "BuyerEmail";
 BuyerAddress:= select top 1 Value from Variables where Name = "BuyerAddress";
 Title:= select top 1 Value from Variables where Name = "Title";
+Description:= select top 1 Value from Variables where Name = "Description";
 SellerName:= select top 1 Value from Variables where Name = "SellerName";
+Price:= select top 1 Value from Variables where Name = "Price";
+AmountToPay:= select top 1 Value from Variables where Name = "AmountToPay";
 CancellationReason:= select top 1 Value from Variables where Name = "CancellationReason";
 Country:= select top 1 Value from Variables where Name = "Country";
 Currency:= select top 1 Value from Variables where Name = "Currency";
@@ -75,7 +78,7 @@ year:= Now.Year.ToString();
       <div class="transaction-status">
         <h2 style="color: limegreen; border-bottom: 2px solid; padding-bottom: 5px; margin: 0;">((localization.Get("PaymentCompletedTitle") ))</h2>
         <p style="margin: 0;"><strong>((localization.Get("RemoteIdColumn") )):</strong> ((RemoteId ))</p>
-        <p style="margin: 0;"><strong>((localization.Get("PaymentDateColumn") )):</strong> ((Payment.DateCompleted.ToString("dd-MM-YYYY HH:mm") ))</p>
+        <p style="margin: 0;"><strong>((localization.Get("PaymentDateColumn") )):</strong> ((Payment.DateCompleted.ToString("dd-MM-yyyy HH:mm") ))</p>
       </div>
       <div class="info" style="margin-top: 10px;">
         <h2 style="color: black; border-bottom: 2px solid black; margin: 0 0 10px 0; padding-bottom: 5px;">((localization.Get("SellerInformationsColumn") ))</h2>
@@ -116,8 +119,8 @@ year:= Now.Year.ToString();
           <tr>
             <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((Title ))</td>
             <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((Description ))</td>
-            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((Price )) ((Currency ))</td>
-            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((AmountToPay)) ((Currency ))</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((Payment.Amount.ToString("f2") )) ((Currency ))</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((Payment.Amount.ToString("f2") )) ((Currency ))</td>
           </tr>
         </tbody>
       </table>
