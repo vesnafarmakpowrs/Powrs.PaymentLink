@@ -216,7 +216,7 @@
     <value>Payment not performed.</value>
   </data>
 	<data name="PaymentNotPerformedMessage" xml:space="preserve">
-    <value>Hello {0}, we are here to inform you that card registration for the {1} performed by the {1} is not performed.</value>
+    <value>Hello {0}, we are here to inform you that card registration for the {1} requested by the {1} is not performed.</value>
   </data>
 	<data name="CancellationBuyerMessage" xml:space="preserve">
     <value>{0} initiated cancellation. If this is wrong please contact seller.</value>
@@ -285,7 +285,7 @@
     <value>Card registration completed </value>
   </data>
 	<data name="CardRegistrationDescription" xml:space="preserve">
-    <value>Hello {0}, your card is now registered. All payments regarding {1} will be automatically initiated by {2}. You can cancel any time on this {3}.</value>
+    <value><![CDATA[Hello {0}, your card is now registered. All payments regarding {1} will be automatically initiated by {2}. You can cancel any time on this <a href='{3}'>link</a>. ]]></value>
   </data>
 	<data name="StateChangedLabel" xml:space="preserve">
     <value>State changed</value>

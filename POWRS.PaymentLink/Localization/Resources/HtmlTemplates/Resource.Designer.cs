@@ -196,7 +196,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello {0}, your card is now registered. All payments regarding {1} will be automatically initiated by {2}. You can cancel any time on this {3}..
+        ///   Looks up a localized string similar to Hello {0}, your card is now registered. All payments regarding {1} will be automatically initiated by {2}. You can cancel any time on this &lt;a href=&apos;{3}&apos;&gt;link&lt;/a&gt;. .
         /// </summary>
         internal static string CardRegistrationDescription {
             get {
@@ -520,7 +520,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello {0}, we are here to inform you that card registration for the {1} performed by the {1} is not performed..
+        ///   Looks up a localized string similar to Hello {0}, we are here to inform you that card registration for the {1} requested by the {1} is not performed..
         /// </summary>
         internal static string PaymentNotPerformedMessage {
             get {
