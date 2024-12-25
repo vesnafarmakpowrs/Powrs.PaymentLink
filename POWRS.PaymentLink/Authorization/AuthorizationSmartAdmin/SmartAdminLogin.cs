@@ -27,19 +27,13 @@ namespace POWRS.PaymentLink.Authorization
         public async Task POST(HttpRequest Request, HttpResponse Response)
         {
             ConfigureResponse(Response);
-
-            DateTime? loginOpportunity = await Gateway.LoginAuditor.GetEarliestLoginOpportunity(Request.RemoteEndPoint, "HTTPS");
-            if (loginOpportunity > DateTime.UtcNow)
-            {
-                throw new TooManyRequestsException($"Login is blocked for: {Request.RemoteEndPoint}. Next login attempt could be made: {loginOpportunity}");
-            }
+            await EnsureEndpointCanLogin(Request);
 
             Dictionary<string, object> requestBody = await GetRequestBody(Request);
 
             string userName = string.Empty;
             string nonce = string.Empty;
             string signature = string.Empty;
-            int duration = 3600;
 
             //validate header valuess
             if (requestBody.TryGetValue("userName", out object userNameObject))
@@ -95,20 +89,10 @@ namespace POWRS.PaymentLink.Authorization
             var userOrganizations = await BrokerAccountRole.GetAllOrganizationChildren(brokerAccountRole.OrgName);
             PaymentLinkModule.SetUsernameOrganizations(userName, userOrganizations);
 
-            if (requestBody.TryGetValue("duration", out object durationObject) && int.TryParse(durationObject?.ToString(), out int parsedDuration))
-            {
-                if (parsedDuration > duration || parsedDuration <= 0)
-                {
-                    throw new BadRequestException("Min Duration: 0, Max duration is 3600s.");
-                }
-
-                duration = parsedDuration;
-            }
-
+            int duration = GetDurationParameter(requestBody);
             JwtToken jwtToken = CreateJwtFactoryToken(userName, duration);
 
-            await Gateway.LoginAuditor.ProcessLoginSuccessful(Request.RemoteEndPoint, "HTTPS");
-            Log.Notice("Login success", userName, Request.RemoteEndPoint, "LoginSuccess");
+            await ProcessLoginSuccess(Request.RemoteEndPoint, userName);
 
             await Response.Return(new Dictionary<string, object>
             {
@@ -116,13 +100,5 @@ namespace POWRS.PaymentLink.Authorization
                 { "expires", (int)Math.Round(Convert.ToDateTime(jwtToken.Expiration).Subtract(JSON.UnixEpoch).TotalSeconds) },
             });
         }
-
-        private async Task ThrowLoginFailure(string Message, string UserName, string Endpoint, HttpStatusCode statusCode)
-        {
-            Log.Error(Message, UserName, Endpoint, "LoginFailure");
-            await Gateway.LoginAuditor.ProcessLoginFailure(Endpoint, "HTTPS", DateTime.UtcNow, UserName);
-            throw new HttpException((int)statusCode, Message);
-        }
-
     }
 }

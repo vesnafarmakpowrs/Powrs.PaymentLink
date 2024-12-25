@@ -10,6 +10,8 @@ using Waher.Security.JWT;
 using System.Collections.Concurrent;
 using Waher.IoTGateway;
 using Waher.Content;
+using System.Net;
+using Waher.Events;
 
 namespace POWRS.PaymentLink.Authorization
 {
@@ -111,7 +113,7 @@ namespace POWRS.PaymentLink.Authorization
                 new KeyValuePair<string, object>("iat", issuedAt),
                 new KeyValuePair<string, object>("exp", expires));
 
-            JwtToken jwtToken = new JwtToken(token);
+            JwtToken jwtToken = new(token);
 
             return jwtToken;
         }
@@ -137,6 +139,44 @@ namespace POWRS.PaymentLink.Authorization
                 UserName = account["UserName"].ToString(),
                 Password = account["Password"].ToString()
             };
+        }
+
+        protected async Task ThrowLoginFailure(string Message, string UserName, string Endpoint, HttpStatusCode statusCode)
+        {
+            Log.Error(Message, UserName, Endpoint, "LoginFailure");
+            await Gateway.LoginAuditor.ProcessLoginFailure(Endpoint, "HTTPS", DateTime.UtcNow, UserName);
+            throw new HttpException((int)statusCode, Message);
+        }
+
+        protected async Task ProcessLoginSuccess(string endpoint, string userName)
+        {
+            await Gateway.LoginAuditor.ProcessLoginSuccessful(endpoint, "HTTPS");
+            Log.Notice("Login success", userName, userName, "LoginSuccess");
+        }
+
+        protected int GetDurationParameter(Dictionary<string, object> requestBody)
+        {
+            int duration = 3600;
+            if (requestBody.TryGetValue("Duration", out object durationObject) && int.TryParse(durationObject?.ToString(), out int parsedDuration))
+            {
+                if (parsedDuration > duration || parsedDuration <= 0)
+                {
+                    throw new BadRequestException("Min Duration: 0, Max duration is 3600s.");
+                }
+
+                duration = parsedDuration;
+            }
+
+            return duration;
+        }
+
+        protected async Task EnsureEndpointCanLogin(HttpRequest Request)
+        {
+            DateTime? loginOpportunity = await Gateway.LoginAuditor.GetEarliestLoginOpportunity(Request.RemoteEndPoint, "HTTPS");
+            if (loginOpportunity > DateTime.UtcNow)
+            {
+                throw new TooManyRequestsException($"Login is blocked for: {Request.RemoteEndPoint}. Next login attempt could be made: {loginOpportunity}");
+            }
         }
     }
 }
