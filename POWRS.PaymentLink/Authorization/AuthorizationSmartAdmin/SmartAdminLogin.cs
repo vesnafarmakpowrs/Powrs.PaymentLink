@@ -63,11 +63,7 @@ namespace POWRS.PaymentLink.Authorization
             }
 
             //check and get account details
-            var account = await GetEnabledAccount(userName, async () =>
-            {
-                Log.Error("Login Failed. Account not found.", userName, Request.RemoteEndPoint, "LoginFailure");
-                await Gateway.LoginAuditor.ProcessLoginFailure(Request.RemoteEndPoint, "HTTPS", DateTime.UtcNow, "Login Failed. Account not found.");
-            });
+            var account = await GetEnabledAccount(userName, Request.RemoteEndPoint, true);
 
             //validate signature
             string s = $"{userName}:{Gateway.Domain?.Value ?? string.Empty}:{nonce}";

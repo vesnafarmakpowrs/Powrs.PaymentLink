@@ -64,11 +64,7 @@ namespace POWRS.PaymentLink.Authorization
                 await ThrowLoginFailure("Login Failed. Username empty.", agentApiKey.UserName ?? "", Request.RemoteEndPoint, HttpStatusCode.Forbidden);
             }
 
-            _ = await GetEnabledAccount(agentApiKey.UserName, async () =>
-            {
-                Log.Error("Login Failed. Account not found.", agentApiKey.UserName, Request.RemoteEndPoint, "LoginFailure");
-                await Gateway.LoginAuditor.ProcessLoginFailure(Request.RemoteEndPoint, "HTTPS", DateTime.UtcNow, "Login Failed. Account not found.");
-            });
+            _ = await GetEnabledAccount(agentApiKey.UserName, Request.RemoteEndPoint);
 
             int duration = GetDurationParameter(requestBody);
             JwtToken jwtToken = CreateJwtFactoryToken(agentApiKey.UserName, duration);

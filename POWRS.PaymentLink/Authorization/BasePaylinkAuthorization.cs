@@ -88,7 +88,7 @@ namespace POWRS.PaymentLink.Authorization
             }
 
             string userName = subjectParts[0];
-            return await GetEnabledAccount(userName);
+            return await GetEnabledAccount(userName, Request.RemoteEndPoint);
         }
         protected JwtFactory GetJwtFactory()
         {
@@ -118,12 +118,17 @@ namespace POWRS.PaymentLink.Authorization
             return jwtToken;
         }
 
-        protected async Task<Account> GetEnabledAccount(string UserName, Func<Task> OnNoAccountFound = null)
+        protected async Task<Account> GetEnabledAccount(string UserName, string endpoint, bool logIfNotFound = true)
         {
             IEnumerable<GenericObject> accounts = await Database.Find<GenericObject>("BrokerAccounts", 0, 1, new FilterFieldEqualTo("UserName", UserName));
             if (!accounts.Any())
             {
-                OnNoAccountFound?.Invoke();
+                if (logIfNotFound)
+                {
+                    Log.Error("Account not found.", UserName, endpoint, "LoginFailure");
+                    await Gateway.LoginAuditor.ProcessLoginFailure(endpoint, "HTTPS", DateTime.UtcNow, "Account not found.");
+                }
+
                 throw new ForbiddenException("No account found.");
             }
 
