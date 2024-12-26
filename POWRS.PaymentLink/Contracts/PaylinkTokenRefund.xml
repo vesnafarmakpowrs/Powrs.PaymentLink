@@ -194,6 +194,7 @@
 					</OnEvent>					
 				</State>
 				<State id="ReleasedFundsToSeller">
+					<OnEnter actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= true;" />
 					<OnEvent actionRef="SetUpRefund" failureState="ReleasedFundsToSeller" newState="AwaitingforRefundPayment">
 						<OnXmlNote localName="SetUpRefund" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
 					</OnEvent>
@@ -220,6 +221,7 @@
 				</State>
 				<State id="RefundBuyer">
 					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='RefundPaymentCompleted'" />
+					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>
 					<OnEvent actionRef="RefundPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
 						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
