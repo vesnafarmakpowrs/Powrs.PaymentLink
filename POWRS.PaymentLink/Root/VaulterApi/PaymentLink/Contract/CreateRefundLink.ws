@@ -5,7 +5,7 @@ if !exists(Posted) then BadRequest("No payload.");
 
 ({
     "tokenId":Required(String(PTokenId)),
-    "price":Required(Double(PPrice) >= 50)
+    "refundAmount":Required(Double(PRefundAmount) >= 50)
 }:=Posted) ??? BadRequest(Exception.Message);
 
 SessionUser:= Global.ValidateAgentApiToken(true, true);
@@ -22,7 +22,7 @@ try
     (
         Error("Token does not exists");
     )
-	else if (PPrice > token.Value) then
+	else if (PRefundAmount > token.Value) then
 	(
 	    Error("Bigger refund amount than value of purchase");
 	);
@@ -39,7 +39,7 @@ try
 	(
 		domain:= "https://" + Gateway.Domain;
 		namespace:= domain + "/Downloads/EscrowPaylinkRS.xsd";
-		xmlNote := "<SetUpRefund xmlns='" + namespace + "' refundAmount='" + PPrice.ToString() +"' />";
+		xmlNote := "<SetUpRefund xmlns='" + namespace + "' refundAmount='" + PRefundAmount.ToString() +"' />";
         PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 
 		xmlNoteResponse := POST(domain + "/Agent/Tokens/AddXmlNote",

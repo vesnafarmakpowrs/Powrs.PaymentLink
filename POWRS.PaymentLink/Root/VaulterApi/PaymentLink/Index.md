@@ -577,7 +577,38 @@ Description of properties:
 }
 ````
 
-### Initiate Refund
+### Create Refund Link
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/CreateRefundLink.ws")}}`  
+Method: `POST`
+
+Call this resource to get a link for a refund payment of transaction related to the order. JSON in the following format is expected in the call.
+**Request**
+
+````
+{
+    "tokenId": Required(String(PTokenId)), 
+    "refundAmount":Required(Double(PRefundAmount) >= 50)
+}
+````
+
+**Request**
+
+Description of properties:
+
+| Name              | Description |
+|:------------------|:------------|
+| `tokenId`         | Token Id. |
+| `refundAmount`    | Amount to be refunded. |
+
+
+````
+{
+ "Link" : "Represents link for refund payment for the item.",
+}
+````
+
+### Initiate Void
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Contract/InitiateRefund.ws")}}`  
 Method: `POST`
