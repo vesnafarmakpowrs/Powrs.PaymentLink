@@ -352,7 +352,7 @@ if(LanguageNamespace == null) then
 			)
 			else if (ContractState == "RefundBuyer" || ContractState == "RefundBuyerFailed")then 
 			(
-				]]<div class="payment-completed"><p>** Povraćaj uplateuspesno uspešno završeno**</p> [[;
+				]]<div class="payment-completed"><p>** Povraćaj uplateu uspešno završeno**</p> [[;
 
 			    DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "RefundPaymentDateTimeInBuyerLocalTime";
 			    if(DateCompleted == null) then

@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
     GenerateTranslations();
 
     var params = new URLSearchParams(window.location.search);
-    var paymentResult = document.getElementById("PaymentResult").value.trim();
+	var paymentResult = null;
+	if (document.getElementById("PaymentResult") != null)
+    var paymentResult = document.getElementById("PaymentResult")?.value.trim();
     
     if ((params.has('Retry') && params.get("Retry") === "true") || (paymentResult != "00" && paymentResult != "82" && paymentResult != "")) {
         showRetrydiv();
