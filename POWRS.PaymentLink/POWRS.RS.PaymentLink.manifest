@@ -4,6 +4,7 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ApplyForAgentLegalId.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./CreateIndices.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./EncodeContractId.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateJwtToken.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateAgentApiToken.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateSmartAgentApiToken.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidatePayoutJWT.config" />

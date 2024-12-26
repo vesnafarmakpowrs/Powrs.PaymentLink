@@ -941,6 +941,9 @@
 	  <None Update="Scripts\StartupScripts\EncodeContractId.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Scripts\StartupScripts\ValidateJwtToken.config">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Scripts\StartupScripts\ValidateSmartAgentApiToken.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
