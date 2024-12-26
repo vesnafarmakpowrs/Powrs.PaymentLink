@@ -65,52 +65,47 @@ Accept: application/json
 Authorization: Bearer ...
 ````
 
-### Agent Api Key Login
+AUTH - login
+------------
 
+### Agent Api Key Login
 This login is meant to be used in approved external systems for integration with Vaulter api. Api key and secret can be generated using Paylink portal or with api.
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Paylink/Login")}}`
 Method:  POST
 
-JSON
--------
+**Request**
 
-Request
+````
+{
+	"ApiKey":Required(Str(ApiKey)),
+	"ApiSecret":Required(Str(ApiSecret)),
+	"Duration":Optional(Str(ApiSecret)),
+}
+````
 
-:	```json
-:	{
-:		"ApiKey":Required(Str(ApiKey)),
-:		"ApiSecret":Required(Str(ApiSecret)),
-:		"Duration":Optional(Str(ApiSecret)),
-:	}
-:	```
+**Response (if successful)**
 
-Response (if successful)
-
-:	```json
-:	{
-.		"jwt":Required(Str(PJwt)),
-.		"expires":Required(DateTime(PExpires))
-:	}
-:   ```
+````
+{
+	"jwt":Required(Str(PJwt)),
+	"expires":Required(DateTime(PExpires))
+}
+````
 
 ### Generate Agent api key
-
 Api to generate Api key and secret, that could be used to gain access to resources.
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Paylink/GenerateApiKey")}}`
 Method:  POST
 
-JSON
--------
+**Request**
 
-Request
-
-:	```json
-:	{
-        "CanBeOverriden": Optional(CanBeOverriden) (Default: true)
-:	}
-:	```
+````
+{
+    "CanBeOverriden": Optional(CanBeOverriden) (Default: true)
+}
+````
 
 Description of properties:
 
@@ -118,17 +113,17 @@ Description of properties:
 |:------------------|:------------|
 | `CanBeOverriden`        | Optional bool which tells if user can manually revoke or regenerate api key without contacting support. |
 
-Response (if successful)
+**Response (if successful)**
 
-:	```json
-:	{
-.		"ApiKey":Required(Str(ApiKey)),
-.		"ApiSecret":Required(DateTime(ApiSecret)),
-.		"Created":Required(DateTime(Created)),
-.		"CanBeOverriden":Required(DateTime(CanBeOverriden)),
-.		"IsBlocked":Required(DateTime(IsBlocked)),
-:	}
-:   ```
+```
+{
+	"ApiKey":Required(Str(ApiKey)),
+	"ApiSecret":Required(DateTime(ApiSecret)),
+	"Created":Required(DateTime(Created)),
+	"CanBeOverriden":Required(DateTime(CanBeOverriden)),
+	"IsBlocked":Required(DateTime(IsBlocked)),
+}
+````
 
 Description of properties:
 
@@ -140,33 +135,29 @@ Description of properties:
 | `IsBlocked`        | Is api key blocked. |
 
 ### Get Generated Api Key
-
 Retrieves generated agent api key for the account.
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Paylink/GetApiKey")}}`
 Method:  POST
 
-JSON
--------
+**Request**
 
-Request
+````json
+{
+}
+````
 
-:	```json
-:	{
-:	}
-:	```
+**Response (if successful)**
 
-Response (if successful)
-
-:	```json
-:	{
-.		"ApiKey":Required(Str(ApiKey)),
-.		"ApiSecret":Required(DateTime(ApiSecret)),
-.		"Created":Required(DateTime(Created)),
-.		"CanBeOverriden":Required(DateTime(CanBeOverriden)),
-.		"IsBlocked":Required(DateTime(IsBlocked)),
-:	}
-:   ```
+````json
+{
+	"ApiKey":Required(Str(ApiKey)),
+	"ApiSecret":Required(DateTime(ApiSecret)),
+	"Created":Required(DateTime(Created)),
+	"CanBeOverriden":Required(DateTime(CanBeOverriden)),
+	"IsBlocked":Required(DateTime(IsBlocked)),
+}
+````
 
 Description of properties:
 
@@ -179,34 +170,29 @@ Description of properties:
 
 
 ### Remove AgentApiKey
-
 Removes generated api key
 
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Paylink/RemoveAgentApiKey")}}`
 Method:  POST
 
-JSON
--------
+**Request**
 
-Request
+````json 
+{
+}
+````
 
-:	```json 
-:	{
-:	}
-:	```
+**Response (if successful)**
 
-Response (if successful)
-
-:	```json
-:	{
-.		"Success":true,
-:	},
-    401 Unauthorized,
-    403 Forbidden
-:   ```
+````json
+{
+	"Success":true,
+},
+401 Unauthorized,
+403 Forbidden
+````
 
 ### Login (Test purposes) do not use in production
-
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/Account/Login")}}`
 
 Method:  POST
@@ -214,29 +200,26 @@ Method:  POST
 Read  **Authentication section** first.
 Call this resource to Login into the system using username and password provided by system administrators. 
 
-JSON
--------
+**Request**
 
-Request
+````
+{
+	"userName":Required(Str(PUserName)),
+	"nonce":Required(Str(PNonce)),
+    "seconds" Required(Int(PSeconds)),
+	"signature":Required(Str(PSignature))
+}
+````
 
-:	```json
-:	{
-:		"userName":Required(Str(PUserName)),
-:		"nonce":Required(Str(PNonce)),
-        "seconds" Required(Int(PSeconds)),
-:		"signature":Required(Str(PSignature))
-:	}
-:	```
+**Response (if successful)**
 
-Response (if successful)
-
-:	```json
-:	{
-.		"jwt":Required(Str(PJwt)),
-.		"expires":Required(DateTime(PExpires)),
-        "isApproved":Required(Bool)
-:	}
-:
+````
+{
+	"jwt":Required(Str(PJwt)),
+	"expires":Required(DateTime(PExpires)),
+    "isApproved":Required(Bool)
+}
+````
 
 Description of properties:
 
@@ -246,6 +229,33 @@ Description of properties:
 | `nonce`           | A unique random string, at least 32 characters long, with sufficient entropy to not be reused again.|
 | `signature` 	    | Cryptographic signature of request. |
 | `seconds` 	    | Duration of token in seconds |
+
+
+### Smart Admin Login
+This login is meant to be used for smart admin portla.
+
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/Agent/SmartAdmin/Login")}}`
+Method:  POST
+
+**Request**
+
+````
+{
+	"userName":Required(Str(userName)),
+	"nonce":Required(Str(nonce)),
+	"signature":Required(Str(signature)),
+	"duration":Optional(Int(duration))
+}
+````
+
+**Response (if successful)**
+
+````
+{
+	"jwt":Required(Str(PJwt)),
+	"expires":Required(DateTime(PExpires))
+}
+````
 
 
 Calculating Signature
@@ -410,7 +420,8 @@ Call this resource to register a new Item in Vaulter. JSON in the following form
     "callbackUrl":Optional(String(PCallbackUrl)),
     "webPageUrl":Optional(String(PWebPageUrl)),
     "successUrl":Optional(String(PSuccessUrl)),
-    "errorUrl":Optional(String(PErrorUrl))
+    "errorUrl":Optional(String(PErrorUrl)),
+    "ipsOnly":Optional(String(PIpsOnly))
 }
 ````
 
@@ -436,6 +447,7 @@ Description of properties:
 | `webPageUrl` | Web page of selling item|
 | `successUrl` | Optional Web page where user will be redirected when payment is successfull. Must be valid public accessable web page. |
 | `errorUrl` |  Optional Web page where user will be redirected when payment failed. Must be valid public accessable web page.|
+| `ipsOnly` |  If true, user will be able to pay with ips only. |
 
 **Response**
 
@@ -798,8 +810,6 @@ There is no need of properties to be send in a request
 ````
 
 ### Verify Token
----------------------------
-
 URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Auth/VerifyToken.ws")}}`  
 Method: `POST`
 
@@ -818,17 +828,61 @@ Read **Authorization section**.
 ````
 200 OK
 	{
-		 "authorized": true,
+		 "authenticated": true,
          "isApproved": bool,
          "role": "User",
          "contactInformationsPopulated": bool,
          "goToOnBoarding": bool
 	}
+401 Unauthorized
+	{
+		 // This can mean that request is not valid, jwt token is not valid, user not approved or blocked.
+		 // Must try to login again, if 200 OK is not returned, 
+	}
 403 Forbidden
 	{
-		 // This can mean that token is not valid, user not approved or blocked.
+		 // This can mean that legal identity is not approved or contact information not populated.
 		 // Must try to login again, if 200 OK is not returned, 
-		 // User is probably blocked or not permitted.
+	}
+400 Bad Request
+	{
+		 //This means that token is not presented, not valid or broken.
+	}
+````
+
+
+### Verify SmartAdmin Token
+URL: `{{Waher.IoTGateway.Gateway.GetUrl("/VaulterApi/PaymentLink/Auth/VerifySmartAdminToken.ws")}}`  
+Method: `POST`
+
+Read **Authorization section**.
+
+**Request**
+
+````
+{
+	 // Empty request body
+}
+````
+
+**Response**
+
+````
+200 OK
+	{
+		 "authenticated": true,
+         "orgName": string,
+         "role": string
+	}
+401 Unauthorized
+	{
+		 // This can mean that request is not valid, jwt token is not valid, user not approved or blocked.
+		 // Must try to login again, if 200 OK is not returned, 
+	}
+403 Forbidden
+	{
+		 // This can mean that legal identity is not approved or contact information not populated.
+		 // Must try to login again, if 200 OK is not returned, 
 	}
 400 Bad Request
 	{

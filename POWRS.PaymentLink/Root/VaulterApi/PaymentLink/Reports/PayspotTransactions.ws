@@ -1,5 +1,5 @@
 ﻿Response.SetHeader("Access-Control-Allow-Origin", "*");
-SessionUser:= Global.ValidateAgentApiToken(false, false);
+SessionUser:= Global.ValidateSmartAdminApiToken();
 
 logObject := SessionUser.username;
 logEventID := "PaySpotTransactions.ws";

@@ -29,7 +29,7 @@ try
 	);
 	logObject := PUserName;
 
-    Log.Informational("Called method LoginSmartAdmin for userName :" + PUserName, logObject, logActor, logEventID, null);
+    Log.Informational("Called method LoginFeeCalcluator for userName :" + PUserName, logObject, logActor, logEventID, null);
 
     validInSeconds:= 1800;
     Resp:= null;

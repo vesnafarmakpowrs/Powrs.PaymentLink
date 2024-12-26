@@ -7,11 +7,18 @@ using Waher.Persistence.Filters;
 using Waher.Persistence.Serialization;
 using Waher.Persistence;
 using Waher.Security.JWT;
+using System.Collections.Concurrent;
+using Waher.IoTGateway;
+using Waher.Content;
+using System.Net;
+using Waher.Events;
 
 namespace POWRS.PaymentLink.Authorization
 {
     public abstract class BasePaylinkAuthorization : HttpAsynchronousResource
     {
+        protected static ConcurrentDictionary<string, List<string>> userNameOrganizations = new ConcurrentDictionary<string, List<string>>();
+
         public BasePaylinkAuthorization(string ResourceName)
             : base(ResourceName) { }
 
@@ -81,7 +88,7 @@ namespace POWRS.PaymentLink.Authorization
             }
 
             string userName = subjectParts[0];
-            return await GetEnabledAccount(userName);
+            return await GetEnabledAccount(userName, Request.RemoteEndPoint);
         }
         protected JwtFactory GetJwtFactory()
         {
@@ -93,13 +100,35 @@ namespace POWRS.PaymentLink.Authorization
 
             return jwtFactory;
         }
+        protected JwtToken CreateJwtFactoryToken(string userName, int duration)
+        {
+            int issuedAt = (int)Math.Round(DateTime.UtcNow.Subtract(JSON.UnixEpoch).TotalSeconds);
+            int expires = issuedAt + duration;
 
-        protected async Task<Account> GetEnabledAccount(string UserName, Func<Task> OnNoAccountFound = null)
+            JwtFactory jwtFactory = GetJwtFactory();
+            string token = jwtFactory.Create(
+                new KeyValuePair<string, object>("jti", Convert.ToBase64String(Gateway.NextBytes(32))),
+                new KeyValuePair<string, object>("iss", Gateway.Domain?.Value ?? string.Empty),
+                new KeyValuePair<string, object>("sub", userName + "@" + (Gateway.Domain?.Value ?? string.Empty)),
+                new KeyValuePair<string, object>("iat", issuedAt),
+                new KeyValuePair<string, object>("exp", expires));
+
+            JwtToken jwtToken = new(token);
+
+            return jwtToken;
+        }
+
+        protected async Task<Account> GetEnabledAccount(string UserName, string endpoint, bool logIfNotFound = true)
         {
             IEnumerable<GenericObject> accounts = await Database.Find<GenericObject>("BrokerAccounts", 0, 1, new FilterFieldEqualTo("UserName", UserName));
             if (!accounts.Any())
             {
-                OnNoAccountFound?.Invoke();
+                if (logIfNotFound)
+                {
+                    Log.Error("Account not found.", UserName, endpoint, "LoginFailure");
+                    await Gateway.LoginAuditor.ProcessLoginFailure(endpoint, "HTTPS", DateTime.UtcNow, "Account not found.");
+                }
+
                 throw new ForbiddenException("No account found.");
             }
 
@@ -115,6 +144,44 @@ namespace POWRS.PaymentLink.Authorization
                 UserName = account["UserName"].ToString(),
                 Password = account["Password"].ToString()
             };
+        }
+
+        protected async Task ThrowLoginFailure(string Message, string UserName, string Endpoint, HttpStatusCode statusCode)
+        {
+            Log.Error(Message, UserName, Endpoint, "LoginFailure");
+            await Gateway.LoginAuditor.ProcessLoginFailure(Endpoint, "HTTPS", DateTime.UtcNow, UserName);
+            throw new HttpException((int)statusCode, Message);
+        }
+
+        protected async Task ProcessLoginSuccess(string endpoint, string userName)
+        {
+            await Gateway.LoginAuditor.ProcessLoginSuccessful(endpoint, "HTTPS");
+            Log.Notice("Login success", userName, userName, "LoginSuccess");
+        }
+
+        protected int GetDurationParameter(Dictionary<string, object> requestBody)
+        {
+            int duration = 3600;
+            if (requestBody.TryGetValue("Duration", out object durationObject) && int.TryParse(durationObject?.ToString(), out int parsedDuration))
+            {
+                if (parsedDuration > duration || parsedDuration <= 0)
+                {
+                    throw new BadRequestException("Min Duration: 0, Max duration is 3600s.");
+                }
+
+                duration = parsedDuration;
+            }
+
+            return duration;
+        }
+
+        protected async Task EnsureEndpointCanLogin(HttpRequest Request)
+        {
+            DateTime? loginOpportunity = await Gateway.LoginAuditor.GetEarliestLoginOpportunity(Request.RemoteEndPoint, "HTTPS");
+            if (loginOpportunity > DateTime.UtcNow)
+            {
+                throw new TooManyRequestsException($"Login is blocked for: {Request.RemoteEndPoint}. Next login attempt could be made: {loginOpportunity}");
+            }
         }
     }
 }
