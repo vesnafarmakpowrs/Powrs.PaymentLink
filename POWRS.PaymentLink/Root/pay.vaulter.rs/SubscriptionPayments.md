@@ -1,5 +1,5 @@
 ﻿Title: Payment Link
-Description: Payment Link.
+Description: Displays information about a contract.
 Date: 2023-08-04
 Author: POWRS
 Width: device-width
@@ -7,6 +7,7 @@ Cache-Control: max-age=0, no-cache, no-store
 Pragma: no-cache
 Expires: 0
 CSS: css/Payout.cssx
+CSS: css/Subscription.cssx
 CSS: css/IPS.cssx
 Icon: favicon.ico
 viewport : Width=device-width, initial-scale=1
@@ -47,6 +48,8 @@ if Token.HasStateMachine then
         ContractState:= CurrentState.State;
 );
 
+	VariableValues:= CurrentState.VariableValues;
+
     Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
    
     if !exists(Contract) then
@@ -65,24 +68,13 @@ if Token.HasStateMachine then
     IpsOnly:= false;
     System.Boolean.TryParse(Identity.IPSONLY, IpsOnly);
 
-    AgentName := "";
-    OrgName := "";   
-    OrgTaxNum := ""; 
-    OrgAddr := "";
-    OrgNr := "";
-    OrgActivity:= "";
-    OrgActivityNumber:= "";
-
-    if Identity != null then
-    (
-       AgentName := MarkdownEncode(Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
-       OrgName  := MarkdownEncode(Identity.ORGNAME);
-       OrgTaxNum :=  MarkdownEncode(Identity.ORGTAXNUM);
-       OrgAddr :=  MarkdownEncode(Identity.ORGADDR);
-       OrgNr := MarkdownEncode(Identity.ORGNR);
-       OrgActivity := MarkdownEncode(Identity.ORGACTIVITY);
-       OrgActivityNumber:= MarkdownEncode(Identity.ORGACTIVITYNUM);
-    );
+    AgentName := MarkdownEncode(Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST);
+    OrgName  := MarkdownEncode(Identity.ORGNAME);
+    OrgTaxNum :=  MarkdownEncode(Identity.ORGTAXNUM);
+    OrgAddr :=  MarkdownEncode(Identity.ORGADDR);
+    OrgNr := MarkdownEncode(Identity.ORGNR);
+    OrgActivity := MarkdownEncode(Identity.ORGACTIVITY);
+    OrgActivityNumber:= MarkdownEncode(Identity.ORGACTIVITYNUM);
      
     CompanyInfo := select top 1 * from POWRS.PaymentLink.Models.OrganizationContactInformation where OrganizationName = Identity.ORGNAME;
     if(CompanyInfo == null) then 
@@ -99,37 +91,22 @@ if Token.HasStateMachine then
 
     FileName:= SellerId + Token.ShortId;
     
-    RemoteId :=  '';
-	IsEcommerce := False;
-	SuccessUrl := '';
-	ErrorUrl := '';
-    foreach Parameter in (Contract.Parameters ?? []) do 
-    (
-          if Parameter.Name == 'RemoteId' then RemoteId := MarkdownEncode(Parameter.Value);
-		  if Parameter.Name == 'IsEcommerce' then IsEcommerce := Bool(Parameter.Value.ToString());
-		  if Parameter.Name == 'SuccessUrl' then SuccessUrl := Parameter.Value.ToString();
-		  if Parameter.Name == 'ErrorUrl' then ErrorUrl := Parameter.Value.ToString();
-    );
-
-    foreach Variable in (CurrentState.VariableValues ?? []) do 
-      (        
-        Variable.Name like "Title" ?   Title := MarkdownEncode(Variable.Value);
-        Variable.Name like "Description" ?   Description := MarkdownEncode(Variable.Value);
-        Variable.Name like "Price" ?   ContractValue := MarkdownEncode(Variable.Value.ToString("N2"));
-        Variable.Name like "Currency" ?   MarkdownEncode(Currency := Variable.Value);
-        Variable.Name like "Country" ?   Country := MarkdownEncode(Variable.Value.ToString());
-        Variable.Name like "Commission" ?   Commission := Variable.Value;
-        Variable.Name like "Buyer" ?   BuyerFullName := MarkdownEncode(Variable.Value);
-        Variable.Name like "BuyerEmail" ?  BuyerEmail := MarkdownEncode(Variable.Value);
-        Variable.Name like "EscrowFee" ?   EscrowFee := MarkdownEncode(Variable.Value.ToString("N2"));
-        Variable.Name like "AmountToPay" ?   AmountToPay := MarkdownEncode(Variable.Value.ToString("N2"));
-        Variable.Name like 'SuccessUrl' ? SuccessUrl := Variable.Value.ToString();
-      );
+    RemoteId :=  select top 1 Value from CurrentState.VariableValues where Name = "RemoteId";
+	SuccessUrl := select top 1 Value from CurrentState.VariableValues where Name = "SuccessUrl";
+	ErrorUrl := select top 1 Value from CurrentState.VariableValues where Name = "ErrorUrl";
+	Title:= select top 1 Value from CurrentState.VariableValues where Name = "Title";
+	Description:= select top 1 Value from CurrentState.VariableValues where Name = "Description";
+	Currency:= select top 1 Value from CurrentState.VariableValues where Name = "Currency";
+	Country:= select top 1 Value from CurrentState.VariableValues where Name = "Country";
+	Buyer:= select top 1 Value from CurrentState.VariableValues where Name = "Buyer";
+	BuyerEmail:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerEmail";
+	EscrowFee:= select top 1 Value from CurrentState.VariableValues where Name = "EscrowFee";
+	AmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
 
      if(!exists(Country)) then 
      (
         Country := 'RS';
-    );
+	 );
     
     Language:= null;
     if(exists(lng) and lng != "") then
@@ -153,7 +130,7 @@ if Token.HasStateMachine then
 		Return("");
     );
  
-    if(ContractState == "AwaitingForAuthorization" and Country != Language.Code.ToUpper()) then
+    if(ContractState == "AwaitingAuthorization" and Country != Language.Code.ToUpper()) then
       (
         SendLangaugeNote(tokenId, languageCode):= 
         (
@@ -189,8 +166,7 @@ if Token.HasStateMachine then
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
   
-	if (!IsEcommerce ) then
-		(
+
 			]]<table style="width:100%">
 				<tr class="welcomeLbl">   
 					<td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
@@ -198,7 +174,7 @@ if Token.HasStateMachine then
 				</tr>
 				<tr>
 					<td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
-					<td style="text-align:right">**ID: ((RemoteId ))**</td>
+					<td style="text-align:right">**ID: ((MarkdownEncode(RemoteId) ))**</td>
 				</tr>
 			</table>
 			<div class="payment-details">
@@ -242,12 +218,12 @@ if Token.HasStateMachine then
 						<td colspan="2" class="item border-radius">
 							<table style="vertical-align:middle; width:100%;">
 								<tr>
-									<td style="width:80%;"> ((Title))</td>
+									<td style="width:80%;"> ((MarkdownEncode(Title) ))</td>
 									<td class="itemPrice" rowspan="2">((ContractValue))</td>
 									<td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
 								</tr>
 								<tr>
-									<td style="width:70%"> ((Description))</td>
+									<td style="width:70%"> ((MarkdownEncode(Description) ))</td>
 								</tr>
 							</table>
 						</td>
@@ -255,11 +231,9 @@ if Token.HasStateMachine then
 			   </table>
 			</div>
 			<div class="spaceItem"></div>[[;
-		);
-	if ContractState == "AwaitingForAuthorization" then
+	
+	if (ContractState == "AwaitingAuthorization") then 
 	(
-			if (!IsEcommerce ) then 
-				(
 					]]<div class="vaulter-details">
 						<table style="width:100%">
 							<tr>
@@ -274,17 +248,14 @@ if Token.HasStateMachine then
 							</tr>
 						</table>
 					</div>[[;
-				);
 				]]<div class="spaceItem"></div>
 				<div class="payment-method-rs"  id="ctn-payment-method-rs">
 					<table style="width:100%; text-align:center">[[;
-					if (!IsEcommerce ) then 
-					(
 						]]<tr>
 							<td>
 									<div id="submit-payment">
 										<div class="retry-div">
-											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="InitiateCardAuthorization()">((LanguageNamespace.GetStringAsync(73) ))</button> 
+											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="StartPayment()">((LanguageNamespace.GetStringAsync(73) ))</button> 
 										</div>
 										<div class="div-payment-notice">
 											<label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(81) )) ((OrgName ))</label>
@@ -292,7 +263,6 @@ if Token.HasStateMachine then
 									</div>
 							</td>
 						</tr>[[;
-					);	
 						]]<tr id="tr_spinner" style="display: none;">
 							<td>
 								<img src="../resources/spin.svg" alt="loadingSpinner">
@@ -300,28 +270,92 @@ if Token.HasStateMachine then
 						</tr>
 						<tr>
 							<td>
-								 <form method="post" id="authorizationForm">
-       								<input type="hidden" name="PAGE" id="PAGE"/> 
-       								<input type="hidden" name="AMOUNT" /> 
-       								<input type="hidden" name="CURRENCY" />
-       								<input type="hidden" name="LANG" /> 
-       								<input type="hidden" name="SHOPID" /> 
-       								<input type="hidden" name="ORDERID" /> 
-       								<input type="hidden" name="URLDONE" /> 
-       								<input type="hidden" name="URLBACK" /> 
-       								<input type="hidden" name="URLMS" /> 
-       								<input type="hidden" name="ACCOUNTINGMODE" /> 
-       								<input type="hidden" name="AUTHORMODE" /> 
-       								<input type="hidden" name="OPTIONS" /> 
-       								<input type="hidden" name="EMAIL" /> 
-       								<input type="hidden" name="TRECURR" /> 
-       								<input type="hidden" name="EXPONENT" /> 
-       								<input type="hidden" name="MAC" />
-								</form>
+								<iframe id="payspot_iframe" class="payspot_iframe" style="display:none"></iframe>
 							</td>
 						</tr>
 					</table>
 				</div>[[;
+	)
+	else if (ContractState == "AwaitingForPayment") then
+	( 
+	   ]]<div class="saved-card">
+			<div class="card-details-title">
+				<div class="saved-card-title">
+					<label>Saved Card</label>
+				</div>
+				<div>
+					<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Register new card</button>
+				</div>
+			</div>
+			<div class="card-details-div">
+				<div class="card-details-row">
+					<div class="card-details">
+						<div class="card-details-lbl">Card Number:</div>
+						<div class="card-value">\*\*\*\* \*\*\*\* \*\*\*\* 1234</div>
+					</div>
+				</div>
+				<div class="card-details_2row">
+					<div class="card-details">
+						<div class="card-details-lbl">Expiration date:</div>
+						<div class="card-value">12/26</div>
+					</div>
+					<div class="card-details">
+						<div class="card-details-lbl">Card Brand:</div>
+						<div class="card-value">Visa</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="spaceItem"></div>
+		[[;
+		nextPaymentDate := Now.AddDays(1).ToString('MMM dd,yyyy');
+		paymentHistory := Create(System.Collections.Generic.List, System.Object);
+		paymentHistory.Add({DateTime(2024,7, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
+		paymentHistory.Add({DateTime(2024,8, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
+		paymentHistory.Add({DateTime(2024,9, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
+		paymentHistory.Add({DateTime(2024,10, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
+		paymentHistory.Add({DateTime(2024,11, 13).ToString('MMM dd,yyyy'),3200.00,'failed'});
+		paymentHistory.Add({DateTime(2025,01, 13).ToString('MMM dd,yyyy'),3200.00,'pending'});
+		]]<div class="spaceItem"></div>
+		<div class="payment-history">
+			<div>Payment History</div>
+			 <div class="spaceItem"></div>[[;
+				foreach (payment in paymentHistory) do (
+					]]
+					<div class="payment-container">
+					  <div class="payment-history-div">
+					    <div>
+							<div class="payment-history-amount">((payment[1] )) RSD</div>
+							<div class="payment-history-date">((payment[0] ))</div>	[[;	
+                            if (payment[2] == 'failed') then 
+							(
+							   ]]<div class="payment-history-retry-note">The next retry payment will be processed on: ((nextPaymentDate ))</div> [[;
+							);
+						]]</div>[[;
+						if (payment[2] == 'failed') then (
+							]]<div class="payment-history-retry"><button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn payment-history-retry-btn">Retry</button></div>[[;
+						)else if (payment[2] == 'pending') then(
+						    ]]<div class="payment-history-retry"><button id="cancel-btn" class="btn-black btn-show add-new-card-btn payment-history-cancel-btn">Cancel</button> </div>[[;
+						);
+						]]</div>[[;
+						if (payment[2] == 'paid') then (
+							]]<div class="payment-sticker paid">paid</div>[[;
+						)else if (payment[2] == 'failed')then (
+						    ]]<div class="payment-sticker failed">failed</div>[[;
+						)else if (payment[2] == 'pending') then(
+						   ]]<div class="payment-sticker pending">pending</div>[[;
+						);
+						]]</div>					   
+				     <div class="payment-history-space"></div>[[;
+					);
+			]]</div>
+		 <div class="spaceItem"></div>
+		 <div class="spaceItem"></div>
+		 <div class="spaceItem"></div>
+		 <div class="spaceItem"></div>
+		</div>
+		</div>
+		</div>[[;
 	)
 	else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" || ContractState == "ReleaseFundsToSellerFailed" )then 
 	(
@@ -359,7 +393,6 @@ if Token.HasStateMachine then
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
 <input type="hidden" value="((Country ))" id="country"/>
-<input type="hidden" value="((IsEcommerce ))" id="IsEcommerce"/>
 <input type="hidden" value="((ContractState ))" id="ContractState"/>
 </main>[[;
 }}
