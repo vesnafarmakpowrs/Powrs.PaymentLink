@@ -4,7 +4,8 @@ if !exists(Posted) then BadRequest("No payload.");
 
 ({
 	"from":Required(String(PDateFrom)),
-    "to":Required(String(PDateTo))
+    "to":Required(String(PDateTo)),
+	"organizationList": Required(String(POrganizationList))
 }:=Posted) ??? BadRequest(Exception.Message);
 
 logObject := SessionUser.username;
@@ -42,7 +43,7 @@ try
 	dateFormat := "dd/MM/yyyy";
 	DTDateFrom := System.DateTime.ParseExact(PDateFrom, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
 	DTDateTo := System.DateTime.ParseExact(PDateTo, dateFormat, System.Globalization.CultureInfo.CurrentUICulture);
-	DTDateTo := DTDateTo.AddDays(1);
+	
 		
 		
 	dayDiff := Days(DTDateTo - DTDateFrom);
