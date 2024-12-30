@@ -159,7 +159,7 @@
 			</Folder>
 		</Folder>
 		<Folder name="pay.vaulter.rs">
-			<Content fileName="Payout.md"/>
+			<Content fileName="SubscriptionPayments.md"/>
 			<Content fileName="PayoutIPS.md"/>
 			<Content fileName="DeepLink.md"/>
 			<Content fileName="Index.html"/>
