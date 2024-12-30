@@ -91,7 +91,6 @@
 
 	
 	<ItemGroup>
-		<None Remove="Root\pay.vaulter.rs\Authorize.md" />
 		<None Remove="Root\pay.vaulter.rs\css\Payout.cssx" />
 		<None Remove="Root\pay.vaulter.rs\DeepLink.md" />
 		<None Remove="Root\pay.vaulter.rs\js\DeepLink.js" />
@@ -128,7 +127,6 @@
 		<None Remove="Root\VaulterApi\PaymentLink\Account\Scheduler\GetPayoutSchedule.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Account\Scheduler\SavePayoutSchedule.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Contract\CreateItemOrder.ws" />
-		<None Remove="Root\VaulterApi\PaymentLink\Contract\CreateRecurringItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Contract\UpdateSuccessUrl.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\CreateItem.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\GetAccountInfo.ws" />
@@ -170,9 +168,6 @@
 		<Content Include="Root\pay.vaulter.rs\DeepLink.md">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\pay.vaulter.rs\Authorize.md">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Include="Root\pay.vaulter.rs\Payout.md">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -210,9 +205,6 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Account\Scheduler\SavePayoutSchedule.ws">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateRecurringItem.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateItemOrder.ws">
