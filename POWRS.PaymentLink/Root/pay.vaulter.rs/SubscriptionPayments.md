@@ -102,6 +102,9 @@ if Token.HasStateMachine then
 	BuyerEmail:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerEmail";
 	EscrowFee:= select top 1 Value from CurrentState.VariableValues where Name = "EscrowFee";
 	AmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
+	ActiveCardDetails:= select top 1 Value from CurrentState.VariableValues where Name = "ActiveCardDetails";
+	
+	ActiveCardDetails:= {MaskedPan: "**** **** **** 1234", ExpiryDate: "02/23", CardBrand: "Visa"};
 
      if(!exists(Country)) then 
      (
@@ -130,8 +133,6 @@ if Token.HasStateMachine then
 		Return("");
     );
  
-    if(ContractState == "AwaitingAuthorization" and Country != Language.Code.ToUpper()) then
-      (
         SendLangaugeNote(tokenId, languageCode):= 
         (
             try
@@ -147,7 +148,6 @@ if Token.HasStateMachine then
         );
 
         Background(SendLangaugeNote(Token.TokenId, Language.Code));
-      );
 
      BuyerFirstName := Before(BuyerFullName," ");
      PayspotId := Before(ID,"@");
@@ -230,11 +230,8 @@ if Token.HasStateMachine then
 					</tr>
 			   </table>
 			</div>
-			<div class="spaceItem"></div>[[;
-	
-	if (ContractState == "AwaitingAuthorization") then 
-	(
-					]]<div class="vaulter-details">
+			<div class="spaceItem"></div>
+			<div class="vaulter-details">
 						<table style="width:100%">
 							<tr>
 								<td colspan="3">
@@ -247,122 +244,91 @@ if Token.HasStateMachine then
 								</td>
 							</tr>
 						</table>
-					</div>[[;
-				]]<div class="spaceItem"></div>
-				<div class="payment-method-rs"  id="ctn-payment-method-rs">
-					<table style="width:100%; text-align:center">[[;
-						]]<tr>
-							<td>
-									<div id="submit-payment">
-										<div class="retry-div">
-											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="StartPayment()">((LanguageNamespace.GetStringAsync(73) ))</button> 
-										</div>
-										<div class="div-payment-notice">
-											<label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(81) )) ((OrgName ))</label>
-										</div>
-									</div>
-							</td>
-						</tr>[[;
-						]]<tr id="tr_spinner" style="display: none;">
-							<td>
-								<img src="../resources/spin.svg" alt="loadingSpinner">
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<iframe id="payspot_iframe" class="payspot_iframe" style="display:none"></iframe>
-							</td>
-						</tr>
-					</table>
-				</div>[[;
-	)
-	else if (ContractState == "AwaitingForPayment") then
-	( 
-	   ]]<div class="saved-card">
+				</div>
+			<div class="spaceItem"></div>[[;
+	if (ContractState != "PaymentCanceled" or ContractState != "PaymentNotPeformed" or ContractState != "PaymentNotPeformed" or ContractState != "Done") then 
+	(
+		if(ActiveCardDetails != null) then 
+		(
+			]]<div class="saved-card">
 			<div class="card-details-title">
 				<div class="saved-card-title">
 					<label>Saved Card</label>
 				</div>
 				<div>
-					<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn">Register new card</button>
+					<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn" onclick="InitiateCardAuthorization();">Register new card</button>
 				</div>
 			</div>
 			<div class="card-details-div">
 				<div class="card-details-row">
 					<div class="card-details">
 						<div class="card-details-lbl">Card Number:</div>
-						<div class="card-value">\*\*\*\* \*\*\*\* \*\*\*\* 1234</div>
+						<div class="card-value">((MarkdownEncode(ActiveCardDetails.MaskedPan) ))</div>
 					</div>
 				</div>
 				<div class="card-details_2row">
 					<div class="card-details">
 						<div class="card-details-lbl">Expiration date:</div>
-						<div class="card-value">12/26</div>
+						<div class="card-value">((MarkdownEncode(ActiveCardDetails.ExpiryDate) ))</div>
 					</div>
 					<div class="card-details">
 						<div class="card-details-lbl">Card Brand:</div>
-						<div class="card-value">Visa</div>
+						<div class="card-value">((MarkdownEncode(ActiveCardDetails.CardBrand) ))</div>
 					</div>
 				</div>
 			</div>
+		</div>[[;
+		)
+		else 
+		(
+			]]<div class="spaceItem"></div>
+				<div class="payment-method-rs"  id="ctn-payment-method-rs">
+					<table style="width:100%; text-align:center">
+						<tr>
+							<td>
+									<div id="submit-payment">
+										<div class="retry-div">
+											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="InitiateCardAuthorization();">((LanguageNamespace.GetStringAsync(73) ))</button> 
+										</div>
+										<div class="div-payment-notice">
+											<label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(81) )) ((OrgName ))</label>
+										</div>
+									</div>
+							</td>
+						</tr>
+					</table>
+				</div>[[;
+		);
+		]]<div id="tr_spinner" style="text-align: center; display: none;">
+			<img src="../resources/spin.svg" alt="loadingSpinner">
 		</div>
-		<div class="spaceItem"></div>
-		[[;
-		nextPaymentDate := Now.AddDays(1).ToString('MMM dd,yyyy');
-		paymentHistory := Create(System.Collections.Generic.List, System.Object);
-		paymentHistory.Add({DateTime(2024,7, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
-		paymentHistory.Add({DateTime(2024,8, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
-		paymentHistory.Add({DateTime(2024,9, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
-		paymentHistory.Add({DateTime(2024,10, 13).ToString('MMM dd,yyyy'),3200.00,'paid'});
-		paymentHistory.Add({DateTime(2024,11, 13).ToString('MMM dd,yyyy'),3200.00,'failed'});
-		paymentHistory.Add({DateTime(2025,01, 13).ToString('MMM dd,yyyy'),3200.00,'pending'});
-		]]<div class="spaceItem"></div>
-		<div class="payment-history">
-			<div>Payment History</div>
-			 <div class="spaceItem"></div>[[;
-				foreach (payment in paymentHistory) do (
-					]]
-					<div class="payment-container">
-					  <div class="payment-history-div">
-					    <div>
-							<div class="payment-history-amount">((payment[1] )) RSD</div>
-							<div class="payment-history-date">((payment[0] ))</div>	[[;	
-                            if (payment[2] == 'failed') then 
-							(
-							   ]]<div class="payment-history-retry-note">The next retry payment will be processed on: ((nextPaymentDate ))</div> [[;
-							);
-						]]</div>[[;
-						if (payment[2] == 'failed') then (
-							]]<div class="payment-history-retry"><button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn payment-history-retry-btn">Retry</button></div>[[;
-						)else if (payment[2] == 'pending') then(
-						    ]]<div class="payment-history-retry"><button id="cancel-btn" class="btn-black btn-show add-new-card-btn payment-history-cancel-btn">Cancel</button> </div>[[;
-						);
-						]]</div>[[;
-						if (payment[2] == 'paid') then (
-							]]<div class="payment-sticker paid">paid</div>[[;
-						)else if (payment[2] == 'failed')then (
-						    ]]<div class="payment-sticker failed">failed</div>[[;
-						)else if (payment[2] == 'pending') then(
-						   ]]<div class="payment-sticker pending">pending</div>[[;
-						);
-						]]</div>					   
-				     <div class="payment-history-space"></div>[[;
-					);
-			]]</div>
-		 <div class="spaceItem"></div>
-		 <div class="spaceItem"></div>
-		 <div class="spaceItem"></div>
-		 <div class="spaceItem"></div>
-		</div>
-		</div>
+		<div>
+					<form method="post" id="authorizationForm">
+						<input type="hidden" name="PAGE" id="PAGE"/> 
+						<input type="hidden" name="AMOUNT" /> 
+								<input type="hidden" name="CURRENCY" />
+								<input type="hidden" name="LANG" /> 
+								<input type="hidden" name="SHOPID" /> 
+								<input type="hidden" name="ORDERID" /> 
+								<input type="hidden" name="URLDONE" /> 
+								<input type="hidden" name="URLBACK" /> 
+								<input type="hidden" name="URLMS" /> 
+								<input type="hidden" name="ACCOUNTINGMODE" /> 
+								<input type="hidden" name="AUTHORMODE" /> 
+								<input type="hidden" name="OPTIONS" /> 
+								<input type="hidden" name="EMAIL" /> 
+								<input type="hidden" name="TRECURR" /> 
+								<input type="hidden" name="EXPONENT" /> 
+								<input type="hidden" name="MAC" />
+								</form>
 		</div>[[;
 	)
-	else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" || ContractState == "ReleaseFundsToSellerFailed" )then 
+	else if (ContractState == "Done")then 
 	(
 		]]<div class="payment-completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>
 		  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
     )
-	else if ContractState == "PaymentCanceled" then 
+	else if (ContractState == "PaymentCanceled" or ContractState == "PaymentNotPeformed") then 
 	(
 		]]**((LanguageNamespace.GetStringAsync(14) ))**
 		<input type="hidden" id="cancelURL" value='((ErrorUrl ))' />[[;
@@ -371,7 +337,58 @@ if Token.HasStateMachine then
 	(
 		]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
 	);
-]]</div>
+	   ]]
+		<div class="spaceItem"></div>
+		[[;
+		Payments:= select top 20 * from PayspotPayments where TokenId = Token.TokenId;
+		nextPaymentDate := Now.AddDays(1).ToString('MMM dd,yyyy');		
+		]]<div class="spaceItem"></div>
+		<div class="payment-history">
+			<div>Payment History</div>
+			 <div class="spaceItem"></div>[[;
+			 if(Payments != null and Payments.Length > 0) then
+			 (
+			 	foreach (payment in Payments) do (
+					]]
+					<div class="payment-container">
+					  <div class="payment-history-div">
+					    <div>
+							<div class="payment-history-amount">((payment.Amount.ToString("f2") )) ((Currency ))</div>
+							<div class="payment-history-date">((payment.DateCreated.ToString("dd/MM/yyyy") ))</div>	[[;
+						]]</div></div>[[;
+						if(payment.RefundedAmount != null and payment.RefundedAmount > 0) then 
+						(
+							]]<div class="payment-sticker refunded">refunded</div>[[;
+						)
+						else if (payment.Result == '00') then 
+						(
+							]]<div class="payment-sticker paid">paid</div>[[;
+						)
+						else if (payment.Result != "" and payment.Result != "00") then 
+						(
+						    ]]<div class="payment-sticker failed">failed</div>[[;
+						)
+						else 
+						(
+						   ]]<div class="payment-sticker pending">pending</div>[[;
+						);
+						]]</div>					   
+				     <div class="payment-history-space"></div>[[;
+					);
+			 )
+			 else 
+			 (
+				]]<p>No payments yet...</p>[[;
+			 );
+			]]</div>
+		 <div class="spaceItem"></div>
+		 <div class="spaceItem"></div>
+		 <div class="spaceItem"></div>
+		 <div class="spaceItem"></div>
+		</div>
+		</div>
+		</div>
+</div>
 <input type="hidden" value="((Language.Code ))" id="prefferedLanguage"/>
 <input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
