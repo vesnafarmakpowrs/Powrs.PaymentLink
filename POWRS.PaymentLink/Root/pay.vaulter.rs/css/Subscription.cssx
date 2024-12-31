@@ -226,6 +226,11 @@
 		background-color: #5bb254;
 		
 	}
+
+	.refunded 
+	{
+	 background-color: orange;
+	}
 	
 	.failed{
 	  background-color: #ee4f61;
