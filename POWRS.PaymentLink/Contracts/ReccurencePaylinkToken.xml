@@ -274,7 +274,12 @@
 								sellerHtml:= html:= Evaluate("Get(sellerTemplateUrl, {'Accept': 'text/html'})");
 								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, sellerEmail, Title + ' - ' + StateToNotify, sellerHtml.HtmlText, null, null))");
 								);
-								
+
+								if(Evaluate("exists(tabId:= Global.PayspotRequests[TokenContract])")) then
+								(
+									Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([tabId],'StateUpdated', {'NewState': StateToNotify })");
+								);
+
 								)
 								catch
 								(
