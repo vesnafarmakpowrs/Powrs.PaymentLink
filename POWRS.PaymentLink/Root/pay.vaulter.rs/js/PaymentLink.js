@@ -287,3 +287,10 @@ function ShowPayspotPage(Data) {
         ShowHideElement("payspot_iframe", null);
     }
 }
+
+function StateUpdated(data) {
+    setTimeout(function () {
+        GenerateLanguageDropdown();
+        GenerateTranslations();
+    }, 1000);
+}
