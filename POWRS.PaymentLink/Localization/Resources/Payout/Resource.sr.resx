@@ -335,4 +335,37 @@
 	<data name="AgreeToTermsAgain" xml:space="preserve">
     <value>Klikom na 'Plati' potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i</value>
   </data>
+	<data name="RegisterNewCard" xml:space="preserve">
+    <value>Registruj novu karticu</value>
+  </data>
+	<data name="CardNumberLabel" xml:space="preserve">
+    <value>Broj kartice</value>
+  </data>
+	<data name="ExpiryDateLabel" xml:space="preserve">
+    <value>Datum isteka</value>
+  </data>
+	<data name="CardBrandLabel" xml:space="preserve">
+    <value>Brend</value>
+  </data>
+	<data name="RefundedLabel" xml:space="preserve">
+    <value>Refundirano</value>
+  </data>
+	<data name="PaidLabel" xml:space="preserve">
+    <value>Plaćeno</value>
+  </data>
+	<data name="FailedLabel" xml:space="preserve">
+    <value>Neuspešno</value>
+  </data>
+	<data name="PendingLabel" xml:space="preserve">
+    <value>Na čekanju</value>
+  </data>
+	<data name="NoPaymentsLabel" xml:space="preserve">
+    <value>Još uvek nema uplata...</value>
+  </data>
+	<data name="FooterCompanyInfo1" xml:space="preserve">
+    <value>Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd</value>
+  </data>
+	<data name="FooterCompanyInfo2" xml:space="preserve">
+    <value>Serbia ©2021 - {0} POWRS</value>
+  </data>
 </root>

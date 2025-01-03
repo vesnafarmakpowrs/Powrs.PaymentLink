@@ -356,9 +356,16 @@ window.onload = function () {
         return;
     }
 
+    let tab = document.getElementById("pageTabId");
+    if (tab != undefined && tab != null && tab.value != "")
+    {
+        TabID = tab.value;
+    }
+        
     if (TabID != "") {
         CheckEvents(TabID);
     }
+
     CheckRedirect();
 };
 

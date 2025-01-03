@@ -169,11 +169,29 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Brand.
+        /// </summary>
+        internal static string CardBrandLabel {
+            get {
+                return ResourceManager.GetString("CardBrandLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full name on card.
         /// </summary>
         internal static string CardFullName {
             get {
                 return ResourceManager.GetString("CardFullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Card number.
+        /// </summary>
+        internal static string CardNumberLabel {
+            get {
+                return ResourceManager.GetString("CardNumberLabel", resourceCulture);
             }
         }
         
@@ -232,11 +250,47 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expiry date.
+        /// </summary>
+        internal static string ExpiryDateLabel {
+            get {
+                return ResourceManager.GetString("ExpiryDateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed.
+        /// </summary>
+        internal static string FailedLabel {
+            get {
+                return ResourceManager.GetString("FailedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         internal static string FirstName {
             get {
                 return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd.
+        /// </summary>
+        internal static string FooterCompanyInfo1 {
+            get {
+                return ResourceManager.GetString("FooterCompanyInfo1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serbia ©2021 - {0} POWRS.
+        /// </summary>
+        internal static string FooterCompanyInfo2 {
+            get {
+                return ResourceManager.GetString("FooterCompanyInfo2", resourceCulture);
             }
         }
         
@@ -304,6 +358,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No payments yet....
+        /// </summary>
+        internal static string NoPaymentsLabel {
+            get {
+                return ResourceManager.GetString("NoPaymentsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To pay with this bank, please open the payment link on the phone where you have intalled Bank-ID..
         /// </summary>
         internal static string OpenPaymentLinkOnPhone {
@@ -318,6 +381,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string OtherPaymentMethods {
             get {
                 return ResourceManager.GetString("OtherPaymentMethods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paid.
+        /// </summary>
+        internal static string PaidLabel {
+            get {
+                return ResourceManager.GetString("PaidLabel", resourceCulture);
             }
         }
         
@@ -484,6 +556,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pending.
+        /// </summary>
+        internal static string PendingLabel {
+            get {
+                return ResourceManager.GetString("PendingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phone Number.
         /// </summary>
         internal static string PhoneNumber {
@@ -547,11 +628,29 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refunded.
+        /// </summary>
+        internal static string RefundedLabel {
+            get {
+                return ResourceManager.GetString("RefundedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Regenerate the IPS QR CODE.
         /// </summary>
         internal static string RegenerateIpsQrCode {
             get {
                 return ResourceManager.GetString("RegenerateIpsQrCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register new card.
+        /// </summary>
+        internal static string RegisterNewCard {
+            get {
+                return ResourceManager.GetString("RegisterNewCard", resourceCulture);
             }
         }
         
