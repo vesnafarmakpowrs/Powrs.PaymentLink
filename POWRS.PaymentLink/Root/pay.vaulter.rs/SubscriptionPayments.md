@@ -103,37 +103,29 @@ if Token.HasStateMachine then
 	EscrowFee:= select top 1 Value from CurrentState.VariableValues where Name = "EscrowFee";
 	AmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
 	ActiveCardDetails:= select top 1 Value from CurrentState.VariableValues where Name = "ActiveCardDetails";
-	
-	ActiveCardDetails:= {MaskedPan: "**** **** **** 1234", ExpiryDate: "02/23", CardBrand: "Visa"};
 
-     if(!exists(Country)) then 
+	 Language:= Country;
+	 culture:= "sr";
+	 if(exists(lng) and lng != "") then
      (
-        Country := 'RS';
-	 );
-    
-    Language:= null;
-    if(exists(lng) and lng != "") then
-    (
-        Language:= Translator.GetLanguageAsync(lng);
-      )
-      else 
-      (
-        Language:= Translator.GetLanguageAsync(Country.ToLowerInvariant());
-    );
+		if(lng != "RS" and lng != "EN") then 
+		(
+			Language:= "RS";
+		)
+		else 
+		(
+			Language:= lng;			
+		);
+     );
 
-    if(Language == null) then
-    (
-		Language:= Translator.GetLanguageAsync("rs");
-    );
-   
-    LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
-    if(LanguageNamespace == null) then 
-    (
-		]]<b>Page is not available at the moment</b>[[;
-		Return("");
-    );
+	 if(Language != "RS") then
+	 (
+		culture:= "en";
+	 );
+	
+	 localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
  
-        SendLangaugeNote(tokenId, languageCode):= 
+        SendLangaugeNote(tokenId, languageCode):=
         (
             try
             (
@@ -144,15 +136,24 @@ if Token.HasStateMachine then
             catch
             (
                 Log.Error(Exception.Message);
-            );
+            );`
         );
 
-        Background(SendLangaugeNote(Token.TokenId, Language.Code));
+        Background(SendLangaugeNote(Token.TokenId, Language));
 
      BuyerFirstName := Before(BuyerFullName," ");
      PayspotId := Before(ID,"@");
      tokenDurationInMinutes:= Int(GetSetting("POWRS.PaymentLink.PayoutPageTokenDuration", 5));
      
+	 tabId:= Str(NewGuid());
+
+	if(!exists(Global.PayspotRequests)) then
+	(
+		Global.PayspotRequests:= Create(Waher.Runtime.Cache.Cache,System.String,System.String,System.Int32.MaxValue,System.TimeSpan.FromHours(0.5),System.TimeSpan.FromHours(0.5));	
+	);
+
+	Global.PayspotRequests[ID]:= tabId;
+
      PageToken:= CreateJwt(
             {
                 "iss":Gateway.Domain, 
@@ -161,6 +162,7 @@ if Token.HasStateMachine then
                 "sub": BuyerFullName, 
                 "id": NewGuid().ToString(),
                 "ip": Request.RemoteEndPoint,
+				"tabId": tabId,
                 "country": Country,
                 "ipsOnly": IpsOnly,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
@@ -173,7 +175,7 @@ if Token.HasStateMachine then
 					<td coolspan="2"><select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
 				</tr>
 				<tr>
-					<td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
+					<td>**((localization.GetFormat("HelloUser", BuyerFullName) ))**</td>
 					<td style="text-align:right">**ID: ((MarkdownEncode(RemoteId) ))**</td>
 				</tr>
 			</table>
@@ -183,14 +185,14 @@ if Token.HasStateMachine then
 					 <td class="item border-radius">
 						<table style="vertical-align:middle; width:100%;">
 						   <tr id="tr_seller_info">
-								<td style="width:50%">((LanguageNamespace.GetStringAsync(11) )): ((OrgName ))</td>
+								<td style="width:50%">((localization.Get("Seller") )): ((OrgName ))</td>
 								<td style="width:40%"></td>
 								<td style="width:10%;text-align:right"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/></td>
 						    </tr>
 							<tr id="tr_seller_dtl" style="display:none"  class="agent-info">
 								<td>
 									<div class="agent-contact-info">
-										<p>((OrgAddr ))test</p>
+										<p>((OrgAddr ))</p>
 										<p>((MarkdownEncode(CompanyInfo.PhoneNumber) ))</p>
 										<p>((MarkdownEncode(CompanyInfo.Email) ))</p>
 										<p>((MarkdownEncode(CompanyInfo.WebAddress) ))</p>
@@ -198,10 +200,10 @@ if Token.HasStateMachine then
 							    </td>
 								<td colspan="2" > 
 									<div style="float: right;" align="right" class="agent-detail">
-										<p>((LanguageNamespace.GetStringAsync(58) )): ((OrgNr ))</p>
-										<p>((LanguageNamespace.GetStringAsync(60) )): (( OrgActivity))</p>
-										<p>((LanguageNamespace.GetStringAsync(61) )): (( OrgActivityNumber))</p>
-										<p>((LanguageNamespace.GetStringAsync(56) )): (( OrgTaxNum))</p>
+										<p>((localization.Get("RegistrationNumber") )): ((OrgNr ))</p>
+										<p>((localization.Get("BusinessActivity") )): (( OrgActivity))</p>
+										<p>((localization.Get("ActivityCode") )): (( OrgActivityNumber))</p>
+										<p>((localization.Get("TaxID") )): (( OrgTaxNum))</p>
 									</div>
 								</td>
 						   </tr>
@@ -211,8 +213,8 @@ if Token.HasStateMachine then
 			   </table>
 			   <table style="width:100%">
 					<tr id="tr_header" class="table-row">
-						<td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
-						<td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) )) ((LanguageNamespace.GetStringAsync(54) ))<strong></td>
+						<td class="item-header"><strong>((localization.Get("Product") ))<strong></td>
+						<td class="price-header"><strong>((localization.Get("Price") )) ((localization.Get("WithVAT") ))<strong></td>
 					</tr>
 				    <tr id="tr_header_title">
 						<td colspan="2" class="item border-radius">
@@ -235,12 +237,12 @@ if Token.HasStateMachine then
 						<table style="width:100%">
 							<tr>
 								<td colspan="3">
-									<label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a> vaulter</label>    
+									<label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((localization.Get("TermsOfUse") ))**</a> vaulter</label>    
 								</td>
 							</tr>
 							<tr >
 								<td colspan="3">
-									<label for="termsAndConditionAgency"><a onclick="OpenTermsAndConditions(event, this);" urlhref="((CompanyInfo.TermsAndConditions ))">**((LanguageNamespace.GetStringAsync(19) ))**</a> ((OrgName ))</label>
+									<label for="termsAndConditionAgency"><a onclick="OpenTermsAndConditions(event, this);" urlhref="((CompanyInfo.TermsAndConditions ))">**((localization.Get("TermsOfUse") ))**</a> ((OrgName ))</label>
 								</td>
 							</tr>
 						</table>
@@ -256,23 +258,23 @@ if Token.HasStateMachine then
 					<label>Saved Card</label>
 				</div>
 				<div>
-					<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn" onclick="InitiateCardAuthorization();">Register new card</button>
+					<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn" onclick="InitiateCardAuthorization();">((localization.Get("RegisterNewCard") ))</button>
 				</div>
 			</div>
 			<div class="card-details-div">
 				<div class="card-details-row">
 					<div class="card-details">
-						<div class="card-details-lbl">Card Number:</div>
+						<div class="card-details-lbl">((localization.Get("CardNumber") ))</div>
 						<div class="card-value">((MarkdownEncode(ActiveCardDetails.MaskedPan) ))</div>
 					</div>
 				</div>
 				<div class="card-details_2row">
 					<div class="card-details">
-						<div class="card-details-lbl">Expiration date:</div>
+						<div class="card-details-lbl">((localization.Get("ExpiryDateLabel") ))</div>
 						<div class="card-value">((MarkdownEncode(ActiveCardDetails.ExpiryDate) ))</div>
 					</div>
 					<div class="card-details">
-						<div class="card-details-lbl">Card Brand:</div>
+						<div class="card-details-lbl">((localization.Get("CardBrandLabel") )):</div>
 						<div class="card-value">((MarkdownEncode(ActiveCardDetails.CardBrand) ))</div>
 					</div>
 				</div>
@@ -282,16 +284,16 @@ if Token.HasStateMachine then
 		else 
 		(
 			]]<div class="spaceItem"></div>
-				<div class="payment-method-rs"  id="ctn-payment-method-rs">
+				<div class="payment-method-rs" id="ctn-payment-method-rs">
 					<table style="width:100%; text-align:center">
 						<tr>
 							<td>
 									<div id="submit-payment">
 										<div class="retry-div">
-											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="InitiateCardAuthorization();">((LanguageNamespace.GetStringAsync(73) ))</button> 
+											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="InitiateCardAuthorization();">((localization.Get("RegisterNewCard") ))</button> 
 										</div>
 										<div class="div-payment-notice">
-											<label id="payment-notice-lbl" class="lbl-payment-notice">((LanguageNamespace.GetStringAsync(81) )) ((OrgName ))</label>
+											<label id="payment-notice-lbl" class="lbl-payment-notice">(localization.Get("AgreeToTermsAgain") )) ((OrgName ))</label>
 										</div>
 									</div>
 							</td>
@@ -325,19 +327,19 @@ if Token.HasStateMachine then
 	)
 	else if (ContractState == "Done")then 
 	(
-		]]<div class="payment-completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>
+		]]<div class="payment-completed">**((localization.Get("PaymentSuccessful") ))**</div>
 		  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
     )
 	else if (ContractState == "PaymentCanceled" or ContractState == "PaymentNotPeformed") then 
 	(
-		]]**((LanguageNamespace.GetStringAsync(14) ))**
+		]]**((localization.Get("Cancelled") ))**
 		<input type="hidden" id="cancelURL" value='((ErrorUrl ))' />[[;
 	)
 	else 
 	(
-		]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
+		]]**((localization.Get("PaymentLinkExpiredAgain") ))**[[;
 	);
-	   ]]
+		]]
 		<div class="spaceItem"></div>
 		[[;
 		Payments:= select top 20 * from PayspotPayments where TokenId = Token.TokenId;
@@ -358,19 +360,19 @@ if Token.HasStateMachine then
 						]]</div></div>[[;
 						if(payment.RefundedAmount != null and payment.RefundedAmount > 0) then 
 						(
-							]]<div class="payment-sticker refunded">refunded</div>[[;
+							]]<div class="payment-sticker refunded">((localization.Get("RefundedLabel") ))</div>[[;
 						)
 						else if (payment.Result == '00') then 
 						(
-							]]<div class="payment-sticker paid">paid</div>[[;
+							]]<div class="payment-sticker paid">((localization.Get("PaidLabel") ))</div>[[;
 						)
 						else if (payment.Result != "" and payment.Result != "00") then 
 						(
-						    ]]<div class="payment-sticker failed">failed</div>[[;
+						    ]]<div class="payment-sticker failed">((localization.Get("FailedLabel") ))</div>[[;
 						)
 						else 
 						(
-						   ]]<div class="payment-sticker pending">pending</div>[[;
+						   ]]<div class="payment-sticker pending">((localization.Get("PendingLabel") ))</div>[[;
 						);
 						]]</div>					   
 				     <div class="payment-history-space"></div>[[;
@@ -378,7 +380,7 @@ if Token.HasStateMachine then
 			 )
 			 else 
 			 (
-				]]<p>No payments yet...</p>[[;
+				]]<p>((localization.Get("NoPaymentsLabel") ))</p>[[;
 			 );
 			]]</div>
 		 <div class="spaceItem"></div>
@@ -392,20 +394,19 @@ if Token.HasStateMachine then
 <input type="hidden" value="((Language.Code ))" id="prefferedLanguage"/>
 <input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(10) ))" id="SelectedAccountOk"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(24) ))" id="SelectedAccountNotOk"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(25) ))" id="QrCodeScanMessage"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(26) ))" id="QrCodeScanTitle"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(27) ))" id="TransactionCompleted"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(28) ))" id="TransactionFailed"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(47) ))" id="SessionTokenExpired"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(74) ))" id="PaymentFailed"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(75) ))" id="PaymentCompletedWaitingRedirection"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(76) ))" id="PaymentFailedWaitingRedirection"/>
+<input type="hidden" value="((localization.Get("ScanIPSQRCode") ))" id="QrCodeScanMessage"/>
+<input type="hidden" value="((localization.Get("BankIDAuthorization") ))" id="QrCodeScanTitle"/>
+<input type="hidden" value="((localization.Get("PaymentSuccessfulThankYou") ))" id="TransactionCompleted"/>
+<input type="hidden" value="((localization.Get("PaymentNotPossible") ))" id="TransactionFailed"/>
+<input type="hidden" value="((localization.Get("PaymentInProgress") ))" id="TransactionInProgress"/>
+<input type="hidden" value="((localization.Get("OpenPaymentLinkOnPhone") ))" id="OpenLinkOnPhoneMessage"/>
+<input type="hidden" value="((localization.Get("SessionExpired") ))" id="SessionTokenExpired"/>
+<input type="hidden" value="((localization.Get("PaymentUnsuccessful") ))" id="PaymentFailed"/>
+<input type="hidden" value="((localization.Get("PaymentSuccessfulRedirect") ))" id="PaymentCompletedWaitingRedirection"/>
+<input type="hidden" value="((localization.Get("PaymentUnsuccessfulRedirect") ))" id="PaymentFailedWaitingRedirection"/>
 
 <input type="hidden" value="((Request.RemoteEndPoint))" id="currentIp"/>
+<input type="hidden" value="((tabId))" id="pageTabId"/>
 <input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
@@ -415,7 +416,9 @@ if Token.HasStateMachine then
 }}
 <div class="footer-parent">
   <div class="footer">
-   Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - 2024 POWRS
+  ((localization.Get("FooterCompanyInfo1") ))
+  </br>
+   ((localization.GetFormat("FooterCompanyInfo2", Str(Now.Year)) ))
   </div>
 </div>
 </div>
