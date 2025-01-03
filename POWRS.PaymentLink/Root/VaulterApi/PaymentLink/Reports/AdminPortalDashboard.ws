@@ -13,6 +13,7 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
+	
 	if(Global.RegexValidation(PDateFrom, "DateDDMMYYYY", "") == false or Global.RegexValidation(PDateTo, "DateDDMMYYYY", "") == false) then
 	(
 		BadRequest("Date format must be dd/MM/yyyy");
@@ -25,14 +26,19 @@ try
 	
 	CardPayment :=  "PaymentCard";
 	IPSPayment :=  "IPSPayment";
-		
+	
+	endpointStart := Now;
+	start := Now;
 	CompletedPayspotPayments := 
 		Select distinct TokenId, PaymentType, RefundedAmount, SenderFee
 		from PayspotPayments
 		where Result = "00"
 			and DateCompleted >= DTDateFrom
 			and DateCompleted < DTDateTo;
+			
+	Log.Debug("select from PayspotPayments -> time: " + (Now - start).get_Milliseconds() + " ms", logObject, logActor, logEventID, null);
 		
+	start := Now;
 	payspotPaymentDictionary := Create(System.Collections.Generic.Dictionary, System.String, System.Object);
 	foreach payment in CompletedPayspotPayments do
 	(
@@ -52,6 +58,7 @@ try
 			);
 		);
 	);
+	Log.Debug("payspotPaymentDictionary created -> time: " + (Now - start).get_Milliseconds() + " ms", logObject, logActor, logEventID, null);
 	
 	Destroy(CompletedPayspotPayments);
 				
@@ -65,30 +72,92 @@ try
 	cardSuccessValue := 0;
 	cardMarkUpFee := 0;
 	
-	neuroFeatureTokenList := 
-		select TokenId, Value
-		from NeuroFeatureReferences
-		where Updated >= DTDateFrom
-			and Updated < DTDateTo;
-			
-	foreach token in neuroFeatureTokenList do 
+	tokens := Create(System.Collections.Generic.List, System.Object);
+	users := Create(System.Collections.Generic.List, System.String);
+	newPartners := 0;
+	
+	if(SessionUser.role == POWRS.PaymentLink.Models.AccountRole.SuperAdmin.ToString())then
 	(
-	    if (payspotPaymentDictionary.ContainsKey(token[0])) then 
+		start := Now;
+		neuroFeatureTokenList := 
+			select TokenId, Value
+			from NeuroFeatureReferences
+			where Updated >= DTDateFrom
+				and Updated < DTDateTo;
+		
+		Log.Debug("SUPER ADMIN - select from NeuroFeatureReferences -> time: " + (Now - start).get_Milliseconds() + " ms", logObject, logActor, logEventID, null);
+		
+		start := Now;
+		foreach token in neuroFeatureTokenList do 
+		(
+			tokens.Add({
+				TokenId: token[0],
+				Value: token[1]
+			});
+		);
+		Log.Debug("SUPER ADMIN - token list created -> time: " + (Now - start).get_Milliseconds() + " ms", logObject, logActor, logEventID, null);
+		
+		start := Now;
+		newPartners := 
+			select count(*) 
+			from LegalIdentities 
+			where State = "Approved" 
+				and Created >= DTDateFrom
+				and Created < DTDateTo;	
+		Log.Debug("select newPartners -> time: " + (Now - start).get_Milliseconds() + " ms", logObject, logActor, logEventID, null);
+	)
+	else
+	(
+		start := Now;
+		myOrganizations := POWRS.PaymentLink.Module.PaymentLinkModule.GetUsernameOrganizations(SessionUser.username);
+		foreach org in myOrganizations do
+		(
+			users := Global.GetUsersForOrganization(org, true);
+			foreach user in users do
+			(
+				neuroFeatureTokenList := 
+				select TokenId, Value
+				from NeuroFeatureReferences
+				where Updated >= DTDateFrom
+					and Updated < DTDateTo
+					and OwnerJid = user;
+					
+				foreach token in neuroFeatureTokenList do 
+				(
+					tokens.Add({
+						TokenId: token[0],
+						Value: token[1]
+					});
+				);
+				
+				userName := Split(user, "@");
+				legalID := select top 1 * from where State = "Approved" and Created >= DTDateFrom and Created < DTDateTo Account = userName;
+				if(legalID != null)then(newPartners++);
+			);			
+		);
+		Log.Debug("GROUP ADMIN - token list created and new partners selected -> time: " + (Now - start).get_Milliseconds() + " ms", logObject, logActor, logEventID, null);
+		
+	);
+			
+	start := Now;
+	foreach token in tokens do 
+	(
+	    if (payspotPaymentDictionary.ContainsKey(token.TokenId)) then 
 		(			
 			successfulTransactionsCount ++;
-			successfulTransactionsValue += token[1];
+			successfulTransactionsValue += token.Value;
 			
-			obj := payspotPaymentDictionary[token[0]];
+			obj := payspotPaymentDictionary[token.TokenId];
 			if(obj.PaymentType == CardPayment) then 
 			(
 				cardSuccessCount ++;
-				cardSuccessValue += token[1];
+				cardSuccessValue += token.Value;
 				cardMarkUpFee += obj.SenderFee ?? 0;
 			)
 			else if(obj.PaymentType == IPSPayment)then 
 			(
 				ipsSuccessCount ++;
-				ipsSuccessValue +=  token[1];
+				ipsSuccessValue += token.Value;
 				IPSFee += obj.SenderFee ?? 0;
 			);
 		)
@@ -97,16 +166,10 @@ try
 			failedlTransactionsCount ++;
         );
 	);
+	Log.Debug("main calculation done -> time: " + (Now - start).get_Milliseconds() + " ms", logObject, logActor, logEventID, null);
 	Destroy(neuroFeatureTokenList);
 	Destroy(payspotPaymentDictionary);
-	
-	newPartners := 
-		select count(*) 
-		from LegalIdentities 
-		where State = "Approved" 
-			and Created >= DTDateFrom
-			and Created < DTDateTo;	
-	
+		
 	ReponseDict := Create(System.Collections.Generic.Dictionary, CaseInsensitiveString, System.Object);
 	ReponseDict.Add("successfulTransactionsValue", successfulTransactionsValue);
 	ReponseDict.Add("successfulTransactionsCount", successfulTransactionsCount);
@@ -115,7 +178,10 @@ try
 	ReponseDict.Add("newPartners", newPartners);
 	ReponseDict.Add("cardMarkUpFee", cardMarkUpFee);
 	ReponseDict.Add("IPSFee", IPSFee);
-	ReponseDict.Add("holdFee", 0);
+	if(SessionUser.role == POWRS.PaymentLink.Models.AccountRole.SuperAdmin.ToString())then
+	(
+		ReponseDict.Add("holdFee", 0);
+	);
 	
 	ReponseDict.Add("shareOfCompleted", Int(successfulTransactionsCount / (successfulTransactionsCount + failedlTransactionsCount) * 100));
 	ReponseDict.Add("shareOfCard", Int(cardSuccessCount / successfulTransactionsCount * 100));
@@ -123,6 +189,7 @@ try
 	ReponseDict.Add("shareOfHold", 0);
 	
 	Destroy(newPartners);
+	Log.Debug("whole endpoint done in -> time: " + (Now - endpointStart).get_Milliseconds() + " ms", logObject, logActor, logEventID, null);
 )
 catch
 (
