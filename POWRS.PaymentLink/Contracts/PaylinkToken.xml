@@ -384,7 +384,7 @@
 							   contract="{TokenContract}"
 							   serviceId="{ServiceProviderId}"
 							   serviceProvider="{ServiceProviderType}">
-							<Parameter key="TotalAmountToPay" value="{AmountToPay}"></Parameter>
+							<Parameter key="AmountToPay" value="{AmountToPay}"></Parameter>
 							<Parameter key="Currency" value="{Currency}"></Parameter>
 							<Parameter key="OrderId" value="{OrderId}"></Parameter>
 							<Parameter key="PayspotOrderId" value="{PayspotOrderId}" />
