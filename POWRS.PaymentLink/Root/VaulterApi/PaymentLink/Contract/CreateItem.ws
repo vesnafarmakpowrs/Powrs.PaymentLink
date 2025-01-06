@@ -43,9 +43,9 @@ try
     IsEcommerce := false;
     ContractInfo := Global.CreateItem(SessionUser, PRemoteId, IsEcommerce,
                 PTitle, PPrice, PCurrency, 
-                PDescription, PPaymentDeadline, PDeliveryDate ?? null, PNumberOfPayments ?? null, 
+                PDescription, PPaymentDeadline, PDeliveryDate ?? null, PNumberOfPayments ?? null,
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber ??? "",
-			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
+			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode,
 			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
 			    logActor);
 			
