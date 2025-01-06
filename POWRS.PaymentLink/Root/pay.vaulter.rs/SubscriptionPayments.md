@@ -98,7 +98,7 @@ if Token.HasStateMachine then
 	Description:= select top 1 Value from CurrentState.VariableValues where Name = "Description";
 	Currency:= select top 1 Value from CurrentState.VariableValues where Name = "Currency";
 	Country:= select top 1 Value from CurrentState.VariableValues where Name = "Country";
-	Buyer:= select top 1 Value from CurrentState.VariableValues where Name = "Buyer";
+	BuyerFullName:= select top 1 Value from CurrentState.VariableValues where Name = "Buyer";
 	BuyerEmail:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerEmail";
 	EscrowFee:= select top 1 Value from CurrentState.VariableValues where Name = "EscrowFee";
 	AmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
@@ -136,7 +136,7 @@ if Token.HasStateMachine then
             catch
             (
                 Log.Error(Exception.Message);
-            );`
+            );
         );
 
         Background(SendLangaugeNote(Token.TokenId, Language));
@@ -221,7 +221,7 @@ if Token.HasStateMachine then
 							<table style="vertical-align:middle; width:100%;">
 								<tr>
 									<td style="width:80%;"> ((MarkdownEncode(Title) ))</td>
-									<td class="itemPrice" rowspan="2">((ContractValue))</td>
+									<td class="itemPrice" rowspan="2">((AmountToPay))</td>
 									<td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
 								</tr>
 								<tr>
@@ -250,12 +250,12 @@ if Token.HasStateMachine then
 			<div class="spaceItem"></div>[[;
 	if (ContractState != "PaymentCanceled" or ContractState != "PaymentNotPeformed" or ContractState != "PaymentNotPeformed" or ContractState != "Done") then 
 	(
-		if(ActiveCardDetails != null) then 
+		if(exists(ActiveCardDetails.MaskedPan)) then 
 		(
 			]]<div class="saved-card">
 			<div class="card-details-title">
 				<div class="saved-card-title">
-					<label>Saved Card</label>
+					<label>((localization.Get("SavedCardLabel") ))</label>
 				</div>
 				<div>
 					<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn" onclick="InitiateCardAuthorization();">((localization.Get("RegisterNewCard") ))</button>
@@ -293,7 +293,7 @@ if Token.HasStateMachine then
 											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="InitiateCardAuthorization();">((localization.Get("RegisterNewCard") ))</button> 
 										</div>
 										<div class="div-payment-notice">
-											<label id="payment-notice-lbl" class="lbl-payment-notice">(localization.Get("AgreeToTermsAgain") )) ((OrgName ))</label>
+											<label id="payment-notice-lbl" class="lbl-payment-notice">((localization.Get("AgreeToTermsAgain") )) ((OrgName ))</label>
 										</div>
 									</div>
 							</td>
@@ -346,7 +346,7 @@ if Token.HasStateMachine then
 		nextPaymentDate := Now.AddDays(1).ToString('MMM dd,yyyy');		
 		]]<div class="spaceItem"></div>
 		<div class="payment-history">
-			<div>Payment History</div>
+			<div>((localization.Get("PaymentHistoryLabel") ))</div>
 			 <div class="spaceItem"></div>[[;
 			 if(Payments != null and Payments.Length > 0) then
 			 (
@@ -391,7 +391,7 @@ if Token.HasStateMachine then
 		</div>
 		</div>
 </div>
-<input type="hidden" value="((Language.Code ))" id="prefferedLanguage"/>
+<input type="hidden" value="((Language ))" id="prefferedLanguage"/>
 <input type="hidden" value="((PageToken ))" id="jwt"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
 <input type="hidden" value="((localization.Get("ScanIPSQRCode") ))" id="QrCodeScanMessage"/>
@@ -412,13 +412,13 @@ if Token.HasStateMachine then
 <input type="hidden" value="((FileName))" id="fileName"/>
 <input type="hidden" value="((Country ))" id="country"/>
 <input type="hidden" value="((ContractState ))" id="ContractState"/>
-</main>[[;
-}}
+</main>
 <div class="footer-parent">
   <div class="footer">
   ((localization.Get("FooterCompanyInfo1") ))
   </br>
-   ((localization.GetFormat("FooterCompanyInfo2", Str(Now.Year)) ))
+   ((localization.GetFormat("FooterCompanyInfo2", Str(Now.Year) ) ))
   </div>
 </div>
-</div>
+</div>[[;
+}}

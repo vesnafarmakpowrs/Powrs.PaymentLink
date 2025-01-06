@@ -74,8 +74,7 @@ year:= Now.Year.ToString();
 		<p>((localization.GetFormat("ContactSellerMessage", CompanyInfo.PhoneNumber, CompanyInfo.Email) ))</p>
 		</div>
 		<div style="text-align: center;">
-		<i><p style="color: gray; font-size: 0.8em">((localization.Get("GoodbyeMessage") ))</p>
-		<p style="color: gray;  font-size: 0.8em">((localization.Get("ThankYouMessage") ))</p></i>
+		<i><p style="color: gray;  font-size: 0.8em">((localization.Get("ThankYouMessage") ))</p></i>
 		</div>
 		 <div class="footer"style="text-align: center;">
             <span class="footer-text" style="display: block;color: gray; font-size: 0.8em; text-align:center;">((localization.Get("FooterCompany") ))</span>
