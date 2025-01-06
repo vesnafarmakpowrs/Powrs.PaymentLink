@@ -27,7 +27,7 @@ ValidatePostedData(Posted) := (
 	);
 	if(!System.String.IsNullOrWhiteSpace(Posted.organizationList))then
 	(
-		myOrganizations := POWRS.PaymentLink.Models.BrokerAccountRole.GetAllOrganizationChildren(SessionUser.orgName);
+		myOrganizations := POWRS.PaymentLink.Module.PaymentLinkModule.GetUsernameOrganizations(SessionUser.username)
 		organizationArray := Split(Posted.organizationList, ",");
 		foreach item in organizationArray do
 		(
@@ -66,7 +66,8 @@ SelectPaylinksAndProcessRecords(sqlQueryBuilder, creator) := (
 				"Amount": amount,
 				"SenderFee": fee,
 				"SellerRecivedAmount" : Dbl(amount)-fee,
-				"SellerName" :  order[10]
+				"SellerName" :  order[11],
+				"Creator": order[10]
 			});
 		);
 	);
@@ -88,33 +89,67 @@ try
 	filterByOrderID := PId != "";
 	
 	sqlQueryBuilder := Create(System.Text.StringBuilder);	
-	sqlQueryBuilder.AppendLine("Select TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, ExpectedPayoutDate, PayoutDate, Amount, SenderFee, RefundedAmount");
+	sqlQueryBuilder.AppendLine("Select TokenId, OrderId, OrderReference, PayspotTransactionId, DateCreated, ExpectedPayoutDate, PayoutDate, Amount, SenderFee, RefundedAmount, t.OwnerJid");
 	sqlQueryBuilder.AppendLine(",((select top 1 Value from 'StateMachineSamples' where StateMachineId=t.TokenId and Variable='SellerName' order by Timestamp desc) ?? '-') as SellerName");
 	sqlQueryBuilder.AppendLine("from PayspotPayments pp");
 	sqlQueryBuilder.AppendLine("join NeuroFeatureReferences t on t.TokenId = pp.TokenId");
 	
 	if(filterByOrderID) then
 	(
+		comment := "When filtering by PId, get Tokens and if role is GroupAdmin check if OwnerJid is allowed";
 		sqlQueryBuilder.AppendLine("where (TokenId = PId or OrderId = PId or PayspotOrderId = PId or BankTransactionId = PId)");
-	)
-	else
-	(
-		sqlQueryBuilder.AppendLine("where DateCreated >= DTDateFrom and DateCreated < DTDateTo and Result='00'" );
-	);
-	
-	if(filterByCreators) then
-	(
-		creators:= Global.GetUsersForOrganization(POrganizationList, true);
-		sqlQueryBuilder.AppendLine("and t.OwnerJid = creator");
-		foreach creator in creators do
-		(
-			SelectPaylinksAndProcessRecords(sqlQueryBuilder, creator);
+		
+		SelectPaylinksAndProcessRecords(sqlQueryBuilder, "");
+		if(Session.role == POWRS.PaymentLink.Models.AccountRole.GroupAdmin.ToString() and responseList.Count > 0)then(
+			users := Global.GetUsersForOrganization(POWRS.PaymentLink.Module.PaymentLinkModule.GetUsernameOrganizations(SessionUser.username), true);
+			
+			foreach obj in responseList do
+			(
+				if(!users.Contains(obj.Creator))then
+				(
+					comment := "remo object";
+					responseList.Remove(obj);
+				);
+			);
 		);
 	)
 	else
 	(
-		SelectPaylinksAndProcessRecords(sqlQueryBuilder, "");
+		sqlQueryBuilder.AppendLine("where DateCreated >= DTDateFrom and DateCreated < DTDateTo and Result='00'" );
+		if(filterByCreators) then
+		(
+		
+			if(Session.role == POWRS.PaymentLink.Models.AccountRole.GroupAdmin.ToString())then
+			(
+				comment:="For group admin select only users for filtered organizations";
+				
+			)
+			else
+			(
+				comment:="For super admin get child organizations for every filtered organization and then select users for every organization";
+				
+			);
+			creators := Global.GetUsersForOrganization(POrganizationList, true);
+			sqlQueryBuilder.AppendLine("and t.OwnerJid = creator");
+			foreach creator in creators do
+			(
+				SelectPaylinksAndProcessRecords(sqlQueryBuilder, creator);
+			);
+		)
+		else
+		(
+			if(Session.role == POWRS.PaymentLink.Models.AccountRole.GroupAdmin.ToString())then
+			(
+				comment := "For group admin get all child organizations, for them get all users and then selet";
+			)
+			else
+			(
+				comment := "For super admin select all, as it is";
+			);
+			SelectPaylinksAndProcessRecords(sqlQueryBuilder, "");
+		);	
 	);	
+	
 	destroy(sqlQueryBuilder);
 	
 	timeFinish := Now;
