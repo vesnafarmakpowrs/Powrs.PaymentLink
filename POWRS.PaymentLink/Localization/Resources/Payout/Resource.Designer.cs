@@ -430,6 +430,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment history.
+        /// </summary>
+        internal static string PaymentHistoryLabel {
+            get {
+                return ResourceManager.GetString("PaymentHistoryLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment is in progress... Do not refresh the page!.
         /// </summary>
         internal static string PaymentInProgress {
@@ -678,6 +687,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string SalesContract {
             get {
                 return ResourceManager.GetString("SalesContract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved card.
+        /// </summary>
+        internal static string SavedCardLabel {
+            get {
+                return ResourceManager.GetString("SavedCardLabel", resourceCulture);
             }
         }
         

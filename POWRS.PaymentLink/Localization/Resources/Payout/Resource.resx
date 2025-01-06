@@ -354,37 +354,43 @@
   <data name="AgreeToTermsAgain" xml:space="preserve">
     <value>By clicking 'Pay Now' you confirm that you have read and agree to the Vaulter Terms and</value>
   </data>
-	<data name="RegisterNewCard" xml:space="preserve">
+  <data name="RegisterNewCard" xml:space="preserve">
     <value>Register new card</value>
   </data>
-	<data name="CardNumberLabel" xml:space="preserve">
+  <data name="CardNumberLabel" xml:space="preserve">
     <value>Card number</value>
   </data>
-	<data name="ExpiryDateLabel" xml:space="preserve">
+  <data name="ExpiryDateLabel" xml:space="preserve">
     <value>Expiry date</value>
   </data>
-	<data name="CardBrandLabel" xml:space="preserve">
+  <data name="CardBrandLabel" xml:space="preserve">
     <value>Brand</value>
   </data>
-	<data name="RefundedLabel" xml:space="preserve">
+  <data name="RefundedLabel" xml:space="preserve">
     <value>Refunded</value>
   </data>
-	<data name="PaidLabel" xml:space="preserve">
+  <data name="PaidLabel" xml:space="preserve">
     <value>Paid</value>
   </data>
-	<data name="FailedLabel" xml:space="preserve">
+  <data name="FailedLabel" xml:space="preserve">
     <value>Failed</value>
   </data>
-	<data name="PendingLabel" xml:space="preserve">
+  <data name="PendingLabel" xml:space="preserve">
     <value>Pending</value>
   </data>
-	<data name="NoPaymentsLabel" xml:space="preserve">
+  <data name="NoPaymentsLabel" xml:space="preserve">
     <value>No payments yet...</value>
   </data>
-	<data name="FooterCompanyInfo1" xml:space="preserve">
+  <data name="FooterCompanyInfo1" xml:space="preserve">
     <value>Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd</value>
   </data>
-	<data name="FooterCompanyInfo2" xml:space="preserve">
+  <data name="FooterCompanyInfo2" xml:space="preserve">
     <value>Serbia ©2021 - {0} POWRS</value>
+  </data>
+  <data name="PaymentHistoryLabel" xml:space="preserve">
+    <value>Payment history</value>
+  </data>
+  <data name="SavedCardLabel" xml:space="preserve">
+    <value>Saved card</value>
   </data>
 </root>

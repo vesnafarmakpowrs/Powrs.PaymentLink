@@ -149,7 +149,7 @@
 				<Variable id="Link">
 					<Calc>
 						domain:= "https://" + Evaluate("GetSetting('POWRS.PaymentLink.PayDomain','')");
-						link:= domain + "/Authorize.md?ID=" + Evaluate("Global.EncodeContractId(TokenContract)");
+						link:= domain + "/SubscriptionPayments.md?ID=" + Evaluate("Global.EncodeContractId(TokenContract)");
 					</Calc>
 				</Variable>
 				
