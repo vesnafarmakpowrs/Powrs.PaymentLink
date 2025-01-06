@@ -393,4 +393,7 @@
   <data name="SavedCardLabel" xml:space="preserve">
     <value>Sačuvana kartica</value>
   </data>
+  <data name="CardRegistrationCompletedColumn" xml:space="preserve">
+    <value>Uspešna registracija kartice</value>
+  </data>
 </root>
