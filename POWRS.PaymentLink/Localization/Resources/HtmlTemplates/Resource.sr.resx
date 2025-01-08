@@ -325,7 +325,7 @@
     <value>Zdravo, zabeležena je promena na linku za plaćanje koji je napravljen za {0}.</value>
   </data>
   <data name="StateChangedAwaitingCardRegistrationDescription" xml:space="preserve">
-    <value>Link je napravljen za {0} i očekuje se registracija platne kartice od strane {1}.</value>
+    <value>Link je napravljen za {0} i očekuje se registracija platne kartice.</value>
   </data>
   <data name="StateChangedAwaitingCardRegistrationRefundDescription" xml:space="preserve">
     <value>Kupcu će biti zadužena kartica u iznosu od {0} {1} radi registracije kartice. Novac ce biti automatski vraćen, kartica će biti sačuvana radi naplate definisane u ugovoru.</value>
