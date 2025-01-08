@@ -88,10 +88,7 @@ if Token.HasStateMachine then
             descriptionText:= localization.GetFormat("TransactionSuccessfulCardNotValid", DeliveryDate.ToString("dd/MM/yyyy"));
         );
         
-    );
-
-    culture:= Country == "RS" ? "sr" : "en";
-	localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
+    );   
 
      BuyerFirstName := Before(BuyerFullName," ");
       ]]  <table style="width:100%">
