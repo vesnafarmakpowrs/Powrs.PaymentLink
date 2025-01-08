@@ -285,7 +285,7 @@
 								sellerOrganization:= Evaluate("select top 1 ORGNAME from IoTBroker.Legal.Identity.LegalIdentity where Id=Seller");
 								sellerEmail:= Evaluate("select top 1 Email from OrganizationContactInformations where OrganizationName = sellerOrganization");
 
-								if(!Evaluate("System.String.IsNullOrEmpty(sellerOrganization)") and !Evaluate("!System.String.IsNullOrEmpty(sellerEmail)")) then
+								if(!Evaluate("System.String.IsNullOrEmpty(sellerOrganization)") and !Evaluate("System.String.IsNullOrEmpty(sellerEmail)")) then
 								(
 								sellerTemplateUrl:= Evaluate("Gateway.GetUrl('/Payout/EmailTemplates/ReccurrencePayments/StateChanged.md?TokenId=' + TokenId + orderParamter)");
 								sellerHtml:= html:= Evaluate("Get(sellerTemplateUrl, {'Accept': 'text/html'})");
