@@ -115,6 +115,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The amount returned to the customer.
+        /// </summary>
+        internal static string AmountToBeRefunded {
+            get {
+                return ResourceManager.GetString("AmountToBeRefunded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Awaiting For Payment.
         /// </summary>
         internal static string AwaitingPayment {
@@ -210,6 +219,24 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string CardPayment {
             get {
                 return ResourceManager.GetString("CardPayment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string CardRegistrationCompletedColumn {
+            get {
+                return ResourceManager.GetString("CardRegistrationCompletedColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chargeback fee.
+        /// </summary>
+        internal static string ChargebackFee {
+            get {
+                return ResourceManager.GetString("ChargebackFee", resourceCulture);
             }
         }
         
@@ -412,6 +439,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment date.
+        /// </summary>
+        internal static string PaymentDate {
+            get {
+                return ResourceManager.GetString("PaymentDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment details.
         /// </summary>
         internal static string PaymentDetails {
@@ -435,6 +471,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string PaymentHistoryLabel {
             get {
                 return ResourceManager.GetString("PaymentHistoryLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to payment info.
+        /// </summary>
+        internal static string PaymentInfo {
+            get {
+                return ResourceManager.GetString("PaymentInfo", resourceCulture);
             }
         }
         
@@ -498,6 +543,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string PaymentOverview {
             get {
                 return ResourceManager.GetString("PaymentOverview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment refund successfully completed.
+        /// </summary>
+        internal static string PaymentRefundCompleted {
+            get {
+                return ResourceManager.GetString("PaymentRefundCompleted", resourceCulture);
             }
         }
         
@@ -642,6 +696,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string RefundedLabel {
             get {
                 return ResourceManager.GetString("RefundedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to refund info.
+        /// </summary>
+        internal static string RefundInfo {
+            get {
+                return ResourceManager.GetString("RefundInfo", resourceCulture);
             }
         }
         

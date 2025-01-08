@@ -248,29 +248,29 @@ if(LanguageNamespace == null) then
 									<div class="refund-lbl">((Title))</br>((Description))</div>
 									<div class="refund-price">((ContractValue.ToString("N2") )) ((Currency ))</div>
 								</div>
-								<div class="refund-sticker product">product: ((RemoteId ))</div>
+								<div class="refund-sticker product">((localization.Get("Product") )): ((RemoteId ))</div>
 							</div>
 							<div class="refund-container product-container">
 								<div class="refund-history-div">
-									<div class="refund-lbl">Datum plaćanja: ((DateCompleted.ToString('MMM dd,yyyy') ))</div>
+									<div class="refund-lbl">((localization.Get("PaymentDate") )): ((DateCompleted.ToString('MMM dd,yyyy') ))</div>
 								</div>
-								<div class="refund-sticker payment">payment info</div>
+								<div class="refund-sticker payment">((localization.Get("PaymentInfo") ))</div>
 							</div>
 							<div class="refund-container refund-info">
 								<div class="refund-history-div">
-									<div class="refund-lbl">Iznos koji se vraća kupcu</div>
+									<div class="refund-lbl">((localization.Get("AmountToBeRefunded") ))</div>
 									<div class="refund-price">((AmountToBeRefunded.ToString("N2") )) ((Currency ))</div>
 								</div>
 								<div class="refund-history-div">
-									<div class="refund-lbl">Naknada za povraćaj uplate</div>
+									<div class="refund-lbl">((localization.Get("ChargebackFee") ))</div>
 									<div class="refund-price">((IPSFee.ToString("N2") )) ((Currency ))</div>
 								</div>
 								<div class="refund-line"> </div>
 								<div class="refund-history-div">
-									<div class="refund-lbl">Ukupno za uplata</div>
+									<div class="refund-lbl">((localization.Get("TotalAmountDue") ))</div>
 									<div class="refund-price">(((TotalAmount).ToString("N2") )) ((Currency ))</div>
 								</div>
-								<div class="refund-sticker refund">refund info</div>
+								<div class="refund-sticker refund">((localization.Get("RefundInfo") ))</div>
 							</div>[[;
 						if (ContractState == "AwaitingforRefundPayment" and TYPE=="") then 
 						( 
@@ -352,7 +352,7 @@ if(LanguageNamespace == null) then
 			)
 			else if (ContractState == "RefundBuyer" || ContractState == "RefundBuyerFailed")then 
 			(
-				]]<div class="payment-completed"><p>** Povraćaj uplateu uspešno završeno**</p> [[;
+				]]<div class="payment-completed"><p>** ((localization.Get("PaymentRefundCompleted") ))**</p> [[;
 
 			    DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "RefundPaymentDateTimeInBuyerLocalTime";
 			    if(DateCompleted == null) then
