@@ -15,6 +15,8 @@
 	<Content altFolder="./Scripts/StartupScripts" fileName="./RegexValidation.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./ValidateUrl.config" />
 	<Content altFolder="./Scripts/StartupScripts" fileName="./SendBuyerTimeZoneToToken.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./GetIdentityProperties.config" />
+	<Content altFolder="./Scripts/StartupScripts" fileName="./GetTokenVariables.config" />
 	<Folder name="Root">
 		<Folder name="VaulterApi">
 			<Folder name="FeeCalculator">
@@ -85,9 +87,12 @@
 				</Folder>
 				<Folder name="Mail">
 					<Content fileName="NotifyIdentityStateChanged.ws"/>
-					<Content fileName="ReportNewState.ws"/>
 					<Content fileName="SendContactUsEmail.ws"/>
 					<Content fileName="SendPaylinkViaEmail.ws"/>
+				</Folder>
+				<Folder name="StateChange">
+					<Content fileName="RegularTokenStateChanged.ws"/>
+					<Content fileName="RecurrenceTokenStateChanged.ws"/>
 				</Folder>
 				<Folder name="Onboarding">
 					<Content fileName="AllowEdit.ws"/>
@@ -155,7 +160,7 @@
 			</Folder>
 		</Folder>
 		<Folder name="pay.vaulter.rs">
-			<Content fileName="Payout.md"/>
+			<Content fileName="SubscriptionPayments.md"/>
 			<Content fileName="PayoutIPS.md"/>
 			<Content fileName="DeepLink.md"/>
 			<Content fileName="Index.html"/>
@@ -255,11 +260,24 @@
 				<Content fileName="InitiatePayment.ws"/>
 				<Content fileName="InitiateIPSPayment.ws"/>
 				<Content fileName="GetAvailableLanguages.ws"/>
+				<Content fileName="UpdateBuyerInformations.ws"/>
 			</Folder>
 			<Folder name="Fonts">
 				<Content fileName="Coanda-Bold.ttf"/>
 				<Content fileName="RTDromo-Medium.woff2"/>
 				<Content fileName="RTDromo-Medium.woff"/>
+			</Folder>
+			<Folder name="EmailTemplates">
+				<Folder name="ReccurrencePayments">
+					<Content fileName="Done.md"></Content>
+					<Content fileName="PaymentCanceled.md"></Content>
+					<Content fileName="PaymentCompleted.md"></Content>
+					<Content fileName="PaymentFailed.html"></Content>
+					<Content fileName="PaymentNotPerformed.md"></Content>
+					<Content fileName="StateChanged.md"></Content>
+					<Content fileName="CardRegistrationCompleted.md"></Content>
+					<Content fileName="AwaitingCardRegistration.md"></Content>
+				</Folder>
 			</Folder>
 			<Folder name="HtmlTemplates">
 				<Folder name="EN">

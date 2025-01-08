@@ -8,23 +8,26 @@
 try
 (
     responseObject:= {"Success": true, "Response": null, "Message": System.String.Empty};
-	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then 
+	if(!exists(POWRS.Payment.PaySpot.PayspotService)) then
 	(
 		Error("Not configured");
 	);
 
-	IpsOnly:= false;
-
-	if(exists(SessionToken.Claims.ipsOnly)) then 
-	(
-		IpsOnly:=  SessionToken.Claims.ipsOnly;
-	);
-
 	ContractId:= SessionToken.Claims.contractId;
 	TokenId:= SessionToken.Claims.tokenId;
-	
-	tokenVariablesResponse:=  Global.GetTokenVariables(TokenId, ["AwaitingForPayment"], PIsFromMobile);
+
+	tokenVariablesResponse:= Global.GetTokenVariables(TokenId, ["AwaitingCardRegistration", "AwaitingNextPayment"], PIsFromMobile);
 	identityProperties:= Global.GetIdentityProperties(tokenVariablesResponse.Owner);
+
+	contractParameters:= tokenVariablesResponse.Variables;
+	cardRegistrationAmount:= contractParameters["CardRegistrationAmount"] ?? 0;
+
+	if(cardRegistrationAmount == null || cardRegistrationAmount <= 0) then 
+	(
+		Error("Card registration amount not available in contract.");
+	);
+
+	contractParameters["AmountToPay"]:= cardRegistrationAmount;
 
 	if(!exists(Global.PayspotRequests)) then
 	(
@@ -32,16 +35,7 @@ try
 	);
 
 	Global.PayspotRequests[ContractId]:= PTabId;
-
-	if(IpsOnly) then
-	(
-		GeneratedIPSForm:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSForm(tokenVariablesResponse.Variables, identityProperties);
-		responseObject.Response:= GeneratedIPSForm.ToDictionary();
-	)
-	else
-	(
-		responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(tokenVariablesResponse.Variables, identityProperties);
-	);
+	responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GenerateCardAuthorizationForm(contractParameters, identityProperties);
 
 	Background(SendBuyerTimeZoneToToken(Request.RemoteEndPoint, PTimeZoneOffset, TokenId));
 )

@@ -21,6 +21,8 @@ if !exists(Posted) then BadRequest("No payload.");
     "webPageUrl":Optional(String(PWebPageUrl)),
     "successUrl":Optional(String(PSuccessUrl)),
     "errorUrl":Optional(String(PErrorUrl)),
+    "deliveryDate": Optional(Str(PDeliveryDate)),
+	"totalNumberOfPayments": Optional(Num(PNumberOfPayments)),
     "ipsOnly": Optional(Bool(PIpsOnly))
 }:=Posted) ??? BadRequest(Exception.Message);
 
@@ -41,9 +43,9 @@ try
     IsEcommerce := false;
     ContractInfo := Global.CreateItem(SessionUser, PRemoteId, IsEcommerce,
                 PTitle, PPrice, PCurrency, 
-                PDescription, PPaymentDeadline, 
+                PDescription, PPaymentDeadline, PDeliveryDate ?? null, PNumberOfPayments ?? null,
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber ??? "",
-			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
+			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode,
 			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
 			    logActor);
 			
@@ -58,7 +60,7 @@ try
     if IpsOnly then PayoutPage := "PayoutIPS.md";
     
     {
-        "Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),	
+        "Link" : PaymentLinkAddress + "/" + ContractInfo.PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),	
         "TokenId" : ContractInfo.TokenId,
         "BuyerEmail": ContractInfo.BuyerEmail,
         "BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,

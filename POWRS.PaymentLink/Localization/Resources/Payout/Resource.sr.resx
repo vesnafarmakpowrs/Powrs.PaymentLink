@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="VaultAmountHeld" xml:space="preserve">
+    <value>Iznos koji vaulter čuva do kraja perioda za otkazivanja koji je odredio prodavac</value>
+  </data>
+  <data name="RecipientAuthorization" xml:space="preserve">
+    <value>Autorizacija primaoca</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>Adresa E-pošte</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Ime</value>
+  </data>
+  <data name="PaymentLinkExpired" xml:space="preserve">
+    <value>Link za plaćanje je istekao. Kontaktiraj prodavca za dobijanje novog</value>
+  </data>
+  <data name="ProtectWithVaulter" xml:space="preserve">
+    <value>Zaštiti svoj novac uz pomoć Vaultera</value>
+  </data>
+  <data name="SalesContract" xml:space="preserve">
+    <value>Kupoprodajni ugovor</value>
+  </data>
+  <data name="ScanQRCode" xml:space="preserve">
+    <value>Skenirajte QR kod pomoću BANK-ID aplikacije ili kliknite na njega ako je vaš Bank-ID instaliran na vašem računaru</value>
+  </data>
+  <data name="SelectBank" xml:space="preserve">
+    <value>Izaberi banku</value>
+  </data>
+  <data name="AccountSelectionConfirmation" xml:space="preserve">
+    <value>Izabrali ste račun: {0}. Da li ste sigurni?</value>
+  </data>
+  <data name="Seller" xml:space="preserve">
+    <value>Prodavac</value>
+  </data>
+  <data name="Sales" xml:space="preserve">
+    <value>Prodaje</value>
+  </data>
+  <data name="AwaitingPayment" xml:space="preserve">
+    <value>Čeka se plaćanje</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Otkazano</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Završeno</value>
+  </data>
+  <data name="PaymentSuccessful" xml:space="preserve">
+    <value>Plaćanje uspešno završeno</value>
+  </data>
+  <data name="PaymentFailed" xml:space="preserve">
+    <value>Plaćanje nije izvršeno</value>
+  </data>
+  <data name="ServiceProvision" xml:space="preserve">
+    <value>Pružanje usluga</value>
+  </data>
+  <data name="TermsOfUse" xml:space="preserve">
+    <value>Uslovi korišćenja</value>
+  </data>
+  <data name="TotalAmountDue" xml:space="preserve">
+    <value>Ukupno za uplati</value>
+  </data>
+  <data name="VaulterFee" xml:space="preserve">
+    <value>Vaulter naknada</value>
+  </data>
+  <data name="WelcomeToVaulterPayment" xml:space="preserve">
+    <value>Dobrodošli na Vaulter naplatu</value>
+  </data>
+  <data name="PaymentLinkExpiredAgain" xml:space="preserve">
+    <value>Link za plaćanje je istekao. Kontaktiraj prodavca za dobijanje novog</value>
+  </data>
+  <data name="AccountNotSelectable" xml:space="preserve">
+    <value>Nije moguće izabrati ovaj račun. Nemate dovoljno sredstava.</value>
+  </data>
+  <data name="ScanIPSQRCode" xml:space="preserve">
+    <value>Skenirajte IPS QR kod pomoću Bank-ID aplikacije.</value>
+  </data>
+  <data name="BankIDAuthorization" xml:space="preserve">
+    <value>Bank-ID Autorizacija</value>
+  </data>
+  <data name="PaymentSuccessfulThankYou" xml:space="preserve">
+    <value>Plaćanje je uspešno. Hvala što koristite Vaulter!</value>
+  </data>
+  <data name="PaymentNotPossible" xml:space="preserve">
+    <value>Plaćanje nije moguće. Izaberite drugi račun i pokušajte ponovo!</value>
+  </data>
+  <data name="PaymentInProgress" xml:space="preserve">
+    <value>Plaćanje je u toku. Ne osvežavajte stranicu!</value>
+  </data>
+  <data name="OpenPaymentLinkOnPhone" xml:space="preserve">
+    <value>Da biste platili preko ove banke, otvorite link za plaćanje na telefonu na koji ste podesili svoj Bank-ID.</value>
+  </data>
+  <data name="PayerDetails" xml:space="preserve">
+    <value>Detalji platioca</value>
+  </data>
+  <data name="PaymentDetails" xml:space="preserve">
+    <value>Detalji za plaćanje</value>
+  </data>
+  <data name="CardOwnerName" xml:space="preserve">
+    <value>Ime vlasnika kartice</value>
+  </data>
+  <data name="CardFullName" xml:space="preserve">
+    <value>Puno ime na kartici</value>
+  </data>
+  <data name="HelloUser" xml:space="preserve">
+    <value>Zdravo {0}, Dobrodošli u pametna plaćanja</value>
+  </data>
+  <data name="PaymentRemaining" xml:space="preserve">
+    <value>Preostalo za plaćanje</value>
+  </data>
+  <data name="PaymentOverview" xml:space="preserve">
+    <value>Pregled plaćanja</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Proizvod</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Cena</value>
+  </data>
+  <data name="PaymentMethod" xml:space="preserve">
+    <value>Način plaćanja</value>
+  </data>
+  <data name="BankAccountPrivacy" xml:space="preserve">
+    <value>Stanje na bankovnom računu je vidljivo samo vama. Nemamo uvid niti čuvamo te informacije.</value>
+  </data>
+  <data name="OtherPaymentMethods" xml:space="preserve">
+    <value>Ostali načini plaćanja</value>
+  </data>
+  <data name="InstantBankPayment" xml:space="preserve">
+    <value>Instant plaćanja preko bankovnog računa</value>
+  </data>
+  <data name="CardPayment" xml:space="preserve">
+    <value>Plaćanje karticom</value>
+  </data>
+  <data name="SessionExpired" xml:space="preserve">
+    <value>Sesija je istekla, osvežite stranicu da bi pokušali ponovo.</value>
+  </data>
+  <data name="TransactionCanceled" xml:space="preserve">
+    <value>Transakcija je otkazana.</value>
+  </data>
+  <data name="TransactionFailed" xml:space="preserve">
+    <value>Vaša transakcija ne može da se završi.</value>
+  </data>
+  <data name="TransactionSuccessful" xml:space="preserve">
+    <value>Transakcija je uspešno završena.</value>
+  </data>
+  <data name="ThankYouForPayment" xml:space="preserve">
+    <value>Hvala Vam na uplati.</value>
+  </data>
+  <data name="EnterPersonalNumber" xml:space="preserve">
+    <value>Unesite vas personalni broj. Informacija neće biti sačuvana, služi za autorizaciju preko Bank-Id aplikacije.</value>
+  </data>
+  <data name="InvalidPersonalNumber" xml:space="preserve">
+    <value>Personalni broj nije u validnom formatu!</value>
+  </data>
+  <data name="WithVAT" xml:space="preserve">
+    <value>sa PDV-om</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Ukupno</value>
+  </data>
+  <data name="TaxID" xml:space="preserve">
+    <value>PIB</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Adresa</value>
+  </data>
+  <data name="RegistrationNumber" xml:space="preserve">
+    <value>Matični broj</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="BusinessActivity" xml:space="preserve">
+    <value>Delatnost</value>
+  </data>
+  <data name="ActivityCode" xml:space="preserve">
+    <value>Šifra delatnosti</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Web-sajt</value>
+  </data>
+  <data name="Individuals" xml:space="preserve">
+    <value>Fizicka lica</value>
+  </data>
+  <data name="LegalEntitiesOrEntrepreneurs" xml:space="preserve">
+    <value>Pravna lica ili preduzetnike</value>
+  </data>
+  <data name="PaymentOutcomeInfo" xml:space="preserve">
+    <value>Informacija o ishodu plaćanja biće Vam prikazana odmah po završetku obrade ali će Vam biti dostavljena i na e-mail adresu uz potvrdu o kupovini.</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Zatvori</value>
+  </data>
+  <data name="PayWithMbanking" xml:space="preserve">
+    <value>Platite mbanking aplikacijom svoje banke</value>
+  </data>
+  <data name="MbankingInstructions" xml:space="preserve">
+    <value>Mbanking aplikacijom koju imate instaliranu na svom mobilnom uređaju skenirajte prikazani jednokratan IPS QR kod i izvršite plaćanje u okruženju Vaše banke. Informacija o ishodu plaćanja biće Vam prikazana odmah po završetku obrade ali će Vam biti dostavljena i na e-mail adresu uz potvrdu o kupovini.</value>
+  </data>
+  <data name="TimeExpired" xml:space="preserve">
+    <value>Vreme je isteklo</value>
+  </data>
+  <data name="RegenerateIpsQrCode" xml:space="preserve">
+    <value>Ponovo generišite IPS QR CODE</value>
+  </data>
+  <data name="GenerateIpsQr" xml:space="preserve">
+    <value>GENERIŠI IPS QR</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>ODUSTANI</value>
+  </data>
+  <data name="Pay" xml:space="preserve">
+    <value>Plati</value>
+  </data>
+  <data name="PaymentUnsuccessful" xml:space="preserve">
+    <value>Plaćanje nije uspešno.</value>
+  </data>
+  <data name="PaymentSuccessfulRedirect" xml:space="preserve">
+    <value>Plaćanje uspešno. Uskoro ćete biti preusmereni na stranicu prodavca...</value>
+  </data>
+  <data name="PaymentUnsuccessfulRedirect" xml:space="preserve">
+    <value>Plaćanje nije uspešno. Uskoro ćete biti preusmereni na stranicu prodavca...</value>
+  </data>
+  <data name="RedirectToSellerPage" xml:space="preserve">
+    <value>Uskoro ćete biti preusmereni na stranicu prodavca...</value>
+  </data>
+  <data name="TryAgain" xml:space="preserve">
+    <value>Pokušajte ponovo</value>
+  </data>
+  <data name="AgreeToTerms" xml:space="preserve">
+    <value>Klikom na 'Plati' i nastavkom ka metodi plaćanja IPS skeniraj, potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i</value>
+  </data>
+  <data name="Refunded" xml:space="preserve">
+    <value>Refundirano</value>
+  </data>
+  <data name="AgreeToTermsAgain" xml:space="preserve">
+    <value>Klikom na 'Plati' potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i</value>
+  </data>
+  <data name="RegisterNewCard" xml:space="preserve">
+    <value>Registruj novu karticu</value>
+  </data>
+  <data name="CardNumberLabel" xml:space="preserve">
+    <value>Broj kartice</value>
+  </data>
+  <data name="ExpiryDateLabel" xml:space="preserve">
+    <value>Datum isteka</value>
+  </data>
+  <data name="CardBrandLabel" xml:space="preserve">
+    <value>Brend</value>
+  </data>
+  <data name="RefundedLabel" xml:space="preserve">
+    <value>Refundirano</value>
+  </data>
+  <data name="PaidLabel" xml:space="preserve">
+    <value>Plaćeno</value>
+  </data>
+  <data name="FailedLabel" xml:space="preserve">
+    <value>Neuspešno</value>
+  </data>
+  <data name="PendingLabel" xml:space="preserve">
+    <value>Na čekanju</value>
+  </data>
+  <data name="NoPaymentsLabel" xml:space="preserve">
+    <value>Još uvek nema uplata...</value>
+  </data>
+  <data name="FooterCompanyInfo1" xml:space="preserve">
+    <value>Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd</value>
+  </data>
+  <data name="FooterCompanyInfo2" xml:space="preserve">
+    <value>Serbia ©2021 - {0} POWRS</value>
+  </data>
+  <data name="PaymentHistoryLabel" xml:space="preserve">
+    <value>Istorija plaćanja</value>
+  </data>
+  <data name="SavedCardLabel" xml:space="preserve">
+    <value>Sačuvana kartica</value>
+  </data>
+  <data name="CardRegistrationCompletedColumn" xml:space="preserve">
+    <value>Uspešna registracija kartice</value>
+  </data>
+</root>

@@ -35,22 +35,21 @@ try
     IsEcommerce := true;
     ContractInfo := Global.CreateItem(SessionUser, PRemoteId, IsEcommerce,
                 PTitle, PPrice, PCurrency, 
-                PDescription, PPaymentDeadline, 
+                PDescription, PPaymentDeadline, null,null,
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber,
 			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode, 
 			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
 			    logActor);
    
-	PayoutPage := "PayoutIPS.md";  
-	Parameter := "";
-	if (exists(PIsCompany) && PIsMobile)  then
-	   (
+		Parameter := "";
+		if (exists(PIsCompany) && PIsMobile)  then
+		(
 		  PIsCompany ? Parameter := "&TYPE=LE" : Parameter := "&TYPE=IE";
-	   );
+		);
 	
 	PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 	{
-		"Link" : PaymentLinkAddress + "/" + PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId)+ Parameter,	
+		"Link" : PaymentLinkAddress + "/PayoutIPS.md?ID=" + Global.EncodeContractId(ContractInfo.ContractId)+ Parameter,	
 		"TokenId" : ContractInfo.TokenId,
 		"BuyerEmail": ContractInfo.BuyerEmail,
 		"BuyerPhoneNumber": ContractInfo.BuyerPhoneNumber,

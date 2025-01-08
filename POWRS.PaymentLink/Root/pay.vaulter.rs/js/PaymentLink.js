@@ -14,7 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function OnlyECommerce() {
 
-    var isEcommerce = (String(document.getElementById("IsEcommerce").value).toLowerCase() === 'true');
+    let isEcommerceInput = document.getElementById("IsEcommerce");
+    if (isEcommerceInput == null)
+    {
+        return;
+    }
+
+    var isEcommerce = (String(isEcommerceInput.value).toLowerCase() === 'true');
     var isAwaitingForPayment = (String(document.getElementById("ContractState").value).toLowerCase() === 'awaitingforpayment')
 
     if (isAwaitingForPayment && isEcommerce) {
@@ -74,7 +80,7 @@ function GenerateLanguageDropdown() {
                 languageDropdown.addEventListener("change", function (e) {
                     PreferredLanguage = languageDropdown.value;
                     let url = new URL(window.location.href);
-                    url.searchParams.set('lng', languageDropdown.value);
+                    url.searchParams.set('lng', languageDropdown.value.toUpperCase());
                     window.location.href = url.toString();
                 });
             }
@@ -120,6 +126,68 @@ function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUs
             "qrCodeUsed": QrCodeUsed,
             "functionName": "SessionUpdated"
         }));
+}
+
+
+function PopulateAuthorizationForm(Data)
+{
+    if (Data == null) {
+        console.log("api response is null");
+        return;
+    }
+
+    if (Data.Message != "") {
+        alert(apiResponse.Message);
+    }
+    const apiResponse = Data.Response;
+    console.log(apiResponse);
+
+    const form = document.getElementById('authorizationForm');
+
+    form.action = apiResponse.ActionUrl;
+    form.querySelector('input[name="PAGE"]').value = apiResponse.Page;
+    form.querySelector('input[name="AMOUNT"]').value = apiResponse.Amount;
+    form.querySelector('input[name="CURRENCY"]').value = apiResponse.Currency;
+    form.querySelector('input[name="LANG"]').value = apiResponse.Lang;
+    form.querySelector('input[name="SHOPID"]').value = apiResponse.Shopid;
+    form.querySelector('input[name="ORDERID"]').value = apiResponse.Orderid;
+    form.querySelector('input[name="URLDONE"]').value = apiResponse.Urldone;
+    form.querySelector('input[name="URLBACK"]').value = apiResponse.Urlback;
+    form.querySelector('input[name="URLMS"]').value = apiResponse.Urlms;
+    form.querySelector('input[name="ACCOUNTINGMODE"]').value = apiResponse.Accountingmode;
+    form.querySelector('input[name="AUTHORMODE"]').value = apiResponse.Authormode;
+    form.querySelector('input[name="OPTIONS"]').value = apiResponse.Options;
+    form.querySelector('input[name="EMAIL"]').value = apiResponse.Email;
+    form.querySelector('input[name="TRECURR"]').value = apiResponse.Trecurr;
+    form.querySelector('input[name="EXPONENT"]').value = apiResponse.Exponent;
+    form.querySelector('input[name="MAC"]').value = apiResponse.Mac;
+
+    // Submit the form
+    form.submit();
+}
+
+function InitiateCardAuthorization() {
+    HideSubmitPaymentDiv();
+    ShowHideElement("payspot-submit", "none");
+    ShowHideElement("tr_spinner", null);
+    CollapseDetails();
+
+    SendXmlHttpRequest("../Payout/API/InitiateCardAuthorization.ws",
+        {
+            "isFromMobile": isMobileDevice,
+            "tabId": TabID,
+            "timeZoneOffset": new Date().getTimezoneOffset()
+        },
+        (response) => {
+            PopulateAuthorizationForm(response);
+        },
+        (error) => {
+            if (error.status === 408) {
+                return;
+            }
+            alert(error);
+            TransactionFailed(null);
+        })
 }
 
 function InitiatePaymentForm(onSuccess) {
@@ -224,4 +292,11 @@ function ShowPayspotPage(Data) {
             document.getElementById("payspot_iframe").src = Data.Response;
         ShowHideElement("payspot_iframe", null);
     }
+}
+
+function StateUpdated(data) {
+    setTimeout(function () {
+        GenerateLanguageDropdown();
+        GenerateTranslations();
+    }, 1000);
 }

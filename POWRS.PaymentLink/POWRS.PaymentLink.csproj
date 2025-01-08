@@ -10,12 +10,15 @@
 
 	<ItemGroup>
 	  <Compile Remove="Root\pay.lab.vaulter.rs\**" />
+	  <Compile Remove="Root\Payout\DynamicTemplates\**" />
 	  <Compile Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
 	  <Compile Remove="Root\VaulterApi\PaymentLink\Onboarding\Template\**" />
 	  <EmbeddedResource Remove="Root\pay.lab.vaulter.rs\**" />
+	  <EmbeddedResource Remove="Root\Payout\DynamicTemplates\**" />
 	  <EmbeddedResource Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
 	  <EmbeddedResource Remove="Root\VaulterApi\PaymentLink\Onboarding\Template\**" />
 	  <None Remove="Root\pay.lab.vaulter.rs\**" />
+	  <None Remove="Root\Payout\DynamicTemplates\**" />
 	  <None Remove="Root\Payout\HtmlTemplates\EN\Reports\**" />
 	  <None Remove="Root\VaulterApi\PaymentLink\Onboarding\Template\**" />
 	</ItemGroup>
@@ -138,6 +141,7 @@
 		<None Remove="Root\VaulterApi\PaymentLink\Reports\ReportTransactions - Copy.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\Reports\ReportTransactions.ws" />
 		<None Remove="Root\VaulterApi\PaymentLink\SendContactUsEmail.ws" />
+		<None Remove="Root\VaulterApi\PaymentLink\StateChange\RecurrenceTokenStateChanged.ws" />
 		<None Remove="Scripts\StartupScripts\GetAgentSuccessfullTransactions.config" />
 		<None Remove="Scripts\StartupScripts\GetUsersForMyCompany.config" />
 		<None Remove="Scripts\StartupScripts\GetUsersForOrganization.config" />
@@ -245,7 +249,7 @@
 		<Content Include="Root\VaulterApi\PaymentLink\Account\GetLegalIdentityInfo.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Root\VaulterApi\PaymentLink\Mail\ReportNewState.ws">
+		<Content Include="Root\VaulterApi\PaymentLink\StateChange\RegularTokenStateChanged.ws">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\API\DealInfo.ws">
@@ -264,6 +268,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\VaulterApi\PaymentLink\Index.md">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\VaulterApi\PaymentLink\StateChange\RecurrenceTokenStateChanged.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Scripts\StartupScripts\GetAgentSuccessfullTransactions.config">
@@ -292,6 +299,16 @@
 	<ItemGroup>
 	  <Compile Update="DealInfo\DealInfo.cs">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Compile>
+	  <Compile Update="Localization\Resources\HtmlTemplates\Resource.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resource.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Localization\Resources\Payout\Resource.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resource.resx</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -677,8 +694,14 @@
 	  <None Update="Root\pay.vaulter.rs\TermsAndCondition.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\API\UpdateBuyerInformations.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\API\InitiateIPSPayment.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\API\InitiateCardAuthorization.ws">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\API\InitiatePayment.ws">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -965,6 +988,9 @@
 	  <None Update="Scripts\StartupScripts\ValidateJwtToken.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Scripts\StartupScripts\GetTokenVariables.config">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Scripts\StartupScripts\ValidateSmartAgentApiToken.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
@@ -975,6 +1001,9 @@
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Scripts\StartupScripts\SendBuyerTimeZoneToToken.config">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Scripts\StartupScripts\GetIdentityProperties.config">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Scripts\StartupScripts\ValidateUrl.config">
@@ -988,6 +1017,17 @@
 	<ItemGroup>
 	  <Folder Include="FeeCalculator\TemplateFiles\FeeCalculatorForm\" />
 	  <Folder Include="Root\VaulterApi\PaymentLink\Organization\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Localization\Resources\HtmlTemplates\Resource.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Localization\Resources\Payout\Resource.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 	
 	<!-- Build Lab Serbian package -->

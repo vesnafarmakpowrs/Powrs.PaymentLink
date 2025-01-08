@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PaymentFailedTitle" xml:space="preserve">
+    <value>Plaćanje nije uspelo.</value>
+  </data>
+  <data name="PaymentFailedMessage" xml:space="preserve">
+    <value>Zdravo {0}, želimo da vas obavestimo da je plaćanje za proizvod {1} neuspešno.</value>
+  </data>
+  <data name="RetryMessage" xml:space="preserve">
+    <value>Ne brinite, pokušaćemo ponovo nekoliko puta u narednim danima i obavestićemo vas o ishodu...</value>
+  </data>
+  <data name="MaxAttemptsNote" xml:space="preserve">
+    <value>Imajte na umu da je maksimalan broj pokušaja: {0}.</value>
+  </data>
+  <data name="CurrentAttempt" xml:space="preserve">
+    <value>Ovo je naš {0} pokušaj.</value>
+  </data>
+  <data name="ExceedAttemptsMessage" xml:space="preserve">
+    <value>Kada ovaj broj bude premašen, vaš proizvod će automatski biti otkazan, a da biste ga obnovili, moraćete da kontaktirate prodavca direktno.</value>
+  </data>
+  <data name="BuyerDetailsCaption" xml:space="preserve">
+    <value>Podaci o kupcu</value>
+  </data>
+  <data name="NameColumn" xml:space="preserve">
+    <value>Ime</value>
+  </data>
+  <data name="AddressColumn" xml:space="preserve">
+    <value>Adresa</value>
+  </data>
+  <data name="CityColumn" xml:space="preserve">
+    <value>Grad</value>
+  </data>
+  <data name="PhoneNumberColumn" xml:space="preserve">
+    <value>Broj telefona</value>
+  </data>
+  <data name="EmailColumn" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="CardDetailsCaption" xml:space="preserve">
+    <value>Podaci o kartici</value>
+  </data>
+  <data name="MaskedPanColumn" xml:space="preserve">
+    <value>Maskirani Pan</value>
+  </data>
+  <data name="ExpirationDateColumn" xml:space="preserve">
+    <value>Datum isteka</value>
+  </data>
+  <data name="BrandColumn" xml:space="preserve">
+    <value>Brend</value>
+  </data>
+  <data name="AmountColumn" xml:space="preserve">
+    <value>Iznos</value>
+  </data>
+  <data name="CheckDetailsMessage" xml:space="preserve">
+    <value> Molimo vas da proverite podatke o kartici iznad. Ako nešto nije u redu, možete izvršiti izmene na ovom &lt;a href="{0}"&gt;linku&lt;/a&gt;. Ukoliko je sve u redu, samo se opustite, proverite da imate dovoljno sredstava na bankovnom računu i mi ćemo učiniti ostalo.</value>
+  </data>
+  <data name="ContactSellerMessage" xml:space="preserve">
+    <value> Ako želite da saznate više detalja o ovoj poruci i samom ugovoru, molimo vas da kontaktirate prodavca direktno na broj telefona: &lt;a href="tel:{0}"&gt;{0}&lt;/a&gt; ili putem e-pošte: &lt;a href="mailto:{1}"&gt;{1}&lt;/a&gt;</value>
+  </data>
+  <data name="FooterCompany" xml:space="preserve">
+    <value>POWRS D.O.O. BEOGRAD, Srbija</value>
+  </data>
+  <data name="FooterCopyright" xml:space="preserve">
+    <value>©2021 - {0} POWRS</value>
+  </data>
+  <data name="FooterWithdrawalNote" xml:space="preserve">
+    <value>Saglasno odredbi člana 27. Zakona o zaštiti potrošača, &lt;a href="{0}"&gt;ovde&lt;/a&gt; možete popuniti obrazac za odustanak od ugovora.</value>
+  </data>
+  <data name="PaymentCompletedTitle" xml:space="preserve">
+    <value>Završeno</value>
+  </data>
+  <data name="PaymentCompletedMessage" xml:space="preserve">
+    <value>Zdravo {0}, sa zadovoljstvom vas obaveštavamo da su sva dospela plaćanja za {1} koja je izvršila kompanija {2} sada kompletirana.</value>
+  </data>
+  <data name="TransactionsInfoMessage" xml:space="preserve">
+    <value>Sve pojedinosti o završenim/neuspelim transakcijama biće vidljive u tabeli ispod. Ako imate bilo kakvo pitanje, molimo vas da direktno kontaktirate prodavca.</value>
+  </data>
+  <data name="AllTransactionsCaption" xml:space="preserve">
+    <value>Sve transakcije</value>
+  </data>
+  <data name="AuthColumn" xml:space="preserve">
+    <value>Aut.</value>
+  </data>
+  <data name="CodeColumn" xml:space="preserve">
+    <value>Kod</value>
+  </data>
+  <data name="DateColumn" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="RefundedStatus" xml:space="preserve">
+    <value>Refundirano</value>
+  </data>
+  <data name="CompletedStatus" xml:space="preserve">
+    <value>Završeno</value>
+  </data>
+  <data name="FailedStatus" xml:space="preserve">
+    <value>Neuspelo</value>
+  </data>
+  <data name="GoodbyeMessage" xml:space="preserve">
+    <value>Žao nam je što se rastajemo, nadamo se da ste imali dobro iskustvo koristeći našu platformu.</value>
+  </data>
+  <data name="ThankYouMessage" xml:space="preserve">
+    <value>Hvala vam što koristite Vaulter.</value>
+  </data>
+  <data name="PaymentCanceledTitle" xml:space="preserve">
+    <value>Plaćanje je otkazano.</value>
+  </data>
+  <data name="PaymentCanceledMessage" xml:space="preserve">
+    <value>Zdravo {0}, sa žaljenjem vas obaveštavamo da su automatska plaćanja za proizvod {1} koju je izvršila kompanija {2} otkazana.</value>
+  </data>
+  <data name="MaxRetriesNote" xml:space="preserve">
+    <value>Molimo vas da imate u vidu da maksimalan broj ponovnih pokušaja definiše prodavac.</value>
+  </data>
+  <data name="CancellationNotInitiatedInfo" xml:space="preserve">
+    <value>Ako otkazivanje nije inicirano od strane vas, a želite da saznate više detalja o samom ugovoru, molimo vas da kontaktirate prodavca direktno na broj telefona: &lt;a href='tel:{0}'&gt;{0}&lt;/a&gt; ili putem e-pošte:  &lt;a href='tel:{1}'&gt;{1}&lt;/a&gt;. </value>
+  </data>
+  <data name="PaymentNotPerformedTitle" xml:space="preserve">
+    <value>Plaćanje nije izvršeno.</value>
+  </data>
+  <data name="PaymentNotPerformedMessage" xml:space="preserve">
+    <value>Zdravo {0}, obaveštavamo vas da registracija kartice za proizvod {1} koju je izvršila kompanija {2} nije izvršena.</value>
+  </data>
+  <data name="CancellationBuyerMessage" xml:space="preserve">
+    <value>{0} je inicirao otkazivanje. Ako je ovo greška, molimo vas da kontaktirate prodavca.</value>
+  </data>
+  <data name="CancellationSellerMessage" xml:space="preserve">
+    <value>{0} je inicirao otkazivanje. Za više detalja kontaktirajte prodavca direktno.</value>
+  </data>
+  <data name="CancellationDeadlineMessage" xml:space="preserve">
+    <value>Ovo se obično dešava kada istekne rok za plaćanje.</value>
+  </data>
+  <data name="RemoteIdColumn" xml:space="preserve">
+    <value>Referentni broj</value>
+  </data>
+  <data name="PaymentDateColumn" xml:space="preserve">
+    <value>Datum uplate</value>
+  </data>
+  <data name="BuyerInformationsColumn" xml:space="preserve">
+    <value>Informacije o kupcu</value>
+  </data>
+  <data name="SellerInformationsColumn" xml:space="preserve">
+    <value>Informacije o prodavcu</value>
+  </data>
+  <data name="OrganizationNumberColumn" xml:space="preserve">
+    <value>Matični broj</value>
+  </data>
+  <data name="TaxNumberColumn" xml:space="preserve">
+    <value>PIB</value>
+  </data>
+  <data name="WebsiteColumn" xml:space="preserve">
+    <value>Web-sajt</value>
+  </data>
+  <data name="ApprovalCodeColumn" xml:space="preserve">
+    <value>Broj odobrenja</value>
+  </data>
+  <data name="PaymentReferenceColumn" xml:space="preserve">
+    <value>Referenca</value>
+  </data>
+  <data name="StatusCodeColumn" xml:space="preserve">
+    <value>Statusni broj</value>
+  </data>
+  <data name="StatusColumn" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="DescriptionColumn" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="TotalPaymentsColumn" xml:space="preserve">
+    <value>Ukupno plaćanja</value>
+  </data>
+  <data name="PriceWithVatColumn" xml:space="preserve">
+    <value>Cena sa PDV-om </value>
+  </data>
+  <data name="TotalColumn" xml:space="preserve">
+    <value>Ukupno </value>
+  </data>
+  <data name="TransactionDetailsColumn" xml:space="preserve">
+    <value>Detalji transakcije </value>
+  </data>
+  <data name="ProductDetailsColumn" xml:space="preserve">
+    <value>Detalji proizvoda</value>
+  </data>
+  <data name="StateChangedLabel" xml:space="preserve">
+    <value>Desila se aktivnost</value>
+  </data>
+  <data name="PaymentCompleted" xml:space="preserve">
+    <value>Dogodilo se plaćanje.</value>
+  </data>
+  <data name="PaymentFailed" xml:space="preserve">
+    <value>Plaćanje nije uspelo.</value>
+  </data>
+  <data name="PaymentNotPerformed" xml:space="preserve">
+    <value>Plaćanje nije izvršeno.</value>
+  </data>
+  <data name="PaymentCanceled" xml:space="preserve">
+    <value>Plaćanje je otkayano.</value>
+  </data>
+  <data name="CardRegistrationCompleted" xml:space="preserve">
+    <value>Registracija kartice je uspešna!</value>
+  </data>
+  <data name="CardRegistrationDescription" xml:space="preserve">
+    <value>Zdravo {0}, tvoja kartica je uspešno registrovana. Naplata za {1} će se u budućnosti odvijati automatski do isteka ugovora sa {2}. Možete otkazati u svakom trenutku na sledećem &lt;a href='{3}'&gt;linku&lt;/a&gt;. </value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Završeno.</value>
+  </data>
+  <data name="StateChangedDescription" xml:space="preserve">
+    <value>Zdravo, zabeležena je promena na linku za plaćanje koji je napravljen za {0}.</value>
+  </data>
+  <data name="StateChangedAwaitingCardRegistrationDescription" xml:space="preserve">
+    <value>Link je napravljen za {0} i očekuje se registracija platne kartice od strane {1}.</value>
+  </data>
+  <data name="StateChangedAwaitingCardRegistrationRefundDescription" xml:space="preserve">
+    <value>Kupcu će biti zadužena kartica u iznosu od {0} {1} radi registracije kartice. Novac ce biti automatski vraćen, kartica će biti sačuvana radi naplate definisane u ugovoru.</value>
+  </data>
+  <data name="MaxPaymentAttemptsExceeded" xml:space="preserve">
+    <value>Broj neuspelih plaćanja je preveliki. Ugovor je automatski otkazan nakon {0} pokušaja.</value>
+  </data>
+  <data name="PaymentFailedNextRetryMessage" xml:space="preserve">
+    <value>Naredni pokušaj naplate će biti {0}.</value>
+  </data>
+  <data name="AwaitingCardRegistrationBuyerMessage" xml:space="preserve">
+    <value>Zdravo {0}, {1} je generisao paylink za vas. Na sledećem &lt;a href="{2}"&gt;linku&lt;/a&gt; možete izvršiti regustraciju kartice koja će biti korišćenja u budućnosti za automatska plaćanja, pregledati sve transakcije vezane za ovaj proizvod, i takodje otkazati u bilo kom trenutku.</value>
+  </data>
+  <data name="AwaitingCardRegistration" xml:space="preserve">
+    <value>Očekuje se registracija platne kartice</value>
+  </data>
+</root>

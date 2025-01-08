@@ -17,37 +17,10 @@ try
 	);
 
 	ContractId:= SessionToken.Claims.contractId;
-	TokenId:= SessionToken.Claims.tokenId;
-	
-	token:= select top 1 * from IoTBroker.NeuroFeatures.Token t where t.TokenId = TokenId;
-	if(token == null) then 
-	(
-		BadRequest("Token does not exists");
-	);
-	
-	currentState:= token.GetCurrentStateVariables();
-	if(currentState.State != "AwaitingForPayment") then
-	(
-		Error("Payment is not available for this contract");
-	);
+	TokenId:= SessionToken.Claims.tokenId;			
 
-	contractParameters:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, System.Object);
-	contractParameters["Message"]:= "Vaulter";
-
-	foreach var in currentState.VariableValues do 
-	(
-	 contractParameters[var.Name]:= var.Value;
-	);
-
-	contractParameters["RequestFromMobilePhone"]:= PIsFromMobile;
-
-	legalIdentityProperties:= select top 1 Properties from LegalIdentities where Id = Token.Owner;
-	identityProperties:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, Waher.Persistence.CaseInsensitiveString);
-
-	foreach prop in legalIdentityProperties do 
-	(
-	 identityProperties[prop.Name]:= prop.Value;
-	);
+	tokenVariablesResponse:= Global.GetTokenVariables(TokenId, ["AwaitingForPayment"], PIsFromMobile);
+	identityProperties:= Global.GetIdentityProperties(tokenVariablesResponse.Owner);
 
 	if(!exists(Global.PayspotRequests)) then
 	(
@@ -59,13 +32,13 @@ try
 	if (PIpsOnly) then 
 	(
 	   if (exists(PBankId)) then (
-	     GeneratedIPSData:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSData(contractParameters, identityProperties, PBankId, 150, PIsCompany);
+	     GeneratedIPSData:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSData(tokenVariablesResponse.Variables, identityProperties, PBankId, 150, PIsCompany);
 		 responseObject.Response:= GeneratedIPSData.ToDictionary();
 	   );		
 	)
 	else
 	(
-		responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(contractParameters, identityProperties);
+		responseObject.Response:= POWRS.Payment.PaySpot.PayspotService.GeneratePayspotLink(tokenVariablesResponse.Variables, identityProperties);
 	);
 
 	Background(SendBuyerTimeZoneToToken(Request.RemoteEndPoint, PTimeZoneOffset, TokenId));
