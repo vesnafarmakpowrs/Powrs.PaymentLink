@@ -835,6 +835,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment is completed but card is not valid long enough. Card must be valid at least until {0}. Same amount will be refunded to your account automatically. Please try with different card..
+        /// </summary>
+        internal static string TransactionSuccessfulCardNotValid {
+            get {
+                return ResourceManager.GetString("TransactionSuccessfulCardNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retry Payment.
         /// </summary>
         internal static string TryAgain {
