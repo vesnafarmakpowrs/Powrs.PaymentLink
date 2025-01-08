@@ -17,9 +17,9 @@ Parameter: lng
 <div class="content">
 {{
 
-Order := select top 1 OrderId, ContractId, TokenId from PayspotPayments where OrderId = ORDERID;
-TokenID := Order.TokenId[0];
-ID := Order.ContractId[0];
+Order := select top 1 * from PayspotPayments where OrderId = ORDERID;
+TokenID := Order.TokenId;
+ID := Order.ContractId;
 
 Token := select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId=TokenID;
 if !exists(Token) then
@@ -43,15 +43,9 @@ if Token.HasStateMachine then
          Return("");
     );
 
-    Identities:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
-
-    AgentName := "";
-    OrgName := "";
-    foreach I in Identities do
-    (
-       AgentName := I.FIRST + " " + I.MIDDLE + " " + I.LAST;
-       OrgName  := I.ORGNAME;
-    );
+    Identity:= select top 1 * from IoTBroker.Legal.Identity.LegalIdentity where Account = Contract.Account And State = 'Approved';
+    AgentName := Identity.FIRST + " " + Identity.MIDDLE + " " + Identity.LAST;
+    OrgName  := Identity.ORGNAME;
 
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
     SellerId := UpperCase(SellerName.Substring(0,3)); 
@@ -63,19 +57,13 @@ if Token.HasStateMachine then
       (
         Variable.Name like "Title" ?   Title := Variable.Value;
         Variable.Name like "Description" ?   Description := Variable.Value;
-        Variable.Name like "Price" ?   ContractValue := Variable.Value.ToString("N2");
         Variable.Name like "Currency" ?   Currency := Variable.Value;
         Variable.Name like "Country" ?   Country := Variable.Value.ToString();
-        Variable.Name like "Commission" ?   Commission := Variable.Value;
         Variable.Name like "Buyer" ?   BuyerFullName := Variable.Value;
-        Variable.Name like "BuyerEmail" ?  BuyerEmail := Variable.Value;
-        Variable.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Variable.Value;
-        Variable.Name like "EscrowFee" ?   EscrowFee := Variable.Value.ToString("N2");
-        Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString("N2");
         Variable.Name like "ErrorUrl" ?  RedirectUrl := Variable.Value.ToString();
       );
 
-            if(!exists(Country)) then 
+     if(!exists(Country)) then 
      (
         Country := 'RS';
      );
@@ -136,7 +124,7 @@ if Token.HasStateMachine then
         <table style="vertical-align:middle; width:100%;">
           <tr>
             <td style="width:80%;"> ((Title))</td>
-            <td class="itemPrice" rowspan="2">((ContractValue))
+            <td class="itemPrice" rowspan="2">((Order.Amount.ToString("N2") ))
             <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
           </tr>
@@ -157,7 +145,7 @@ if Token.HasStateMachine then
         <table style="vertical-align:middle; width:100%;">
           <tr>
             <td style="width:80%">**((LanguageNamespace.GetStringAsync(55) ))**</td>
-            <td class="itemPrice" rowspan="2">((AmountToPay))
+            <td class="itemPrice" rowspan="2">((Order.Amount.ToString("N2") ))
             <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
           </tr>
