@@ -8,30 +8,34 @@ CSS: ../../css/Payout.cssx
 CSS: ../../css/Status.css
 viewport : Width=device-width, initial-scale=1
 Parameter: ORDERID
-Parameter: lng
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <div class="container">
 <div class="content">
 {{
-  Language:= null;
-if(exists(lng)) then 
+  Order := select top 1 * from PayspotPayments where OrderId = ORDERID;
+TokenID := Order.TokenId;
+ID := Order.ContractId;
+
+Token := select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId=TokenID;
+if !exists(Token) then
 (
-  Language:= Translator.GetLanguageAsync(lng);
+  ]]<b>Payment link is not valid</b>[[;
+  Return("");
 );
-if(Language == null) then 
+if Token.HasStateMachine then
 (
- lng:= "rs";
- Language:= Translator.GetLanguageAsync("rs");
+	CurrentState:=Token.GetCurrentStateVariables();
+	if exists(CurrentState) then 
+    (
+        ContractState:= CurrentState.State;
+    );		
 );
 
-LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
-if(LanguageNamespace == null) then 
-(
- ]]<b>Page is not available at the moment</b>[[;
- Return("");
-);
+    Country:= select top 1 Value from CurrentState.VariableValues where Name = "Country";
+    culture:= Country == "RS" ? "sr" : "en";
+	localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
 ]]
 <div class="spaceItem"></div>
  <div class="vaulter-details container">
@@ -40,17 +44,17 @@ if(LanguageNamespace == null) then
                 <img src="../../resources/error_red.png" alt="successpng" width="50" />
             </div>
             <div class="welcomeLbl textHeader">
-                <span>((LanguageNamespace.GetStringAsync(48) ))</span>
+                <span>((localization.Get("TransactionCanceled") ))</span>
             </div>
         </div>
     </div>
-</div>[[;
-}}
+</div>
 </div>
 </main>
 <div class="footer-parent">
   <div class="footer">
-    Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - 2024 POWRS
+    Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - ((Now.Year)) POWRS
   </div>
 </div>
-</div>
+</div>[[;
+}}

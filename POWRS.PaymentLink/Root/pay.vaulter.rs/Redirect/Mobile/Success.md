@@ -64,32 +64,8 @@ if Token.HasStateMachine then
     BuyerFullName:= select top 1 Value from CurrentState.VariableValues where Name = "Buyer";
     BuyerEmail:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerEmail";
 
-      if(!exists(Country)) then 
-     (
-        Country := 'RS';
-     );
-
-      Language:= null;
-      if(exists(lng) and lng != "") then
-      (
-        Language:= Translator.GetLanguageAsync(lng);
-      )
-      else 
-      (
-        Language:= Translator.GetLanguageAsync(Country.ToLowerInvariant());
-      );
-
-      if(Language == null) then
-      (
-        Language:= Translator.GetLanguageAsync("rs");
-      );
-      
-      LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
-      if(LanguageNamespace == null) then 
-      (
-       ]]<b>Page is not available at the moment</b>[[;
-       Return("");
-      );
+    culture:= Country == "RS" ? "sr" : "en";
+	localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
 
      BuyerFirstName := Before(BuyerFullName," ");
       ]]  <table style="width:100%">
@@ -99,22 +75,21 @@ if Token.HasStateMachine then
          </td>
   </tr>
    <tr>
-     <td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
+     <td>**((localization.GetFormat("HelloUser", BuyerFullName) ))**</td>
 </tr>
 </table>
 <input type="hidden" value="((lng ))" id="prefferedLanguage"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(27) ))" id="TransactionCompleted"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(28) ))" id="TransactionFailed"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
+<input type="hidden" value="((localization.Get("PaymentSuccessfulThankYou") ))" id="TransactionCompleted"/>
+<input type="hidden" value="((localization.Get("PaymentNoPaymentNotPossibletPossible") ))" id="TransactionFailed"/>
+<input type="hidden" value="((localization.Get("PaymentInProgress") ))" id="TransactionInProgress"/>
 <input type="hidden" value="((Country ))" id="country"/>
 <input type="hidden" value="((SuccessUrl ))" id="RedirectUrl"/>
 <div class="payment-details">
   <table style="width:100%">
     <tr id="tr_header" class="table-row">
-      <td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
-      <td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) ))<strong></td>
+      <td class="item-header"><strong>((localization.Get("Product") ))<strong></td>
+      <td class="price-header"><strong>((localization.Get("Price") ))<strong></td>
     </tr>
     <tr id="tr_header_title">
       <td colspan="2" class="item border-radius">
@@ -141,7 +116,7 @@ if Token.HasStateMachine then
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
           <tr>
-            <td style="width:80%">**((LanguageNamespace.GetStringAsync(55) ))**</td>
+            <td style="width:80%">**((localization.Get("TotalAmount") ))**</td>
             <td class="itemPrice" rowspan="2">((Order.Amount.ToString("N2") ))
             <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
@@ -158,15 +133,15 @@ if Token.HasStateMachine then
                 <img src="../../resources/success_green.png" alt="successpng" width="50" />
             </div>
             <div class="welcomeLbl textHeader">
-                <span>((LanguageNamespace.GetStringAsync(50) ))</span>
+                <span>((localization.Get("TransactionSuccessful") ))</span>
             </div>
             <div class="textBody">
-                <span>((LanguageNamespace.GetStringAsync(51) ))</span>
+                <span>((localization.Get("ThankYouForPayment") ))</span>
             </div>[[;
             if(!System.String.IsNullOrEmpty(SuccessUrl)) then 
             (
              ]]<div class="textBody">
-                <h3 style="color: green;">((LanguageNamespace.GetStringAsync(77) ))</h3>
+                <h3 style="color: green;">((localization.Get("RedirectToSellerPage") ))</h3>
              </div>[[;
             );         
         ]]</div>
