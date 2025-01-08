@@ -176,6 +176,9 @@
 					<OnEvent actionRef="UpdateBuyerInformations">
 						<OnExternalXmlNote localName="UpdateBuyerInformations" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
+					<OnEvent actionRef="ChangeBuyerLanguage">
+						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
 				</State>
 
 				<State id="AwaitingNextPayment">
@@ -193,6 +196,9 @@
 					</OnEvent>
 					<OnEvent actionRef="RegisterCard" newState="AwaitingNextPayment" failureState="AwaitingNextPayment">
 						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="ChangeBuyerLanguage">
+						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
 					</OnEvent>
 				</State>
 
@@ -250,6 +256,17 @@
 					<CallAction actionRef="IncrementTotalCompletedPayments"/>
 					<CallAction actionRef="ResetFailedAttemptsCounter"/>
 					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'PaymentCompleted'"/>
+				</Action>
+
+				<Action id="ChangeBuyerLanguage">
+					<Script>
+						newLanguage:= SelectXmlStr(Note,'/default:LanguageChanged/@language');
+					</Script>
+					<If condition="newLanguage like '[A-Z]{2}' and newLanguage != Country">
+						<Then>
+							<PersistVariable name="Country" value="{newLanguage}"></PersistVariable>
+						</Then>
+					</If>
 				</Action>
 
 				<Action id="NotifyNewState">
