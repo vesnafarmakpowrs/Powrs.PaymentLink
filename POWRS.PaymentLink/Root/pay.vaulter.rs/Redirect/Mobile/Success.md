@@ -17,9 +17,9 @@ Parameter: lng
 <div class="content">
 {{
 
-Order := select top 1 OrderId, ContractId, TokenId from PayspotPayments where OrderId = ORDERID;
-TokenID := Order.TokenId[0];
-ID := Order.ContractId[0];
+Order := select top 1 * from PayspotPayments where OrderId = ORDERID;
+TokenID := Order.TokenId;
+ID := Order.ContractId;
 Token := select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId=TokenID;
 if !exists(Token) then
 (
@@ -54,26 +54,15 @@ if Token.HasStateMachine then
     );
 
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
-    SellerId := UpperCase(SellerName.Substring(0,3)); 
-
-    FileName:= SellerId + Token.ShortId;
+    SellerId := UpperCase(SellerName.Substring(0,3));
 
     SuccessUrl:= "";
-    foreach Variable in (CurrentState.VariableValues ?? []) do 
-      (
-        Variable.Name like "Title" ?   Title := Variable.Value;
-        Variable.Name like "Description" ?   Description := Variable.Value;
-        Variable.Name like "Price" ?   ContractValue := Variable.Value.ToString("N2");
-        Variable.Name like "Currency" ?   Currency := Variable.Value;
-        Variable.Name like "Country" ?   Country := Variable.Value.ToString();
-        Variable.Name like "Commission" ?   Commission := Variable.Value;
-        Variable.Name like "Buyer" ?   BuyerFullName := Variable.Value;
-        Variable.Name like "BuyerEmail" ?  BuyerEmail := Variable.Value;
-        Variable.Name like "BuyerPersonalNum" ?   BuyerPersonalNum := Variable.Value;
-        Variable.Name like "EscrowFee" ?   EscrowFee := Variable.Value.ToString("N2");
-        Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString("N2");
-        Variable.Name like "SuccessUrl" ? SuccessUrl:= Variable.Value.ToString();
-      );
+    Title:= select top 1 Value from CurrentState.VariableValues where Name = "Title";
+    Description:= select top 1 Value from CurrentState.VariableValues where Name = "Description";
+    Currency:= select top 1 Value from CurrentState.VariableValues where Name = "Currency";
+    Country:= select top 1 Value from CurrentState.VariableValues where Name = "Country";
+    BuyerFullName:= select top 1 Value from CurrentState.VariableValues where Name = "Buyer";
+    BuyerEmail:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerEmail";
 
       if(!exists(Country)) then 
      (
@@ -132,7 +121,7 @@ if Token.HasStateMachine then
         <table style="vertical-align:middle; width:100%;">
           <tr>
             <td style="width:80%;"> ((Title))</td>
-            <td class="itemPrice" rowspan="2">((ContractValue))
+            <td class="itemPrice" rowspan="2">((Order.Amount.ToString("N2") ))
             <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
           </tr>
@@ -153,7 +142,7 @@ if Token.HasStateMachine then
         <table style="vertical-align:middle; width:100%;">
           <tr>
             <td style="width:80%">**((LanguageNamespace.GetStringAsync(55) ))**</td>
-            <td class="itemPrice" rowspan="2">((AmountToPay))
+            <td class="itemPrice" rowspan="2">((Order.Amount.ToString("N2") ))
             <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
           </tr>
@@ -181,13 +170,14 @@ if Token.HasStateMachine then
              </div>[[;
             );         
         ]]</div>
-    </div>[[;
-}}
-</div>
+    </div>
+    </div>
 </main>
 <div class="footer-parent">
   <div class="footer">
-   Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - 2024 POWRS 
+   Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - ((Now.Year)) POWRS
   </div>
 </div>
 </div>
+    [[;
+}}
