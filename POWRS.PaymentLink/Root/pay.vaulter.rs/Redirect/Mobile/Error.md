@@ -9,7 +9,6 @@ CSS: ../../css/Status.css
 JavaScript: ../../js/Status.js
 viewport : Width=device-width, initial-scale=1
 Parameter: ORDERID
-Parameter: lng
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,8 +30,10 @@ if !exists(Token) then
 if Token.HasStateMachine then
 (
 	CurrentState:=Token.GetCurrentStateVariables();
-	if exists(CurrentState) then
-		ContractState:= CurrentState.State;
+	if exists(CurrentState) then 
+    (
+        ContractState:= CurrentState.State;
+    );		
 );
 
     Contract:= select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId= Token.OwnershipContract;
@@ -50,45 +51,15 @@ if Token.HasStateMachine then
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
     SellerId := UpperCase(SellerName.Substring(0,3)); 
 
-    FileName:= SellerId + Token.ShortId;
+    RedirectUrl:= select top 1 Value from CurrentState.VariableValues where Name = "ErrorUrl";
+    Title:= select top 1 Value from CurrentState.VariableValues where Name = "Title";
+    Description:= select top 1 Value from CurrentState.VariableValues where Name = "Description";
+    Currency:= select top 1 Value from CurrentState.VariableValues where Name = "Currency";
+    Country:= select top 1 Value from CurrentState.VariableValues where Name = "Country";
+    BuyerFullName:= select top 1 Value from CurrentState.VariableValues where Name = "Buyer";
 
-    RedirectUrl:= "";
-    foreach Variable in (CurrentState.VariableValues ?? []) do 
-      (
-        Variable.Name like "Title" ?   Title := Variable.Value;
-        Variable.Name like "Description" ?   Description := Variable.Value;
-        Variable.Name like "Currency" ?   Currency := Variable.Value;
-        Variable.Name like "Country" ?   Country := Variable.Value.ToString();
-        Variable.Name like "Buyer" ?   BuyerFullName := Variable.Value;
-        Variable.Name like "ErrorUrl" ?  RedirectUrl := Variable.Value.ToString();
-      );
-
-     if(!exists(Country)) then 
-     (
-        Country := 'RS';
-     );
-
-      Language:= null;
-      if(exists(lng) and lng != "") then
-      (
-        Language:= Translator.GetLanguageAsync(lng);
-      )
-      else 
-      (
-        Language:= Translator.GetLanguageAsync(Country.ToLowerInvariant());
-      );
-
-      if(Language == null) then
-      (
-        Language:= Translator.GetLanguageAsync("rs");
-      );
-      
-      LanguageNamespace:= Language.GetNamespaceAsync("POWRS.PaymentLink");
-      if(LanguageNamespace == null) then 
-      (
-       ]]<b>Page is not available at the moment</b>[[;
-       Return("");
-      );
+    culture:= Country == "RS" ? "sr" : "en";
+	localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
 
      BuyerFirstName := Before(BuyerFullName," ");
       ]]  <table style="width:100%">
@@ -98,17 +69,16 @@ if Token.HasStateMachine then
        <select class="select-lng" style="display:none" title="languageDropdown" id="languageDropdown"></select></td>
   </tr>
    <tr>
-    <td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
+    <td>**((localization.GetFormat("HelloUser", BuyerFullName) ))**</td>
 </tr>
 </table>
 
-<input type="hidden" value="((lng ))" id="prefferedLanguage"/>
+<input type="hidden" value="((Country ))" id="prefferedLanguage"/>
 <input type="hidden" value="POWRS.PaymentLink" id="Namespace"/>
 
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(27) ))" id="TransactionCompleted"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(28) ))" id="TransactionFailed"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(29) ))" id="TransactionInProgress"/>
-<input type="hidden" value="((LanguageNamespace.GetStringAsync(30) ))" id="OpenLinkOnPhoneMessage"/>
+<input type="hidden" value="((localization.Get("PaymentSuccessfulThankYou") ))" id="TransactionCompleted"/>
+<input type="hidden" value="((localization.Get("PaymentNoPaymentNotPossibletPossible") ))" id="TransactionFailed"/>
+<input type="hidden" value="((localization.Get("PaymentInProgress") ))" id="TransactionInProgress"/>
 
 <input type="hidden" value="((Country ))" id="country"/>
 <input type="hidden" value="((RedirectUrl ))" id="RedirectUrl"/>
@@ -116,8 +86,8 @@ if Token.HasStateMachine then
 <div class="payment-details">
   <table style="width:100%">
     <tr id="tr_header" class="table-row">
-      <td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
-      <td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) ))<strong></td>
+      <td class="item-header"><strong>((localization.Get("Product") ))<strong></td>
+      <td class="price-header"><strong>((localization.Get("Price") ))<strong></td>
     </tr>
     <tr id="tr_header_title">
       <td colspan="2" class="item border-radius">
@@ -144,7 +114,7 @@ if Token.HasStateMachine then
       <td colspan="2" class="item border-radius">
         <table style="vertical-align:middle; width:100%;">
           <tr>
-            <td style="width:80%">**((LanguageNamespace.GetStringAsync(55) ))**</td>
+            <td style="width:80%">**((localization.Get("TotalAmount") ))**</td>
             <td class="itemPrice" rowspan="2">((Order.Amount.ToString("N2") ))
             <td>
             <td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
@@ -162,26 +132,24 @@ if Token.HasStateMachine then
                 <img src="../../resources/error_red.png" alt="successpng" width="50" />
             </div>
             <div class="welcomeLbl textHeader">
-                <span>((LanguageNamespace.GetStringAsync(49) ))</span>
+                <span>((localization.Get("TransactionFailed") ))</span>
             </div>[[;
-            if(!System.String.IsNullOrEmpty(SuccessUrl)) then 
+            if(!System.String.IsNullOrEmpty(SuccessUrl)) then
             (
              ]]<div class="textBody">
-                <h3 style="color: red;">((LanguageNamespace.GetStringAsync(77) ))</h3>
+                <h3 style="color: red;">((localization.Get("RedirectToSellerPage") ))</h3>
              </div>[[;
             );
         ]]
         </div>
      </div>
-    </div>[[;
-}}
-
+    </div>
 </div>
 </main>
-
 <div class="footer-parent">
   <div class="footer">
-    Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - 2024 POWRS
+    Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd <br/>Serbia ©2021 - ((Now.Year )) POWRS
   </div>
 </div>
-</div>
+</div>[[;
+}}
