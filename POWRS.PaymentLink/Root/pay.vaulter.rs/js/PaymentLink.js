@@ -14,7 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function OnlyECommerce() {
 
-    var isEcommerce = (String(document.getElementById("IsEcommerce").value).toLowerCase() === 'true');
+    let isEcommerceInput = document.getElementById("IsEcommerce");
+    if (isEcommerceInput == null)
+    {
+        return;
+    }
+
+    var isEcommerce = (String(isEcommerceInput.value).toLowerCase() === 'true');
     var isAwaitingForPayment = (String(document.getElementById("ContractState").value).toLowerCase() === 'awaitingforpayment')
 
     if (isAwaitingForPayment && isEcommerce) {
@@ -74,7 +80,7 @@ function GenerateLanguageDropdown() {
                 languageDropdown.addEventListener("change", function (e) {
                     PreferredLanguage = languageDropdown.value;
                     let url = new URL(window.location.href);
-                    url.searchParams.set('lng', languageDropdown.value);
+                    url.searchParams.set('lng', languageDropdown.value.toUpperCase());
                     window.location.href = url.toString();
                 });
             }
