@@ -83,6 +83,7 @@ try
 		foreach token in tokens do (
 			tokenVariables := token.GetCurrentStateVariables();
                          TokenState := tokenVariables.State;
+                         ActualTokenState := TokenState; 
                         if (TokenState != null OR TokenState != "") then
                          (
 						   IsPaymentCompleted := POWRS.PaymentLink.Contracts.Enums.EnumHelper.IsPaymentCompleted(TokenState);
@@ -104,6 +105,7 @@ try
 				"IsActive": !exists(doneStates[tokenVariables.State]),
 				"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
 				"Created": token.Created.ToString("s"),
+                                "TokenState": ActualTokenState,
 				"State": TokenState ,
 				"Variables": (tokenVariables.VariableValues.Length > 0 ? tokenVariables.VariableValues : token.Tags)
 			});
