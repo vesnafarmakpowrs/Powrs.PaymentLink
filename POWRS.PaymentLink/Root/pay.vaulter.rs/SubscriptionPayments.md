@@ -97,49 +97,35 @@ if Token.HasStateMachine then
 	Title:= select top 1 Value from CurrentState.VariableValues where Name = "Title";
 	Description:= select top 1 Value from CurrentState.VariableValues where Name = "Description";
 	Currency:= select top 1 Value from CurrentState.VariableValues where Name = "Currency";
-	Country:= select top 1 Value from CurrentState.VariableValues where Name = "Country";
+	Language:= select top 1 Value from CurrentState.VariableValues where Name = "Country";
 	BuyerFullName:= select top 1 Value from CurrentState.VariableValues where Name = "Buyer";
 	BuyerEmail:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerEmail";
 	EscrowFee:= select top 1 Value from CurrentState.VariableValues where Name = "EscrowFee";
 	AmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
 	ActiveCardDetails:= select top 1 Value from CurrentState.VariableValues where Name = "ActiveCardDetails";
 
-	 Language:= Country;
-	 culture:= "sr";
-	 if(exists(lng) and lng != "") then
-     (
-		if(lng != "RS" and lng != "EN") then 
+	if(exists(lng) and lng like '[A-Z]{2}' and lng != Language) then 
+	(
+			Language:= lng;
+		    SendLangaugeNote(tokenId, languageCode):=
 		(
-			Language:= "RS";
-		)
-		else 
-		(
-			Language:= lng;			
-		);
-     );
-
-	 if(Language != "RS") then
-	 (
-		culture:= "en";
-	 );
-	
-	 localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
- 
-        SendLangaugeNote(tokenId, languageCode):=
-        (
-            try
-            (
-                addNoteEndpoint:= Gateway.GetUrl(":8088/AddNote/" + tokenId);
-	            namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
-	            Post(addNoteEndpoint ,<LanguageChanged xmlns=namespace language=languageCode.ToUpper() />,{},Waher.IoTGateway.Gateway.Certificate);
-            )
-            catch
-            (
-                Log.Error(Exception.Message);
-            );
+			try
+				(
+					 addNoteEndpoint:= Gateway.GetUrl(":8088/AddNote/" + tokenId);
+					 namespace:= "https://" + Gateway.Domain + "/Downloads/EscrowPaylinkRS.xsd";
+					Post(addNoteEndpoint ,<LanguageChanged xmlns=namespace language=languageCode.ToUpper() />,{},Waher.IoTGateway.Gateway.Certificate);
+				)
+				catch
+				(
+					Log.Error(Exception.Message);
+				);
         );
 
-        Background(SendLangaugeNote(Token.TokenId, Language));
+     Background(SendLangaugeNote(Token.TokenId, Language));
+	);
+
+	culture:= Language == "RS" ? "sr" : "en";
+	localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
 
      BuyerFirstName := Before(BuyerFullName," ");
      PayspotId := Before(ID,"@");
@@ -163,7 +149,7 @@ if Token.HasStateMachine then
                 "id": NewGuid().ToString(),
                 "ip": Request.RemoteEndPoint,
 				"tabId": tabId,
-                "country": Country,
+                "country": Language,
                 "ipsOnly": IpsOnly,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
@@ -410,7 +396,7 @@ if Token.HasStateMachine then
 <input type="hidden" value="((BuyerFullName))" id="buyerFullName"/>
 <input type="hidden" value="((BuyerEmail))" id="buyerEmail"/>
 <input type="hidden" value="((FileName))" id="fileName"/>
-<input type="hidden" value="((Country ))" id="country"/>
+<input type="hidden" value="((Language ))" id="country"/>
 <input type="hidden" value="((ContractState ))" id="ContractState"/>
 </main>
 <div class="footer-parent">
