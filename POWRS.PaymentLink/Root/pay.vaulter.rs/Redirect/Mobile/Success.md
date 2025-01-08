@@ -10,6 +10,7 @@ JavaScript: ../../js/Status.js
 viewport : Width=device-width, initial-scale=1
 Parameter: ORDERID
 Parameter: lng
+Parameter: PANEXPIRYDATE
 
 <main class="border-radius">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -56,13 +57,38 @@ if Token.HasStateMachine then
     SellerName:= !System.String.IsNullOrEmpty(OrgName) ? OrgName : AgentName;
     SellerId := UpperCase(SellerName.Substring(0,3));
 
-    SuccessUrl:= "";
+    SuccessUrl:= select top 1 Value from CurrentState.VariableValues where Name = "SuccessUrl";
+    ErrorUrl:= select top 1 Value from CurrentState.VariableValues where Name = "ErrorUrl";
     Title:= select top 1 Value from CurrentState.VariableValues where Name = "Title";
     Description:= select top 1 Value from CurrentState.VariableValues where Name = "Description";
     Currency:= select top 1 Value from CurrentState.VariableValues where Name = "Currency";
     Country:= select top 1 Value from CurrentState.VariableValues where Name = "Country";
     BuyerFullName:= select top 1 Value from CurrentState.VariableValues where Name = "Buyer";
     BuyerEmail:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerEmail";
+    TotalNumberOfPayments:= select top 1 Value from CurrentState.VariableValues where Name = "TotalNumberOfPayments";
+    DeliveryDate:= select top 1 Value from CurrentState.VariableValues where Name = "DeliveryDate";
+    isReccuringPayment:= TotalNumberOfPayments != null and TotalNumberOfPayments > 0 DeliveryDate != null;
+    culture:= Country == "RS" ? "sr" : "en";
+	localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
+    
+    iconName:= "success_green.png";
+    descriptionText:= localization.Get("TransactionSuccessful"); 
+    isCardExpired:= false;    
+	
+    if(isReccuringPayment) then
+    (
+		if(!System.String.IsNullOrEmpty(Order.ExpiryDate)) then 
+		(
+			PANEXPIRYDATE:= Order.ExpiryDate;
+		);
+		
+        if(isCardExpired:= POWRS.PaymentLink.CardHelper.IsCardExpired(DeliveryDate, Str(PANEXPIRYDATE))) then 
+        (
+            iconName:= "error_red.png";
+            descriptionText:= localization.GetFormat("TransactionSuccessfulCardNotValid", DeliveryDate.ToString("dd/MM/yyyy"));
+        );
+        
+    );
 
     culture:= Country == "RS" ? "sr" : "en";
 	localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
@@ -130,14 +156,17 @@ if Token.HasStateMachine then
  <div class="vaulter-details container">
         <div class="messageContainer messageContainer_width">
             <div class="imageContainer">
-                <img src="../../resources/success_green.png" alt="successpng" width="50" />
+                <img src="../../resources/((iconName ))" alt="successpng" width="50" />
             </div>
             <div class="welcomeLbl textHeader">
-                <span>((localization.Get("TransactionSuccessful") ))</span>
-            </div>
-            <div class="textBody">
-                <span>((localization.Get("ThankYouForPayment") ))</span>
+                <span>((descriptionText ))</span>
             </div>[[;
+            if(!isCardExpired) then 
+            (
+                ]]<div class="textBody">
+                <span>((localization.Get("ThankYouForPayment") ))</span>
+                </div>[[;
+            );
             if(!System.String.IsNullOrEmpty(SuccessUrl)) then 
             (
              ]]<div class="textBody">
