@@ -393,4 +393,7 @@
   <data name="SavedCardLabel" xml:space="preserve">
     <value>Saved card</value>
   </data>
+  <data name="TransactionSuccessfulCardNotValid" xml:space="preserve">
+    <value>Payment is completed but card is not valid long enough. Card must be valid at least until {0}. Same amount will be refunded to your account automatically. Please try with different card.</value>
+  </data>
 </root>
