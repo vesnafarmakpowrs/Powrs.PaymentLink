@@ -169,7 +169,7 @@
     <value>Iznos</value>
   </data>
   <data name="CheckDetailsMessage" xml:space="preserve">
-    <value> Molimo vas da proverite podatke o kartici iznad. Ako nešto nije u redu, možete izvršiti izmene na ovom &lt;a href="{0}"&gt;linku&lt;/a&gt;. Ukoliko je sve u redu, samo se opustite, proverite da imate dovoljno sredstava na bankovnom računu i mi ćemo učiniti ostalo.</value>
+    <value>Molimo vas da proverite podatke o kartici iznad. Ako nešto nije u redu, možete izvršiti izmene na ovom &lt;a href="{0}"&gt;linku&lt;/a&gt;. Ukoliko je sve u redu, samo se opustite, proverite da imate dovoljno sredstava na bankovnom računu i mi ćemo učiniti ostalo.</value>
   </data>
   <data name="ContactSellerMessage" xml:space="preserve">
     <value> Ako želite da saznate više detalja o ovoj poruci i samom ugovoru, molimo vas da kontaktirate prodavca direktno na broj telefona: &lt;a href="tel:{0}"&gt;{0}&lt;/a&gt; ili putem e-pošte: &lt;a href="mailto:{1}"&gt;{1}&lt;/a&gt;</value>
@@ -337,7 +337,7 @@
     <value>Naredni pokušaj naplate će biti {0}.</value>
   </data>
   <data name="AwaitingCardRegistrationBuyerMessage" xml:space="preserve">
-    <value>Zdravo {0}, {1} je generisao paylink za vas. Na sledećem &lt;a href="{2}"&gt;linku&lt;/a&gt; možete izvršiti regustraciju kartice koja će biti korišćenja u budućnosti za automatska plaćanja, pregledati sve transakcije vezane za ovaj proizvod, i takodje otkazati u bilo kom trenutku.</value>
+    <value>Zdravo {0}, {1} je generisao paylink za vas. Na sledećem &lt;a href="{2}"&gt;linku&lt;/a&gt; možete izvršiti registraciju kartice koja će biti korišćenja u budućnosti za automatska plaćanja, pregledati sve transakcije vezane za ovaj proizvod, i takodje otkazati u bilo kom trenutku.</value>
   </data>
   <data name="AwaitingCardRegistration" xml:space="preserve">
     <value>Očekuje se registracija platne kartice</value>
