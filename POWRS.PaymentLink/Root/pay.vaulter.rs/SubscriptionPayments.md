@@ -100,6 +100,10 @@ if Token.HasStateMachine then
 	Language:= select top 1 Value from CurrentState.VariableValues where Name = "Country";
 	BuyerFullName:= select top 1 Value from CurrentState.VariableValues where Name = "Buyer";
 	BuyerEmail:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerEmail";
+	BuyerPhoneNumber:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerPhoneNumber";
+	BuyerAddress:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerAddress";
+	BuyerCity:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerCity";
+
 	EscrowFee:= select top 1 Value from CurrentState.VariableValues where Name = "EscrowFee";
 	AmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
 	ActiveCardDetails:= select top 1 Value from CurrentState.VariableValues where Name = "ActiveCardDetails";
@@ -234,8 +238,31 @@ if Token.HasStateMachine then
 						</table>
 				</div>
 			<div class="spaceItem"></div>[[;
-	if (ContractState != "PaymentCanceled" or ContractState != "PaymentNotPeformed" or ContractState != "PaymentNotPeformed" or ContractState != "Done") then 
+	if (ContractState != "PaymentCanceled" and ContractState != "PaymentNotPeformed" and ContractState != "PaymentNotPeformed" and ContractState != "Done") then 
 	(
+		]]<div class="saved-card" id="billingDetailsForm">
+		<table class="width100 vaulter-form">
+        <tr>
+			<td colspan="4"><b>((localization.Get("BillingDetailsLabel") ))</b></td>
+            <td colspan="4" style="text-align: right;">
+                <button class="btn-black btn-show add-new-card-btn" type="button" onclick="UpdateBuyerInformations(this);">((localization.Get("UpdateLabel") ))</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8"><input class="width100" type="text" name="fullName" value='((BuyerFullName ))' placeholder="((localization.Get("FullNameLabel") ))"></td>
+        </tr>
+        <tr>
+            <td colspan="4"><input class="width100" type="text" name="address" value='((BuyerAddress ))' placeholder="((localization.Get("Address") ))"></td>
+            <td colspan="4"><input class="width100" type="text" name="city" value='((BuyerCity ))' placeholder="((localization.Get("CityLabel") ))"></td>
+        </tr>
+        <tr>
+            <td colspan="4"><input class="width100" type="tel" name="phoneNumber" value='((BuyerPhoneNumber ))' placeholder="((localization.Get("PhoneNumber") ))"></td>
+            <td colspan="4"><input class="width100" type="email" name="email" value='((BuyerEmail ))' placeholder="((localization.Get("EmailAddress") ))"></td>
+        </tr>
+    </table>
+		</div>
+		<div class="spaceItem"></div>
+		[[;
 		if(exists(ActiveCardDetails.MaskedPan)) then 
 		(
 			]]<div class="saved-card">
@@ -245,6 +272,9 @@ if Token.HasStateMachine then
 				</div>
 				<div>
 					<button id="add-new-card-btn" class="btn-black btn-show add-new-card-btn" onclick="InitiateCardAuthorization();">((localization.Get("RegisterNewCard") ))</button>
+				</div>
+				<div>
+					<button class="btn-border-red btn-show add-new-card-btn" onclick="InitiateCancellation();">((localization.Get("Cancel") ))</button>
 				</div>
 			</div>
 			<div class="card-details-div">

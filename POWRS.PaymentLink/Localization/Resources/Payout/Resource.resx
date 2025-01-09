@@ -396,4 +396,22 @@
   <data name="TransactionSuccessfulCardNotValid" xml:space="preserve">
     <value>Payment is completed but card is not valid long enough. Card must be valid at least until {0}. Same amount will be refunded to your account automatically. Please try with different card.</value>
   </data>
+	<data name="FullNameLabel" xml:space="preserve">
+    <value>First and Last name</value>
+  </data>
+	<data name="FirstNameLabel" xml:space="preserve">
+    <value>First name</value>
+  </data>
+	<data name="LastNameLabel" xml:space="preserve">
+    <value>Last name</value>
+  </data>
+	<data name="CityLabel" xml:space="preserve">
+    <value>City</value>
+  </data>
+	<data name="UpdateLabel" xml:space="preserve">
+    <value>Update</value>
+  </data>
+	<data name="BillingDetailsLabel" xml:space="preserve">
+    <value>Billing details</value>
+  </data>
 </root>

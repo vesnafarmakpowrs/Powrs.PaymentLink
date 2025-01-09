@@ -282,16 +282,6 @@
 								Config:= Evaluate("ConfigClass.Instance");
 								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title + ' - ' + StateToNotify, html.HtmlText, null, null))");
 
-								sellerOrganization:= Evaluate("select top 1 ORGNAME from IoTBroker.Legal.Identity.LegalIdentity where Id=Seller");
-								sellerEmail:= Evaluate("select top 1 Email from OrganizationContactInformations where OrganizationName = sellerOrganization");
-
-								if(!Evaluate("System.String.IsNullOrEmpty(sellerOrganization)") and !Evaluate("System.String.IsNullOrEmpty(sellerEmail)")) then
-								(
-								sellerTemplateUrl:= Evaluate("Gateway.GetUrl('/Payout/EmailTemplates/ReccurrencePayments/StateChanged.md?TokenId=' + TokenId + orderParamter)");
-								sellerHtml:= html:= Evaluate("Get(sellerTemplateUrl, {'Accept': 'text/html'})");
-								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, sellerEmail, Title + ' - ' + StateToNotify, sellerHtml.HtmlText, null, null))");
-								);
-
 								if(Evaluate("exists(tabId:= Global.PayspotRequests[TokenContract])")) then
 								(
 									Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([tabId],'StateUpdated', {'NewState': StateToNotify })");
