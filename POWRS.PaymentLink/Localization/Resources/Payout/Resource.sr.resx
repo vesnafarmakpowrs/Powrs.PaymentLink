@@ -325,7 +325,7 @@
     <value>GENERIŠI IPS QR</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>ODUSTANI</value>
+    <value>Odustani</value>
   </data>
   <data name="Pay" xml:space="preserve">
     <value>Plati</value>
@@ -395,6 +395,24 @@
   </data>
   <data name="CardRegistrationCompletedColumn" xml:space="preserve">
     <value>Uspešna registracija kartice</value>
+  </data>
+  <data name="FullNameLabel" xml:space="preserve">
+    <value>Ime i prezime</value>
+  </data>
+	<data name="FirstNameLabel" xml:space="preserve">
+    <value>Ime</value>
+  </data>
+	<data name="LastNameLabel" xml:space="preserve">
+    <value>Prezime</value>
+  </data>
+	<data name="CityLabel" xml:space="preserve">
+    <value>Grad</value>
+  </data>
+	<data name="UpdateLabel" xml:space="preserve">
+    <value>Ažuriraj</value>
+  </data>
+	<data name="BillingDetailsLabel" xml:space="preserve">
+    <value>Detalji za naplatu</value>
   </data>
   <data name="TransactionSuccessfulCardNotValid" xml:space="preserve">
     <value>Plaćanje je uspešno, ali kartica mora biti važeća minimum do {0}. Isti iznos će biti refundiran na vaš račun. Molimo vas pokušajte sa drugom karticom.</value>
