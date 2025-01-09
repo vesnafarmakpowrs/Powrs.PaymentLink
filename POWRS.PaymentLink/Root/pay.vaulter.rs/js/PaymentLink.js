@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function OnlyECommerce() {
 
     let isEcommerceInput = document.getElementById("IsEcommerce");
-    if (isEcommerceInput == null)
-    {
+    if (isEcommerceInput == null) {
         return;
     }
 
@@ -129,8 +128,7 @@ function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUs
 }
 
 
-function PopulateAuthorizationForm(Data)
-{
+function PopulateAuthorizationForm(Data) {
     if (Data == null) {
         console.log("api response is null");
         return;
@@ -187,6 +185,56 @@ function InitiateCardAuthorization() {
             }
             alert(error);
             TransactionFailed(null);
+        })
+}
+
+function UpdateBuyerInformations(btn) {
+    btn.disabled = true;
+    const fullName = document.querySelector('input[name="fullName"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const address = document.querySelector('input[name="address"]').value;
+    const city = document.querySelector('input[name="city"]').value;
+    const phoneNumber = document.querySelector('input[name="phoneNumber"]').value;
+
+    SendXmlHttpRequest("../Payout/API/UpdateBuyerInformations.ws",
+        {
+            "fullName": fullName,
+            "email": email,
+            "address": address,
+            "city": city,
+            "phoneNumber": phoneNumber
+        },
+        (response) => {
+            location.reload();
+        },
+        (error) => {
+            parsedError = JSON.parse(error.response);
+            if (parsedError.length > 0) {
+                parsedError.forEach(fieldName => {
+                    const input = document.querySelector(`input[name="${fieldName}"]`);
+                    if (input) {
+                        input.style.border = '1px solid red';
+                    }
+                });
+            }
+            btn.disabled = false;
+        })
+}
+
+function InitiateCancellation() {
+    ShowHideElement("tr_spinner", null);
+    SendXmlHttpRequest("../Payout/API/InitiateCancellation.ws",
+        {},
+        (response) => {
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
+        },
+        (error) => {
+            if (error.status === 408) {
+                return;
+            }
+            alert("There is an error");
         })
 }
 
