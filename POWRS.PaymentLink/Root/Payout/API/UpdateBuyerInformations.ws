@@ -19,7 +19,11 @@ if(!Global.RegexValidation(PFullName, "FullName", "")) then
 (
 	errors.Add("fullName");
 );
-if(!Global.RegexValidation(PPhoneNumber, "PhoneNumber", "")) then 
+if(!exists(PPhoneNumber)) then 
+(
+	PPhoneNumber:= "";
+);
+if(PPhoneNumber != "" and !Global.RegexValidation(PPhoneNumber, "PhoneNumber", "")) then 
 (
 	errors.Add("phoneNumber");
 );
@@ -33,7 +37,7 @@ if(!Global.RegexValidation(PAddress, "Address", "")) then
 );
 if(!Global.RegexValidation(PCity, "City", "")) then
 (
-	errors.Add("address");
+	errors.Add("city");
 );
 
 if(errors.Count > 0) then 
