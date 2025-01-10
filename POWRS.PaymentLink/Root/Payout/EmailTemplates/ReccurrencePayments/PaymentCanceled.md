@@ -58,7 +58,6 @@ TotalCompletedPayments:= select top 1 Value from Variables where Name = "TotalCo
 TotalNumberOfPayments:= select top 1 Value from Variables where Name = "TotalNumberOfPayments";
 CancellationReason:= select top 1 Value from Variables where Name = "CancellationReason";
 Country:= select top 1 Value from Variables where Name = "Country";
-Payments:= select * from PayspotPayments where TokenId = TokenId;
 localizationCountry:= Country == "RS" ? "sr" : "en";
 localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, localizationCountry), "HtmlTemplates");
 year:= Now.Year.ToString();

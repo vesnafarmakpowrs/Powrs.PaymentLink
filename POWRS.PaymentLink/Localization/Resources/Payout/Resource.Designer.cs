@@ -115,6 +115,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paid.
+        /// </summary>
+        internal static string AlreadyPaidLabel {
+            get {
+                return ResourceManager.GetString("AlreadyPaidLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Awaiting For Payment.
         /// </summary>
         internal static string AwaitingPayment {
@@ -385,6 +394,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remaining.
+        /// </summary>
+        internal static string LeftToPayLabel {
+            get {
+                return ResourceManager.GetString("LeftToPayLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Legal entities.
         /// </summary>
         internal static string LegalEntitiesOrEntrepreneurs {
@@ -408,6 +426,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string NoPaymentsLabel {
             get {
                 return ResourceManager.GetString("NoPaymentsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of installments.
+        /// </summary>
+        internal static string NumberOfPaymentsLabel {
+            get {
+                return ResourceManager.GetString("NumberOfPaymentsLabel", resourceCulture);
             }
         }
         
