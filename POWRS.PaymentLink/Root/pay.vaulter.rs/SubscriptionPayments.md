@@ -106,8 +106,12 @@ if Token.HasStateMachine then
 
 	EscrowFee:= select top 1 Value from CurrentState.VariableValues where Name = "EscrowFee";
 	AmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
+	TotalNumberOfPayments:= select top 1 Value from CurrentState.VariableValues where Name = "TotalNumberOfPayments";
+	TotalCompletedPayments:= select top 1 Value from CurrentState.VariableValues where Name = "TotalCompletedPayments";
 	ActiveCardDetails:= select top 1 Value from CurrentState.VariableValues where Name = "ActiveCardDetails";
 
+	TotalPaid:= AmountToPay * TotalCompletedPayments;
+	TotalAmountToPay:= AmountToPay * TotalNumberOfPayments;
 	if(exists(lng) and lng like '[A-Z]{2}' and lng != Language) then 
 	(
 			Language:= lng;
@@ -204,15 +208,12 @@ if Token.HasStateMachine then
 			   <table style="width:100%">
 					<tr id="tr_header" class="table-row">
 						<td class="item-header"><strong>((localization.Get("Product") ))<strong></td>
-						<td class="price-header"><strong>((localization.Get("Price") )) ((localization.Get("WithVAT") ))<strong></td>
 					</tr>
 				    <tr id="tr_header_title">
 						<td colspan="2" class="item border-radius">
 							<table style="vertical-align:middle; width:100%;">
 								<tr>
 									<td style="width:80%;"> ((MarkdownEncode(Title) ))</td>
-									<td class="itemPrice" rowspan="2">((AmountToPay))</td>
-									<td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
 								</tr>
 								<tr>
 									<td style="width:70%"> ((MarkdownEncode(Description) ))</td>
@@ -237,9 +238,33 @@ if Token.HasStateMachine then
 							</tr>
 						</table>
 				</div>
+			<div class="spaceItem"></div>
+			<div class="saved-card">
+			<table class="width100 responsive-table" style="text-align: left;">
+			<thead>
+			<tr>
+			<th>((localization.Get("Price") ))</th>
+			<th>((localization.Get("NumberOfPaymentsLabel") ))</th>
+			<th>((localization.Get("AlreadyPaidLabel") ))</th>
+			<th>((localization.Get("LeftToPayLabel") ))</th>
+			<th>((localization.Get("TotalAmount") ))</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+			<td data-label='((localization.Get("Price") ))'>((AmountToPay.ToString("f2") )) ((Currency))</td>
+			<td data-label='((localization.Get("NumberOfPaymentsLabel") ))'>((TotalNumberOfPayments ))</td>
+			<td data-label='((localization.Get("AlreadyPaidLabel") ))'>((TotalPaid.ToString("f2") )) ((Currency))</td>
+			<td data-label='((localization.Get("LeftToPayLabel") ))'>(((TotalAmountToPay - TotalPaid).ToString("f2") )) ((Currency))</td>
+			<td data-label='((localization.Get("TotalAmount") ))'>((TotalAmountToPay.ToString("f2") )) ((Currency))</td>
+			</tr>
+			</tbody>			
+			</table>
+			</div>
 			<div class="spaceItem"></div>[[;
 	if (ContractState != "PaymentCanceled" and ContractState != "PaymentNotPeformed" and ContractState != "PaymentNotPeformed" and ContractState != "Done") then 
 	(
+		Log.Informational(ContractState, null);
 		]]<div class="saved-card" id="billingDetailsForm">
 		<table class="width100 vaulter-form">
         <tr>
@@ -348,7 +373,7 @@ if Token.HasStateMachine then
     )
 	else if (ContractState == "PaymentCanceled" or ContractState == "PaymentNotPeformed") then 
 	(
-		]]**((localization.Get("Cancelled") ))**
+		]]<b style="color:red;">((localization.Get("Cancelled") ))</b>
 		<input type="hidden" id="cancelURL" value='((ErrorUrl ))' />[[;
 	)
 	else 

@@ -68,14 +68,14 @@ function GenerateLanguageDropdown() {
 
                 response.forEach(language => {
                     if (language.Code != 'sv') {
+
                         let option = document.createElement("option");
                         option.value = language.Code;
                         option.textContent = language.Name;
+                        option.selected = prefferedLanguage.value.toLowerCase() === language.Code.toLowerCase();
                         languageDropdown.appendChild(option);
                     }
                 });
-
-                languageDropdown.value = prefferedLanguage.value;
                 languageDropdown.addEventListener("change", function (e) {
                     PreferredLanguage = languageDropdown.value;
                     let url = new URL(window.location.href);

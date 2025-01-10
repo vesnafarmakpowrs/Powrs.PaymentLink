@@ -417,4 +417,13 @@
   <data name="TransactionSuccessfulCardNotValid" xml:space="preserve">
     <value>Plaćanje je uspešno, ali kartica mora biti važeća minimum do {0}. Isti iznos će biti refundiran na vaš račun. Molimo vas pokušajte sa drugom karticom.</value>
   </data>
+	<data name="NumberOfPaymentsLabel" xml:space="preserve">
+    <value>Broj plaćanja</value>
+  </data>
+	<data name="AlreadyPaidLabel" xml:space="preserve">
+    <value>Uplaćeno</value>
+  </data>
+	<data name="LeftToPayLabel" xml:space="preserve">
+    <value>Preostalo</value>
+  </data>
 </root>
