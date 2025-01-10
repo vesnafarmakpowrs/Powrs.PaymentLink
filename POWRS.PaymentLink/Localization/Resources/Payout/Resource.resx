@@ -414,4 +414,13 @@
 	<data name="BillingDetailsLabel" xml:space="preserve">
     <value>Billing details</value>
   </data>
+	<data name="NumberOfPaymentsLabel" xml:space="preserve">
+    <value>Number of installments</value>
+  </data>
+	<data name="AlreadyPaidLabel" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+	<data name="LeftToPayLabel" xml:space="preserve">
+    <value>Remaining</value>
+  </data>
 </root>
