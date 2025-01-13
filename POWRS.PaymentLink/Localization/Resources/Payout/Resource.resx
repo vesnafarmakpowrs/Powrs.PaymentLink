@@ -413,6 +413,7 @@
   </data>
   <data name="PaymentRefundCompleted" xml:space="preserve">
     <value>Payment refund successfully completed</value>
+  </data>
   <data name="TransactionSuccessfulCardNotValid" xml:space="preserve">
     <value>Payment is completed but card is not valid long enough. Card must be valid at least until {0}. Same amount will be refunded to your account automatically. Please try with different card.</value>
   </data>

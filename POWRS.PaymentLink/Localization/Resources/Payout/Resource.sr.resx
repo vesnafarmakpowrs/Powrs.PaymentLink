@@ -413,6 +413,7 @@
   </data>
   <data name="PaymentRefundCompleted" xml:space="preserve">
     <value>Povraćaj uplatu uspešno završeno</value>
+  </data>
   <data name="FullNameLabel" xml:space="preserve">
     <value>Ime i prezime</value>
   </data>

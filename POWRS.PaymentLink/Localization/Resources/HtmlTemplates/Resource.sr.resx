@@ -234,9 +234,6 @@
   <data name="PaymentNotPerformedTitle" xml:space="preserve">
     <value>Plaćanje nije izvršeno.</value>
   </data>
-  <data name="PaymentNotPerformedMessage" xml:space="preserve">
-    <value>Zdravo {0}, obaveštavamo vas da registracija kartice za proizvod {1} koju je izvršila kompanija {2} nije izvršena.</value>
-  </data>
   <data name="CancellationBuyerMessage" xml:space="preserve">
     <value>{0} je inicirao otkazivanje. Ako je ovo greška, molimo vas da kontaktirate prodavca.</value>
   </data>
@@ -282,20 +279,26 @@
   <data name="DescriptionColumn" xml:space="preserve">
     <value>Opis</value>
   </data>
-  <data name="TotalPaymentsColumn" xml:space="preserve">
-    <value>Ukupno plaćanja</value>
-  </data>
   <data name="PriceWithVatColumn" xml:space="preserve">
     <value>Cena sa PDV-om </value>
   </data>
   <data name="TotalColumn" xml:space="preserve">
     <value>Ukupno </value>
   </data>
+  <data name="TotalPaymentsColumn" xml:space="preserve">
+    <value>Ukupno plaćanja</value>
+  </data>
   <data name="TransactionDetailsColumn" xml:space="preserve">
     <value>Detalji transakcije </value>
   </data>
   <data name="ProductDetailsColumn" xml:space="preserve">
     <value>Detalji proizvoda</value>
+  </data>
+  <data name="CardRegistrationCompletedColumn" xml:space="preserve">
+    <value>Registracija kartice je uspesna!</value>
+  </data>
+  <data name="CardRegistrationDescription" xml:space="preserve">
+    <value>Zdravo {0}, tvoja kartica je uspešno registrovana. Naplata za {1} će se u budućnosti odvijati automatski do isteka ugovora sa {2}. Možete otkazati u svakom trenutku na sledećem &lt;a href='{3}'&gt;linku&lt;/a&gt;. </value>
   </data>
   <data name="StateChangedLabel" xml:space="preserve">
     <value>Desila se aktivnost</value>
@@ -315,14 +318,14 @@
   <data name="CardRegistrationCompleted" xml:space="preserve">
     <value>Registracija kartice je uspešna!</value>
   </data>
-  <data name="CardRegistrationDescription" xml:space="preserve">
-    <value>Zdravo {0}, tvoja kartica je uspešno registrovana. Naplata za {1} će se u budućnosti odvijati automatski do isteka ugovora sa {2}. Možete otkazati u svakom trenutku na sledećem &lt;a href='{3}'&gt;linku&lt;/a&gt;. </value>
-  </data>
   <data name="Done" xml:space="preserve">
     <value>Završeno.</value>
   </data>
   <data name="StateChangedDescription" xml:space="preserve">
     <value>Zdravo, zabeležena je promena na linku za plaćanje koji je napravljen za {0}.</value>
+  </data>
+  <data name="AwaitingCardRegistrationBuyerMessage" xml:space="preserve">
+    <value>Zdravo {0}, {1} je generisao paylink za vas. Na sledećem &lt;a href="{2}"&gt;linku&lt;/a&gt; možete izvršiti registraciju kartice koja će biti korišćenja u budućnosti za automatska plaćanja, pregledati sve transakcije vezane za ovaj proizvod, i takodje otkazati u bilo kom trenutku.</value>
   </data>
   <data name="StateChangedAwaitingCardRegistrationDescription" xml:space="preserve">
     <value>Link je napravljen za {0} i očekuje se registracija platne kartice.</value>
@@ -336,10 +339,10 @@
   <data name="PaymentFailedNextRetryMessage" xml:space="preserve">
     <value>Naredni pokušaj naplate će biti {0}.</value>
   </data>
-  <data name="AwaitingCardRegistrationBuyerMessage" xml:space="preserve">
-    <value>Zdravo {0}, {1} je generisao paylink za vas. Na sledećem &lt;a href="{2}"&gt;linku&lt;/a&gt; možete izvršiti registraciju kartice koja će biti korišćenja u budućnosti za automatska plaćanja, pregledati sve transakcije vezane za ovaj proizvod, i takodje otkazati u bilo kom trenutku.</value>
-  </data>
   <data name="AwaitingCardRegistration" xml:space="preserve">
     <value>Očekuje se registracija platne kartice</value>
+  </data>
+  <data name="PaymentNotPerformedMessage1" xml:space="preserve">
+    <value>Zdravo {0}, obaveštavamo vas da registracija kartice za proizvod {1} koju je izvršila kompanija {2} nije izvršena.</value>
   </data>
 </root>

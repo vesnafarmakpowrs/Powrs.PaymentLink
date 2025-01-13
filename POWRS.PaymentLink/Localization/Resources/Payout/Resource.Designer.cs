@@ -115,18 +115,20 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The amount returned to the customer.
-        /// </summary>
-        internal static string AmountToBeRefunded {
-            get {
-                return ResourceManager.GetString("AmountToBeRefunded", resourceCulture);
-  		}
-        }
         ///   Looks up a localized string similar to Paid.
         /// </summary>
         internal static string AlreadyPaidLabel {
             get {
                 return ResourceManager.GetString("AlreadyPaidLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The amount returned to the customer.
+        /// </summary>
+        internal static string AmountToBeRefunded {
+            get {
+                return ResourceManager.GetString("AmountToBeRefunded", resourceCulture);
             }
         }
         
@@ -253,6 +255,10 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string ChargebackFee {
             get {
                 return ResourceManager.GetString("ChargebackFee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         internal static string CityLabel {
