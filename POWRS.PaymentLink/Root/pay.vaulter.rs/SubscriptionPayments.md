@@ -16,6 +16,7 @@ Parameter: lng
 JavaScript: js/Events.js
 JavaScript: js/XmlHttp.js
 JavaScript: js/PaymentLink.js
+JavaScript: js/Subscription.js
 JavaScript: js/PayoutDetails.js
 
 <main class="border-radius">
