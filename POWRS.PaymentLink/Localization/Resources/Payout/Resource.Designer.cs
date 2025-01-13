@@ -502,7 +502,7 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Payment history.
+        ///   Looks up a localized string similar to Payments overview.
         /// </summary>
         internal static string PaymentHistoryLabel {
             get {

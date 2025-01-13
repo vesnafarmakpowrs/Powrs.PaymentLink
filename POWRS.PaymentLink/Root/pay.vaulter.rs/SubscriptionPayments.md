@@ -106,6 +106,7 @@ if Token.HasStateMachine then
 
 	EscrowFee:= select top 1 Value from CurrentState.VariableValues where Name = "EscrowFee";
 	AmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
+	DeliveryDate:= select top 1 Value from CurrentState.VariableValues where Name = "DeliveryDate";
 	TotalNumberOfPayments:= select top 1 Value from CurrentState.VariableValues where Name = "TotalNumberOfPayments";
 	TotalCompletedPayments:= select top 1 Value from CurrentState.VariableValues where Name = "TotalCompletedPayments";
 	ActiveCardDetails:= select top 1 Value from CurrentState.VariableValues where Name = "ActiveCardDetails";
@@ -383,15 +384,35 @@ if Token.HasStateMachine then
 		]]
 		<div class="spaceItem"></div>
 		[[;
-		Payments:= select top 20 * from PayspotPayments where TokenId = Token.TokenId;
-		nextPaymentDate := Now.AddDays(1).ToString('MMM dd,yyyy');		
+		Payments:= select top 20 * from PayspotPayments where TokenId = Token.TokenId and Result != "" order by DateCreated desc;
+		list:= Create(System.Collections.Generic.List, System.Object);
+		pendingPayment:= 
+		{
+			Amount: AmountToPay,
+			RefundedAmount: 0,
+			DateCreated: DeliveryDate,
+			Result: ""
+		};
+		list.Add(pendingPayment);
+		if(Payments != null and Payments.Length > 0) then
+			 (
+			 	foreach (payment in Payments) do 
+				(
+					list.Add({
+						Amount: payment.Amount,
+						RefundedAmount: payment.RefundedAmount,
+						DateCreated: payment.DateCreated,
+						Result: payment.Result
+					});
+				);
+			);
+		
+
 		]]<div class="spaceItem"></div>
 		<div class="payment-history">
 			<div>((localization.Get("PaymentHistoryLabel") ))</div>
 			 <div class="spaceItem"></div>[[;
-			 if(Payments != null and Payments.Length > 0) then
-			 (
-			 	foreach (payment in Payments) do (
+			 	foreach (payment in list) do (
 					]]
 					<div class="payment-container">
 					  <div class="payment-history-div">
@@ -418,11 +439,6 @@ if Token.HasStateMachine then
 						]]</div>					   
 				     <div class="payment-history-space"></div>[[;
 					);
-			 )
-			 else 
-			 (
-				]]<p>((localization.Get("NoPaymentsLabel") ))</p>[[;
-			 );
 			]]</div>
 		 <div class="spaceItem"></div>
 		 <div class="spaceItem"></div>
