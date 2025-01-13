@@ -98,6 +98,7 @@
 		<None Remove="Root\pay.vaulter.rs\js\IPSMobile.js" />
 		<None Remove="Root\pay.vaulter.rs\js\PaymentLink.js" />
 		<None Remove="Root\pay.vaulter.rs\js\Status.js" />
+		<None Remove="Root\pay.vaulter.rs\js\Subscription.js" />
 		<None Remove="Root\pay.vaulter.rs\Payout.md" />
 		<None Remove="Root\pay.vaulter.rs\resources\spinner.gif" />
 		<None Remove="Root\pay.vaulter.rs\resources\vaulterlogo.svg" />
@@ -157,6 +158,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\pay.vaulter.rs\js\Events.js">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\pay.vaulter.rs\js\Subscription.js">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\pay.vaulter.rs\js\Status.js">
