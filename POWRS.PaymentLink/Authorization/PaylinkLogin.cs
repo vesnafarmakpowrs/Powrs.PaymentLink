@@ -4,8 +4,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Waher.Content;
-using Waher.Events;
-using Waher.IoTGateway;
 using Waher.Networking.HTTP;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
