@@ -219,10 +219,10 @@
 				</State>
 
 				<State id="PaymentCanceled">
-					<OnEnter actionRef="MarkAsDone"/>
+					<OnEnter actionRef="PaymentCanceledOnEnter"/>
 				</State>
 				<State id="Done">
-					<OnEnter actionRef="MarkAsDone"/>
+					<OnEnter actionRef="DoneOnEnter"/>
 				</State>
 
 				<State id="PaymentFailed">
@@ -236,7 +236,7 @@
 				</State>
 
 				<State id="PaymentNotPerformed">
-					<OnEnter actionRef="MarkAsDone"/>
+					<OnEnter actionRef="PaymentNotPerformedOnEnter"/>
 				</State>
 
 				<Action id="SetCancellationReason">
@@ -246,6 +246,21 @@
 						</Then>
 					</If>
 				</Action>
+
+				<Action id="PaymentCanceledOnEnter">
+					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'PaymentCanceled'"/>
+					<CallAction actionRef="MarkAsDone" />
+				</Action>
+
+				<Action id="DoneOnEnter">
+					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'Done'"/>
+					<CallAction actionRef="MarkAsDone" />
+				</Action>
+				
+				<Action id="PaymentNotPerformedOnEnter">
+					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'PaymentNotPerformed'"/>
+					<CallAction actionRef="MarkAsDone" />
+				</Action>				
 				
 				<Action id="AwaitingCardRegistrationOnEnter">
 					<CallAction actionRef="SetServiceProvider"/>
@@ -282,16 +297,6 @@
 								Config:= Evaluate("ConfigClass.Instance");
 								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title + ' - ' + StateToNotify, html.HtmlText, null, null))");
 
-								sellerOrganization:= Evaluate("select top 1 ORGNAME from IoTBroker.Legal.Identity.LegalIdentity where Id=Seller");
-								sellerEmail:= Evaluate("select top 1 Email from OrganizationContactInformations where OrganizationName = sellerOrganization");
-
-								if(!Evaluate("System.String.IsNullOrEmpty(sellerOrganization)") and !Evaluate("!System.String.IsNullOrEmpty(sellerEmail)")) then
-								(
-								sellerTemplateUrl:= Evaluate("Gateway.GetUrl('/Payout/EmailTemplates/ReccurrencePayments/StateChanged.md?TokenId=' + TokenId + orderParamter)");
-								sellerHtml:= html:= Evaluate("Get(sellerTemplateUrl, {'Accept': 'text/html'})");
-								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, sellerEmail, Title + ' - ' + StateToNotify, sellerHtml.HtmlText, null, null))");
-								);
-
 								if(Evaluate("exists(tabId:= Global.PayspotRequests[TokenContract])")) then
 								(
 									Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([tabId],'StateUpdated', {'NewState': StateToNotify })");
@@ -326,7 +331,6 @@
 						ActiveCardDetails.RegistrationOrderId:= OrderId;
 						ActiveCardDetails.RegistrationAmount:= Amount;
 						ActiveCardDetails.CardRegistrationDateTime:= NowUtc;
-						ActiveCardDetails.IsValid:= false;
 					</Script>
 					<Try>
 						<BuyEDaler to="{Seller}"
@@ -346,9 +350,6 @@
 
 						<If condition="!Evaluate('POWRS.PaymentLink.CardHelper.IsCardExpired(DeliveryDate, ActiveCardDetails.ExpiryDate)')">
 							<Then>
-								<Script>
-									ActiveCardDetails.IsValid:= true;
-								</Script>
 								<PersistVariable name="PaymentType" value="{PaymentType}" />
 								<PersistVariable name="ActiveCardDetails" value="{ActiveCardDetails}" />
 								<CallAction actionRef="SaveOrderId" beforeActionScript="NewOrderId:= OrderId"/>
@@ -452,11 +453,10 @@
 							</Script>
 						</Catch>
 					</Try>
-					<PersistVariable name="ActiveCardDetails" value="{ActiveCardDetails}" />
 				</Action>
 				<Action id="UpdateBuyerInformations">
 					<Script>
-						fullName:= SelectXmlStr(Note,'/default:UpdateBuyerInformations/@buyerFullName');
+						fullName:= SelectXmlStr(Note,'/default:UpdateBuyerInformations/@fullName');
 						city:= SelectXmlStr(Note,'/default:UpdateBuyerInformations/@city');
 						phoneNumber:= SelectXmlStr(Note,'/default:UpdateBuyerInformations/@phoneNumber');
 						email:= SelectXmlStr(Note,'/default:UpdateBuyerInformations/@email');

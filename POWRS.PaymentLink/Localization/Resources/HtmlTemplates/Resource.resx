@@ -315,7 +315,7 @@
     <value><![CDATA[Hello {0}, {1} created paylink for you. On this <a href="{2}">link</a> you can register card for future payments, view all transactions related to this product and also cancel this contract any time.]]></value>
   </data>
 	<data name="StateChangedAwaitingCardRegistrationDescription" xml:space="preserve">
-    <value>Link is generated for {0} to registar card for future payment for {1}.</value>
+    <value>Link is generated for {0} to registar card for future payment.</value>
   </data>
 	<data name="StateChangedAwaitingCardRegistrationRefundDescription" xml:space="preserve">
     <value>Buyer will be charged {0} {1} in order to register card. After card registration, funds will be automatically refunded, and card will be saved for future payments untill the end of the contract.</value>

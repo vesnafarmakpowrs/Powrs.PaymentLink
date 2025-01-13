@@ -58,7 +58,6 @@ TotalCompletedPayments:= select top 1 Value from Variables where Name = "TotalCo
 TotalNumberOfPayments:= select top 1 Value from Variables where Name = "TotalNumberOfPayments";
 CancellationReason:= select top 1 Value from Variables where Name = "CancellationReason";
 Country:= select top 1 Value from Variables where Name = "Country";
-Payments:= select * from PayspotPayments where TokenId = TokenId;
 localizationCountry:= Country == "RS" ? "sr" : "en";
 localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, localizationCountry), "HtmlTemplates");
 year:= Now.Year.ToString();
@@ -74,10 +73,12 @@ year:= Now.Year.ToString();
 				<div id="description">
 					<p>((localization.GetFormat("PaymentCanceledMessage",BuyerName, Title, SellerName) ))</p>					
 				</div></div></div>
-		<div>
-		<p>((localization.Get("MaxRetriesNote") ))
-		((localization.GetFormat("CancellationNotInitiatedInfo", CompanyInfo.PhoneNumber, CompanyInfo.Email) ))
-		</p>
+		<div>[[;
+		if(FailedPaymentAttempts >= MaxFailedAttempts) then 
+		(
+			]]<p>((localization.Get("MaxRetriesNote") ))</p>[[;
+		);
+		]]<p>((localization.GetFormat("CancellationNotInitiatedInfo", CompanyInfo.PhoneNumber, CompanyInfo.Email) ))</p>
 		</div>
 		<div style="text-align: center;">
 		<i><p style="color: gray; font-size: 0.8em">((localization.Get("GoodbyeMessage") ))</p>

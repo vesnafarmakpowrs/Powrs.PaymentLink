@@ -206,6 +206,7 @@
 			<Folder name="js">
 				<Content fileName="Events.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="PaymentLink.js" altFolder="..\..\pay.vaulter.rs\js"/>
+				<Content fileName="Subscription.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="Status.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="PaymentLinkIPS.js" altFolder="..\..\pay.vaulter.rs\js"/>
 				<Content fileName="PayoutDetails.js" altFolder="..\..\pay.vaulter.rs\js"/>

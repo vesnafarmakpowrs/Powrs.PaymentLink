@@ -120,6 +120,13 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string AmountToBeRefunded {
             get {
                 return ResourceManager.GetString("AmountToBeRefunded", resourceCulture);
+  		}
+        }
+        ///   Looks up a localized string similar to Paid.
+        /// </summary>
+        internal static string AlreadyPaidLabel {
+            get {
+                return ResourceManager.GetString("AlreadyPaidLabel", resourceCulture);
             }
         }
         
@@ -147,6 +154,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string BankIDAuthorization {
             get {
                 return ResourceManager.GetString("BankIDAuthorization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Billing details.
+        /// </summary>
+        internal static string BillingDetailsLabel {
+            get {
+                return ResourceManager.GetString("BillingDetailsLabel", resourceCulture);
             }
         }
         
@@ -237,6 +253,11 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string ChargebackFee {
             get {
                 return ResourceManager.GetString("ChargebackFee", resourceCulture);
+        ///   Looks up a localized string similar to City.
+        /// </summary>
+        internal static string CityLabel {
+            get {
+                return ResourceManager.GetString("CityLabel", resourceCulture);
             }
         }
         
@@ -304,6 +325,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First name.
+        /// </summary>
+        internal static string FirstNameLabel {
+            get {
+                return ResourceManager.GetString("FirstNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Powrs D.O.O. Beograd, (org.no 21761818), Balkanska 2, Beograd.
         /// </summary>
         internal static string FooterCompanyInfo1 {
@@ -318,6 +348,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string FooterCompanyInfo2 {
             get {
                 return ResourceManager.GetString("FooterCompanyInfo2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First and Last name.
+        /// </summary>
+        internal static string FullNameLabel {
+            get {
+                return ResourceManager.GetString("FullNameLabel", resourceCulture);
             }
         }
         
@@ -367,6 +406,24 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last name.
+        /// </summary>
+        internal static string LastNameLabel {
+            get {
+                return ResourceManager.GetString("LastNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remaining.
+        /// </summary>
+        internal static string LeftToPayLabel {
+            get {
+                return ResourceManager.GetString("LeftToPayLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Legal entities.
         /// </summary>
         internal static string LegalEntitiesOrEntrepreneurs {
@@ -390,6 +447,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string NoPaymentsLabel {
             get {
                 return ResourceManager.GetString("NoPaymentsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of installments.
+        /// </summary>
+        internal static string NumberOfPaymentsLabel {
+            get {
+                return ResourceManager.GetString("NumberOfPaymentsLabel", resourceCulture);
             }
         }
         
@@ -466,7 +532,7 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Payment history.
+        ///   Looks up a localized string similar to Payments overview.
         /// </summary>
         internal static string PaymentHistoryLabel {
             get {
@@ -898,11 +964,29 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment is completed but card is not valid long enough. Card must be valid at least until {0}. Same amount will be refunded to your account automatically. Please try with different card..
+        /// </summary>
+        internal static string TransactionSuccessfulCardNotValid {
+            get {
+                return ResourceManager.GetString("TransactionSuccessfulCardNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retry Payment.
         /// </summary>
         internal static string TryAgain {
             get {
                 return ResourceManager.GetString("TryAgain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string UpdateLabel {
+            get {
+                return ResourceManager.GetString("UpdateLabel", resourceCulture);
             }
         }
         

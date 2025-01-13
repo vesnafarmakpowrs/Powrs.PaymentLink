@@ -628,7 +628,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link is generated for {0} to registar card for future payment for {1}..
+        ///   Looks up a localized string similar to Link is generated for {0} to registar card for future payment..
         /// </summary>
         internal static string StateChangedAwaitingCardRegistrationDescription {
             get {

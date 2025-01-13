@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function OnlyECommerce() {
 
     let isEcommerceInput = document.getElementById("IsEcommerce");
-    if (isEcommerceInput == null)
-    {
+    if (isEcommerceInput == null) {
         return;
     }
 
@@ -69,14 +68,14 @@ function GenerateLanguageDropdown() {
 
                 response.forEach(language => {
                     if (language.Code != 'sv') {
+
                         let option = document.createElement("option");
                         option.value = language.Code;
                         option.textContent = language.Name;
+                        option.selected = prefferedLanguage.value.toLowerCase() === language.Code.toLowerCase();
                         languageDropdown.appendChild(option);
                     }
                 });
-
-                languageDropdown.value = prefferedLanguage.value;
                 languageDropdown.addEventListener("change", function (e) {
                     PreferredLanguage = languageDropdown.value;
                     let url = new URL(window.location.href);
@@ -129,8 +128,7 @@ function RegisterUpdateNotifications(SessionId, RequestFromMobilePhone, QrCodeUs
 }
 
 
-function PopulateAuthorizationForm(Data)
-{
+function PopulateAuthorizationForm(Data) {
     if (Data == null) {
         console.log("api response is null");
         return;
@@ -164,30 +162,6 @@ function PopulateAuthorizationForm(Data)
 
     // Submit the form
     form.submit();
-}
-
-function InitiateCardAuthorization() {
-    HideSubmitPaymentDiv();
-    ShowHideElement("payspot-submit", "none");
-    ShowHideElement("tr_spinner", null);
-    CollapseDetails();
-
-    SendXmlHttpRequest("../Payout/API/InitiateCardAuthorization.ws",
-        {
-            "isFromMobile": isMobileDevice,
-            "tabId": TabID,
-            "timeZoneOffset": new Date().getTimezoneOffset()
-        },
-        (response) => {
-            PopulateAuthorizationForm(response);
-        },
-        (error) => {
-            if (error.status === 408) {
-                return;
-            }
-            alert(error);
-            TransactionFailed(null);
-        })
 }
 
 function InitiatePaymentForm(onSuccess) {
@@ -292,11 +266,4 @@ function ShowPayspotPage(Data) {
             document.getElementById("payspot_iframe").src = Data.Response;
         ShowHideElement("payspot_iframe", null);
     }
-}
-
-function StateUpdated(data) {
-    setTimeout(function () {
-        GenerateLanguageDropdown();
-        GenerateTranslations();
-    }, 1000);
 }
