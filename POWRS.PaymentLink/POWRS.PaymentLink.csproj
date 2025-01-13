@@ -105,6 +105,7 @@
 		<None Remove="Root\Payout\API\GetAvailableLanguages.ws" />
 		<None Remove="Root\Payout\API\Demo\InitiateIPSPayment.ws" />
 		<None Remove="Root\Payout\DealInfo.ws" />
+		<None Remove="Root\Payout\EmailTemplates\ReccurrencePayments\PaymentCanceled.md" />
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\GetAvailableLanguages.ws" />
@@ -184,6 +185,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\API\Demo\InitiateIPSPayment.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\Payout\EmailTemplates\ReccurrencePayments\PaymentCanceled.md">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\HtmlTemplates\EN\SendLinkViaEmail.html">
@@ -691,6 +695,9 @@
 	  <None Update="Root\pay.vaulter.rs\resources\vaulter_txt.svg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.vaulter.rs\SubscriptionPayments.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.vaulter.rs\TermsAndCondition.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -705,6 +712,27 @@
 	  </None>
 	  <None Update="Root\Payout\API\InitiatePayment.ws">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\AwaitingCardRegistration.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\CardRegistrationCompleted.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\Done.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\PaymentCompleted.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\PaymentFailed.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\PaymentNotPerformed.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\StateChanged.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\Fonts\Coanda-Bold.ttf">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
