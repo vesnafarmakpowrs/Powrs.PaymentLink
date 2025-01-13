@@ -388,7 +388,7 @@
     <value>Serbia ©2021 - {0} POWRS</value>
   </data>
   <data name="PaymentHistoryLabel" xml:space="preserve">
-    <value>Istorija plaćanja</value>
+    <value>Pregled svih plaćanja</value>
   </data>
   <data name="SavedCardLabel" xml:space="preserve">
     <value>Sačuvana kartica</value>
