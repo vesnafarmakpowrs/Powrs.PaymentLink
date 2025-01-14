@@ -500,6 +500,9 @@
 	  <None Update="Root\pay.vaulter.rs\css\IPS.cssx">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.vaulter.rs\css\ProgressBar.cssx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.vaulter.rs\css\Status.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
