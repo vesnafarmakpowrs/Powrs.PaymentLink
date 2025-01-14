@@ -232,6 +232,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string CardRegistrationCompletedColumn {
+            get {
+                return ResourceManager.GetString("CardRegistrationCompletedColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         internal static string CityLabel {
@@ -417,6 +426,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string MbankingInstructions {
             get {
                 return ResourceManager.GetString("MbankingInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next Installment on.
+        /// </summary>
+        internal static string NextInstallmentOn {
+            get {
+                return ResourceManager.GetString("NextInstallmentOn", resourceCulture);
             }
         }
         
@@ -876,6 +894,33 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string TotalAmountDue {
             get {
                 return ResourceManager.GetString("TotalAmountDue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Financed.
+        /// </summary>
+        internal static string TotalFinanced {
+            get {
+                return ResourceManager.GetString("TotalFinanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Paid.
+        /// </summary>
+        internal static string TotalPaid {
+            get {
+                return ResourceManager.GetString("TotalPaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Remaining.
+        /// </summary>
+        internal static string TotalRemaining {
+            get {
+                return ResourceManager.GetString("TotalRemaining", resourceCulture);
             }
         }
         

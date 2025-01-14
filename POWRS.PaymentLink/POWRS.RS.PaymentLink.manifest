@@ -177,12 +177,14 @@
 				</Folder>
 			</Folder>
 			<Folder name="css">
-				<Content fileName="Payout.cssx"/>
 				<Content fileName="Status.css"/>
 				<Content fileName="Banklist.css"/>
 				<Content fileName="Info.cssx"/>
 				<Content fileName="IPS.cssx"/>
+				<Content fileName="ProgressBar.cssx"/>
+				<Content fileName="Payout.cssx"/>
 				<Content fileName="Status.css"/>
+				<Content fileName="Subscription.cssx"/>
 				<Folder name="fonts">
 					<Content fileName="Coanda-Bold.ttf"/>
 					<Content fileName="RTDromo-Book.woff"/>

@@ -396,31 +396,46 @@
   <data name="TransactionSuccessfulCardNotValid" xml:space="preserve">
     <value>Payment is completed but card is not valid long enough. Card must be valid at least until {0}. Same amount will be refunded to your account automatically. Please try with different card.</value>
   </data>
-	<data name="FullNameLabel" xml:space="preserve">
+  <data name="FullNameLabel" xml:space="preserve">
     <value>First and Last name</value>
   </data>
-	<data name="FirstNameLabel" xml:space="preserve">
+  <data name="FirstNameLabel" xml:space="preserve">
     <value>First name</value>
   </data>
-	<data name="LastNameLabel" xml:space="preserve">
+  <data name="LastNameLabel" xml:space="preserve">
     <value>Last name</value>
   </data>
-	<data name="CityLabel" xml:space="preserve">
+  <data name="CityLabel" xml:space="preserve">
     <value>City</value>
   </data>
-	<data name="UpdateLabel" xml:space="preserve">
+  <data name="UpdateLabel" xml:space="preserve">
     <value>Update</value>
   </data>
-	<data name="BillingDetailsLabel" xml:space="preserve">
+  <data name="BillingDetailsLabel" xml:space="preserve">
     <value>Billing details</value>
   </data>
-	<data name="NumberOfPaymentsLabel" xml:space="preserve">
+  <data name="NumberOfPaymentsLabel" xml:space="preserve">
     <value>Number of installments</value>
   </data>
-	<data name="AlreadyPaidLabel" xml:space="preserve">
+  <data name="AlreadyPaidLabel" xml:space="preserve">
     <value>Paid</value>
   </data>
-	<data name="LeftToPayLabel" xml:space="preserve">
+  <data name="LeftToPayLabel" xml:space="preserve">
     <value>Remaining</value>
+  </data>
+  <data name="CardRegistrationCompletedColumn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TotalRemaining" xml:space="preserve">
+    <value>Total Remaining</value>
+  </data>
+  <data name="TotalFinanced" xml:space="preserve">
+    <value>Total Financed</value>
+  </data>
+  <data name="TotalPaid" xml:space="preserve">
+    <value>Total Paid</value>
+  </data>
+  <data name="NextInstallmentOn" xml:space="preserve">
+    <value>Next Installment on</value>
   </data>
 </root>

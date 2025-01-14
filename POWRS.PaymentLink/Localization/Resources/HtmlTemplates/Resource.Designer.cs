@@ -538,7 +538,7 @@ namespace POWRS.PaymentLink.Localization.Resources.HtmlTemplates {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello {0}, we are here to inform you that card registration for the {1} requested by the {1} is not performed..
+        ///   Looks up a localized string similar to Hello {0}, we are here to inform you that card registration for the {1} requested by the {2} is not performed..
         /// </summary>
         internal static string PaymentNotPerformedMessage {
             get {

@@ -179,13 +179,16 @@
 					<Content fileName="Error.md" altFolder="..\..\..\pay.vaulter.rs\Redirect\Mobile"/>
 				</Folder>
 			</Folder>
-			<Folder name="css" >
-				<Content fileName="Payout.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
+			<Folder name="css" >				
 				<Content fileName="Status.css" altFolder="..\..\pay.vaulter.rs\css"/>
 				<Content fileName="Banklist.css" altFolder="..\..\pay.vaulter.rs\css"/>
 				<Content fileName="Info.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
 				<Content fileName="IPS.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Content fileName="ProgressBar.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Content fileName="Payout.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
 				<Content fileName="Status.css" altFolder="..\..\pay.vaulter.rs\css"/>
+				<Content fileName="Subscription.cssx" altFolder="..\..\pay.vaulter.rs\css"/>
+				
 				<Folder name="fonts">
 					<Content fileName="Coanda-Bold.ttf"  altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
 					<Content fileName="RTDromo-Book.woff" altFolder="..\..\..\pay.vaulter.rs\css\fonts"/>
