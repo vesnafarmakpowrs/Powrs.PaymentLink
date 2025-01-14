@@ -211,13 +211,11 @@
 	}
 
    .payment-history-retry-btn {
-	 /* margin-left: auto;Push the button to the far right */
 	  cursor: pointer;
 	  margin-bottom: 8px;
     }
 	
 	.payment-history-cancel-btn {
-	 /* margin-left: auto;Push the button to the far right */
 	  cursor: pointer;
 	    margin-bottom: 8px;
     }
@@ -237,8 +235,59 @@
 	}
 	
 	.pending{
-	  background-color: #5383f0
+	  background-color: #5383f0;
 	}
+	
+	.summary {
+       background-color: #ffffff !important;
+    }
+	
+	.summary-container {
+      display: flex;
+      gap: 10px; 
+    }
+
+    .summary-column {
+      flex: 1; 
+      display: flex;
+      flex-direction: column;
+      gap: 5px; 
+      padding: 5px;
+    }
+
+    .summary-row-title {
+	  font-family: "RTDromo Light";
+	  font-size: medium;
+	  text-align: left;
+	  color: #6b6868;
+    }
+	
+	.summary-row-amount {
+	   text-align: left;
+    }
+	
+	.summary-row-notice {
+	  padding: 5px 0px 5px 5px;
+	  font-family: "RTDromo Light";
+	  font-size: small;
+	  text-align: left;
+	  color: #6b6868;
+    }
+	.line {
+    width: 100%; 
+    height: 1px; 
+	background-color: #c9c7c7;
+    margin: 10px 0; 
+    }
+	
+   .summary-total-lbl {
+	   padding-top: 5px;
+	  font-family: "RTDromo";
+	  font-size: small;
+	  text-align: left;
+    }
+	
+	
 
 @media (max-width: 1500px) {
 
