@@ -239,7 +239,7 @@
 	}
 	
 	.summary {
-       background-color: #ffffff !important;
+       background-color: #f9f9f9 !important;
     }
 	
 	.summary-container {
@@ -287,9 +287,17 @@
 	  text-align: left;
     }
 	
+	.billing-dtl-header-row {
+		display: flex;
+        margin-bottom: 10px;
+		align-items: center;
+	}
+	
 	.billing-dtl-row {
         display: flex;
         margin-bottom: 10px;
+		font-family: "RTDromo Light";
+	  font-size: medium;
     }
 
     .billing-dtl-column {
@@ -301,6 +309,10 @@
         width: 100%;
         box-sizing: border-box;
     }
+	
+	.billing-dtl-input{
+		background-color: #d9d9d9;
+	}
 
     .btn-black {
         background-color: black;
@@ -322,6 +334,22 @@
 	
 
 @media (max-width: 1500px) {
+
+	.billing-dtl-header-row {
+        margin-bottom: 0px;;
+	}
+	
+	.billing-dtl-row  {
+		flex-direction: column;  /* Stack text boxes vertically on smaller screens */
+	}
+	
+	 .billing-dtl-column {
+        padding: 5px 5px;
+    }
+	
+	.billing-dtl-row {
+        margin-bottom: 0px;
+    }
 
         .saved-card {
             margin: 0px;

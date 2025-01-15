@@ -299,9 +299,9 @@ if Token.HasStateMachine then
 	if (ContractState != "PaymentCanceled" and ContractState != "PaymentNotPeformed" and ContractState != "PaymentNotPeformed" and ContractState != "Done") then 
 	(
 		Log.Informational(ContractState, null);
-		]]<div class="saved-card" id="billingDetailsForm">
+		]]<div class="saved-card summary" id="billingDetailsForm">
 		<div class="width100 vaulter-form">
-				<div class="billing-dtl-row">
+				<div class="billing-dtl-header-row">
 					<div class="billing-dtl-column">
 					((localization.Get("BillingDetailsLabel") ))
 					</div>
@@ -313,27 +313,27 @@ if Token.HasStateMachine then
 				</div>
 				<div class="billing-dtl-row">
 					<div class="billing-dtl-column">
-						<input class="width100" type="text" id="fullName" name="fullName" value='((BuyerFullName ))' placeholder="((localization.Get("FullNameLabel") ))" style="display: none;">
+						<input class="width100 billing-dtl-input" type="text" id="fullName" name="fullName" value='((BuyerFullName ))' placeholder="((localization.Get("FullNameLabel") ))" style="display: none;">
 						<label id="fullName-lbl">((localization.Get("FullNameLabel") )): ((BuyerFullName ))</label>
 					</div>
 				</div>
 				<div class="billing-dtl-row">
 					<div class="billing-dtl-column">
-						<input class="width100" type="text" id="address" name="address" value='((BuyerAddress ))' placeholder="((localization.Get("Address") ))" style="display: none;">
+						<input class="width100 billing-dtl-input" type="text" id="address" name="address" value='((BuyerAddress ))' placeholder="((localization.Get("Address") ))" style="display: none;">
 						<label id="address-lbl">((localization.Get("Address") )): ((BuyerAddress ))</label>
 					</div>
 					<div class="billing-dtl-column">
-						<input class="width100" type="text" id="city" name="city" value='((BuyerCity ))' placeholder="((localization.Get("CityLabel") ))" style="display: none;">
+						<input class="width100 billing-dtl-input" type="text" id="city" name="city" value='((BuyerCity ))' placeholder="((localization.Get("CityLabel") ))" style="display: none;">
 						<label id="city-lbl">((localization.Get("CityLabel") )): ((BuyerCity ))</label>
 					</div>
 				</div>
 				<div class="billing-dtl-row">
 					<div class="billing-dtl-column">
-						<input class="width100" type="tel" id="phoneNumber" name="phoneNumber" value='((BuyerPhoneNumber ))' placeholder="((localization.Get("PhoneNumber") ))" style="display: none;">
+						<input class="width100 billing-dtl-input" type="tel" id="phoneNumber" name="phoneNumber" value='((BuyerPhoneNumber ))' placeholder="((localization.Get("PhoneNumber") ))" style="display: none;">
 						<label id="phoneNumber-lbl">((localization.Get("PhoneNumber") )): ((BuyerPhoneNumber ))</label>
 					</div>
 					<div class="billing-dtl-column">
-						<input class="width100" type="email" id="email" name="email" value='((BuyerEmail ))' placeholder="((localization.Get("EmailAddress") ))" style="display: none;">
+						<input class="width100 billing-dtl-input" type="email" id="email" name="email" value='((BuyerEmail ))' placeholder="((localization.Get("EmailAddress") ))" style="display: none;">
 						<label id="email-lbl">((localization.Get("EmailAddress") )): ((BuyerEmail ))</label>
 					</div>
 				</div>
