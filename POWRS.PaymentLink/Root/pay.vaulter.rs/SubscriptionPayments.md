@@ -449,7 +449,7 @@ if Token.HasStateMachine then
 					  <div class="payment-history-div">
 					    <div>
 							<div class="payment-history-amount">((payment.Amount.ToString("f2") )) ((Currency ))</div>
-							<div class="payment-history-date">((payment.DateCreated.ToString("dd/MM/yyyy") ))</div>	[[;
+							<div class="payment-history-date">((payment.DateCreated.ToString("MMM dd, yyyy") ))</div>	[[;
 						]]</div></div>[[;
 						if(payment.RefundedAmount != null and payment.RefundedAmount > 0) then 
 						(
