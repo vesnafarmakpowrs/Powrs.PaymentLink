@@ -192,7 +192,7 @@ if Token.HasStateMachine then
 			  if (payment.Result == "") then 
 					(
 					  pendingAmount := payment.Amount;
-					  pendingDate := payment.DateCreated.ToString("dd/MM/yyyy");
+					  pendingDate := payment.DateCreated.ToString("MMM dd,yyyy");
 					); 
 			);
 
@@ -284,7 +284,7 @@ if Token.HasStateMachine then
 					</div>
 				</div>	 
 				<div class="meter green nostripes">
-					<span style="width: 33.3%"></span>
+					<span style="width:((((TotalPaid/TotalAmountToPay)* 100).ToString("f2") ))%"></span>
 				</div>
 				<div class="summary-row-notice">
 				  <span>((localization.Get("NextInstallmentOn") ))  ((pendingDate )) : ((pendingAmount )) ((Currency))<span>
