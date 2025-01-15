@@ -101,6 +101,7 @@ function EditBuyerDetails() {
         isEditMode ? ShowHideElement(elementId, null) : ShowHideElement(elementId, "none");
         isEditMode ? ShowHideElement(elementId + "-lbl", "none") : ShowHideElement(elementId + "-lbl", null);
     });
+    !isEditMode ? UpdateBuyerInformations(btnEditBuyerDetails) : null;
 }
 
 function InitiateCancellation() {
