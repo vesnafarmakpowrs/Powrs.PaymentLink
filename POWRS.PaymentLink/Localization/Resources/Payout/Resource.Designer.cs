@@ -448,6 +448,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next Installment on.
+        /// </summary>
+        internal static string NextInstallmentOn {
+            get {
+                return ResourceManager.GetString("NextInstallmentOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No payments yet....
         /// </summary>
         internal static string NoPaymentsLabel {
@@ -939,6 +948,33 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         internal static string TotalAmountDue {
             get {
                 return ResourceManager.GetString("TotalAmountDue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Financed.
+        /// </summary>
+        internal static string TotalFinanced {
+            get {
+                return ResourceManager.GetString("TotalFinanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Paid.
+        /// </summary>
+        internal static string TotalPaid {
+            get {
+                return ResourceManager.GetString("TotalPaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Remaining.
+        /// </summary>
+        internal static string TotalRemaining {
+            get {
+                return ResourceManager.GetString("TotalRemaining", resourceCulture);
             }
         }
         

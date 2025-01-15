@@ -9,6 +9,7 @@ Expires: 0
 CSS: css/Payout.cssx
 CSS: css/Subscription.cssx
 CSS: css/IPS.cssx
+CSS: css/ProgressBar.cssx
 Icon: favicon.ico
 viewport : Width=device-width, initial-scale=1
 Parameter: ID
@@ -163,7 +164,37 @@ if Token.HasStateMachine then
                 "ipsOnly": IpsOnly,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
-  
+    Payments:= select top 20 * from PayspotPayments where TokenId = Token.TokenId and Result != "" order by DateCreated desc;
+		list:= Create(System.Collections.Generic.List, System.Object);
+		pendingPayment:= 
+		{
+			Amount: AmountToPay,
+			RefundedAmount: 0,
+			DateCreated: DeliveryDate,
+			Result: ""
+		};
+		list.Add(pendingPayment);
+		if(Payments != null and Payments.Length > 0) then
+			 (
+			 	foreach (payment in Payments) do 
+				(
+					list.Add({
+						Amount: payment.Amount,
+						RefundedAmount: payment.RefundedAmount,
+						DateCreated: payment.DateCreated,
+						Result: payment.Result
+					});
+				);
+			);
+			pendingAmount := 0;
+			pendingDate := "";
+			foreach (payment in list) do (
+			  if (payment.Result == "") then 
+					(
+					  pendingAmount := payment.Amount;
+					  pendingDate := payment.DateCreated.ToString("MMM dd,yyyy");
+					); 
+			);
 
 			]]<table style="width:100%">
 				<tr class="welcomeLbl">   
@@ -241,52 +272,53 @@ if Token.HasStateMachine then
 						</table>
 				</div>
 			<div class="spaceItem"></div>
-			<div class="saved-card">
-			<table class="width100 responsive-table" style="text-align: left;">
-			<thead>
-			<tr>
-			<th>((localization.Get("Price") ))</th>
-			<th>((localization.Get("NumberOfPaymentsLabel") ))</th>
-			<th>((localization.Get("AlreadyPaidLabel") ))</th>
-			<th>((localization.Get("LeftToPayLabel") ))</th>
-			<th>((localization.Get("TotalAmount") ))</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr>
-			<td data-label='((localization.Get("Price") ))'>((AmountToPay.ToString("f2") )) ((Currency))</td>
-			<td data-label='((localization.Get("NumberOfPaymentsLabel") ))'>((TotalNumberOfPayments ))</td>
-			<td data-label='((localization.Get("AlreadyPaidLabel") ))'>((TotalPaid.ToString("f2") )) ((Currency))</td>
-			<td data-label='((localization.Get("LeftToPayLabel") ))'>(((TotalAmountToPay - TotalPaid).ToString("f2") )) ((Currency))</td>
-			<td data-label='((localization.Get("TotalAmount") ))'>((TotalAmountToPay.ToString("f2") )) ((Currency))</td>
-			</tr>
-			</tbody>			
-			</table>
+			<div class="saved-card summary" id="PaymentSummary">
+				<div class="summary-container">
+					<div class="summary-column">
+						<div class="summary-row-title">((localization.Get("TotalPaid") ))</div>
+						<div class="summary-row-amount">((TotalPaid.ToString("f2") )) ((Currency))</div>
+					</div>
+					<div class="summary-column">
+						<div class="summary-row-title">((localization.Get("TotalRemaining") ))</div>
+						<div class="summary-row-amount">(((TotalAmountToPay - TotalPaid).ToString("f2") )) ((Currency))</div>
+					</div>
+				</div>	 
+				<div class="meter green nostripes">
+					<span style="width:((((TotalPaid/TotalAmountToPay)* 100).ToString("f2") ))%"></span>
+				</div>
+				<div class="summary-row-notice">
+				  <span>((localization.Get("NextInstallmentOn") ))  ((pendingDate )) : ((pendingAmount )) ((Currency))<span>
+				</div>
+				<div class="line"></div>
+				<div class="summary-container">
+					<div class="summary-column summary-total-lbl">((localization.Get("TotalFinanced") ))</div>
+					<div class="summary-column">((AmountToPay.ToString("f2") )) ((Currency))</div>
+				</div>
 			</div>
-			<div class="spaceItem"></div>[[;
+   		<div class="spaceItem"></div>[[;
 	if (ContractState != "PaymentCanceled" and ContractState != "PaymentNotPeformed" and ContractState != "PaymentNotPeformed" and ContractState != "Done") then 
 	(
 		Log.Informational(ContractState, null);
 		]]<div class="saved-card" id="billingDetailsForm">
-		<table class="width100 vaulter-form">
-        <tr>
-			<td colspan="4"><b>((localization.Get("BillingDetailsLabel") ))</b></td>
-            <td colspan="4" style="text-align: right;">
-                <button class="btn-black btn-show add-new-card-btn" type="button" onclick="UpdateBuyerInformations(this);">((localization.Get("UpdateLabel") ))</button>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="8"><input class="width100" type="text" name="fullName" value='((BuyerFullName ))' placeholder="((localization.Get("FullNameLabel") ))"></td>
-        </tr>
-        <tr>
-            <td colspan="4"><input class="width100" type="text" name="address" value='((BuyerAddress ))' placeholder="((localization.Get("Address") ))"></td>
-            <td colspan="4"><input class="width100" type="text" name="city" value='((BuyerCity ))' placeholder="((localization.Get("CityLabel") ))"></td>
-        </tr>
-        <tr>
-            <td colspan="4"><input class="width100" type="tel" name="phoneNumber" value='((BuyerPhoneNumber ))' placeholder="((localization.Get("PhoneNumber") ))"></td>
-            <td colspan="4"><input class="width100" type="email" name="email" value='((BuyerEmail ))' placeholder="((localization.Get("EmailAddress") ))"></td>
-        </tr>
-    </table>
+			<table class="width100 vaulter-form">
+			<tr>
+				<td colspan="4"><b>((localization.Get("BillingDetailsLabel") ))</b></td>
+				<td colspan="4" style="text-align: right;">
+					<button class="btn-black btn-show add-new-card-btn" type="button" onclick="UpdateBuyerInformations(this);">((localization.Get("UpdateLabel") ))</button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="8"><input class="width100" type="text" name="fullName" value='((BuyerFullName ))' placeholder="((localization.Get("FullNameLabel") ))"></td>
+			</tr>
+			<tr>
+				<td colspan="4"><input class="width100" type="text" name="address" value='((BuyerAddress ))' placeholder="((localization.Get("Address") ))"></td>
+				<td colspan="4"><input class="width100" type="text" name="city" value='((BuyerCity ))' placeholder="((localization.Get("CityLabel") ))"></td>
+			</tr>
+			<tr>
+				<td colspan="4"><input class="width100" type="tel" name="phoneNumber" value='((BuyerPhoneNumber ))' placeholder="((localization.Get("PhoneNumber") ))"></td>
+				<td colspan="4"><input class="width100" type="email" name="email" value='((BuyerEmail ))' placeholder="((localization.Get("EmailAddress") ))"></td>
+			</tr>
+			</table>
 		</div>
 		<div class="spaceItem"></div>
 		[[;
@@ -385,28 +417,7 @@ if Token.HasStateMachine then
 		]]
 		<div class="spaceItem"></div>
 		[[;
-		Payments:= select top 20 * from PayspotPayments where TokenId = Token.TokenId and Result != "" order by DateCreated desc;
-		list:= Create(System.Collections.Generic.List, System.Object);
-		pendingPayment:= 
-		{
-			Amount: AmountToPay,
-			RefundedAmount: 0,
-			DateCreated: DeliveryDate,
-			Result: ""
-		};
-		list.Add(pendingPayment);
-		if(Payments != null and Payments.Length > 0) then
-			 (
-			 	foreach (payment in Payments) do 
-				(
-					list.Add({
-						Amount: payment.Amount,
-						RefundedAmount: payment.RefundedAmount,
-						DateCreated: payment.DateCreated,
-						Result: payment.Result
-					});
-				);
-			);
+		
 		
 
 		]]<div class="spaceItem"></div>

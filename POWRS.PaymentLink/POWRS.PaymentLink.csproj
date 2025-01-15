@@ -298,10 +298,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Waher.Content" Version="3.0.0" />
-		<PackageReference Include="Waher.Events" Version="1.4.0" />
-		<PackageReference Include="Waher.IoTGateway" Version="3.1.0" />
-		<PackageReference Include="Waher.Persistence" Version="1.14.0" />		
+		<PackageReference Include="Waher.Content" Version="2.6.14" />
+		<PackageReference Include="Waher.Events" Version="1.3.0" />
+		<PackageReference Include="Waher.IoTGateway" Version="3.0.0" />
+		<PackageReference Include="Waher.Persistence" Version="1.13.0" />		
 	</ItemGroup>
 
 	<ItemGroup>
@@ -505,6 +505,9 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\css\IPS.cssx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\pay.vaulter.rs\css\ProgressBar.cssx">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\pay.vaulter.rs\css\Status.css">
