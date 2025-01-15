@@ -282,8 +282,8 @@
 	
    .summary-total-lbl {
 	   padding-top: 5px;
-	  font-family: "RTDromo";
-	  font-size: small;
+	  font-family: "RTDromo Light";
+	  font-size: medium;
 	  text-align: left;
     }
 	
