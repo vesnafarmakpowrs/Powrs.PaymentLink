@@ -1,4 +1,4 @@
-SessionUser := Global.ValidateAgentApiToken(false, false);
+SessionUser := Global.ValidateSmartAgentApiToken();
 
 logObject := SessionUser.username;
 logEventID := "GetOrganizations.ws";
@@ -6,12 +6,7 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
-	if(SessionUser.orgName = "") then 
-	(
-		Error("Your Account don't have defined organization name");
-	);
-	
-	myOrganizations := POWRS.PaymentLink.Models.BrokerAccountRole.GetAllOrganizationChildren(SessionUser.orgName);
+	myOrganizations := POWRS.PaymentLink.Module.PaymentLinkModule.GetUsernameOrganizations(SessionUser.username);
 )
 catch
 (
