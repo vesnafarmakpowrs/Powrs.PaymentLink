@@ -39,13 +39,9 @@ namespace POWRS.PaymentLink.Authorization
                 throw new BadRequestException("Request body is missing");
             }
 
-            if (await Request.DecodeDataAsync() is not ContentResponse contentResponse)
+            if (await Request.DecodeDataAsync() is not Dictionary<string, object> requestBody)
             {
                 throw new BadRequestException("Expected content response type object.");
-            }
-            if (contentResponse.Decoded is not Dictionary<string, object> requestBody)
-            {
-                throw new BadRequestException("Content expected to be Dictionary.");
             }
 
             return requestBody;
