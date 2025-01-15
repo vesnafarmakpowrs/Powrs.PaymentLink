@@ -88,6 +88,21 @@ function UpdateBuyerInformations(btn) {
             btn.disabled = false;
         })
 }
+
+let isEditMode = false;
+
+function EditBuyerDetails() {
+    isEditMode = !isEditMode;
+    const btnEditBuyerDetails = document.querySelector('#btnEditBuyerDetails');
+
+    isEditMode ? btnEditBuyerDetails.textContent = 'Snimi' : btnEditBuyerDetails.textContent = 'Azuriraj';
+    let buyerDetailElements = ["fullName", "address", "city", "phoneNumber", "email"];
+    buyerDetailElements.forEach(function (elementId, index) {
+        isEditMode ? ShowHideElement(elementId, null) : ShowHideElement(elementId, "none");
+        isEditMode ? ShowHideElement(elementId + "-lbl", "none") : ShowHideElement(elementId + "-lbl", null);
+    });
+}
+
 function InitiateCancellation() {
     ShowHideElement("tr_spinner", null);
     SendXmlHttpRequest("../Payout/API/InitiateCancellation.ws",

@@ -287,6 +287,38 @@
 	  text-align: left;
     }
 	
+	.billing-dtl-row {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .billing-dtl-column {
+        flex: 1;
+        padding: 0 5px;
+    }
+
+    .width100 {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .btn-black {
+        background-color: black;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-black:hover {
+        background-color: #333;
+    }
+
+    .saved-card {
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
 	
 
 @media (max-width: 1500px) {
