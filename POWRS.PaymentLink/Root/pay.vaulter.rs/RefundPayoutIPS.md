@@ -58,16 +58,22 @@ if(LanguageNamespace == null) then
 	  Return("");
 	);
 
-	TokenId :=select top 1 TokenId from NeuroFeatureTokens where CreationContract = ID;
-    stateMachineSample := select * from StateMachineSamples where StateMachineId = TokenId;
-	CurrentState:= select top 1 Value from stateMachineSample where Variable = "<State>" order by TimeStamp desc;
-	 
-	if(CurrentState == "") then 
+	Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
+
+	PaymentResult := select Top 1 Result from PayspotPayments where TokenId = Token.TokenId;
+
+	if !exists(Token) then
 	(
-		]]<b>Payment link is not valid</b>[[;
-		Return("");
+	  ]]<b>Payment link is not valid</b>[[;
+	  Return("");
 	);
-	PaymentResult := select Top 1 Result from PayspotPayments where TokenId = TokenId;
+
+	if Token.HasStateMachine then
+	(
+		CurrentState:=Token.GetCurrentStateVariables();
+		if exists(CurrentState) then
+			ContractState:= CurrentState.State;
+	);
 
 	Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
 	   
@@ -133,24 +139,28 @@ if(LanguageNamespace == null) then
 		  if Parameter.Name == 'ErrorUrl' then ErrorUrl := Parameter.Value.ToString();
 	);
 
-	    Title :=  select top 1 Value from stateMachineSample where Variable = "Title" order by TimeStamp desc;
-		Description :=  select top 1 Value from stateMachineSample where Variable = "Description" order by TimeStamp desc;
-		ContractValue :=  select top 1 Value from stateMachineSample where Variable = "Price" order by TimeStamp desc;
-		Currency :=  select top 1 Value from stateMachineSample where Variable = "Currency" order by TimeStamp desc;
-		Country :=  select top 1 Value from stateMachineSample where Variable = "Country" order by TimeStamp desc;
-		Commission :=  select top 1 Value from stateMachineSample where Variable = "Commission" order by TimeStamp desc;
-		Buyer :=  select top 1 Value from stateMachineSample where Variable = "Buyer" order by TimeStamp desc;
-	    BuyerEmail :=  select top 1 Value from stateMachineSample where Variable = "BuyerEmail" order by TimeStamp desc;
-		BuyerPhoneNumber :=  select top 1 Value from stateMachineSample where Variable = "BuyerPhoneNumber" order by TimeStamp desc;
-		BuyerAddress :=  select top 1 Value from stateMachineSample where Variable = "BuyerAddress" order by TimeStamp desc;
-		BuyerCity :=  select top 1 Value from stateMachineSample where Variable = "BuyerCity" order by TimeStamp desc;
-		EscrowFee :=  select top 1 Value from stateMachineSample where Variable = "EscrowFee" order by TimeStamp desc;
-		AmountToPay :=  select top 1 Value from stateMachineSample where Variable = "AmountToPay" order by TimeStamp desc;
-		SuccessUrl :=  select top 1 Value from stateMachineSample where Variable = "SuccessUrl" order by TimeStamp desc;
-		IPSFeePercent :=  select top 1 Value from stateMachineSample where Variable = "IPSFee" order by TimeStamp desc;
-		AmountToBeRefunded :=  select top 1 Value from stateMachineSample where Variable = "AmountToBeRefunded" order by TimeStamp desc;
-	
-	
+	foreach Variable in (CurrentState.VariableValues ?? []) do 
+	(        
+		Variable.Name like "Title" ?   Title := MarkdownEncode(Variable.Value);
+		Variable.Name like "Description" ?   Description := MarkdownEncode(Variable.Value);
+		Variable.Name like "Price" ?   ContractValue := Variable.Value;
+		Variable.Name like "Currency" ?   MarkdownEncode(Currency := Variable.Value);
+		Variable.Name like "Country" ?   Country := MarkdownEncode(Variable.Value.ToString());
+		Variable.Name like "Commission" ?   Commission := Variable.Value;
+		Variable.Name like "Buyer" ?   BuyerFullName := MarkdownEncode(Variable.Value);
+		Variable.Name like "BuyerEmail" ?  BuyerEmail := MarkdownEncode(Variable.Value);
+		Variable.Name like "BuyerPhoneNumber" ?  BuyerPhoneNumber := MarkdownEncode(Variable.Value);
+		Variable.Name like "BuyerAddress" ?  BuyerAddress := MarkdownEncode(Variable.Value);
+		Variable.Name like "BuyerCity" ?  BuyerCity := MarkdownEncode(Variable.Value);		
+		Variable.Name like "EscrowFee" ?   EscrowFee := MarkdownEncode(Variable.Value.ToString("N2"));
+		Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString();	
+		Variable.Name like 'SuccessUrl' ? SuccessUrl := Variable.Value;
+		Variable.Name like "IPSFee" ?   IPSFeePercent := Variable.Value;
+		Variable.Name like "AmountToBeRefunded" ?   AmountToBeRefunded := Variable.Value;
+		
+		
+	);
+
     IPSFee := Double(AmountToBeRefunded) * (Double(IPSFeePercent)/100);	
 	IPSFee < 20 ? IPSFee := 20;
 	TotalAmount := Double(AmountToBeRefunded) + IPSFee;
@@ -163,7 +173,7 @@ if(LanguageNamespace == null) then
 		{
 			"iss":Gateway.Domain, 
 			"contractId": ID,
-			"tokenId": TokenId,
+			"tokenId": Token.TokenId,
 			"sub": BuyerFullName, 
 			"id": NewGuid().ToString(),
 			"ip": Request.RemoteEndPoint,
@@ -172,14 +182,13 @@ if(LanguageNamespace == null) then
 			"exp": NowUtc.AddMinutes(tokenDurationInMinutes)
 		});
 	bankList := Create(System.Collections.Generic.List, POWRS.Networking.PaySpot.Models.GetBanks.Bank);
-	DateCompleted := select top 1 Value from stateMachineSample where Variable = "PaymentDateTimeInBuyerLocalTime" order by TimeStamp desc;
-	    
+	DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTimeInBuyerLocalTime";
 	if (DateCompleted != null) then
 	(
-		DateCompleted := select top 1 Value from stateMachineSample where Variable = "PaymentDateTime" order by TimeStamp desc;
+		DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTime";
 	);
 	
-		if (TYPE != "" && CurrentState == "AwaitingForPayment") then
+		if (TYPE != "" && ContractState == "AwaitingForPayment") then
 		(
 		    if ( TYPE == 'IE') then 
 			(
@@ -263,7 +272,7 @@ if(LanguageNamespace == null) then
 								</div>
 								<div class="refund-sticker refund">((localization.Get("RefundInfo") ))</div>
 							</div>[[;
-						if (CurrentState == "AwaitingforRefundPayment" and TYPE=="") then 
+						if (ContractState == "AwaitingforRefundPayment" and TYPE=="") then 
 						( 
 							]]<div class="refund-container termsAndCondition-container">
 							   <div class="refund-lbl"><label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a> vaulter</label></div>
@@ -274,7 +283,7 @@ if(LanguageNamespace == null) then
 					<div class="spaceItem"></div>[[;
 			);
 				
-			if (CurrentState == "AwaitingforRefundPayment" and TYPE=="") then 
+			if (ContractState == "AwaitingforRefundPayment" and TYPE=="") then 
 			( 
 			  ]]<div class="spaceItem"></div>
 				<div id="retry-payment" style="display:none">
@@ -341,19 +350,19 @@ if(LanguageNamespace == null) then
 				</div>[[;
 				
 			)
-			else if (CurrentState == "RefundBuyer" || CurrentState == "RefundBuyerFailed")then 
+			else if (ContractState == "RefundBuyer" || ContractState == "RefundBuyerFailed")then 
 			(
 				]]<div class="payment-completed"><p>** ((localization.Get("PaymentRefundCompleted") ))**</p> [[;
 
-			    DateCompleted := select top 1 Value from stateMachineSample.VariableValues where Name = "RefundPaymentDateTimeInBuyerLocalTime";
+			    DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "RefundPaymentDateTimeInBuyerLocalTime";
 			    if(DateCompleted == null) then
 			     (
-				   DateCompleted := select top 1 Value from stateMachineSample.VariableValues where Name = "PaymentDateTime";
+				   DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTime";
 			     );
 			    ]]<p>**Datum plaćanja: ((DateCompleted.ToLocalTime().ToString("dd-MM-yyyy HH:mm") ))**</p></div>
 			      <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
 			)
-			else if CurrentState == "PaymentCanceled" then 
+			else if ContractState == "PaymentCanceled" then 
 			(
 			  **Buyer refunded**
 			);
