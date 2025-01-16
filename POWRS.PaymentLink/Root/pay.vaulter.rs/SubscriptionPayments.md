@@ -36,21 +36,20 @@ catch
   Return("");
 );
 
-Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
-if !exists(Token) then
+TokenId:=select top 1 TokenId from IoTBroker.NeuroFeatures.Token where CreationContract=ID;
+if !exists(TokenId) then
 (
   ]]<b>Payment link is not valid</b>[[;
   Return("");
 );
 
-if Token.HasStateMachine then
+stateMachineSample := select * from StateMachineSamples where StateMachineId = TokenId;
+CurrentState:= select top 1 Value from stateMachineSample where Variable = "<State>" order by TimeStamp desc;
+if(CurrentState == "") then 
 (
-    CurrentState:=Token.GetCurrentStateVariables();
-    if exists(CurrentState) then
-        ContractState:= CurrentState.State;
+ ]]<b>Payment link is not valid</b>[[;
+  Return("");
 );
-
-	VariableValues:= CurrentState.VariableValues;
 
     Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
    
@@ -93,25 +92,25 @@ if Token.HasStateMachine then
 
     FileName:= SellerId + Token.ShortId;
     
-    RemoteId :=  select top 1 Value from CurrentState.VariableValues where Name = "RemoteId";
-	SuccessUrl := select top 1 Value from CurrentState.VariableValues where Name = "SuccessUrl";
-	ErrorUrl := select top 1 Value from CurrentState.VariableValues where Name = "ErrorUrl";
-	Title:= select top 1 Value from CurrentState.VariableValues where Name = "Title";
-	Description:= select top 1 Value from CurrentState.VariableValues where Name = "Description";
-	Currency:= select top 1 Value from CurrentState.VariableValues where Name = "Currency";
-	Language:= select top 1 Value from CurrentState.VariableValues where Name = "Country";
-	BuyerFullName:= select top 1 Value from CurrentState.VariableValues where Name = "Buyer";
-	BuyerEmail:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerEmail";
-	BuyerPhoneNumber:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerPhoneNumber";
-	BuyerAddress:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerAddress";
-	BuyerCity:= select top 1 Value from CurrentState.VariableValues where Name = "BuyerCity";
+    RemoteId :=  select top 1 Value from stateMachineSample where Variable = "RemoteId" order by TimeStamp desc;
+	SuccessUrl := select top 1 Value from stateMachineSample where Variable = "SuccessUrl" order by TimeStamp desc;
+	ErrorUrl := select top 1 Value from stateMachineSample where Variable = "ErrorUrl" order by TimeStamp desc;
+	Title:= select top 1 Value from stateMachineSample where Variable = "Title" order by TimeStamp desc;
+	Description:= select top 1 Value from stateMachineSample where Variable = "Description" order by TimeStamp desc;
+	Currency:= select top 1 Value from stateMachineSample where Variable = "Currency" order by TimeStamp desc;
+	Language:= select top 1 Value from stateMachineSample where Variable = "Country" order by TimeStamp desc;
+	BuyerFullName:= select top 1 Value from stateMachineSample where Variable = "Buyer" order by TimeStamp desc;
+	BuyerEmail:= select top 1 Value from stateMachineSample where Variable = "BuyerEmail" order by TimeStamp desc;
+	BuyerPhoneNumber:= select top 1 Value from stateMachineSample where Variable = "BuyerPhoneNumber" order by TimeStamp desc;
+	BuyerAddress:= select top 1 Value from stateMachineSample where Variable = "BuyerAddress" order by TimeStamp desc;
+	BuyerCity:= select top 1 Value from stateMachineSample where Variable = "BuyerCity" order by TimeStamp desc;
 
-	EscrowFee:= select top 1 Value from CurrentState.VariableValues where Name = "EscrowFee";
-	AmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
-	DeliveryDate:= select top 1 Value from CurrentState.VariableValues where Name = "DeliveryDate";
-	TotalNumberOfPayments:= select top 1 Value from CurrentState.VariableValues where Name = "TotalNumberOfPayments";
-	TotalCompletedPayments:= select top 1 Value from CurrentState.VariableValues where Name = "TotalCompletedPayments";
-	ActiveCardDetails:= select top 1 Value from CurrentState.VariableValues where Name = "ActiveCardDetails";
+	EscrowFee:= select top 1 Value from stateMachineSample where Variable = "EscrowFee" order by TimeStamp desc;
+	AmountToPay:= select top 1 Value from stateMachineSample where Variable = "AmountToPay" order by TimeStamp desc;
+	DeliveryDate:= select top 1 Value from stateMachineSample where Variable = "DeliveryDate" order by TimeStamp desc;
+	TotalNumberOfPayments:= select top 1 Value from stateMachineSample where Variable = "TotalNumberOfPayments" order by TimeStamp desc;
+	TotalCompletedPayments:= select top 1 Value from stateMachineSample where Variable = "TotalCompletedPayments" order by TimeStamp desc;
+	ActiveCardDetails:= select top 1 Value from stateMachineSample where Variable = "ActiveCardDetails" order by TimeStamp desc;
 
 	TotalPaid:= AmountToPay * TotalCompletedPayments;
 	TotalAmountToPay:= AmountToPay * TotalNumberOfPayments;

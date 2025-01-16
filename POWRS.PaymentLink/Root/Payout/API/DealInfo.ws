@@ -7,7 +7,7 @@
    if (contract == null) then
 	Error("Contract is missing");
 
-   ShortId := select top 1 ShortId from NeuroFeatureTokens where OwnershipContract = PContractId;
+   ShortId := select top 1 ShortId from NeuroFeatureTokens where CreationContract = PContractId;
       
    ContractParams:= Create(System.Collections.Generic.Dictionary,CaseInsensitiveString,System.Object);
    ContractParams.Add("Created",contract.Created.ToShortDateString());

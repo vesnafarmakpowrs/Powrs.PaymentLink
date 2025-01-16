@@ -33,7 +33,7 @@ catch
   Return("");
 );
 
-Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
+Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where CreationContract=ID;
 if !exists(Token) then
 (
   ]]<b>Payment link is not valid</b>[[;
