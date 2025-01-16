@@ -256,7 +256,7 @@ if(CurrentState == "") then
 			   </table>
 			</div>
 			<div class="spaceItem"></div>
-			<div class="vaulter-details">
+			<div class="vaulter-details grey-bg">
 						<table style="width:100%">
 							<tr>
 								<td colspan="3">
@@ -273,11 +273,11 @@ if(CurrentState == "") then
 			<div class="spaceItem"></div>
 			<div class="saved-card summary" id="PaymentSummary">
 				<div class="summary-container">
-					<div class="summary-column">
+					<div class="summary-col">
 						<div class="summary-row-title">((localization.Get("TotalPaid") ))</div>
 						<div class="summary-row-amount">((TotalPaid.ToString("f2") )) ((Currency))</div>
 					</div>
-					<div class="summary-column">
+					<div class="summary-col">
 						<div class="summary-row-title">((localization.Get("TotalRemaining") ))</div>
 						<div class="summary-row-amount">(((TotalAmountToPay - TotalPaid).ToString("f2") )) ((Currency))</div>
 					</div>
@@ -290,8 +290,8 @@ if(CurrentState == "") then
 				</div>
 				<div class="line"></div>
 				<div class="summary-container">
-					<div class="summary-column summary-total-lbl">((localization.Get("TotalFinanced") ))</div>
-					<div class="summary-column">((AmountToPay.ToString("f2") )) ((Currency))</div>
+					<div class="summary-col summary-total-lbl">((localization.Get("TotalFinanced") ))</div>
+					<div class="summary-col">((AmountToPay.ToString("f2") )) ((Currency))</div>
 				</div>
 			</div>
    		<div class="spaceItem"></div>[[;
@@ -299,41 +299,54 @@ if(CurrentState == "") then
 	(
 		Log.Informational(ContractState, null);
 		]]<div class="saved-card summary" id="billingDetailsForm">
-		<div class="width100 vaulter-form">
+			<div class="width100 vaulter-form">
 				<div class="billing-dtl-header-row">
-					<div class="billing-dtl-column">
-					((localization.Get("BillingDetailsLabel") ))
-					</div>
-					<div class="billing-dtl-column" style="text-align: right;">
+					<div class="billing-dtl-column">((localization.Get("BillingDetailsLabel") ))</div>
+					<div class="billing-dtl-column right-btn" >
 						<button class="btn-black btn-show add-new-card-btn" id="btnEditBuyerDetails" type="button" onclick="EditBuyerDetails();">
 							((localization.Get("UpdateLabel") ))
 						</button>
 					</div>
 				</div>
-				<div class="billing-dtl-row">
-					<div class="billing-dtl-column">
-						<input class="width100 billing-dtl-input" type="text" id="fullName" name="fullName" value='((BuyerFullName ))' placeholder="((localization.Get("FullNameLabel") ))" style="display: none;">
-						<label id="fullName-lbl">((localization.Get("FullNameLabel") )): ((BuyerFullName ))</label>
+				<div id="billing-dtl-edit-div" style="display: none;">
+					<div class="billing-dtl-row">
+						<div class="billing-dtl-column">
+							<input class="width100 billing-dtl-input" type="text" id="fullName" name="fullName" value='((BuyerFullName ))' placeholder="((localization.Get("FullNameLabel") ))" style="display: none;">
+						</div>
+					</div>
+					<div class="billing-dtl-row-edit">
+						<div class="billing-dtl-column">
+							<input class="width100 billing-dtl-input" type="text" id="address" name="address" value='((BuyerAddress ))' placeholder="((localization.Get("Address") ))" style="display: none;">
+						</div>
+						<div class="billing-dtl-column">
+							<input class="width100 billing-dtl-input" type="text" id="city" name="city" value='((BuyerCity ))' placeholder="((localization.Get("CityLabel") ))" style="display: none;">
+						</div>
+					</div>
+					<div class="billing-dtl-row-edit">
+						<div class="billing-dtl-column">
+							<input class="width100 billing-dtl-input" type="tel" id="phoneNumber" name="phoneNumber" value='((BuyerPhoneNumber ))' placeholder="((localization.Get("PhoneNumber") ))" style="display: none;">
+						</div>
+						<div class="billing-dtl-column">
+							<input class="width100 billing-dtl-input" type="email" id="email" name="email" value='((BuyerEmail ))' placeholder="((localization.Get("EmailAddress") ))" style="display: none;">
+						</div>
 					</div>
 				</div>
-				<div class="billing-dtl-row">
-					<div class="billing-dtl-column">
-						<input class="width100 billing-dtl-input" type="text" id="address" name="address" value='((BuyerAddress ))' placeholder="((localization.Get("Address") ))" style="display: none;">
-						<label id="address-lbl">((localization.Get("Address") )): ((BuyerAddress ))</label>
+				<div id="billing-dtl-div">
+					<div class="billing-dtl-row">
+						<div class="billing-dtl-column">
+							<label id="fullName-lbl">((BuyerFullName ))</label>
+						</div>
+						<div class="billing-dtl-column right">
+							<label id="phoneNumber-lbl">((BuyerPhoneNumber ))</label>
+						</div>
 					</div>
-					<div class="billing-dtl-column">
-						<input class="width100 billing-dtl-input" type="text" id="city" name="city" value='((BuyerCity ))' placeholder="((localization.Get("CityLabel") ))" style="display: none;">
-						<label id="city-lbl">((localization.Get("CityLabel") )): ((BuyerCity ))</label>
-					</div>
-				</div>
-				<div class="billing-dtl-row">
-					<div class="billing-dtl-column">
-						<input class="width100 billing-dtl-input" type="tel" id="phoneNumber" name="phoneNumber" value='((BuyerPhoneNumber ))' placeholder="((localization.Get("PhoneNumber") ))" style="display: none;">
-						<label id="phoneNumber-lbl">((localization.Get("PhoneNumber") )): ((BuyerPhoneNumber ))</label>
-					</div>
-					<div class="billing-dtl-column">
-						<input class="width100 billing-dtl-input" type="email" id="email" name="email" value='((BuyerEmail ))' placeholder="((localization.Get("EmailAddress") ))" style="display: none;">
-						<label id="email-lbl">((localization.Get("EmailAddress") )): ((BuyerEmail ))</label>
+					<div class="billing-dtl-row">
+						<div class="billing-dtl-column">
+							<label id="address-lbl">((BuyerAddress )), ((BuyerCity ))</label>
+						</div>
+						<div class="billing-dtl-column right">
+						    <label id="email-lbl">((BuyerEmail ))</label>
+						</div>
 					</div>
 				</div>
 			</div>

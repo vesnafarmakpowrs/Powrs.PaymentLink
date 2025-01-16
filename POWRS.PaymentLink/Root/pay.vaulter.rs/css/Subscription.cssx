@@ -247,7 +247,7 @@
       gap: 10px; 
     }
 
-    .summary-column {
+    .summary-col {
       flex: 1; 
       display: flex;
       flex-direction: column;
@@ -281,7 +281,7 @@
     }
 	
    .summary-total-lbl {
-	   padding-top: 5px;
+	  padding-top: 5px;
 	  font-family: "RTDromo Light";
 	  font-size: medium;
 	  text-align: left;
@@ -294,11 +294,22 @@
 	}
 	
 	.billing-dtl-row {
-        display: flex;
-        margin-bottom: 10px;
+		display: flex;
+		margin-bottom: 5px;
 		font-family: "RTDromo Light";
-	  font-size: medium;
+	    font-size: medium;
     }
+	
+	.billing-dtl-row-edit {
+        display: flex;
+        margin-bottom: 5px;
+		font-family: "RTDromo Light";
+	    font-size: medium;
+    }
+
+	.billing-dtl-lbl {
+		font-size: small !important;
+	}
 
     .billing-dtl-column {
         flex: 1;
@@ -313,6 +324,17 @@
 	.billing-dtl-input{
 		background-color: #d9d9d9;
 	}
+	
+	.right{
+		 text-align: right;
+	}
+	
+	.right-btn{
+		 display: flex; 
+		 justify-content: flex-end;
+	}
+	
+	
 
     .btn-black {
         background-color: black;
@@ -326,12 +348,22 @@
     }
 
     .saved-card {
-        padding: 20px;
+        padding: 10px 20px 10px 20px; 
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: #f9f9f9;
     }
 	
+	.grey-bg{
+	 background-color: #f9f9f9;
+	}
+	
+@media (max-width: 1024px) {
+	.billing-dtl-row-edit  {
+			flex-direction: column;  /* Stack text boxes vertically on smaller screens */
+			 margin-bottom: 0px;
+		}
+}
 
 @media (max-width: 1500px) {
 
@@ -340,20 +372,19 @@
 	}
 	
 	.billing-dtl-row  {
-		flex-direction: column;  /* Stack text boxes vertically on smaller screens */
+		 margin-bottom: 0px;
 	}
+	
+	
+	
 	
 	 .billing-dtl-column {
         padding: 5px 5px;
     }
 	
-	.billing-dtl-row {
-        margin-bottom: 0px;
-    }
-
         .saved-card {
             margin: 0px;
-            padding: 8px;
+            padding: 3px 8px 3px 8px;
 		}
 		
 		.info

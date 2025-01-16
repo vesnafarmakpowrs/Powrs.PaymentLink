@@ -96,7 +96,9 @@ function EditBuyerDetails() {
     const btnEditBuyerDetails = document.querySelector('#btnEditBuyerDetails');
 
     isEditMode ? btnEditBuyerDetails.textContent = 'Snimi' : btnEditBuyerDetails.textContent = 'Azuriraj';
-    let buyerDetailElements = ["fullName", "address", "city", "phoneNumber", "email"];
+    isEditMode ? ShowHideElement("billing-dtl-div", "none") : ShowHideElement("billing-dtl-div", "block");
+    let buyerDetailElements = ["fullName", "address", "city", "phoneNumber", "email", "billing-dtl-edit-div"];
+
     buyerDetailElements.forEach(function (elementId, index) {
         isEditMode ? ShowHideElement(elementId, null) : ShowHideElement(elementId, "none");
         isEditMode ? ShowHideElement(elementId + "-lbl", "none") : ShowHideElement(elementId + "-lbl", null);
