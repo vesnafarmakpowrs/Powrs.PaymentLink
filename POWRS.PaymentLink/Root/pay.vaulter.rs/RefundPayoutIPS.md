@@ -46,7 +46,9 @@ if(LanguageNamespace == null) then
  ]]<b>Page is not available at the moment</b>[[;
  Return("");
 );
-
+ 
+ culture:= Language == "RS" ? "sr" : "en";
+ localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
 
 	try
 	(
