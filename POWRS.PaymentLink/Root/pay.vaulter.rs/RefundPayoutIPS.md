@@ -57,10 +57,10 @@ if(LanguageNamespace == null) then
 		]]<b>Payment link is not valid</b>[[;
 	  Return("");
 	);
-
-	Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
-
-	PaymentResult := select Top 1 Result from PayspotPayments where TokenId = Token.TokenId;
+   
+    TokenId := select top 1 TokenId from NeuroFeatureTokens where CreationContract = ID;
+    Token := select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId = TokenId;
+	PaymentResult := select Top 1 Result from PayspotPayments where TokenId = TokenId;
 
 	if !exists(Token) then
 	(
