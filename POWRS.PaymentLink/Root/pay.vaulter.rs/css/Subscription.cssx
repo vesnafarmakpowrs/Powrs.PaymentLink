@@ -342,13 +342,17 @@
         border: none;
         cursor: pointer;
     }
+	
+	.btn-save {
+       border-radius: 5px;
+    }
 
     .btn-black:hover {
         background-color: #333;
     }
 
     .saved-card {
-        padding: 10px 20px 10px 20px; 
+        padding: 10px 15px 10px 15px; 
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: #f9f9f9;
@@ -357,15 +361,14 @@
 	.grey-bg{
 	 background-color: #f9f9f9;
 	}
-	
-@media (max-width: 1024px) {
-	.billing-dtl-row-edit  {
+
+
+@media (max-width: 1280px) {
+
+.billing-dtl-row-edit  {
 			flex-direction: column;  /* Stack text boxes vertically on smaller screens */
 			 margin-bottom: 0px;
 		}
-}
-
-@media (max-width: 1500px) {
 
 	.billing-dtl-header-row {
         margin-bottom: 0px;;

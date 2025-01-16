@@ -303,7 +303,7 @@ if(CurrentState == "") then
 				<div class="billing-dtl-header-row">
 					<div class="billing-dtl-column">((localization.Get("BillingDetailsLabel") ))</div>
 					<div class="billing-dtl-column right-btn" >
-						<button class="btn-black btn-show add-new-card-btn" id="btnEditBuyerDetails" type="button" onclick="EditBuyerDetails();">
+						<button class="btn-black btn-show add-new-card-btn btn-save" id="btnEditBuyerDetails" type="button" onclick="EditBuyerDetails();">
 							((localization.Get("UpdateLabel") ))
 						</button>
 					</div>
