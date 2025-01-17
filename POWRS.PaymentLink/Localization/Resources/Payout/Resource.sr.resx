@@ -345,7 +345,10 @@
   <data name="TryAgain" xml:space="preserve">
     <value>Pokušajte ponovo</value>
   </data>
-  <data name="AgreeToTerms" xml:space="preserve">
+  <data name="AgreeToRegisterCardTerms" xml:space="preserve">
+    <value>Klikom na 'Registruj novu karticu' potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i</value>
+  </data>
+	<data name="AgreeToTerms" xml:space="preserve">
     <value>Klikom na 'Plati' i nastavkom ka metodi plaćanja IPS skeniraj, potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i</value>
   </data>
   <data name="Refunded" xml:space="preserve">

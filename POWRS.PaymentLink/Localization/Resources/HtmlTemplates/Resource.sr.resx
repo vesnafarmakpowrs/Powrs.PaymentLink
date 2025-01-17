@@ -342,4 +342,7 @@
   <data name="AwaitingCardRegistration" xml:space="preserve">
     <value>Očekuje se registracija platne kartice</value>
   </data>
+	<data name="AgreeToRegisterCardTerms" xml:space="preserve">
+    <value>By clicking 'Register new card' you confirm that you have read and agree to the Vaulter Terms and</value>
+  </data>
 </root>

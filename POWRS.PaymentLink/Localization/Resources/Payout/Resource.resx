@@ -354,6 +354,9 @@
   <data name="AgreeToTermsAgain" xml:space="preserve">
     <value>By clicking 'Pay Now' you confirm that you have read and agree to the Vaulter Terms and</value>
   </data>
+	<data name="AgreeToRegisterCardTerms" xml:space="preserve">
+    <value>By clicking 'Register new card' you confirm that you have read and agree to the Vaulter Terms and</value>
+  </data>
   <data name="RegisterNewCard" xml:space="preserve">
     <value>Register new card</value>
   </data>

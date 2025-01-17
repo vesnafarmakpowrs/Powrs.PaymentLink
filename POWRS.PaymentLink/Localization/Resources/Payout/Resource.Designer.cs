@@ -97,6 +97,15 @@ namespace POWRS.PaymentLink.Localization.Resources.Payout {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to By clicking &apos;Register new card&apos; you confirm that you have read and agree to the Vaulter Terms and.
+        /// </summary>
+        internal static string AgreeToRegisterCardTerms {
+            get {
+                return ResourceManager.GetString("AgreeToRegisterCardTerms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By clicking &apos;Pay Now&apos; and proceeding to the IPS scan payment method, you confirm that you have read and agree to the Vaulter Terms and.
         /// </summary>
         internal static string AgreeToTerms {

@@ -276,23 +276,23 @@ if Token.HasStateMachine then
 				<div class="summary-container">
 					<div class="summary-col">
 						<div class="summary-row-title">((localization.Get("TotalPaid") ))</div>
-						<div class="summary-row-amount">((TotalPaid.ToString("f2") )) ((Currency))</div>
+						<div class="summary-row-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(TotalPaid) )) ((Currency))</div>
 					</div>
 					<div class="summary-col">
 						<div class="summary-row-title">((localization.Get("TotalRemaining") ))</div>
-						<div class="summary-row-amount">(((TotalAmountToPay - TotalPaid).ToString("f2") )) ((Currency))</div>
+						<div class="summary-row-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(TotalAmountToPay - TotalPaid) )) ((Currency))</div>
 					</div>
 				</div>	 
 				<div class="meter green nostripes">
-					<span style="width:((((TotalPaid/TotalAmountToPay)* 100).ToString("f2") ))%"></span>
+					<span style="width:(((TotalPaid/TotalAmountToPay)* 100 ))%"></span>
 				</div>
 				<div class="summary-row-notice">
-				  <span>((localization.Get("NextInstallmentOn") ))  ((pendingDate )) : ((pendingAmount )) ((Currency))<span>
+				  <span>((localization.Get("NextInstallmentOn") ))  ((pendingDate )) : ((POWRS.PaymentLink.Utils.ToVaulterStringFormat(pendingAmount) )) ((Currency))<span>
 				</div>
 				<div class="line"></div>
 				<div class="summary-container">
 					<div class="summary-col summary-total-lbl">((localization.Get("TotalFinanced") ))</div>
-					<div class="summary-col">((AmountToPay.ToString("f2") )) ((Currency))</div>
+					<div class="summary-col">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(AmountToPay) )) ((Currency))</div>
 				</div>
 			</div>
    		<div class="spaceItem"></div>[[;
@@ -400,7 +400,7 @@ if Token.HasStateMachine then
 											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="InitiateCardAuthorization();">((localization.Get("RegisterNewCard") ))</button> 
 										</div>
 										<div class="div-payment-notice">
-											<label id="payment-notice-lbl" class="lbl-payment-notice">((localization.Get("AgreeToTermsAgain") )) ((OrgName ))</label>
+											<label id="payment-notice-lbl" class="lbl-payment-notice">((localization.Get("AgreeToRegisterCardTerms") )) ((OrgName ))</label>
 										</div>
 									</div>
 							</td>
@@ -461,7 +461,7 @@ if Token.HasStateMachine then
 					<div class="payment-container">
 					  <div class="payment-history-div">
 					    <div>
-							<div class="payment-history-amount">((payment.Amount.ToString("f2") )) ((Currency ))</div>
+							<div class="payment-history-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(payment.Amount) )) ((Currency ))</div>
 							<div class="payment-history-date">((payment.DateCreated.ToString("MMM dd, yyyy") ))</div>	[[;
 						]]</div></div>[[;
 						if(payment.RefundedAmount != null and payment.RefundedAmount > 0) then 
