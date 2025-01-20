@@ -40,13 +40,14 @@
 	.card-details-lbl {
 		font-size: medium;
 		white-space:nowrap;
+		padding-left: 5px; 
 	}
 	
 	.saved-card-title {
 		 font-size: medium;
 	}
 	.card-details-title {
-		font-size: 16px;
+		font-size: medium;
 		font-weight: bold;
 		display: flex; 
 		align-items: center; 
@@ -54,14 +55,30 @@
 		padding-bottom:8px;
 	}
 	.card-value{
-		border: 1px solid #ccc;
-		border-radius: 8px;
-		background-color: #f1f1f1;
-		font-size: 16px;
+		font-size: medium;
 		color: #838282;
 		text-align: left;
 		padding: 5px 10px;
 		white-space:nowrap;
+	}
+	.card-img-div{
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		background-color: #f4f4f4cc;
+		padding: 5px 5px;
+		display: flex;
+		align-items: center; 
+		justify-content: center; 
+	}
+	.card-detail-center{
+		align-items: center; 
+		justify-content: left; 
+	}
+	.card-detail-left{
+		justify-content: left; 
+	}
+	.card-img{
+		width: 60px;
 	}
 	.add-new-card-btn
 	{

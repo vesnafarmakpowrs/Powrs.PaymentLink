@@ -368,22 +368,22 @@ if Token.HasStateMachine then
 					<button class="btn-border-red btn-show add-new-card-btn" onclick="InitiateCancellation();">((localization.Get("Cancel") ))</button>
 				</div>
 			</div>
-			<div class="card-details-div">
-				<div class="card-details-row">
-					<div class="card-details">
-						<div class="card-details-lbl">((localization.Get("CardNumber") ))</div>
-						<div class="card-value">((MarkdownEncode(ActiveCardDetails.MaskedPan) ))</div>
+			<div class="card-details-div">				
+				<div class="card-details-row card-detail-center">
+				     <div class="card-details card-img-div">
+						<img class="card-img" src="./resources/register_cards/visa_card.png" alt="Visa"/>
 					</div>
 				</div>
-				<div class="card-details_2row">
+				<div class="card-details_2row card-detail-center card-detail-left">
 					<div class="card-details">
-						<div class="card-details-lbl">((localization.Get("ExpiryDateLabel") ))</div>
-						<div class="card-value">((MarkdownEncode(ActiveCardDetails.ExpiryDate) ))</div>
+						<div class="card-details-lbl">((MarkdownEncode(ActiveCardDetails.CardBrand) ))</div>
+						<div class="card-value">\*\*\*\*(( Right(ActiveCardDetails.MaskedPan,4) ))</div>
 					</div>
-					<div class="card-details">
-						<div class="card-details-lbl">((localization.Get("CardBrandLabel") )):</div>
-						<div class="card-value">((MarkdownEncode(ActiveCardDetails.CardBrand) ))</div>
-					</div>
+				</div>
+				<div class="card-details-row card-detail-center card-detail-left">
+						<div class="card-details-lbl">((localization.Get("ExpiryDateLabel") ))</div>[[;
+						 exp:= Left(ActiveCardDetails.ExpiryDate,2) + "/" + Right(ActiveCardDetails.ExpiryDate,2); 
+						]]<div class="card-value">((MarkdownEncode(exp) ))</div>
 				</div>
 			</div>
 		</div>[[;
