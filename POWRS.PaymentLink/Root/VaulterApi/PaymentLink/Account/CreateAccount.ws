@@ -16,7 +16,7 @@ logEventID := "CreateAccount.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 newUserRegistrationDetailUpdated := false;
-accountAlreadyExists:= false;
+accountCreated:= false;
 
 try
 (
@@ -53,7 +53,6 @@ try
     if(!System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = PUserName)) then 
     (
         Error("Account with " + PUserName + " already exists");
-        accountAlreadyExists:= true;
     );
 	
 	if(PUserRole >= 0 && !POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PUserRole)) then 
@@ -119,7 +118,8 @@ try
 
     enabled:= Update BrokerAccounts set Enabled = true where UserName = PUserName;
     Global.VerifyingNumbers.Remove(PEmail);
-
+	accountCreated := true;
+	
 	try
 	(
 		if(!exists(NewAccount.jwt)) then 
@@ -351,7 +351,7 @@ try
 )
 catch
 (
-    if(accountAlreadyExists) then 
+    if(accountCreated) then 
     (
 		try 
 		(
