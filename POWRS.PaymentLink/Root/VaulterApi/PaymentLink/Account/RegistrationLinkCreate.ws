@@ -155,8 +155,6 @@ try
 		newUserRegistrationDetail.NewUserRole := POWRS.PaymentLink.Models.AccountRole.ClientAdmin;
 	);
 	
-	Log.Informational("Succeffully created New User object. \nParentOrgName: " + Str(PParentOrgName) + ",\nNewOrgName: " + newUserRegistrationDetail.NewOrgName + ",\nNewOrgClientType: " + Str(newUserRegistrationDetail.NewOrgClientType) + ",\nNewUserRole: " + newUserRegistrationDetail.NewUserRole, logObject, logActor, logEventID, null);
-	
 	currentStep := "DB Insert-Update";
 	Waher.Persistence.Database.Insert(newUserRegistrationDetail);
 	newId := select top 1 ObjectId from POWRS.PaymentLink.Models.NewUserRegistrationDetail order by ObjectId desc;

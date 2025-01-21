@@ -155,8 +155,6 @@ try
 		
 		SetSetting(PUserName  + ".KeyId", PKeyId);
 		SetSetting(PUserName  + ".KeySecret", KeyPassword);
-		
-		Log.Informational("Create account -> cripted keys created", logObject, logActor, logEventID, null);
 	)
 	catch
 	(
@@ -252,8 +250,6 @@ try
 		accountRole.OrgName:= orgName;
 		accountRole.ParentOrgName:= parentOrgName;
 		Waher.Persistence.Database.Insert(accountRole);
-		
-		Log.Informational("Create account -> broker acc roles inserted for user name: " + PUserName, logObject, logActor, logEventID, null);
 	)
 	catch
 	(
@@ -270,7 +266,6 @@ try
 			newObj.OrgClientType := POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetEnumByUrlPathName(PlocationPathName);
 			
 			Waher.Persistence.Database.Insert(newObj);
-			Log.Informational("Create account -> broker acc onboarding client type successfully inserted for user name: " + PUserName, logObject, logActor, logEventID, null);
 		);
 	)
 	catch
@@ -293,11 +288,11 @@ try
 				Waher.Persistence.Database.Insert(organizationClientType);
 			);
 		);
-		Log.Informational("Inserted record in collection -> broker acc onboarding client type successfully inserted for user name: " + PUserName, logObject, logActor, logEventID, null);
 	)
 	catch
 	(
 		Log.Error("Unable to insert organization name for GourpAdminUser: " + Exception.Message, logObject, logActor, logEventID, null);
+		Error(Exception.Message);
 	);
 		
 	try
