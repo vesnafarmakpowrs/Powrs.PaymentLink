@@ -66,8 +66,6 @@ namespace POWRS.PaymentLink.Authorization
 
             //validate signature
             string domain = Request.Header["Host"];
-            Log.Debug($"Domain from header: {domain}", userName, userName, "SmartAdminLogIn");
-
             string s = $"{userName}:{domain ?? string.Empty}:{nonce}";
             string controlSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Encoding.UTF8.GetBytes(account.Password), Encoding.UTF8.GetBytes(s)));
 

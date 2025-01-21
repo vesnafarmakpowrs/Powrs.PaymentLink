@@ -179,11 +179,6 @@ try
 		newUserRegistrationDetail.SuccessfullyRegisteredUserName := accountRole.UserName;
 		Waher.Persistence.Database.Update(newUserRegistrationDetail);
 		newUserRegistrationDetailUpdated := true;
-		Log.Debug("Updated: newUserRegistrationDetail. id: " + newUserRegistrationDetail.ObjectId, logObject, logActor, logEventID, null);
-	)
-	else
-	(
-		Log.Debug("newUserRegistrationDetail not exists", logObject, logActor, logEventID, null);
 	);
 	
 	creatorUserName := "";
