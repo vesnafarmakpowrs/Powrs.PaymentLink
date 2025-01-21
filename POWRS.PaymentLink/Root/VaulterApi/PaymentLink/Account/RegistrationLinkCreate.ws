@@ -10,7 +10,7 @@ comment := "!!! Handled use cases in file: project/DataModel/GetRegistrationLink
 }:=Posted) ??? BadRequest(Exception.Message);
 
 logObject := SessionUser.username;
-logEventID := "GetRegistrationLink.ws";
+logEventID := "RegistrationLinkCreate.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 currentStep := "";
 errors:= Create(System.Collections.Generic.List, System.String);
@@ -103,6 +103,9 @@ try
 	newOrgClientType := null;
 	
 	newUserRegistrationDetail := Create(POWRS.PaymentLink.Models.NewUserRegistrationDetail);
+	newUserRegistrationDetail.Created := Now;
+	newUserRegistrationDetail.Creator := SessionUser.username;
+	newUserRegistrationDetail.SuccessfullyRegisteredUserName := "";
 	
 	comment := "Handle when logged in SuperAdmin";
 	if(SessionUser.role == POWRS.PaymentLink.Models.AccountRole.SuperAdmin.ToString())then
@@ -152,28 +155,9 @@ try
 		newUserRegistrationDetail.NewUserRole := POWRS.PaymentLink.Models.AccountRole.ClientAdmin;
 	);
 	
-	Log.Informational("Succeffully created New User object. \nParentOrgName: " + Str(PParentOrgName) + ",\nNewOrgName: " + newUserRegistrationDetail.NewOrgName + ",\nNewOrgClientType: " + Str(newUserRegistrationDetail.NewOrgClientType) + ",\nNewUserRole: " + newUserRegistrationDetail.NewUserRole, logObject, logActor, logEventID, null);
-	
 	currentStep := "DB Insert-Update";
-	newId := "";
-	
-	newUserRegistrationDetailFromDB := 
-		select top 1 * 
-		from POWRS.PaymentLink.Models.NewUserRegistrationDetail 
-		where ParentOrgName = newUserRegistrationDetail.ParentOrgName and
-			NewOrgName = newUserRegistrationDetail.NewOrgName and
-			NewOrgClientType = newUserRegistrationDetail.NewOrgClientType and
-			NewUserRole = newUserRegistrationDetail.NewUserRole;
-			
-	if(newUserRegistrationDetailFromDB != null)then
-	(
-		newId := newUserRegistrationDetailFromDB.ObjectId;
-	)
-	else
-	(		
-		Waher.Persistence.Database.Insert(newUserRegistrationDetail);
-		newId := select top 1 ObjectId from POWRS.PaymentLink.Models.NewUserRegistrationDetail order by ObjectId desc;
-	);
+	Waher.Persistence.Database.Insert(newUserRegistrationDetail);
+	newId := select top 1 ObjectId from POWRS.PaymentLink.Models.NewUserRegistrationDetail order by ObjectId desc;
 	
 	currentStep := "CreateUrl";
 	siteUrl := Create(System.Text.StringBuilder);

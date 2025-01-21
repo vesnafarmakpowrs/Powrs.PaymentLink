@@ -14,6 +14,9 @@ namespace POWRS.PaymentLink.Models
         private string newOrgName;
         private ClientType.Enums.ClientType newOrgClientType;
         private AccountRole newUserRole;
+        private string creator;
+        private DateTime created;
+        private string successfullyRegisteredUserName;
 
         [ObjectId]
         public string ObjectId { get => objectId; set => objectId = value; }
@@ -21,6 +24,8 @@ namespace POWRS.PaymentLink.Models
         public string NewOrgName { get => newOrgName; set => newOrgName = value; }
         public ClientType.Enums.ClientType NewOrgClientType { get => newOrgClientType; set => newOrgClientType = value; }
         public AccountRole NewUserRole { get => newUserRole; set => newUserRole = value; }
-      
+        public string Creator { get => creator; set => creator = value; }
+        public DateTime Created { get => created; set => created = value; }
+        public string SuccessfullyRegisteredUserName { get => successfullyRegisteredUserName; set => successfullyRegisteredUserName = value; }
     }
 }
