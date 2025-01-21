@@ -57,6 +57,8 @@
 					<Content fileName="GetContactInfo.ws"/>
 					<Content fileName="GetLegalIdentityInfo.ws"/>
 					<Content fileName="GetUsers.ws"/>
+					<Content fileName="RegistrationLinkCreate.ws"/>
+					<Content fileName="RegistrationLinkInfo.ws"/>
 					<Content fileName="RoleForSubUser.ws"/>
 					<Content fileName="SendVerificationEmail.ws"/>
 					<Content fileName="VerifyEmail.ws"/>
@@ -135,7 +137,6 @@
 				</Folder>
 				<Folder name="Organization">
 					<Content fileName="GetOrganizations.ws"/>
-					<Content fileName="GetRegistrationLink.ws"/>
 				</Folder>
 				<Folder name="Reports">
 					<Content fileName="AdminPortalDashboard.ws"/>

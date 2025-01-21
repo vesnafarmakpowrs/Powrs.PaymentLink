@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Waher.Content;
 using Waher.Events;
-using Waher.IoTGateway;
 using Waher.Networking.HTTP;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
@@ -66,7 +65,10 @@ namespace POWRS.PaymentLink.Authorization
             var account = await GetEnabledAccount(userName, Request.RemoteEndPoint, true);
 
             //validate signature
-            string s = $"{userName}:{Gateway.Domain?.Value ?? string.Empty}:{nonce}";
+            string domain = Request.Header["Host"];
+            Log.Debug($"Domain from header: {domain}", userName, userName, "SmartAdminLogIn");
+
+            string s = $"{userName}:{domain ?? string.Empty}:{nonce}";
             string controlSignature = Convert.ToBase64String(Hashes.ComputeHMACSHA256Hash(Encoding.UTF8.GetBytes(account.Password), Encoding.UTF8.GetBytes(s)));
 
             if (signature != controlSignature)
