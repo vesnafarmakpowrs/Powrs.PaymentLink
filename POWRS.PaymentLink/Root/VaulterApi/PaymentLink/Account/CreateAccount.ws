@@ -15,6 +15,9 @@ logObject := "";
 logEventID := "CreateAccount.ws";
 logActor := Split(Request.RemoteEndPoint, ":")[0];
 
+newUserRegistrationDetailUpdated := false;
+accountCreated:= false;
+
 try
 (
 	PNewSubUser := PNewSubUser ?? false;
@@ -49,28 +52,44 @@ try
 
     if(!System.String.IsNullOrWhiteSpace(select top 1 UserName from BrokerAccounts where UserName = PUserName)) then 
     (
-        AccountAlreadyExists:= true;
         Error("Account with " + PUserName + " already exists");
     );
 	
-	if(PUserRole >= 0 && !POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PUserRole)) then (
+	if(PUserRole >= 0 && !POWRS.PaymentLink.Models.EnumHelper.IsEnumDefined(POWRS.PaymentLink.Models.AccountRole, PUserRole)) then 
+	(
         Error("Role doesn't exists.");
 	);
-	if(!System.String.IsNullOrWhiteSpace(PRegistrationId))then
+	if(PNewSubUser)then
 	(
-		NewUserRegistrationDetail := 
-			select top 1 * 
-			from POWRS.PaymentLink.Models.NewUserRegistrationDetail 
-			where Str(ObjectId) = Str(PRegistrationId);
-			
-		if(NewUserRegistrationDetail = null)then
+		commnet:= "While creating new sab user, looged used must be verified";
+		SessionUser:= Global.ValidateAgentApiToken(true, false);
+	);
+	
+	if(!PNewSubUser) then 
+	(
+		if(System.String.IsNullOrWhiteSpace(PRegistrationId))then
 		(
-			Error("RegistrationId doesn't exists.");
+			Error("RegistrationId parameter is mandatory");
+		)
+		else
+		(
+			newUserRegistrationDetail := 
+				select top 1 * 
+				from POWRS.PaymentLink.Models.NewUserRegistrationDetail 
+				where Str(ObjectId) = Str(PRegistrationId);
+				
+			if(newUserRegistrationDetail = null)then
+			(
+				Error("RegistrationId doesn't exists.");
+			)
+			else if(!System.String.IsNullOrWhiteSpace(newUserRegistrationDetail.SuccessfullyRegisteredUserName)) then
+			(
+				Error("RegistrationId already used.");
+			);
 		);
 	);
-		
 
-	logObject := PUserName;	
+	logObject := PUserName;
 
     apiKey:= GetSetting("POWRS.PaymentLink.ApiKey", "");
     apiKeySecret:= GetSetting("POWRS.PaymentLink.ApiKeySecret", "");
@@ -99,7 +118,8 @@ try
 
     enabled:= Update BrokerAccounts set Enabled = true where UserName = PUserName;
     Global.VerifyingNumbers.Remove(PEmail);
-
+	accountCreated := true;
+	
 	try
 	(
 		if(!exists(NewAccount.jwt)) then 
@@ -135,8 +155,6 @@ try
 		
 		SetSetting(PUserName  + ".KeyId", PKeyId);
 		SetSetting(PUserName  + ".KeySecret", KeyPassword);
-		
-		Log.Informational("Create account -> cripted keys created", logObject, logActor, logEventID, null);
 	)
 	catch
 	(
@@ -154,18 +172,25 @@ try
 		Destroy(KeySignature);
 	);
 	
+	if(exists(newUserRegistrationDetail) and newUserRegistrationDetail != null)then
+	(
+		newUserRegistrationDetail.SuccessfullyRegisteredUserName := accountRole.UserName;
+		Waher.Persistence.Database.Update(newUserRegistrationDetail);
+		newUserRegistrationDetailUpdated := true;
+	);
+	
 	creatorUserName := "";
 	orgName := "";
 	parentOrgName := "";
 	enumNewUserRole := POWRS.PaymentLink.Models.AccountRole.User;
 	try
 	(
-		if(exists(NewUserRegistrationDetail) and NewUserRegistrationDetail != null)then
+		if(exists(newUserRegistrationDetail) and newUserRegistrationDetail != null)then
 		(
 			creatorUserName := PUserName;
-			orgName := NewUserRegistrationDetail.NewOrgName;
-			parentOrgName := NewUserRegistrationDetail.ParentOrgName;
-			enumNewUserRole := NewUserRegistrationDetail.NewUserRole;
+			orgName := newUserRegistrationDetail.NewOrgName;
+			parentOrgName := newUserRegistrationDetail.ParentOrgName;
+			enumNewUserRole := newUserRegistrationDetail.NewUserRole;
 		)
 		else
 		(
@@ -224,10 +249,7 @@ try
 		accountRole.CreatorUserName:= creatorUserName;
 		accountRole.OrgName:= orgName;
 		accountRole.ParentOrgName:= parentOrgName;
-
 		Waher.Persistence.Database.Insert(accountRole);
-		
-		Log.Informational("Create account -> broker acc roles inserted for user name: " + PUserName, logObject, logActor, logEventID, null);
 	)
 	catch
 	(
@@ -244,33 +266,33 @@ try
 			newObj.OrgClientType := POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetEnumByUrlPathName(PlocationPathName);
 			
 			Waher.Persistence.Database.Insert(newObj);
-			Log.Informational("Create account -> broker acc onboarding client type successfully inserted for user name: " + PUserName, logObject, logActor, logEventID, null);
 		);
 	)
 	catch
 	(
 		Log.Error("Unable to insert client type: " + Exception.Message, logObject, logActor, logEventID, null);
+		Error(Exception.Message);
 	);
 	
 	try
 	(
-		if(enumNewUserRole = POWRS.PaymentLink.Models.AccountRole.GroupAdmin and NewUserRegistrationDetail != null)then
+		if(enumNewUserRole = POWRS.PaymentLink.Models.AccountRole.GroupAdmin and newUserRegistrationDetail != null)then
 		(
-			organizationClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = NewUserRegistrationDetail.NewOrgName;
+			organizationClientType := Select top 1 * from POWRS.PaymentLink.ClientType.Models.OrganizationClientType where OrganizationName = newUserRegistrationDetail.NewOrgName;
 			if(organizationClientType = null)then
 			(
 				organizationClientType := Create(POWRS.PaymentLink.ClientType.Models.OrganizationClientType);
-				organizationClientType.OrganizationName := NewUserRegistrationDetail.NewOrgName;
-				organizationClientType.OrgClientType := NewUserRegistrationDetail.NewOrgClientType;
+				organizationClientType.OrganizationName := newUserRegistrationDetail.NewOrgName;
+				organizationClientType.OrgClientType := newUserRegistrationDetail.NewOrgClientType;
 				
 				Waher.Persistence.Database.Insert(organizationClientType);
 			);
 		);
-		Log.Informational("Inserted record in collection -> broker acc onboarding client type successfully inserted for user name: " + PUserName, logObject, logActor, logEventID, null);
 	)
 	catch
 	(
 		Log.Error("Unable to insert organization name for GourpAdminUser: " + Exception.Message, logObject, logActor, logEventID, null);
+		Error(Exception.Message);
 	);
 		
 	try
@@ -319,7 +341,7 @@ try
 )
 catch
 (
-    if(!exists(AccountAlreadyExists)) then 
+    if(accountCreated) then 
     (
 		try 
 		(
@@ -332,6 +354,19 @@ catch
 		);
     );
     
+	if(newUserRegistrationDetailUpdated) then
+	(
+		try 
+		(
+			newUserRegistrationDetail.SuccessfullyRegisteredUserName := "";
+			Waher.Persistence.Database.Update(newUserRegistrationDetail);
+		)
+		catch
+		(
+			Log.Error("Unable to cleanup 'newUserRegistrationDetail' for userName " + PUserName + ", and newUserRegistrationDetail.ObjectId: " + newUserRegistrationDetail.ObjectId, logObject, logActor, logEventID, null);
+		);
+	);
+	
 	Log.Error("Unable to create user: " + Exception.Message, logObject, logActor, logEventID, null);
     BadRequest(Exception.Message);
 )
@@ -340,4 +375,5 @@ finally
     Destroy(Nonce);
     Destroy(S);
     Destroy(Signature);
+	Destroy(newUserRegistrationDetail);
 );

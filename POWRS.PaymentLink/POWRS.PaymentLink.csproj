@@ -906,6 +906,9 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Account\ContactInfo.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Account\RegistrationLinkInfo.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Account\RoleForSubUser.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -993,7 +996,7 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Organization\GetOrganizations.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Root\VaulterApi\PaymentLink\Organization\GetRegistrationLink.ws">
+	  <None Update="Root\VaulterApi\PaymentLink\Account\RegistrationLinkCreate.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Organization\GetSubOrganizationRegistrationLink.ws">
@@ -1057,7 +1060,6 @@
 
 	<ItemGroup>
 	  <Folder Include="FeeCalculator\TemplateFiles\FeeCalculatorForm\" />
-	  <Folder Include="Root\VaulterApi\PaymentLink\Organization\" />
 	</ItemGroup>
 
 	<ItemGroup>
