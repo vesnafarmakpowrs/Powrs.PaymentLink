@@ -1,6 +1,6 @@
 ﻿Title: Payment Link
 Description: Payment Link.
-Date: 2023-08-04
+Date: 2024-12-23
 Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
@@ -46,6 +46,8 @@ if Token.HasStateMachine then
     if exists(CurrentState) then
         ContractState:= CurrentState.State;
 );
+
+IsPaymentCompleted := POWRS.PaymentLink.Contracts.Enums.EnumHelper.IsPaymentCompleted(ContractState);
 
     Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
    
@@ -306,11 +308,18 @@ if Token.HasStateMachine then
 					</table>
 				</div>[[;
 	)
-	else if (ContractState == "PaymentCompleted" || ContractState == "ServiceDelivered" || ContractState == "Done" || ContractState == "ReleaseFundsToSellerFailed" )then 
-	(
-		]]<div class="payment-completed">**((LanguageNamespace.GetStringAsync(16) ))**</div>
-		  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
-    )
+	else if (IsPaymentCompleted) then 
+			(
+			]]<div class="payment-completed"><p>**((LanguageNamespace.GetStringAsync(16) ))**</p> [[;
+
+			   DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTimeInBuyerLocalTime";
+			   if(DateCompleted == null) then
+			   (
+				DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTime";
+			   );
+			   ]]<p>**Datum plaćanja: ((DateCompleted.ToLocalTime().ToString("dd-MM-yyyy HH:mm") ))**</p></div>
+			  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
+			)
 	else if ContractState == "PaymentCanceled" then 
 	(
 		]]**((LanguageNamespace.GetStringAsync(14) ))**

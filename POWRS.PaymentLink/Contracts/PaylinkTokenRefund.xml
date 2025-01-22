@@ -1,0 +1,1060 @@
+<contract archiveOpt="P1Y" archiveReq="P1Y" canActAsTemplate="true" duration="P99Y" id="PaylinkToken" visibility="Public" xmlns="urn:ieee:iot:leg:sc:1.0">
+	<Create xmlns="https://paiwise.tagroot.io/Schema/NeuroFeatures.xsd">
+		<TokenID shortIdAlphabet="0123456789" shortIdLength="10">
+			<Random />
+		</TokenID>
+		<Creator>
+			<RoleReference role="Creator" />
+		</Creator>
+		<Owner>
+			<RoleReference role="Creator" />
+		</Owner>
+		<TrustProvider>
+			<RoleReference role="TrustProvider" />
+		</TrustProvider>
+		<Value>
+			<ParameterReference parameter="Value" />
+		</Value>
+		<Currency>
+			<ParameterReference parameter="Currency" />
+		</Currency>
+		<CommissionPercent>
+			<ParameterReference parameter="CommissionPercent" />
+		</CommissionPercent>
+		<Expires>
+			<ParameterReference parameter="Expires" />
+		</Expires>
+		<CreatorCanDestroy>
+			<Boolean>true</Boolean>
+		</CreatorCanDestroy>
+		<OwnerCanDestroyIndividual>
+			<Boolean>true</Boolean>
+		</OwnerCanDestroyIndividual>
+		<Definition>
+			<StateMachine startState="AwaitingForPayment" xmlns="https://paiwise.tagroot.io/Schema/StateMachines.xsd">
+				<Variable id="Title">
+					<TagReference tag="Title" />
+				</Variable>
+				<Variable id="Description">
+					<TagReference tag="Description" />
+				</Variable>
+				<Variable id="AmountToPay">
+					<TagReference tag="AmountToPay" />
+				</Variable>
+				<Variable id="Price">
+					<TagReference tag="Value" />
+				</Variable>
+				<Variable id="Currency">
+					<TagReference tag="Currency" />
+				</Variable>
+				<Variable id="Country">
+					<TagReference tag="Country" />
+				</Variable>
+				<Variable id="TokenContract">
+					<TokenProperty>CreationContract</TokenProperty>
+				</Variable>
+				<Variable id="TokenId">
+					<TokenProperty>TokenId</TokenProperty>
+				</Variable>
+				<Variable id="Buyer">
+					<TagReference tag="Buyer" />
+				</Variable>
+				<Variable id="BuyerEmail">
+					<TagReference tag="BuyerEmail" />
+				</Variable>
+				<Variable id="BuyerAddress">
+					<TagReference tag="BuyerAddress" />
+				</Variable>
+				<Variable id="BuyerCity">
+					<TagReference tag="BuyerCity" />
+				</Variable>
+				<Variable id="CallBackUrl">
+					<TagReference tag="CallBackUrl" />
+				</Variable>
+				<Variable id="Seller">
+					<TagReference tag="Seller" />
+				</Variable>
+				<Variable id="SellerName">
+					<TagReference tag="SellerName" />
+				</Variable>
+				<Variable id="SellerBankAccount">
+					<TagReference tag="SellerBankAccount" />
+				</Variable>
+				<Variable id="BuyerBankAccount">
+					<TagReference tag="BuyerBankAccount" />
+				</Variable>
+				<Variable id="PaymentDeadline">
+					<TagReference tag="PaymentDeadline" />
+				</Variable>
+				<Variable id="EscrowFee">
+					<TagReference tag="EscrowFee" />
+				</Variable>
+				<Variable id="SMSCounter">
+					<Number>0</Number>
+				</Variable>
+				<Variable id="EmailCounter">
+					<Number>0</Number>
+				</Variable>
+				<Variable id="PaySpotStatusCode">
+					<TagReference tag="PaySpotStatusCode"/>
+				</Variable>
+				<Variable id="PaySpotStatusMsg">
+					<TagReference tag="PaySpotStatusMsg"/>
+				</Variable>
+				<Variable id="Notifications">
+					<Calc><![CDATA[{}]]></Calc>
+				</Variable>
+				<Variable id="NeuronDomain">
+					<Calc><![CDATA[Gateway.Domain]]></Calc>
+				</Variable>
+				<Variable id="WebPageUrl">
+					<TagReference tag="WebPageUrl" />
+				</Variable>
+				<Variable id="BuyerPhoneNumber">
+					<TagReference tag="BuyerPhoneNumber" />
+				</Variable>
+				<Variable id="RemoteId">
+					<TagReference tag="RemoteId" />
+				</Variable>
+				<Variable id="ErrorUrl">
+					<TagReference tag="ErrorUrl" />
+				</Variable>
+				<Variable id="SuccessUrl">
+					<TagReference tag="SuccessUrl" />
+				</Variable>
+				<Variable id="CanCancel">
+					<Boolean>false</Boolean>
+				</Variable>				
+				<Variable id="AmountToBeRefunded">
+					<Number>0</Number>
+				</Variable>
+				<Variable id="RefundedAmount">
+					<Number>0</Number>
+				</Variable>
+				<Variable id="IsEcommerce">
+					<Boolean>false</Boolean>
+				</Variable>
+				<Variable id="TimeZoneOffset">
+					<Number>0</Number>
+				</Variable>
+				<Variable id="SellerTimeZoneOffset">
+					<Number>0</Number>
+				</Variable>
+				<Variable id="IPSFee">
+					<Number>0</Number>
+				</Variable>				
+				<State id="AwaitingForPayment">
+					<OnEnter actionRef="SetServiceProvider"/>
+					<OnEvent actionRef="ProcessCompletedPayspotPayment" newState="PaymentCompleted" failureState="AwaitingForPayment">
+						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="ProcessPayspotPaymentStatus" newState="AwaitingForPayment" failureState="AwaitingForPayment">
+						<OnExternalXmlNote localName="PayspotPaymentStatus" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="ChangeBuyerLanguage">
+						<OnExternalXmlNote localName="LanguageChanged" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="SetBuyerTimeZoneDifference">
+						<OnExternalXmlNote localName="TimeZoneDifference" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="SMSToBuyerSent">
+						<OnExternalXmlNote localName="SMSToBuyerSent" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="EmailToBuyerSent">
+						<OnExternalXmlNote localName="EmailToBuyerSent" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent newState="PaymentNotPerformed">
+						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+					</OnEvent>
+					<OnEvent newState="PaymentNotPerformed">
+						<OnDateTime>{PaymentDeadline}</OnDateTime>
+					</OnEvent>
+						<OnEvent actionRef="SetCallBackUrl" >
+							<OnExternalXmlNote localName="CallBackUrlUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+						</OnEvent>
+				</State>
+				<State id="PaymentNotPerformed">
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentNotPerformed'" />
+				</State>
+				<State id="PaymentCompleted">
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentCompleted'" />
+					<OnEnter actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= true;" />
+					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>
+					<OnEvent actionRef="VoidPayment" newState="PaymentCanceled" failureState="PaymentCompleted">
+						<OnXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+					</OnEvent>
+					<OnEvent actionRef="PayoutDateUpdated">
+						<OnExternalXmlNote localName="PayoutDateUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="ReleasedFundsToSeller">
+						<OnDateTime>{DeliveryDate}</OnDateTime>
+					</OnEvent>
+					<OnEvent actionRef="SetCallBackUrl" >
+						<OnExternalXmlNote localName="CallBackUrlUpdated" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>					
+				</State>
+				<State id="ReleasedFundsToSeller">
+					<OnEnter actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= true;" />
+					<OnEvent actionRef="SetUpRefund" failureState="ReleasedFundsToSeller" newState="AwaitingforRefundPayment">
+						<OnXmlNote localName="SetUpRefund" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+					</OnEvent>
+					<OnEvent newState="Done">
+						<OnDateTime>1Y</OnDateTime>
+					</OnEvent>
+				</State>
+				<State id="AwaitingforRefundPayment">
+					<OnEvent actionRef="SetUpRefund" failureState="AwaitingforRefundPayment" newState="AwaitingforRefundPayment">
+						<OnXmlNote localName="SetUpRefund" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+					</OnEvent>
+					<OnEvent actionRef="ProcessCompletedRefundPayment" newState="RefundBuyer" failureState="RefundBuyerFailed">
+						<OnExternalXmlNote localName="PayspotPaymentCompleted" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="ProcessRefundPayspotPaymentStatus" newState="AwaitingforRefundPayment" failureState="AwaitingforRefundPayment">
+						<OnExternalXmlNote localName="PayspotPaymentStatus" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent actionRef="SetSellerTimeZoneDifference">
+						<OnExternalXmlNote localName="TimeZoneDifference" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+					<OnEvent newState="Done">
+						<OnDateTime>1Y</OnDateTime>
+					</OnEvent>
+				</State>
+				<State id="RefundBuyer">
+					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='RefundPaymentCompleted'" />
+					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>
+					<OnEvent actionRef="RefundPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
+						<OnDuration>PT1S</OnDuration>
+					</OnEvent>
+				</State>
+				<State id="RefundBuyerFailed">
+					<OnEvent actionRef="RefundPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
+						<OnExternalXmlNote localName="CancelPayment" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note" sourceVariable="Source"/>
+					</OnEvent>
+				</State>
+				<State id="ReleaseFundsToSellerFailed">
+					<OnEvent actionRef="ReleaseFunds" failureState="ReleaseFundsToSellerFailed" newState="Done">
+						<OnXmlNote localName="RetryReleaseFundsToSeller" namespace="{'https://' + NeuronDomain + '/Downloads/EscrowPaylinkRS.xsd'}" noteVariable="Note"/>
+					</OnEvent>
+				</State>
+				<State id="PaymentCanceled">
+					<OnEnter actionRef="MarkAsDone"/>
+				</State>
+				<State id="Done">
+					<OnEnter actionRef="MarkAsDone"/>
+				</State>
+				<Action id="SetBuyerTimeZoneDifference">
+					<Script>
+						offset:= Num(SelectXmlStr(Note,'/default:TimeZoneDifference/@timeZoneOffset'));
+					</Script>
+					<PersistVariable name="TimeZoneOffset" value="{offset}" />
+				</Action>
+				<Action id="SetSellerTimeZoneDifference">
+					<Script>
+						sellerOffset:= Num(SelectXmlStr(Note,'/default:TimeZoneDifference/@SellerTimeZoneDifference'));
+					</Script>
+					<PersistVariable name="SellerTimeZoneOffset" value="{sellerOffset}" />
+				</Action>
+				<Action id="SetServiceProvider">
+					<If condition="!exists(serviceProviderId) or serviceProviderId == ''">
+						<Then>
+							<Script>
+								config:= Evaluate("POWRS.Payment.PaySpot.ServiceConfiguration.GetCurrent()");
+								isProduction:= config.IsProduction ?? false;
+								serviceMode:= isProduction ? ".Live" : ".Test";
+
+								serviceProviderId:= "POWRS.Payment.PaySpot.PayspotService" + serviceMode;
+								serviceProviderType:= "POWRS.Payment.PaySpot.PayspotServiceProvider";
+							</Script>
+							<PersistVariable name="ServiceProviderId" value="{serviceProviderId}"/>
+							<PersistVariable name="ServiceProviderType" value="{serviceProviderType}"/>
+						</Then>
+					</If>
+				</Action>
+				<Action id="EmailToBuyerSent">
+					<Script>
+						newEmail:= SelectXmlStr(Note,'/default:EmailToBuyerSent/@email');
+					</Script>
+					<PersistVariable name="EmailCounter" value="{EmailCounter + 1}" />
+					<If condition="newEmail != BuyerEmail">
+						<Then>
+							<PersistVariable name="BuyerEmail" value="{newEmail}" />
+						</Then>
+					</If>
+				</Action>
+				<Action id="SMSToBuyerSent">
+					<Script>
+						newPhoneNumber:= SelectXmlStr(Note,'/default:SMSToBuyerSent/@phoneNumber');
+					</Script>
+					<PersistVariable name="SMSCounter" value="{SMSCounter + 1 }" />
+					<If condition="newPhoneNumber != BuyerPhoneNumber">
+						<Then>
+							<PersistVariable name="BuyerPhoneNumber" value="{newPhoneNumber}" />
+						</Then>
+					</If>
+				</Action>
+				<Action id="PayoutDateUpdated">
+					<Script>
+						newPayoutDate:= SelectXmlStr(Note,'/default:PayoutDateUpdated/@expectedPayoutDate');
+					</Script>
+					<PersistVariable name="ExpectedPayoutDate" value="{DateTimeUtc(newPayoutDate)}" />
+				</Action>
+				
+				<Action id="SetCallBackUrl">
+					<Script>
+						successUrl:= SelectXmlStr(Note,'/default:CallBackUrlUpdated/@successUrl');
+					</Script>
+					<PersistVariable name="SuccessUrl" value="{successUrl}" />
+				</Action>
+				<Action id="ChangeBuyerLanguage">
+					<Script>
+						newLanguage:= SelectXmlStr(Note,'/default:LanguageChanged/@language');
+					</Script>
+					<If condition="newLanguage like '[A-Z]{2}' and newLanguage != Country">
+						<Then>
+							<PersistVariable name="Country" value="{newLanguage}"></PersistVariable>
+						</Then>
+					</If>
+				</Action>
+				<Action id="MarkAsDone">
+					<PersistVariable name="MarkedAsDone" value="true"/>
+				</Action>
+				<Action id="ChangeCanCancelValue">
+					<If condition="exists(newCanCancelValue)">
+						<Then>
+							<PersistVariable name="CanCancel" value="{newCanCancelValue}"></PersistVariable>
+						</Then>
+					</If>
+				</Action>
+				<Action id="VoidPayment">
+					<If condition="TotalAmountPaid &lt; AmountToPay">
+						<Then>
+							<TextNote content="The amount paid is not sufficient" />
+						</Then>
+						<Else>
+							<PersistVariable name="VoidPaymentMessage" value="" />
+							<Script>
+								<![CDATA[
+									AmountToSell:= AmountToPay;
+									BankAccountToSell:= "";
+									SellEdalerFrom:= Seller;
+									AccountName:= SellerName;
+									MessageOnError:= 'VoidPayment error';
+									Mode:= 'Void';
+									Message:= "Povrat novca."
+								]]>
+							</Script>
+							<Try>
+								<CallAction actionRef="TrySellEdaler" />
+								<PersistVariable name="VoidPaymentMessage" value="ok" />
+								<Catch exceptionVariable="ex">
+									<PersistVariable name="VoidPaymentMessage" value="ex.Message" />
+									<Error reason="ex.Message"></Error>
+								</Catch>
+							</Try>
+							<PersistVariable name="RefundedAmount" value="{AmountToPay}" />
+						</Else>
+					</If>
+				</Action>
+				<Action id="RefundPayment">
+					<If condition="TotalAmountPaid &lt; AmountToPay">
+						<Then>
+							<TextNote content="The amount paid is not sufficient" />
+						</Then>
+						<Else>
+							<PersistVariable name="RefundPaymentMessage" value="" />
+							<Script>
+								<![CDATA[
+									AmountToSell:= AmountToBeRefunded;
+									BankAccountToSell:= "";
+									SellEdalerFrom:= Seller;
+									AccountName:= SellerName;
+									MessageOnError:= 'Refund Payment error';
+									Mode:= 'Refund';
+									Message:= "Povrat novca."
+								]]>
+							</Script>
+							<Try>
+								<CallAction actionRef="TrySellEdaler" />
+								<PersistVariable name="RefundPaymentMessage" value="ok" />
+								<Catch exceptionVariable="ex">
+									<PersistVariable name="RefundPaymentMessage" value="ex.Message" />
+									<Error reason="ex.Message"></Error>
+								</Catch>
+							</Try>
+							<PersistVariable name="RefundedAmount" value="{AmountToBeRefunded}" />
+						</Else>
+					</If>
+				</Action>
+				<Action id="SetUpRefund">
+					<Try>
+						<Script>
+							amountToBeRefunded:= Double(SelectXmlStr(Note,'/default:SetUpRefund/@refundAmount'));
+							IPSFee := Evaluate("POWRS.PaymentLink.ClientType.OrgClientType.GetBrokerJidIPSFee('CreatorJid')");							
+							amountToPay:= amountToBeRefunded  + (amountToBeRefunded * (IPSFee / 100));
+						</Script>
+						<PersistVariable name="AmountToBeRefunded" value="{amountToBeRefunded}" />						
+						<PersistVariable name="IPSFee" value="{IPSFee}" />
+						<PersistVariable name="AmountToPay" value="{amountToPay}" />
+						<Catch exceptionVariable="ex">
+							<LogEvent actor="{Seller}" eventId="SetUpRefund" level="Medium" message="{'Error while set up refund for buyer: ' + ex.Message}" module="SetUpRefund" object="{Buyer}" type="Error" />
+						</Catch>
+					</Try>
+			    </Action>
+				<Action id="ReportNewState">
+					<If condition="NewStatus == 'PaymentFailed' or (NewStatus != 'PaymentFailed' and !exists(Notifications[NewStatus]))">
+						<Then>
+							<Try>
+								<Script>
+									endpoint:= "https://" + NeuronDomain + "/VaulterApi/PaymentLink/Mail/ReportNewState.ws";
+									Json:= {
+									"Status":  NewStatus,
+									"ContractId": TokenContract,
+									"CallBackUrl": CallBackUrl,
+									"TokenId": TokenId,
+									"SendEmail" : BuyerEmail,
+									"CountryCode" : Country,
+									"SuccessUrl": SuccessUrl,
+									"ErrorUrl": ErrorUrl,
+									"RemoteId": RemoteId,
+									"StatusCode": PaySpotStatusCode
+									};
+									if(exists(PayspotOrderId)) then
+									(
+									Json.PayspotOrderId:= PayspotOrderId;
+									);
+									if(exists(OrderId)) then
+									(
+									Json.OrderId:= OrderId;
+									);
+									if (exists(PaymentType)) then
+									(
+									Json.PaymentType:= PaymentType;
+									);
+
+									response:= Evaluate("Post(Gateway.GetUrl(':8088/VaulterApi/PaymentLink/Mail/ReportNewState.ws'), Json, {Accept: 'application/json'}, Gateway.Certificate)");
+								</Script>
+								<Catch exceptionVariable="ex">
+									<LogEvent actor="{Seller}" eventId="ReportNewState" level="Medium" message="{'Error while notifying client about state changed: ' + ex.Message}" module="ReportNewState" object="" type="Error" />
+								</Catch>
+								<Finally>
+									<Script>
+										Notifications[NewStatus]:= true;
+									</Script>
+									<PersistVariable name="Notifications" value="{Notifications}" />
+								</Finally>
+							</Try>
+							<PersistVariable name="Notifications" value="{Notifications}"/>
+						</Then>
+					</If>
+				</Action>
+				<Action id="ProcessPayspotPaymentStatus">
+					<Script>
+						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@orderId');
+						PayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@payspotOrderId');
+						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentType');
+						PaymentStatusCode := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusCode');
+						PaymentStatusDescr := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusDescr');
+						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': PaymentStatusCode, 'Msg': PaymentStatusDescr, 'ErrorUrl': ErrorUrl})")
+					</Script>
+					<Try>
+						<PersistVariable name="PaySpotStatusCode" value="{PaymentStatusCode}" />
+						<PersistVariable name="PaySpotStatusMsg" value="{PaymentStatusDescr}" />
+						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessPayspotPaymentStatus, paymentStatus: ' + PaymentStatusDescr, 'PaySpotStatusCode: ' + PaySpotStatusCode }" object="{Buyer}" type="Informational" />
+						<CallAction actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentFailed'" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="ProcessPayspotPaymentStatus" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="ProcessRefundPayspotPaymentStatus">
+					<Script>
+						RefundOrderId:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@orderId');
+						RefundPayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@payspotOrderId');
+						RefundPaymentType := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentType');
+						RefundPaymentStatusCode := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusCode');
+						RefundPaymentStatusDescr := SelectXmlStr(Note,'/default:PayspotPaymentStatus/@paymentStatusDescr');
+						Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([Global.PayspotRequests[TokenContract]],'PaySpotPaymentStatus', {'StatusCode': RefundPaymentStatusCode, 'Msg': RefundPaymentStatusDescr, 'ErrorUrl': ErrorUrl})")
+					</Script>
+					<Try>
+						<PersistVariable name="RefundPaymentStatusCode" value="{RefundPaymentStatusCode}" />
+						<PersistVariable name="RefundPaymentStatusDescr" value="{RefundPaymentStatusDescr}" />
+						<LogEvent actor="{Seller}" eventId="PaymentStatus" level="Medium" message="{'ProcessRefundPayspotPaymentStatus, RefundPaymentStatus: ' + RefundPaymentStatusDescr, 'RefundPaySpotStatusCode: ' + RefundPaySpotStatusCode }" object="{Buyer}" type="Informational" />
+						<CallAction actionRef="ReportNewState" beforeActionScript="NewStatus:='PaymentFailed'" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="ProcessRefundPayspotPaymentStatus" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="ProcessCompletedPayspotPayment">
+					<Script>
+						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
+						PayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@payspotOrderId');
+						PaymentType := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentType');
+					</Script>
+					<Try>
+						<BuyEDaler to="{Seller}"
+							   amount="{AmountToPay}"
+							   currency="{Currency}"
+							   reference="{'nfeat: ' + TokenId}"
+							   contract="{TokenContract}"
+							   serviceId="{ServiceProviderId}"
+							   serviceProvider="{ServiceProviderType}">
+							<Parameter key="AmountToPay" value="{AmountToPay}"></Parameter>
+							<Parameter key="Currency" value="{Currency}"></Parameter>
+							<Parameter key="OrderId" value="{OrderId}"></Parameter>
+							<Parameter key="PayspotOrderId" value="{PayspotOrderId}" />
+							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
+						</BuyEDaler>
+						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
+						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
+						<PersistVariable name="PaymentDateTimeInBuyerLocalTime" value="{Evaluate('NowUtc.AddMinutes(-TimeZoneOffset)')}" />
+						<PersistVariable name="DeliveryDate" value="{Evaluate('NowUtc.AddMinutes(1)')}" />
+						<PersistVariable name="OrderId" value="{OrderId}" />
+						<PersistVariable name="PayspotOrderId" value="{PayspotOrderId}" />
+						<PersistVariable name="PaymentType" value="{PaymentType}" />
+
+						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="ProcessCompletedRefundPayment">
+					<Script>
+						RefundOrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
+						RefundPayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@payspotOrderId');
+						RefundPaymentType := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentType');
+					</Script>
+					<Try>
+						<BuyEDaler to="{Seller}"
+							   amount="{AmountToPay}"
+							   currency="{Currency}"
+							   reference="{'nfeat: ' + TokenId}"
+							   contract="{TokenContract}"
+							   serviceId="{ServiceProviderId}"
+							   serviceProvider="{ServiceProviderType}">
+							<Parameter key="AmountToPay" value="{AmountToPay}"></Parameter>
+							<Parameter key="Currency" value="{Currency}"></Parameter>
+							<Parameter key="OrderId" value="{RefundOrderId}"></Parameter>
+							<Parameter key="PayspotOrderId" value="{RefundPayspotOrderId}" />
+							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
+						</BuyEDaler>
+						<PersistVariable name="TotalAmountPaid" value="{AmountToPay}" />
+						<PersistVariable name="PaymentDateTime" value="{NowUtc}" />
+						<PersistVariable name="RefundPaymentDateTimeInBuyerLocalTime" value="{Evaluate('NowUtc.AddMinutes(-TimeZoneOffset)')}" />
+						<PersistVariable name="DeliveryDate" value="{Evaluate('NowUtc.AddMinutes(1)')}" />
+						<PersistVariable name="RefundOrderId" value="{RefundOrderId}" />
+						<PersistVariable name="RefundPayspotOrderId" value="{RefundPayspotOrderId}" />
+						<PersistVariable name="RefundPaymentType" value="{RefundPaymentType}" />
+
+						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
+						<Catch exceptionVariable="ex">
+							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
+							<Error reason="{ex.Message}"></Error>
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="ReleaseFunds">
+					<If condition="TotalAmountPaid &lt; AmountToPay">
+						<Then>
+							<TextNote content="The amount paid is not sufficient" />
+						</Then>
+						<Else>
+							<Script>
+								<![CDATA[					
+									AmountToSell:= AmountToPay;
+									BankAccountToSell:= "";
+									SellEdalerFrom:= Seller;
+									AccountName:= SellerName;
+									MessageOnError:= 'ReleaseFundsToSeller error';
+									Mode:= 'Confirm';
+									Message:= "";
+								]]>
+							</Script>
+							<Try>
+								<CallAction actionRef="TrySellEdaler" />
+								<Catch exceptionVariable="ex">
+									<PersistVariable name="ReleaseFundsToSellerError" value="{ex.Message}"/>
+								</Catch>
+							</Try>
+						</Else>
+					</If>
+				</Action>
+				<Action id="TrySellEdaler">
+					<Try>
+						<LogEvent actor="{SellEdalerFrom}"
+									eventId="TrySellEdaler"
+									level="Medium"
+									message="{'TrySellEdaler started - ' + ' Amount: ' + AmountToSell + ' Contract: ' + TokenContract + ' Currency: ' + Currency + ' From: ' + SellEdalerFrom + ' TokenId: ' + TokenId + ' ServiceProviderId: ' + ServiceProviderId + ' ServiceProviderType: ' + ServiceProviderType + ' BankAccount: ' + BankAccountToSell + ' AccountName: ' + AccountName }"
+									module="SellEDaler"
+									object=""
+									type="Informational" />
+						<SellEDaler amount="{AmountToSell}"
+									contract="{TokenContract}"
+									currency="{Currency}"
+									from="{SellEdalerFrom}"
+									reference="{Reference:='nfeat:'+TokenId}"
+									serviceId="{ServiceProviderId}"
+									serviceProvider="{ServiceProviderType}">
+							<Parameter key="Amount" value="{AmountToSell}" />
+							<Parameter key="Currency" value="{Currency}" />
+							<Parameter key="Account" value="{BankAccountToSell}" />
+							<Parameter key="AccountName" value="{AccountName}" />
+							<Parameter key="ContractId" value="{TokenContract}" />
+							<Parameter key="TokenId" value="{TokenId}" />
+							<Parameter key="Message" value="{Message}" />
+							<Parameter key="OrderId" value="{OrderId}" />
+							<Parameter key="PayspotOrderId" value="{PayspotOrderId}" />
+							<Parameter key="Mode" value="{Mode}" />
+						</SellEDaler>
+						<TextNote content="{'Amount of edaler: ' + AmountToSell + ' ' + Currency + ' sold. From: ' + SellEdalerFrom + ' to BankAccount: ' + BankAccountToSell}" />
+						<Catch exceptionVariable="ex">
+							<LogEvent actor="{SellEdalerFrom}" eventId="SellEDaler" level="Medium" message="{MessageOnError + ' - ' +ex.Message }" module="SellEDaler" object="" type="Error" />
+							<Error reason="{ex.Message}" />
+						</Catch>
+					</Try>
+				</Action>
+				<Action id="End">
+					<End />
+				</Action>
+				<ReportPresent>
+					| Variable | Value |
+					|---------------------|-------------------------|
+					| AmountToPay | {{AmountToPay}} |
+					| Currency | {{Currency}} |
+					| TokenContract | {{TokenContract}} |
+					| Buyer | {{Buyer}} |
+					| Seller | {{Seller}} |
+				</ReportPresent>
+			</StateMachine>
+		</Definition>
+		<Tag name="Seller">
+			<RoleReference role="Creator" />
+		</Tag>
+		<Tag name="Buyer">
+			<ParameterReference parameter="BuyerFullName" />
+		</Tag>
+		<Tag name="BuyerEmail">
+			<ParameterReference parameter="BuyerEmail" />
+		</Tag>
+		<Tag name="BuyerAddress">
+			<ParameterReference parameter="BuyerAddress" />
+		</Tag>
+		<Tag name="BuyerCity">
+			<ParameterReference parameter="BuyerCity" />
+		</Tag>
+		<Tag name="CallBackUrl">
+			<ParameterReference parameter="CallBackUrl" />
+		</Tag>
+		<Tag name="WebPageUrl">
+			<ParameterReference parameter="WebPageUrl" />
+		</Tag>
+		<Tag name="BuyerPhoneNumber">
+			<ParameterReference parameter="BuyerPhoneNumber" />
+		</Tag>
+		<Tag name="Country">
+			<ParameterReference parameter="Country" />
+		</Tag>
+		<Tag name="Title">
+			<ParameterReference parameter="Title" />
+		</Tag>
+		<Tag name="Description">
+			<ParameterReference parameter="Description" />
+		</Tag>
+		<Tag name="Value">
+			<ParameterReference parameter="Value" />
+		</Tag>
+		<Tag name="Currency">
+			<ParameterReference parameter="Currency" />
+		</Tag>
+		<Tag name="SellerName">
+			<ParameterReference parameter="SellerName" />
+		</Tag>
+		<Tag name="SellerBankAccount">
+			<ParameterReference parameter="SellerBankAccount" />
+		</Tag>
+		<Tag name="BuyerBankAccount">
+			<ParameterReference parameter="BuyerBankAccount" />
+		</Tag>
+		<Tag name="AmountToPay">
+			<ParameterReference parameter="AmountToPay" />
+		</Tag>
+		<Tag name="PaymentDeadline">
+			<ParameterReference parameter="PaymentDeadline" />
+		</Tag>
+		<Tag name="EscrowFee">
+			<ParameterReference parameter="EscrowFee" />
+		</Tag>
+		<Tag name="PaySpotStatusCode">
+			<ParameterReference parameter="PaySpotStatusCode" />
+		</Tag>
+		<Tag name="PaySpotStatusMsg">
+			<ParameterReference parameter="PaySpotStatusMsg" />
+		</Tag>
+		<Tag name="RemoteId">
+			<ParameterReference parameter="RemoteId" />
+		</Tag>
+		<Tag name="SuccessUrl">
+			<ParameterReference parameter="SuccessUrl" />
+		</Tag>
+		<Tag name="ErrorUrl">
+			<ParameterReference parameter="ErrorUrl" />
+		</Tag>
+		<Tag name="IsEcommerce">
+			<ParameterReference parameter="IsEcommerce" />
+		</Tag>
+		<FriendlyName>
+			<ParameterReference parameter="Title" />
+		</FriendlyName>
+		<Category>
+			<String>Vaulter</String>
+		</Category>
+		<Description>
+			<ParameterReference parameter="Description" />
+		</Description>
+		<Glyph contentType="image/png">
+			iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAABFFJREFUeJztWU1IMlsYfrqTFmgLIb5yEURlLQo3YVZUCi1qFUFQUKt2QURWm7IgIkhqJ9IP1EIIWkWuIugPLIh0GVFUBC5SocCkEM2/uYvv3oPDNNM43Thwv3lgYM77d57zeI7nzEwBy7Is/mD8RZsAbSgC0CZAG4oAtAnQhiIAbQK0oQhAmwBtKALQJkAbigC0CdCGIgBtArShCECbAG0oAtAmQBuKALQJ0EahkCMYDGJpaQklJSV5F43H4+jr60NHRwfPNz8/j3g8jmw2i5qaGoyMjORdHwBSqRScTicODg5wfX2N19dXqNVqVFRUoLGxET09Pejv7/+6ECsAn8/HApB9LS4u8mo+PT3x4vJFJpNh29vbJfPY2dkRrSe4BL77uSCTyfBs4+PjPNvCwoLkmqenp2AYBufn55JzHh8fRf0FQh9G3t7ecHx8jOLiYo69tLQUZrOZtLe3t/Hr1y+k02liSyaTMBqNqKqq4nZWUAAA0Gg0iMVixC5FbK/XC6vVyrE1Nzdjbm4O3d3dYBiG2O/v77G7u4vZ2VlMT0/D4XAIF857Dv5mS65oNCopx+FwkBy73c5arVbS3t/fz6tPAOzt7a2kfgOBgHhdSVVEyITD4bxzYrEYe3R0RNoGg0E0d2BggJOfTCbl0P6cl6ykPAXIHWx1dfWndV5eXiT153K55FAWri0rKU8BGhoaSLzH4yF2u91O7ENDQ5/mer3eb+0aX+HHBYhGo6ID+GpwKysrxF9fXy+Hrih+/CRos9nI/dTUFM+fe1hyOp08fygUIvcGg0Fyv3V1dWhtbYXJZBIPlKMa8pgBubHpdJrn9/v9xM8wDM9vs9mIv7e3VxZHMfzoDFhdXSX3FouFs1f/C5PJBI1GA+D34eni4oLjLysrI/eBQOA/5yh4EBJN+udAAwDhcBjl5eWfxhUVFSGZTAIAlpeX0dbWhkQiwYnRarXY2trC5uYmAKCpqQk+n4/4Dw8P0dXVRdpS6eZyFM2RPKcEppfQEri8vJT9HPHx8SHY397eXt4cReOkDVm4uJAALS0tsgUYHR3l1LJYLHlvhVLjf2QJpNNpqFQq0na73UilUoJTkWEYPD8/Y2ZmhthyY6PRKHQ6HWmr1WrEYjEUFgo+zdNdAmNjY8RvNpsl19VqtSTP7XZzfGtra7yZMjg4yPr9fl4dj8dDdwnk+s/OziTXXV9fJ3k6nY7ndzqdspaU6Fgks8tNyikeDAY5PpfL9a2ja27uZ79uKBRia2trJQ++srJStD/hRSSCiYkJqFQqvL+/816ZJRIJTE5OIpvNcrYvqXC73bi6ukI2m8XDwwPvJKfX63F3d4dIJIKNjQ2cnJzg5uYGkUgEDMNAr9fDaDSis7MTw8PD5IwhBFl/gv8n/PFvhRUBaBOgDUUA2gRoQxGANgHaUASgTYA2FAFoE6ANRQDaBGhDEYA2AdpQBKBNgDYUAWgToA1FANoEaONve9o8PVvYS2AAAAAASUVORK5CYII=
+		</Glyph>
+	</Create>
+	<role maxCount="1" minCount="1" name="Creator">
+		<description xml:lang="en">
+			<paragraph>
+				<text>
+					This is the role of the part that acts as the creator and owner of the token
+					being created.
+				</text>
+			</paragraph>
+		</description>
+	</role>
+	<role maxCount="1" minCount="1" name="TrustProvider">
+		<description xml:lang="en">
+			<paragraph>
+				<text>
+					This is the role of the trust provider that acts will host the token and
+					approve its creation.
+				</text>
+			</paragraph>
+		</description>
+	</role>
+	<parts>
+		<templateOnly />
+	</parts>
+	<parameters>
+		<stringParameter name="Title" value="" guide="Title" minLength="2">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Title of item.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="Description" value="" guide="Description">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Description of item.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<numericalParameter name="Value" guide="Value of token" min="1" minIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>The initial value of the token.</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+		<numericalParameter name="EscrowFee" value="0" guide="Vaulter Fees" min="0" minIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Vaulter transaction fees.</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+
+		<stringParameter name="Currency" value="RSD" guide="Currency" regEx="[A-Z]{3}" minLength="3" maxLength="3">
+			<description xml:lang="en">
+				<paragraph>
+					<text>The initial currency of the token.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="Country" value="RS" guide="Country" regEx="[A-Z]{2}" minLength="2" maxLength="2">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Country where token will be sold.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<numericalParameter name="CommissionPercent" value="0" guide="Commision (%)" min="0" minIncluded="true" max="100" maxIncluded="true">
+			<description xml:lang="en">
+				<paragraph>
+					<text>The commission the Trust Provider gets for creating the tokens.</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+		<calcParameter name="Commission" guide="Commission" exp="Value*CommissionPercent/100">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Commission to be paid to the Trust Provider</text>
+				</paragraph>
+			</description>
+		</calcParameter>
+		<dateParameter name="Expires" guide="Expiry date" exp="Expires&gt;Now.Date">
+			<description xml:lang="en">
+				<paragraph>
+					<text>When token expires.</text>
+				</paragraph>
+			</description>
+		</dateParameter>
+		<stringParameter name="SellerBankAccount" value="" guide="Seller's bank account number" minLength="8" maxLength="24">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Seller's bank account number</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SellerName" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Seller Name used to sellEdaler</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerBankAccount" value="" guide="Buyer's bank account number">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Buyer</text>
+					<text>’</text>
+					<text>s bank account number</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="PaySpotStatusCode" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>PaySpot status code of paymentr</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="PaySpotStatusMsg" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>PaySpot status message of paymentr</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerFullName" value="" minLength="2">
+			<description xml:lang="en">
+				<paragraph>
+					<text>First, Second and Last name of the buyer.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerEmail">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Buyer Email.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerAddress">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Billing Address of the buyer to be presented on the paylink and confirmation screen.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerCity" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>City of billing Address of the buyer to be presented on the paylink and confirmation screen.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<dateTimeParameter name="PaymentDeadline">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Date and time untill buyer can pay.</text>
+				</paragraph>
+			</description>
+		</dateTimeParameter>
+		<calcParameter name="AmountToPay" exp="Value + EscrowFee">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Total amount to be paid, including fee.</text>
+				</paragraph>
+			</description>
+		</calcParameter>
+		<stringParameter name="RemoteId" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Id from remote system.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="CallBackUrl" value=" ">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Send info when transaction is completed.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="BuyerPhoneNumber" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Buyer phone number where to send notification.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="WebPageUrl" value=" ">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Web page of selling product.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SuccessUrl" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Url to transfer when payment is completed.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="ErrorUrl" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Url to transfer when payment is not completed and has errors..</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<booleanParameter name="IsEcommerce" value="false">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Is Ecommerce payment</text>
+				</paragraph>
+			</description>
+		</booleanParameter>
+	</parameters>
+	<humanReadableText xml:lang="en">
+		<section>
+			<header>
+				<text>Create Vaulter Item token</text>
+			</header>
+			<body>
+				<paragraph>
+					<text>This contract creates a Neuro-Feature™ token representing an item for sale 						on a remote site using the Vaulter™ app.</text>
+				</paragraph>
+				<paragraph>
+					<text>This contract creates a Neuro-Feature™ token representing an item for sale 						on a remote site using the Vaulter™ app.</text>
+				</paragraph>
+				<section>
+					<header>
+						<text>Information in token</text>
+					</header>
+					<body>
+						<paragraph>
+							<text>The token encodes the following information:</text>
+						</paragraph>
+						<bulletItems>
+							<item>
+								<text>A title to be displayed to viewers of the item: </text>
+								<bold>
+									<parameter name="Title" />
+								</bold>
+							</item>
+							<item>
+								<text>A textual description of the item to be displayed to viewers 								of the item: </text>
+								<bold>
+									<parameter name="Description" />
+								</bold>
+							</item>
+							<item>
+								<text>Bank account number: </text>
+								<bold>
+									<parameter name="SellerBankAccount" />
+								</bold>
+							</item>
+						</bulletItems>
+						<paragraph>
+							<text>Additional information that is specified by the creator:</text>
+						</paragraph>
+						<bulletItems>
+							<item>
+								<text>Initial Value and Currency of the token: </text>
+								<bold>
+									<parameter name="Value" />
+									<text>.</text>
+									<parameter name="Currency" />
+								</bold>
+							</item>
+							<item>
+								<text>Token creation commission, payed by the creator to the Trust 								Provider: </text>
+								<bold>
+									<parameter name="CommissionPercent" />
+									<text> %</text>
+								</bold>
+								<text>, corresponding to </text>
+								<bold>
+									<parameter name="Commission" />
+									<text>.</text>
+									<parameter name="Currency" />
+								</bold>
+								<text>.</text>
+							</item>
+							<item>
+								<text>A date when the token expires: </text>
+								<bold>
+									<parameter name="Expires" />
+								</bold>
+								<text>.</text>
+							</item>
+						</bulletItems>
+					</body>
+				</section>
+				<section>
+					<header>
+						<text>Ownership of token</text>
+					</header>
+					<body>
+						<paragraph>
+							<text>By signing this contract, the creator swears to be the owner of 								said item on the remote site. When the token is created, the owner 								becomes its first owner. The Creator is responsible for forwarding 								the responsabilities of the ownership of the token, unto the next 								owner, if transferred. The creator assures only to transfer the 								token to a new owner, as a sign that the ownership of the 								corresponding item on Limundo, has been sold to the corresponding 								buyer.</text>
+						</paragraph>
+					</body>
+				</section>
+				<section>
+					<header>
+						<text>Commission</text>
+					</header>
+					<body>
+						<paragraph>
+							<text>The token creation commission is paid by the Creator to the Trust 								Provider upon signature by both parties. Payment is done using 								eDaler®.</text>
+						</paragraph>
+					</body>
+				</section>
+				<section>
+					<header>
+						<text>Destruction of token</text>
+					</header>
+					<body>
+						<paragraph>
+							<text>The current owner of the token can destroy the token, when it 								chooses to. The destruction of the token will permit the creation of 								a new token with the same information. If not manually destroyed by 								the current owner of the token, the token expires at </text>
+							<parameter name="Expires" />
+							<text>. When the token expires, it is automatically destroyed. Records 								are only available for archiving purposes.</text>
+						</paragraph>
+					</body>
+				</section>
+				<section>
+					<header>
+						<text>Disclaimer</text>
+					</header>
+					<body>
+						<paragraph>
+							<text>This contract is an example on how a token creation contract may 								look like. For legal validity, a proper legal text must be provided.</text>
+						</paragraph>
+					</body>
+				</section>
+			</body>
+		</section>
+	</humanReadableText>
+</contract>

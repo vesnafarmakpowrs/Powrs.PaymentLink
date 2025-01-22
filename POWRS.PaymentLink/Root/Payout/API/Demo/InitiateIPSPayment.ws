@@ -26,10 +26,13 @@ try
 	);
 	
 	currentState:= token.GetCurrentStateVariables();
-	if(currentState.State != "AwaitingForPayment") then
+	if(currentState.State != "AwaitingForPayment" && currentState.State != "AwaitingforRefundPayment") then
 	(
 		Error("Payment is not available for this contract");
 	);
+
+	isRefundPayment := false;
+	currentState.State == "AwaitingforRefundPayment" ? isRefundPayment := true;
 
 	contractParameters:= Create(System.Collections.Generic.Dictionary, Waher.Persistence.CaseInsensitiveString, System.Object);
 	contractParameters["Message"]:= "Vaulter";
@@ -59,7 +62,7 @@ try
 	if (PIpsOnly) then 
 	(
 	   if (exists(PBankId)) then (
-	     GeneratedIPSData:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSData(contractParameters, identityProperties, PBankId, 150, PIsCompany);
+	     GeneratedIPSData:= POWRS.Payment.PaySpot.PayspotService.GenerateIPSData(contractParameters, identityProperties, PBankId, 150, PIsCompany, isRefundPayment);
 		 responseObject.Response:= GeneratedIPSData.ToDictionary();
 	   );		
 	)

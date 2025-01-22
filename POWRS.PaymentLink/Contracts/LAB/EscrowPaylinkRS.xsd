@@ -66,10 +66,21 @@
 			<xs:attribute type="xs:string" use="required" name="expectedPayoutDate" />
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="BuyerTimeZoneDifference">
+	<xs:element name="TimeZoneDifference">
 		<xs:complexType>
 			<xs:attribute type="xs:string" use="required" name="timeZoneOffset" />
 			<xs:attribute type="xs:string" use="required" name="state" />
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="SetUpRefund">
+		<xs:complexType>
+			<xs:attribute type="xs:string" use="required" name="refundAmount" />
+		</xs:complexType>
+	</xs:element>	
+	<xs:element name="RefundBuyer">
+		<xs:complexType>
+			<xs:attribute type="xs:string" use="required" name="refundAmount" />
+		</xs:complexType>
+	</xs:element>	
+	<xs:element name="RetryRefundBuyer"/>
 </xs:schema>

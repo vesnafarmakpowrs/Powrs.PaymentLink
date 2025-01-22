@@ -55,7 +55,7 @@ try
             notificationSent:= false;
         );
 
-        SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted", "PaymentFailed"};
+        SendCallBackOnStatusList := {"PaymentNotPerformed", "PaymentCompleted", "PaymentFailed","RefundPaymentCompleted"};
 
         callbackSuccess:= false;
         if(!System.String.IsNullOrEmpty(r.CallBackUrl) && (r.Status in SendCallBackOnStatusList)) then

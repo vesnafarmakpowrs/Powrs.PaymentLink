@@ -10,7 +10,7 @@ namespace POWRS.PaymentLink
     {
         public static async Task NotifyTimeZoneDifference(int timeZoneOffset, string stateCity, string tokenId)
         {
-            var xmlNote = $"<BuyerTimeZoneDifference xmlns='https://{Gateway.Domain}/Downloads/EscrowPaylinkRS.xsd' timeZoneOffset='{timeZoneOffset}' state='{stateCity}' />";
+            var xmlNote = $"<TimeZoneDifference xmlns='https://{Gateway.Domain}/Downloads/EscrowPaylinkRS.xsd' timeZoneOffset='{timeZoneOffset}' state='{stateCity}' />";
             
             XmlDocument xmlDocument = new();
             xmlDocument.LoadXml(xmlNote);

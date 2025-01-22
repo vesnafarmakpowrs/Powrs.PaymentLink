@@ -106,6 +106,7 @@
 		<None Remove="Root\Payout\API\GetAvailableLanguages.ws" />
 		<None Remove="Root\Payout\API\Demo\InitiateIPSPayment.ws" />
 		<None Remove="Root\Payout\DealInfo.ws" />
+		<None Remove="Root\Payout\EmailTemplates\ReccurrencePayments\PaymentCanceled.md" />
 		<None Remove="Root\Payout\Events.js" />
 		<None Remove="Root\Payout\GetAccountInfo.ws" />
 		<None Remove="Root\Payout\GetAvailableLanguages.ws" />
@@ -188,6 +189,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\API\Demo\InitiateIPSPayment.ws">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Root\Payout\EmailTemplates\ReccurrencePayments\PaymentCanceled.md">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Root\Payout\HtmlTemplates\EN\SendLinkViaEmail.html">
@@ -317,6 +321,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="Contracts\PaylinkTokenRefund.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Language\POWRS.PaymentLink.en.lng">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -509,6 +516,9 @@
 	  <None Update="Root\pay.vaulter.rs\css\Stripe.css">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.vaulter.rs\css\Subscription.cssx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.vaulter.rs\favicon.ico">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -695,6 +705,9 @@
 	  <None Update="Root\pay.vaulter.rs\resources\vaulter_txt.svg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\pay.vaulter.rs\SubscriptionPayments.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\pay.vaulter.rs\TermsAndCondition.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -712,6 +725,27 @@
 	  </None>
 	  <None Update="Root\Payout\API\InitiatePayment.ws">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\AwaitingCardRegistration.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\CardRegistrationCompleted.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\Done.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\PaymentCompleted.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\PaymentFailed.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\PaymentNotPerformed.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\EmailTemplates\ReccurrencePayments\StateChanged.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\Fonts\Coanda-Bold.ttf">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -743,6 +777,12 @@
 	  <None Update="Root\Payout\HtmlTemplates\EN\purchase_agreement.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\SubscriptionCanceled.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\EN\SubscriptionPaymentFailed.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\EN\TermsAndCondition.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -753,6 +793,12 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\ContactUs.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\RS\SubscriptionCanceled.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Root\Payout\HtmlTemplates\RS\SubscriptionPaymentFailed.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Root\Payout\HtmlTemplates\RS\PaymentFailedIPS.html">
@@ -899,6 +945,9 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\CreateItemIPS.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Contract\CreateRefundLink.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\InvalidateContract.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -1024,16 +1073,27 @@
 	    <LastGenOutput>Resource.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Localization\Resources\HtmlTemplates\Resource.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Localization\Resources\Payout\Resource.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
 	
 	<!-- Build Lab Serbian package -->
    <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
 	  <ApplicationManifest>POWRS.Lab.PaymentLink.manifest</ApplicationManifest>
     </PropertyGroup>
-   <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
 	  <Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Install.exe&quot; -p &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot; -k 5d98ddf8138a851f6822be199ee9324e -m &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.Lab.PaymentLink.manifest&quot;" />
 	  <Exec Command="&quot;C:\Program Files (x86)\Waher Data AB\IoT Gateway 1.0\Waher.Utility.Sign.exe&quot; -c ed448 -priv &quot;qGe+NyQy0hjvuNPK61LfvHmkJZxD0SHdo7UozOsWpGPj3GmSxAa8X4Ch7gJv23tRfUm4+IJIJCo=&quot; -o &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.signature&quot; -s &quot;C:\Projects\Powrs.PaymentLink\POWRS.PaymentLink\bin\Release\net6.0\POWRS.PaymentLink.RS.package&quot;" />
-   </Target>-->
+   </Target>
 
 	<!--
 	<PropertyGroup>

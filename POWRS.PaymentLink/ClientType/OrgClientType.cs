@@ -1,9 +1,12 @@
 ﻿using POWRS.PaymentLink.ClientType.Models;
 using POWRS.PaymentLink.Onboarding;
+using POWRS.PaymentLink.ClientType;
 using System;
 using System.Threading.Tasks;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
+using Waher.Events;
+using Waher.IoTGateway;
 
 namespace POWRS.PaymentLink.ClientType
 {
@@ -66,6 +69,45 @@ namespace POWRS.PaymentLink.ClientType
             var brokerAccClientType = await Database.FindFirstDeleteRest<BrokerAccountOnboaradingClientTypeTMP>(userNameFilter);
 
             return new OrgClientType { BrokerAccountOnboaradingClientTypeTMP = brokerAccClientType };
+        }
+
+        public static async Task<decimal> GetBrokerAccIPSFee(string userName)
+        {
+            try
+            {
+                var orgClientType = await GetBrokerAccClientType(userName);
+
+                Enums.ClientType enumClientType = Enums.ClientType.Small;
+
+                if (orgClientType.OrganizationClientType != null)
+                    enumClientType = orgClientType.OrganizationClientType.OrgClientType;
+
+                var typeFilter = new FilterFieldEqualTo("Type", enumClientType);
+
+                ClientTypePayspotSetting clientTypePayspotSetting = await Database.FindFirstDeleteRest<ClientTypePayspotSetting>(typeFilter);
+
+                return clientTypePayspotSetting.IPSFee;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                throw;
+            }
+        }
+
+        public static async Task<decimal> GetBrokerJidIPSFee(string Jid)
+        {
+            try
+            {
+               string userName = Jid.Split("@")[0].ToString();
+
+                return await GetBrokerAccIPSFee(userName);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                throw;
+            }
         }
     }
 }

@@ -83,18 +83,29 @@ try
 		foreach token in tokens do (
 			tokenVariables := token.GetCurrentStateVariables();
                          TokenState := tokenVariables.State;
-                        if (TokenState == null OR TokenState == "") then
+                         ActualTokenState := TokenState; 
+                        if (TokenState != null OR TokenState != "") then
                          (
-                           PaymentStatus := select top 1 Result from PayspotPayments where TokenId= token.TokenId;
-                           PaymentStatus == "00" ? TokenState := "PaymentCompleted";
-			 );
+						   IsPaymentCompleted := POWRS.PaymentLink.Contracts.Enums.EnumHelper.IsPaymentCompleted(TokenState);
+                           (IsPaymentCompleted && TokenState != "ReleaseFundsToSellerFailed" ) ? TokenState := "PaymentCompleted";
+			             );
+						 foreach Variable in (tokenVariables.VariableValues ?? []) do 
+						 (        
+                            if (Variable.Name like "CanCancel") then 
+							(
+								CanCancel := Variable.Value;
+								return;
+							);
+						  );
+
 			ResultList.Add({
 				"Creator": item.UserName,
 				"TokenId": token.TokenId,
-				"CanCancel": tokenVariables.State == "PaymentCompleted",
+				"CanCancel": CanCancel,
 				"IsActive": !exists(doneStates[tokenVariables.State]),
 				"Paylink": Replace(template, "{0}", Global.EncodeContractId(token.OwnershipContract)),
 				"Created": token.Created.ToString("s"),
+                                "TokenState": ActualTokenState,
 				"State": TokenState ,
 				"Variables": (tokenVariables.VariableValues.Length > 0 ? tokenVariables.VariableValues : token.Tags)
 			});

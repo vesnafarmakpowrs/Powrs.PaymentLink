@@ -83,6 +83,7 @@
 					<Content fileName="CreateItemIPS.ws"/>
 					<Content fileName="CreateItemOrder.ws"/>
 					<Content fileName="CreateItemEComm.ws"/>
+					<Content fileName="CreateRefundLink.ws"/>
 					<Content fileName="InvalidateContract.ws"/>
 					<Content fileName="UpdateSuccessUrl.ws"/>
 				</Folder>
@@ -292,6 +293,8 @@
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
 					<Content fileName="ApprovedLegalIdentity.html"></Content>
+					<Content fileName="SubscriptionCanceled.html"></Content>
+					<Content fileName="SubscriptionPaymentFailed.html"></Content>
 				</Folder>
 				<Folder name="RS">
 					<Content fileName="ContactUs.html"></Content>
@@ -302,6 +305,8 @@
 					<Content fileName="VerifyEmail.html"></Content>
 					<Content fileName="SendLinkViaEmail.html"></Content>
 					<Content fileName="ApprovedLegalIdentity.html"></Content>
+					<Content fileName="SubscriptionCanceled.html"></Content>
+					<Content fileName="SubscriptionPaymentFailed.html"></Content>
 				</Folder>
 			</Folder>
 

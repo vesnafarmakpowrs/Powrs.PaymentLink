@@ -1,6 +1,6 @@
 ﻿Title: Payment Link
 Description: Displays information about a contract.
-Date: 2024-12-23
+Date: 2023-08-04
 Author: POWRS
 Width: device-width
 Cache-Control: max-age=0, no-cache, no-store
@@ -10,6 +10,7 @@ CSS: css/Payout.cssx
 CSS: css/IPS.cssx
 CSS: css/Info.cssx
 CSS: css/BankList.css
+CSS: css/Refund.cssx
 Icon: favicon.ico
 viewport : Width=device-width, initial-scale=1
 Parameter: ID
@@ -17,10 +18,10 @@ Parameter: TYPE
 Parameter: lng
 JavaScript: js/Events.js
 JavaScript: js/XmlHttp.js
-JavaScript: js/PayoutDetails.js
 JavaScript: js/PaymentLinkIPS.js
 JavaScript: js/QRIPS.js
 JavaScript: js/IPSMobile.js
+JavaScript: js/RefundDetails.js
 
 
 <main class="border-radius">
@@ -45,7 +46,9 @@ if(LanguageNamespace == null) then
  ]]<b>Page is not available at the moment</b>[[;
  Return("");
 );
-
+ 
+ culture:= Language == "RS" ? "sr" : "en";
+ localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, culture), "Payout");
 
 	try
 	(
@@ -56,10 +59,10 @@ if(LanguageNamespace == null) then
 		]]<b>Payment link is not valid</b>[[;
 	  Return("");
 	);
-
-	Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where CreationContract=ID;
-
-	PaymentResult := select Top 1 Result from PayspotPayments where TokenId = Token.TokenId;
+   
+    TokenId := select top 1 TokenId from NeuroFeatureTokens where CreationContract = ID;
+    Token := select top 1 * from IoTBroker.NeuroFeatures.Token where TokenId = TokenId;
+	PaymentResult := select Top 1 Result from PayspotPayments where TokenId = TokenId;
 
 	if !exists(Token) then
 	(
@@ -73,8 +76,6 @@ if(LanguageNamespace == null) then
 		if exists(CurrentState) then
 			ContractState:= CurrentState.State;
 	);
-	
-	IsPaymentCompleted := POWRS.PaymentLink.Contracts.Enums.EnumHelper.IsPaymentCompleted(ContractState);
 
 	Contract:=select top 1 * from IoTBroker.Legal.Contracts.Contract where ContractId=ID;
 	   
@@ -144,17 +145,27 @@ if(LanguageNamespace == null) then
 	(        
 		Variable.Name like "Title" ?   Title := MarkdownEncode(Variable.Value);
 		Variable.Name like "Description" ?   Description := MarkdownEncode(Variable.Value);
-		Variable.Name like "Price" ?   ContractValue := MarkdownEncode(Variable.Value.ToString("N2"));
+		Variable.Name like "Price" ?   ContractValue := Variable.Value;
 		Variable.Name like "Currency" ?   MarkdownEncode(Currency := Variable.Value);
 		Variable.Name like "Country" ?   Country := MarkdownEncode(Variable.Value.ToString());
 		Variable.Name like "Commission" ?   Commission := Variable.Value;
 		Variable.Name like "Buyer" ?   BuyerFullName := MarkdownEncode(Variable.Value);
 		Variable.Name like "BuyerEmail" ?  BuyerEmail := MarkdownEncode(Variable.Value);
+		Variable.Name like "BuyerPhoneNumber" ?  BuyerPhoneNumber := MarkdownEncode(Variable.Value);
+		Variable.Name like "BuyerAddress" ?  BuyerAddress := MarkdownEncode(Variable.Value);
+		Variable.Name like "BuyerCity" ?  BuyerCity := MarkdownEncode(Variable.Value);		
 		Variable.Name like "EscrowFee" ?   EscrowFee := MarkdownEncode(Variable.Value.ToString("N2"));
-		Variable.Name like "AmountToPay" ?   AmountToPay := MarkdownEncode(Variable.Value.ToString("N2"));	
+		Variable.Name like "AmountToPay" ?   AmountToPay := Variable.Value.ToString();	
 		Variable.Name like 'SuccessUrl' ? SuccessUrl := Variable.Value;
+		Variable.Name like "IPSFee" ?   IPSFeePercent := Variable.Value;
+		Variable.Name like "AmountToBeRefunded" ?   AmountToBeRefunded := Variable.Value;
+		
+		
 	);
 
+    IPSFee := Double(AmountToBeRefunded) * (Double(IPSFeePercent)/100);	
+	IPSFee < 20 ? IPSFee := 20;
+	TotalAmount := Double(AmountToBeRefunded) + IPSFee;
 	Country := 'RS';
 	BuyerFirstName := Before(BuyerFullName," ");
 	PayspotId := Before(ID,"@");
@@ -173,6 +184,11 @@ if(LanguageNamespace == null) then
 			"exp": NowUtc.AddMinutes(tokenDurationInMinutes)
 		});
 	bankList := Create(System.Collections.Generic.List, POWRS.Networking.PaySpot.Models.GetBanks.Bank);
+	DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTimeInBuyerLocalTime";
+	if (DateCompleted != null) then
+	(
+		DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTime";
+	);
 	
 		if (TYPE != "" && ContractState == "AwaitingForPayment") then
 		(
@@ -204,97 +220,74 @@ if(LanguageNamespace == null) then
 		)
 		else  
 	    (
-			if (!IsEcommerce ) then
-			 (
 				]]  <table style="width:100%">
 						 <tr class="welcomeLbl">   
 							<td><img class="vaulterLogo" src="./resources/vaulter_txt.svg" alt="Vaulter"/> </td>
 							<td coolspan="2"><select class="select-lng" title="languageDropdown" id="languageDropdown"></select></td>
-						</tr>
-						<tr>
-							<td>**((System.String.Format(LanguageNamespace.GetStringAsync(36).ToString(), BuyerFullName) ))**</td>
-							<td style="text-align:right">**ID: ((RemoteId ))**</td>
-						</tr>
-					</table>
-					<div class="payment-details">
-					   <table style="width:100%">
-						  <tr id="tr_summary">
-							 <td class="item border-radius">
-								<table style="vertical-align:middle; width:100%;">
-								   <tr id="tr_seller_info">
-									  <td style="width:50%">((LanguageNamespace.GetStringAsync(11) )): ((OrgName ))</td>
-									  <td style="width:40%"></td>
-									  <td style="width:10%;text-align:right"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandSellerDetails()"/></td>
-								   </tr>
-									<tr id="tr_seller_dtl" style="display:none"  class="agent-info">
-									 <td>
-										<div class="agent-contact-info">
-								<p>((OrgAddr ))test</p>
-									<p>((MarkdownEncode(CompanyInfo.PhoneNumber) ))</p>
-											<p>((MarkdownEncode(CompanyInfo.Email) ))</p>
-											<p>((MarkdownEncode(CompanyInfo.WebAddress) ))</p>
-										</div>
-									  </td>
-							  <td colspan="2" > 
-										<div style="float: right;" align="right" class="agent-detail">
-								<p>((LanguageNamespace.GetStringAsync(58) )): ((OrgNr ))</p>
-									<p>((LanguageNamespace.GetStringAsync(60) )): (( OrgActivity))</p>
-											<p>((LanguageNamespace.GetStringAsync(61) )): (( OrgActivityNumber))</p>
-											<p>((LanguageNamespace.GetStringAsync(56) )): (( OrgTaxNum))</p>
-										</div>
-									  </td>
-								   </tr>
-								</table>
-							 </td>
-						  </tr>
-					   </table>
-						<table style="width:100%">
-							<tr id="tr_header" class="table-row">
-								<td class="item-header"><strong>((LanguageNamespace.GetStringAsync(39) ))<strong></td>
-								<td class="price-header"><strong>((LanguageNamespace.GetStringAsync(40) )) ((LanguageNamespace.GetStringAsync(54) ))<strong></td>
-							</tr>
-							<tr id="tr_header_title">
-								<td colspan="2" class="item border-radius">
-									<table style="vertical-align:middle; width:100%;">
-										<tr>
-											<td style="width:80%;"> ((Title))</td>
-											<td class="itemPrice" rowspan="2">((ContractValue))</td>
-											<td style="width:10%;" rowspan="2" class="currencyLeft"> ((Currency )) </td>
-										</tr>
-										<tr>
-											<td style="width:70%"> ((Description))</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-						</table>
+						</tr>						
+					</table>					
+					<div class="refund-details">
+					   <div class="payment-history">
+						    <div class="refund-container buyer-container">
+								<div class="refund-history-div">
+									<div class="refund-lbl">((BuyerFullName ))</div>
+									<div class="refund-price"><img id="expand_img" class="logo_expand"  src="./resources/expand-down.svg" alt=""  onclick="ExpandBuyerDetails()"/></div>
+								</div>
+								<div id="buyerInfo" class="refund-history-div buyer-info-div" style="display:none" >
+									<div class="buyer-info-child">
+										<div class="buyer-info-left">((BuyerPhoneNumber ))</div>
+										<div class="buyer-info-right">((BuyerAddress ))</div>
+									</div>
+									<div class="buyer-info-child">
+										<div class="buyer-info-left">((BuyerEmail ))</div>
+										<div class="buyer-info-right">((BuyerCity ))</div>
+									</div>
+								</div>								
+								<div class="refund-sticker buyer">buyer info</div>
+							</div>
+							<div class="refund-container product-container">
+								<div class="refund-history-div">
+									<div class="refund-lbl">((Title))</br>((Description))</div>
+									<div class="refund-price">((ContractValue.ToString("N2") )) ((Currency ))</div>
+								</div>
+								<div class="refund-sticker product">((localization.Get("Product") )): ((RemoteId ))</div>
+							</div>
+							<div class="refund-container product-container">
+								<div class="refund-history-div">
+									<div class="refund-lbl">((localization.Get("PaymentDate") )): ((DateCompleted.ToString('MMM dd,yyyy') ))</div>
+								</div>
+								<div class="refund-sticker payment">((localization.Get("PaymentInfo") ))</div>
+							</div>
+							<div class="refund-container refund-info">
+								<div class="refund-history-div">
+									<div class="refund-lbl">((localization.Get("AmountToBeRefunded") ))</div>
+									<div class="refund-price">((AmountToBeRefunded.ToString("N2") )) ((Currency ))</div>
+								</div>
+								<div class="refund-history-div">
+									<div class="refund-lbl">((localization.Get("ChargebackFee") ))</div>
+									<div class="refund-price">((IPSFee.ToString("N2") )) ((Currency ))</div>
+								</div>
+								<div class="refund-line"> </div>
+								<div class="refund-history-div">
+									<div class="refund-lbl">((localization.Get("TotalAmountDue") ))</div>
+									<div class="refund-price">(((TotalAmount).ToString("N2") )) ((Currency ))</div>
+								</div>
+								<div class="refund-sticker refund">((localization.Get("RefundInfo") ))</div>
+							</div>[[;
+						if (ContractState == "AwaitingforRefundPayment" and TYPE=="") then 
+						( 
+							]]<div class="refund-container termsAndCondition-container">
+							   <div class="refund-lbl"><label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a> vaulter</label></div>
+							</div>[[;
+						);
+					]]</div>
 					</div>
-					<div class="spaceItem"></div>
-					[[;
-				);	
+					<div class="spaceItem"></div>[[;
 			);
 				
-			if (ContractState == "AwaitingForPayment" and TYPE=="") then 
+			if (ContractState == "AwaitingforRefundPayment" and TYPE=="") then 
 			( 
-			   
-				if (!IsEcommerce ) then
-				(
-					]]<div class="vaulter-details">
-						<table style="width:100%">
-							<tr>
-								<td colspan="3">
-									<label for="termsAndCondition"><a href="TermsAndCondition.html" target="_blank">**((LanguageNamespace.GetStringAsync(19) ))**</a> vaulter</label>    
-								</td>
-							</tr>
-							<tr >
-								<td colspan="3">
-									<label for="termsAndConditionAgency"><a onclick="OpenTermsAndConditions(event, this);" urlhref="((CompanyInfo.TermsAndConditions ))">**((LanguageNamespace.GetStringAsync(19) ))**</a> ((OrgName ))</label>
-								</td>
-							</tr>
-						</table>
-					</div>[[;
-				);
-				]]<div class="spaceItem"></div>
+			  ]]<div class="spaceItem"></div>
 				<div id="retry-payment" style="display:none">
 				   <div class="retry-div" >
 					<button id="payspot-submit" class="retry-btn btn-black btn-show" onclick="RetryPayment()">((LanguageNamespace.GetStringAsync(78) ))</button> 
@@ -356,28 +349,24 @@ if(LanguageNamespace == null) then
 						  </div> 
 					  </div>
 					</div>  
-				[[;
+				</div>[[;
+				
 			)
-			else if (IsPaymentCompleted) then 
+			else if (ContractState == "RefundBuyer" || ContractState == "RefundBuyerFailed")then 
 			(
-			]]<div class="payment-completed"><p>**((LanguageNamespace.GetStringAsync(16) ))**</p> [[;
+				]]<div class="payment-completed"><p>** ((localization.Get("PaymentRefundCompleted") ))**</p> [[;
 
-			   DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTimeInBuyerLocalTime";
-			   if(DateCompleted == null) then
-			   (
-				DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTime";
-			   );
-			   ]]<p>**Datum plaćanja: ((DateCompleted.ToLocalTime().ToString("dd-MM-yyyy HH:mm") ))**</p></div>
-			  <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
+			    DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "RefundPaymentDateTimeInBuyerLocalTime";
+			    if(DateCompleted == null) then
+			     (
+				   DateCompleted := select top 1 Value from CurrentState.VariableValues where Name = "PaymentDateTime";
+			     );
+			    ]]<p>**Datum plaćanja: ((DateCompleted.ToLocalTime().ToString("dd-MM-yyyy HH:mm") ))**</p></div>
+			      <input type="hidden" id="successURL" value='((SuccessUrl ))' /> [[;
 			)
 			else if ContractState == "PaymentCanceled" then 
 			(
-			  ]]**((LanguageNamespace.GetStringAsync(80) ))**
-			   <input type="hidden" id="cancelURL" value='((ErrorUrl ))' />[[;
-			)
-			else 
-			(
-			  ]]**((LanguageNamespace.GetStringAsync(23) ))**[[;
+			  **Buyer refunded**
 			);
 		
 ]]</div>
