@@ -354,6 +354,9 @@
   <data name="AgreeToTermsAgain" xml:space="preserve">
     <value>By clicking 'Pay Now' you confirm that you have read and agree to the Vaulter Terms and</value>
   </data>
+	<data name="AgreeToRegisterCardTerms" xml:space="preserve">
+    <value>By clicking 'Register new card' you confirm that you have read and agree to the Vaulter Terms and</value>
+  </data>
   <data name="RegisterNewCard" xml:space="preserve">
     <value>Register new card</value>
   </data>
@@ -392,27 +395,6 @@
   </data>
   <data name="SavedCardLabel" xml:space="preserve">
     <value>Saved card</value>
-  </data>
-  <data name="CardRegistrationCompletedColumn" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PaymentDate" xml:space="preserve">
-    <value>Payment date</value>
-  </data>
-  <data name="PaymentInfo" xml:space="preserve">
-    <value>payment info</value>
-  </data>
-  <data name="AmountToBeRefunded" xml:space="preserve">
-    <value>The amount returned to the customer</value>
-  </data>
-  <data name="ChargebackFee" xml:space="preserve">
-    <value>Chargeback fee</value>
-  </data>
-  <data name="RefundInfo" xml:space="preserve">
-    <value>refund info</value>
-  </data>
-  <data name="PaymentRefundCompleted" xml:space="preserve">
-    <value>Payment refund successfully completed</value>
   </data>
   <data name="TransactionSuccessfulCardNotValid" xml:space="preserve">
     <value>Payment is completed but card is not valid long enough. Card must be valid at least until {0}. Same amount will be refunded to your account automatically. Please try with different card.</value>

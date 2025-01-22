@@ -345,7 +345,10 @@
   <data name="TryAgain" xml:space="preserve">
     <value>Pokušajte ponovo</value>
   </data>
-  <data name="AgreeToTerms" xml:space="preserve">
+  <data name="AgreeToRegisterCardTerms" xml:space="preserve">
+    <value>Klikom na 'Registruj novu karticu' potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i</value>
+  </data>
+	<data name="AgreeToTerms" xml:space="preserve">
     <value>Klikom na 'Plati' i nastavkom ka metodi plaćanja IPS skeniraj, potvrđujete da ste pročitali i da se slažete sa Odredbama Vaulter-a i</value>
   </data>
   <data name="Refunded" xml:space="preserve">
@@ -395,24 +398,6 @@
   </data>
   <data name="TransactionSuccessfulCardNotValid" xml:space="preserve">
     <value>Plaćanje je uspešno, ali kartica mora biti važeća minimum do {0}. Isti iznos će biti refundiran na vaš račun. Molimo vas pokušajte sa drugom karticom.</value>
-  </data>
-  <data name="PaymentDate" xml:space="preserve">
-    <value>Datum plaćanja</value>
-  </data>
-  <data name="PaymentInfo" xml:space="preserve">
-    <value>informacije o placanju</value>
-  </data>
-  <data name="AmountToBeRefunded" xml:space="preserve">
-    <value>Iznos koji se vraća kupcu</value>
-  </data>
-  <data name="ChargebackFee" xml:space="preserve">
-    <value>Naknada za povraćaj uplate</value>
-  </data>
-  <data name="RefundInfo" xml:space="preserve">
-    <value>iнформације о поврату новца</value>
-  </data>
-  <data name="PaymentRefundCompleted" xml:space="preserve">
-    <value>Povraćaj uplatu uspešno završeno</value>
   </data>
   <data name="FullNameLabel" xml:space="preserve">
     <value>Ime i prezime</value>

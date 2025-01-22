@@ -36,7 +36,7 @@ catch
   Return("");
 );
 
-Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
+Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where CreationContract=ID;
 if !exists(Token) then
 (
   ]]<b>Payment link is not valid</b>[[;
@@ -257,7 +257,7 @@ if Token.HasStateMachine then
 			   </table>
 			</div>
 			<div class="spaceItem"></div>
-			<div class="vaulter-details">
+			<div class="vaulter-details grey-bg">
 						<table style="width:100%">
 							<tr>
 								<td colspan="3">
@@ -274,51 +274,83 @@ if Token.HasStateMachine then
 			<div class="spaceItem"></div>
 			<div class="saved-card summary" id="PaymentSummary">
 				<div class="summary-container">
-					<div class="summary-column">
+					<div class="summary-col">
 						<div class="summary-row-title">((localization.Get("TotalPaid") ))</div>
-						<div class="summary-row-amount">((TotalPaid.ToString("f2") )) ((Currency))</div>
+						<div class="summary-row-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(TotalPaid) )) ((Currency))</div>
 					</div>
-					<div class="summary-column">
+					<div class="summary-col">
 						<div class="summary-row-title">((localization.Get("TotalRemaining") ))</div>
-						<div class="summary-row-amount">(((TotalAmountToPay - TotalPaid).ToString("f2") )) ((Currency))</div>
+						<div class="summary-row-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(TotalAmountToPay - TotalPaid) )) ((Currency))</div>
 					</div>
 				</div>	 
 				<div class="meter green nostripes">
-					<span style="width:((((TotalPaid/TotalAmountToPay)* 100).ToString("f2") ))%"></span>
+					<span style="width:(((TotalPaid/TotalAmountToPay)* 100 ))%"></span>
 				</div>
 				<div class="summary-row-notice">
-				  <span>((localization.Get("NextInstallmentOn") ))  ((pendingDate )) : ((pendingAmount )) ((Currency))<span>
+				  <span>((localization.Get("NextInstallmentOn") ))  ((pendingDate )) : ((POWRS.PaymentLink.Utils.ToVaulterStringFormat(pendingAmount) )) ((Currency))<span>
 				</div>
 				<div class="line"></div>
 				<div class="summary-container">
-					<div class="summary-column summary-total-lbl">((localization.Get("TotalFinanced") ))</div>
-					<div class="summary-column">((AmountToPay.ToString("f2") )) ((Currency))</div>
+					<div class="summary-col summary-total-lbl">((localization.Get("TotalFinanced") ))</div>
+					<div class="summary-col">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(AmountToPay) )) ((Currency))</div>
 				</div>
 			</div>
    		<div class="spaceItem"></div>[[;
 	if (ContractState != "PaymentCanceled" and ContractState != "PaymentNotPeformed" and ContractState != "PaymentNotPeformed" and ContractState != "Done") then 
 	(
 		Log.Informational(ContractState, null);
-		]]<div class="saved-card" id="billingDetailsForm">
-			<table class="width100 vaulter-form">
-			<tr>
-				<td colspan="4"><b>((localization.Get("BillingDetailsLabel") ))</b></td>
-				<td colspan="4" style="text-align: right;">
-					<button class="btn-black btn-show add-new-card-btn" type="button" onclick="UpdateBuyerInformations(this);">((localization.Get("UpdateLabel") ))</button>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="8"><input class="width100" type="text" name="fullName" value='((BuyerFullName ))' placeholder="((localization.Get("FullNameLabel") ))"></td>
-			</tr>
-			<tr>
-				<td colspan="4"><input class="width100" type="text" name="address" value='((BuyerAddress ))' placeholder="((localization.Get("Address") ))"></td>
-				<td colspan="4"><input class="width100" type="text" name="city" value='((BuyerCity ))' placeholder="((localization.Get("CityLabel") ))"></td>
-			</tr>
-			<tr>
-				<td colspan="4"><input class="width100" type="tel" name="phoneNumber" value='((BuyerPhoneNumber ))' placeholder="((localization.Get("PhoneNumber") ))"></td>
-				<td colspan="4"><input class="width100" type="email" name="email" value='((BuyerEmail ))' placeholder="((localization.Get("EmailAddress") ))"></td>
-			</tr>
-			</table>
+		]]<div class="saved-card summary" id="billingDetailsForm">
+			<div class="width100 vaulter-form">
+				<div class="billing-dtl-header-row">
+					<div class="billing-dtl-column">((localization.Get("BillingDetailsLabel") ))</div>
+					<div class="billing-dtl-column right-btn" >
+						<button class="btn-black btn-show add-new-card-btn btn-save" id="btnEditBuyerDetails" type="button" onclick="EditBuyerDetails();">
+							((localization.Get("UpdateLabel") ))
+						</button>
+					</div>
+				</div>
+				<div id="billing-dtl-edit-div" style="display: none;">
+					<div class="billing-dtl-row">
+						<div class="billing-dtl-column">
+							<input class="width100 billing-dtl-input" type="text" id="fullName" name="fullName" value='((BuyerFullName ))' placeholder="((localization.Get("FullNameLabel") ))" style="display: none;">
+						</div>
+					</div>
+					<div class="billing-dtl-row-edit">
+						<div class="billing-dtl-column">
+							<input class="width100 billing-dtl-input" type="text" id="address" name="address" value='((BuyerAddress ))' placeholder="((localization.Get("Address") ))" style="display: none;">
+						</div>
+						<div class="billing-dtl-column">
+							<input class="width100 billing-dtl-input" type="text" id="city" name="city" value='((BuyerCity ))' placeholder="((localization.Get("CityLabel") ))" style="display: none;">
+						</div>
+					</div>
+					<div class="billing-dtl-row-edit">
+						<div class="billing-dtl-column">
+							<input class="width100 billing-dtl-input" type="tel" id="phoneNumber" name="phoneNumber" value='((BuyerPhoneNumber ))' placeholder="((localization.Get("PhoneNumber") ))" style="display: none;">
+						</div>
+						<div class="billing-dtl-column">
+							<input class="width100 billing-dtl-input" type="email" id="email" name="email" value='((BuyerEmail ))' placeholder="((localization.Get("EmailAddress") ))" style="display: none;">
+						</div>
+					</div>
+				</div>
+				<div id="billing-dtl-div">
+					<div class="billing-dtl-row">
+						<div class="billing-dtl-column">
+							<label id="fullName-lbl">((BuyerFullName ))</label>
+						</div>
+						<div class="billing-dtl-column right">
+							<label id="phoneNumber-lbl">((BuyerPhoneNumber ))</label>
+						</div>
+					</div>
+					<div class="billing-dtl-row">
+						<div class="billing-dtl-column">
+							<label id="address-lbl">((BuyerAddress )), ((BuyerCity ))</label>
+						</div>
+						<div class="billing-dtl-column right">
+						    <label id="email-lbl">((BuyerEmail ))</label>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="spaceItem"></div>
 		[[;
@@ -336,22 +368,22 @@ if Token.HasStateMachine then
 					<button class="btn-border-red btn-show add-new-card-btn" onclick="InitiateCancellation();">((localization.Get("Cancel") ))</button>
 				</div>
 			</div>
-			<div class="card-details-div">
-				<div class="card-details-row">
-					<div class="card-details">
-						<div class="card-details-lbl">((localization.Get("CardNumber") ))</div>
-						<div class="card-value">((MarkdownEncode(ActiveCardDetails.MaskedPan) ))</div>
+			<div class="card-details-div">				
+				<div class="card-details-row card-detail-center">
+				     <div class="card-details card-img-div">
+						<img class="card-img" src="./resources/register_cards/visa_card.png" alt="Visa"/>
 					</div>
 				</div>
-				<div class="card-details_2row">
+				<div class="card-details_2row card-detail-center card-detail-left">
 					<div class="card-details">
-						<div class="card-details-lbl">((localization.Get("ExpiryDateLabel") ))</div>
-						<div class="card-value">((MarkdownEncode(ActiveCardDetails.ExpiryDate) ))</div>
+						<div class="card-details-lbl">((MarkdownEncode(ActiveCardDetails.CardBrand) ))</div>
+						<div class="card-value">\*\*\*\*(( Right(ActiveCardDetails.MaskedPan,4) ))</div>
 					</div>
-					<div class="card-details">
-						<div class="card-details-lbl">((localization.Get("CardBrandLabel") )):</div>
-						<div class="card-value">((MarkdownEncode(ActiveCardDetails.CardBrand) ))</div>
-					</div>
+				</div>
+				<div class="card-details-row card-detail-center card-detail-left">
+						<div class="card-details-lbl">((localization.Get("ExpiryDateLabel") ))</div>[[;
+						 exp:= Left(ActiveCardDetails.ExpiryDate,2) + "/" + Right(ActiveCardDetails.ExpiryDate,2); 
+						]]<div class="card-value">((MarkdownEncode(exp) ))</div>
 				</div>
 			</div>
 		</div>[[;
@@ -368,7 +400,7 @@ if Token.HasStateMachine then
 											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="InitiateCardAuthorization();">((localization.Get("RegisterNewCard") ))</button> 
 										</div>
 										<div class="div-payment-notice">
-											<label id="payment-notice-lbl" class="lbl-payment-notice">((localization.Get("AgreeToTermsAgain") )) ((OrgName ))</label>
+											<label id="payment-notice-lbl" class="lbl-payment-notice">((localization.Get("AgreeToRegisterCardTerms") )) ((OrgName ))</label>
 										</div>
 									</div>
 							</td>
@@ -429,8 +461,8 @@ if Token.HasStateMachine then
 					<div class="payment-container">
 					  <div class="payment-history-div">
 					    <div>
-							<div class="payment-history-amount">((payment.Amount.ToString("f2") )) ((Currency ))</div>
-							<div class="payment-history-date">((payment.DateCreated.ToString("dd/MM/yyyy") ))</div>	[[;
+							<div class="payment-history-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(payment.Amount) )) ((Currency ))</div>
+							<div class="payment-history-date">((payment.DateCreated.ToString("MMM dd, yyyy") ))</div>	[[;
 						]]</div></div>[[;
 						if(payment.RefundedAmount != null and payment.RefundedAmount > 0) then 
 						(

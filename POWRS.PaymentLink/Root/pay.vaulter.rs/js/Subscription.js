@@ -73,7 +73,8 @@ function UpdateBuyerInformations(btn) {
             "phoneNumber": phoneNumber
         },
         (response) => {
-            location.reload();
+            //location.reload();
+            ShowEditBillingDetailElements();
         },
         (error) => {
             parsedError = JSON.parse(error.response);
@@ -85,9 +86,42 @@ function UpdateBuyerInformations(btn) {
                     }
                 });
             }
-            btn.disabled = false;
+
         })
+    btn.disabled = false;
 }
+
+let isEditMode = false;
+
+function EditBuyerDetails() {
+    const btnEditBuyerDetails = document.querySelector('#btnEditBuyerDetails');
+    if (isEditMode) {
+        if (!UpdateBuyerInformations(btnEditBuyerDetails)) return;
+    }
+    else {
+        ShowEditBillingDetailElements();
+    }
+}
+
+function ShowEditBillingDetailElements() {
+    isEditMode = !isEditMode;
+
+    isEditMode ? btnEditBuyerDetails.textContent = 'Snimi' : btnEditBuyerDetails.textContent = 'Azuriraj';
+    isEditMode ? ShowHideElement("billing-dtl-div", "none") : ShowHideElement("billing-dtl-div", "block");
+    let buyerDetailElements = ["fullName", "address", "city", "phoneNumber", "email", "billing-dtl-edit-div"];
+
+    buyerDetailElements.forEach(function (elementId, index) {
+        isEditMode ? ShowHideElement(elementId, null) : ShowHideElement(elementId, "none");
+        isEditMode ? ShowHideElement(elementId + "-lbl", "none") : ShowHideElement(elementId + "-lbl", null);
+    });
+
+    if (!isEditMode) {
+        buyerDetailElements.forEach(function (elementId, index) {
+            !elementId.includes('div') ? document.querySelector(`input[name="${elementId}"]`).style.border = '1px solid #ccc' : null;
+        });
+    }
+}
+
 function InitiateCancellation() {
     ShowHideElement("tr_spinner", null);
     SendXmlHttpRequest("../Payout/API/InitiateCancellation.ws",

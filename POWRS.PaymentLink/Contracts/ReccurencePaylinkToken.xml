@@ -295,7 +295,7 @@
 								html:= Evaluate("Get(templateUrl, {'Accept': 'text/html'})");
 								ConfigClass:= Evaluate("Waher.Service.IoTBroker.Setup.RelayConfiguration");
 								Config:= Evaluate("ConfigClass.Instance");
-								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title + ' - ' + StateToNotify, html.HtmlText, null, null))");
+								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title, html.HtmlText, null, null))");
 
 								if(Evaluate("exists(tabId:= Global.PayspotRequests[TokenContract])")) then
 								(

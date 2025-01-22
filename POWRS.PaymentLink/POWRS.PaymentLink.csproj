@@ -1060,6 +1060,18 @@
 
 	<ItemGroup>
 	  <Folder Include="FeeCalculator\TemplateFiles\FeeCalculatorForm\" />
+	  <Folder Include="Root\VaulterApi\PaymentLink\Organization\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Localization\Resources\HtmlTemplates\Resource.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Localization\Resources\Payout\Resource.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>

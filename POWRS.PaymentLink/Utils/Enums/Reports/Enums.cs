@@ -9,7 +9,7 @@
         PayLinkFrequency,
         OnboardingActivity
     }
-    public enum TopicFilterCondition
+    public enum TopicFilterCondition 
     {
         LessThan,
         EqualTo,

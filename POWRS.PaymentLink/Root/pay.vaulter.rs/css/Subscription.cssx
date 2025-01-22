@@ -40,13 +40,14 @@
 	.card-details-lbl {
 		font-size: medium;
 		white-space:nowrap;
+		padding-left: 5px; 
 	}
 	
 	.saved-card-title {
 		 font-size: medium;
 	}
 	.card-details-title {
-		font-size: 16px;
+		font-size: medium;
 		font-weight: bold;
 		display: flex; 
 		align-items: center; 
@@ -54,14 +55,30 @@
 		padding-bottom:8px;
 	}
 	.card-value{
-		border: 1px solid #ccc;
-		border-radius: 8px;
-		background-color: #f1f1f1;
-		font-size: 16px;
+		font-size: medium;
 		color: #838282;
 		text-align: left;
 		padding: 5px 10px;
 		white-space:nowrap;
+	}
+	.card-img-div{
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		background-color: #f4f4f4cc;
+		padding: 5px 5px;
+		display: flex;
+		align-items: center; 
+		justify-content: center; 
+	}
+	.card-detail-center{
+		align-items: center; 
+		justify-content: left; 
+	}
+	.card-detail-left{
+		justify-content: left; 
+	}
+	.card-img{
+		width: 60px;
 	}
 	.add-new-card-btn
 	{
@@ -239,7 +256,7 @@
 	}
 	
 	.summary {
-       background-color: #ffffff !important;
+       background-color: #f9f9f9 !important;
     }
 	
 	.summary-container {
@@ -247,7 +264,7 @@
       gap: 10px; 
     }
 
-    .summary-column {
+    .summary-col {
       flex: 1; 
       display: flex;
       flex-direction: column;
@@ -281,19 +298,113 @@
     }
 	
    .summary-total-lbl {
-	   padding-top: 5px;
+	  padding-top: 5px;
 	  font-family: "RTDromo Light";
 	  font-size: medium;
 	  text-align: left;
     }
 	
+	.billing-dtl-header-row {
+		display: flex;
+        margin-bottom: 10px;
+		align-items: center;
+	}
+	
+	.billing-dtl-row {
+		display: flex;
+		margin-bottom: 5px;
+		font-family: "RTDromo Light";
+	    font-size: medium;
+    }
+	
+	.billing-dtl-row-edit {
+        display: flex;
+        margin-bottom: 5px;
+		font-family: "RTDromo Light";
+	    font-size: medium;
+    }
+
+	.billing-dtl-lbl {
+		font-size: small !important;
+	}
+
+    .billing-dtl-column {
+        flex: 1;
+        padding: 0 5px;
+    }
+
+    .width100 {
+        width: 100%;
+        box-sizing: border-box;
+    }
+	
+	.billing-dtl-input{
+		background-color: #d9d9d9;
+	}
+	
+	.right{
+		 text-align: right;
+	}
+	
+	.right-btn{
+		 display: flex; 
+		 justify-content: flex-end;
+	}
+	
 	
 
-@media (max-width: 1500px) {
+    .btn-black {
+        background-color: black;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+	
+	.btn-save {
+       border-radius: 5px;
+    }
 
+    .btn-black:hover {
+        background-color: #333;
+    }
+
+    .saved-card {
+        padding: 10px 15px 10px 15px; 
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+	
+	.grey-bg{
+	 background-color: #f9f9f9;
+	}
+
+
+@media (max-width: 1280px) {
+
+.billing-dtl-row-edit  {
+			flex-direction: column;  /* Stack text boxes vertically on smaller screens */
+			 margin-bottom: 0px;
+		}
+
+	.billing-dtl-header-row {
+        margin-bottom: 0px;;
+	}
+	
+	.billing-dtl-row  {
+		 margin-bottom: 0px;
+	}
+	
+	
+	
+	
+	 .billing-dtl-column {
+        padding: 5px 5px;
+    }
+	
         .saved-card {
             margin: 0px;
-            padding: 8px;
+            padding: 3px 8px 3px 8px;
 		}
 		
 		.info
