@@ -50,6 +50,7 @@ try
     PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 
     businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
+	IpsOnly := PIpsOnly;
     if(businessData != null) then 
     (
      IpsOnly := (PIpsOnly or businessData.IPSOnly);
