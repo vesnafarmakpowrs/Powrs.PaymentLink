@@ -214,9 +214,6 @@
 		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateItemOrder.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
-		<Content Include="Root\VaulterApi\PaymentLink\Contract\CreateItem.ws">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>		
 		<Content Include="Root\VaulterApi\PaymentLink\Contract\UpdateSuccessUrl.ws">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		

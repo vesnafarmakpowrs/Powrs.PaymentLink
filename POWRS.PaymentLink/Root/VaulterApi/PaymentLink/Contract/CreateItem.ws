@@ -22,7 +22,10 @@ if !exists(Posted) then BadRequest("No payload.");
     "successUrl":Optional(String(PSuccessUrl)),
     "errorUrl":Optional(String(PErrorUrl)),
     "deliveryDate": Optional(Str(PDeliveryDate)),
+    "firstPaymentAmount": Optional(Num(PFirstPaymentAmount)),
 	"totalNumberOfPayments": Optional(Num(PNumberOfPayments)),
+    "linkCreatorName": Optional(Str(PLinkCreatorName)),
+    "linkType": Optional(Str(PLinkType)),
     "ipsOnly": Optional(Bool(PIpsOnly))
 }:=Posted) ??? BadRequest(Exception.Message);
 
@@ -41,18 +44,17 @@ try
     );
 
     IsEcommerce := false;
-    ContractInfo := Global.CreateItem(SessionUser, PRemoteId, IsEcommerce,
+    ContractInfo := Global.CreateItem_nenad(SessionUser, PRemoteId, IsEcommerce,
                 PTitle, PPrice, PCurrency, 
-                PDescription, PPaymentDeadline, PDeliveryDate ?? null, PNumberOfPayments ?? null,
+                PDescription, PPaymentDeadline, PDeliveryDate ?? null, PNumberOfPayments ?? null, PFirstPaymentAmount ?? 0, PLinkType ?? POWRS.PaymentLink.Enums.LinkType.OneTime.ToString(),
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber ??? "",
 			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode,
-			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "",
+			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "", PLinkCreatorName ?? "",
 			    logActor);
 			
     PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
 
     businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
-	IpsOnly := PIpsOnly;
     if(businessData != null) then 
     (
      IpsOnly := (PIpsOnly or businessData.IPSOnly);
