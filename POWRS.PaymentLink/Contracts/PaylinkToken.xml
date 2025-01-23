@@ -418,7 +418,7 @@
 							<Script>
 								<![CDATA[					
 									AmountToSell:= AmountToPay;
-									BankAccountToSell:= "";
+									BankAccountToSell:= SellerBankAccount;
 									SellEdalerFrom:= Seller;
 									AccountName:= SellerName;
 									MessageOnError:= 'ReleaseFundsToSeller error';
