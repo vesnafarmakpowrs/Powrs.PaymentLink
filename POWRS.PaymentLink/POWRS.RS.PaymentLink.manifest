@@ -275,7 +275,7 @@
 					<Content fileName="Done.md"></Content>
 					<Content fileName="PaymentCanceled.md"></Content>
 					<Content fileName="PaymentCompleted.md"></Content>
-					<Content fileName="PaymentFailed.html"></Content>
+					<Content fileName="PaymentFailed.md"></Content>
 					<Content fileName="PaymentNotPerformed.md"></Content>
 					<Content fileName="StateChanged.md"></Content>
 					<Content fileName="CardRegistrationCompleted.md"></Content>
