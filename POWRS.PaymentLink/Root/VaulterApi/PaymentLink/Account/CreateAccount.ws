@@ -7,7 +7,6 @@
     "email" : Required(Str(PEmail)),
 	"newSubUser": Optional(Boolean(PNewSubUser)),
     "role": Optional(Int(PUserRole)),
-	"locationPathName": Optional(Str(PlocationPathName)),
 	"registrationId": Optional(Str(PRegistrationId))
 }:=Posted) ??? BadRequest(Exception.Message);
 
@@ -17,12 +16,12 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 newUserRegistrationDetailUpdated := false;
 accountCreated:= false;
+brokerAccountOnboaradingClientTypeTMPCreated := false;
 
 try
 (
 	PNewSubUser := PNewSubUser ?? false;
 	PUserRole := PUserRole ?? -1;
-	PlocationPathName := PlocationPathName ?? "";
 	PRegistrationId := PRegistrationId ?? "";
 
     if(Global.RegexValidation(PEmail, "Email", "") == false) then 
@@ -261,11 +260,20 @@ try
 	(
 		if(!PNewSubUser)then
 		(
-			newObj := Create(POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP);
-			newObj.UserName := PUserName;
-			newObj.OrgClientType := POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetEnumByUrlPathName(PlocationPathName);
-			
-			Waher.Persistence.Database.Insert(newObj);
+			brokerAccClientType := select top 1 * from POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP where UserName = PUserName;
+			if(brokerAccClientType != null) then 
+			(
+				brokerAccClientType.OrgClientType := newUserRegistrationDetail.NewOrgClientType;
+				Waher.Persistence.Database.Update(brokerAccClientType);
+			)
+			else
+			(
+				brokerAccClientType := Create(POWRS.PaymentLink.ClientType.Models.BrokerAccountOnboaradingClientTypeTMP);
+				brokerAccClientType.UserName := PUserName;
+				brokerAccClientType.OrgClientType := newUserRegistrationDetail.NewOrgClientType;
+				Waher.Persistence.Database.Insert(brokerAccClientType);
+			);
+			brokerAccountOnboaradingClientTypeTMPCreated := true;
 		);
 	)
 	catch
@@ -315,8 +323,7 @@ try
 		)
 		else
 		(
-			newClientType := POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetEnumByUrlPathName(PlocationPathName);
-			MailBody := MailBody.Replace("{{clientType}}", "Client type: <strong>" + newClientType.ToString() + "</strong>.");
+			MailBody := MailBody.Replace("{{clientType}}", "Client type: <strong>" +  newUserRegistrationDetail.NewOrgClientType.ToString() + "</strong>.");
 			MailBody := MailBody.Replace("{{accountType}}", "account");
 		);
 		
@@ -364,6 +371,18 @@ catch
 		catch
 		(
 			Log.Error("Unable to cleanup 'newUserRegistrationDetail' for userName " + PUserName + ", and newUserRegistrationDetail.ObjectId: " + newUserRegistrationDetail.ObjectId, logObject, logActor, logEventID, null);
+		);
+	);
+	
+	if(brokerAccountOnboaradingClientTypeTMPCreated) then
+	(
+		try 
+		(
+			delete from BrokerAccountOnboaradingClientTypeTMPs where UserName = PUserName;
+		)
+		catch
+		(
+			Log.Error("Unable to cleanup 'BrokerAccountOnboaradingClientTypeTMPs' for userName " + PUserName, logObject, logActor, logEventID, null);
 		);
 	);
 	

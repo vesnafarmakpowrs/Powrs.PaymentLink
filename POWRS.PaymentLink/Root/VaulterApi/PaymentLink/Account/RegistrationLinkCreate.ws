@@ -161,8 +161,7 @@ try
 	
 	currentStep := "CreateUrl";
 	siteUrl := Create(System.Text.StringBuilder);
-	siteUrl.Append("https://paylink.vaulter.rs/index.html#/");
-	siteUrl.Append(POWRS.PaymentLink.ClientType.Enums.EnumHelper.GetPathNameByEnum(newUserRegistrationDetail.NewOrgClientType));
+	siteUrl.Append("https://paylink.vaulter.rs/index.html#/registration");
 	siteUrl.Append("?id=" + newId);
 	
 	Log.Informational("Succeffully generated registration URL: " + Str(siteUrl), logObject, logActor, logEventID, null);
