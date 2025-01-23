@@ -131,7 +131,7 @@
 				<Variable id="IsEcommerce">
 					<Boolean>false</Boolean>
 				</Variable>
-				<Variable id="TimeZoneOffset">
+				<Variable id="TimeZoneOffset"> 
 					<Number>0</Number>
 				</Variable>
 				<Variable id="Creator">
