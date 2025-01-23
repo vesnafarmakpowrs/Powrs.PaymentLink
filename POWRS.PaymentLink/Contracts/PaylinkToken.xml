@@ -131,11 +131,14 @@
 				<Variable id="IsEcommerce">
 					<Boolean>false</Boolean>
 				</Variable>
-				<Variable id="TimeZoneOffset">
+				<Variable id="TimeZoneOffset"> 
 					<Number>0</Number>
 				</Variable>
 				<Variable id="Creator">
 					<TokenProperty>Creator</TokenProperty>
+				</Variable>
+				<Variable id="LinkCreatorName">
+					<TagReference tag="LinkCreatorName" />
 				</Variable>
 				<State id="AwaitingForPayment">
 					<OnEnter actionRef="SetServiceProvider"/>
@@ -558,6 +561,9 @@
 		<Tag name="IsEcommerce">
 			<ParameterReference parameter="IsEcommerce" />
 		</Tag>
+		<Tag name="LinkCreatorName">
+			<ParameterReference parameter="LinkCreatorName" />
+		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
 		</FriendlyName>
@@ -777,6 +783,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Url to transfer when payment is not completed and has errors..</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="LinkCreatorName" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Person who created link.</text>
 				</paragraph>
 			</description>
 		</stringParameter>

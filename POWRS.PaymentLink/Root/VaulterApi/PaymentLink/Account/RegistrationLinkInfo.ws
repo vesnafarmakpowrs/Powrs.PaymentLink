@@ -1,3 +1,5 @@
+Response.SetHeader("Access-Control-Allow-Origin","*");
+
 ({
     "id": Required(Str(Pid))
 }:=Posted) ??? BadRequest(Exception.Message);

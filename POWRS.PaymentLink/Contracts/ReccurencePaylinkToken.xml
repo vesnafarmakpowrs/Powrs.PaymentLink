@@ -116,9 +116,6 @@
 				<Variable id="TimeZoneOffset">
 					<Number>0</Number>
 				</Variable>
-				<Variable id="CardRegistrationAmount">
-					<Number>1</Number>
-				</Variable>
 				<Variable id="MaxFailedPaymentAttempts">
 					<Number>5</Number>
 				</Variable>
@@ -146,13 +143,45 @@
 				<Variable id="Creator">
 					<TokenProperty>Creator</TokenProperty>
 				</Variable>
+				<Variable id="LinkCreatorName">
+					<TagReference tag="LinkCreatorName" />
+				</Variable>
+				<Variable id="FirstInstallmentAmount">
+					<TagReference tag="FirstInstallmentAmount" />
+				</Variable>
+				<Variable id="CardRegistrationAmount">
+					<Calc>
+						if(TotalNumberOfPayments == 1 or TotalCompletedPayments > 0 or exists(ActiveCardDetails.CardBrand)) then
+						(
+						1;
+						)
+						else
+						(
+						FirstInstallmentAmount;
+						);
+					</Calc>
+				</Variable>
+				<Variable id="NextPaymentAmount">
+					<Calc>
+						if(FirstInstallmentAmount > 1) then
+						(
+						(Price - FirstInstallmentAmount) / TotalNumberOfPayments;
+						)
+						else
+						(
+						(Price / TotalNumberOfPayments);
+						);
+					</Calc>
+				</Variable>
+				<Variable id="TotalAmountPaid">
+					<Number>0</Number>
+				</Variable>
 				<Variable id="Link">
 					<Calc>
 						domain:= "https://" + Evaluate("GetSetting('POWRS.PaymentLink.PayDomain','')");
 						link:= domain + "/SubscriptionPayments.md?ID=" + Evaluate("Global.EncodeContractId(TokenContract)");
 					</Calc>
 				</Variable>
-				
 				<State id="AwaitingCardRegistration">
 					<OnEnter actionRef="AwaitingCardRegistrationOnEnter"/>
 					<OnEvent actionRef="RegisterCard" newState="CardRegistrationCompleted" failureState="AwaitingCardRegistration">
@@ -203,6 +232,7 @@
 				</State>
 
 				<State id="CardRegistrationCompleted">
+					<OnEnter actionRef="CardRegistrationCompletedOnEnter"/>
 					<OnEvent actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'CardRegistrationCompleted'" newState="AwaitingNextPayment" failureState="AwaitingNextPayment">
 						<OnDuration>PT1S</OnDuration>
 					</OnEvent>
@@ -215,6 +245,9 @@
 					</OnEvent>
 					<OnEvent newState="Done">
 						<OnCondition>TotalCompletedPayments &gt;= TotalNumberOfPayments</OnCondition>
+					</OnEvent>
+					<OnEvent newState="Done">
+						<OnCondition>TotalAmountPaid &gt;= Price</OnCondition>
 					</OnEvent>
 				</State>
 
@@ -252,16 +285,25 @@
 					<CallAction actionRef="MarkAsDone" />
 				</Action>
 
+				<Action id="CardRegistrationCompletedOnEnter">
+					<If condition="DeliveryDate == PaymentDeadline">
+						<Then>
+							<PersistVariable name="DayOfMonth" value="{NowUtc.Day}" />
+							<CallAction actionRef="CalculateNextDeliveryDate" />
+						</Then>
+					</If>
+				</Action>
+
 				<Action id="DoneOnEnter">
 					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'Done'"/>
 					<CallAction actionRef="MarkAsDone" />
 				</Action>
-				
+
 				<Action id="PaymentNotPerformedOnEnter">
 					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'PaymentNotPerformed'"/>
 					<CallAction actionRef="MarkAsDone" />
-				</Action>				
-				
+				</Action>
+
 				<Action id="AwaitingCardRegistrationOnEnter">
 					<CallAction actionRef="SetServiceProvider"/>
 					<CallAction actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'AwaitingCardRegistration'"/>
@@ -295,11 +337,11 @@
 								html:= Evaluate("Get(templateUrl, {'Accept': 'text/html'})");
 								ConfigClass:= Evaluate("Waher.Service.IoTBroker.Setup.RelayConfiguration");
 								Config:= Evaluate("ConfigClass.Instance");
-								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title, html.HtmlText, null, null))");
+								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title + ' - ' + StateToNotify, html.HtmlText, null, null))");
 
 								if(Evaluate("exists(tabId:= Global.PayspotRequests[TokenContract])")) then
 								(
-									Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([tabId],'StateUpdated', {'NewState': StateToNotify })");
+								Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([tabId],'StateUpdated', {'NewState': StateToNotify })");
 								);
 
 								)
@@ -307,7 +349,7 @@
 								(
 								x:= Exception.Message;
 								);
-							</Script>					
+							</Script>
 						</Then>
 					</If>
 
@@ -346,15 +388,25 @@
 							<Parameter key="ContractId" value="{TokenContract}"></Parameter>
 						</BuyEDaler>
 
-						<CallAction actionRef="RefundRegistrationAmount" />
-
 						<If condition="!Evaluate('POWRS.PaymentLink.CardHelper.IsCardExpired(DeliveryDate, ActiveCardDetails.ExpiryDate)')">
 							<Then>
 								<PersistVariable name="PaymentType" value="{PaymentType}" />
 								<PersistVariable name="ActiveCardDetails" value="{ActiveCardDetails}" />
 								<CallAction actionRef="SaveOrderId" beforeActionScript="NewOrderId:= OrderId"/>
+								<If condition="ActiveCardDetails.RegistrationAmount > 1">
+									<Then>
+										<CallAction actionRef="ConfirmPayment" beforeActionScript="SellEdalerOrderId:= ActiveCardDetails.RegistrationOrderId;AmountToSell:= ActiveCardDetails.RegistrationAmount;" />
+										<CallAction actionRef="IncrementTotalCompletedPayments" />
+										<PersistVariable name="TotalAmountPaid" value="{TotalAmountPaid + ActiveCardDetails.RegistrationAmount}" />
+										<PersistVariable name="CardRegistrationAmount" value="1" />
+									</Then>
+									<Else>
+										<CallAction actionRef="RefundRegistrationAmount" />
+									</Else>
+								</If>
 							</Then>
 							<Else>
+								<CallAction actionRef="RefundRegistrationAmount" />
 								<Error reason="Payment completed but card is not valid long enough."></Error>
 							</Else>
 						</If>
@@ -388,13 +440,13 @@
 						newOrderId:= Evaluate('NewGuid()');
 					</Script>
 					<BuyEDaler to="{Seller}"
-							   amount="{AmountToPay}"
+							   amount="{NextPaymentAmount}"
 							   currency="{Currency}"
 							   reference="{'nfeat: ' + TokenId}"
 							   contract="{TokenContract}"
 							   serviceId="{ServiceProviderId}"
 							   serviceProvider="{ServiceProviderType}">
-						<Parameter key="AmountToPay" value="{AmountToPay}"></Parameter>
+						<Parameter key="AmountToPay" value="{NextPaymentAmount}"></Parameter>
 						<Parameter key="Currency" value="{Currency}"></Parameter>
 						<Parameter key="OrderId" value="Not needed"></Parameter>
 						<Parameter key="Country" value="{Country}"></Parameter>
@@ -413,8 +465,10 @@
 						<Parameter key="BuyerCity" value="{BuyerCity}"></Parameter>
 					</BuyEDaler>
 
-					<CallAction actionRef="ConfirmPayment" beforeActionScript="SellEdalerOrderId:= newOrderId;" />
+					<CallAction actionRef="ConfirmPayment" beforeActionScript="SellEdalerOrderId:= newOrderId;AmountToSell:= NextPaymentAmount;" />
 					<CallAction actionRef="SaveOrderId" beforeActionScript="NewOrderId:= newOrderId"/>
+
+					<PersistVariable name="TotalAmountPaid" value="{TotalAmountPaid + NextPaymentAmount}"/>
 				</Action>
 
 				<Action id="SaveOrderId">
@@ -424,7 +478,7 @@
 						</Then>
 					</If>
 				</Action>
-				
+
 				<Action id="RefundRegistrationAmount">
 					<Try>
 						<If condition="!exists(ActiveCardDetails.CardRegistrationDateTime)">
@@ -508,10 +562,11 @@
 						next:= Evaluate("NowUtc.AddMonths(1)");
 						totalDaysInMonth:= Evaluate("System.DateTime.DaysInMonth(next.Year, next.Month)");
 						nextDay:= DayOfMonth > totalDaysInMonth ? totalDaysInMonth : DayOfMonth;
-						nextDeliveryDate:= Evaluate("DateTime(next.Year, next.Month, nextDay, 12, 0,0,0)");
+						nextDeliveryDate:= Evaluate("DateTime(next.Year, next.Month, nextDay, 23, 59,0,0)");
+						nextDeliveryDateUtc:= Evaluate("next.ToUniversalTime()");
 					</Script>
 
-					<PersistVariable name="DeliveryDate" value="{nextDeliveryDate}" />
+					<PersistVariable name="DeliveryDate" value="{nextDeliveryDateUtc}" />
 				</Action>
 				<Action id="SetBuyerTimeZoneDifference">
 					<Script>
@@ -536,12 +591,13 @@
 					</If>
 				</Action>
 				<Action id="MarkAsDone">
+					<PersistVariable name="NextPaymentAmount" value="0" />
 					<PersistVariable name="MarkedAsDone" value="true"/>
+					<PersistVariable name="DeliveryDate" value=""/>
 				</Action>
 				<Action id="ConfirmPayment">
 					<Script>
-						<![CDATA[					
-									AmountToSell:= AmountToPay;
+						<![CDATA[
 									SellEdalerFrom:= Seller;
 									AccountName:= SellerName;
 									MessageOnError:= 'ReleaseFundsToSeller error';
@@ -671,6 +727,12 @@
 		</Tag>
 		<Tag name="DayOfMonth">
 			<ParameterReference parameter="DayOfMonth" />
+		</Tag>
+		<Tag name="LinkCreatorName">
+			<ParameterReference parameter="LinkCreatorName" />
+		</Tag>
+		<Tag name="FirstInstallmentAmount">
+			<ParameterReference parameter="FirstInstallmentAmount" />
 		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
@@ -878,7 +940,7 @@
 				</paragraph>
 			</description>
 		</dateTimeParameter>
-		<numericalParameter name="TotalNumberOfPayments" value="1" min="1" minIncluded="true" max="36" maxIncluded="true">
+		<numericalParameter name="TotalNumberOfPayments" value="1" min="1" minIncluded="true" max="24" maxIncluded="true">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Total number of montly payments.</text>
@@ -889,6 +951,20 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Day of month, when card authorization will be initiated.</text>
+				</paragraph>
+			</description>
+		</numericalParameter>
+		<stringParameter name="LinkCreatorName" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Full name of individual who created link.</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<numericalParameter name="FirstInstallmentAmount" value="0" min="0">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Amount of the firstInstallment</text>
 				</paragraph>
 			</description>
 		</numericalParameter>

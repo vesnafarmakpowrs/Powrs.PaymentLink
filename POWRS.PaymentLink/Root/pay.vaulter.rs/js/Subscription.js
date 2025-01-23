@@ -33,6 +33,7 @@ function PopulateAuthorizationForm(Data) {
     // Submit the form
     form.submit();
 }
+
 function InitiateCardAuthorization() {
     HideSubmitPaymentDiv();
     ShowHideElement("payspot-submit", "none");
@@ -56,14 +57,15 @@ function InitiateCardAuthorization() {
             TransactionFailed(null);
         })
 }
+	
+   
 function UpdateBuyerInformations(btn) {
     btn.disabled = true;
-    const fullName = document.querySelector('input[name="fullName"]').value;
+	const fullName = document.querySelector('input[name="fullName"]').value;
     const email = document.querySelector('input[name="email"]').value;
     const address = document.querySelector('input[name="address"]').value;
     const city = document.querySelector('input[name="city"]').value;
     const phoneNumber = document.querySelector('input[name="phoneNumber"]').value;
-
     SendXmlHttpRequest("../Payout/API/UpdateBuyerInformations.ws",
         {
             "fullName": fullName,
@@ -74,7 +76,7 @@ function UpdateBuyerInformations(btn) {
         },
         (response) => {
             //location.reload();
-            ShowEditBillingDetailElements();
+			ShowEditBillingDetailElements();
         },
         (error) => {
             parsedError = JSON.parse(error.response);
@@ -86,40 +88,44 @@ function UpdateBuyerInformations(btn) {
                     }
                 });
             }
-
+          
         })
-    btn.disabled = false;
+  btn.disabled = false;		
 }
 
-let isEditMode = false;
+let isEditMode = false; 
 
-function EditBuyerDetails() {
+function EditBuyerDetails()
+{
     const btnEditBuyerDetails = document.querySelector('#btnEditBuyerDetails');
-    if (isEditMode) {
-        if (!UpdateBuyerInformations(btnEditBuyerDetails)) return;
-    }
-    else {
-        ShowEditBillingDetailElements();
-    }
+	if (isEditMode)
+	{
+	    if (!UpdateBuyerInformations(btnEditBuyerDetails)) return;
+	}
+	else
+	{
+		ShowEditBillingDetailElements();
+	}
 }
 
-function ShowEditBillingDetailElements() {
-    isEditMode = !isEditMode;
-
-    isEditMode ? btnEditBuyerDetails.textContent = 'Snimi' : btnEditBuyerDetails.textContent = 'Azuriraj';
-    isEditMode ? ShowHideElement("billing-dtl-div", "none") : ShowHideElement("billing-dtl-div", "block");
-    let buyerDetailElements = ["fullName", "address", "city", "phoneNumber", "email", "billing-dtl-edit-div"];
-
-    buyerDetailElements.forEach(function (elementId, index) {
-        isEditMode ? ShowHideElement(elementId, null) : ShowHideElement(elementId, "none");
-        isEditMode ? ShowHideElement(elementId + "-lbl", "none") : ShowHideElement(elementId + "-lbl", null);
-    });
-
-    if (!isEditMode) {
-        buyerDetailElements.forEach(function (elementId, index) {
-            !elementId.includes('div') ? document.querySelector(`input[name="${elementId}"]`).style.border = '1px solid #ccc' : null;
-        });
-    }
+function ShowEditBillingDetailElements()
+{
+	isEditMode = !isEditMode;
+	
+	isEditMode ? btnEditBuyerDetails.textContent ='Snimi' : btnEditBuyerDetails.textContent = 'Azuriraj';
+    isEditMode ?  ShowHideElement("billing-dtl-div", "none") : ShowHideElement("billing-dtl-div", "block") ;
+	let buyerDetailElements = ["fullName", "address", "city", "phoneNumber","email", "billing-dtl-edit-div"];
+	
+	buyerDetailElements.forEach(function(elementId, index) {
+	    isEditMode ?  ShowHideElement(elementId, null) : ShowHideElement(elementId, "none") ;
+		isEditMode ?  ShowHideElement(elementId + "-lbl", "none") : ShowHideElement(elementId + "-lbl", null) ;
+	});
+	
+	if (!isEditMode){
+		buyerDetailElements.forEach(function(elementId, index) {
+			!elementId.includes('div') ? document.querySelector(`input[name="${elementId}"]`).style.border = '1px solid #ccc' : null ;
+		});
+	}
 }
 
 function InitiateCancellation() {

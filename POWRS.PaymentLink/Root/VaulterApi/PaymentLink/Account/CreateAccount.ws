@@ -174,7 +174,7 @@ try
 	
 	if(exists(newUserRegistrationDetail) and newUserRegistrationDetail != null)then
 	(
-		newUserRegistrationDetail.SuccessfullyRegisteredUserName := accountRole.UserName;
+		newUserRegistrationDetail.SuccessfullyRegisteredUserName := PUserName;
 		Waher.Persistence.Database.Update(newUserRegistrationDetail);
 		newUserRegistrationDetailUpdated := true;
 	);

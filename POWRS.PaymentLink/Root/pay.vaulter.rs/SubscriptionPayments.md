@@ -36,7 +36,7 @@ catch
   Return("");
 );
 
-Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where CreationContract=ID;
+Token:=select top 1 * from IoTBroker.NeuroFeatures.Token where OwnershipContract=ID;
 if !exists(Token) then
 (
   ]]<b>Payment link is not valid</b>[[;
@@ -112,9 +112,10 @@ if Token.HasStateMachine then
 	TotalNumberOfPayments:= select top 1 Value from CurrentState.VariableValues where Name = "TotalNumberOfPayments";
 	TotalCompletedPayments:= select top 1 Value from CurrentState.VariableValues where Name = "TotalCompletedPayments";
 	ActiveCardDetails:= select top 1 Value from CurrentState.VariableValues where Name = "ActiveCardDetails";
+	TotalPaid:= select top 1 Value from CurrentState.VariableValues where Name = "TotalAmountPaid";
+	TotalAmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
+	NextPaymentAmount:= select top 1 Value from CurrentState.VariableValues where Name = "NextPaymentAmount";
 
-	TotalPaid:= AmountToPay * TotalCompletedPayments;
-	TotalAmountToPay:= AmountToPay * TotalNumberOfPayments;
 	if(exists(lng) and lng like '[A-Z]{2}' and lng != Language) then 
 	(
 			Language:= lng;
@@ -164,18 +165,11 @@ if Token.HasStateMachine then
                 "ipsOnly": IpsOnly,
                 "exp": NowUtc.AddMinutes(tokenDurationInMinutes)
             });
-    Payments:= select top 20 * from PayspotPayments where TokenId = Token.TokenId and Result != "" order by DateCreated desc;
+		Payments:= select top 20 * from PayspotPayments where TokenId = Token.TokenId and Result != "" order by DateCreated desc;
 		list:= Create(System.Collections.Generic.List, System.Object);
-		pendingPayment:= 
-		{
-			Amount: AmountToPay,
-			RefundedAmount: 0,
-			DateCreated: DeliveryDate,
-			Result: ""
-		};
-		list.Add(pendingPayment);
+				
 		if(Payments != null and Payments.Length > 0) then
-			 (
+			 (			 
 			 	foreach (payment in Payments) do 
 				(
 					list.Add({
@@ -185,15 +179,6 @@ if Token.HasStateMachine then
 						Result: payment.Result
 					});
 				);
-			);
-			pendingAmount := 0;
-			pendingDate := "";
-			foreach (payment in list) do (
-			  if (payment.Result == "") then 
-					(
-					  pendingAmount := payment.Amount;
-					  pendingDate := payment.DateCreated.ToString("MMM dd,yyyy");
-					); 
 			);
 
 			]]<table style="width:100%">
@@ -276,23 +261,23 @@ if Token.HasStateMachine then
 				<div class="summary-container">
 					<div class="summary-col">
 						<div class="summary-row-title">((localization.Get("TotalPaid") ))</div>
-						<div class="summary-row-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(TotalPaid) )) ((Currency))</div>
+						<div class="summary-row-amount">((TotalPaid.ToString("f2") )) ((Currency))</div>
 					</div>
 					<div class="summary-col">
 						<div class="summary-row-title">((localization.Get("TotalRemaining") ))</div>
-						<div class="summary-row-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(TotalAmountToPay - TotalPaid) )) ((Currency))</div>
+						<div class="summary-row-amount">(((TotalAmountToPay - TotalPaid).ToString("f2") )) ((Currency))</div>
 					</div>
 				</div>	 
 				<div class="meter green nostripes">
-					<span style="width:(((TotalPaid/TotalAmountToPay)* 100 ))%"></span>
+					<span style="width:((((TotalPaid/TotalAmountToPay)* 100).ToString("f2") ))%"></span>
 				</div>
 				<div class="summary-row-notice">
-				  <span>((localization.Get("NextInstallmentOn") ))  ((pendingDate )) : ((POWRS.PaymentLink.Utils.ToVaulterStringFormat(pendingAmount) )) ((Currency))<span>
+				  <span>((localization.Get("NextInstallmentOn") ))  ((DeliveryDate.ToLocalTime().ToString("MMM dd, yyyy HH:mm") )) : ((NextPaymentAmount.ToString("f2") )) ((Currency))<span>
 				</div>
 				<div class="line"></div>
 				<div class="summary-container">
 					<div class="summary-col summary-total-lbl">((localization.Get("TotalFinanced") ))</div>
-					<div class="summary-col">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(AmountToPay) )) ((Currency))</div>
+					<div class="summary-col">((AmountToPay.ToString("f2") )) ((Currency))</div>
 				</div>
 			</div>
    		<div class="spaceItem"></div>[[;
@@ -400,7 +385,7 @@ if Token.HasStateMachine then
 											<button id="payspot-submit" class="retry-btn btn-black btn-show submit-btn" onclick="InitiateCardAuthorization();">((localization.Get("RegisterNewCard") ))</button> 
 										</div>
 										<div class="div-payment-notice">
-											<label id="payment-notice-lbl" class="lbl-payment-notice">((localization.Get("AgreeToRegisterCardTerms") )) ((OrgName ))</label>
+											<label id="payment-notice-lbl" class="lbl-payment-notice">((localization.Get("AgreeToTermsAgain") )) ((OrgName ))</label>
 										</div>
 									</div>
 							</td>
@@ -461,7 +446,7 @@ if Token.HasStateMachine then
 					<div class="payment-container">
 					  <div class="payment-history-div">
 					    <div>
-							<div class="payment-history-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(payment.Amount) )) ((Currency ))</div>
+							<div class="payment-history-amount">((payment.Amount.ToString("f2") )) ((Currency ))</div>
 							<div class="payment-history-date">((payment.DateCreated.ToString("MMM dd, yyyy") ))</div>	[[;
 						]]</div></div>[[;
 						if(payment.RefundedAmount != null and payment.RefundedAmount > 0) then 
