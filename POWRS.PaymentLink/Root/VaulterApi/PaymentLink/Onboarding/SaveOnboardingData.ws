@@ -10,16 +10,10 @@ errors:= Create(System.Collections.Generic.List, System.String);
 currentMethod:= "";
 fileMaxSizeMB := Dbl(GetSetting("POWRS.PaymentLink.OnBoardingFileMaxSize", "25"));
 
-allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","");
-if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
-	BadRequest("No setting: OnBoardingAllCompaniesRootPath");
-);
-
 ValidatePostedData(Posted) := (
 	if(!exists(Posted.GeneralCompanyInformation) or Posted.GeneralCompanyInformation == null) then errors.Add("GeneralCompanyInformation could not be null");
 	if(!exists(Posted.CompanyStructure) or Posted.CompanyStructure == null) then errors.Add("CompanyStructure could not be null");
 	if(!exists(Posted.BusinessData) or Posted.BusinessData == null) then errors.Add("BusinessData could not be null");
-	if(!exists(Posted.LegalDocuments) or Posted.LegalDocuments == null) then errors.Add("LegalDocuments could not be null");
 	
 	if(errors.Count > 0)then
 	(
@@ -105,45 +99,7 @@ ValidatePostedData(Posted) := (
 			if(!exists(item.IsPoliticallyExposedPerson))then
 			(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IsPoliticallyExposedPerson");
-			);
-			if(!exists(item.StatementOfOfficialDocumentIsNewUpload))then(
-				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocumentIsNewUpload");
-			)else(
-				isNewUpload := item.StatementOfOfficialDocumentIsNewUpload;
-			);
-			if(!exists(item.StatementOfOfficialDocument))then(
-				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocument");
-			)else if (isNewUpload)then(
-				if(!POWRS.PaymentLink.Utils.IsValidBase64String(item.StatementOfOfficialDocument, fileMaxSizeMB))then(
-					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".StatementOfOfficialDocument");
-					errors.Add("StatementOfOfficialDocument not valid base 64 string");
-				);
-			);
-			if(!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument) and System.String.IsNullOrWhiteSpace(item.FullName))then(
-				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".FullName");
-				errors.Add("When file exists full name must be populated");				
-			);
-			
-			isNewUpload := false;
-			if(!exists(item.IdCardIsNewUpload))then(
-				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCardIsNewUpload");
-			)else(
-				isNewUpload := item.IdCardIsNewUpload;
-			);
-			if(!exists(item.IdCard))then(
-				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
-			)else if(isNewUpload)then (
-				if(System.String.IsNullOrWhiteSpace(item.IdCard))then (
-					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
-				)else if(!POWRS.PaymentLink.Utils.IsValidBase64String(item.IdCard, fileMaxSizeMB))then(
-					errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".IdCard");
-					errors.Add("IdCard not valid base 64 string");
-				);
-			);
-			if(!System.String.IsNullOrWhiteSpace(item.IdCard) and System.String.IsNullOrWhiteSpace(item.FullName))then(
-				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".FullName");
-				errors.Add("When file exists full name must be populated");				
-			);
+			);			
 			if(!exists(item.DocumentType))then(
 				errors.Add("GeneralCompanyInformation.LegalRepresentatives;" + itemIndex + ".DocumentType");
 			);
@@ -242,24 +198,6 @@ ValidatePostedData(Posted) := (
 			if(!exists(item.IsPoliticallyExposedPerson))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IsPoliticallyExposedPerson");
 			);
-			if(!exists(item.StatementOfOfficialDocumentIsNewUpload))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocumentIsNewUpload");
-			)else(
-				isNewUpload :=  item.StatementOfOfficialDocumentIsNewUpload ??? false;
-			);
-			if(!exists(item.StatementOfOfficialDocument))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
-			)else if (isNewUpload)then(
-				if(System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument))then (
-					errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
-				)else if(!POWRS.PaymentLink.Utils.IsValidBase64String(item.StatementOfOfficialDocument, fileMaxSizeMB))then(
-					errors.Add("CompanyStructure.Owners;" + itemIndex + ".StatementOfOfficialDocument");
-					errors.Add("StatementOfOfficialDocument not valid base 64 string");
-				);
-			);
-			if(!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument) and System.String.IsNullOrWhiteSpace(item.FullName))then (
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
-			);
 			
 			if(!exists(item.Role))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".Role");
@@ -283,25 +221,6 @@ ValidatePostedData(Posted) := (
 			);
 			if(!exists(item.Citizenship))then(
 				errors.Add("CompanyStructure.Owners;" + itemIndex + ".Citizenship");
-			);
-			isNewUpload := false;			
-			if(!exists(item.IdCardIsNewUpload))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCardIsNewUpload");
-			)else(
-				isNewUpload := item.IdCardIsNewUpload ??? false;
-			);
-			if(!exists(item.IdCard))then(
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCard");
-			)else if(isNewUpload)then (
-				if(System.String.IsNullOrWhiteSpace(item.IdCard))then (
-					errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCard");
-				)else if(!POWRS.PaymentLink.Utils.IsValidBase64String(item.IdCard, fileMaxSizeMB))then(
-					errors.Add("CompanyStructure.Owners;" + itemIndex + ".IdCard");
-					errors.Add("IdCard not valid base 64 string");
-				);
-			);
-			if(!System.String.IsNullOrWhiteSpace(item.IdCard) and System.String.IsNullOrWhiteSpace(item.FullName))then (
-				errors.Add("CompanyStructure.Owners;" + itemIndex + ".FullName");
 			);
 			
 			itemIndex++;
@@ -346,126 +265,6 @@ ValidatePostedData(Posted) := (
 		errors.Add("BusinessData.IPSOnly");
 	);
 	
-	isNewUpload := false;
-	if(!exists(Posted.LegalDocuments.ContractWithEMIIsNewUpload))then(
-		errors.Add("LegalDocuments.ContractWithEMIIsNewUpload");
-	)else(
-		isNewUpload := Posted.LegalDocuments.ContractWithEMIIsNewUpload; 
-	);
-	if(!exists(Posted.LegalDocuments.ContractWithEMI))then(
-		errors.Add("LegalDocuments.ContractWithEMI");
-	)else(
-		if(isNewUpload and 
-			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.ContractWithEMI)
-			or
-			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.ContractWithEMI, fileMaxSizeMB)
-			)
-		)then
-		(
-			errors.Add("LegalDocuments.ContractWithEMI");
-		);
-	);
-	
-	isNewUpload := false;
-	if(!exists(Posted.LegalDocuments.ContractWithVaulterIsNewUpload))then(
-		errors.Add("LegalDocuments.ContractWithVaulterIsNewUpload");
-	)else(
-		isNewUpload := Posted.LegalDocuments.ContractWithVaulterIsNewUpload;
-	);
-	if(!exists(Posted.LegalDocuments.ContractWithVaulter))then(
-		errors.Add("LegalDocuments.ContractWithVaulter");
-	)else(
-		if(isNewUpload and 
-			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.ContractWithVaulter)
-			or
-			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.ContractWithVaulter, fileMaxSizeMB)
-			)
-		)then
-		(
-			errors.Add("LegalDocuments.ContractWithVaulter");
-		);
-	);
-	
-	isNewUpload := false;
-	if(!exists(Posted.LegalDocuments.PromissoryNoteIsNewUpload))then(
-		errors.Add("LegalDocuments.PromissoryNoteIsNewUpload");
-	)else(
-		isNewUpload := Posted.LegalDocuments.PromissoryNoteIsNewUpload;
-	);
-	if(!exists(Posted.LegalDocuments.PromissoryNote))then(
-		errors.Add("LegalDocuments.PromissoryNote");
-	)else(
-		if(isNewUpload and 
-			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.PromissoryNote)
-			or
-			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.PromissoryNote, fileMaxSizeMB)
-			)
-		)then
-		(
-			errors.Add("LegalDocuments.PromissoryNote");
-		);
-	);
-	
-	isNewUpload := false;
-	if(!exists(Posted.LegalDocuments.BusinessCooperationRequestIsNewUpload))then(
-		errors.Add("LegalDocuments.BusinessCooperationRequestIsNewUpload");
-	)else(
-		isNewUpload := Posted.LegalDocuments.BusinessCooperationRequestIsNewUpload;
-	);
-	if(!exists(Posted.LegalDocuments.BusinessCooperationRequest))then(
-		errors.Add("LegalDocuments.BusinessCooperationRequest");
-	)else(
-		if(isNewUpload and 
-			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.BusinessCooperationRequest)
-			or
-			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.BusinessCooperationRequest, fileMaxSizeMB)
-			)
-		)then
-		(
-			errors.Add("LegalDocuments.BusinessCooperationRequest");
-		);
-	);
-	
-	isNewUpload := false;
-	if(!exists(Posted.LegalDocuments.RequestForPromissoryNotesRegistrationIsNewUpload))then(
-		errors.Add("LegalDocuments.RequestForPromissoryNotesRegistrationIsNewUpload");
-	)else(
-		isNewUpload := Posted.LegalDocuments.RequestForPromissoryNotesRegistrationIsNewUpload;
-	);
-	if(!exists(Posted.LegalDocuments.RequestForPromissoryNotesRegistration))then(
-		errors.Add("LegalDocuments.RequestForPromissoryNotesRegistration");
-	)else(
-		if(isNewUpload and 
-			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.RequestForPromissoryNotesRegistration)
-			or
-			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.RequestForPromissoryNotesRegistration, fileMaxSizeMB)
-			)
-		)then
-		(
-			errors.Add("LegalDocuments.RequestForPromissoryNotesRegistration");
-		);
-	);
-	
-	isNewUpload := false;
-	if(!exists(Posted.LegalDocuments.CardOfDepositedSignaturesIsNewUpload))then(
-		errors.Add("LegalDocuments.CardOfDepositedSignaturesIsNewUpload");
-	)else(
-		isNewUpload := Posted.LegalDocuments.CardOfDepositedSignaturesIsNewUpload;
-	);
-	if(!exists(Posted.LegalDocuments.CardOfDepositedSignatures))then(
-		errors.Add("LegalDocuments.CardOfDepositedSignatures");
-	)else(
-		if(isNewUpload and 
-			(System.String.IsNullOrWhiteSpace(Posted.LegalDocuments.CardOfDepositedSignatures)
-			or
-			!POWRS.PaymentLink.Utils.IsValidBase64String(Posted.LegalDocuments.CardOfDepositedSignatures, fileMaxSizeMB)
-			)
-		)then
-		(
-			errors.Add("LegalDocuments.CardOfDepositedSignatures");
-		);
-	);
-	
 	if(errors.Count > 0)then
 	(
 		Error(errors);
@@ -500,9 +299,6 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 		Error("GeneralCompanyInfo: you can't change organization number");
 	);
 	
-	companySubDirPath := "\\" + GeneralCompanyInfo.OrganizationNumber;
-	fileRootPath := allCompaniesRootPath + companySubDirPath;
-
 	generalInfo.Updated := Now;
 	generalInfo.UserName := UserName;
 	generalInfo.FullName := Trim(GeneralCompanyInfo.FullName);
@@ -542,32 +338,6 @@ SaveGeneralCompanyInfo(GeneralCompanyInfo, UserName):=
 			representative.AddressOfResidence:= item.AddressOfResidence;
 			representative.CityOfResidence:= item.CityOfResidence;
 			representative.PersonalNumber:= item.PersonalNumber;
-			
-			if(item.StatementOfOfficialDocumentIsNewUpload)then(
-				fileName := SessionUser.username + "_LegalRepresentative_" + Str(itemNo) + "_Politicall_" + POWRS.PaymentLink.Utils.PrepareStringForFileName(item.FullName) + ".pdf";
-				SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
-				
-				representative.StatementOfOfficialDocument:= fileName;
-			)else (
-				if (item.StatementOfOfficialDocument != "" and !System.IO.File.Exists(fileRootPath + "\\" + item.StatementOfOfficialDocument)) then
-				(
-					Error("LegalRepresentative[" + Str(itemNo) + "] file " + item.StatementOfOfficialDocument + " does not exist");
-				);
-				representative.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
-			);
-			
-			if(item.IdCardIsNewUpload)then(
-				fileName := SessionUser.username + "_LegalRepresentative_" + Str(itemNo) + "_IdCard_" + POWRS.PaymentLink.Utils.PrepareStringForFileName(item.FullName) + ".pdf";
-				SaveFile(fileRootPath, fileName, item.IdCard);
-				
-				representative.IdCard:= fileName;
-			)else(
-				if (item.IdCard != "" and !System.IO.File.Exists(fileRootPath + "\\" + item.IdCard)) then
-				(
-					Error("LegalRepresentative[" + Str(itemNo) + "] file " + item.IdCard + " does not exist");
-				);
-				representative.IdCard:= item.IdCard;				
-			);
 			
 			if(!System.String.IsNullOrWhiteSpace(item.DateOfIssue)) then 
 			(
@@ -617,10 +387,7 @@ SaveCompanyStructure(CompanyStructure, UserName, organizationNumber):=
 	companyStructure.OwnerStructure:= System.Enum.Parse(POWRS.PaymentLink.Onboarding.Enums.OwnerStructure, CompanyStructure.OwnerStructure) ??? POWRS.PaymentLink.Onboarding.Enums.OwnerStructure.Company;
 
 	if(CompanyStructure.Owners != null and CompanyStructure.Owners.Length > 0) then 
-	(
-		companySubDirPath := "\\" + organizationNumber;
-		fileRootPath := allCompaniesRootPath + companySubDirPath;
-		
+	(		
 		itemNo := 0;
 		foreach(item in CompanyStructure.Owners) do
 		(
@@ -641,32 +408,6 @@ SaveCompanyStructure(CompanyStructure, UserName, organizationNumber):=
 			owner.DocumentIssuancePlace:= item.DocumentIssuancePlace;
 			owner.Citizenship:= item.Citizenship;
 			
-			if(item.StatementOfOfficialDocumentIsNewUpload)then(
-				fileName := SessionUser.username + "_Owner_" + Str(itemNo) + "_Politicall_" + POWRS.PaymentLink.Utils.PrepareStringForFileName(item.FullName) + ".pdf";
-				SaveFile(fileRootPath, fileName, item.StatementOfOfficialDocument);
-				
-				owner.StatementOfOfficialDocument:= fileName;
-			)else (
-				if (!System.String.IsNullOrWhiteSpace(item.StatementOfOfficialDocument) and !System.IO.File.Exists(fileRootPath + "\\" + item.StatementOfOfficialDocument)) then
-				(
-					Error("Owner[" + Str(itemNo) + "] file " + item.StatementOfOfficialDocument + " does not exist");
-				);
-				owner.StatementOfOfficialDocument:= item.StatementOfOfficialDocument;
-			);
-			
-			if(item.IdCardIsNewUpload)then(
-				fileName := SessionUser.username + "_Owner_" + Str(itemNo) + "_IdCard_" + POWRS.PaymentLink.Utils.PrepareStringForFileName(item.FullName) + ".pdf";
-				SaveFile(fileRootPath, fileName, item.IdCard);
-				
-				owner.IdCard:= fileName;
-			)else(
-				if (!System.String.IsNullOrWhiteSpace(item.IdCard) and !System.IO.File.Exists(fileRootPath + "\\" + item.IdCard)) then
-				(
-					Error("Owner[" + Str(itemNo) + "] file " + item.IdCard + " does not exist");
-				);
-				owner.IdCard:= item.IdCard;				
-			);
-
 			if(!System.String.IsNullOrWhiteSpace(item.DateOfBirth)) then 
 			(
 				owner.DateOfBirth:= System.DateTime.ParseExact(item.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture);
@@ -738,124 +479,6 @@ SaveBusinessData(BusinessData, UserName):=
 	Return(0);
 );
 
-SaveLegalDocuments(LegalDocuments, UserName, organizationNumber):=
-(
-	companySubDirPath := "\\" + organizationNumber;
-	fileRootPath := allCompaniesRootPath + companySubDirPath;
-	
-
-	documents:= select top 1 * from POWRS.PaymentLink.Onboarding.LegalDocuments where UserName = UserName;
-	alreadyExists:= documents != null;
-
-	if(documents == null) then 
-	(
-		documents:= Create(POWRS.PaymentLink.Onboarding.LegalDocuments, UserName);
-	);
-
-	if(LegalDocuments.ContractWithEMIIsNewUpload) then
-	(
-		fileName := SessionUser.username + "_ContractWithEMI" + ".pdf";
-		SaveFile(fileRootPath, fileName, LegalDocuments.ContractWithEMI);
-		documents.ContractWithEMI:=  fileName;
-	)else (
-		if (LegalDocuments.ContractWithEMI != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.ContractWithEMI)) then
-		(
-			Error("ContractWithEMI file " + LegalDocuments.ContractWithEMI + " does not exist");
-		);
-		documents.ContractWithEMI:= LegalDocuments.ContractWithEMI;
-	);
-	
-	if(LegalDocuments.ContractWithVaulterIsNewUpload) then
-	(
-		fileName := SessionUser.username + "_ContractWithVaulter" + ".pdf";
-		SaveFile(fileRootPath, fileName, LegalDocuments.ContractWithVaulter);
-		documents.ContractWithVaulter:= fileName;
-	)else (
-		if (LegalDocuments.ContractWithVaulter != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.ContractWithVaulter)) then
-		(
-			Error("ContractWithVaulter file " + LegalDocuments.ContractWithVaulter + " does not exist");
-		);
-		documents.ContractWithVaulter:= LegalDocuments.ContractWithVaulter;
-	);
-	
-	if(LegalDocuments.PromissoryNoteIsNewUpload) then
-	(
-		fileName := SessionUser.username + "_PromissoryNote" + ".pdf";
-		SaveFile(fileRootPath, fileName, LegalDocuments.PromissoryNote);
-		documents.PromissoryNote:= fileName;
-	)else (
-		if (LegalDocuments.PromissoryNote != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.PromissoryNote)) then
-		(
-			Error("PromissoryNote file " + LegalDocuments.PromissoryNote + " does not exist");
-		);
-		documents.PromissoryNote:= LegalDocuments.PromissoryNote;
-	);
-	
-	if(LegalDocuments.BusinessCooperationRequestIsNewUpload) then
-	(
-		fileName := SessionUser.username + "_BusinessCooperationRequest" + ".pdf";
-		SaveFile(fileRootPath, fileName, LegalDocuments.BusinessCooperationRequest);
-		documents.BusinessCooperationRequest:= fileName;
-	)else (
-		if (LegalDocuments.BusinessCooperationRequest != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.BusinessCooperationRequest)) then
-		(
-			Error("BusinessCooperationRequest file " + LegalDocuments.BusinessCooperationRequest + " does not exist");
-		);
-		documents.BusinessCooperationRequest:= LegalDocuments.BusinessCooperationRequest;
-	);
-	
-	if(LegalDocuments.RequestForPromissoryNotesRegistrationIsNewUpload) then
-	(
-		fileName := SessionUser.username + "_RequestForPromissoryNotesRegistration" + ".pdf";
-		SaveFile(fileRootPath, fileName, LegalDocuments.RequestForPromissoryNotesRegistration);
-		documents.RequestForPromissoryNotesRegistration:= fileName;
-	)else (
-		if (LegalDocuments.RequestForPromissoryNotesRegistration != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.RequestForPromissoryNotesRegistration)) then
-		(
-			Error("RequestForPromissoryNotesRegistration file " + LegalDocuments.RequestForPromissoryNotesRegistration + " does not exist");
-		);
-		documents.RequestForPromissoryNotesRegistration:= LegalDocuments.RequestForPromissoryNotesRegistration;
-	);
-	
-	if(LegalDocuments.CardOfDepositedSignaturesIsNewUpload) then
-	(
-		fileName := SessionUser.username + "_CardOfDepositedSignatures" + ".pdf";
-		SaveFile(fileRootPath, fileName, LegalDocuments.CardOfDepositedSignatures);
-		documents.CardOfDepositedSignatures:= fileName;
-	)else (
-		if (LegalDocuments.CardOfDepositedSignatures != "" and !System.IO.File.Exists(fileRootPath + "\\" + LegalDocuments.CardOfDepositedSignatures)) then
-		(
-			Error("CardOfDepositedSignatures file " + LegalDocuments.CardOfDepositedSignatures + " does not exist");
-		);
-		documents.CardOfDepositedSignatures:= LegalDocuments.CardOfDepositedSignatures;
-	);
-
-	if(alreadyExists) then 
-	(
-		Waher.Persistence.Database.Update(documents);
-	)
-	else
-	(
-		Waher.Persistence.Database.Insert(documents);
-	);
-
-	Return(0);
-);
-
-SaveFile(fileRootPath, fileName, fileBase64String):=
-(
-	if (!System.IO.Directory.Exists(fileRootPath)) then(
-		System.IO.Directory.CreateDirectory(fileRootPath);
-	);
-	
-	filePath := fileRootPath + "\\" + fileName;
-	fileBytes := System.Convert.FromBase64String(fileBase64String);
-	
-	System.IO.File.WriteAllBytes(filePath, fileBytes);
-	
-	return(1);
-);
-
 try
 (
 	currentMethod := "ValidatePostedData";
@@ -869,10 +492,7 @@ try
 	
 	currentMethod := "SaveBusinessData"; 
 	SaveBusinessData(Posted.BusinessData, SessionUser.username);
-	
-	currentMethod := "SaveLegalDocuments"; 
-	SaveLegalDocuments(Posted.LegalDocuments, SessionUser.username, Posted.GeneralCompanyInformation.OrganizationNumber);
-	
+		
 	Log.Informational("Succeffully saved OnBoarding data.", logObject, logActor, logEventID, null);
 	{
 		success: true

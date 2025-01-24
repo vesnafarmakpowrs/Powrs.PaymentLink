@@ -12,11 +12,9 @@ namespace POWRS.PaymentLink.Onboarding
             placeOfBirth = "";
             addressOfResidence = "";
             cityOfResidence = "";
-            statementOfOfficialDocument = "";
             documentNumber = "";
             placeOfIssue = "";
             issuerName = "";
-            idCard = "";
             dateOfBirthStr = "";
             dateOfIssueStr = "";
         }
@@ -28,13 +26,11 @@ namespace POWRS.PaymentLink.Onboarding
         private string addressOfResidence;
         private string cityOfResidence;
         private bool isPoliticallyExposedPerson;
-        private string statementOfOfficialDocument;
         private DocumentType documentType;
         private string documentNumber;
         private DateTime? dateOfIssue;
         private string placeOfIssue;
         private string issuerName;
-        private string idCard;
 
         private string dateOfBirthStr;
         private string dateOfIssueStr;
@@ -61,8 +57,6 @@ namespace POWRS.PaymentLink.Onboarding
             }
         }
         public string PlaceOfIssue { get => placeOfIssue; set => placeOfIssue = value; }
-        public string StatementOfOfficialDocument { get => statementOfOfficialDocument; set => statementOfOfficialDocument = value; }
-        public string IdCard { get => idCard; set => idCard = value; }
         public bool IsPoliticallyExposedPerson { get => isPoliticallyExposedPerson; set => isPoliticallyExposedPerson = value; }
         public string DateOfBirthStr { get => dateOfBirthStr; set => dateOfBirthStr = value; }
         public string DateOfIssueStr { get => dateOfIssueStr; set => dateOfIssueStr = value; }
