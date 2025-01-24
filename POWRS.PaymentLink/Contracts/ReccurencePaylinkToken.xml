@@ -146,33 +146,91 @@
 				<Variable id="LinkCreatorName">
 					<TagReference tag="LinkCreatorName" />
 				</Variable>
-				<Variable id="FirstInstallmentAmount">
-					<TagReference tag="FirstInstallmentAmount" />
-				</Variable>
-				<Variable id="CardRegistrationAmount">
+				<Variable id="FirstInstallmentAmountParameter">
+					<TagReference tag="FirstInstallmentAmountParameter" />
+				</Variable>				
+				<Variable id="LinkType">
+					<TagReference tag="LinkType" />
+				</Variable>				
+				<Variable id="TotalAmountToPay">
 					<Calc>
-						if(TotalNumberOfPayments == 1 or TotalCompletedPayments > 0 or exists(ActiveCardDetails.CardBrand)) then
+						<![CDATA[
+						if(LinkType == "Delayed" or LinkType == "Installments") then
 						(
-						1;
+							Price;
+						)
+						else if(LinkType == "Subscription")  then
+						(
+							(TotalNumberOfPayments * Price);
 						)
 						else
 						(
-						FirstInstallmentAmount;
+							Error("Unrecognized link type");
 						);
+						]]>
+					</Calc>
+				</Variable>
+				<Variable id="FirstInstallmentAmount">
+					<Calc>
+						<![CDATA[
+						if(FirstInstallmentAmountParameter > 0) then
+						(
+							FirstInstallmentAmountParameter;
+						)
+						else
+						(
+							(TotalAmountToPay / TotalNumberOfPayments);
+						);
+						]]>
 					</Calc>
 				</Variable>
 				<Variable id="NextPaymentAmount">
 					<Calc>
-						if(FirstInstallmentAmount > 1) then
+						<![CDATA[
+						if(LinkType == "Delayed") then
 						(
-						(Price - FirstInstallmentAmount) / TotalNumberOfPayments;
+							TotalAmountToPay;
+						)
+						else if(LinkType == "Subscription") then 
+						(
+							(TotalAmountToPay / TotalNumberOfPayments);
+						)
+						else if(LinkType == "Installments") then
+						(
+							(TotalAmountToPay - FirstInstallmentAmount) / (TotalNumberOfPayments - 1);
 						)
 						else
 						(
-						(Price / TotalNumberOfPayments);
+							Error("Unrecognized link type");
 						);
+						]]>
 					</Calc>
 				</Variable>
+				<Variable id="CardRegistrationAmount">
+					<Calc>
+						<![CDATA[
+						if(LinkType == "Delayed") then
+						(
+							1;
+						)
+						else if(LinkType == "Subscription" or LinkType == "Installments") then
+						(
+							if(TotalCompletedPayments > 0 or exists(ActiveCardDetails.CardBrand)) then 
+							(
+								1;
+							)
+							else 
+							(
+								FirstInstallmentAmount;
+							);
+						)
+						else
+						(
+							Error("Unrecognized link type");
+						);
+						]]>
+					</Calc>
+				</Variable>		
 				<Variable id="TotalAmountPaid">
 					<Number>0</Number>
 				</Variable>
@@ -247,7 +305,7 @@
 						<OnCondition>TotalCompletedPayments &gt;= TotalNumberOfPayments</OnCondition>
 					</OnEvent>
 					<OnEvent newState="Done">
-						<OnCondition>TotalAmountPaid &gt;= Price</OnCondition>
+						<OnCondition>TotalAmountPaid &gt;= TotalAmountToPay</OnCondition>
 					</OnEvent>
 				</State>
 
@@ -337,7 +395,7 @@
 								html:= Evaluate("Get(templateUrl, {'Accept': 'text/html'})");
 								ConfigClass:= Evaluate("Waher.Service.IoTBroker.Setup.RelayConfiguration");
 								Config:= Evaluate("ConfigClass.Instance");
-								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title + ' - ' + StateToNotify, html.HtmlText, null, null))");
+								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title, html.HtmlText, null, null))");
 
 								if(Evaluate("exists(tabId:= Global.PayspotRequests[TokenContract])")) then
 								(
@@ -731,8 +789,11 @@
 		<Tag name="LinkCreatorName">
 			<ParameterReference parameter="LinkCreatorName" />
 		</Tag>
-		<Tag name="FirstInstallmentAmount">
-			<ParameterReference parameter="FirstInstallmentAmount" />
+		<Tag name="FirstInstallmentAmountParameter">
+			<ParameterReference parameter="FirstInstallmentAmountParameter" />
+		</Tag>
+		<Tag name="LinkType">
+			<ParameterReference parameter="LinkType" />
 		</Tag>
 		<FriendlyName>
 			<ParameterReference parameter="Title" />
@@ -961,13 +1022,20 @@
 				</paragraph>
 			</description>
 		</stringParameter>
-		<numericalParameter name="FirstInstallmentAmount" value="0" min="0">
+		<numericalParameter name="FirstInstallmentAmountParameter" value="0" min="0">
 			<description xml:lang="en">
 				<paragraph>
 					<text>Amount of the firstInstallment</text>
 				</paragraph>
 			</description>
 		</numericalParameter>
+		<stringParameter name="LinkType" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Type of contract. Possible values: Delayed, Installments, Subscription</text>
+				</paragraph>
+			</description>
+		</stringParameter>
 	</parameters>
 	<humanReadableText xml:lang="en">
 		<section>

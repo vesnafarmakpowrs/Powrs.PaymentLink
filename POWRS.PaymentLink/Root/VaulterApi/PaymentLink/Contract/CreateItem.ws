@@ -37,30 +37,18 @@ logActor := Split(Request.RemoteEndPoint, ":")[0];
 
 try
 (
-    PayoutPage := "Payout.md";
-    if(!exists(PIpsOnly)) then
-    (
-        PIpsOnly:= false;
-    );
-
+    PIpsOnly:= PIpsOnly ??? false;
     IsEcommerce := false;
+
     ContractInfo := Global.CreateItem_nenad(SessionUser, PRemoteId, IsEcommerce,
-                PTitle, PPrice, PCurrency, 
-                PDescription, PPaymentDeadline, PDeliveryDate ?? null, PNumberOfPayments ?? null, PFirstPaymentAmount ?? 0, PLinkType ?? POWRS.PaymentLink.Enums.LinkType.OneTime.ToString(),
+                PTitle, PPrice, PCurrency, PIpsOnly,
+                PDescription, PPaymentDeadline, PDeliveryDate ?? null, PNumberOfPayments ?? null, PFirstPaymentAmount ?? 0, PLinkType ?? "OneTime",
 			    PBuyerFirstName, PBuyerLastName, PBuyerEmail, PBuyerPhoneNumber ??? "",
 			    PBuyerAddress , PBuyerCity ?? "", PBuyerCountryCode,
 			    PCallBackUrl ?? "", PWebPageUrl ?? "", PSuccessUrl ?? "", PErrorUrl ?? "", PLinkCreatorName ?? "",
 			    logActor);
 			
     PaymentLinkAddress := "https://" + GetSetting("POWRS.PaymentLink.PayDomain","");
-
-    businessData:= select top 1 * from POWRS.PaymentLink.Onboarding.BusinessData where UserName = SessionUser.username;
-    if(businessData != null) then 
-    (
-     IpsOnly := (PIpsOnly or businessData.IPSOnly);
-    );
-
-    if IpsOnly then PayoutPage := "PayoutIPS.md";
     
     {
         "Link" : PaymentLinkAddress + "/" + ContractInfo.PayoutPage + "?ID=" + Global.EncodeContractId(ContractInfo.ContractId),	

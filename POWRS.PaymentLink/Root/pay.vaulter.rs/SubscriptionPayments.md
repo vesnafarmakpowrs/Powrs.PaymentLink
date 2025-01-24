@@ -113,7 +113,7 @@ if Token.HasStateMachine then
 	TotalCompletedPayments:= select top 1 Value from CurrentState.VariableValues where Name = "TotalCompletedPayments";
 	ActiveCardDetails:= select top 1 Value from CurrentState.VariableValues where Name = "ActiveCardDetails";
 	TotalPaid:= select top 1 Value from CurrentState.VariableValues where Name = "TotalAmountPaid";
-	TotalAmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "AmountToPay";
+	TotalAmountToPay:= select top 1 Value from CurrentState.VariableValues where Name = "TotalAmountToPay";
 	NextPaymentAmount:= select top 1 Value from CurrentState.VariableValues where Name = "NextPaymentAmount";
 
 	if(exists(lng) and lng like '[A-Z]{2}' and lng != Language) then 
@@ -270,14 +270,16 @@ if Token.HasStateMachine then
 				</div>	 
 				<div class="meter green nostripes">
 					<span style="width:((((TotalPaid/TotalAmountToPay)* 100).ToString("f2") ))%"></span>
-				</div>
-				<div class="summary-row-notice">
-				  <span>((localization.Get("NextInstallmentOn") ))  ((DeliveryDate.ToLocalTime().ToString("MMM dd, yyyy HH:mm") )) : ((NextPaymentAmount.ToString("f2") )) ((Currency))<span>
-				</div>
-				<div class="line"></div>
+				</div>[[;
+				if(ContractState == "AwaitingNextPayment") then 
+				(
+					]]<div class="summary-row-notice">
+					<span>((localization.Get("NextInstallmentOn") ))  ((DeliveryDate.ToLocalTime().ToString("MMM dd, yyyy HH:mm") )) : ((NextPaymentAmount.ToString("f2") )) ((Currency))<span></div>[[;
+				);
+				]]<div class="line"></div>
 				<div class="summary-container">
 					<div class="summary-col summary-total-lbl">((localization.Get("TotalFinanced") ))</div>
-					<div class="summary-col">((AmountToPay.ToString("f2") )) ((Currency))</div>
+					<div class="summary-col">((TotalAmountToPay.ToString("f2") )) ((Currency))</div>
 				</div>
 			</div>
    		<div class="spaceItem"></div>[[;
