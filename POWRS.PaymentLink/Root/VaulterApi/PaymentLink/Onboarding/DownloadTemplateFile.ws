@@ -690,11 +690,6 @@ try
 		BadRequest("Parameter FileType not valid");
 	);
 	
-	allCompaniesRootPath := GetSetting("POWRS.PaymentLink.OnBoardingAllCompaniesRootPath","");
-	if(System.String.IsNullOrWhiteSpace(allCompaniesRootPath)) then (
-		Error("No setting: OnBoardingAllCompaniesRootPath");
-	);	
-	
 	returnFilePath := "";
 	fileName := "";
 	if(PFileType == "ContractWithVaulter")then

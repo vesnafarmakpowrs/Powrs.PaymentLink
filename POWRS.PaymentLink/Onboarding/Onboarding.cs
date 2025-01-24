@@ -10,24 +10,14 @@ namespace POWRS.PaymentLink.Onboarding
         public GeneralCompanyInformation GeneralCompanyInformation { get; set; } = new();
         public CompanyStructure CompanyStructure { get; set; } = new();
         public BusinessData BusinessData { get; set; } = new();
-        public LegalDocuments LegalDocuments { get; set; } = new();
 
         public bool CanSubmit
         {
             get
             {
-                bool canSubmit = GeneralCompanyInformation?.IsCompleted() == true &&
+                return GeneralCompanyInformation?.IsCompleted() == true &&
                 CompanyStructure?.IsCompleted() == true &&
-                BusinessData?.IsCompleted() == true &&
-                LegalDocuments?.IsCompleted() == true;
-
-                if (!canSubmit)
-                    return false;
-
-                if (!BusinessData.IPSOnly && string.IsNullOrWhiteSpace(LegalDocuments?.PromissoryNote))
-                    return false;
-                else
-                    return true;
+                BusinessData?.IsCompleted() == true;
             }
         }
 
@@ -42,14 +32,12 @@ namespace POWRS.PaymentLink.Onboarding
             var companyInformationsTask = Database.FindFirstDeleteRest<GeneralCompanyInformation>(userNameFilter);
             var companyStructureTask = Database.FindFirstDeleteRest<CompanyStructure>(userNameFilter);
             var businessDataTask = Database.FindFirstDeleteRest<BusinessData>(userNameFilter);
-            var legalDocumentsTask = Database.FindFirstDeleteRest<LegalDocuments>(userNameFilter);
 
             Task[] tasks = new Task[]
             {
                    companyInformationsTask,
                    companyStructureTask,
                    businessDataTask,
-                   legalDocumentsTask
             };
 
             await Task.WhenAll(tasks);
@@ -59,7 +47,6 @@ namespace POWRS.PaymentLink.Onboarding
                 GeneralCompanyInformation = companyInformationsTask.Result ?? new GeneralCompanyInformation(),
                 CompanyStructure = companyStructureTask.Result ?? new CompanyStructure(),
                 BusinessData = businessDataTask.Result ?? new BusinessData(),
-                LegalDocuments = legalDocumentsTask.Result ?? new LegalDocuments()
             };
 
             return onboardingResult;

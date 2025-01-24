@@ -102,8 +102,6 @@ namespace POWRS.PaymentLink.Onboarding
              string.IsNullOrWhiteSpace(m.DocumentNumber) ||
              m.DateOfIssue == null ||
              string.IsNullOrWhiteSpace(m.PlaceOfIssue) ||
-             string.IsNullOrWhiteSpace(m.StatementOfOfficialDocument) ||
-             string.IsNullOrWhiteSpace(m.IdCard) ||
              string.IsNullOrWhiteSpace(m.IssuerName) ||
              string.IsNullOrWhiteSpace(m.PlaceOfBirth) ||
              string.IsNullOrWhiteSpace(m.AddressOfResidence) ||
