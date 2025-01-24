@@ -20,14 +20,6 @@ GetPreciseErrors(onBoardingData):=(
 	(
 		errors.Add("BusinessData");
 	);
-	if(!onBoardingData.LegalDocuments.IsCompleted())then
-	(
-		errors.Add("LegalDocuments");
-	);
-	if(!onBoardingData.BusinessData.IPSOnly and System.String.IsNullOrWhiteSpace(onBoardingData.LegalDocuments.PromissoryNote))then
-    (
-		errors.Add("BusinessData.IPSOnly");
-	);
 	
 	if(errors.Count > 0)then
 	(
@@ -133,9 +125,6 @@ SendEmailToVaulter(onBoardingData):= (
 	MailBody.Append("<br />Organization number: <strong>{{organizationNumber}}</strong>");
 	MailBody.Append("<br />Organization tax number: <strong>{{organizationTaxNumber}}</strong>");
 	MailBody.Append("<br />");
-	MailBody.Append("<br />Uploaded documents:");
-	MailBody.Append("<br />{{uploadedDocuments}}");
-	MailBody.Append("<br />");
 	MailBody.Append("<br />Please review this request.");
 	MailBody.Append("<br />");
 	MailBody.Append("<br />Best regards");
@@ -145,36 +134,6 @@ SendEmailToVaulter(onBoardingData):= (
 	MailBody := Replace(MailBody, "{{organizationShortName}}", onBoardingData.GeneralCompanyInformation.ShortName);
 	MailBody := Replace(MailBody, "{{organizationNumber}}", onBoardingData.GeneralCompanyInformation.OrganizationNumber);
 	MailBody := Replace(MailBody, "{{organizationTaxNumber}}", onBoardingData.GeneralCompanyInformation.TaxNumber);
-	
-    neuronDomain:= "https://" + Gateway.Domain;
-	companyLink := neuronDomain + "/VaulterApi/PaymentLink/Onboarding/UploadedFiles/" + onBoardingData.GeneralCompanyInformation.OrganizationNumber + "/";
-	uploadedDocuments := Create(System.Text.StringBuilder);
-	foreach (item in onBoardingData.GeneralCompanyInformation.LegalRepresentatives) do(
-		uploadedDocuments.Append("<br /><a href=\"" + companyLink + item.IdCard +"\">" + item.IdCard + "</a>");
-		uploadedDocuments.Append("<br /><a href=\"" + companyLink + item.StatementOfOfficialDocument +"\">" + item.StatementOfOfficialDocument + "</a>");
-	);
-	foreach (item in onBoardingData.CompanyStructure.Owners) do(
-		uploadedDocuments.Append("<br /><a href=\"" + companyLink + item.IdCard +"\">" + item.IdCard + "</a>");
-		uploadedDocuments.Append("<br /><a href=\"" + companyLink + item.StatementOfOfficialDocument +"\">" + item.StatementOfOfficialDocument + "</a>");
-	);
-	
-	uploadedDocuments.Append("<br /><a href=\"" + companyLink + onBoardingData.LegalDocuments.BusinessCooperationRequest +"\">" + onBoardingData.LegalDocuments.BusinessCooperationRequest + "</a>");
-	uploadedDocuments.Append("<br /><a href=\"" + companyLink + onBoardingData.LegalDocuments.ContractWithEMI +"\">" + onBoardingData.LegalDocuments.ContractWithEMI + "</a>");
-	uploadedDocuments.Append("<br /><a href=\"" + companyLink + onBoardingData.LegalDocuments.ContractWithVaulter +"\">" + onBoardingData.LegalDocuments.ContractWithVaulter + "</a>");
-	if(onBoardingData.LegalDocuments.PromissoryNote != "")then
-	(
-		uploadedDocuments.Append("<br /><a href=\"" + companyLink + onBoardingData.LegalDocuments.PromissoryNote +"\">" + onBoardingData.LegalDocuments.PromissoryNote + "</a>");
-	);
-	if(onBoardingData.LegalDocuments.RequestForPromissoryNotesRegistration != "")then
-	(
-		uploadedDocuments.Append("<br /><a href=\"" + companyLink + onBoardingData.LegalDocuments.RequestForPromissoryNotesRegistration +"\">" + onBoardingData.LegalDocuments.RequestForPromissoryNotesRegistration + "</a>");
-	);
-	if(onBoardingData.LegalDocuments.CardOfDepositedSignatures != "")then
-	(
-		uploadedDocuments.Append("<br /><a href=\"" + companyLink + onBoardingData.LegalDocuments.CardOfDepositedSignatures +"\">" + onBoardingData.LegalDocuments.CardOfDepositedSignatures + "</a>");
-	);
-	
-	MailBody := Replace(MailBody, "{{uploadedDocuments}}", uploadedDocuments.ToString());
 	
 	ConfigClass:=Waher.Service.IoTBroker.Setup.RelayConfiguration;
 	Config := ConfigClass.Instance;
@@ -261,7 +220,6 @@ try
 	try
 	(
 		currentMethod := "SendEmailToUser";
-		SendEmailToUser();
 	)
 	catch
 	(

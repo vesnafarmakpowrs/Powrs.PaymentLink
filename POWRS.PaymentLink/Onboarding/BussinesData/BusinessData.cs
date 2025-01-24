@@ -31,14 +31,14 @@ namespace POWRS.PaymentLink.Onboarding
         private int mostExpensiveProductAmount;
         private bool sellingGoodsWithDelayedDelivery;
         private int periodFromPaymentToDeliveryInDays;
+        private string methodOfDeliveringGoodsToCustomers;
         private int complaintsPerMonth;
         private int complaintsPerYear;
-        private bool iPSOnly;
-        private string methodOfDeliveringGoodsToCustomers;
         private string descriptionOfTheGoodsToBeSoldOnline;
         private string eComerceContactFullName;
         private string eComerceResponsiblePersonPhone;
         private string eComerceContactEmail;
+        private bool iPSOnly;
 
         public string BusinessModel
         {
@@ -110,6 +110,7 @@ namespace POWRS.PaymentLink.Onboarding
             get => periodFromPaymentToDeliveryInDays;
             set => periodFromPaymentToDeliveryInDays = value;
         }
+        public string MethodOfDeliveringGoodsToCustomers { get => methodOfDeliveringGoodsToCustomers; set => methodOfDeliveringGoodsToCustomers = value; }
 
         public int ComplaintsPerMonth
         {
@@ -122,7 +123,6 @@ namespace POWRS.PaymentLink.Onboarding
             get => complaintsPerYear;
             set => complaintsPerYear = value;
         }
-        public string MethodOfDeliveringGoodsToCustomers { get => methodOfDeliveringGoodsToCustomers; set => methodOfDeliveringGoodsToCustomers = value; }
         public string DescriptionOfTheGoodsToBeSoldOnline { get => descriptionOfTheGoodsToBeSoldOnline; set => descriptionOfTheGoodsToBeSoldOnline = value; }
         public string EComerceContactFullName { get => eComerceContactFullName; set => eComerceContactFullName = value; }
         public string EComerceResponsiblePersonPhone { get => eComerceResponsiblePersonPhone; set => eComerceResponsiblePersonPhone = value; }

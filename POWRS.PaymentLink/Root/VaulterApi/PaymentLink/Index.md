@@ -1469,8 +1469,6 @@ Token is required. Request body is empty.
                 "DocumentNumber": "",
                 "DateOfIssue": 1704063600,
                 "PlaceOfIssue": "",
-                "StatementOfOfficialDocument": "",
-                "IdCard": "LegalRepresentative_1_IdCard_Mirko Kruščić.pdf",
                 "IsPoliticallyExposedPerson": false,
                 "DateOfBirthStr": "31/05/1988",
                 "DateOfIssueStr": "01/01/2024",
@@ -1512,8 +1510,6 @@ Token is required. Request body is empty.
                 "Citizenship": "Serbian",
                 "OwningPercentage": 25,
                 "Role": "Developer",
-                "StatementOfOfficialDocument": "Owner_1_Politicall_Mirko Kruščić.pdf",
-                "IdCard": "Owner_1_IdCard_Mirko Kruščić.pdf",
                 "DateOfBirthStr": "31/05/1988",
                 "IssueDateStr": "31/01/2020",
                 "CityOfResidence": "Voždovac"
@@ -1591,11 +1587,7 @@ Call this resource save data for onboarding.
                 "PlaceOfBirth" : "",
                 "AddressOfResidence": "",
                 "CityOfResidence": "",
-                "IsPoliticallyExposedPerson": true|false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
-				"StatementOfOfficialDocumentIsNewUpload": true|false,   -> if it is new file upload then 'true', else 'false'
-                "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
-				"IdCardIsNewUpload": true|false,            -> if it is new file upload then 'true', else 'false'
-                "IdCard": "",                           -> if it is new file uplad then base 64 string, else string from API
+                "IsPoliticallyExposedPerson": true|false,
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
                 "PlaceOfIssue": "",
                 "IssuerName": "",
@@ -1618,9 +1610,7 @@ Call this resource save data for onboarding.
                 "PlaceOfBirth": "",
                 "AddressOfResidence": "",
                 "CityOfResidence": "",
-                "IsPoliticallyExposedPerson": true|false,    -> If this is 'true' then 'StatementOfOfficialDocument' can't be null or white space
-				"StatementOfOfficialDocumentIsNewUpload": false,       -> if it is new file upload then 'true', else 'false'
-                "StatementOfOfficialDocument": "",      -> if it is new file uplad then base 64 string, else string from API
+                "IsPoliticallyExposedPerson": true|false,
                 "OwningPercentage": 25.1,
                 "Role": "",
                 "DocumentType": "IDCard",               -> Can be string: 'IDCard' or 'Passport'
@@ -1628,9 +1618,7 @@ Call this resource save data for onboarding.
                 "IssueDate": "25/04/2024",              -> Format: dd/MM/yyyy. If user don't select date, send empty string
                 "IssuerName": "",
                 "DocumentIssuancePlace": "",
-                "Citizenship": "",
-				"IdCardIsNewUpload": true|false,            -> if it is new file upload then 'true', else 'false'
-                "IdCard": ""                            -> if it is new file uplad then base 64 string, else string from API
+                "Citizenship": ""				
             }
         ]
    },

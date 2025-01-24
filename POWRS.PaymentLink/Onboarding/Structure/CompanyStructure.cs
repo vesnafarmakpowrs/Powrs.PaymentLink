@@ -92,15 +92,13 @@ namespace POWRS.PaymentLink.Onboarding
                     string.IsNullOrWhiteSpace(m.PlaceOfBirth) ||
                     string.IsNullOrWhiteSpace(m.AddressOfResidence) ||
                     string.IsNullOrWhiteSpace(m.CityOfResidence) ||
-                    string.IsNullOrWhiteSpace(m.StatementOfOfficialDocument) ||
                     m.OwningPercentage < 25 ||
                     string.IsNullOrWhiteSpace(m.Role) ||
                     string.IsNullOrWhiteSpace(m.DocumentNumber) ||
                     (m.IssueDate == null && m.IssueDate == DateTime.MinValue) ||
                     string.IsNullOrWhiteSpace(m.IssuerName) ||
                     string.IsNullOrWhiteSpace(m.DocumentIssuancePlace) ||
-                    string.IsNullOrWhiteSpace(m.Citizenship) ||
-                    string.IsNullOrWhiteSpace(m.IdCard));
+                    string.IsNullOrWhiteSpace(m.Citizenship));
 
                 return !incompleteOwnerFormsExists;
             }
