@@ -936,6 +936,9 @@
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\CalculatePaySpotCallback.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Root\VaulterApi\PaymentLink\Contract\CreateItem.ws">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Root\VaulterApi\PaymentLink\Contract\CreateItemEComm.ws">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
