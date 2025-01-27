@@ -56,8 +56,8 @@ Title:= select top 1 Value from Variables where Name = "Title";
 SellerName:= select top 1 Value from Variables where Name = "SellerName";
 CancellationReason:= select top 1 Value from Variables where Name = "CancellationReason";
 Country:= select top 1 Value from Variables where Name = "Country";
-MaxFailedAttempts:= select top 1 Value from Variables where Name = "MaxFailedPaymentAttempts";
-FailedPaymentAttempts:= select top 1 Value from Variables where Name = "FailedPaymentAttempts";
+MaxFailedAttempts:= Str(select top 1 Value from Variables where Name = "MaxFailedPaymentAttempts");
+FailedPaymentAttempts:= Str(select top 1 Value from Variables where Name = "FailedPaymentAttempts");
 ActiveCardDetails:= select top 1 Value from Variables where Name = "ActiveCardDetails";
 Amount:= select top 1 Value from Variables where Name = "AmountToPay";
 Link:= select top 1 Value from Variables where Name = "Link";
@@ -76,9 +76,8 @@ year:= Now.Year.ToString();
 				<div id="description">
 					<p>((localization.GetFormat("PaymentFailedMessage", BuyerName, Title) ))</p>
 					<p>((localization.Get("RetryMessage") ))</p>
-					<span style="display: block;">((localization.GetFormat("MaxAttemptsNote", Str(MaxFailedAttempts)) ))</span>
-					<span style="display: block;">((localization.GetFormat("CurrentAttempt", Str(FailedPaymentAttempts)) ))</span>
-					<p>Once this this number exceeds, your product will automatically be cancelled, and in order to renew, you will have to contact seller directly.</p>
+					<span style="display: block;">((localization.GetFormat("MaxAttemptsNote", MaxFailedAttempts) ))</span>
+					<span style="display: block;">((localization.GetFormat("CurrentAttempt", FailedPaymentAttempts) ))</span>
 				</div>
 				<div style="margin-bottom:20px;">
 					<table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; border: 1px solid #ddd;">
