@@ -38,7 +38,19 @@ namespace POWRS.PaymentLink
                 .Replace("'", "")
                 .Replace("\"", "");
         }
-     
+
+        public static string ToVaulterStringFormat(object parameter)
+        {
+            if (!decimal.TryParse(parameter?.ToString(), out decimal number))
+            {
+                return string.Empty;
+            }
+
+            string formattedNumber = number.ToString("#,0.00", System.Globalization.CultureInfo.InvariantCulture);
+            formattedNumber = formattedNumber.Replace(",", "X").Replace(".", ",").Replace("X", ".");
+
+            return formattedNumber;
+        }
 
     }
 }

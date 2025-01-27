@@ -93,7 +93,7 @@ TotalNumberOfPayments:= select top 1 Value from Variables where Name = "TotalNum
 Price:= select top 1 Value from Variables where Name = "Price";
 Currency:= select top 1 Value from Variables where Name = "Currency";
 DeliveryDate:= select top 1 Value from Variables where Name = "Currency";
-TotalToPay:= (TotalNumberOfPayments * Price).ToString("f2");
+TotalToPay:= POWRS.PaymentLink.Utils.ToVaulterStringFormat(TotalNumberOfPayments * Price);
 localizationCountry:= Country == "RS" ? "sr" : "en";
 localization:= Create(POWRS.PaymentLink.Localization.LocalizationService, Create(CultureInfo, localizationCountry), "HtmlTemplates");
 year:= Now.Year.ToString();
@@ -213,7 +213,7 @@ Payments:= select * from PayspotPayments where TokenId = TokenId;
 							<td style="padding: 8px; border: 1px solid #ddd;">((item.Amount )) ((Currency ))</td>
 							<td style="padding: 8px; border: 1px solid #ddd;">((item.AuthNumber))</td>
 							<td style="padding: 8px; border: 1px solid #ddd;">((item.Result))</td>
-							<td style="padding: 8px; border: 1px solid #ddd;">((item.DateCompleted.ToString("dd-MM-yyyy") ))</td>
+							<td style="padding: 8px; border: 1px solid #ddd;">((item.DateCreated.ToString("dd-MM-yyyy") ))</td>
 							<td style="padding: 8px; border: 1px solid #ddd; color: ((color ))">((item.RefundedAmount > 0 ? localization.Get("RefundedStatus") : (item.Result == "00" ?  localization.Get("CompletedStatus") : localization.Get("FailedStatus") ) ))</td>
 						</tr>[[;
 						);

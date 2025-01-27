@@ -261,25 +261,25 @@ if Token.HasStateMachine then
 				<div class="summary-container">
 					<div class="summary-col">
 						<div class="summary-row-title">((localization.Get("TotalPaid") ))</div>
-						<div class="summary-row-amount">((TotalPaid.ToString("f2") )) ((Currency))</div>
+						<div class="summary-row-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(TotalPaid) )) ((Currency))</div>
 					</div>
 					<div class="summary-col">
 						<div class="summary-row-title">((localization.Get("TotalRemaining") ))</div>
-						<div class="summary-row-amount">(((TotalAmountToPay - TotalPaid).ToString("f2") )) ((Currency))</div>
+						<div class="summary-row-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(TotalAmountToPay - TotalPaid) )) ((Currency))</div>
 					</div>
 				</div>	 
 				<div class="meter green nostripes">
-					<span style="width:((((TotalPaid/TotalAmountToPay)* 100).ToString("f2") ))%"></span>
+					<span style="width:(((TotalPaid/TotalAmountToPay) * 100 ))%"></span>
 				</div>[[;
 				if(ContractState == "AwaitingNextPayment") then 
 				(
 					]]<div class="summary-row-notice">
-					<span>((localization.Get("NextInstallmentOn") ))  ((DeliveryDate.ToLocalTime().ToString("MMM dd, yyyy HH:mm") )) : ((NextPaymentAmount.ToString("f2") )) ((Currency))<span></div>[[;
+					<span>((localization.Get("NextInstallmentOn") ))  ((DeliveryDate.ToLocalTime().ToString("MMM dd, yyyy HH:mm") )) : ((POWRS.PaymentLink.Utils.ToVaulterStringFormat(NextPaymentAmount) )) ((Currency))<span></div>[[;
 				);
 				]]<div class="line"></div>
 				<div class="summary-container">
 					<div class="summary-col summary-total-lbl">((localization.Get("TotalFinanced") ))</div>
-					<div class="summary-col">((TotalAmountToPay.ToString("f2") )) ((Currency))</div>
+					<div class="summary-col">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(TotalAmountToPay) )) ((Currency))</div>
 				</div>
 			</div>
    		<div class="spaceItem"></div>[[;
@@ -448,7 +448,7 @@ if Token.HasStateMachine then
 					<div class="payment-container">
 					  <div class="payment-history-div">
 					    <div>
-							<div class="payment-history-amount">((payment.Amount.ToString("f2") )) ((Currency ))</div>
+							<div class="payment-history-amount">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(payment.Amount) )) ((Currency ))</div>
 							<div class="payment-history-date">((payment.DateCreated.ToString("MMM dd, yyyy") ))</div>	[[;
 						]]</div></div>[[;
 						if(payment.RefundedAmount != null and payment.RefundedAmount > 0) then 

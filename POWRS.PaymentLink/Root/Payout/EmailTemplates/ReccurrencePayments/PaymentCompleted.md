@@ -119,8 +119,8 @@ year:= Now.Year.ToString();
           <tr>
             <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((Title ))</td>
             <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((Description ))</td>
-            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((Payment.Amount.ToString("f2") )) ((Currency ))</td>
-            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((Payment.Amount.ToString("f2") )) ((Currency ))</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(Payment.Amount) )) ((Currency ))</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(Payment.Amount) )) ((Currency ))</td>
           </tr>
         </tbody>
       </table>

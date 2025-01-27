@@ -119,7 +119,7 @@ year:= Now.Year.ToString();
 							<td style="padding: 8px; border: 1px solid #ddd;">((ActiveCardDetails.MaskedPan ))</td>
 							<td style="padding: 8px; border: 1px solid #ddd;">((ActiveCardDetails.ExpiryDate ))</td>
 							<td style="padding: 8px; border: 1px solid #ddd;">((ActiveCardDetails.CardBrand ))</td>
-							<td style="padding: 8px; border: 1px solid #ddd;">((Amount.ToString("f2") )) ((Currency ))</td>
+							<td style="padding: 8px; border: 1px solid #ddd;">((POWRS.PaymentLink.Utils.ToVaulterStringFormat(Amount) )) ((Currency ))</td>
 						</tr>
 						</tbody>
 					</table>
