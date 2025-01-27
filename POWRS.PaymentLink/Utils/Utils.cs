@@ -43,7 +43,7 @@ namespace POWRS.PaymentLink
         {
             if (!decimal.TryParse(parameter?.ToString(), out decimal number))
             {
-                return string.Empty;
+                return string.Empty; 
             }
 
             string formattedNumber = number.ToString("#,0.00", System.Globalization.CultureInfo.InvariantCulture);
