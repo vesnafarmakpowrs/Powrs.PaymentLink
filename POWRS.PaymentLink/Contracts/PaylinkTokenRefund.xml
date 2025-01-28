@@ -220,7 +220,7 @@
 					</OnEvent>
 				</State>
 				<State id="RefundBuyer">
-					<OnEnter actionRef="ReportNewState" beforeActionScript="NewStatus:='RefundPaymentCompleted'" />
+					<OnEnter actionRef="NotifyNewState" beforeActionScript="StateToNotify:= 'SellerRefundPaymentCompleted'" />
 					<OnLeave actionRef="ChangeCanCancelValue" beforeActionScript="newCanCancelValue:= false;"/>
 					<OnEvent actionRef="RefundPayment" failureState="RefundBuyerFailed" newState="PaymentCanceled">
 						<OnDuration>PT1S</OnDuration>
@@ -447,6 +447,36 @@
 						</Then>
 					</If>
 				</Action>
+				<Action id="NotifyNewState">
+					<If condition="exists(StateToNotify)">
+						<Then>
+							<Script>
+								try
+								(
+								orderParamter:= exists(LastOrderId) and LastOrderId != '' ? "&amp;OrderId=" + LastOrderId : '';
+								templateUrl:= Evaluate("Gateway.GetUrl('/Payout/EmailTemplates/RefundPayments/' + StateToNotify + '.md?TokenId=' + TokenId + orderParamter)");
+								html:= Evaluate("Get(templateUrl, {'Accept': 'text/html'})");
+								ConfigClass:= Evaluate("Waher.Service.IoTBroker.Setup.RelayConfiguration");
+								Config:= Evaluate("ConfigClass.Instance");
+								Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title, html.HtmlText, null, null))");
+								creator := GetTokenCreatorJid('6a36730c-7266-442d-bf23-2@edaler.lab.neuron.vaulter.nu');
+								sellerAccount := '';
+								if (exists(creator.CreatorJid))
+								sellerAccount := Before(creator.CreatorJid,'@');
+								if(Evaluate("exists(tabId:= Global.PayspotRequests[TokenContract])")) then
+								(
+								   Evaluate("Waher.IoTGateway.ClientEvents.PushEvent([tabId],'StateUpdated', {'NewState': StateToNotify })");
+								);
+
+								)
+								catch
+								(
+								   x:= Exception.Message;
+								);
+							</Script>
+						</Then>
+					</If>
+				</Action>
 				<Action id="ProcessPayspotPaymentStatus">
 					<Script>
 						OrderId:= SelectXmlStr(Note,'/default:PayspotPaymentStatus/@orderId');
@@ -527,6 +557,12 @@
 						RefundOrderId:= SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@orderId');
 						RefundPayspotOrderId := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@payspotOrderId');
 						RefundPaymentType := SelectXmlStr(Note,'/default:PayspotPaymentCompleted/@paymentType');
+						Evaluate("Background(POWRS.PaymentLink.MailSender.SendHtmlMail(Config.Host, Int(Config.Port), Config.Sender, Config.UserName, Config.Password, BuyerEmail, Title, html.HtmlText, null, null))");
+						creator := GetTokenCreatorJid('6a36730c-7266-442d-bf23-2@edaler.lab.neuron.vaulter.nu');
+						if(creator != null) then
+						(
+						   SellerEmail := creator.OrgEmail;
+						);
 					</Script>
 					<Try>
 						<BuyEDaler to="{Seller}"
@@ -549,7 +585,7 @@
 						<PersistVariable name="RefundOrderId" value="{RefundOrderId}" />
 						<PersistVariable name="RefundPayspotOrderId" value="{RefundPayspotOrderId}" />
 						<PersistVariable name="RefundPaymentType" value="{RefundPaymentType}" />
-
+						<PersistVariable name="SellerEmail" value="{SellerEmail}" />
 						<LogEvent actor="{Seller}" eventId="PaymentCompleted" level="Medium" message="{'PaymentCompleted, amountPaid: ' + AmountToPay + ' ' + Currency}" object="{Buyer}" type="Informational" />
 						<Catch exceptionVariable="ex">
 							<LogEvent type="Error" eventId="BuyEdaler" actor="{Seller}" message="{ex.Message}"></LogEvent>
@@ -818,6 +854,13 @@
 			<description xml:lang="en">
 				<paragraph>
 					<text>Seller Name used to sellEdaler</text>
+				</paragraph>
+			</description>
+		</stringParameter>
+		<stringParameter name="SellerEmail" value="">
+			<description xml:lang="en">
+				<paragraph>
+					<text>Seller email used for sending notifications</text>
 				</paragraph>
 			</description>
 		</stringParameter>
